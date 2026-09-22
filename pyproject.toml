@@ -1,0 +1,97 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bpmn-py"
+version = "0.1.0.dev0"
+description = "Pure-Python port of bpmn.io bpmn-moddle and bpmn-auto-layout: read, check, build, lay out and write BPMN 2.0 XML"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+requires-python = ">=3.11"
+authors = [{ name = "Fabien Antoine" }]
+keywords = ["bpmn", "bpmn2", "bpmn-moddle", "bpmn-auto-layout", "bpmn-io", "moddle", "xml", "workflow", "process", "agents"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Text Processing :: Markup :: XML",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+xsd = ["lxml>=5"]
+
+[project.urls]
+Homepage = "https://github.com/rhanka/bpmn-py"
+Repository = "https://github.com/rhanka/bpmn-py"
+Issues = "https://github.com/rhanka/bpmn-py/issues"
+Changelog = "https://github.com/rhanka/bpmn-py/blob/main/CHANGELOG.md"
+"Upstream: bpmn-moddle" = "https://github.com/bpmn-io/bpmn-moddle"
+"Upstream: bpmn-auto-layout" = "https://github.com/bpmn-io/bpmn-auto-layout"
+
+[dependency-groups]
+dev = [{ include-group = "lint" }, { include-group = "test" }, "pre-commit>=4"]
+lint = ["ruff>=0.14", "mypy>=1.19", "lxml-stubs>=0.5"]
+test = ["pytest>=8.4", "pytest-cov>=7", "hypothesis>=6", "lxml>=6"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bpmn_py"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "scripts", "README.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "UPSTREAM.toml", "UPSTREAM.lock"]
+exclude = ["tests/oracle/node_modules"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["tests/upstream"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  "D203", "D213",      # docstring style: one-blank-line-before-class / multi-line-summary-second-line
+  "COM812",            # conflicts with the formatter
+  "FIX", "TD",         # TODO policing
+  "CPY",               # per-file copyright headers: LICENSE + THIRD_PARTY_NOTICES govern instead
+  "PLR2004",           # magic values are fine in small scripts and tests
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "D", "PLR2004", "INP001", "PLC0415"]
+"scripts/**" = ["T201", "D", "INP001", "S310"]
+
+[tool.mypy]
+strict = true
+python_version = "3.11"
+packages = ["bpmn_py"]
+mypy_path = "src"
+warn_unreachable = true
+pretty = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+xfail_strict = true
+markers = [
+  "oracle: differential tests against the upstream Node implementation (needs node)",
+  "upstream(file, title): claims the transposition of one upstream JS test case",
+]
+
+[tool.coverage.run]
+source = ["bpmn_py"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_also = ["if TYPE_CHECKING:", "raise NotImplementedError", "@overload"]

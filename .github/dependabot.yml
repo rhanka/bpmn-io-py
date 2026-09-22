@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }
+    groups:
+      actions: { patterns: ["*"] }
+  - package-ecosystem: uv
+    directory: /
+    schedule: { interval: weekly }
+    groups:
+      dev-tooling: { patterns: ["*"] }
+  # The oracle pins the upstream JS packages: a Dependabot PR here IS the "upstream moved" signal.
+  - package-ecosystem: npm
+    directory: /tests/oracle
+    schedule: { interval: daily }

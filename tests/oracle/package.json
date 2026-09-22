@@ -1,0 +1,12 @@
+{
+  "name": "bpmn-py-oracle",
+  "private": true,
+  "description": "Pinned upstream JS implementation used as a differential oracle by the Python test-suite. A Dependabot bump here means upstream moved: port the change, then update UPSTREAM.toml.",
+  "type": "module",
+  "dependencies": {
+    "bpmn-auto-layout": "1.3.0",
+    "bpmn-moddle": "10.3.1",
+    "moddle": "8.2.1",
+    "moddle-xml": "12.3.1"
+  }
+}

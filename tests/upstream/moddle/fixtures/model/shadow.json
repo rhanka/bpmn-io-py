@@ -1,0 +1,21 @@
+{
+  "name": "Shadow",
+  "uri": "http://shadow",
+  "prefix": "s",
+  "types": [
+    {
+      "name": "Element",
+      "properties": []
+    },
+    {
+      "name": "NamedElement",
+      "superClass": [ "s:Element" ]
+    },
+    {
+      "name": "ExtendsBuiltinElement",
+      "superClass": [
+        "Element"
+      ]
+    }
+  ]
+}
