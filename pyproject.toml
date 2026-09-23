@@ -28,9 +28,6 @@ classifiers = [
 ]
 dependencies = []
 
-[project.optional-dependencies]
-xsd = ["lxml>=5"]
-
 [project.urls]
 Homepage = "https://github.com/rhanka/bpmn-py"
 Repository = "https://github.com/rhanka/bpmn-py"
@@ -42,7 +39,7 @@ Changelog = "https://github.com/rhanka/bpmn-py/blob/main/CHANGELOG.md"
 [dependency-groups]
 dev = [{ include-group = "lint" }, { include-group = "test" }, "pre-commit>=4"]
 lint = ["ruff>=0.14", "mypy>=1.19", "lxml-stubs>=0.5"]
-test = ["pytest>=8.4", "pytest-cov>=7", "hypothesis>=6", "lxml>=6"]
+test = ["pytest>=8.4", "pytest-cov>=7", "hypothesis>=6", "lxml>=6", "jsonschema>=4.26"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/bpmn_py"]
@@ -68,7 +65,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "D", "PLR2004", "INP001", "PLC0415"]
-"scripts/**" = ["T201", "D", "INP001", "S310"]
+"scripts/**" = ["T201", "D", "INP001", "S310", "C901"]
 
 [tool.mypy]
 strict = true

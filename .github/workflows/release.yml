@@ -7,7 +7,8 @@ name: Release
 on:
   push:
     tags:
-      - "v[0-9]*"
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+rc[0-9]+"
 
 permissions:
   contents: read
@@ -28,7 +29,7 @@ jobs:
         env:
           TAG: ${{ github.ref_name }}
         run: |
-          package="bpmn_py"
+          package="$(python3 -c 'import tomllib;print(tomllib.load(open("pyproject.toml","rb"))["project"]["name"])')"
           version="${TAG#v}"
           echo "package=$package" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
@@ -36,8 +37,19 @@ jobs:
           if [ "$declared" != "$version" ]; then
             echo "::error::tag version $version != pyproject version $declared"; exit 1
           fi
+      - name: Full test-suite must pass before any release
+        run: |
+          uv sync --group test
+          uv run pytest -m "not oracle"
+          uv run python scripts/sync_upstream.py --check
+          uv run python scripts/port_coverage.py --strict
       - run: uv build
-      - run: uvx twine check --strict dist/*
+      - run: uvx --from twine==7.0.0 twine check --strict dist/*
+      - name: Install-from-wheel smoke test
+        run: |
+          uv venv --python 3.13 .smoke
+          uv pip install --python .smoke/bin/python dist/*.whl
+          .smoke/bin/python -c "import bpmn_py; print(bpmn_py.__version__)"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: dist
@@ -74,4 +86,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
-        run: gh release create "$TAG" dist/* --repo "$REPO" --title "$TAG" --generate-notes
+        run: |
+          if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/* --repo "$REPO" --clobber
+          else
+            gh release create "$TAG" dist/* --repo "$REPO" --title "$TAG" --generate-notes
+          fi

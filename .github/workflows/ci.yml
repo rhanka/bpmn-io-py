@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "port-*"]
   pull_request:
   workflow_dispatch:
 
@@ -90,7 +90,12 @@ jobs:
           persist-credentials: false
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
       - run: uv build
-      - run: uvx twine check --strict dist/*
+      - run: uvx --from twine==7.0.0 twine check --strict dist/*
+      - name: Install-from-wheel smoke test
+        run: |
+          uv venv --python 3.13 .smoke
+          uv pip install --python .smoke/bin/python dist/*.whl
+          .smoke/bin/python -c "import bpmn_py; print(bpmn_py.__version__, bpmn_py.UPSTREAM_VERSIONS)"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: dist
