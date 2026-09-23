@@ -17,6 +17,7 @@ DESCRIPTOR_NAMES: Final[dict[str, str]] = {
     "dc": "bpmn/dc.json",
     "di": "bpmn/di.json",
     "bioc": "bpmn-io/bioc.json",
+    "color": "color/bpmn-in-color.json",
 }
 
 

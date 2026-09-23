@@ -74,6 +74,19 @@ vendor = [
   { from = "github", path = "test", dest = "tests/upstream/bpmn-moddle/test" },
 ]
 
+[upstream.bpmn-in-color-moddle]
+npm = "bpmn-in-color-moddle"
+version = "0.2.0"
+repo = "bpmn-io/bpmn-in-color-moddle"
+tag = "v0.2.0"
+commit = "ae12f23876f5f9cb46f84879ad5c3e37614ce4cf"
+license = "MIT"
+# Sixth descriptor package (default BpmnModdle model); recorded from the v0.2.0
+# tag (resources/ holds only bpmn-in-color.json there).
+vendor = [
+  { from = "github", path = "resources", dest = "src/bpmn_io/resources/color" },
+]
+
 [upstream.bpmn-auto-layout]
 npm = "bpmn-auto-layout"
 version = "1.3.0"

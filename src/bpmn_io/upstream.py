@@ -11,5 +11,6 @@ UPSTREAM_VERSIONS: Final[dict[str, str]] = {
     "moddle": "8.2.1",
     "moddle-xml": "12.3.1",
     "bpmn-moddle": "10.3.1",
+    "bpmn-in-color-moddle": "0.2.0",
     "bpmn-auto-layout": "1.3.0",
 }

@@ -4,7 +4,7 @@ import pytest
 
 from bpmn_io import DESCRIPTOR_NAMES, UPSTREAM_VERSIONS, __version__, load_descriptor
 
-EXPECTED_TYPE_COUNTS = {"bpmn": 137, "bpmndi": 6, "dc": 7, "di": 11, "bioc": 2}
+EXPECTED_TYPE_COUNTS = {"bpmn": 137, "bpmndi": 6, "dc": 7, "di": 11, "bioc": 2, "color": 3}
 
 
 def test_version_is_exposed() -> None:
