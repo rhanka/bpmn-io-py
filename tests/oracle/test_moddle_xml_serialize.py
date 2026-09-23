@@ -2,10 +2,10 @@
 
 ``op=model-serialize-batch`` (``tests/oracle/dump.mjs``, ``BpmnModdle`` —
 always lax) parses each document and serializes it back with ``format``
-false/true; the port reads lax through the five vendored descriptor packages
+false/true; the port reads lax through the six vendored descriptor packages
+(five + the ``bpmn-in-color`` 6th package, BR01-COLOR resolved in Lot 7)
 and serializes with the same options. Outputs must be byte-identical,
-failures message-identical. ``bpmn-in-color.bpmn`` is excluded (BR01-COLOR:
-6th descriptor package, Lot 7).
+failures message-identical.
 """
 
 from __future__ import annotations
@@ -27,9 +27,12 @@ pytestmark = pytest.mark.oracle
 
 FIXTURES = Path(__file__).parent.parent / "upstream" / "bpmn-moddle" / "test" / "fixtures" / "bpmn"
 
-#: Excluded until the 6th descriptor package is vendored (BR01-COLOR, needs
-#: network; Lot 7).
-SKIP_FIXTURES = frozenset({"bpmn-in-color.bpmn"})
+#: No exclusions: the 6th descriptor package is vendored (BR01-COLOR resolved
+#: in Lot 7).
+SKIP_FIXTURES = frozenset()
+
+#: The six default descriptor packages (``DESCRIPTORS`` five + color).
+PACKAGES = (*DESCRIPTORS, "color/bpmn-in-color.json")
 
 
 def _serialize_py(
@@ -37,7 +40,7 @@ def _serialize_py(
     format: bool,  # noqa: A002, FBT001 - option names
 ) -> dict[str, Any]:
     """Parse lax and serialize back, capturing failures like the batch op."""
-    packages = [json.loads((RESOURCES / rel).read_text(encoding="utf-8")) for rel in DESCRIPTORS]
+    packages = [json.loads((RESOURCES / rel).read_text(encoding="utf-8")) for rel in PACKAGES]
     try:
         root = Reader(Moddle(packages), lax=True).from_xml(xml, "bpmn:Definitions").root_element
         return {"xml": Writer(format=format, preamble=True).to_xml(root)}

@@ -106,23 +106,24 @@ Actions with the following status should be included around tasks only if really
   - [x] `src/bpmn_io/moddle_xml/common.py`, `read.py`: `Reader`, `ElementHandler`/`RootElementHandler`/`GenericElementHandler`/`ValueHandler`/`ReferenceHandler`, `Context` (`references`, `warnings`, `elements_by_id`), `xsi:type` **and `xmi:type`** dispatch, namespace prefix redefinition/collision, `$attrs` for unknown attributes, body properties, reference resolution post-pass, `ParseError` carrying warnings (D4.1), lax mode.
   - [x] Synchronous `from_xml(xml, type_name, options) -> ParseResult` (dataclass).
   - [x] `tests/moddle_xml/test_reader.py`: 86/86 cases of `tests/upstream/moddle-xml/test/spec/reader.js` (88 rows − 2 duplicated titles claimed once).
-  - [x] Oracle: `tests/oracle/test_moddle_xml_dump.py` vs `model-dump-batch` op — 88/89 fixtures byte-equal (`bpmn-in-color.bpmn` skipped: BR01-COLOR 6th descriptor, Lot 7).
+  - [x] Oracle: `tests/oracle/test_moddle_xml_dump.py` vs `model-dump-batch` op — 89/89 fixtures byte-equal (BR01-COLOR resolved in Lot 7: 6th descriptor vendored).
   - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
 - [x] **Lot 6 — moddle-xml Writer & roundtrip**
   - [x] `src/bpmn_io/moddle_xml/write.py`: `Writer`, element/attribute/body serializers, namespace collection and declaration order, `xsi:type` and `serialize: property` (incl. `Assignment.from`), escaping table, `format` indentation, `preamble`, number formatting via `_js.number_to_string`; iterative.
   - [x] `to_xml(element, format=False, preamble=True) -> WriteResult`.
   - [x] `tests/moddle_xml/test_writer.py` (75/75), `test_roundtrip.py` (14/14), `test_roundtrip_uml.py` (1/1), `test_performance.py` (4/4, full depth, no timeout adaptation needed); `test/integration/distro.cjs` N-A (packaging check).
-  - [x] Byte gate: `tests/oracle/test_moddle_xml_serialize.py` vs `model-serialize-batch` — 88/89 fixtures × format True/False byte-identical (`bpmn-in-color.bpmn`: BR01-COLOR, Lot 7).
+  - [x] Byte gate: `tests/oracle/test_moddle_xml_serialize.py` vs `model-serialize-batch` — 89/89 fixtures × format True/False byte-identical (BR01-COLOR resolved in Lot 7).
   - [x] Property tests (hypothesis): `test_serialize_fixed_point` over the corpus.
   - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
-- [ ] **Lot 7 — bpmn-moddle**
-  - [ ] `src/bpmn_io/bpmn_moddle/bpmn_moddle.py`, `simple.py`, `__init__.py`: `BpmnModdle` wiring the vendored descriptors (bpmn, bpmndi, dc, di, bioc) and additional packages, `from_xml`/`to_xml` delegates; public re-exports in `bpmn_io/__init__.py`.
-  - [ ] `tests/bpmn_moddle/test_bpmn_moddle.py`, `xml/test_read.py`, `xml/test_write.py`, `xml/test_roundtrip.py`, `xml/test_edit.py`, `xml/test_expr.py`, `extension/test_*.py`, `integration/test_camunda.py`, `integration/test_misc.py`: claim every case of `tests/upstream/bpmn-moddle/test/spec/**` and `test/integration/**`; `validate(xml)` adapted through lxml against the OMG XSDs vendored with the upstream fixtures, every Xerces/libxml2 divergence recorded in `docs/xsd-divergences.md`; `distro.cjs` claimed N-A, replaced by the CI wheel smoke test.
-  - [ ] `check(xml | element) -> Report` (L0 integrity: warnings, unresolved references, unknown attributes) in `src/bpmn_io/check.py` + tests.
-  - [ ] Byte gate: `to_xml` byte-identical to the oracle for every bpmn-moddle fixture (incl. `complex.bpmn`, vendor exports, extension fixtures).
-  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
+- [x] **Lot 7 — bpmn-moddle**
+  - [x] `src/bpmn_io/bpmn_moddle/bpmn_moddle.py`, `simple.py`, `__init__.py`: `BpmnModdle` wiring the six vendored descriptors (bpmn, bpmndi, dc, di, bioc, color) and additional packages, `from_xml`/`to_xml` delegates; public re-exports in `bpmn_io/__init__.py`.
+  - [x] `tests/bpmn_moddle/test_bpmn_moddle.py`, `xml/test_read.py`, `xml/test_write.py`, `xml/test_roundtrip.py`, `xml/test_edit.py`, `xml/test_expr.py`, `extension/test_*.py`, `integration/test_camunda.py`, `integration/test_misc.py`: claim every case of `tests/upstream/bpmn-moddle/test/spec/**` and `test/integration/**` (173 passed); `validate(xml)` adapted through lxml against the OMG XSDs, every Xerces/libxml2 divergence recorded in `docs/xsd-divergences.md` (0 divergences, 45 validate sites); `distro.cjs` claimed N-A, replaced by the CI wheel smoke test.
+  - [x] `check(xml | element) -> Report` (L0 integrity: warnings, unresolved references, unknown attributes) in `src/bpmn_io/check.py` + tests.
+  - [x] Byte gate: `to_xml` byte-identical to the oracle for every bpmn-moddle fixture (incl. `complex.bpmn`, vendor exports, extension fixtures).
+  - [x] BR01-COLOR resolved: 6th descriptor vendored (web_fetch, `UPSTREAM.toml`), oracle dump + serialize gates 89/89 incl. `bpmn-in-color.bpmn`.
+  - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
 - [ ] **Lot 8 — bpmn-auto-layout**
   - [ ] `src/bpmn_io/auto_layout/grid.py`, `layouter.py`, `handlers/*.py`, `di/*.py`, `utils/*.py`, `__init__.py` from `tests/upstream/bpmn-auto-layout/lib/**`: `layout_process(xml: str) -> str` (1.3.0 semantics), `LayoutError`/`LayoutWarning`; `Math.round` via `_js.math_round` only.

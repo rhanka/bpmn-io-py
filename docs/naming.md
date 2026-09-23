@@ -174,3 +174,21 @@ calls `toXML(element)` (Promise of `{xml}`); the port exposes `Writer`,
 Not transposed (N-A): `moddle-xml/test/integration/distro.cjs` (packaging
 check, same as the moddle one). `performance.js` ported at full depth with no
 timeout adaptation (runs within default limits).
+
+## bpmn-moddle (Lot 7 inventory)
+
+`BpmnModdle` wires six default descriptor packages (bpmn, bpmndi, dc, di,
+bioc, color — the sixth vendored from `bpmn-in-color-moddle` 0.2.0, see
+`UPSTREAM.toml`). Sources: `tests/upstream/bpmn-moddle/lib/*.js`.
+
+| Upstream name | Port name | Notes |
+|---|---|---|
+| `BpmnModdle` (default, lax `fromXML`) | `BpmnModdle` | `Reader({"model", "lax": True})`; `from_xml`/`to_xml` delegates |
+| `createModdle` (simple.js) | `create_moddle` | six default packages + additional ones |
+| `toXML` Promise `{xml}` | `to_xml` → `SerializationResult` | sync; `options` `{format, preamble}` |
+| L0 `check(xml | element)` | `check` → `Report` in `src/bpmn_io/check.py` | warnings, unresolved references, unknown attributes |
+
+Not transposed (N-A): `bpmn-moddle/test/integration/distro.cjs` (packaging
+check). `validate(xml)` cases run through `lxml` against the OMG XSDs;
+divergences (none observed: 0 divergences, 45 validate sites) live in
+`docs/xsd-divergences.md`.

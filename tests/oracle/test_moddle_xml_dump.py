@@ -2,7 +2,8 @@
 
 ``op=model-dump`` (``tests/oracle/dump.mjs``, ``BpmnModdle`` — always lax)
 dumps the canonical model for an XML document; the port reads the same
-document lax through the five vendored descriptor packages and must produce
+document lax through the six vendored descriptor packages (five + the
+``bpmn-in-color`` 6th package, BR01-COLOR resolved in Lot 7) and must produce
 the identical dump (root tree, elements by id, references, warnings). The
 corpus is every ``bpmn-moddle`` ``.bpmn`` fixture, including ``error/`` and
 ``.part.`` fragments (both sides fail those identically — lax warnings).
@@ -31,9 +32,12 @@ pytestmark = pytest.mark.oracle
 
 FIXTURES = Path(__file__).parent.parent / "upstream" / "bpmn-moddle" / "test" / "fixtures" / "bpmn"
 
-#: Excluded until the 6th descriptor package is vendored (BR01-COLOR, needs
-#: network; Lot 7): `border-color`/`fill-color` properties are JS-only there.
-SKIP_FIXTURES = frozenset({"bpmn-in-color.bpmn"})
+#: No exclusions: the 6th descriptor package is vendored (BR01-COLOR resolved
+#: in Lot 7), so `border-color`/`fill-color` map to properties on both sides.
+SKIP_FIXTURES = frozenset()
+
+#: The six default descriptor packages (``DESCRIPTORS`` five + color).
+PACKAGES = (*DESCRIPTORS, "color/bpmn-in-color.json")
 
 
 def _primitive(value: object) -> object:
@@ -75,7 +79,7 @@ def _dump_item(item: object, prop: PropertyDescriptor | None) -> object:
 
 def _dump_py(xml: str) -> dict[str, Any]:
     """Read ``xml`` lax through the port and dump the canonical model."""
-    packages = [json.loads((RESOURCES / rel).read_text(encoding="utf-8")) for rel in DESCRIPTORS]
+    packages = [json.loads((RESOURCES / rel).read_text(encoding="utf-8")) for rel in PACKAGES]
     result = Reader(Moddle(packages), lax=True).from_xml(xml, "bpmn:Definitions")
     return {
         "root": _dump_element(result.root_element),
