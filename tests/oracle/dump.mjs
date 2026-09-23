@@ -109,6 +109,17 @@ export async function modelDump(xml, type = 'bpmn:Definitions') {
   };
 }
 
+export async function layoutProcessBatch(inputs) {
+  const { layoutProcess } = await import('bpmn-auto-layout');
+  return Promise.all((inputs ?? []).map(async ({ xml }) => {
+    try {
+      return { xml: await layoutProcess(xml) };
+    } catch (error) {
+      return { error: error?.message ?? String(error) };
+    }
+  }));
+}
+
 export async function modelSerializeBatch(inputs) {
   const { BpmnModdle } = await import('bpmn-moddle');
   return Promise.all((inputs ?? []).map(async ({ xml, format, preamble }) => {
