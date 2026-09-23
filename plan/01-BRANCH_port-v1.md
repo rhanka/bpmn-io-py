@@ -48,6 +48,7 @@ Actions with the following status should be included around tasks only if really
 - `acknowledge` BR01-EX8: product-name + path updates in `THIRD_PARTY_NOTICES.md` (forbidden path). Reason: owner rename decision. Impact: header lines + one table cell. Rollback: `git checkout` the file.
 - `acknowledge` BR01-EX9: rename fallout in `.github/workflows/*.yml` (smoke-test import), `tests/oracle/package.json` + `package-lock.json` (oracle name), `SECURITY.md`, `CONTRIBUTING.md`, `plan/BRIEF-port-v1.md`. Reason: owner rename decision. Impact: name references only. Rollback: `git checkout` the files.
 - `blocked` BR01-PR: draft PR `port-v1` → `main` and `git push` pending: origin points to `rhanka/bpmn-io-py`, which does not exist yet (GitHub-side rename is an owner action), and this environment has no network egress. Recorded per BRIEF rule 8; unblocks the Lot 0 checkbox.
+- `acknowledge` BR01-EX1: `.github/workflows/ci.yml` oracle job regenerates the ledger and fails on drift (`node tests/oracle/ledger.mjs --check`); the generated `tests/upstream/LEDGER.json` is committed as the drift reference. Reason: Lot 1 oracle harness. Impact: CI only. Rollback: `git checkout` the workflow and delete `LEDGER.json`.
 
 ## Orchestration Mode (AI-selected)
 - [x] **Mono-branch + cherry-pick** (default for orthogonal tasks; single final test cycle)

@@ -10,9 +10,11 @@ Upstream cases come from two sources, merged:
 
 * a static scan of `it(...)`, `it.skip(...)`, `it.only(...)` and the `iit(<arg>)(...)` wrapper in
   every `*.js`, `*.cjs`, `*.mjs`, `*.ts` file;
-* `tests/upstream/LEDGER.json` when present ({"<file>": ["<full title>", ...]}), produced by the
+* `tests/upstream/LEDGER.json` when present ({"<file>": ["<title>", ...]}), produced by the
   oracle job with a mocha dry-run, which is the only reliable source for *dynamic* titles
-  (template literals such as `should layout ${fileName}`).
+  (template literals such as `` `should layout ${fileName}` ``, concatenations, `forEach`
+  loops). For a file present in the ledger, the ledger is authoritative and static entries
+  are ignored (only static skips are kept, for the report column).
 
 Without the ledger, dynamic titles of `bpmn-auto-layout/test/LayoutSpec.js` are expanded from the
 fixture files (one case per `fixtures/*.bpmn`); any other dynamic title is reported as unresolved.
@@ -74,14 +76,19 @@ def upstream_cases() -> tuple[dict[str, dict[str, str]], list[str]]:
     for src in sorted(p for p in UPSTREAM.rglob("*") if p.suffix in SUFFIXES):
         rel = str(src.relative_to(UPSTREAM))
         found: dict[str, str] = {}
+        in_ledger = rel in ledger
         for m in IT_RE.finditer(src.read_text(encoding="utf-8")):
             kind = "skip" if m["mod"] == ".skip" else "active"
             title = m["title"]
+            if in_ledger:
+                # The ledger enumerates this file's real (evaluated) titles; static
+                # entries would double-count them or carry concatenation fragments.
+                if kind == "skip" and DYNAMIC not in title:
+                    found[title] = kind
+                continue
             if DYNAMIC not in title:
                 found[title] = kind
                 continue
-            if rel in ledger:
-                continue  # the ledger enumerates this file's real titles below
             expanded = _expand_dynamic(rel, title)
             if expanded is None:
                 unresolved.append(f"{rel}::{title}")
