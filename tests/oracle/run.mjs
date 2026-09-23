@@ -10,6 +10,8 @@
 import { createRequire } from 'node:module';
 import process from 'node:process';
 
+import { descriptorDump, modelDump } from './dump.mjs';
+
 const requirePkg = createRequire(import.meta.url);
 const PINNED = ['saxen', 'min-dash', 'moddle', 'moddle-xml', 'bpmn-moddle', 'bpmn-auto-layout'];
 
@@ -52,11 +54,17 @@ async function main() {
     return;
   }
   try {
-    const result =
-      payload.op === 'ping' ? await ping() : payload.op === 'call' ? await call(payload) : null;
-    if (payload.op !== 'ping' && payload.op !== 'call') {
+    const OPS = {
+      ping: () => ping(),
+      call: (args) => call(args),
+      'descriptor-dump': (args) => descriptorDump(args.packages),
+      'model-dump': (args) => modelDump(args.xml, args.type),
+    };
+    const run = OPS[payload.op];
+    if (!run) {
       throw new Error(`unknown op: ${payload.op}`);
     }
+    const result = await run(payload);
     process.stdout.write(`${JSON.stringify({ ok: true, result: result ?? null })}\n`);
   } catch (error) {
     fail(error?.message ?? String(error));

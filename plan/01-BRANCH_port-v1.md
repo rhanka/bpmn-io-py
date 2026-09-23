@@ -48,6 +48,7 @@ Actions with the following status should be included around tasks only if really
 - `acknowledge` BR01-EX8: product-name + path updates in `THIRD_PARTY_NOTICES.md` (forbidden path). Reason: owner rename decision. Impact: header lines + one table cell. Rollback: `git checkout` the file.
 - `acknowledge` BR01-EX9: rename fallout in `.github/workflows/*.yml` (smoke-test import), `tests/oracle/package.json` + `package-lock.json` (oracle name), `SECURITY.md`, `CONTRIBUTING.md`, `plan/BRIEF-port-v1.md`. Reason: owner rename decision. Impact: name references only. Rollback: `git checkout` the files.
 - `blocked` BR01-PR: draft PR `port-v1` → `main` and `git push` pending: origin points to `rhanka/bpmn-io-py`, which does not exist yet (GitHub-side rename is an owner action), and this environment has no network egress. Recorded per BRIEF rule 8; unblocks the Lot 0 checkbox.
+- `attention` BR01-COLOR: the default model needs a sixth descriptor package. Evidence: upstream `BpmnModdle` default (simple.js) wires `bpmn-in-color-moddle` (^0.2.0, devDependency bundled into dist) next to the five vendored sets; `bpmn-in-color.bpmn` (`color:` non-normative ns) is read with a zero-warning assertion (`BPMN in color properties`), which a five-package model cannot satisfy. The `extends`-bearing bioc traits (`ColoredEdge`, `ColoredShape`, skipped by the descriptor dump) do not cover it (different namespace). Actions when network exists: pin `bpmn-in-color-moddle` (resolve `^0.2.0`), add an `UPSTREAM.toml` section + vendored resources + oracle devDependency, wire it into Lot 7 `BpmnModdle`, amend EVOL D1. `example-colors.bpmn` (`bc` biocolors ns) roundtrips through `$attrs` and is unaffected.
 - `acknowledge` BR01-EX1: `.github/workflows/ci.yml` oracle job regenerates the ledger and fails on drift (`node tests/oracle/ledger.mjs --check`); the generated `tests/upstream/LEDGER.json` is committed as the drift reference. Reason: Lot 1 oracle harness. Impact: CI only. Rollback: `git checkout` the workflow and delete `LEDGER.json`.
 
 ## Orchestration Mode (AI-selected)
@@ -72,7 +73,7 @@ Actions with the following status should be included around tasks only if really
     - [ ] `uv run pytest`
     - [ ] `uv run python scripts/port_coverage.py` runs clean (no stale/duplicate claims)
 
-- [ ] **Lot 1 — Node oracle harness & test ledger (first, so parity is measured from Lot 2 on)**
+- [x] **Lot 1 — Node oracle harness & test ledger (first, so parity is measured from Lot 2 on)**
   - [ ] `tests/oracle/ledger.mjs`: mocha `--dry-run --reporter json` over each vendored upstream suite (with the pinned oracle packages) → `tests/upstream/LEDGER.json` (`{"<file>": ["<full title>", ...]}`); `scripts/port_coverage.py` already reads it; CI oracle job regenerates it and fails on drift (BR01-EX1: `.github/workflows/ci.yml`).
   - [ ] `tests/oracle/run.mjs`: generic runner — given a package, a function path and JSON args, returns JSON results (saxen event streams, moddle canonical dumps, `toXML` strings, `layoutProcess` output).
   - [ ] `tests/oracle/dump.mjs`: canonical model dumper (`$type`, properties in descriptor order, references by id, `$attrs` key order) shared by all later lots.
