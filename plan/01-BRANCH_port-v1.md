@@ -7,7 +7,7 @@ Transpose saxen, the used min-dash subset, moddle, moddle-xml, bpmn-moddle and b
 - Literal transposition: same file split, same function order and names (snake_case), same warnings and error texts; every ported module starts with `# Transposed from <repo>@<short-sha> <path> (MIT).`
 - Vendored upstream trees (`tests/upstream/**`, `src/bpmn_py/resources/**`) are never edited by hand; `scripts/sync_upstream.py --check` must stay green.
 - Every upstream `it()` is claimed with `@pytest.mark.upstream("<file>", "<title>")` (ported / adapted / N-A with reason); no test is dropped silently.
-- Zero runtime dependency; `lxml` only under the `[xsd]` extra and the `test` group; `jsonschema` only in the `test` group.
+- Zero runtime dependency; `lxml` and `jsonschema` only in the `test` dependency group.
 - Iterative (non-recursive) reader, writer and matchers; JS semantics only through `bpmn_py/_js.py`.
 - Commit discipline: one logical change per commit, selective `git add <files>`, under ~150 lines per commit, lot checkboxes updated within the commit, NO attribution trailers of any kind (no `Co-Authored-By`, no `Generated with`, no session ids).
 - Local gate before every push: `uv run ruff check . && uv run ruff format --check . && uv run mypy && uv run pytest && uv run python scripts/port_coverage.py`.
@@ -41,11 +41,12 @@ Actions with the following status should be included around tasks only if really
 - subagent or agent requires support or informs: `blocked` / `deferred` / `cancelled` / `attention`
 - conductor agent or human brings response: `clarification` / `acknowledge` / `refuse`
 - `attention` BR01-D12: the PyPI distribution name is still open (`bpmn-py` and `bpmn` are registered by others); it only affects Lot 10.
+- `acknowledge` BR01-R1: plan re-sequenced after the Muse 1.3 review (oracle first, vendored `lib/` sources, per-lot byte gates, D4.1 async mapping, L1 narrowed to tests).
 
 ## Orchestration Mode (AI-selected)
 - [x] **Mono-branch + cherry-pick** (default for orthogonal tasks; single final test cycle)
 - [ ] **Multi-branch** (only if sub-workstreams require independent CI or long-running validation)
-- Rationale: the lots are strictly sequential (each layer depends on the previous one); a single branch `port-v1` with small commits and CI on every push is enough.
+- Rationale: the lots are strictly sequential (each layer depends on the previous one); a single branch `port-v1` with small commits, a draft PR and CI on every push (`port-*` branches) is enough.
 
 ## UAT Management (in orchestration context)
 - No UI. UAT = the owner runs the README quick-start against a real `.bpmn` (Camunda Modeler export) after Lot 8, and the CLI after Lot 9.
@@ -53,76 +54,85 @@ Actions with the following status should be included around tasks only if really
 
 ## Plan / Todo (lot-based)
 - [ ] **Lot 0 — Baseline & port protocol**
-  - [ ] Read `spec/SPEC_EVOL_BPMN_PY.md`, `CONTRIBUTING.md`, `UPSTREAM.toml`; run the local gate once (green baseline).
-  - [ ] Write `docs/naming.md`: the JS → Python naming table of D3 (camelCase → snake_case, moddle property names unchanged, `$type` → `type_`, `$attrs` → `attrs_`, `$parent` → `parent_`, `$descriptor` → `descriptor_`, `$model` → `model_`, `$instanceOf` → `instance_of`, keyword properties via `get`/`set` only).
-  - [ ] `src/bpmn_py/_js.py` + `tests/test_js.py`: truthiness, `undefined`/`null` sentinel, `math_round` (half-up), `number_to_string` (JS `Number#toString`), `parse_int`/`parse_float`, ordered set, `json_stringify` semantics.
-  - [ ] `tests/conftest.py`: register the `upstream` marker helper, `fixtures(pkg)` path helper, `read_fixture(pkg, path)`.
-  - [ ] `tests/_matchers.py`: transposed `expect.js` / `matchers.js` (`json_equal` excluding `$parent`/`$model`/`$descriptor`, insertion order kept, iterative).
+  - [ ] Read `spec/SPEC_EVOL_BPMN_PY.md`, `CONTRIBUTING.md`, `UPSTREAM.toml`; run the local gate once (green baseline); open a draft PR `port-v1` → `main` so every push is reviewed in CI.
+  - [ ] Sources to transpose are the vendored upstream trees `tests/upstream/<pkg>/lib/**` (pinned commit, sha256 in `UPSTREAM.lock`); tests are `tests/upstream/<pkg>/test/**`. Never read a port source from anywhere else.
+  - [ ] Write `docs/naming.md`: the JS → Python naming table of D3 (camelCase → snake_case, moddle property names unchanged, `$type` → `type_`, `$attrs` → `attrs_`, `$parent` → `parent_`, `$descriptor` → `descriptor_`, `$model` → `model_`, `$instanceOf` → `instance_of`, keyword properties via `get`/`set` only, dunder names never intercepted) and § test idioms (D4.1: await/reject → call/`pytest.raises`, chai → pytest).
+  - [ ] `src/bpmn_py/_js.py` + `tests/test_js.py`: truthiness, `undefined`/`null` sentinel, `math_round` (half-up), `number_to_string` (JS `Number#toString`: `100`, `1e+21`, `1e-7`), `parse_int`/`parse_float` leniency, ordered set, `json_stringify` semantics.
+  - [ ] `tests/conftest.py`: `upstream_dir(pkg)` / `read_fixture(pkg, path)` helpers.
+  - [ ] `tests/_matchers.py`: transposed `expect.js` / `matchers.js` of moddle-xml and bpmn-moddle (`json_equal` excluding `$parent`/`$model`/`$descriptor`, insertion order kept, iterative).
   - [ ] Lot gate:
     - [ ] `uv run ruff check . && uv run ruff format --check . && uv run mypy`
     - [ ] `uv run pytest`
     - [ ] `uv run python scripts/port_coverage.py` runs clean (no stale/duplicate claims)
 
-- [ ] **Lot 1 — min-dash subset**
-  - [ ] Inventory every min-dash import in the six upstream `lib/` trees (npm dist bundles in `tests/oracle/node_modules/*/dist`) → list in `docs/naming.md` § min-dash.
-  - [ ] `src/bpmn_py/_min_dash.py`: transpose exactly those helpers (array/collection/object/fn/lang), same semantics on dict/list, insertion order kept.
-  - [ ] `tests/min_dash/test_*.py`: claim the upstream `tests/upstream/min-dash/*.spec.js` cases covering the transposed helpers; the rest claimed N-A ("helper not used by the ported libraries").
-  - [ ] Lot gate (same checklist as Lot 0)
+- [ ] **Lot 1 — Node oracle harness & test ledger (first, so parity is measured from Lot 2 on)**
+  - [ ] `tests/oracle/ledger.mjs`: mocha `--dry-run --reporter json` over each vendored upstream suite (with the pinned oracle packages) → `tests/upstream/LEDGER.json` (`{"<file>": ["<full title>", ...]}`); `scripts/port_coverage.py` already reads it; CI oracle job regenerates it and fails on drift (BR01-EX1: `.github/workflows/ci.yml`).
+  - [ ] `tests/oracle/run.mjs`: generic runner — given a package, a function path and JSON args, returns JSON results (saxen event streams, moddle canonical dumps, `toXML` strings, `layoutProcess` output).
+  - [ ] `tests/oracle/dump.mjs`: canonical model dumper (`$type`, properties in descriptor order, references by id, `$attrs` key order) shared by all later lots.
+  - [ ] `tests/oracle/conftest.py` + `tests/oracle/_bridge.py`: pytest fixture calling the runner through `node` (skip locally without `node_modules`, mandatory in CI).
+  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
-- [ ] **Lot 2 — saxen (lenient SAX parser)**
-  - [ ] `src/bpmn_py/saxen/parser.py`: `Parser` with `on(...)` handlers, `ns()` namespace mode, `parse()`; entity decoding (`decode.js`), attribute parsing leniency and warning texts, position (line/column, 0-based as upstream), error texts, `proxy`/`ns` modes, stop/skip control.
+- [ ] **Lot 2 — min-dash subset**
+  - [ ] Inventory every min-dash import in `tests/upstream/{saxen,moddle,moddle-xml,bpmn-moddle,bpmn-auto-layout}/lib/**` → list in `docs/naming.md` § min-dash.
+  - [ ] `src/bpmn_py/_min_dash.py`: transpose exactly those helpers from `tests/upstream/min-dash/lib/**`, same semantics on dict/list, insertion order kept.
+  - [ ] `tests/min_dash/test_*.py`: claim every case of `tests/upstream/min-dash/test/**` — ported for the transposed helpers; N-A with reason for helpers not used by the ported libraries, for `integration/bundle.spec.{js,cjs}` (JS bundle packaging) and `index.spec.ts` (TypeScript typing tests).
+  - [ ] Oracle: differential test on each transposed helper for a table of inputs.
+  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
+
+- [ ] **Lot 3 — saxen (lenient SAX parser)**
+  - [ ] `src/bpmn_py/saxen/parser.py` (+ `decode.py`): `Parser` with `on(...)` handlers, `ns()` namespace mode, `parse()`, and the streaming API (`write(chunk)` chainable, `end()` returning the error), entity decoding, attribute parsing leniency and warning texts, positions (line/column as upstream), error texts, `proxy`/`ns` modes, stop/skip control.
   - [ ] Security: no DTD processing, no external entities, only built-in and numeric character references; explicit tests (XXE payload, entity amplification, deep nesting GHSA-x3vc-q6mj-47vp).
-  - [ ] `tests/saxen/test_parser.py`, `test_elements.py`, `test_decode.py`, `test_errors.py`, `test_modes.py`, `test_stream.py`: claim every case of `tests/upstream/saxen/*.js`; `test/perf` cases claimed adapted (timeout per CI runner) or N-A with reason.
-  - [ ] Lot gate (same checklist as Lot 0)
+  - [ ] `tests/saxen/test_parser.py`, `test_elements.py`, `test_decode.py`, `test_errors.py`, `test_modes.py`, `test_stream.py`: claim every case of `tests/upstream/saxen/test/**`; `test/perf` claimed adapted (timeout per CI runner) or N-A with reason.
+  - [ ] Oracle: event-stream differential (every event, attribute map, warning and position) for every `.bpmn`/`.xml` fixture of moddle-xml and bpmn-moddle.
+  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
-- [ ] **Lot 3 — moddle (meta-model runtime)**
-  - [ ] `src/bpmn_py/moddle/ns.py`, `types.py`, `properties.py`, `base.py`, `descriptor_builder.py`, `registry.py`, `factory.py`, `moddle.py`, `__init__.py`: `Moddle`, `create`, `create_any`, `get_type`, `get_element_descriptor`, `get_property_descriptor`, `get_type_descriptor`, `has_type`, `Base.get/set`, `type_`/`attrs_`/`parent_`/`descriptor_`/`model_`/`instance_of`, `isVirtual`/`replaces`/`redefines`, default values, `isMany` collections, generic (`isGeneric`) elements.
-  - [ ] Keyword-named properties (`from`, `import`) and `type` reachable only via `get`/`set`/`**kwargs`.
+- [ ] **Lot 4 — moddle (meta-model runtime)**
+  - [ ] `src/bpmn_py/moddle/ns.py`, `types.py`, `properties.py`, `base.py`, `descriptor_builder.py`, `registry.py`, `factory.py`, `moddle.py`, `__init__.py`: `Moddle`, `create`, `create_any`, `get_type`, `get_element_descriptor`, `get_property_descriptor`, `get_type_descriptor`, `has_type`, `Base.get/set`, `type_`/`attrs_`/`parent_`/`descriptor_`/`model_`/`instance_of`, `isVirtual`/`replaces`/`redefines`, default values, `isMany` collections, generic (`isGeneric`) elements; `__getattr__` never intercepts dunders (tests with `copy`, `pickle`, `hasattr`).
+  - [ ] Keyword-named properties (`from`, `import`) and `type` (4 BPMN types) reachable only via `get`/`set`/`**kwargs`.
   - [ ] Iterative descriptor building and property traversal.
-  - [ ] `tests/moddle/test_*.py`: claim every case of `tests/upstream/moddle/spec/**` (schema.js adapted with `jsonschema` + vendored `tests/upstream/moddle-resources/schema/moddle.json`).
-  - [ ] Lot gate (same checklist as Lot 0)
+  - [ ] `tests/moddle/test_*.py`: claim every case of `tests/upstream/moddle/test/spec/**` (schema.js adapted with `jsonschema` against `tests/upstream/moddle/resources/schema/moddle.json`, one case per model fixture).
+  - [ ] Oracle: canonical descriptor dump (effective properties per type, in order) for every type of every vendored descriptor.
+  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
-- [ ] **Lot 4 — moddle-xml Reader**
-  - [ ] `src/bpmn_py/moddle_xml/common.py`, `read.py`: `Reader`, `ElementHandler`/`RootElementHandler`/`GenericElementHandler`/`ValueHandler`/`ReferenceHandler`, `Context` (`references`, `warnings`, `elements_by_id`), `xsi:type` dispatch, namespace prefix redefinition/collision, `$attrs` for unknown attributes, body properties, reference resolution post-pass, `ParseError` carrying warnings, lax mode.
+- [ ] **Lot 5 — moddle-xml Reader**
+  - [ ] `src/bpmn_py/moddle_xml/common.py`, `read.py`: `Reader`, `ElementHandler`/`RootElementHandler`/`GenericElementHandler`/`ValueHandler`/`ReferenceHandler`, `Context` (`references`, `warnings`, `elements_by_id`), `xsi:type` **and `xmi:type`** dispatch, namespace prefix redefinition/collision, `$attrs` for unknown attributes, body properties, reference resolution post-pass, `ParseError` carrying warnings (D4.1), lax mode.
   - [ ] Synchronous `from_xml(xml, type_name, options) -> ParseResult` (dataclass).
-  - [ ] `tests/moddle_xml/test_reader.py`: claim all 86 cases of `tests/upstream/moddle-xml/spec/reader.js` with the upstream fixtures.
-  - [ ] Lot gate (same checklist as Lot 0)
+  - [ ] `tests/moddle_xml/test_reader.py`: claim every case of `tests/upstream/moddle-xml/test/spec/reader.js` with the upstream fixtures.
+  - [ ] Oracle: canonical dump + warnings list equal for every moddle-xml and bpmn-moddle fixture.
+  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
-- [ ] **Lot 5 — moddle-xml Writer & roundtrip**
-  - [ ] `src/bpmn_py/moddle_xml/write.py`: `Writer`, element/attribute/body serializers, namespace collection and declaration order, `xsi:type` and `serialize: property`, escaping, `format` indentation, `preamble`, number formatting via `_js.number_to_string`; iterative.
+- [ ] **Lot 6 — moddle-xml Writer & roundtrip**
+  - [ ] `src/bpmn_py/moddle_xml/write.py`: `Writer`, element/attribute/body serializers, namespace collection and declaration order, `xsi:type` and `serialize: property` (incl. `Assignment.from`), escaping table, `format` indentation, `preamble`, number formatting via `_js.number_to_string`; iterative.
   - [ ] `to_xml(element, format=False, preamble=True) -> WriteResult`.
-  - [ ] `tests/moddle_xml/test_writer.py`, `test_roundtrip.py`, `test_roundtrip_uml.py`, `test_performance.py` (depth 50 000 / ns depth 1 500, timeout adapted per runner): claim every case of `tests/upstream/moddle-xml/spec/*.js` and `integration/*`.
-  - [ ] Lot gate (same checklist as Lot 0)
+  - [ ] `tests/moddle_xml/test_writer.py`, `test_roundtrip.py`, `test_roundtrip_uml.py`, `test_performance.py` (depth 50 000 / ns depth 1 500, timeout adapted per runner): claim every case of `tests/upstream/moddle-xml/test/spec/*.js` and `test/integration/*`.
+  - [ ] Byte gate: `to_xml(format=True)` and `to_xml(format=False)` byte-identical to the oracle for every moddle-xml fixture.
+  - [ ] Property tests (hypothesis): generated models roundtrip `from_xml(to_xml(m))` to an equal canonical dump.
+  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
-- [ ] **Lot 6 — bpmn-moddle**
+- [ ] **Lot 7 — bpmn-moddle**
   - [ ] `src/bpmn_py/bpmn_moddle/bpmn_moddle.py`, `simple.py`, `__init__.py`: `BpmnModdle` wiring the vendored descriptors (bpmn, bpmndi, dc, di, bioc) and additional packages, `from_xml`/`to_xml` delegates; public re-exports in `bpmn_py/__init__.py`.
-  - [ ] `tests/bpmn_moddle/test_bpmn_moddle.py`, `xml/test_read.py`, `xml/test_write.py`, `xml/test_roundtrip.py`, `xml/test_edit.py`, `xml/test_expr.py`, `extension/test_*.py`, `integration/test_camunda.py`, `integration/test_misc.py`: claim every case of `tests/upstream/bpmn-moddle/spec/**` and `integration/**`; `validate(xml)` adapted through lxml + the OMG XSDs vendored under `tests/upstream/bpmn-moddle/fixtures/xsd` (every Xerces/libxml2 divergence recorded in the test docstring); `distro.cjs` claimed N-A, replaced by `tests/test_wheel_smoke.py` (install built wheel in a temp venv, import, roundtrip `simple.bpmn`).
+  - [ ] `tests/bpmn_moddle/test_bpmn_moddle.py`, `xml/test_read.py`, `xml/test_write.py`, `xml/test_roundtrip.py`, `xml/test_edit.py`, `xml/test_expr.py`, `extension/test_*.py`, `integration/test_camunda.py`, `integration/test_misc.py`: claim every case of `tests/upstream/bpmn-moddle/test/spec/**` and `test/integration/**`; `validate(xml)` adapted through lxml against the OMG XSDs vendored with the upstream fixtures, every Xerces/libxml2 divergence recorded in `docs/xsd-divergences.md`; `distro.cjs` claimed N-A, replaced by the CI wheel smoke test.
   - [ ] `check(xml | element) -> Report` (L0 integrity: warnings, unresolved references, unknown attributes) in `src/bpmn_py/check.py` + tests.
-  - [ ] Lot gate (same checklist as Lot 0)
-
-- [ ] **Lot 7 — Node oracle (byte-identical XML)**
-  - [ ] `tests/oracle/dump.mjs`: canonical dumper of a parsed model (`$type`, properties in descriptor order, references by id, `$attrs` key order) + `toXML({format:true})` for a fixture path; `tests/oracle/ledger.mjs`: mocha dry-run of the pinned upstream suites (dynamic cases included) → `tests/upstream/LEDGER.json`.
-  - [ ] `tests/oracle/test_differential.py`: for every `.bpmn` fixture of bpmn-moddle and moddle-xml, compare the Python canonical dump and the byte-exact `to_xml(format=True)` output with the Node ones; warnings compared as lists.
-  - [ ] `scripts/port_coverage.py`: read `tests/upstream/LEDGER.json` when present (dynamic cases), keep the static scan as fallback; CI oracle job regenerates and checks the ledger.
-  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle` green locally and in CI
+  - [ ] Byte gate: `to_xml` byte-identical to the oracle for every bpmn-moddle fixture (incl. `complex.bpmn`, vendor exports, extension fixtures).
+  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
 - [ ] **Lot 8 — bpmn-auto-layout**
-  - [ ] `src/bpmn_py/auto_layout/grid.py`, `layouter.py`, `handlers/*.py`, `di/*.py`, `utils/*.py`, `__init__.py`: `layout_process(xml: str) -> str` (1.3.0 semantics), `LayoutError`/`LayoutWarning`.
-  - [ ] `tests/auto_layout/test_layout.py`: one claimed case per fixture (47) of `tests/upstream/bpmn-auto-layout/fixtures`, byte-exact against `tests/upstream/bpmn-auto-layout/snapshots`; oracle differential for every fixture.
+  - [ ] `src/bpmn_py/auto_layout/grid.py`, `layouter.py`, `handlers/*.py`, `di/*.py`, `utils/*.py`, `__init__.py` from `tests/upstream/bpmn-auto-layout/lib/**`: `layout_process(xml: str) -> str` (1.3.0 semantics), `LayoutError`/`LayoutWarning`; `Math.round` via `_js.math_round` only.
+  - [ ] `tests/auto_layout/test_layout.py`: one claimed case per fixture (47) of `tests/upstream/bpmn-auto-layout/test/fixtures`, byte-exact against `test/snapshots`.
+  - [ ] Byte gate: oracle differential for every fixture.
   - [ ] UAT checkpoint: owner runs `layout_process` on a Camunda Modeler export without DI and opens the result in Camunda Modeler / bpmn-js.
   - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
 - [ ] **Lot 9 — Typing, CLI, docs**
-  - [ ] `scripts/gen_stubs.py` → `src/bpmn_py/bpmn_moddle/types.pyi` (all descriptor types, `create` overloads on `Literal["bpmn:..."]`, `is_a` narrowing); `stubtest` + `assert_type` tests; CI step.
-  - [ ] `src/bpmn_py/cli.py` (`bpmn-py check|roundtrip|layout <file> [--json]`, stable exit codes) + `[project.scripts]` (conditional path: `pyproject.toml`, BR01-EX1) + tests.
+  - [ ] `scripts/gen_stubs.py` → `src/bpmn_py/bpmn_moddle/types.pyi` (all descriptor types, `create` overloads on `Literal["bpmn:..."]`, `is_a` narrowing); `stubtest` + `assert_type` tests; CI step (BR01-EX2).
+  - [ ] `src/bpmn_py/cli.py` (`bpmn-py check|roundtrip|layout <file> [--json]`, stable exit codes) + `[project.scripts]` (conditional path: `pyproject.toml`, BR01-EX3) + tests.
   - [ ] README: real usage (read, check, build, write, layout, CLI), API table, "unofficial" notice; `docs/porting.md` (how a module maps to upstream, how to resync); `CHANGELOG.md` 0.1.0 entry.
   - [ ] UAT checkpoint: owner runs the CLI on a real file.
   - [ ] Lot gate (same checklist as Lot 0)
 
 - [ ] **Lot 10 — Release readiness**
-  - [ ] `scripts/port_coverage.py --strict` in CI (conditional path `.github/workflows/ci.yml`, BR01-EX2); 100 % of upstream cases claimed.
-  - [ ] `tests/test_wheel_smoke.py` in CI build job.
+  - [ ] `scripts/port_coverage.py --strict` in CI (BR01-EX4: `.github/workflows/ci.yml`); 100 % of upstream cases claimed, no unresolved dynamic title.
   - [ ] Update `spec/SPEC_EVOL_BPMN_PY.md` § 2 with any deviation recorded during the port (D12 name resolved by the owner).
-  - [ ] Version `0.1.0` (`uv version 0.1.0`), CHANGELOG finalised; owner configures the PyPI trusted publisher (pending publisher: repo `rhanka/bpmn-py`, workflow `release.yml`, environment `pypi`) — owner action.
-  - [ ] Push branch, open PR `port-v1` → `main`, CI green, merge commit (NO squash, NO rebase), preserve branch, tag `v0.1.0` on `main` — owner action for the tag.
+  - [ ] Version `0.1.0` (`uv version 0.1.0`), CHANGELOG finalised; owner configures the PyPI trusted publisher (pending publisher: repo `rhanka/bpmn-py`, workflow `release.yml`, environment `pypi`) — owner action; rehearsal on TestPyPI recommended.
+  - [ ] Mark the PR ready, CI green, merge commit (NO squash, NO rebase), preserve branch, tag `v0.1.0` on `main` — owner action for the tag.
   - [ ] Move this file to `plan/done/01-BRANCH_port-v1.md`.

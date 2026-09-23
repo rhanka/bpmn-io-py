@@ -2,9 +2,10 @@
 
 Status: EVOL (committed design, numbered decisions, ready to plan).
 Date: 2026-09-22. Ladder: STUDY (`SPEC_STUDY_BPMN_MODDLE_PY.md`) → VOL (§1) → EVOL (§2–§6).
-Peer review: two independent adversarial reviews (lens A: maintainability / packaging / user value;
-lens B: correctness / licensing / interoperability), reconciled in §5. A third review (Codex) was
-launched but its result could not be retrieved in-session (status: `not covered`).
+Peer review: three independent adversarial reviews — lens A (Claude Opus: maintainability /
+packaging / user value), lens B (Claude Opus: correctness / licensing / interoperability), lens C
+(Muse 1.3, effort max: plan executability, tooling, CI/release) — reconciled in §5. A Codex review
+was launched but its result could not be retrieved in-session (status: `not covered`).
 
 ## 1. Volition (owner direction, reversible until the first release)
 
@@ -17,7 +18,8 @@ launched but its result could not be retrieved in-session (status: `not covered`
 - Purpose: a pure-Python BPMN toolchain for Python AI agents (Google ADK and others), so an agent can
   draft, check, lay out and emit valid BPMN 2.0 XML without Node.
 - Post-v1 candidates (recorded, not planned): backend-only, isometric parts of `bpmn-js`
-  (import tree walker, ModelUtil/DiUtil/LabelUtil, BpmnRules) and `bpmnlint` rules.
+  (import tree walker, ModelUtil/DiUtil/LabelUtil, BpmnRules) and `bpmnlint` (bpmn-io, MIT, 29
+  built-in rules evaluated on the bpmn-moddle model), same literal-port method.
 
 ## 2. Decisions
 
@@ -42,9 +44,13 @@ API (`BpmnModdle`, `layout_process`, errors). Every ported module starts with
   `$parent` → `element.parent_`, `$descriptor` → `element.descriptor_`, `$model` → `element.model_`,
   `$instanceOf` → `element.instance_of(...)`. Trailing underscore is the PEP 8 convention for
   reserved-name collisions; `get("$type")` also works. `type` without underscore is never used for
-  `$type` because `type` is a real BPMN property on three types.
+  `$type` because `type` is a real BPMN property on four types (`Relationship`,
+  `ExtensionAttributeDefinition`, `CorrelationProperty`, `ResourceParameter`).
 - Python keywords among properties (`from`, `import`): reachable only through `get`/`set`,
-  `create(..., **{"from": x})` and `getattr`; never as bare attributes.
+  `create(..., **{"from": x})` and `getattr`; never as bare attributes. `Assignment.from` is
+  serialized with `xsi:type`, so the keyword rule is exercised by the writer roundtrip too.
+- Dynamic attribute access (`__getattr__`) never intercepts dunder names, so `copy`, `pickle`,
+  `hasattr` and debugger introspection behave normally.
 - Errors: `LayoutError`, `LayoutWarning` keep their names; parse errors raise `ParseError` carrying
   `.warnings`.
 
@@ -53,6 +59,15 @@ options=None) -> ParseResult` (dataclass: `root_element`, `references`, `warning
 `elements_by_id`). `to_xml(element, format=False, preamble=True) -> WriteResult` (`xml`, `warnings`).
 `create(type_name, **properties)`, `create_any`, `get_type`, `get_element_descriptor`, `has_type`,
 `get_property_descriptor`. `layout_process(xml: str) -> str` (as 1.3.0). No async API.
+
+**D4.1 — Async → sync mapping (mechanical, counts as *ported*).** Upstream `await
+moddle.fromXML(xml)` → `moddle.from_xml(xml)`; a rejected promise → a raised exception:
+`ParseError` for reader failures (carrying `.warnings`, as upstream attaches `err.warnings`),
+`LayoutError` for layout failures. Test idioms map one-to-one: `await expect(p).to.be.rejectedWith(...)`
+and `try { await … } catch (err) { … }` → `with pytest.raises(ParseError) as info:` followed by the
+same assertions on `info.value`. Chai matchers map mechanically (`to.eql` → `json_equal`/`==`,
+`to.match` → `re.search`, `to.contain` → `in`, `to.have.length` → `len`). These mappings are listed
+in `docs/naming.md` § test idioms; a test that uses only them is *ported*, not *adapted*.
 
 **D5 — JS semantics module.** `bpmn_py/_js.py` implements, with tests, the JS behaviours the port
 relies on: truthiness, `undefined`/`null` distinction, `Math.round` (half-up), number formatting
@@ -67,7 +82,10 @@ validation through lxml instead of Java Xerces; Ajv → `jsonschema`), *N-A* (cl
 `pytest.skip` test stating the reason, e.g. `distro.cjs` bundle tests replaced by an
 install-from-wheel smoke test). Dynamic upstream cases (one per fixture in `LayoutSpec.js`, one
 per schema in `schema.js`) are enumerated by a small mocha dry-run in the oracle job and written to
-`tests/upstream/LEDGER.json`; the coverage script reads the ledger when present.
+`tests/upstream/LEDGER.json`; the coverage script reads the ledger when present and, without it,
+expands the `LayoutSpec.js` template from the fixture files. The scan covers `.js`, `.cjs`,
+`.mjs` and `.ts` upstream files and the `iit(...)` wrapper. The ledger and the oracle harness are
+built first (plan Lot 1), so byte-parity feedback exists from the first ported module on.
 
 **D7 — Differential oracle.** `tests/oracle/` pins the JS packages (`npm ci --ignore-scripts`);
 `@pytest.mark.oracle` tests run a canonical dumper (`$type`, properties in descriptor order,
@@ -79,9 +97,12 @@ byte-for-byte. Dependabot on `tests/oracle/package.json` is the "upstream moved"
 `scripts/gen_stubs.py`, checked in CI with `mypy --strict` and `stubtest`. No Pythonic façade in v1.
 
 **D9 — Validation levels.** L0 `check(xml | element) -> Report` = upstream integrity (parse
-warnings, unresolved references, unknown attributes) — never called "validate". L1 = XSD validation
-via the `[xsd]` extra (lxml) against user-supplied OMG schemas (the XSDs are not redistributed by the
-wheel; the test-suite fetches them under `tests/`). L2 (semantic rules, bpmnlint) is out of scope.
+warnings, unresolved references, unknown attributes) — never called "validate". L1 (XSD validation
+of emitted XML) exists only inside the test-suite, through lxml against the OMG XSDs vendored with
+the upstream fixtures, as the adaptation of upstream's Java `xsd-schema-validator` calls; every
+Xerces/libxml2 divergence is recorded in a divergence matrix (`docs/xsd-divergences.md`). No
+runtime L1 API and no `[xsd]` extra in v1. L2 (semantic rules) is out of scope for v1; `bpmnlint`
+(bpmn-io, MIT, 29 rules on the bpmn-moddle model) is the recorded post-v1 candidate.
 
 **D10 — CLI.** `bpmn-py check|roundtrip|layout <file>` on argparse, `--json`, stable exit codes.
 
@@ -125,10 +146,12 @@ Layout: `from_xml` → Layouter grid → DI elements created through moddle → 
 
 ## 4. Testing
 
-- Unit: ported upstream suites (546 static `it()` cases + dynamic ones from the ledger), organised
-  as `tests/<pkg>/test_<spec>.py` mirroring upstream file names.
-- Golden: upstream fixtures and auto-layout snapshots (byte-exact `toXML`).
-- Property: hypothesis roundtrip on generated models (small, complements the oracle).
+- Unit: ported upstream suites (the static count is printed by `scripts/port_coverage.py`; the
+  ledger adds the dynamic cases), organised as `tests/<pkg>/test_<spec>.py` mirroring upstream file
+  names.
+- Golden: upstream fixtures and auto-layout snapshots (byte-exact `toXML`), with a byte-comparison
+  gate in every lot that touches serialization (writer, bpmn-moddle, auto-layout).
+- Property: hypothesis roundtrip on generated models (small, complements the oracle; plan Lot 6).
 - Oracle: Node differential (D7), mandatory in CI, skipped locally without `node_modules`.
 - Gates: ruff, mypy strict, stubtest, `sync_upstream --check`, `port_coverage --strict` (at 100 %),
   wheel/sdist `twine check`, install-from-wheel smoke.
@@ -146,6 +169,20 @@ Layout: `from_xml` → Layouter grid → DI elements created through moddle → 
 | Naming `bpmn-moddle` on PyPI | perceived official | `bpmn-py` taken | D12 open |
 | Workspace / 2 dists | fine | contradicts single dist | single dist (owner) |
 | Number/round semantics | — | acceptance criteria | D5 |
+
+Lens C (Muse, on the plan and tooling), reconciled:
+
+| Finding | Decision |
+|---|---|
+| Release assumes an unresolved PyPI name | D12 stays with the owner; release workflow reads the name from `pyproject.toml`, runs the full suite, `--strict` coverage and a wheel smoke before publishing |
+| CI ignored the working branch | CI runs on `main` and `port-*` pushes |
+| Coverage scanner missed `iit`, `.cjs`, `.ts`, dynamic titles | scanner extended; ledger first (D6) |
+| Async → sync unspecified | D4.1 |
+| Oracle too late | plan re-sequenced: oracle harness is Lot 1 |
+| Port source (`lib/`) had no provenance | upstream `lib/` trees vendored and sha256-pinned next to `test/` |
+| L1 XSD promised without a lot | D9 narrowed to the test-suite adaptation |
+| `jsonschema`, hypothesis, `xmi:type`, saxen streaming API, `from`/xsi:type unplanned | added to the lots |
+| `sync_upstream.py` fetched movable tags, no extra-file detection | fetch by commit, `--check` verifies pins and extras, member paths sanitized |
 
 ## 6. Out of scope (v1)
 

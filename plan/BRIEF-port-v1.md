@@ -15,12 +15,11 @@ those three files completely before writing any code, then start Lot 0.
 A literal, systematic transposition to pure Python of the bpmn.io stack: saxen, the used subset of
 min-dash, moddle, moddle-xml, bpmn-moddle, bpmn-auto-layout, at the versions pinned in
 `UPSTREAM.toml`. The upstream test-suites, helpers, fixtures and snapshots are vendored verbatim under
-`tests/upstream/<pkg>/` (read-only). The upstream JS sources are available as dist bundles under
-`tests/oracle/node_modules/<pkg>/dist/` (run `cd tests/oracle && npm ci --ignore-scripts` if
-missing); for the unbundled upstream `lib/` trees, fetch the pinned tags into a git-ignored
-`.upstream/` directory (commit shas are in `UPSTREAM.toml`). Priority is byte-identical behaviour:
-`to_xml` output and auto-layout snapshots must match upstream byte for byte, verified through the
-Node oracle (Lot 7).
+`tests/upstream/<pkg>/test/` and the upstream sources to transpose under `tests/upstream/<pkg>/lib/`,
+both at the pinned commit and sha256-locked (read-only). The pinned JS packages used as a
+differential oracle are installed by `cd tests/oracle && npm ci --ignore-scripts`. Priority is
+byte-identical behaviour: `to_xml` output and auto-layout snapshots must match upstream byte for
+byte, verified through the Node oracle, which is built first (Lot 1) and gates every later lot.
 
 ## Hard rules
 

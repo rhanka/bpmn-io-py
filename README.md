@@ -33,8 +33,7 @@ get are the ones bpmn-js, Camunda Modeler and the bpmn.io toolchain produce and 
 - **Differential oracle.** CI also runs the upstream JavaScript packages through Node and compares
   canonical dumps and emitted XML with the Python port (`tests/oracle/`).
 - **Zero runtime dependency.** The lenient SAX parser (`saxen`) is transposed too, so parsing
-  behaviour, warnings and error positions match upstream exactly; `lxml` is an optional extra for
-  XSD validation only.
+  behaviour, warnings and error positions match upstream exactly.
 - **MIT, attributed.** See [`LICENSE`](LICENSE) and
   [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 

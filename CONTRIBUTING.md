@@ -11,7 +11,8 @@
 1. **One upstream, one pin.** `UPSTREAM.toml` pins each bpmn.io package by version, tag and commit.
    `scripts/sync_upstream.py` vendors descriptors, fixtures and JS test-suites and writes
    `UPSTREAM.lock`; CI fails if a vendored file was edited by hand.
-2. **Literal transposition.** Port functions in the same order and with the same names as upstream
+2. **Literal transposition.** Port from the vendored sources `tests/upstream/<pkg>/lib/**` only.
+   Port functions in the same order and with the same names as upstream
    (snake_case). Each ported module starts with a header comment naming the upstream file and commit.
    JavaScript semantics that do not exist in Python (truthiness, `undefined` vs `null`, key order,
    `min-dash` helpers) live in one shared module and are tested there.
