@@ -135,3 +135,24 @@ Downstream `moddle-xml/lib/read.js` uses `Moddle`, `parseNameNS`, `coerceType`,
 
 Not transposed (N-A): nothing public — internals keep the same split.
 `moddle/test/integration/distro.*` are packaging checks, not ported as tests.
+
+## moddle-xml Reader (Lot 5 inventory)
+
+Downstream `bpmn-moddle/lib/bpmn-moddle.js` builds
+`new Reader(assign({ model: this, lax: true }, options))` and calls
+`fromXML(xmlStr, rootHandler)` (`rootHandler` from `handler(typeName)`).
+The port exposes the same surface from `bpmn_io.moddle_xml` (sources:
+`tests/upstream/moddle-xml/lib/read.js` → `read.py`, `common.js` →
+`common.py`, pinned in `tests/oracle/package.json`).
+
+| Upstream name | Port name | Notes |
+|---|---|---|
+| `Reader` | `Reader` | `Reader(model, lax=...)`, `handler(name)`, sync `from_xml(xml, root_handler)` |
+| `fromXML` result `{rootElement, elementsById, references, warnings}` | `ParseResult` dataclass | `snake_case` keys; sync return / raise instead of Promise |
+| `ParseError` (+ `.warnings`) | `ParseError` (+ `.warnings`) | strict failures raise; lax degrades to warnings |
+| `lax: true` (BpmnModdle default) | `lax=True` | `unparsable content` becomes a warning + `NoopHandler` |
+| `undefined` body / unset single ref | `UNDEFINED` (`bpmn_io._js`) | missing body is `UNDEFINED` (not `None`); unresolved single refs unset |
+| `getContext` | bound `ctx()` | `{data, line, column}` |
+
+Not transposed (N-A): the Writer (`write.js`, Lot 6). `test/perf` absent upstream
+for moddle-xml.

@@ -102,12 +102,12 @@ Actions with the following status should be included around tasks only if really
   - [x] Oracle: `tests/oracle/test_moddle.py` vs `descriptor-dump` op for all types of the 5 vendored descriptors (incl. skipped trait types).
   - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
-- [ ] **Lot 5 — moddle-xml Reader**
-  - [ ] `src/bpmn_io/moddle_xml/common.py`, `read.py`: `Reader`, `ElementHandler`/`RootElementHandler`/`GenericElementHandler`/`ValueHandler`/`ReferenceHandler`, `Context` (`references`, `warnings`, `elements_by_id`), `xsi:type` **and `xmi:type`** dispatch, namespace prefix redefinition/collision, `$attrs` for unknown attributes, body properties, reference resolution post-pass, `ParseError` carrying warnings (D4.1), lax mode.
-  - [ ] Synchronous `from_xml(xml, type_name, options) -> ParseResult` (dataclass).
-  - [ ] `tests/moddle_xml/test_reader.py`: claim every case of `tests/upstream/moddle-xml/test/spec/reader.js` with the upstream fixtures.
-  - [ ] Oracle: canonical dump + warnings list equal for every moddle-xml and bpmn-moddle fixture.
-  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
+- [x] **Lot 5 — moddle-xml Reader**
+  - [x] `src/bpmn_io/moddle_xml/common.py`, `read.py`: `Reader`, `ElementHandler`/`RootElementHandler`/`GenericElementHandler`/`ValueHandler`/`ReferenceHandler`, `Context` (`references`, `warnings`, `elements_by_id`), `xsi:type` **and `xmi:type`** dispatch, namespace prefix redefinition/collision, `$attrs` for unknown attributes, body properties, reference resolution post-pass, `ParseError` carrying warnings (D4.1), lax mode.
+  - [x] Synchronous `from_xml(xml, type_name, options) -> ParseResult` (dataclass).
+  - [x] `tests/moddle_xml/test_reader.py`: 86/86 cases of `tests/upstream/moddle-xml/test/spec/reader.js` (88 rows − 2 duplicated titles claimed once).
+  - [x] Oracle: `tests/oracle/test_moddle_xml_dump.py` vs `model-dump-batch` op — 88/89 fixtures byte-equal (`bpmn-in-color.bpmn` skipped: BR01-COLOR 6th descriptor, Lot 7).
+  - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
 - [ ] **Lot 6 — moddle-xml Writer & roundtrip**
   - [ ] `src/bpmn_io/moddle_xml/write.py`: `Writer`, element/attribute/body serializers, namespace collection and declaration order, `xsi:type` and `serialize: property` (incl. `Assignment.from`), escaping table, `format` indentation, `preamble`, number formatting via `_js.number_to_string`; iterative.

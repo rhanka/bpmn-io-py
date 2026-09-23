@@ -160,6 +160,12 @@ async function main() {
       call: (args) => call(args),
       'descriptor-dump': (args) => descriptorDump(args.packages),
       'model-dump': (args) => modelDump(args.xml, args.type),
+      'model-dump-batch': (args) => Promise.all(
+        (args.inputs ?? []).map((input) => modelDump(input.xml, input.type).then(
+          (dump) => ({ dump }),
+          (error) => ({ error: error?.message ?? String(error) }),
+        )),
+      ),
       saxen: (args) => saxen(args),
     };
     const run = OPS[payload.op];
