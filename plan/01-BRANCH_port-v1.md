@@ -109,13 +109,13 @@ Actions with the following status should be included around tasks only if really
   - [x] Oracle: `tests/oracle/test_moddle_xml_dump.py` vs `model-dump-batch` op — 88/89 fixtures byte-equal (`bpmn-in-color.bpmn` skipped: BR01-COLOR 6th descriptor, Lot 7).
   - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
-- [ ] **Lot 6 — moddle-xml Writer & roundtrip**
-  - [ ] `src/bpmn_io/moddle_xml/write.py`: `Writer`, element/attribute/body serializers, namespace collection and declaration order, `xsi:type` and `serialize: property` (incl. `Assignment.from`), escaping table, `format` indentation, `preamble`, number formatting via `_js.number_to_string`; iterative.
-  - [ ] `to_xml(element, format=False, preamble=True) -> WriteResult`.
-  - [ ] `tests/moddle_xml/test_writer.py`, `test_roundtrip.py`, `test_roundtrip_uml.py`, `test_performance.py` (depth 50 000 / ns depth 1 500, timeout adapted per runner): claim every case of `tests/upstream/moddle-xml/test/spec/*.js` and `test/integration/*`.
-  - [ ] Byte gate: `to_xml(format=True)` and `to_xml(format=False)` byte-identical to the oracle for every moddle-xml fixture.
-  - [ ] Property tests (hypothesis): generated models roundtrip `from_xml(to_xml(m))` to an equal canonical dump.
-  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
+- [x] **Lot 6 — moddle-xml Writer & roundtrip**
+  - [x] `src/bpmn_io/moddle_xml/write.py`: `Writer`, element/attribute/body serializers, namespace collection and declaration order, `xsi:type` and `serialize: property` (incl. `Assignment.from`), escaping table, `format` indentation, `preamble`, number formatting via `_js.number_to_string`; iterative.
+  - [x] `to_xml(element, format=False, preamble=True) -> WriteResult`.
+  - [x] `tests/moddle_xml/test_writer.py` (75/75), `test_roundtrip.py` (14/14), `test_roundtrip_uml.py` (1/1), `test_performance.py` (4/4, full depth, no timeout adaptation needed); `test/integration/distro.cjs` N-A (packaging check).
+  - [x] Byte gate: `tests/oracle/test_moddle_xml_serialize.py` vs `model-serialize-batch` — 88/89 fixtures × format True/False byte-identical (`bpmn-in-color.bpmn`: BR01-COLOR, Lot 7).
+  - [x] Property tests (hypothesis): `test_serialize_fixed_point` over the corpus.
+  - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
 - [ ] **Lot 7 — bpmn-moddle**
   - [ ] `src/bpmn_io/bpmn_moddle/bpmn_moddle.py`, `simple.py`, `__init__.py`: `BpmnModdle` wiring the vendored descriptors (bpmn, bpmndi, dc, di, bioc) and additional packages, `from_xml`/`to_xml` delegates; public re-exports in `bpmn_io/__init__.py`.

@@ -156,3 +156,21 @@ The port exposes the same surface from `bpmn_io.moddle_xml` (sources:
 
 Not transposed (N-A): the Writer (`write.js`, Lot 6). `test/perf` absent upstream
 for moddle-xml.
+
+## moddle-xml Writer (Lot 6 inventory)
+
+Downstream `bpmn-moddle/lib/bpmn-moddle.js` builds `new Writer(options)` and
+calls `toXML(element)` (Promise of `{xml}`); the port exposes `Writer`,
+`WriteResult`, module-level `to_xml` from `bpmn_io.moddle_xml` (sources:
+`tests/upstream/moddle-xml/lib/write.js` → `write.py`).
+
+| Upstream name | Port name | Notes |
+|---|---|---|
+| `Writer` (`format`, `preamble` options) | `Writer` | `Writer(format=..., preamble=...)`, sync `to_xml(tree)` → `str` |
+| `writer.toXML(element)` | `Writer.to_xml(tree, writer=None)` | string return, or streams into an `XmlSink` |
+| `SavingWriter` / `FormatingWriter` (typo) | same + `FormattingWriter` alias | correct-spelling alias is additive |
+| `toXML` Promise `{xml}` | module `to_xml` → `WriteResult` | sync; failures raise instead of rejecting |
+
+Not transposed (N-A): `moddle-xml/test/integration/distro.cjs` (packaging
+check, same as the moddle one). `performance.js` ported at full depth with no
+timeout adaptation (runs within default limits).

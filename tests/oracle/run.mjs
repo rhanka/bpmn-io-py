@@ -14,7 +14,7 @@
 import { createRequire } from 'node:module';
 import process from 'node:process';
 
-import { descriptorDump, modelDump } from './dump.mjs';
+import { descriptorDump, modelDump, modelSerializeBatch } from './dump.mjs';
 
 const requirePkg = createRequire(import.meta.url);
 const PINNED = ['saxen', 'min-dash', 'moddle', 'moddle-xml', 'bpmn-moddle', 'bpmn-auto-layout'];
@@ -166,6 +166,7 @@ async function main() {
           (error) => ({ error: error?.message ?? String(error) }),
         )),
       ),
+      'model-serialize-batch': (args) => modelSerializeBatch(args.inputs),
       saxen: (args) => saxen(args),
     };
     const run = OPS[payload.op];

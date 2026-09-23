@@ -108,3 +108,17 @@ export async function modelDump(xml, type = 'bpmn:Definitions') {
     })),
   };
 }
+
+export async function modelSerializeBatch(inputs) {
+  const { BpmnModdle } = await import('bpmn-moddle');
+  return Promise.all((inputs ?? []).map(async ({ xml, format, preamble }) => {
+    try {
+      const moddle = new BpmnModdle();
+      const { rootElement } = await moddle.fromXML(xml, 'bpmn:Definitions');
+      const { xml: serialized } = await moddle.toXML(rootElement, { format, preamble });
+      return { xml: serialized };
+    } catch (error) {
+      return { error: error?.message ?? String(error) };
+    }
+  }));
+}
