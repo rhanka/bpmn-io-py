@@ -92,3 +92,24 @@ Not transposed (N-A, claimed with reason in `tests/min_dash/`): `flatten`, `with
 libraries above; `debounce`/`throttle` additionally have no equivalent in the
 synchronous port. Python `None` is JS `null` and `UNDEFINED` (`bpmn_io._js`) is JS
 `undefined`, so `find` misses and `for_each` completions surface as `UNDEFINED`.
+
+## saxen (Lot 3 inventory)
+
+`saxen` is consumed by exactly one downstream library: `moddle-xml/lib/read.js`
+imports `{ Parser as SaxParser }`, builds `new SaxParser({ proxy: true })`,
+calls `.ns(uriMap)`, and decodes text via the `decodeEntities` handler argument.
+The port exposes the same surface from `bpmn_io.saxen` (sources:
+`tests/upstream/saxen/lib/*.js`, v11.2.0 pinned in `tests/oracle/package.json`).
+
+| Upstream name | Port name | Notes |
+|---|---|---|
+| `Parser` | `Parser` | `on`, `ns`, `parse`, `write` (chainable), `end`, `stop` |
+| `decode` (decodeEntities) | `decode_entities` | handler arg + `ns` URI mapping use it |
+| `Error` parse failures | `ParseError` | via `onError`, `parse`/`end` return, or default rethrow |
+| handler `getContext` | bound `ctx()` | `{data, line, column}` |
+| JS call tolerance (extras dropped, missing `undefined`) | `_adapt_arity` | missing parameters arrive as `None` |
+| JS `String.prototype.trim` (strips U+FEFF) | `_js_trim` | root-level blank checks only |
+
+Not transposed (N-A): nothing — the whole `lib/` surface is ported. `test/perf`
+is N-A (benchmark harness, no assertions; noted in `tests/saxen/test_stream.py`).
+`None` is JS `null`; there is no `undefined` in the saxen surface.

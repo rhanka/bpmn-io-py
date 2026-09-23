@@ -10,6 +10,9 @@ from pathlib import Path
 ORACLE_DIR = Path(__file__).parent
 RUNNER = ORACLE_DIR / "run.mjs"
 _TIMEOUT_S = 120
+#: Payloads above this size travel over stdin (``@stdin`` marker argv): a single
+#: argv string is capped by the OS (Linux ``MAX_ARG_STRLEN`` = 128 KiB).
+_STDIN_THRESHOLD_BYTES = 100_000
 
 
 class OracleError(Exception):
@@ -39,9 +42,16 @@ def run(payload: dict[str, object]) -> object:
 
     Raises :class:`OracleError` on transport failure, timeout or runner-reported error.
     """
+    data = json.dumps(payload)
+    if len(data.encode("utf-8")) > _STDIN_THRESHOLD_BYTES:
+        argv: list[str] = [_node_executable(), str(RUNNER), "@stdin"]
+    else:
+        argv = [_node_executable(), str(RUNNER), data]
+        data = None
     try:
         proc = subprocess.run(  # noqa: S603 — fixed argv ([node, runner, JSON]), no shell.
-            [_node_executable(), str(RUNNER), json.dumps(payload)],
+            argv,
+            input=data,
             capture_output=True,
             text=True,
             timeout=_TIMEOUT_S,

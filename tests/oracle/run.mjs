@@ -81,10 +81,75 @@ async function call({ package: name, path: dotted, args }) {
   return await target(...revive(args ?? []));
 }
 
+function serializeError(err) {
+  return err instanceof Error ? err.message : String(err);
+}
+
+function readStdin() {
+  return new Promise((resolve, reject) => {
+    let data = '';
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', (chunk) => {
+      data += chunk;
+    });
+    process.stdin.on('end', () => resolve(data));
+    process.stdin.on('error', reject);
+  });
+}
+
+async function saxen({ inputs }) {
+  const { Parser } = await import('saxen');
+  return (inputs ?? []).map(({ xml, chunks, options }) => {
+    const parser = new Parser();
+    if (options && options.ns) {
+      parser.ns(options.ns);
+    }
+    const events = [];
+    parser.on('openTag', (name, getAttrs, _decode, tagEnd, getContext) => {
+      events.push(['openTag', name, getAttrs(), tagEnd, getContext()]);
+    });
+    parser.on('closeTag', (name, _decode, tagStart, getContext) => {
+      events.push(['closeTag', name, tagStart, getContext()]);
+    });
+    parser.on('text', (chars, _decode, getContext) => {
+      events.push(['text', chars, getContext()]);
+    });
+    parser.on('comment', (value, _decode, getContext) => {
+      events.push(['comment', value, getContext()]);
+    });
+    parser.on('attention', (value, _decode, getContext) => {
+      events.push(['attention', value, getContext()]);
+    });
+    parser.on('cdata', (data, getContext) => {
+      events.push(['cdata', data, getContext()]);
+    });
+    parser.on('question', (value, getContext) => {
+      events.push(['question', value, getContext()]);
+    });
+    parser.on('error', (err, getContext) => {
+      events.push(['error', serializeError(err), getContext()]);
+    });
+    parser.on('warn', (err, getContext) => {
+      events.push(['warn', serializeError(err), getContext()]);
+    });
+    let returned;
+    if (chunks) {
+      for (const chunk of chunks) {
+        returned = parser.write(chunk);
+      }
+      returned = parser.end();
+    } else {
+      returned = parser.parse(xml);
+    }
+    return { events, error: returned == null ? null : serializeError(returned) };
+  });
+}
+
 async function main() {
   let payload;
   try {
-    payload = JSON.parse(process.argv[2] ?? '{}');
+    const raw = process.argv[2] === '@stdin' ? await readStdin() : (process.argv[2] ?? '{}');
+    payload = JSON.parse(raw);
   } catch (error) {
     fail(`invalid JSON payload: ${error.message}`);
     return;
@@ -95,6 +160,7 @@ async function main() {
       call: (args) => call(args),
       'descriptor-dump': (args) => descriptorDump(args.packages),
       'model-dump': (args) => modelDump(args.xml, args.type),
+      saxen: (args) => saxen(args),
     };
     const run = OPS[payload.op];
     if (!run) {

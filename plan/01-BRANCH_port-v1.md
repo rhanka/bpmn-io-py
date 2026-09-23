@@ -87,12 +87,12 @@ Actions with the following status should be included around tasks only if really
   - [x] Oracle: differential test on each transposed helper for a table of inputs (`bind` excluded: `this`-rebinding has no Python equivalent, unit-covered in `tests/min_dash/test_fn.py`).
   - [x] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
-- [ ] **Lot 3 — saxen (lenient SAX parser)**
-  - [ ] `src/bpmn_io/saxen/parser.py` (+ `decode.py`): `Parser` with `on(...)` handlers, `ns()` namespace mode, `parse()`, and the streaming API (`write(chunk)` chainable, `end()` returning the error), entity decoding, attribute parsing leniency and warning texts, positions (line/column as upstream), error texts, `proxy`/`ns` modes, stop/skip control.
-  - [ ] Security: no DTD processing, no external entities, only built-in and numeric character references; explicit tests (XXE payload, entity amplification, deep nesting GHSA-x3vc-q6mj-47vp).
-  - [ ] `tests/saxen/test_parser.py`, `test_elements.py`, `test_decode.py`, `test_errors.py`, `test_modes.py`, `test_stream.py`: claim every case of `tests/upstream/saxen/test/**`; `test/perf` claimed adapted (timeout per CI runner) or N-A with reason.
-  - [ ] Oracle: event-stream differential (every event, attribute map, warning and position) for every `.bpmn`/`.xml` fixture of moddle-xml and bpmn-moddle.
-  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
+- [x] **Lot 3 — saxen (lenient SAX parser)**
+  - [x] `src/bpmn_io/saxen/parser.py` (+ `decode.py`): `Parser` with `on(...)` handlers, `ns()` namespace mode, `parse()`, and the streaming API (`write(chunk)` chainable, `end()` returning the error), entity decoding, attribute parsing leniency and warning texts, positions (line/column as upstream), error texts, `proxy`/`ns` modes, stop/skip control.
+  - [x] Security: no DTD processing, no external entities, only built-in and numeric character references; explicit tests (`tests/saxen/test_security.py`: XXE payload, entity amplification, 2000-deep nesting).
+  - [x] `tests/saxen/test_parser.py`, `test_elements.py`, `test_decode.py`, `test_errors.py`, `test_modes.py`, `test_stream.py`: claim every case of `tests/upstream/saxen/test/**` (183 claims, 0 stale/duplicate); `test/perf` N-A with reason (benchmark harness, no assertions).
+  - [x] Oracle: event-stream differential (`tests/oracle/test_saxen.py`, op `saxen` in `run.mjs`) for 89 `bpmn-moddle` `.bpmn` fixtures (raw + ns map) + `UML.xmi` + garbage-in files + chunked parses; `decode` call table.
+  - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
 - [ ] **Lot 4 — moddle (meta-model runtime)**
   - [ ] `src/bpmn_io/moddle/ns.py`, `types.py`, `properties.py`, `base.py`, `descriptor_builder.py`, `registry.py`, `factory.py`, `moddle.py`, `__init__.py`: `Moddle`, `create`, `create_any`, `get_type`, `get_element_descriptor`, `get_property_descriptor`, `get_type_descriptor`, `has_type`, `Base.get/set`, `type_`/`attrs_`/`parent_`/`descriptor_`/`model_`/`instance_of`, `isVirtual`/`replaces`/`redefines`, default values, `isMany` collections, generic (`isGeneric`) elements; `__getattr__` never intercepts dunders (tests with `copy`, `pickle`, `hasattr`).
