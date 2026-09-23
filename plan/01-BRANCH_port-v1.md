@@ -80,12 +80,12 @@ Actions with the following status should be included around tasks only if really
   - [ ] `tests/oracle/conftest.py` + `tests/oracle/_bridge.py`: pytest fixture calling the runner through `node` (skip locally without `node_modules`, mandatory in CI).
   - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
-- [ ] **Lot 2 — min-dash subset**
-  - [ ] Inventory every min-dash import in `tests/upstream/{saxen,moddle,moddle-xml,bpmn-moddle,bpmn-auto-layout}/lib/**` → list in `docs/naming.md` § min-dash.
-  - [ ] `src/bpmn_io/_min_dash.py`: transpose exactly those helpers from `tests/upstream/min-dash/lib/**`, same semantics on dict/list, insertion order kept.
-  - [ ] `tests/min_dash/test_*.py`: claim every case of `tests/upstream/min-dash/test/**` — ported for the transposed helpers; N-A with reason for helpers not used by the ported libraries, for `integration/bundle.spec.{js,cjs}` (JS bundle packaging) and `index.spec.ts` (TypeScript typing tests).
-  - [ ] Oracle: differential test on each transposed helper for a table of inputs.
-  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
+- [x] **Lot 2 — min-dash subset**
+  - [x] Inventory every min-dash import in `tests/upstream/{saxen,moddle,moddle-xml,bpmn-moddle,bpmn-auto-layout}/lib/**` → list in `docs/naming.md` § min-dash.
+  - [x] `src/bpmn_io/_min_dash.py`: transpose exactly those helpers from `tests/upstream/min-dash/lib/**`, same semantics on dict/list, insertion order kept.
+  - [x] `tests/min_dash/test_*.py`: claim every case of `tests/upstream/min-dash/test/**` — ported for the transposed helpers; N-A with reason for helpers not used by the ported libraries, for `integration/bundle.spec.{js,cjs}` (JS bundle packaging) and `index.spec.ts` (TypeScript typing tests).
+  - [x] Oracle: differential test on each transposed helper for a table of inputs (`bind` excluded: `this`-rebinding has no Python equivalent, unit-covered in `tests/min_dash/test_fn.py`).
+  - [x] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
 - [ ] **Lot 3 — saxen (lenient SAX parser)**
   - [ ] `src/bpmn_io/saxen/parser.py` (+ `decode.py`): `Parser` with `on(...)` handlers, `ns()` namespace mode, `parse()`, and the streaming API (`write(chunk)` chainable, `end()` returning the error), entity decoding, attribute parsing leniency and warning texts, positions (line/column as upstream), error texts, `proxy`/`ns` modes, stop/skip control.

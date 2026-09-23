@@ -7,6 +7,10 @@
 // Ops: `ping` (node version + pinned package versions), `call` (invoke a dotted
 // export path of an installed package with JSON args, awaiting thenables).
 // Results must be JSON-serializable; canonical model dumps go through dump.mjs.
+//
+// `call` args revive two markers (test-only, so callbacks can cross the JSON
+// boundary): `{ "$fn": "<source>" }` compiles to a function, `{ "$undefined": true }`
+// becomes `undefined`. Results still serialize to JSON (`undefined` → `null`).
 import { createRequire } from 'node:module';
 import process from 'node:process';
 
@@ -27,6 +31,38 @@ async function ping() {
   return { node: process.version, packages };
 }
 
+function revive(value) {
+  if (Array.isArray(value)) {
+    return value.map(revive);
+  }
+  if (value !== null && typeof value === 'object') {
+    const keys = Object.keys(value);
+    if (keys.length === 1 && typeof value.$fn === 'string') {
+      return new Function(`return (${value.$fn})`)();
+    }
+    if (keys.length === 1 && value.$undefined === true) {
+      return undefined;
+    }
+    // Preserve own `__proto__` keys (fromEntries would set the prototype instead).
+    const out = {};
+    for (const [key, entry] of Object.entries(value)) {
+      const revived = revive(entry);
+      if (key === '__proto__') {
+        Object.defineProperty(out, key, {
+          value: revived,
+          enumerable: true,
+          writable: true,
+          configurable: true,
+        });
+      } else {
+        out[key] = revived;
+      }
+    }
+    return out;
+  }
+  return value;
+}
+
 async function call({ package: name, path: dotted, args }) {
   if (!/^[A-Za-z0-9_-]+$/.test(name ?? '')) {
     throw new Error(`invalid package: ${name}`);
@@ -42,7 +78,7 @@ async function call({ package: name, path: dotted, args }) {
   if (typeof target !== 'function') {
     throw new Error(`not a function: ${name}.${dotted}`);
   }
-  return await target(...(args ?? []));
+  return await target(...revive(args ?? []));
 }
 
 async function main() {

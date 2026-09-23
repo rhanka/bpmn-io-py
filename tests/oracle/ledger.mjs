@@ -34,7 +34,12 @@ function collectFile() {
   // Bare it() titles (whitespace-normalized): the ledger must use the exact strings
   // scripts/port_coverage.py scans statically, so both sources deduplicate and only
   // genuinely dynamic titles are added.
-  const recordIt = (title) => {
+  const recordIt = (title, fn) => {
+    // Pending tests (`it('...')` without callback) never execute: omit them,
+    // like the static scan (which only matches `it('...', ...)`).
+    if (typeof fn !== 'function') {
+      return;
+    }
     titles.push(String(title).replace(/\s+/g, ' ').trim());
   };
   recordIt.only = recordIt;

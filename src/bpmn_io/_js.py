@@ -29,6 +29,7 @@ __all__ = [
     "number_to_string",
     "parse_float",
     "parse_int",
+    "strict_equal",
 ]
 
 #: Matches a leading ``parseFloat`` number: ``Infinity`` or a decimal with optional exponent.
@@ -162,6 +163,24 @@ def parse_int(text: str, radix: int | None = None) -> int | float:
     if not digits:
         return math.nan
     return sign * int("".join(digits), base)
+
+
+def strict_equal(left: object, right: object) -> bool:
+    """Return JavaScript ``===`` semantics for plain values.
+
+    Numbers (``int`` and ``float`` alike) and strings compare by value; containers
+    (``dict``/``list``/``tuple``) compare by identity like JS objects; ``bool``
+    never equals a number (``typeof`` differs); ``None`` (``null``) and
+    ``UNDEFINED`` (``undefined``) equal only themselves. ``NaN`` never equals,
+    including itself.
+    """
+    if isinstance(left, bool) or isinstance(right, bool):
+        return left is right
+    if left is None or right is None or left is UNDEFINED or right is UNDEFINED:
+        return left is right
+    if isinstance(left, (dict, list, tuple)) or isinstance(right, (dict, list, tuple)):
+        return left is right
+    return bool(left == right)
 
 
 def parse_float(text: str) -> float:

@@ -17,6 +17,7 @@ from bpmn_io._js import (
     number_to_string,
     parse_float,
     parse_int,
+    strict_equal,
 )
 
 
@@ -155,6 +156,25 @@ def test_parse_float(text: str, expected: float) -> None:
         assert math.isnan(actual)
     else:
         assert actual == expected
+
+
+def test_strict_equal() -> None:
+    assert strict_equal(1, 1)
+    assert strict_equal(1, 1.0)
+    assert strict_equal("a", "a")
+    assert strict_equal(None, None)
+    assert strict_equal(UNDEFINED, UNDEFINED)
+    assert strict_equal(True, True)  # noqa: FBT003
+    assert strict_equal(0.0, -0.0)
+    shared = [1]
+    assert strict_equal(shared, shared)
+    assert not strict_equal(True, 1)  # noqa: FBT003
+    assert not strict_equal(False, 0)  # noqa: FBT003
+    assert not strict_equal(None, UNDEFINED)
+    assert not strict_equal(1, "1")
+    assert not strict_equal([1], [1])
+    assert not strict_equal({}, {})
+    assert not strict_equal(math.nan, math.nan)
 
 
 def test_ordered_set_keeps_insertion_order() -> None:
