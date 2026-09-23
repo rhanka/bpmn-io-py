@@ -1,4 +1,4 @@
-"""bpmn-py: bpmn.io's bpmn-moddle and bpmn-auto-layout transposed to pure Python.
+"""bpmn-io: bpmn.io's bpmn-moddle and bpmn-auto-layout transposed to pure Python.
 
 A literal, attributed transposition of ``moddle``, ``moddle-xml``, ``bpmn-moddle`` and
 ``bpmn-auto-layout`` (all MIT, (c) camunda Services GmbH) to Python with no runtime dependency.
@@ -9,11 +9,11 @@ from __future__ import annotations
 
 from importlib.metadata import PackageNotFoundError, version
 
-from bpmn_py.descriptors import DESCRIPTOR_NAMES, load_descriptor
-from bpmn_py.upstream import UPSTREAM_VERSIONS
+from bpmn_io.descriptors import DESCRIPTOR_NAMES, load_descriptor
+from bpmn_io.upstream import UPSTREAM_VERSIONS
 
 try:
-    __version__ = version("bpmn-py")
+    __version__ = version("bpmn-io")
 except PackageNotFoundError:  # pragma: no cover - source checkout without install
     __version__ = "0.0.0+unknown"
 

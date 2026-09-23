@@ -3,7 +3,7 @@
 # Bump a version here, re-run the script, then port the upstream changes (see CONTRIBUTING.md).
 #
 # Vendored destinations:
-#   src/bpmn_py/resources/**   moddle descriptors (runtime data, shipped in the wheel)
+#   src/bpmn_io/resources/**   moddle descriptors (runtime data, shipped in the wheel)
 #   tests/upstream/<pkg>/      upstream `lib/` (the sources transposed) and `test/` trees verbatim
 #                              (specs, helpers, fixtures, snapshots) at the pinned commit: the
 #                              reference for the 1:1 port, read by scripts/port_coverage.py, used as
@@ -28,7 +28,7 @@ repo = "bpmn-io/min-dash"
 tag = "v5.1.0"
 commit = "960f7a8746241ba50159dcf15af3b80d8ddaf399"
 license = "MIT"
-# Only the helpers used by the ported libraries are transposed (into bpmn_py._min_dash); their
+# Only the helpers used by the ported libraries are transposed (into bpmn_io._min_dash); their
 # upstream tests are vendored for those helpers' port.
 vendor = [
   { from = "github", path = "lib", dest = "tests/upstream/min-dash/lib" },
@@ -69,8 +69,8 @@ commit = "f35959afc443444b706a4f39542530134233db07"
 license = "MIT"
 vendor = [
   { from = "github", path = "lib", dest = "tests/upstream/bpmn-moddle/lib" },
-  { from = "npm", path = "resources/bpmn/json", dest = "src/bpmn_py/resources/bpmn" },
-  { from = "npm", path = "resources/bpmn-io/json", dest = "src/bpmn_py/resources/bpmn-io" },
+  { from = "npm", path = "resources/bpmn/json", dest = "src/bpmn_io/resources/bpmn" },
+  { from = "npm", path = "resources/bpmn-io/json", dest = "src/bpmn_io/resources/bpmn-io" },
   { from = "github", path = "test", dest = "tests/upstream/bpmn-moddle/test" },
 ]
 

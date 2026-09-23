@@ -3,7 +3,7 @@ requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
-name = "bpmn-py"
+name = "bpmn-io"
 version = "0.1.0.dev0"
 description = "Pure-Python port of bpmn.io bpmn-moddle and bpmn-auto-layout: read, check, build, lay out and write BPMN 2.0 XML"
 readme = "README.md"
@@ -29,10 +29,10 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/rhanka/bpmn-py"
-Repository = "https://github.com/rhanka/bpmn-py"
-Issues = "https://github.com/rhanka/bpmn-py/issues"
-Changelog = "https://github.com/rhanka/bpmn-py/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/rhanka/bpmn-io-py"
+Repository = "https://github.com/rhanka/bpmn-io-py"
+Issues = "https://github.com/rhanka/bpmn-io-py/issues"
+Changelog = "https://github.com/rhanka/bpmn-io-py/blob/main/CHANGELOG.md"
 "Upstream: bpmn-moddle" = "https://github.com/bpmn-io/bpmn-moddle"
 "Upstream: bpmn-auto-layout" = "https://github.com/bpmn-io/bpmn-auto-layout"
 
@@ -42,7 +42,7 @@ lint = ["ruff>=0.14", "mypy>=1.19", "lxml-stubs>=0.5"]
 test = ["pytest>=8.4", "pytest-cov>=7", "hypothesis>=6", "lxml>=6", "jsonschema>=4.26"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/bpmn_py"]
+packages = ["src/bpmn_io"]
 
 [tool.hatch.build.targets.sdist]
 include = ["src", "tests", "scripts", "README.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "UPSTREAM.toml", "UPSTREAM.lock"]
@@ -70,7 +70,7 @@ ignore = [
 [tool.mypy]
 strict = true
 python_version = "3.11"
-packages = ["bpmn_py"]
+packages = ["bpmn_io"]
 mypy_path = "src"
 warn_unreachable = true
 pretty = true
@@ -85,7 +85,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["bpmn_py"]
+source = ["bpmn_io"]
 branch = true
 
 [tool.coverage.report]

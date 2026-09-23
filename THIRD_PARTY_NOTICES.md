@@ -1,8 +1,8 @@
 # Third-party notices
 
-bpmn-py is a literal transposition to Python of the following bpmn.io libraries. Their algorithms,
+bpmn-io is a literal transposition to Python of the following bpmn.io libraries. Their algorithms,
 descriptors, test fixtures and test-suites are reproduced or translated here under the terms of the
-MIT License, with the original copyright notice preserved. bpmn-py is an independent project and is
+MIT License, with the original copyright notice preserved. bpmn-io is an independent project and is
 **not affiliated with, endorsed by, or supported by bpmn.io or Camunda**.
 
 | Upstream project | Version | Copyright | License | What is transposed |
@@ -11,7 +11,7 @@ MIT License, with the original copyright notice preserved. bpmn-py is an indepen
 | [min-dash](https://github.com/bpmn-io/min-dash) | 5.1.0 | 2017-present camunda Services GmbH | MIT | the utility helpers used by the libraries below, their tests |
 | [moddle](https://github.com/bpmn-io/moddle) | 8.2.1 | 2014-present Camunda Services GmbH | MIT | meta-model runtime (registry, factory, properties), moddle.json schema, test-suite |
 | [moddle-xml](https://github.com/bpmn-io/moddle-xml) | 12.3.1 | 2014-present Camunda Services GmbH | MIT | XML reader/writer, test-suite and fixtures |
-| [bpmn-moddle](https://github.com/bpmn-io/bpmn-moddle) | 10.3.1 | 2014 camunda Services GmbH | MIT | BPMN 2.0 / DI / DC / bioc descriptors (`src/bpmn_py/resources`), wiring, test-suite and fixtures |
+| [bpmn-moddle](https://github.com/bpmn-io/bpmn-moddle) | 10.3.1 | 2014 camunda Services GmbH | MIT | BPMN 2.0 / DI / DC / bioc descriptors (`src/bpmn_io/resources`), wiring, test-suite and fixtures |
 | [bpmn-auto-layout](https://github.com/bpmn-io/bpmn-auto-layout) | 1.3.0 | bpmn.io contributors (package.json declares MIT; no LICENSE file at the pinned tag, status unverified) | MIT | layout algorithm, test-suite, fixtures and snapshots |
 
 Exact tags, commits and per-file sha256 digests of every vendored file are recorded in

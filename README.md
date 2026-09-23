@@ -1,4 +1,4 @@
-# bpmn-py
+# bpmn-io
 
 **bpmn.io's `bpmn-moddle` and `bpmn-auto-layout`, transposed to pure Python.**
 
@@ -8,7 +8,7 @@ semantics of the reference JavaScript implementation, and no runtime dependency.
 > Status: pre-alpha. The repository scaffold, upstream pins and conformance tooling are in place;
 > the port itself is in progress. Nothing is published on PyPI yet.
 >
-> bpmn-py is an independent project, not affiliated with bpmn.io or Camunda.
+> bpmn-io is an independent project, not affiliated with bpmn.io or Camunda.
 
 ## Why this exists
 
@@ -18,7 +18,7 @@ human or to an engine. Until now the only faithful implementation of the BPMN 2.
 (`bpmn-moddle`) and of automatic diagram layout (`bpmn-auto-layout`) lived in JavaScript, so a
 Python agent had to shell out to Node or skip validation altogether.
 
-bpmn-py removes that gap: a 100 % mapped Python port, so the objects, the warnings and the XML you
+bpmn-io removes that gap: a 100 % mapped Python port, so the objects, the warnings and the XML you
 get are the ones bpmn-js, Camunda Modeler and the bpmn.io toolchain produce and expect.
 
 ## Design principles
@@ -40,7 +40,7 @@ get are the ones bpmn-js, Camunda Modeler and the bpmn.io toolchain produce and 
 ## Planned API (mirrors upstream)
 
 ```python
-from bpmn_py import BpmnModdle
+from bpmn_io import BpmnModdle
 
 moddle = BpmnModdle()
 result = moddle.from_xml(xml)  # ParseResult(root_element, references, warnings, elements_by_id)
@@ -48,7 +48,7 @@ definitions = result.root_element
 task = moddle.create("bpmn:Task", name="Review")
 xml_out = moddle.to_xml(definitions, format=True)
 
-from bpmn_py import layout_process  # bpmn-auto-layout
+from bpmn_io import layout_process  # bpmn-auto-layout
 
 laid_out = layout_process(xml_out)  # BPMN with generated DI
 ```

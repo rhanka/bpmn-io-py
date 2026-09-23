@@ -28,7 +28,7 @@
 
 Dependabot opens a PR on `tests/oracle/package.json` when bpmn.io publishes a new version. To adopt
 it: bump `UPSTREAM.toml`, run `scripts/sync_upstream.py`, port the diff (upstream changelog + git
-diff between commits), update `src/bpmn_py/upstream.py` and `CHANGELOG.md`.
+diff between commits), update `src/bpmn_io/upstream.py` and `CHANGELOG.md`.
 
 ## Release
 

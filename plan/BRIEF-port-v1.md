@@ -1,6 +1,6 @@
 # Brief — implementing agent for `plan/01-BRANCH_port-v1.md`
 
-You are the implementing agent for this repository (GitHub `rhanka/bpmn-py`), on branch `port-v1`
+You are the implementing agent for this repository (GitHub `rhanka/bpmn-io-py`), on branch `port-v1`
 (already created and checked out). A supervising session reviews your commits and the CI; you do not
 need its permission to execute the plan.
 
@@ -23,7 +23,7 @@ byte, verified through the Node oracle, which is built first (Lot 1) and gates e
 
 ## Hard rules
 
-1. Never edit `tests/upstream/**`, `src/bpmn_py/resources/**`, `UPSTREAM.lock`, `LICENSE`,
+1. Never edit `tests/upstream/**`, `src/bpmn_io/resources/**`, `UPSTREAM.lock`, `LICENSE`,
    `THIRD_PARTY_NOTICES.md`. `scripts/sync_upstream.py --check` must stay green.
 2. Every upstream `it()` is claimed by exactly one Python test via
    `@pytest.mark.upstream("<js file relative to tests/upstream>", "<exact it title>")`; adapted or

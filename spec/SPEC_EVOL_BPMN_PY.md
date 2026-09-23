@@ -1,4 +1,4 @@
-# SPEC EVOL — bpmn-py
+# SPEC EVOL — bpmn-io
 
 Status: EVOL (committed design, numbered decisions, ready to plan).
 Date: 2026-09-22. Ladder: STUDY (`SPEC_STUDY_BPMN_MODDLE_PY.md`) → VOL (§1) → EVOL (§2–§6).
@@ -9,8 +9,8 @@ was launched but its result could not be retrieved in-session (status: `not cove
 
 ## 1. Volition (owner direction, reversible until the first release)
 
-- One public Python library, **`bpmn-py`** (import `bpmn_py`), MIT, published under the owner's own
-  PyPI account from GitHub `rhanka/bpmn-py`.
+- One public Python library, **`bpmn-io`** (import `bpmn_io`), MIT, published under the owner's own
+  PyPI account from GitHub `rhanka/bpmn-io-py`.
 - **Literal transposition** of bpmn.io's `bpmn-moddle` stack and `bpmn-auto-layout`: algorithms
   *and* 100 % of the upstream test-suites, ported one-to-one, with attribution. The STUDY's phrase
   "0 % derivation" is withdrawn: the port is a derivative work distributed under MIT with the
@@ -30,8 +30,8 @@ expat cannot reproduce saxen's lenient parsing, warnings and positions that ~20 
 porting saxen keeps the 100 % target and removes any XML dependency.
 
 **D2 — Package layout.** One distribution, one import root, modules mirroring upstream:
-`bpmn_py/_min_dash.py`, `bpmn_py/saxen/`, `bpmn_py/moddle/`, `bpmn_py/moddle_xml/`,
-`bpmn_py/bpmn_moddle/`, `bpmn_py/auto_layout/`, plus `bpmn_py/__init__.py` re-exporting the public
+`bpmn_io/_min_dash.py`, `bpmn_io/saxen/`, `bpmn_io/moddle/`, `bpmn_io/moddle_xml/`,
+`bpmn_io/bpmn_moddle/`, `bpmn_io/auto_layout/`, plus `bpmn_io/__init__.py` re-exporting the public
 API (`BpmnModdle`, `layout_process`, errors). Every ported module starts with
 `# Transposed from <repo>@<short-sha> <path> (MIT).`
 
@@ -69,7 +69,7 @@ same assertions on `info.value`. Chai matchers map mechanically (`to.eql` → `j
 `to.match` → `re.search`, `to.contain` → `in`, `to.have.length` → `len`). These mappings are listed
 in `docs/naming.md` § test idioms; a test that uses only them is *ported*, not *adapted*.
 
-**D5 — JS semantics module.** `bpmn_py/_js.py` implements, with tests, the JS behaviours the port
+**D5 — JS semantics module.** `bpmn_io/_js.py` implements, with tests, the JS behaviours the port
 relies on: truthiness, `undefined`/`null` distinction, `Math.round` (half-up), number formatting
 (`100` not `100.0`, `1e21`, `1e-7`), `parseInt`/`parseFloat` leniency, insertion-ordered sets (dict),
 `JSON.stringify` semantics for the `jsonEqual` matcher. Reader, writer and matchers are iterative
@@ -104,7 +104,7 @@ Xerces/libxml2 divergence is recorded in a divergence matrix (`docs/xsd-divergen
 runtime L1 API and no `[xsd]` extra in v1. L2 (semantic rules) is out of scope for v1; `bpmnlint`
 (bpmn-io, MIT, 29 rules on the bpmn-moddle model) is the recorded post-v1 candidate.
 
-**D10 — CLI.** `bpmn-py check|roundtrip|layout <file>` on argparse, `--json`, stable exit codes.
+**D10 — CLI.** `bpmn-io check|roundtrip|layout <file>` on argparse, `--json`, stable exit codes.
 
 **D11 — Packaging & release.** hatchling, PEP 639 license expression + license files, PEP 735
 dependency groups, Python ≥ 3.11, CI matrix 3.11–3.14 (ubuntu; 3.13 on windows/macos), actions
@@ -112,10 +112,13 @@ pinned by SHA + zizmor, Dependabot (github-actions, uv, npm). Tag `vX.Y.Z` = pyp
 build → PyPI Trusted Publishing (environment `pypi`, PEP 740 attestations) → GitHub release.
 Keep-a-Changelog maintained by hand.
 
-**D12 — Naming on PyPI (open, owner).** `bpmn-py` is registered on PyPI by another author
-(0.0.2, June 2024, sample-project metadata). Options: (a) PEP 541 name-transfer request, (b) publish
-as `bpmnpy` and keep `bpmn_py` as import name, (c) another free name. Repo and import name are
-`bpmn-py`/`bpmn_py` regardless.
+**D12 — Naming on PyPI (resolved by the owner, 2026-09-23).** Distribution name `bpmn-io`,
+repo `rhanka/bpmn-io-py`, import package `bpmn_io` (dist and import names differ). `bpmn-py` is
+registered on PyPI by another author (0.0.2, June 2024, sample-project metadata), which ruled it
+out. On 2026-09-23 the PyPI JSON API returned 404 for `bpmn-io` (appears free; to confirm at
+publish time). Risk recorded: the dist name matches the upstream organisation name while the
+project states it is unofficial and unaffiliated (D13); if PyPI disputes the name, fall back to a
+distinct name and keep `bpmn_io` as import name.
 
 **D13 — Licensing.** `LICENSE` carries the owner's and the upstream copyright lines;
 `THIRD_PARTY_NOTICES.md` lists every upstream project, holder, version and what is transposed; both
@@ -129,7 +132,7 @@ nesting (upstream advisory GHSA-x3vc-q6mj-47vp).
 ## 3. Architecture
 
 ```
-bpmn_py/
+bpmn_io/
   _js.py            JS semantics helpers (D5)
   _min_dash.py      transposed min-dash subset
   saxen/            Parser (lenient SAX, namespaces, entity decoding, positions)
@@ -166,7 +169,7 @@ Layout: `from_xml` → Layouter grid → DI elements created through moddle → 
 | Typed stubs | mandatory in v1 | — | D8 |
 | CLI | v1, argparse | — | D10 |
 | Auto-layout priority | key adoption driver, v1 | — | v1 (D1), 1.3.0 |
-| Naming `bpmn-moddle` on PyPI | perceived official | `bpmn-py` taken | D12 open |
+| Naming `bpmn-moddle` on PyPI | perceived official | `bpmn-py` taken | D12 resolved (`bpmn-io`) |
 | Workspace / 2 dists | fine | contradicts single dist | single dist (owner) |
 | Number/round semantics | — | acceptance criteria | D5 |
 
