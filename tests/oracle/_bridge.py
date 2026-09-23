@@ -25,22 +25,31 @@ def available() -> bool:
     )
 
 
+def _node_executable() -> str:
+    """Full path to node, or raise when it is missing from PATH."""
+    exe = shutil.which("node")
+    if exe is None:
+        msg = "oracle runner needs node on PATH"
+        raise OracleError(msg)
+    return exe
+
+
 def run(payload: dict[str, object]) -> object:
     """Send one JSON call to the runner and return its result object.
 
-    Raises :class:`OracleError` on transport failure or runner-reported error.
+    Raises :class:`OracleError` on transport failure, timeout or runner-reported error.
     """
     try:
-        proc = subprocess.run(
-            ["node", str(RUNNER), json.dumps(payload)],
+        proc = subprocess.run(  # noqa: S603 — fixed argv ([node, runner, JSON]), no shell.
+            [_node_executable(), str(RUNNER), json.dumps(payload)],
             capture_output=True,
             text=True,
             timeout=_TIMEOUT_S,
             cwd=ORACLE_DIR,
             check=False,
         )
-    except FileNotFoundError as exc:
-        msg = f"oracle runner needs node on PATH: {exc}"
+    except subprocess.TimeoutExpired as exc:
+        msg = f"oracle runner timed out after {_TIMEOUT_S}s: {payload.get('op')}"
         raise OracleError(msg) from exc
     if proc.returncode != 0:
         tail = proc.stderr.strip().splitlines()[-5:]

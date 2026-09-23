@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-
 from _bridge import OracleError
 
 if TYPE_CHECKING:
@@ -34,12 +33,9 @@ def test_ping_reports_node_and_pinned_versions(
 def test_generic_call_dispatches_to_package_function(
     oracle_call: Callable[[dict[str, object]], object],
 ) -> None:
-    assert (
-        oracle_call(
-            {"op": "call", "package": "min-dash", "path": "flatten", "args": [[[1], [2]]]},
-        )
-        == [1, 2]
-    )
+    assert oracle_call(
+        {"op": "call", "package": "min-dash", "path": "flatten", "args": [[[1], [2]]]},
+    ) == [1, 2]
 
 
 def test_call_unknown_path_raises(
