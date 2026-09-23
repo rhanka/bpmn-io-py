@@ -9,7 +9,10 @@ from __future__ import annotations
 
 from importlib.metadata import PackageNotFoundError, version
 
+from bpmn_io.bpmn_moddle import BpmnModdle, SerializationResult, create_moddle
+from bpmn_io.check import Report, check
 from bpmn_io.descriptors import DESCRIPTOR_NAMES, load_descriptor
+from bpmn_io.moddle_xml.read import ParseError, ParseResult
 from bpmn_io.upstream import UPSTREAM_VERSIONS
 
 try:
@@ -17,4 +20,16 @@ try:
 except PackageNotFoundError:  # pragma: no cover - source checkout without install
     __version__ = "0.0.0+unknown"
 
-__all__ = ["DESCRIPTOR_NAMES", "UPSTREAM_VERSIONS", "__version__", "load_descriptor"]
+__all__ = [
+    "DESCRIPTOR_NAMES",
+    "UPSTREAM_VERSIONS",
+    "BpmnModdle",
+    "ParseError",
+    "ParseResult",
+    "Report",
+    "SerializationResult",
+    "__version__",
+    "check",
+    "create_moddle",
+    "load_descriptor",
+]
