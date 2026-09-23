@@ -192,3 +192,34 @@ Not transposed (N-A): `bpmn-moddle/test/integration/distro.cjs` (packaging
 check). `validate(xml)` cases run through `lxml` against the OMG XSDs;
 divergences (none observed: 0 divergences, 45 validate sites) live in
 `docs/xsd-divergences.md`.
+
+## bpmn-auto-layout (Lot 8 inventory)
+
+`layoutProcess(xml)` lays out the first root process of a DI-less document
+and returns fresh-DI XML. Sources: `tests/upstream/bpmn-auto-layout/lib/**`
+(9 files), pinned in `tests/oracle/package.json` (1.3.0). Port lives in
+`src/bpmn_io/auto_layout/` with the same file split (snake_case).
+
+| Upstream name | Port name | Notes |
+|---|---|---|
+| `layoutProcess(xml)` (index.js) | `layout_process` | module-level; sync (the JS `async` is incidental) |
+| `Layouter` | `Layouter` | owns `BpmnModdle()` + `DiFactory`; `layout_process`, `handle` |
+| rejected promise on layout failure | raised `LayoutError` | E1–E3 messages byte-identical; parse failures propagate `ParseError` unwrapped |
+| layout warning value | `LayoutWarning` | defined, never raised (no upstream raise site in 1.3.0) |
+| `Grid` | `Grid` | `find` → `(row, col)` tuple; `getGridDimensions` → `(rows, cols)`; identity (`is`) dedup |
+| `DiFactory` | `DiFactory` | `create`, `create_di_bounds`, `create_di_label`, `create_di_shape`, `create_di_waypoints`, `create_di_edge`, `create_di_plane`, `create_di_diagram` |
+| `getDefaultSize`, `is` (DiUtil) | `get_default_size`, `is_` | `is` is a keyword; same 9-branch size cascade |
+| handler registry (handler/index.js) | `HANDLERS` | order significant: element, incoming, outgoing, attacher |
+| `createElementDi`, `addToGrid`, `createConnectionDi` | `create_element_di`, `add_to_grid`, `create_connection_di` | attacher `add_to_grid` mutates the live `outgoing` list in place, as upstream |
+| `isConnection`, `isBoundaryEvent`, `findElementInTree` | `is_connection`, `is_boundary_event`, `find_element_in_tree` | fresh `visited` set per top-level call |
+| `getMid`, `getDockingPoint`, `connectElements`, `coordinatesToPosition`, `getBounds` | `get_mid`, `get_docking_point`, `connect_elements`, `coordinates_to_position`, `get_bounds` | |
+| `DEFAULT_CELL_WIDTH`/`DEFAULT_CELL_HEIGHT` (layoutUtil) | same | 150/140; task size 100×80 lives in `di_util` |
+| `Math.round` (boundary placement only) | `_js.math_round` | the only rounding site; all other geometry stays full-double |
+| `Math.sign` | `_math_sign` private | inline; no shared-helper change |
+| `undefined` reduce accumulator | `UNDEFINED` (`bpmn_io._js`) | falsy checks cover `0` and `UNDEFINED` |
+| dynamic `gridPosition`/`grid`/`di`/`level`/`isExpanded` attrs | `grid_position`/same | read/written on moddle elements via `get`/plain-attr |
+
+Not transposed (N-A): `UPDATE_SNAPSHOTS` regeneration and the browser
+`output/index.html` report harness in `test/LayoutSpec.js` (harness-only, no
+assertions). `example.bpmn` color-namespace stripping falls out of `clean_di`
++ writer behavior, not special-casing.

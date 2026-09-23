@@ -126,9 +126,9 @@ Actions with the following status should be included around tasks only if really
   - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
 - [ ] **Lot 8 — bpmn-auto-layout**
-  - [ ] `src/bpmn_io/auto_layout/grid.py`, `layouter.py`, `handlers/*.py`, `di/*.py`, `utils/*.py`, `__init__.py` from `tests/upstream/bpmn-auto-layout/lib/**`: `layout_process(xml: str) -> str` (1.3.0 semantics), `LayoutError`/`LayoutWarning`; `Math.round` via `_js.math_round` only.
-  - [ ] `tests/auto_layout/test_layout.py`: one claimed case per fixture (47) of `tests/upstream/bpmn-auto-layout/test/fixtures`, byte-exact against `test/snapshots`.
-  - [ ] Byte gate: oracle differential for every fixture.
+  - [x] `src/bpmn_io/auto_layout/grid.py`, `layouter.py`, `handlers/*.py`, `di/*.py`, `utils/*.py`, `__init__.py` from `tests/upstream/bpmn-auto-layout/lib/**`: `layout_process(xml: str) -> str` (1.3.0 semantics), `LayoutError`/`LayoutWarning`; `Math.round` via `_js.math_round` only.
+  - [x] `tests/auto_layout/test_layout_snapshot.py`: one claimed case per fixture (47) of `tests/upstream/bpmn-auto-layout/test/fixtures`, byte-exact against `test/snapshots`.
+  - [x] Byte gate: oracle differential for every fixture (`layout-process-batch` op + `tests/oracle/test_auto_layout.py`).
   - [ ] UAT checkpoint: owner runs `layout_process` on a Camunda Modeler export without DI and opens the result in Camunda Modeler / bpmn-js.
   - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
