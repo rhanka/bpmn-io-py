@@ -113,3 +113,25 @@ The port exposes the same surface from `bpmn_io.saxen` (sources:
 Not transposed (N-A): nothing — the whole `lib/` surface is ported. `test/perf`
 is N-A (benchmark harness, no assertions; noted in `tests/saxen/test_stream.py`).
 `None` is JS `null`; there is no `undefined` in the saxen surface.
+
+## moddle (Lot 4 inventory)
+
+Downstream `moddle-xml/lib/read.js` uses `Moddle`, `parseNameNS`, `coerceType`,
+`isSimpleType`; `moddle-xml/lib/write.js` uses `isSimpleType`, `parseNameNS`;
+`bpmn-moddle/lib/bpmn-moddle.js` subclasses `Moddle`. The port exposes the exact
+`lib/index.js` surface from `bpmn_io.moddle` (sources:
+`tests/upstream/moddle/lib/*.js`, pinned in `tests/oracle/package.json`).
+
+| Upstream name | Port name | Notes |
+|---|---|---|
+| `Moddle` (default) | `Moddle` | `create`, `create_any`, `get_type`, `get_element_descriptor`, `get_property_descriptor`, `get_type_descriptor`, `has_type` |
+| `parseNameNS` | `parse_name_ns` | |
+| `coerceType` | `coerce_type` | |
+| `isBuiltInType` | `is_built_in_type` | |
+| `isSimpleType` | `is_simple_type` | |
+| `Base` element (`get`/`set`, `$type`/`$attrs`/`$parent`/`$descriptor`/`$model`/`$instanceOf`) | `AnyModdleElement` + `ModdleElement` | `__getattr__` never intercepts dunders; keyword-named properties via `get`/`set` |
+| internal `DescriptorBuilder`/`Registry`/`Factory`/`Properties` | same module split | `ns`/`types`/`properties`/`base`/`descriptor_builder`/`registry`/`factory`/`moddle` |
+| `undefined` default / missing config | `UNDEFINED` (`bpmn_io._js`) | only `UNDEFINED` means "no default"; `None`/`False`/`0` are real defaults |
+
+Not transposed (N-A): nothing public — internals keep the same split.
+`moddle/test/integration/distro.*` are packaging checks, not ported as tests.

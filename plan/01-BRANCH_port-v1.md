@@ -94,13 +94,13 @@ Actions with the following status should be included around tasks only if really
   - [x] Oracle: event-stream differential (`tests/oracle/test_saxen.py`, op `saxen` in `run.mjs`) for 89 `bpmn-moddle` `.bpmn` fixtures (raw + ns map) + `UML.xmi` + garbage-in files + chunked parses; `decode` call table.
   - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
-- [ ] **Lot 4 — moddle (meta-model runtime)**
-  - [ ] `src/bpmn_io/moddle/ns.py`, `types.py`, `properties.py`, `base.py`, `descriptor_builder.py`, `registry.py`, `factory.py`, `moddle.py`, `__init__.py`: `Moddle`, `create`, `create_any`, `get_type`, `get_element_descriptor`, `get_property_descriptor`, `get_type_descriptor`, `has_type`, `Base.get/set`, `type_`/`attrs_`/`parent_`/`descriptor_`/`model_`/`instance_of`, `isVirtual`/`replaces`/`redefines`, default values, `isMany` collections, generic (`isGeneric`) elements; `__getattr__` never intercepts dunders (tests with `copy`, `pickle`, `hasattr`).
-  - [ ] Keyword-named properties (`from`, `import`) and `type` (4 BPMN types) reachable only via `get`/`set`/`**kwargs`.
-  - [ ] Iterative descriptor building and property traversal.
-  - [ ] `tests/moddle/test_*.py`: claim every case of `tests/upstream/moddle/test/spec/**` (schema.js adapted with `jsonschema` against `tests/upstream/moddle/resources/schema/moddle.json`, one case per model fixture).
-  - [ ] Oracle: canonical descriptor dump (effective properties per type, in order) for every type of every vendored descriptor.
-  - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
+- [x] **Lot 4 — moddle (meta-model runtime)**
+  - [x] `src/bpmn_io/moddle/ns.py`, `types.py`, `properties.py`, `base.py`, `descriptor_builder.py`, `registry.py`, `factory.py`, `moddle.py`, `__init__.py`: `Moddle`, `create`, `create_any`, `get_type`, `get_element_descriptor`, `get_property_descriptor`, `get_type_descriptor`, `has_type`, `Base.get/set`, `type_`/`attrs_`/`parent_`/`descriptor_`/`model_`/`instance_of`, `isVirtual`/`replaces`/`redefines`, default values, `isMany` collections, generic (`isGeneric`) elements; no `__getattr__` interception (`tests/moddle/test_dunder.py`: `copy`, `pickle`, `hasattr`).
+  - [x] Keyword-named properties (`from`, `import`) and `type` (4 BPMN types) reachable only via `get`/`set`/`**kwargs` (`test_keyword_properties_via_get_set_kwargs`).
+  - [x] Iterative descriptor building and property traversal.
+  - [x] `tests/moddle/test_*.py`: 121/121 cases of `tests/upstream/moddle/test/spec/**` (123 ledger rows − 2 duplicated titles claimed once) + `test_dunder.py` robustness; schema.js via `jsonschema` Draft 7, one case per model fixture; `test/perf` absent upstream for moddle.
+  - [x] Oracle: `tests/oracle/test_moddle.py` vs `descriptor-dump` op for all types of the 5 vendored descriptors (incl. skipped trait types).
+  - [x] Lot gate (same checklist as Lot 0) + `pytest -m oracle`
 
 - [ ] **Lot 5 — moddle-xml Reader**
   - [ ] `src/bpmn_io/moddle_xml/common.py`, `read.py`: `Reader`, `ElementHandler`/`RootElementHandler`/`GenericElementHandler`/`ValueHandler`/`ReferenceHandler`, `Context` (`references`, `warnings`, `elements_by_id`), `xsi:type` **and `xmi:type`** dispatch, namespace prefix redefinition/collision, `$attrs` for unknown attributes, body properties, reference resolution post-pass, `ParseError` carrying warnings (D4.1), lax mode.
