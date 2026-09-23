@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-FIXTURES = Path(__file__).parent / "upstream" / "bpmn-moddle" / "fixtures"
+FIXTURES = Path(__file__).parent / "upstream" / "bpmn-moddle" / "test" / "fixtures"
 
 
 @pytest.fixture(scope="session")

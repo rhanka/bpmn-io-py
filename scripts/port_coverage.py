@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
 """Measure how much of the upstream JS test-suites is ported to Python.
 
-Every upstream `it('<title>')` (and `it.skip`, reported separately) found under `tests/upstream/`
-must be claimed by exactly one Python test carrying the marker::
+Every upstream test case found under `tests/upstream/` must be claimed by exactly one Python test
+carrying the marker::
 
-    @pytest.mark.upstream("bpmn-moddle/spec/xml/read.js", "should import simple process")
+    @pytest.mark.upstream("bpmn-moddle/test/spec/xml/read.js", "should import simple process")
 
-The script cross-references both sides and prints a per-file table.
+Upstream cases come from two sources, merged:
+
+* a static scan of `it(...)`, `it.skip(...)`, `it.only(...)` and the `iit(<arg>)(...)` wrapper in
+  every `*.js`, `*.cjs`, `*.mjs`, `*.ts` file;
+* `tests/upstream/LEDGER.json` when present ({"<file>": ["<full title>", ...]}), produced by the
+  oracle job with a mocha dry-run, which is the only reliable source for *dynamic* titles
+  (template literals such as `should layout ${fileName}`).
+
+Without the ledger, dynamic titles of `bpmn-auto-layout/test/LayoutSpec.js` are expanded from the
+fixture files (one case per `fixtures/*.bpmn`); any other dynamic title is reported as unresolved.
 
 Usage:
   scripts/port_coverage.py            # report
@@ -27,25 +36,62 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 UPSTREAM = ROOT / "tests" / "upstream"
+LEDGER = UPSTREAM / "LEDGER.json"
 PY_TESTS = ROOT / "tests"
+SUFFIXES = (".js", ".cjs", ".mjs", ".ts")
 
-# it('title'), it("title"), it(`title`), it.skip(...), it.only(...)
+# it('title'), it("title"), it(`title`), it.skip(...), it.only(...), iit(arg)('title', ...)
 IT_RE = re.compile(
-    r"""^\s*it(?P<mod>\.skip|\.only)?\(\s*(?P<q>['"`])(?P<title>.*?)(?P=q)\s*,""", re.MULTILINE
+    r"""^\s*(?:it|iit\([^)]*\))(?P<mod>\.skip|\.only)?\(\s*(?P<q>['"`])(?P<title>.*?)(?P=q)\s*,""",
+    re.MULTILINE,
 )
+DYNAMIC = "${"
 
 
-def upstream_cases() -> dict[str, dict[str, str]]:
-    """Return {relative js file: {title: 'active'|'skip'}}."""
+def _expand_dynamic(file_: str, title: str) -> list[str] | None:
+    """Built-in expansion for the known dynamic titles; None when unresolved.
+
+    Mirrors the upstream loops: `readdirSync(fixtures).filter(.bpmn)` in LayoutSpec.js and
+    `FastGlob.globSync('test/fixtures/model/**/*.json')` (paths relative to the moddle repo root)
+    in schema.js.
+    """
+    compact = title.replace(" ", "")
+    if file_ == "bpmn-auto-layout/test/LayoutSpec.js" and compact == "shouldlayout${fileName}":
+        fixtures = sorted((UPSTREAM / "bpmn-auto-layout" / "test" / "fixtures").glob("*.bpmn"))
+        return [f"should layout {f.name}" for f in fixtures]
+    if file_ == "moddle/test/spec/schema.js" and compact == "shouldvalidatefixture:${file}":
+        repo = UPSTREAM / "moddle"
+        models = sorted((repo / "test" / "fixtures" / "model").rglob("*.json"))
+        return [f"should validate fixture: {m.relative_to(repo).as_posix()}" for m in models]
+    return None
+
+
+def upstream_cases() -> tuple[dict[str, dict[str, str]], list[str]]:
+    """Return ({relative file: {title: 'active'|'skip'}}, [unresolved dynamic titles])."""
     cases: dict[str, dict[str, str]] = {}
-    for js in sorted(UPSTREAM.rglob("*.js")):
-        rel = str(js.relative_to(UPSTREAM))
+    unresolved: list[str] = []
+    ledger: dict[str, list[str]] = json.loads(LEDGER.read_text()) if LEDGER.exists() else {}
+    for src in sorted(p for p in UPSTREAM.rglob("*") if p.suffix in SUFFIXES):
+        rel = str(src.relative_to(UPSTREAM))
         found: dict[str, str] = {}
-        for m in IT_RE.finditer(js.read_text(encoding="utf-8")):
-            found[m["title"]] = "skip" if m["mod"] == ".skip" else "active"
+        for m in IT_RE.finditer(src.read_text(encoding="utf-8")):
+            kind = "skip" if m["mod"] == ".skip" else "active"
+            title = m["title"]
+            if DYNAMIC not in title:
+                found[title] = kind
+                continue
+            if rel in ledger:
+                continue  # the ledger enumerates this file's real titles below
+            expanded = _expand_dynamic(rel, title)
+            if expanded is None:
+                unresolved.append(f"{rel}::{title}")
+            else:
+                found.update(dict.fromkeys(expanded, kind))
+        for title in ledger.get(rel, []):
+            found.setdefault(title, "active")
         if found:
             cases[rel] = found
-    return cases
+    return cases, unresolved
 
 
 def _marker_args(node: ast.AST) -> tuple[str, str] | None:
@@ -65,6 +111,8 @@ def python_claims() -> dict[tuple[str, str], list[str]]:
     """Return {(js file, title): [python test qualified names]}."""
     claims: dict[tuple[str, str], list[str]] = defaultdict(list)
     for py in sorted(PY_TESTS.rglob("test_*.py")):
+        if UPSTREAM in py.parents:
+            continue
         tree = ast.parse(py.read_text(encoding="utf-8"), filename=str(py))
         for node in ast.walk(tree):
             if not isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef):
@@ -79,7 +127,7 @@ def python_claims() -> dict[tuple[str, str], list[str]]:
 def main(argv: list[str]) -> int:
     strict = "--strict" in argv
     as_json = "--json" in argv
-    cases = upstream_cases()
+    cases, unresolved = upstream_cases()
     claims = python_claims()
 
     report: dict[str, dict[str, object]] = {}
@@ -103,6 +151,8 @@ def main(argv: list[str]) -> int:
             problems.append(f"stale claim {file_!r}::{title!r} in {', '.join(names)}")
         elif len(names) > 1:
             problems.append(f"duplicate claim {file_!r}::{title!r} in {', '.join(names)}")
+    if strict:
+        problems.extend(f"unresolved dynamic title {u} (ledger needed)" for u in unresolved)
 
     pct = 100.0 * ported / total if total else 0.0
     if as_json:
@@ -111,6 +161,7 @@ def main(argv: list[str]) -> int:
             "ported": ported,
             "percent": pct,
             "files": report,
+            "unresolved_dynamic": unresolved,
             "problems": problems,
         }
         print(json.dumps(payload, indent=2))
@@ -123,6 +174,8 @@ def main(argv: list[str]) -> int:
             )
             print(line)
         print(f"\n{ported}/{total} upstream test cases ported ({pct:.1f} %)")
+        for u in unresolved:
+            print(f"DYNAMIC (unresolved without ledger): {u}")
         for p in problems:
             print(f"PROBLEM: {p}")
     if problems:

@@ -4,9 +4,10 @@
 #
 # Vendored destinations:
 #   src/bpmn_py/resources/**   moddle descriptors (runtime data, shipped in the wheel)
-#   tests/upstream/<pkg>/      upstream `test/` trees verbatim (specs, helpers, fixtures, snapshots):
-#                              the reference for the 1:1 port, read by scripts/port_coverage.py,
-#                              used as golden files by the Python tests, never executed here
+#   tests/upstream/<pkg>/      upstream `lib/` (the sources transposed) and `test/` trees verbatim
+#                              (specs, helpers, fixtures, snapshots) at the pinned commit: the
+#                              reference for the 1:1 port, read by scripts/port_coverage.py, used as
+#                              golden files by the Python tests, never executed here
 
 [upstream.saxen]
 npm = "saxen"
@@ -16,7 +17,8 @@ tag = "v11.2.0"
 commit = "a25d1968d1db85f2c07dce1d0a8533a32a8324fe"
 license = "MIT"
 vendor = [
-  { from = "github", path = "test", dest = "tests/upstream/saxen" },
+  { from = "github", path = "lib", dest = "tests/upstream/saxen/lib" },
+  { from = "github", path = "test", dest = "tests/upstream/saxen/test" },
 ]
 
 [upstream.min-dash]
@@ -29,7 +31,8 @@ license = "MIT"
 # Only the helpers used by the ported libraries are transposed (into bpmn_py._min_dash); their
 # upstream tests are vendored for those helpers' port.
 vendor = [
-  { from = "github", path = "test", dest = "tests/upstream/min-dash" },
+  { from = "github", path = "lib", dest = "tests/upstream/min-dash/lib" },
+  { from = "github", path = "test", dest = "tests/upstream/min-dash/test" },
 ]
 
 [upstream.moddle]
@@ -40,8 +43,9 @@ tag = "v8.2.1"
 commit = "3124e6ac3d5c06330e2e650973058c02b610df40"
 license = "MIT"
 vendor = [
-  { from = "github", path = "test", dest = "tests/upstream/moddle" },
-  { from = "github", path = "resources/schema", dest = "tests/upstream/moddle-resources/schema" },
+  { from = "github", path = "lib", dest = "tests/upstream/moddle/lib" },
+  { from = "github", path = "test", dest = "tests/upstream/moddle/test" },
+  { from = "github", path = "resources/schema", dest = "tests/upstream/moddle/resources/schema" },
 ]
 
 [upstream.moddle-xml]
@@ -52,7 +56,8 @@ tag = "v12.3.1"
 commit = "dc015701f1edf5d6323a7a3b319aa0c1b47c3bba"
 license = "MIT"
 vendor = [
-  { from = "github", path = "test", dest = "tests/upstream/moddle-xml" },
+  { from = "github", path = "lib", dest = "tests/upstream/moddle-xml/lib" },
+  { from = "github", path = "test", dest = "tests/upstream/moddle-xml/test" },
 ]
 
 [upstream.bpmn-moddle]
@@ -63,9 +68,10 @@ tag = "v10.3.1"
 commit = "f35959afc443444b706a4f39542530134233db07"
 license = "MIT"
 vendor = [
+  { from = "github", path = "lib", dest = "tests/upstream/bpmn-moddle/lib" },
   { from = "npm", path = "resources/bpmn/json", dest = "src/bpmn_py/resources/bpmn" },
   { from = "npm", path = "resources/bpmn-io/json", dest = "src/bpmn_py/resources/bpmn-io" },
-  { from = "github", path = "test", dest = "tests/upstream/bpmn-moddle" },
+  { from = "github", path = "test", dest = "tests/upstream/bpmn-moddle/test" },
 ]
 
 [upstream.bpmn-auto-layout]
@@ -76,5 +82,6 @@ tag = "v1.3.0"
 commit = "50b69fe91732a64916fd09a90d24f749430d5858"
 license = "MIT"
 vendor = [
-  { from = "github", path = "test", dest = "tests/upstream/bpmn-auto-layout" },
+  { from = "github", path = "lib", dest = "tests/upstream/bpmn-auto-layout/lib" },
+  { from = "github", path = "test", dest = "tests/upstream/bpmn-auto-layout/test" },
 ]
