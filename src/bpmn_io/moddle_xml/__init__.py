@@ -1,5 +1,5 @@
 # Transposed from bpmn-io/moddle-xml@dc01570 lib/index.js (MIT).
-"""Public surface of the moddle-xml reader (read path only)."""
+"""Public surface of the moddle-xml reader and writer."""
 
 from bpmn_io.moddle_xml.common import (
     DEFAULT_NS_MAP,
@@ -24,6 +24,7 @@ from bpmn_io.moddle_xml.read import (
     ValueHandler,
     XmlNode,
 )
+from bpmn_io.moddle_xml.write import Writer, WriteResult, to_xml
 
 __all__ = [
     "DEFAULT_NS_MAP",
@@ -41,8 +42,11 @@ __all__ = [
     "Reader",
     "ReferenceHandler",
     "ValueHandler",
+    "WriteResult",
+    "Writer",
     "XmlNode",
     "get_serialization",
     "get_serialization_type",
     "has_lower_case_alias",
+    "to_xml",
 ]
