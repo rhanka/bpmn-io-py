@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -15,15 +17,44 @@ from bpmn_io.moddle_xml.read import ParseError
 
 __all__ = ["main"]
 
+#: Control characters that must never reach the terminal raw (cyber-review S3:
+#: error text embeds offending input slices verbatim). Tab/newline survive;
+#: everything else becomes a ``\\xNN`` escape. Non-ASCII text is untouched.
+_UNSAFE_CONTROL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
+
+
+def _safe(text: str) -> str:
+    """Escape terminal-unsafe control characters (payload XML never passes here)."""
+    return _UNSAFE_CONTROL.sub(lambda match: f"\\x{ord(match.group()):02x}", text)
+
+
+class _OutputError(Exception):
+    """Stdout failed; ``message`` is None on a broken pipe (nothing to report to)."""
+
+    def __init__(self, message: str | None = None) -> None:
+        super().__init__(message)
+        self.message = message
+
 
 def _out(text: str) -> None:
-    """Write one normal-output line to stdout."""
-    sys.stdout.write(text + "\n")
+    """Write one normal-output line to stdout (cyber-review S2/S4).
+
+    A closed pipe becomes ``_OutputError`` (exit 1, quietly); unencodable
+    output (e.g. lone surrogates from numeric references) becomes
+    ``_OutputError`` with a clean message instead of a traceback.
+    """
+    try:
+        sys.stdout.write(text + "\n")
+    except BrokenPipeError as err:
+        raise _OutputError from err
+    except UnicodeError as err:
+        raise _OutputError(str(err)) from err
 
 
 def _err(text: str) -> None:
-    """Write one diagnostic line to stderr."""
-    sys.stderr.write(text + "\n")
+    """Write one diagnostic line to stderr (sanitized, pipe-safe)."""
+    with contextlib.suppress(BrokenPipeError):
+        sys.stderr.write(_safe(text) + "\n")
 
 
 def _fail_usage(message: str) -> int:
@@ -36,7 +67,8 @@ def _read_input(file: str) -> str | None:
     """Read ``file`` as UTF-8, reporting problems on stderr (None on failure)."""
     try:
         return Path(file).read_text(encoding="utf-8")
-    except (OSError, UnicodeError) as err:
+    except (OSError, UnicodeError, ValueError) as err:
+        # ValueError: embedded-NUL path (reachable via API use of main()).
         _err(f"bpmn-io: cannot read {file!r}: {err}")
         return None
 
@@ -62,9 +94,9 @@ def _cmd_check(file: str, *, as_json: bool) -> int:
         if report.ok:
             _out(f"ok: {file}")
         for warning in report.warnings:
-            _out(f"warning: {warning.message}")
+            _out(f"warning: {_safe(warning.message)}")
         for error in report.errors:
-            _out(f"error: {error}")
+            _out(f"error: {_safe(error)}")
     return 0 if report.ok else 1
 
 
@@ -110,9 +142,10 @@ def _cmd_layout(file: str, *, as_json: bool) -> int:
 def _fail_processing(file: str, message: str, *, as_json: bool) -> int:
     """Report a processing failure (exit code 1), as JSON when requested."""
     if as_json:
+        # json.dumps escapes control characters; no _safe needed.
         _out(json.dumps({"ok": False, "file": file, "error": message}))
     else:
-        _err(f"bpmn-io: {message}")
+        _err(f"bpmn-io: {_safe(message)}")
     return 1
 
 
@@ -156,7 +189,12 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     """Run the CLI (importable entry point; returns the exit code)."""
     args = build_parser().parse_args(argv)
-    return int(args.func(args))
+    try:
+        return int(args.func(args))
+    except _OutputError as err:
+        if err.message is not None:
+            _err(f"bpmn-io: cannot write output: {err.message}")
+        return 1
 
 
 if __name__ == "__main__":
