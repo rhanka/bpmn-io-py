@@ -133,7 +133,11 @@ Camunda". OMG XSDs and test fixtures never ship in the wheel.
 
 **D14 — Security.** The saxen port ignores DTDs, resolves no external entity, expands only built-in
 and numeric character references; explicit tests for XXE payloads, entity amplification and deep
-nesting (upstream advisory GHSA-x3vc-q6mj-47vp).
+nesting (upstream advisory GHSA-x3vc-q6mj-47vp). Pre-release cyber-review hardening: the reader
+drops extension attributes colliding with generic-element internals (`model_`, `type_`, `get`, … —
+unreachable upstream, reachable through the `xxx_` renaming); import warnings are capped at 1000
+with a truncation marker; the CLI sanitizes control characters in diagnostics and maps output
+failures to exit 1. `twine` is hash-pinned in CI (`scripts/twine-check.txt`).
 
 ## 3. Architecture
 

@@ -53,6 +53,7 @@ Actions with the following status should be included around tasks only if really
 - `acknowledge` BR01-EX2: `.github/workflows/ci.yml` stub-drift job runs `scripts/gen_stubs.py --check`; the generated `src/bpmn_io/bpmn_moddle/types.pyi` is committed as the drift reference. Reason: Lot 9 typed surface. Impact: CI only. Rollback: `git checkout` the workflow and delete `types.pyi` (+ `types.py`).
 - `acknowledge` BR01-EX3: `pyproject.toml` gains `[project.scripts] bpmn-io = "bpmn_io.cli:main"` (console-script entry point, D12 dist name). Reason: Lot 9 CLI. Impact: packaging metadata only. Rollback: `git checkout -- pyproject.toml`.
 - `acknowledge` BR01-EX4: `.github/workflows/ci.yml` coverage step runs `scripts/port_coverage.py --strict` (exit 1 unless 100 % claimed). Reason: Lot 10 100 % claim (766/766, 8 distro cases claimed-skipped). Impact: CI only. Rollback: drop `--strict`.
+- `acknowledge` BR01-EX5: `.github/workflows/ci.yml` + `release.yml` build jobs install twine from committed `scripts/twine-check.txt` (`--require-hashes`) instead of `uvx --from twine==7.0.0`. Reason: cyber-review S5 (TOFU on every build). Impact: CI only; regenerate with the header command on twine bumps. Rollback: restore the `uvx` line.
 
 ## Orchestration Mode (AI-selected)
 - [x] **Mono-branch + cherry-pick** (default for orthogonal tasks; single final test cycle)
