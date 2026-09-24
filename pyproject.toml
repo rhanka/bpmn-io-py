@@ -80,6 +80,9 @@ pretty = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# `from tests._matchers import ...` needs the repo root importable; the `pytest`
+# console script (CI) does not put CWD on sys.path like `python -m pytest` does.
+pythonpath = ["."]
 addopts = "-ra --strict-markers --strict-config"
 xfail_strict = true
 markers = [
