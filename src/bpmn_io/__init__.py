@@ -10,7 +10,7 @@ from __future__ import annotations
 from importlib.metadata import PackageNotFoundError, version
 
 from bpmn_io.auto_layout import Layouter, LayoutError, LayoutWarning, layout_process
-from bpmn_io.bpmn_moddle import BpmnModdle, SerializationResult, create_moddle
+from bpmn_io.bpmn_moddle import BpmnModdle, SerializationResult, create_moddle, is_a
 from bpmn_io.check import Report, check
 from bpmn_io.descriptors import DESCRIPTOR_NAMES, load_descriptor
 from bpmn_io.moddle_xml.read import ParseError, ParseResult
@@ -35,6 +35,7 @@ __all__ = [
     "__version__",
     "check",
     "create_moddle",
+    "is_a",
     "layout_process",
     "load_descriptor",
 ]

@@ -8,5 +8,6 @@ both names are kept here: call ``create_moddle()`` (no arguments) for the
 
 from bpmn_io.bpmn_moddle.bpmn_moddle import BpmnModdle, SerializationResult
 from bpmn_io.bpmn_moddle.simple import create_moddle
+from bpmn_io.bpmn_moddle.types import is_a
 
-__all__ = ["BpmnModdle", "SerializationResult", "create_moddle"]
+__all__ = ["BpmnModdle", "SerializationResult", "create_moddle", "is_a"]

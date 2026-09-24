@@ -36,6 +36,9 @@ Changelog = "https://github.com/rhanka/bpmn-io-py/blob/main/CHANGELOG.md"
 "Upstream: bpmn-moddle" = "https://github.com/bpmn-io/bpmn-moddle"
 "Upstream: bpmn-auto-layout" = "https://github.com/bpmn-io/bpmn-auto-layout"
 
+[project.scripts]
+bpmn-io = "bpmn_io.cli:main"
+
 [dependency-groups]
 dev = [{ include-group = "lint" }, { include-group = "test" }, "pre-commit>=4"]
 lint = ["ruff>=0.14", "mypy>=1.19", "lxml-stubs>=0.5"]
