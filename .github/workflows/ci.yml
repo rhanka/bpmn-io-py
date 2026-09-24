@@ -93,8 +93,11 @@ jobs:
           persist-credentials: false
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
       - run: uv build
-      - run: uv pip install --system --require-hashes -r scripts/twine-check.txt
-      - run: python -m twine check --strict dist/*
+      - name: Install hash-pinned twine (cyber-review S5, no --system)
+        run: |
+          uv venv .twine
+          uv pip install --python .twine/bin/python --require-hashes -r scripts/twine-check.txt
+      - run: .twine/bin/python -m twine check --strict dist/*
       - name: Install-from-wheel smoke test
         run: |
           uv venv --python 3.13 .smoke
