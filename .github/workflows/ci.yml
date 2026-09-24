@@ -104,15 +104,7 @@ jobs:
           uv pip install --python .smoke/bin/python dist/*.whl
           .smoke/bin/python -c "import bpmn_io; print(bpmn_io.__version__, bpmn_io.UPSTREAM_VERSIONS)"
       - name: Wheel contains only the runtime surface (cyber-review N6)
-        run: >
-          uv run python -c "
-          import glob, zipfile, sys;
-          names = [n for w in glob.glob('dist/*.whl') for n in zipfile.ZipFile(w).namelist()];
-          bad = [n for n in names if n.endswith(('.pyc', '.xsd')) or '/tests/' in n or n.startswith('tests/')];
-          assert not bad, bad;
-          assert any(n.endswith('py.typed') for n in names) and any(n.endswith('types.pyi') for n in names);
-          print('wheel ok:', len(names), 'entries');
-          "
+        run: uv run python scripts/check_wheel.py "dist/*.whl"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: dist
