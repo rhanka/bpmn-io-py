@@ -50,6 +50,8 @@ Actions with the following status should be included around tasks only if really
 - `blocked` BR01-PR: draft PR `port-v1` → `main` and `git push` pending: origin points to `rhanka/bpmn-io-py`, which does not exist yet (GitHub-side rename is an owner action), and this environment has no network egress. Recorded per BRIEF rule 8; unblocks the Lot 0 checkbox.
 - `attention` BR01-COLOR: the default model needs a sixth descriptor package. Evidence: upstream `BpmnModdle` default (simple.js) wires `bpmn-in-color-moddle` (^0.2.0, devDependency bundled into dist) next to the five vendored sets; `bpmn-in-color.bpmn` (`color:` non-normative ns) is read with a zero-warning assertion (`BPMN in color properties`), which a five-package model cannot satisfy. The `extends`-bearing bioc traits (`ColoredEdge`, `ColoredShape`, skipped by the descriptor dump) do not cover it (different namespace). Actions when network exists: pin `bpmn-in-color-moddle` (resolve `^0.2.0`), add an `UPSTREAM.toml` section + vendored resources + oracle devDependency, wire it into Lot 7 `BpmnModdle`, amend EVOL D1. `example-colors.bpmn` (`bc` biocolors ns) roundtrips through `$attrs` and is unaffected.
 - `acknowledge` BR01-EX1: `.github/workflows/ci.yml` oracle job regenerates the ledger and fails on drift (`node tests/oracle/ledger.mjs --check`); the generated `tests/upstream/LEDGER.json` is committed as the drift reference. Reason: Lot 1 oracle harness. Impact: CI only. Rollback: `git checkout` the workflow and delete `LEDGER.json`.
+- `acknowledge` BR01-EX2: `.github/workflows/ci.yml` stub-drift job runs `scripts/gen_stubs.py --check`; the generated `src/bpmn_io/bpmn_moddle/types.pyi` is committed as the drift reference. Reason: Lot 9 typed surface. Impact: CI only. Rollback: `git checkout` the workflow and delete `types.pyi` (+ `types.py`).
+- `acknowledge` BR01-EX3: `pyproject.toml` gains `[project.scripts] bpmn-io = "bpmn_io.cli:main"` (console-script entry point, D12 dist name). Reason: Lot 9 CLI. Impact: packaging metadata only. Rollback: `git checkout -- pyproject.toml`.
 
 ## Orchestration Mode (AI-selected)
 - [x] **Mono-branch + cherry-pick** (default for orthogonal tasks; single final test cycle)
@@ -132,12 +134,12 @@ Actions with the following status should be included around tasks only if really
   - [ ] UAT checkpoint: owner runs `layout_process` on a Camunda Modeler export without DI and opens the result in Camunda Modeler / bpmn-js.
   - [ ] Lot gate (same checklist as Lot 0) + `uv run pytest -m oracle`
 
-- [ ] **Lot 9 — Typing, CLI, docs**
-  - [ ] `scripts/gen_stubs.py` → `src/bpmn_io/bpmn_moddle/types.pyi` (all descriptor types, `create` overloads on `Literal["bpmn:..."]`, `is_a` narrowing); `stubtest` + `assert_type` tests; CI step (BR01-EX2).
-  - [ ] `src/bpmn_io/cli.py` (`bpmn-io check|roundtrip|layout <file> [--json]`, stable exit codes) + `[project.scripts]` (conditional path: `pyproject.toml`, BR01-EX3) + tests.
-  - [ ] README: real usage (read, check, build, write, layout, CLI), API table, "unofficial" notice; `docs/porting.md` (how a module maps to upstream, how to resync); `CHANGELOG.md` 0.1.0 entry.
+- [x] **Lot 9 — Typing, CLI, docs**
+  - [x] `scripts/gen_stubs.py` → `src/bpmn_io/bpmn_moddle/types.pyi` (161 concrete types, `create` overloads on `Literal["bpmn:..."]`, `is_a` narrowing); `stubtest` + `assert_type` tests (20 passed); CI step (BR01-EX2).
+  - [x] `src/bpmn_io/cli.py` (`bpmn-io check|roundtrip|layout <file> [--json]`, exit 0/1/2) + `[project.scripts]` (BR01-EX3) + `tests/test_cli.py`.
+  - [x] README: real usage (read, check, build, write, layout, CLI — every snippet verified live), API table, "unofficial" notice; `docs/porting.md` (module map, resync, generated-files policy); `CHANGELOG.md` 0.1.0 entry drafted under `[Unreleased]`.
   - [ ] UAT checkpoint: owner runs the CLI on a real file.
-  - [ ] Lot gate (same checklist as Lot 0)
+  - [x] Lot gate (same checklist as Lot 0)
 
 - [ ] **Lot 10 — Release readiness**
   - [ ] `scripts/port_coverage.py --strict` in CI (BR01-EX4: `.github/workflows/ci.yml`); 100 % of upstream cases claimed, no unresolved dynamic title.
