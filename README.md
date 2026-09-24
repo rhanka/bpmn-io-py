@@ -94,7 +94,9 @@ bpmn-io layout process.bpmn           # automatic DI layout to stdout
 from bpmn_io import BpmnModdle
 
 moddle = BpmnModdle()
-definitions = moddle.create("bpmn:Definitions", {"id": "D", "targetNamespace": "http://bpmn.io/schema/bpmn"})
+definitions = moddle.create(
+    "bpmn:Definitions", {"id": "D", "targetNamespace": "http://bpmn.io/schema/bpmn"}
+)
 process = moddle.create("bpmn:Process", {"id": "Hiring", "isExecutable": True})
 start = moddle.create("bpmn:StartEvent", {"id": "Apply", "name": "Candidate applies"})
 task = moddle.create("bpmn:Task", {"id": "Screen", "name": "Screen resume"})
@@ -123,7 +125,7 @@ Definitions "D"
 from bpmn_io import BpmnModdle, check
 
 xml = open("process.bpmn").read()
-report = check(xml)                       # string level: parse + warnings
+report = check(xml)  # string level: parse + warnings
 print(report.ok, [w.message for w in report.warnings])
 # True ['unresolved reference <Flow_Missing>']
 
@@ -141,8 +143,8 @@ business rules (bpmnlint-style) are out of scope for v1.
 ```python
 from bpmn_io import layout_process
 
-bare = open("no-di.bpmn").read()          # a process without any BPMNDiagram
-laid_out = layout_process(bare)           # grid placement + generated DI
+bare = open("no-di.bpmn").read()  # a process without any BPMNDiagram
+laid_out = layout_process(bare)  # grid placement + generated DI
 assert "BPMNDiagram" in laid_out
 open("with-di.bpmn", "w").write(laid_out)
 ```
