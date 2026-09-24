@@ -72,6 +72,7 @@ vendor = [
   { from = "npm", path = "resources/bpmn/json", dest = "src/bpmn_io/resources/bpmn" },
   { from = "npm", path = "resources/bpmn-io/json", dest = "src/bpmn_io/resources/bpmn-io" },
   { from = "github", path = "test", dest = "tests/upstream/bpmn-moddle/test" },
+  { from = "npm", path = "resources/bpmn/xsd", dest = "tests/upstream/bpmn-moddle/resources/bpmn/xsd" },
 ]
 
 [upstream.bpmn-in-color-moddle]

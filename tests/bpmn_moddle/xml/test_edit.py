@@ -41,8 +41,7 @@ XSD_FIXTURES = (
 OMG_XSD = (
     Path(__file__).resolve().parent.parent.parent.parent
     / "tests"
-    / "oracle"
-    / "node_modules"
+    / "upstream"
     / "bpmn-moddle"
     / "resources"
     / "bpmn"
