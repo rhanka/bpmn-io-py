@@ -7,9 +7,9 @@ repos:
       - id: check-toml
       - id: check-yaml
       - id: end-of-file-fixer
-        exclude: ^packages/.*/tests/fixtures/
+        exclude: ^tests/upstream/
       - id: trailing-whitespace
-        exclude: ^packages/.*/tests/fixtures/
+        exclude: ^tests/upstream/
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.0
     hooks:

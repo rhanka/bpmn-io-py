@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "port-*"]
   pull_request:
   workflow_dispatch:
 
@@ -34,8 +34,9 @@ jobs:
       - name: Vendored upstream files match UPSTREAM.lock
         run: uv run python scripts/sync_upstream.py --check
       - name: Upstream test-suite port coverage
-        # Flip to `--strict` once the port reaches 100 % (see CONTRIBUTING.md).
-        run: uv run python scripts/port_coverage.py
+        run: uv run python scripts/port_coverage.py --strict
+      - name: Generated stubs match types.pyi
+        run: uv run python scripts/gen_stubs.py --check
 
   test:
     name: Test (py${{ matrix.python }} / ${{ matrix.os }})
@@ -75,6 +76,8 @@ jobs:
           cache-dependency-path: tests/oracle/package-lock.json
       - run: npm ci --ignore-scripts
         working-directory: tests/oracle
+      - name: Upstream test ledger matches LEDGER.json
+        run: node tests/oracle/ledger.mjs --check
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           enable-cache: true
@@ -90,7 +93,18 @@ jobs:
           persist-credentials: false
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
       - run: uv build
-      - run: uvx twine check --strict dist/*
+      - name: Install hash-pinned twine (cyber-review S5, no --system)
+        run: |
+          uv venv .twine
+          uv pip install --python .twine/bin/python --require-hashes -r scripts/twine-check.txt
+      - run: .twine/bin/python -m twine check --strict dist/*
+      - name: Install-from-wheel smoke test
+        run: |
+          uv venv --python 3.13 .smoke
+          uv pip install --python .smoke/bin/python dist/*.whl
+          .smoke/bin/python -c "import bpmn_io; print(bpmn_io.__version__, bpmn_io.UPSTREAM_VERSIONS)"
+      - name: Wheel contains only the runtime surface (cyber-review N6)
+        run: uv run python scripts/check_wheel.py "dist/*.whl"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: dist

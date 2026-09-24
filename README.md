@@ -1,14 +1,15 @@
-# bpmn-py
+# bpmn-io
 
 **bpmn.io's `bpmn-moddle` and `bpmn-auto-layout`, transposed to pure Python.**
 
 Read, check, build, lay out and write BPMN 2.0 XML from Python, with the exact object model and
 semantics of the reference JavaScript implementation, and no runtime dependency.
 
-> Status: pre-alpha. The repository scaffold, upstream pins and conformance tooling are in place;
-> the port itself is in progress. Nothing is published on PyPI yet.
+> Status: the full port is implemented (moddle, moddle-xml, bpmn-moddle, bpmn-auto-layout)
+> with byte-identical conformance gates; release 0.1.0 is in preparation. Nothing is published
+> on PyPI yet.
 >
-> bpmn-py is an independent project, not affiliated with bpmn.io or Camunda.
+> bpmn-io is an independent project, not affiliated with bpmn.io or Camunda.
 
 ## Why this exists
 
@@ -18,7 +19,7 @@ human or to an engine. Until now the only faithful implementation of the BPMN 2.
 (`bpmn-moddle`) and of automatic diagram layout (`bpmn-auto-layout`) lived in JavaScript, so a
 Python agent had to shell out to Node or skip validation altogether.
 
-bpmn-py removes that gap: a 100 % mapped Python port, so the objects, the warnings and the XML you
+bpmn-io removes that gap: a 100 % mapped Python port, so the objects, the warnings and the XML you
 get are the ones bpmn-js, Camunda Modeler and the bpmn.io toolchain produce and expect.
 
 ## Design principles
@@ -33,26 +34,57 @@ get are the ones bpmn-js, Camunda Modeler and the bpmn.io toolchain produce and 
 - **Differential oracle.** CI also runs the upstream JavaScript packages through Node and compares
   canonical dumps and emitted XML with the Python port (`tests/oracle/`).
 - **Zero runtime dependency.** The lenient SAX parser (`saxen`) is transposed too, so parsing
-  behaviour, warnings and error positions match upstream exactly; `lxml` is an optional extra for
-  XSD validation only.
+  behaviour, warnings and error positions match upstream exactly.
 - **MIT, attributed.** See [`LICENSE`](LICENSE) and
   [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
-## Planned API (mirrors upstream)
+## Usage
 
 ```python
-from bpmn_py import BpmnModdle
+from bpmn_io import BpmnModdle, check, layout_process
 
 moddle = BpmnModdle()
+
+# read
 result = moddle.from_xml(xml)  # ParseResult(root_element, references, warnings, elements_by_id)
 definitions = result.root_element
-task = moddle.create("bpmn:Task", name="Review")
-xml_out = moddle.to_xml(definitions, format=True)
 
-from bpmn_py import layout_process  # bpmn-auto-layout
+# check (L0 integrity: warnings, unresolved references, unknown attributes)
+report = check(xml)
+assert report.ok, report.errors
 
-laid_out = layout_process(xml_out)  # BPMN with generated DI
+# build
+task = moddle.create("bpmn:Task", {"name": "Review"})
+definitions.get("rootElements")[0].get("flowElements").append(task)
+
+# lay out (generates DI for diagrams without one)
+laid_out = layout_process(xml)
+
+# write
+out = moddle.to_xml(definitions, {"format": True})
+print(out.xml)
 ```
+
+```bash
+bpmn-io check process.bpmn            # exit 0 when clean, 1 on errors
+bpmn-io check process.bpmn --json     # {"ok": true, "errors": [], "warnings": [], ...}
+bpmn-io roundtrip process.bpmn        # parse + serialize back to stdout
+bpmn-io layout process.bpmn           # automatic DI layout to stdout
+```
+
+## API
+
+| Name | Module | Contract |
+|---|---|---|
+| `BpmnModdle` | `bpmn_io.bpmn_moddle` | default model (six descriptors), lax `from_xml`, `to_xml` |
+| `create_moddle` | `bpmn_io.bpmn_moddle` | `BpmnModdle` plus additional descriptor packages |
+| `check` / `Report` | `bpmn_io.check` | L0 integrity: warnings, unresolved references, unknown attributes |
+| `layout_process` / `Layouter` | `bpmn_io.auto_layout` | automatic DI layout; `LayoutError` on failure |
+| `is_a` | `bpmn_io.bpmn_moddle.types` | `TypeGuard` narrowing on descriptor literal types |
+| `ParseResult` / `ParseError` | `bpmn_io.moddle_xml` | read result / failure |
+| `SerializationResult` | `bpmn_io.bpmn_moddle` | `to_xml` result (`xml`, `warnings`) |
+| `DESCRIPTOR_NAMES` / `load_descriptor` | `bpmn_io.descriptors` | vendored descriptor registry |
+| `UPSTREAM_VERSIONS` | `bpmn_io.upstream` | pinned upstream versions |
 
 ## Development
 
@@ -76,4 +108,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the porting workflow and the release 
 | moddle | 8.2.1 |
 | moddle-xml | 12.3.1 |
 | bpmn-moddle | 10.3.1 |
+| bpmn-in-color-moddle | 0.2.0 |
 | bpmn-auto-layout | 1.3.0 |
