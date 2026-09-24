@@ -33,7 +33,8 @@ porting saxen keeps the 100 % target and removes any XML dependency.
 `bpmn_io/_min_dash.py`, `bpmn_io/saxen/`, `bpmn_io/moddle/`, `bpmn_io/moddle_xml/`,
 `bpmn_io/bpmn_moddle/`, `bpmn_io/auto_layout/`, plus `bpmn_io/__init__.py` re-exporting the public
 API (`BpmnModdle`, `layout_process`, errors). Every ported module starts with
-`# Transposed from <repo>@<short-sha> <path> (MIT).`
+`# Transposed from <repo>@<version> <path> (MIT).` (version pin, not commit sha —
+as-built deviation recorded in Lot 10).
 
 **D3 — Naming rules (JS → Python), deterministic and documented in `docs/naming.md`.**
 - Functions, methods, variables: camelCase → snake_case (`fromXML` → `from_xml`, `getType` →
@@ -56,8 +57,10 @@ API (`BpmnModdle`, `layout_process`, errors). Every ported module starts with
 
 **D4 — API shape.** Synchronous. `BpmnModdle.from_xml(xml: str, type_name="bpmn:Definitions",
 options=None) -> ParseResult` (dataclass: `root_element`, `references`, `warnings`,
-`elements_by_id`). `to_xml(element, format=False, preamble=True) -> WriteResult` (`xml`, `warnings`).
-`create(type_name, **properties)`, `create_any`, `get_type`, `get_element_descriptor`, `has_type`,
+`elements_by_id`). `to_xml(element, options=None) -> SerializationResult` (`xml`; as-built
+name — the draft said `WriteResult`). `create(descriptor, attrs=None)` (mapping form, not
+`**properties`, because descriptor properties include Python keywords like `from`),
+`create_any`, `get_type`, `get_element_descriptor`, `has_type`,
 `get_property_descriptor`. `layout_process(xml: str) -> str` (as 1.3.0). No async API.
 
 **D4.1 — Async → sync mapping (mechanical, counts as *ported*).** Upstream `await
@@ -92,9 +95,12 @@ built first (plan Lot 1), so byte-parity feedback exists from the first ported m
 references by id, `$attrs` key order) on both sides for every fixture and compare `toXML(format)`
 byte-for-byte. Dependabot on `tests/oracle/package.json` is the "upstream moved" signal.
 
-**D8 — Typing.** `py.typed`; generated `.pyi` stubs for all descriptor types (mirrors upstream's
-`dist/types`), `create` overloads on `Literal["bpmn:Task"]`, `is_a()` narrowing. Generator in
-`scripts/gen_stubs.py`, checked in CI with `mypy --strict` and `stubtest`. No Pythonic façade in v1.
+**D8 — Typing.** `py.typed`; generated `.pyi` stubs for all descriptor types, `create`
+overloads on `Literal["bpmn:Task"]`, `is_a()` narrowing. Generator in `scripts/gen_stubs.py`,
+checked in CI with `mypy --strict` and `stubtest`. As-built deviation (Lot 9): upstream ships
+no `.d.ts` (`bpmn-moddle`, `bpmn-auto-layout` have none), so the stub surface is a new
+Python-side design generated from the six vendored descriptors, not a mirror. No Pythonic
+façade in v1.
 
 **D9 — Validation levels.** L0 `check(xml | element) -> Report` = upstream integrity (parse
 warnings, unresolved references, unknown attributes) — never called "validate". L1 (XSD validation

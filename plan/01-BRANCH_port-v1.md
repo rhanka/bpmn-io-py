@@ -52,6 +52,7 @@ Actions with the following status should be included around tasks only if really
 - `acknowledge` BR01-EX1: `.github/workflows/ci.yml` oracle job regenerates the ledger and fails on drift (`node tests/oracle/ledger.mjs --check`); the generated `tests/upstream/LEDGER.json` is committed as the drift reference. Reason: Lot 1 oracle harness. Impact: CI only. Rollback: `git checkout` the workflow and delete `LEDGER.json`.
 - `acknowledge` BR01-EX2: `.github/workflows/ci.yml` stub-drift job runs `scripts/gen_stubs.py --check`; the generated `src/bpmn_io/bpmn_moddle/types.pyi` is committed as the drift reference. Reason: Lot 9 typed surface. Impact: CI only. Rollback: `git checkout` the workflow and delete `types.pyi` (+ `types.py`).
 - `acknowledge` BR01-EX3: `pyproject.toml` gains `[project.scripts] bpmn-io = "bpmn_io.cli:main"` (console-script entry point, D12 dist name). Reason: Lot 9 CLI. Impact: packaging metadata only. Rollback: `git checkout -- pyproject.toml`.
+- `acknowledge` BR01-EX4: `.github/workflows/ci.yml` coverage step runs `scripts/port_coverage.py --strict` (exit 1 unless 100 % claimed). Reason: Lot 10 100 % claim (766/766, 8 distro cases claimed-skipped). Impact: CI only. Rollback: drop `--strict`.
 
 ## Orchestration Mode (AI-selected)
 - [x] **Mono-branch + cherry-pick** (default for orthogonal tasks; single final test cycle)
@@ -142,8 +143,8 @@ Actions with the following status should be included around tasks only if really
   - [x] Lot gate (same checklist as Lot 0)
 
 - [ ] **Lot 10 — Release readiness**
-  - [ ] `scripts/port_coverage.py --strict` in CI (BR01-EX4: `.github/workflows/ci.yml`); 100 % of upstream cases claimed, no unresolved dynamic title.
-  - [ ] Update `spec/SPEC_EVOL_BPMN_PY.md` § 2 with any deviation recorded during the port (D12 name resolved by the owner).
+  - [x] `scripts/port_coverage.py --strict` in CI (BR01-EX4: `.github/workflows/ci.yml`); 766/766 claimed (8 distro packaging cases claimed-skipped, `tests/test_distro.py`), no unresolved dynamic title.
+  - [x] Update `spec/SPEC_EVOL_BPMN_PY.md` § 2 with any deviation recorded during the port: D2 header `@<version>`, D4 `SerializationResult` + `create(descriptor, attrs)`, D8 stubs are new design (no upstream `.d.ts`).
   - [ ] Version `0.1.0` (`uv version 0.1.0`), CHANGELOG finalised; owner configures the PyPI trusted publisher (pending publisher: repo `rhanka/bpmn-io-py`, workflow `release.yml`, environment `pypi`) — owner action; rehearsal on TestPyPI recommended.
   - [ ] Mark the PR ready, CI green, merge commit (NO squash, NO rebase), preserve branch, tag `v0.1.0` on `main` — owner action for the tag.
   - [ ] Move this file to `plan/done/01-BRANCH_port-v1.md`.

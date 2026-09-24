@@ -34,8 +34,7 @@ jobs:
       - name: Vendored upstream files match UPSTREAM.lock
         run: uv run python scripts/sync_upstream.py --check
       - name: Upstream test-suite port coverage
-        # Flip to `--strict` once the port reaches 100 % (see CONTRIBUTING.md).
-        run: uv run python scripts/port_coverage.py
+        run: uv run python scripts/port_coverage.py --strict
       - name: Generated stubs match types.pyi
         run: uv run python scripts/gen_stubs.py --check
 
