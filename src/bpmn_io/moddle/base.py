@@ -101,6 +101,23 @@ class ModdleElement(Base):
         return (_rebuild_element, (self.model_, self.type_), dict(vars(self)))
 
 
+#: Instance slots of a generic element that XML input must never overwrite.
+#: Upstream is immune by construction (``$`` cannot appear in an attribute
+#: name); the Python ``xxx_`` renaming opened the collision (security B1).
+_RESERVED_GENERIC_KEYS = frozenset({"type_", "attrs_", "parent_", "model_", "descriptor_"})
+
+
+def is_reserved_generic_key(key: str) -> bool:
+    """Return whether ``key`` must never be filled from XML on a generic element.
+
+    Covers the internal slots above plus every class attribute (accessors like
+    ``get``/``set``/``instance_of``, dunders) whose shadowing would break the
+    element. Programmatic ``set``/``create_any`` stay untouched (upstream parity:
+    the caller owns the keys it passes).
+    """
+    return key in _RESERVED_GENERIC_KEYS or hasattr(AnyModdleElement, key)
+
+
 class AnyModdleElement(Base):
     """A generic (untyped) element, as created by ``Moddle.create_any``.
 

@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 from bpmn_io._js import UNDEFINED, UndefinedType
 from bpmn_io.moddle import Moddle, coerce_type, is_simple_type, parse_name_ns
+from bpmn_io.moddle.base import is_reserved_generic_key
 from bpmn_io.moddle_xml.common import (
     DEFAULT_NS_MAP,
     get_serialization_type,
@@ -158,6 +159,11 @@ class ParseError(ValueError):
         self.warnings: list[ParseWarning] = warnings if warnings is not None else []
 
 
+#: Bound on collected import warnings (cyber-review S1). Benign documents stay
+#: far below it (corpus maximum is a handful); only hostile warning floods hit it.
+MAX_WARNINGS = 1000
+
+
 @dataclass
 class ParseContext:
     """The mutable parse state shared by every handler of one document."""
@@ -192,7 +198,19 @@ class ParseContext:
         self.elements_by_id[id_value] = element
 
     def add_warning(self, warning: ParseWarning) -> None:
-        """Collect an import warning."""
+        """Collect an import warning, bounded (cyber-review S1).
+
+        Each warning costs O(document) context work, so hostile inputs could
+        otherwise force minutes of quadratic work with an unbounded list.
+        Past ``MAX_WARNINGS`` only a single truncation marker is kept.
+        """
+        if len(self.warnings) > MAX_WARNINGS:
+            return
+        if len(self.warnings) == MAX_WARNINGS:
+            self.warnings.append(
+                ParseWarning(message="too many warnings, further warnings truncated")
+            )
+            return
         self.warnings.append(warning)
 
 
@@ -499,10 +517,20 @@ class GenericElementHandler(BaseElementHandler):
         self.model = model
 
     def create_element(self, node: XmlNode) -> AnyModdleElement:
-        """Create a generic element with raw attributes and its namespace uri."""
+        """Create a generic element with raw attributes and its namespace uri.
+
+        Attributes colliding with element internals (``model_``, ``type_``,
+        ``get``, …) are dropped: ``$``-internals are unreachable from XML
+        upstream, but the Python ``xxx_`` renaming made them reachable here
+        (security B1). Dropped keys never reach the writer, which skips the
+        same internal set on the way out.
+        """
         name_ns = parse_name_ns(node.name)
         uri = node.ns.get((name_ns.prefix or "") + "$uri", "")
-        return self.model.create_any(node.name, uri, node.attributes)
+        attributes = {
+            key: value for key, value in node.attributes.items() if not is_reserved_generic_key(key)
+        }
+        return self.model.create_any(node.name, uri, attributes)
 
     def handle_child(self, node: XmlNode) -> BaseHandler | None:
         """Nest every child as a generic element under `$children`."""

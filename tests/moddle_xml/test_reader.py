@@ -18,6 +18,7 @@ from typing import Any
 
 import pytest
 
+from bpmn_io._js import UNDEFINED
 from bpmn_io.moddle import Moddle
 from bpmn_io.moddle_xml import ParseError, Reader
 from tests._matchers import json_equal
@@ -2083,3 +2084,61 @@ def test_088_read_remapped_generic_prefix() -> None:
             ],
         },
     )
+
+
+def test_089_hostile_generic_attrs_cannot_clobber_internals() -> None:
+    """Port-specific security test (cyber-review B1, no upstream case).
+
+    Attribute names colliding with generic-element internals (``model_``,
+    ``type_``, ``get``, …) are unreachable from XML upstream (``$`` is an
+    illegal attribute-name char) but reachable in the port through the
+    ``xxx_`` renaming. The reader must drop them: internals survive, the
+    child still parses, and the tree serializes.
+    """
+    _model_holder, reader = _reader("extensions")
+
+    xml = (
+        '<e:root xmlns:e="http://extensions">'
+        '<foo:custom xmlns:foo="http://foo" model_="PWNED" descriptor_="PWNED" '
+        'parent_="PWNED" type_="PWNED" get="PWNED" set="PWNED">'
+        '<foo:child a="A" />'
+        "</foo:custom>"
+        "</e:root>"
+    )
+
+    result = reader.from_xml(xml, reader.handler("e:Root"))
+
+    (custom,) = result.root_element.get("extensions")
+    assert custom.type_ == "foo:custom"
+    assert isinstance(custom.model_, Moddle)
+    assert callable(custom.get)
+    assert custom.get("$children") is not UNDEFINED
+    assert json_equal(
+        custom,
+        {
+            "$type": "foo:custom",
+            "xmlns:foo": "http://foo",
+            "$children": [{"$type": "foo:child", "a": "A"}],
+        },
+    )
+
+
+def test_090_warning_flood_is_truncated() -> None:
+    """Port-specific security test (cyber-review S1, no upstream case).
+
+    Past ``MAX_WARNINGS`` the reader keeps a single truncation marker instead
+    of accumulating unbounded O(document)-cost warnings.
+    """
+    from bpmn_io.moddle_xml.read import MAX_WARNINGS
+
+    model_holder = _model("extensions")
+    reader = Reader({"model": model_holder, "lax": True})
+
+    tasks = "".join(f'<e:item id="T{i}" bogus="v" />' for i in range(MAX_WARNINGS + 100))
+    result = reader.from_xml(
+        f'<e:root xmlns:e="http://extensions">{tasks}</e:root>',
+        reader.handler("e:Root"),
+    )
+
+    assert len(result.warnings) == MAX_WARNINGS + 1
+    assert result.warnings[-1].message == "too many warnings, further warnings truncated"
