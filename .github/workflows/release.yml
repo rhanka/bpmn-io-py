@@ -44,7 +44,8 @@ jobs:
           uv run python scripts/sync_upstream.py --check
           uv run python scripts/port_coverage.py --strict
       - run: uv build
-      - run: uvx --from twine==7.0.0 twine check --strict dist/*
+      - run: uv pip install --system --require-hashes -r scripts/twine-check.txt
+      - run: python -m twine check --strict dist/*
       - name: Install-from-wheel smoke test
         run: |
           uv venv --python 3.13 .smoke
