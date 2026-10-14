@@ -32,8 +32,11 @@ def _local_require(path: str) -> object:
     """Default ``requireLocal``: resolve bpmnlint's own rules and configs."""
     if path.startswith("../../rules/"):
         rule_name = path[len("../../rules/") :]
+        module_name = rule_name.replace("-", "_")
+        if module_name == "global":
+            module_name = "global_"
         module = __import__(
-            f"bpmn_io.lint.rules.{rule_name.replace('-', '_')}",
+            f"bpmn_io.lint.rules.{module_name}",
             fromlist=["factory"],
         )
         return module.factory
