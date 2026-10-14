@@ -26,11 +26,11 @@ Close the isometry gaps found after the 0.2.0 release by an independent Python/N
 - [x] **Lot 16 — Full-corpus lint oracle (red first)**
   - [x] `tests/oracle/test_lint_reports.py`: parametrize over every vendored `.bpmn` that both sides parse (same parse outcome asserted otherwise) × configs `bpmnlint:recommended` and `bpmnlint:all`; canonical comparison with JSON.stringify semantics (undefined keys dropped) on both sides; commit with the F1 cases marked `xfail(strict=True)`.
   - [x] Lot gate.
-- [ ] **Lot 17 — JS property-access semantics in rules**
-  - [ ] `_js.py`: a strict member read for collections that returns `UNDEFINED` when unset, and JS-style method calls on `UNDEFINED`/`None` raising a `TypeError` whose message is exactly V8's `Cannot read properties of undefined (reading '<name>')` (resp. `null`).
-  - [ ] Audit ALL 58 `prop_list()` call sites against the upstream rule source: keep the `|| []` fallback only where upstream has it (`|| []`, `?.`, `get()` on an isMany property); use the strict read elsewhere. Record the audit table in `docs/naming.md` § bpmnlint property access.
-  - [ ] Linter reports the raised error as `rule-error` with the same message (already the upstream path); unit tests per affected rule with the empty-definitions diagram.
-  - [ ] Flip the Lot 16 xfails; lot gate.
+- [x] **Lot 17 — JS property-access semantics in rules**
+  - [x] `_js.py`: a strict member read for collections that returns `UNDEFINED` when unset, and JS-style method calls on `UNDEFINED`/`None` raising a `TypeError` whose message is exactly V8's `Cannot read properties of undefined (reading '<name>')` (resp. `null`).
+  - [x] Audit ALL 58 `prop_list()` call sites against the upstream rule source: keep the `|| []` fallback only where upstream has it (`|| []`, `?.`, `get()` on an isMany property); use the strict read elsewhere. Record the audit table in `docs/naming.md` § bpmnlint property access.
+  - [x] Linter reports the raised error as `rule-error` with the same message (already the upstream path); unit tests per affected rule with the empty-definitions diagram.
+  - [x] Flip the Lot 16 xfails; lot gate.
 - [ ] **Lot 18 — CLI JSON, Dependabot, release 0.2.1**
   - [ ] CLI `--json` serializes reports with JSON.stringify semantics (omit undefined keys) + test (F2).
   - [ ] `.github/dependabot.yml` excludes `tests/upstream/**` (BR03-EX2) (F4).

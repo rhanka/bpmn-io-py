@@ -35,31 +35,6 @@ UPSTREAM_ROOT = Path(__file__).parent.parent / "upstream"
 
 CONFIGS = ("recommended", "all")
 
-# F1 (plan/03-BRANCH_lint-isometry.md): on definitions without root
-# elements the JS rules `global` and `no-bpmndi` throw and the linter
-# reports a `rule-error`; the Python rules read the unset collections
-# through `prop_list()` (`|| []`) and report nothing. Marked xfail in
-# Lot 16, fixed in Lot 17.
-KNOWN_F1 = frozenset(
-    {
-        "bpmn-auto-layout/test/fixtures/scenario.empty-definitions.bpmn",
-        "bpmn-auto-layout/test/snapshots/scenario.empty-definitions.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/attrs.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/di-extension.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/empty-definitions-default-ns.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/empty-definitions.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/error/bad-encoding.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/error/duplicate-ids.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/error/extension-definition-missing.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/error/undeclared-ns-child.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/error/unrecognized-child.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/error/xmlns-redeclaration.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/extension-elements.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/namespace-prefix-collision.bpmn",
-        "bpmn-moddle/test/fixtures/bpmn/redundant-ns-declaration.bpmn",
-    },
-)
-
 
 def _diagrams() -> list[Path]:
     return sorted(UPSTREAM_ROOT.rglob("*.bpmn"))
@@ -85,21 +60,13 @@ def _canonical(value: object) -> str:
 
 
 def _params() -> list[pytest.param]:  # type: ignore[type-arg]
-    params = []
+    params: list[pytest.param] = []  # type: ignore[type-arg]
     for path in _diagrams():
         relative = _relative(path)
-        for config_name in CONFIGS:
-            marks = ()
-            if relative in KNOWN_F1:
-                marks = (
-                    pytest.mark.xfail(
-                        strict=True,
-                        reason="F1: rule-error on definitions without root elements (Lot 17)",
-                    ),
-                )
-            params.append(
-                pytest.param(relative, config_name, id=f"{relative}::{config_name}", marks=marks),
-            )
+        params.extend(
+            pytest.param(relative, config_name, id=f"{relative}::{config_name}")
+            for config_name in CONFIGS
+        )
     return params
 
 

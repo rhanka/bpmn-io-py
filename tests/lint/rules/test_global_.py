@@ -7,7 +7,11 @@ from __future__ import annotations
 
 import pytest
 
+from bpmn_io.lint import Linter
+from bpmn_io.lint.resolver import NodeResolver
 from bpmn_io.lint.rules import global_
+from bpmn_io.lint.testers.helper import read_moddle
+from tests.conftest import upstream_dir
 from tests.lint.rules._case import assert_invalid, assert_valid
 
 VALID = [
@@ -221,3 +225,19 @@ def test_valid(case: dict) -> None:
 )
 def test_invalid(case: dict) -> None:
     assert_invalid("global", global_.factory, case)
+
+
+def test_rule_error_on_empty_definitions() -> None:
+    fixture = (
+        upstream_dir("bpmn-auto-layout") / "test" / "fixtures" / "scenario.empty-definitions.bpmn"
+    )
+    root = read_moddle(fixture)["root"]
+    results = Linter(resolver=NodeResolver()).lint(root, {"rules": {"global": "error"}})
+    assert results == {
+        "global": [
+            {
+                "message": "Cannot read properties of undefined (reading 'filter')",
+                "category": "rule-error",
+            },
+        ],
+    }

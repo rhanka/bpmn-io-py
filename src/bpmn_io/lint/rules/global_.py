@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, cast
 
 from bpmn_io._bpmnlint_utils import is_, is_any
-from bpmn_io._js import UNDEFINED
+from bpmn_io._js import UNDEFINED, js_filter, strict_get
 from bpmn_io.lint.rules.helper import annotate_rule, prop, prop_list
 
 if TYPE_CHECKING:
@@ -40,11 +40,14 @@ def factory(_config: object = None) -> dict[str, Any]:
 
 
 def _get_root_elements(definitions: ModdleElement) -> list[ModdleElement]:
-    return [
-        element
-        for element in prop_list(definitions, "rootElements")
-        if is_any(element, ["bpmn:Error", "bpmn:Escalation", "bpmn:Message", "bpmn:Signal"])
-    ]
+    # Upstream `definitions.rootElements.filter(...)`: no `|| []` fallback,
+    # so an unset collection raises the JS TypeError (reported as rule-error).
+    return js_filter(
+        strict_get(definitions, "rootElements"),
+        lambda element: is_any(
+            element, ["bpmn:Error", "bpmn:Escalation", "bpmn:Message", "bpmn:Signal"]
+        ),
+    )
 
 
 def _get_referencing_elements(definitions: ModdleElement) -> list[ModdleElement]:

@@ -249,3 +249,65 @@ Not transposed (N-A): the Node CLI executable, bundling (webpack/rollup) and
 `install-local` integration harnesses (JS packaging; the Python CLI is
 adapted from them in Lot 14), and the performance scaling suites (timing
 ratios, no portable assertion).
+
+## bpmnlint property access (Lot 17 audit)
+
+JS has two different reads on a moddle element, and the port keeps them
+distinct. `element.get('<name>')` lazily initializes an `isMany` property
+to `[]`; a direct `element.<name>` read returns `undefined` when the
+property was never set, with no fallback unless the upstream code writes
+one. Python `ModdleElement.get` mirrors the first read, so the rule
+helpers map each upstream form as follows: `prop_list(node, name)` is
+`node.<name> || []` (also used where upstream reads through `get()` on an
+`isMany` property, which can never yield `undefined`, and where the
+direct read is only tested for truthiness, never dereferenced), while
+`strict_get(node, name)` (`bpmn_io._js`) is the direct read: it returns
+`UNDEFINED` for an unset property without storing anything, and
+`js_filter`/`js_map` then raise the V8 `TypeError`
+(`Cannot read properties of undefined (reading '<method>')`, resp.
+`null`) that the linter reports as `rule-error`. All 57 `prop_list()`
+call sites (plus its definition in `rules/helper.py`) were audited
+against `tests/upstream/bpmnlint/rules/*.js`:
+
+| Python rule (collection sites) | Count | Upstream form | Port |
+|---|---|---|---|
+| `ad_hoc_sub_process` (`flowElements`) | 1 | `node.flowElements \|\| []` | `prop_list` |
+| `conditional_event` (`eventDefinitions`) | 1 | `node.eventDefinitions \|\| []` | `prop_list` |
+| `conditional_flows` (`outgoing` x2) | 2 | `node.outgoing \|\| []` | `prop_list` |
+| `end_event_required` (`flowElements`) | 1 | `node.flowElements \|\| []` | `prop_list` |
+| `event_based_gateway` (`outgoing`) | 1 | `node.outgoing \|\| []` | `prop_list` |
+| `event_sub_process_typed_start_event` (`flowElements`, `eventDefinitions`) | 2 | both `\|\| []` | `prop_list` |
+| `fake_join` (`incoming`) | 1 | `node.incoming \|\| []` | `prop_list` |
+| `global_` (`rootElements` in `_get_root_elements`) | 1 | `definitions.rootElements.filter(...)`, no fallback | `js_filter(strict_get(...))` (strict) |
+| `global_` (`rootElements`, `flowElements`, `messageFlows`, `eventDefinitions` in the walk) | 4 | `element.get('<name>')` on `isMany` properties | `prop_list` |
+| `label_required` (`outgoing`) | 1 | `node.outgoing \|\| []` | `prop_list` |
+| `link_event` (`flowElements`, `eventDefinitions` in `_is_link_event`) | 2 | both `\|\| []` | `prop_list` |
+| `link_event` (`eventDefinitions` in `_get_link_name`) | 1 | `linkEvent.get('eventDefinitions').find(...)` on an `isMany` property | `prop_list` |
+| `no_bpmndi` (`rootElements` argument) | 1 | `getAllBpmnElements(node.rootElements)`, then `rootElements.map(...)`, no fallback | `js_map(strict_get(...))` (strict) |
+| `no_bpmndi` (`laneSets`, `flowElements`, `lanes`) | 3 | truthiness-guarded direct reads (`x && x.<name>`, `<name> \|\| []`) | `prop_list` |
+| `no_bpmndi` (`participants`, `artifacts`, `messageFlows`) | 3 | each `<name> \|\| []` | `prop_list` |
+| `no_bpmndi` (`diagrams`) | 1 | `definitionsNode.get('diagrams').map(...)` on an `isMany` property | `prop_list` |
+| `no_bpmndi` (`planeElement`) | 1 | `diagram.plane.planeElement \|\| []` (collection fallback, strict `plane` read) | `strict_get(strict_get(diagram, 'plane'), 'planeElement')` with `|| []` |
+| `no_disconnected` (`incoming`, `outgoing`) | 2 | both `\|\| []` | `prop_list` |
+| `no_disconnected` (`eventDefinitions`) | 1 | direct read, only truthiness/length-guarded (`!eventDefinitions \|\| length !== 1`) | `prop_list` |
+| `no_gateway_join_fork` (`incoming`, `outgoing`) | 2 | both `\|\| []` | `prop_list` |
+| `no_implicit_end` (`eventDefinitions` x2, `artifacts`, `outgoing`) | 4 | each `\|\| []` | `prop_list` |
+| `no_implicit_split` (`outgoing`) | 1 | `node.outgoing \|\| []` | `prop_list` |
+| `no_implicit_start` (`eventDefinitions`, `incoming`) | 2 | both `\|\| []` | `prop_list` |
+| `no_overlapping_elements` (`rootElements`, `flowElements`, `diagrams`, `planeElement`, `participants`) | 5 | each `\|\| []` (`planeElement` behind a `!!diagram.plane` filter) | `prop_list` |
+| `single_blank_start_event` (`flowElements`, `eventDefinitions`) | 2 | both `\|\| []` | `prop_list` |
+| `single_event_definition` (`eventDefinitions`) | 1 | `node.eventDefinitions \|\| []` | `prop_list` |
+| `start_event_required` (`flowElements`) | 1 | `node.flowElements \|\| []` | `prop_list` |
+| `sub_process_blank_start_event` (`flowElements`, `eventDefinitions`) | 2 | both `\|\| []` | `prop_list` |
+| `superfluous_gateway` (`incoming`, `outgoing`) | 2 | both `\|\| []` | `prop_list` |
+| `superfluous_label` (`outgoing`) | 1 | `(source.outgoing \|\| [])` | `prop_list` |
+| `superfluous_termination` (`flowElements` x2, `outgoing`, `eventDefinitions`) | 4 | each `(... \|\| [])` | `prop_list` |
+
+Result: 54 sites keep the `|| []`/`get()` fallback through `prop_list`;
+the strict reads are the two F1 sites (`global_.rootElements.filter` and
+`no_bpmndi.rootElements.map`) plus the `plane` dereference inside the
+`planeElement || []` expression (whose collection keeps its fallback).
+Single (non-collection)
+properties keep going through `prop()` (`undefined` mapped to `None`),
+with `?.` optional chaining upstream mirrored by the `is not None`
+guards already in place.

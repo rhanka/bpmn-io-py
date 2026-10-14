@@ -14,22 +14,25 @@ from __future__ import annotations
 import json
 import math
 import re
-from typing import TYPE_CHECKING, Any, Final, Generic, TypeVar
+from typing import TYPE_CHECKING, Any, Final, Generic, TypeVar, cast
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Iterator
+    from collections.abc import Callable, Iterable, Iterator
 
 __all__ = [
     "UNDEFINED",
     "OrderedSet",
     "UndefinedType",
     "is_truthy",
+    "js_filter",
+    "js_map",
     "json_stringify",
     "math_round",
     "number_to_string",
     "parse_float",
     "parse_int",
     "strict_equal",
+    "strict_get",
 ]
 
 #: Matches a leading ``parseFloat`` number: ``Infinity`` or a decimal with optional exponent.
@@ -181,6 +184,68 @@ def strict_equal(left: object, right: object) -> bool:
     if isinstance(left, (dict, list, tuple)) or isinstance(right, (dict, list, tuple)):
         return left is right
     return bool(left == right)
+
+
+def strict_get(target: object, name: str) -> object:
+    """Return JS direct member access (``target.name``) without lazy defaults.
+
+    Unlike ``ModdleElement.get`` -- which lazily initializes a collection
+    property to ``[]`` -- a direct read returns ``UNDEFINED`` when the
+    property was never set, and does not store anything. Reading a member
+    of ``undefined``/``null`` raises the V8 ``TypeError`` message.
+
+    Dict targets read by key; other targets read their instance storage,
+    resolving the moddle property-descriptor local name when present.
+    """
+    if target is UNDEFINED:
+        msg = f"Cannot read properties of undefined (reading '{name}')"
+        raise TypeError(msg)
+    if target is None:
+        msg = f"Cannot read properties of null (reading '{name}')"
+        raise TypeError(msg)
+    if isinstance(target, dict):
+        return target.get(name, UNDEFINED)
+    try:
+        stored: dict[str, Any] = vars(target)
+    except TypeError:
+        return getattr(target, name, UNDEFINED)
+    resolved = name
+    model = stored.get("model_")
+    if model is not None:
+        try:
+            descriptor = model.properties.get_property(target, name)
+        except TypeError:
+            descriptor = None
+        if descriptor is not None:
+            resolved = str(descriptor.name)
+    if resolved in stored:
+        return stored[resolved]
+    attrs = stored.get("attrs_")
+    if isinstance(attrs, dict):
+        return attrs.get(name.removeprefix(":"), UNDEFINED)
+    return UNDEFINED
+
+
+def js_filter(value: object, predicate: Callable[[Any], object]) -> list[Any]:
+    """Return JS ``value.filter(predicate)``; throws on ``undefined``/``null``."""
+    if value is UNDEFINED:
+        msg = "Cannot read properties of undefined (reading 'filter')"
+        raise TypeError(msg)
+    if value is None:
+        msg = "Cannot read properties of null (reading 'filter')"
+        raise TypeError(msg)
+    return [item for item in cast("Iterable[Any]", value) if is_truthy(predicate(item))]
+
+
+def js_map(value: object, mapper: Callable[[Any], object]) -> list[Any]:
+    """Return JS ``value.map(mapper)``; throws on ``undefined``/``null``."""
+    if value is UNDEFINED:
+        msg = "Cannot read properties of undefined (reading 'map')"
+        raise TypeError(msg)
+    if value is None:
+        msg = "Cannot read properties of null (reading 'map')"
+        raise TypeError(msg)
+    return [mapper(item) for item in cast("Iterable[Any]", value)]
 
 
 def parse_float(text: str) -> float:

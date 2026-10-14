@@ -7,17 +7,21 @@ import math
 
 import pytest
 
+from bpmn_io import BpmnModdle
 from bpmn_io._js import (
     UNDEFINED,
     OrderedSet,
     UndefinedType,
     is_truthy,
+    js_filter,
+    js_map,
     json_stringify,
     math_round,
     number_to_string,
     parse_float,
     parse_int,
     strict_equal,
+    strict_get,
 )
 
 
@@ -212,6 +216,71 @@ def test_json_stringify_deep_nesting_is_iterative() -> None:
         value = [value]
     text = json_stringify(value)
     assert text == "[" * 5000 + "1" + "]" * 5000
+
+
+EMPTY_DEFINITIONS = (
+    '<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" '
+    'id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" />'
+)
+
+
+def test_strict_get_unset_collection_is_undefined_without_lazy_init() -> None:
+    root = BpmnModdle().from_xml(EMPTY_DEFINITIONS).root_element
+    assert strict_get(root, "rootElements") is UNDEFINED
+    # No lazy initialization happened (unlike `get`).
+    assert "rootElements" not in vars(root)
+    assert root.get("rootElements") == []
+    assert strict_get(root, "rootElements") == []
+
+
+def test_strict_get_dict_and_missing_member() -> None:
+    assert strict_get({"a": 1}, "a") == 1
+    assert strict_get({"a": 1}, "b") is UNDEFINED
+
+
+@pytest.mark.parametrize(
+    ("target", "expected"),
+    [
+        (UNDEFINED, "Cannot read properties of undefined (reading 'planeElement')"),
+        (None, "Cannot read properties of null (reading 'planeElement')"),
+    ],
+)
+def test_strict_get_on_undefined_or_null_raises_v8_message(
+    target: object,
+    expected: str,
+) -> None:
+    with pytest.raises(TypeError) as info:
+        strict_get(target, "planeElement")
+    assert str(info.value) == expected
+
+
+def test_js_filter_and_js_map_on_lists() -> None:
+    assert js_filter([1, 2, 3, 4], lambda item: item % 2 == 0) == [2, 4]
+    assert js_map([1, 2], lambda item: item * 10) == [10, 20]
+
+
+@pytest.mark.parametrize(
+    ("value", "method", "expected"),
+    [
+        (
+            UNDEFINED,
+            "filter",
+            "Cannot read properties of undefined (reading 'filter')",
+        ),
+        (None, "filter", "Cannot read properties of null (reading 'filter')"),
+        (UNDEFINED, "map", "Cannot read properties of undefined (reading 'map')"),
+        (None, "map", "Cannot read properties of null (reading 'map')"),
+    ],
+)
+def test_js_methods_on_undefined_or_null_raise_v8_message(
+    value: object,
+    method: str,
+    expected: str,
+) -> None:
+    call = js_filter if method == "filter" else js_map
+    with pytest.raises(TypeError) as info:
+        call(value, lambda item: item)
+    assert str(info.value) == expected
 
 
 def test_json_stringify_rejects_bare_undefined_and_foreign_types() -> None:
