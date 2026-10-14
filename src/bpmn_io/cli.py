@@ -1,18 +1,27 @@
-"""Command-line interface for bpmn-io: check, roundtrip and lay out BPMN files."""
+"""Command-line interface for bpmn-io: check, roundtrip, lay out and lint BPMN files."""
 
 from __future__ import annotations
 
 import argparse
 import contextlib
+import glob as glob_module
 import json
 import re
 import sys
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
+if TYPE_CHECKING:
+    from bpmn_io.bpmn_moddle import BpmnModdle
+    from bpmn_io.lint.linter import Resolver
+    from bpmn_io.moddle.base import ModdleElement
+
+from bpmn_io._moddle_utils import path_stringify
 from bpmn_io.auto_layout import LayoutError, layout_process
 from bpmn_io.bpmn_moddle.simple import create_moddle
 from bpmn_io.check import check
+from bpmn_io.lint import Linter
+from bpmn_io.lint.resolver import NodeResolver
 from bpmn_io.moddle_xml.read import ParseError
 
 __all__ = ["main"]
@@ -139,6 +148,196 @@ def _cmd_layout(file: str, *, as_json: bool) -> int:
     return 0
 
 
+def _lint_category(category: str) -> str:
+    """Map a lint report category to its CLI label (upstream ``categoryMap``)."""
+    return {"warn": "warning"}.get(category, category)
+
+
+def _print_lint_reports(file: str, results: dict[str, list[dict[str, Any]]]) -> tuple[int, int]:
+    """Print one file's lint reports (upstream table output); return (errors, warnings)."""
+    error_count = 0
+    warning_count = 0
+    rows: list[tuple[str, str, str, str]] = []
+    for name, reports in results.items():
+        for report in reports:
+            category = str(report.get("category", ""))
+            report_id = str(report.get("id") or "")
+            path = report.get("path")
+            if isinstance(path, list):
+                report_id = f"{report_id}#{path_stringify(path)}"
+            rows.append(
+                (
+                    report_id,
+                    _lint_category(category),
+                    str(report.get("message", "")),
+                    str(report.get("name") or name),
+                ),
+            )
+            if category == "error":
+                error_count += 1
+            else:
+                warning_count += 1
+
+    if rows:
+        _out("")
+        _out(str(Path(file).resolve()))
+        for report_id, category, message, name in rows:
+            _out(f"  {report_id}  {category}  {_safe(message)}  {name}")
+
+    return error_count, warning_count
+
+
+def _load_lint_config(config_arg: str | None) -> dict[str, Any] | None:
+    """Load the lint config JSON (``--config`` or ``.bpmnlintrc``); None on failure."""
+    config_path = config_arg or ".bpmnlintrc"
+    try:
+        config_string = Path(config_path).read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        if config_arg:
+            _err(f"bpmn-io: could not read {config_arg}")
+        else:
+            _err("bpmn-io: could not locate local .bpmnlintrc file. Create one via")
+            _err("")
+            _err("  bpmn-io lint --init")
+        return None
+    try:
+        config = json.loads(config_string)
+    except json.JSONDecodeError as err:
+        _err(f"bpmn-io: could not parse {config_path}: {err}")
+        return None
+    if not isinstance(config, dict):
+        _err(f"bpmn-io: could not parse {config_path}: expected a JSON object")
+        return None
+    return config
+
+
+def _lint_moddle(config: dict[str, Any]) -> BpmnModdle | None:
+    """Create the moddle instance with the config's ``moddleExtensions`` loaded."""
+    extensions: dict[str, Any] = {}
+    raw_extensions = config.get("moddleExtensions") or {}
+    if isinstance(raw_extensions, dict):
+        for name, extension_path in raw_extensions.items():
+            try:
+                loaded = json.loads(Path(str(extension_path)).read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, json.JSONDecodeError) as err:
+                _err(
+                    f"bpmn-io: could not load moddle extension <{name}> "
+                    f"from {extension_path}: {err}",
+                )
+                return None
+            extensions[name] = loaded
+    if extensions:
+        return create_moddle(extensions)
+    return create_moddle()
+
+
+def _lint_file(file: str, config: dict[str, Any], model: BpmnModdle) -> tuple[int, int]:
+    """Lint one diagram file and print its reports."""
+    xml = _read_input(file)
+    if xml is None:
+        return 1, 0
+
+    try:
+        result = model.from_xml(xml)
+    except ParseError as err:
+        return _print_lint_reports(
+            file,
+            {"": [{"message": f"Parse error: {err.message}", "category": "error"}]},
+        )
+
+    import_reports: dict[str, list[dict[str, Any]]] = {}
+    if result.warnings:
+        import_reports = {
+            "": [
+                {
+                    "id": getattr(getattr(warning, "element", None), "id", None) or "",
+                    "message": (
+                        "Import warning: "
+                        + (str(warning.message).splitlines()[0] if warning.message else "")
+                    ),
+                    "category": "error",
+                }
+                for warning in result.warnings
+            ],
+        }
+
+    linter = Linter(config=config, resolver=cast("Resolver", NodeResolver()))
+    try:
+        lint_reports = linter.lint(cast("ModdleElement", result.root_element))
+    except Exception as err:  # noqa: BLE001 - CLI reports any lint failure
+        _err(f"bpmn-io: {err}")
+        return 1, 0
+
+    return _print_lint_reports(file, {**import_reports, **lint_reports})
+
+
+def _cmd_lint(
+    files: list[str],
+    *,
+    config_arg: str | None,
+    init: bool,
+    max_warnings: int,
+) -> int:
+    """Lint diagram files against a bpmnlint config (adapted JS CLI)."""
+    if init:
+        target = Path(".bpmnlintrc")
+        if target.exists():
+            _err("bpmn-io: not overriding existing .bpmnlintrc")
+            return 1
+        target.write_text('{\n  "extends": "bpmnlint:recommended"\n}', encoding="utf-8")
+        _out("Created .bpmnlintrc file")
+        return 0
+
+    if not files:
+        _err("bpmn-io: lint: BPMN file path missing")
+        return 2
+
+    config = _load_lint_config(config_arg)
+    model = _lint_moddle(config) if config is not None else None
+    if config is None or model is None:
+        return 2
+
+    actual_files = _expand_lint_files(files)
+    if actual_files is None:
+        return 2
+
+    error_count = 0
+    warning_count = 0
+    _out("")
+    for file in actual_files:
+        errors, warnings = _lint_file(file, config, model)
+        error_count += errors
+        warning_count += warnings
+
+    problem_count = error_count + warning_count
+    if problem_count:
+        _out("")
+        _out(
+            f"✖ {problem_count} problem{'s' if problem_count != 1 else ''} "
+            f"({error_count} error{'s' if error_count != 1 else ''}, "
+            f"{warning_count} warning{'s' if warning_count != 1 else ''})",
+        )
+
+    return 1 if error_count or (max_warnings != -1 and warning_count > max_warnings) else 0
+
+
+def _expand_lint_files(files: list[str]) -> list[str] | None:
+    """Expand glob patterns to the diagram files to lint (None on a missing file)."""
+    actual_files: list[str] = []
+    for pattern in files:
+        matches = sorted(glob_module.glob(pattern, recursive=True))  # noqa: PTH207
+        if matches:
+            actual_files.extend(matches)
+        elif glob_module.has_magic(pattern):
+            continue
+        elif Path(pattern).exists():
+            actual_files.append(pattern)
+        else:
+            _err(f"bpmn-io: cannot read {pattern!r}: no such file")
+            return None
+    return actual_files
+
+
 def _fail_processing(file: str, message: str, *, as_json: bool) -> int:
     """Report a processing failure (exit code 1), as JSON when requested."""
     if as_json:
@@ -164,15 +363,27 @@ def _run_layout(args: argparse.Namespace) -> int:
     return _cmd_layout(args.file, as_json=args.json)
 
 
+def _run_lint(args: argparse.Namespace) -> int:
+    """Dispatch the lint subcommand."""
+    return _cmd_lint(
+        list(args.files),
+        config_arg=args.config,
+        init=args.init,
+        max_warnings=args.max_warnings,
+    )
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Create the bpmn-io argument parser."""
     parser = argparse.ArgumentParser(
         prog="bpmn-io",
-        description="Check, roundtrip and lay out BPMN 2.0 files.",
+        description="Check, roundtrip, lay out and lint BPMN 2.0 files.",
         epilog="exit codes: 0 success (check passes with no errors), "
         "1 finding or processing failure, 2 usage or IO error.",
     )
-    sub = parser.add_subparsers(dest="command", metavar="check|roundtrip|layout", required=True)
+    sub = parser.add_subparsers(
+        dest="command", metavar="check|roundtrip|layout|lint", required=True
+    )
     commands: tuple[tuple[str, str, Any], ...] = (
         ("check", "parse a file and report integrity findings", _run_check),
         ("roundtrip", "parse a file and print it back out serialized", _run_roundtrip),
@@ -183,6 +394,30 @@ def build_parser() -> argparse.ArgumentParser:
         subparser.add_argument("file", help="BPMN XML file to process")
         subparser.add_argument("--json", action="store_true", help="JSON output on stdout")
         subparser.set_defaults(func=func)
+
+    lint_parser = sub.add_parser(
+        "lint",
+        help="lint diagram files against a bpmnlint config (built-in rules)",
+    )
+    lint_parser.add_argument("files", nargs="*", help="BPMN files or glob patterns to lint")
+    lint_parser.add_argument(
+        "--config",
+        "-c",
+        default=None,
+        help="path to configuration file; overrides .bpmnlintrc if present",
+    )
+    lint_parser.add_argument(
+        "--init",
+        action="store_true",
+        help="generate a .bpmnlintrc file in the current working directory",
+    )
+    lint_parser.add_argument(
+        "--max-warnings",
+        type=int,
+        default=-1,
+        help="number of warnings to trigger nonzero exit code - default: -1",
+    )
+    lint_parser.set_defaults(func=_run_lint)
     return parser
 
 

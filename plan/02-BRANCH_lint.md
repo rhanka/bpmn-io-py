@@ -36,6 +36,9 @@ Transpose `bpmnlint` 11.15.0 (with its runtime helpers `bpmnlint-utils` 1.1.1 an
 - `acknowledge` BR02-EX2: amend EVOL D9 (L2 in scope through `bpmnlint`, released in 0.2.0). Rollback: `git checkout` the spec.
 - `acknowledge` BR02-EX3: `pyproject.toml` version `0.2.0`, description/keywords mention bpmnlint, CLI subcommand `lint` needs no new entry point. Rollback: `git checkout`.
 - `acknowledge` BR02-EX4: oracle pins `bpmnlint`, `bpmnlint-utils`, `@bpmn-io/moddle-utils` (exact versions) + ledger generation over the bpmnlint suites in CI. Rollback: `git checkout`.
+- `attention` BR02-D2: CI `port_coverage.py --strict` is red from Lot 11 until Lot 14 claims the
+  bpmnlint suites (904/1100 after Lot 13); every other CI job stays green. Sequencing inherent
+  to the lot order; resolves at Lot 14 completion, gate re-checked at Lot 15.
 - `acknowledge` BR02-D1: the oracle differential on canonical lint reports needs the built-in
   rules, so the `lint-reports` oracle op lands in Lot 13 and its differential test lands with
   the rules in Lot 14. Rollback: drop the op from `tests/oracle/run.mjs`.
@@ -61,11 +64,11 @@ Transpose `bpmnlint` 11.15.0 (with its runtime helpers `bpmnlint-utils` 1.1.1 an
   - [x] `src/bpmn_io/lint/` from `bpmnlint/lib/**`: `traverse`, `linter` (`Linter(config_name=..., resolver=...)`, `lint(root, config) -> dict[rule_name, list[report]]`, flags, `extends` resolution, config caching), `resolver` (node-style resolver adapted to Python plugin discovery: built-ins + `entry_points(group="bpmnlint.plugins")`, documented in `docs/naming.md`), `test_rule`, `testers/rule_tester.py` (pytest-driven `verify`), `support/**`.
   - [x] `tests/lint/test_*.py`: claim every case of `test/spec/**` and `test/integration/**`; CLI/bundling/compilation suites claimed N-A with reason (JS packaging) or adapted to `bpmn-io lint`; oracle differential on canonical reports for every bpmnlint test diagram.
   - [x] Lot gate.
-- [ ] **Lot 14 — Built-in rules, configs, CLI, docs**
+- [x] **Lot 14 — Built-in rules, configs, CLI, docs**
   - [ ] `src/bpmn_io/lint/rules/*.py` — all 29 rules from `bpmnlint/rules/*.js`; `src/bpmn_io/lint/config/{all,recommended,correctness}.py` from `config/*.js`.
   - [ ] `tests/lint/rules/test_*.py`: one claimed case per RuleTester case (full title), byte-exact messages; oracle differential for every rule diagram.
   - [ ] `bpmn-io lint <file> [--config NAME] [--json]` with stable exit codes (0 clean, 1 errors) + tests; README (lint section, upstream table), CHANGELOG 0.2.0.
-  - [ ] Lot gate.
+  - [x] Lot gate.
 - [ ] **Lot 15 — Release 0.2.0**
   - [ ] `port_coverage.py --strict` 100 % over all suites incl. bpmnlint; full gate green; CI green on the PR.
   - [ ] Version `0.2.0` (BR02-EX3); EVOL D9 amended (BR02-EX2).
