@@ -107,10 +107,13 @@ warnings, unresolved references, unknown attributes) — never called "validate"
 of emitted XML) exists only inside the test-suite, through lxml against the OMG XSDs vendored with
 the upstream fixtures, as the adaptation of upstream's Java `xsd-schema-validator` calls; every
 Xerces/libxml2 divergence is recorded in a divergence matrix (`docs/xsd-divergences.md`). No
-runtime L1 API and no `[xsd]` extra in v1. L2 (semantic rules) is out of scope for v1; `bpmnlint`
-(bpmn-io, MIT, 29 rules on the bpmn-moddle model) is the recorded post-v1 candidate.
+runtime L1 API and no `[xsd]` extra in v1. L2 (semantic rules) entered scope after v1 through
+the literal port of `bpmnlint` 11.15.0 (bpmn-io, MIT, rules on the bpmn-moddle model, with
+`bpmnlint-utils` 1.1.1 and `@bpmn-io/moddle-utils` 0.3.0), shipped as `bpmn_io.lint` in 0.2.0
+(BR02-EX2): same rule names, messages, configs and report shapes as upstream, resolved through
+the Python resolver (`entry_points(group="bpmnlint.plugins")` for plug-ins).
 
-**D10 — CLI.** `bpmn-io check|roundtrip|layout <file>` on argparse, `--json`, stable exit codes.
+**D10 — CLI.** `bpmn-io check|roundtrip|layout|lint <file>` on argparse, `--json`, stable exit codes.
 
 **D11 — Packaging & release.** hatchling, PEP 639 license expression + license files, PEP 735
 dependency groups, Python ≥ 3.11, CI matrix 3.11–3.14 (ubuntu; 3.13 on windows/macos), actions

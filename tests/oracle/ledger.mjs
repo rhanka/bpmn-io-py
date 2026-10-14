@@ -6,7 +6,7 @@
 //
 // Usage: node tests/oracle/ledger.mjs [--check]
 //   default writes LEDGER.json; --check exits 1 when regeneration drifts.
-import { register } from 'node:module';
+import { Module, register } from 'node:module';
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
@@ -18,7 +18,25 @@ const ORACLE_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(ORACLE_DIR, '..', '..');
 const UPSTREAM = path.join(ROOT, 'tests', 'upstream');
 const LEDGER = path.join(UPSTREAM, 'LEDGER.json');
-const PACKAGES = ['saxen', 'min-dash', 'moddle', 'moddle-xml', 'bpmn-moddle', 'bpmn-auto-layout'];
+// Vendored CommonJS files (bpmnlint lib/) `require()` bare specifiers; point
+// the CJS resolver at the oracle's pinned node_modules (ESM imports already
+// resolve there through ledger-hooks.mjs).
+process.env.NODE_PATH = path.join(ORACLE_DIR, 'node_modules');
+Module._initPaths();
+const PACKAGES = [
+  'saxen',
+  'min-dash',
+  'moddle',
+  'moddle-xml',
+  'bpmn-moddle',
+  'bpmn-auto-layout',
+  'bpmnlint',
+  'bpmnlint-utils',
+  'moddle-utils',
+];
+// bpmnlint titles are keyed by their FULL mocha title (describe path joined
+// with ' > '), because RuleTester-generated case titles repeat across rules.
+const FULL_TITLE_PACKAGES = new Set(['bpmnlint', 'bpmnlint-utils', 'moddle-utils']);
 const SUFFIXES = new Set(['.js', '.cjs', '.mjs']);
 
 const noHook = (..._args) => undefined;
@@ -29,26 +47,37 @@ const fakeCtx = new Proxy(
   },
 );
 
-function collectFile() {
+function collectFile(fullTitle = false) {
   const titles = [];
+  const stack = [];
   // Bare it() titles (whitespace-normalized): the ledger must use the exact strings
   // scripts/port_coverage.py scans statically, so both sources deduplicate and only
-  // genuinely dynamic titles are added.
+  // genuinely dynamic titles are added. In full-title mode the describe path is
+  // prepended (`a > b > title`), matching the RuleTester keying of the plan.
   const recordIt = (title, fn) => {
     // Pending tests (`it('...')` without callback) never execute: omit them,
     // like the static scan (which only matches `it('...', ...)`).
     if (typeof fn !== 'function') {
       return;
     }
-    titles.push(String(title).replace(/\s+/g, ' ').trim());
+    const bare = String(title).replace(/\s+/g, ' ').trim();
+    titles.push(fullTitle && stack.length ? [...stack, bare].join(' > ') : bare);
   };
   recordIt.only = recordIt;
   recordIt.skip = noHook;
-  const runDescribe = async (title, cb) => {
+  // Mocha executes describe callbacks synchronously; mirroring that keeps the
+  // title stack exact even when a suite registers sibling describes back to
+  // back (RuleTester does, without awaiting anything).
+  const runDescribe = (title, cb) => {
     if (typeof cb !== 'function') {
       return;
     }
-    await cb.call(fakeCtx);
+    stack.push(String(title).replace(/\s+/g, ' ').trim());
+    try {
+      cb.call(fakeCtx);
+    } finally {
+      stack.pop();
+    }
   };
   runDescribe.only = runDescribe;
   runDescribe.skip = noHook;
@@ -91,7 +120,17 @@ function specFiles(pkg) {
     }
   };
   walk(path.join(UPSTREAM, pkg, 'test'));
-  return found.sort();
+  const sorted = found.sort();
+  // bpmnlint integration/performance files execute real work (child processes,
+  // config compilation) at import time; they are claimed through the static
+  // scan instead (N-A / adapted CLI and packaging suites).
+  if (pkg === 'bpmnlint') {
+    return sorted.filter((f) => {
+      const rel = path.relative(UPSTREAM, f).replace(/\\/g, '/');
+      return rel.includes('/test/spec/') || rel.includes('/test/rules/');
+    });
+  }
+  return sorted;
 }
 
 async function main() {
@@ -102,7 +141,7 @@ async function main() {
     process.chdir(path.join(UPSTREAM, pkg));
     for (const file of specFiles(pkg)) {
       const rel = path.relative(UPSTREAM, file).replace(/\\/g, '/');
-      const { titles } = collectFile();
+      const { titles } = collectFile(FULL_TITLE_PACKAGES.has(pkg));
       try {
         await import(`${pathToFileURL(file).href}?ledger=1`);
       } catch (error) {

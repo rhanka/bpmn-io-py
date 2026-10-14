@@ -5,7 +5,7 @@
 Read, check, build, lay out and write BPMN 2.0 XML from Python, with the exact object model and
 semantics of the reference JavaScript implementation, and no runtime dependency.
 
-> Status: the full port is implemented (moddle, moddle-xml, bpmn-moddle, bpmn-auto-layout)
+> Status: the full port is implemented (moddle, moddle-xml, bpmn-moddle, bpmn-auto-layout, bpmnlint)
 > with byte-identical conformance gates; release 0.1.0 is in preparation. Nothing is published
 > on PyPI yet.
 >
@@ -70,6 +70,8 @@ bpmn-io check process.bpmn            # exit 0 when clean, 1 on errors
 bpmn-io check process.bpmn --json     # {"ok": true, "errors": [], "warnings": [], ...}
 bpmn-io roundtrip process.bpmn        # parse + serialize back to stdout
 bpmn-io layout process.bpmn           # automatic DI layout to stdout
+bpmn-io lint --init                   # write a .bpmnlintrc (extends bpmnlint:recommended)
+bpmn-io lint process.bpmn             # semantic (L2) lint; exit 1 on errors
 ```
 
 ## API
@@ -79,6 +81,7 @@ bpmn-io layout process.bpmn           # automatic DI layout to stdout
 | `BpmnModdle` | `bpmn_io.bpmn_moddle` | default model (six descriptors), lax `from_xml`, `to_xml` |
 | `create_moddle` | `bpmn_io.bpmn_moddle` | `BpmnModdle` plus additional descriptor packages |
 | `check` / `Report` | `bpmn_io.check` | L0 integrity: warnings, unresolved references, unknown attributes |
+| `Linter` | `bpmn_io.lint` | bpmnlint port (L2 semantic rules): `lint(root, config)` returns reports by rule name; built-in configs `bpmnlint:all`, `bpmnlint:correctness`, `bpmnlint:recommended` |
 | `layout_process` / `Layouter` | `bpmn_io.auto_layout` | automatic DI layout; `LayoutError` on failure |
 | `is_a` | `bpmn_io.bpmn_moddle.types` | `TypeGuard` narrowing on descriptor literal types |
 | `ParseResult` / `ParseError` | `bpmn_io.moddle_xml` | read result / failure |
@@ -136,7 +139,23 @@ print(report.ok, report.errors)
 
 `check` is the L0 integrity gate (unparsable input, unknown attributes, dangling
 references) — the same findings the CLI reports with exit code 1. Semantic
-business rules (bpmnlint-style) are out of scope for v1.
+business rules are the L2 lint below.
+
+```python
+from bpmn_io import BpmnModdle
+from bpmn_io.lint import Linter
+from bpmn_io.lint.resolver import NodeResolver
+
+root = BpmnModdle().from_xml(xml).root_element
+reports = Linter(resolver=NodeResolver()).lint(root, {"extends": "bpmnlint:recommended"})
+# {'label-required': [{'id': 'ShipOrder', 'message': 'Element is missing label/name',
+#                      'path': ['name'], 'meta': {...}, 'category': 'error'}]}
+```
+
+All 28 bpmnlint rules are ported (`bpmnlint:all`), with the upstream
+`off|warn|error|info` (and numeric 0..3) flags, `extends` configs and plugin
+resolution via `entry_points(group="bpmnlint.plugins")`. Custom rules are
+plain factories returning `{"check": ..., "meta": ...}`.
 
 ### 3. Lay out a diagram-less file
 
@@ -191,3 +210,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the porting workflow and the release 
 | bpmn-moddle | 10.3.1 |
 | bpmn-in-color-moddle | 0.2.0 |
 | bpmn-auto-layout | 1.3.0 |
+| bpmnlint | 11.15.0 |
+| bpmnlint-utils | 1.1.1 |
+| @bpmn-io/moddle-utils | 0.3.0 |

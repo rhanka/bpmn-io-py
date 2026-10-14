@@ -223,3 +223,29 @@ Not transposed (N-A): `UPDATE_SNAPSHOTS` regeneration and the browser
 `output/index.html` report harness in `test/LayoutSpec.js` (harness-only, no
 assertions). `example.bpmn` color-namespace stripping falls out of `clean_di`
 + writer behavior, not special-casing.
+
+## bpmnlint (Lot 12–13 inventory)
+
+Sources: `tests/upstream/bpmnlint/lib/**` (v11.15.0), `bpmnlint-utils`
+(v1.1.1) and `@bpmn-io/moddle-utils` (v0.3.0). The port lives in
+`bpmn_io/lint/` (same file split), `bpmn_io/_bpmnlint_utils.py` and
+`bpmn_io/_moddle_utils.py`.
+
+| Upstream name | Port name | Notes |
+|---|---|---|
+| `Linter` (`lint` sync per D4.1) | `Linter` | `lint(root, config) -> dict[rule_name, list[report]]`; resolver required |
+| `traverse` | `traverse` | iterative (explicit stack), same enter/leave order and sub-tree skipping |
+| `testRule` / `Reporter` | `test_rule` / `Reporter` | reports are plain dicts (`id`, `message`, `path`, `meta`, `category`) |
+| `is` / `isAny` (bpmnlint-utils) | `is_` / `is_any` | `is` is a Python keyword (same convention as DiUtil `is_`) |
+| `getPath`, `pathConcat`, `pathEquals`, `pathParse`, `pathStringify` | `get_path`, `path_concat`, `path_equals`, `path_parse`, `path_stringify` | `null` → `None`, `undefined` → `UNDEFINED` |
+| `NodeResolver` | `NodeResolver` | node-style steps kept; the scoped `require` is Python-backed (next row) |
+| `createScopedRequire(cwd)` | `create_scoped_require(cwd)` | returns a callable with `resolve()`; discovery = `entry_points(group="bpmnlint.plugins")` (entry point name = package name, loaded object exposes `rules`/`configs`), then `importlib` with dash segments mapped to underscores (`pkg/rules/name` → `pkg.rules.name`) |
+| `StaticResolver` | `StaticResolver` | cache keys `rule:<pkg>/<name>`, `config:<pkg>/<name>` |
+| `compileConfig` | `compile_config` | generated JS bundle text byte-identical; driven by the Python resolver |
+| rule factory `(config) => { check, meta }` | factory callable returning a dict | `check` is a callable or an `enter`/`leave` dict; plugin prefix `bpmnlint-plugin-*`, `extends`, flags `off|warn|error|info` and numeric 0..3 kept |
+| `RuleTester.verify` | `verify` (testers) | pytest-driven: executes cases synchronously, raises `AssertionError` on mismatch; case titles are the FULL mocha titles from `tests/upstream/LEDGER.json` |
+
+Not transposed (N-A): the Node CLI executable, bundling (webpack/rollup) and
+`install-local` integration harnesses (JS packaging; the Python CLI is
+adapted from them in Lot 14), and the performance scaling suites (timing
+ratios, no portable assertion).

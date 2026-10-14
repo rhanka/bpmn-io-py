@@ -17,7 +17,7 @@ import process from 'node:process';
 import { descriptorDump, layoutProcessBatch, modelDump, modelSerializeBatch } from './dump.mjs';
 
 const requirePkg = createRequire(import.meta.url);
-const PINNED = ['saxen', 'min-dash', 'moddle', 'moddle-xml', 'bpmn-moddle', 'bpmn-in-color-moddle', 'bpmn-auto-layout'];
+const PINNED = ['saxen', 'min-dash', 'moddle', 'moddle-xml', 'bpmn-moddle', 'bpmn-in-color-moddle', 'bpmn-auto-layout', 'bpmnlint', 'bpmnlint-utils', '@bpmn-io/moddle-utils'];
 
 function fail(message) {
   process.stdout.write(`${JSON.stringify({ ok: false, error: { message } })}\n`);
@@ -64,7 +64,7 @@ function revive(value) {
 }
 
 async function call({ package: name, path: dotted, args }) {
-  if (!/^[A-Za-z0-9_-]+$/.test(name ?? '')) {
+  if (!/^(@[A-Za-z0-9_-]+\/)?[A-Za-z0-9_-]+$/.test(name ?? '')) {
     throw new Error(`invalid package: ${name}`);
   }
   const segments = String(dotted ?? '').split('.');
@@ -79,6 +79,36 @@ async function call({ package: name, path: dotted, args }) {
     throw new Error(`not a function: ${name}.${dotted}`);
   }
   return await target(...revive(args ?? []));
+}
+
+let lintModulesPromise;
+
+function loadLintModules() {
+  lintModulesPromise ??= (async () => {
+    const { BpmnModdle } = await import('bpmn-moddle');
+    const bpmnlint = await import('bpmnlint');
+    const Linter = bpmnlint.Linter ?? bpmnlint.default.Linter;
+    const nodeResolverModule = await import('bpmnlint/lib/resolver/node-resolver.js');
+    const NodeResolver = nodeResolverModule.default ?? nodeResolverModule;
+    return { BpmnModdle, Linter, NodeResolver };
+  })();
+  return lintModulesPromise;
+}
+
+async function lintReports({ xml, config }) {
+  const { BpmnModdle, Linter, NodeResolver } = await loadLintModules();
+  const moddle = new BpmnModdle();
+  const { rootElement } = await moddle.fromXML(xml);
+  const linter = new Linter({ resolver: new NodeResolver() });
+  return await linter.lint(rootElement, config);
+}
+
+async function lintReportsBatch({ items }) {
+  const results = [];
+  for (const item of items) {
+    results.push(await lintReports(item));
+  }
+  return results;
 }
 
 function serializeError(err) {
@@ -169,6 +199,8 @@ async function main() {
       'model-serialize-batch': (args) => modelSerializeBatch(args.inputs),
       'layout-process-batch': (args) => layoutProcessBatch(args.inputs),
       saxen: (args) => saxen(args),
+      'lint-reports': (args) => lintReports(args),
+      'lint-reports-batch': (args) => lintReportsBatch(args),
     };
     const run = OPS[payload.op];
     if (!run) {
