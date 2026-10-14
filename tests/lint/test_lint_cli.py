@@ -76,6 +76,30 @@ def test_lint_max_warnings(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -
     assert main(["lint", "--max-warnings", "0", str(FAKE_JOIN_INVALID)]) == 1
 
 
+NO_ID_DIAGRAM = (
+    '<?xml version="1.0" encoding="UTF-8"?>'
+    '<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" '
+    'id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">'
+    '<bpmn:process id="Process_1"><bpmn:task /></bpmn:process>'
+    "</bpmn:definitions>"
+)
+
+
+def test_lint_json_omits_undefined_id(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    diagram = tmp_path / "no-id.bpmn"
+    diagram.write_text(NO_ID_DIAGRAM, encoding="utf-8")
+    assert main(["lint", "--config", "recommended", "--json", str(diagram)]) == 1
+    out = capsys.readouterr().out
+    assert '"id": null' not in out
+    payload = json.loads(out.strip().splitlines()[-1])
+    label_reports = payload["reports"]["label-required"]
+    assert label_reports
+    assert all("id" not in report for report in label_reports)
+
+
 def test_lint_config_name_and_json(capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["lint", "--config", "recommended", "--json", str(INVALID)]) == 1
     payload = json.loads(capsys.readouterr().out.strip().splitlines()[-1])

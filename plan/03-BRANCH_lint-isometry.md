@@ -32,6 +32,6 @@ Close the isometry gaps found after the 0.2.0 release by an independent Python/N
   - [x] Linter reports the raised error as `rule-error` with the same message (already the upstream path); unit tests per affected rule with the empty-definitions diagram.
   - [x] Flip the Lot 16 xfails; lot gate.
 - [ ] **Lot 18 — CLI JSON, Dependabot, release 0.2.1**
-  - [ ] CLI `--json` serializes reports with JSON.stringify semantics (omit undefined keys) + test (F2).
-  - [ ] `.github/dependabot.yml` excludes `tests/upstream/**` (BR03-EX2) (F4).
+  - [x] CLI `--json` serializes reports with JSON.stringify semantics (omit undefined keys) + test (F2).
+  - [x] `.github/dependabot.yml` excludes `tests/upstream/**` (BR03-EX2) (F4).
   - [ ] CHANGELOG 0.2.1, version bump (BR03-EX1), PR → CI green → merge commit → tag `v0.2.1` → verify PyPI and GitHub release → move this file to `plan/done/`.
