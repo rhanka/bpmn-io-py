@@ -51,9 +51,9 @@ Transpose `bpmnlint` 11.15.0 (with its runtime helpers `bpmnlint-utils` 1.1.1 an
   - [x] Add the three `[upstream.*]` pins (BR02-EX1) vendoring `lib/`, `rules/`, `config/`, `test/` of bpmnlint, `lib/` + `test/` of bpmnlint-utils, `index.js` + `test/` of moddle-utils; run `scripts/sync_upstream.py`; `src/bpmn_io/upstream.py` + `THIRD_PARTY_NOTICES.md` rows (holders read from each vendored LICENSE).
   - [x] Oracle pins (BR02-EX4) and `tests/oracle/ledger.mjs` extended to the bpmnlint suites; `tests/upstream/LEDGER.json` regenerated with FULL titles for RuleTester cases; `scripts/port_coverage.py` keyed accordingly (static scan stays for the other suites).
   - [x] Lot gate (same checklist as above).
-- [ ] **Lot 12 — Helpers**
-  - [ ] `src/bpmn_io/_moddle_utils.py` (from `moddle-utils/index.js`) and `src/bpmn_io/_bpmnlint_utils.py` (from `bpmnlint-utils/lib/**`), with every upstream test claimed and an oracle differential per helper.
-  - [ ] Lot gate.
+- [x] **Lot 12 — Helpers**
+  - [x] `src/bpmn_io/_moddle_utils.py` (from `moddle-utils/index.js`) and `src/bpmn_io/_bpmnlint_utils.py` (from `bpmnlint-utils/lib/**`), with every upstream test claimed and an oracle differential per helper.
+  - [x] Lot gate.
 - [ ] **Lot 13 — Linter core**
   - [ ] `src/bpmn_io/lint/` from `bpmnlint/lib/**`: `traverse`, `linter` (`Linter(config_name=..., resolver=...)`, `lint(root, config) -> dict[rule_name, list[report]]`, flags, `extends` resolution, config caching), `resolver` (node-style resolver adapted to Python plugin discovery: built-ins + `entry_points(group="bpmnlint.plugins")`, documented in `docs/naming.md`), `test_rule`, `testers/rule_tester.py` (pytest-driven `verify`), `support/**`.
   - [ ] `tests/lint/test_*.py`: claim every case of `test/spec/**` and `test/integration/**`; CLI/bundling/compilation suites claimed N-A with reason (JS packaging) or adapted to `bpmn-io lint`; oracle differential on canonical reports for every bpmnlint test diagram.

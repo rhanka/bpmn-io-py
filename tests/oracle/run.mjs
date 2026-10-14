@@ -64,7 +64,7 @@ function revive(value) {
 }
 
 async function call({ package: name, path: dotted, args }) {
-  if (!/^[A-Za-z0-9_-]+$/.test(name ?? '')) {
+  if (!/^(@[A-Za-z0-9_-]+\/)?[A-Za-z0-9_-]+$/.test(name ?? '')) {
     throw new Error(`invalid package: ${name}`);
   }
   const segments = String(dotted ?? '').split('.');
