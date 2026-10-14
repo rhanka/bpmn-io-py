@@ -17,7 +17,7 @@ import process from 'node:process';
 import { descriptorDump, layoutProcessBatch, modelDump, modelSerializeBatch } from './dump.mjs';
 
 const requirePkg = createRequire(import.meta.url);
-const PINNED = ['saxen', 'min-dash', 'moddle', 'moddle-xml', 'bpmn-moddle', 'bpmn-in-color-moddle', 'bpmn-auto-layout'];
+const PINNED = ['saxen', 'min-dash', 'moddle', 'moddle-xml', 'bpmn-moddle', 'bpmn-in-color-moddle', 'bpmn-auto-layout', 'bpmnlint', 'bpmnlint-utils', '@bpmn-io/moddle-utils'];
 
 function fail(message) {
   process.stdout.write(`${JSON.stringify({ ok: false, error: { message } })}\n`);

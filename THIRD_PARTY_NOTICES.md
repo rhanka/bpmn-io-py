@@ -14,6 +14,9 @@ MIT License, with the original copyright notice preserved. bpmn-io is an indepen
 | [bpmn-moddle](https://github.com/bpmn-io/bpmn-moddle) | 10.3.1 | 2014 camunda Services GmbH | MIT | BPMN 2.0 / DI / DC / bioc descriptors (`src/bpmn_io/resources`), wiring, test-suite and fixtures |
 | [bpmn-in-color-moddle](https://github.com/bpmn-io/bpmn-in-color-moddle) | 0.2.0 | bpmn.io contributors | MIT | BPMN in Color descriptor (`src/bpmn_io/resources/color`) |
 | [bpmn-auto-layout](https://github.com/bpmn-io/bpmn-auto-layout) | 1.3.0 | bpmn.io contributors (package.json declares MIT; no LICENSE file at the pinned tag, status unverified) | MIT | layout algorithm, test-suite, fixtures and snapshots |
+| [bpmnlint](https://github.com/bpmn-io/bpmnlint) | 11.15.0 | 2018-present bpmn.io Contributors | MIT | linter core, 29 built-in rules, configs, test-suite and fixtures |
+| [bpmnlint-utils](https://github.com/bpmn-io/bpmnlint-utils) | 1.1.1 | 2018-present bpmn.io Contributors | MIT | rule-authoring utilities (`is`, `isAny`, checks), test-suite |
+| [@bpmn-io/moddle-utils](https://github.com/bpmn-io/moddle-utils) | 0.3.0 | 2022-present Camunda Services GmbH | MIT | moddle element path/id utilities, test-suite |
 
 Exact tags, commits and per-file sha256 digests of every vendored file are recorded in
 `UPSTREAM.toml` and `UPSTREAM.lock`.

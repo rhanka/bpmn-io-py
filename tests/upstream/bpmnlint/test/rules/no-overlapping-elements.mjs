@@ -1,0 +1,175 @@
+import RuleTester from '../../lib/testers/rule-tester.js';
+
+import rule from '../../rules/no-overlapping-elements.js';
+
+import {
+  readModdle
+} from '../../lib/testers/helper.js';
+
+import { stubCJS } from '../helper.mjs';
+
+const {
+  __dirname
+} = stubCJS(import.meta.url);
+
+
+RuleTester.verify('no-overlapping-elements', rule, {
+  valid: [
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/valid-boundary-event.bpmn')
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/valid-collaboration.bpmn')
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/valid-process.bpmn')
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/valid-subprocess.bpmn')
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/valid-subprocess-collapsed.bpmn')
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/valid-data-objects.bpmn')
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/ignore-missing-di.bpmn')
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/ignore-missing-bounds.bpmn')
+    }
+  ],
+  invalid: [
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/invalid-boundary-event.bpmn'),
+      report: [
+        {
+          id: 'TASK',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'LOOKS_LIKE_BOUNDARY',
+          message: 'Element overlaps with other element'
+        }
+      ]
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/invalid-collaboration.bpmn'),
+      report: [
+        {
+          id: 'Participant_1af2hnr',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'Participant_06xnivi',
+          message: 'Element overlaps with other element'
+        }
+      ]
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/invalid-process.bpmn'),
+      report: [
+        {
+          id: 'TASK_1',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'TASK_2',
+          message: 'Element overlaps with other element'
+        }
+      ]
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/invalid-subprocess.bpmn'),
+      report: [
+        {
+          id: 'TASK',
+          message: 'Element is outside of parent boundary'
+        }
+      ]
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/invalid-subprocess-collapsed.bpmn'),
+      report: [
+        {
+          id: 'TASK',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'END_EVENT',
+          message: 'Element overlaps with other element'
+        }
+      ]
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/invalid-wide-element.bpmn'),
+      report: [
+        {
+          id: 'TASK_FAR',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'WIDE_TASK',
+          message: 'Element overlaps with other element'
+        }
+      ]
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/invalid-touching-elements.bpmn'),
+      report: [
+        {
+          id: 'TASK_LEFT',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'TASK_RIGHT',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'TASK_TOP',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'TASK_BOTTOM',
+          message: 'Element overlaps with other element'
+        }
+      ]
+    },
+    {
+      name: 'report in element order',
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/invalid-report-order.bpmn'),
+      report: [
+        {
+          id: 'TASK_A',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'TASK_B',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'TASK_C',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'TASK_D',
+          message: 'Element overlaps with other element'
+        }
+      ]
+    },
+    {
+      moddleElement: readModdle(__dirname + '/no-overlapping-elements/invalid-nan-bounds.bpmn'),
+      report: [
+        {
+          id: 'TASK_LEFT',
+          message: 'Element overlaps with other element'
+        },
+        {
+          id: 'TASK_RIGHT',
+          message: 'Element overlaps with other element'
+        }
+      ]
+    }
+  ]
+});

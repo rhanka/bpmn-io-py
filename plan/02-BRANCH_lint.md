@@ -47,10 +47,10 @@ Transpose `bpmnlint` 11.15.0 (with its runtime helpers `bpmnlint-utils` 1.1.1 an
 - No UI. UAT = owner runs `bpmn-io lint <file>` on a real `.bpmn` after Lot 14.
 
 ## Plan / Todo (lot-based)
-- [ ] **Lot 11 — Pins, vendoring, oracle, ledger**
-  - [ ] Add the three `[upstream.*]` pins (BR02-EX1) vendoring `lib/`, `rules/`, `config/`, `test/` of bpmnlint, `lib/` + `test/` of bpmnlint-utils, `index.js` + `test/` of moddle-utils; run `scripts/sync_upstream.py`; `src/bpmn_io/upstream.py` + `THIRD_PARTY_NOTICES.md` rows (holders read from each vendored LICENSE).
-  - [ ] Oracle pins (BR02-EX4) and `tests/oracle/ledger.mjs` extended to the bpmnlint suites; `tests/upstream/LEDGER.json` regenerated with FULL titles for RuleTester cases; `scripts/port_coverage.py` keyed accordingly (static scan stays for the other suites).
-  - [ ] Lot gate (same checklist as above).
+- [x] **Lot 11 — Pins, vendoring, oracle, ledger**
+  - [x] Add the three `[upstream.*]` pins (BR02-EX1) vendoring `lib/`, `rules/`, `config/`, `test/` of bpmnlint, `lib/` + `test/` of bpmnlint-utils, `index.js` + `test/` of moddle-utils; run `scripts/sync_upstream.py`; `src/bpmn_io/upstream.py` + `THIRD_PARTY_NOTICES.md` rows (holders read from each vendored LICENSE).
+  - [x] Oracle pins (BR02-EX4) and `tests/oracle/ledger.mjs` extended to the bpmnlint suites; `tests/upstream/LEDGER.json` regenerated with FULL titles for RuleTester cases; `scripts/port_coverage.py` keyed accordingly (static scan stays for the other suites).
+  - [x] Lot gate (same checklist as above).
 - [ ] **Lot 12 — Helpers**
   - [ ] `src/bpmn_io/_moddle_utils.py` (from `moddle-utils/index.js`) and `src/bpmn_io/_bpmnlint_utils.py` (from `bpmnlint-utils/lib/**`), with every upstream test claimed and an oracle differential per helper.
   - [ ] Lot gate.

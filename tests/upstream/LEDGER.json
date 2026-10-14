@@ -872,5 +872,411 @@
     "should layout sub-process.nested.bpmn",
     "should layout text-annotation.bpmn",
     "should layout transaction.bpmn"
+  ],
+  "bpmnlint/test/rules/ad-hoc-sub-process.mjs": [
+    "rules/ad-hoc-sub-process > should lint valid > test case #1",
+    "rules/ad-hoc-sub-process > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/conditional-event.mjs": [
+    "rules/conditional-event > should lint valid > test case #1",
+    "rules/conditional-event > should lint valid > test case #2",
+    "rules/conditional-event > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/conditional-flows.mjs": [
+    "rules/conditional-flows > should lint valid > test case #1 split",
+    "rules/conditional-flows > should lint valid > test case #2 split after task",
+    "rules/conditional-flows > should lint valid > test case #3 conditional fork",
+    "rules/conditional-flows > should lint valid > test case #4 no condition after merge",
+    "rules/conditional-flows > should lint invalid > test case #1 fork after exclusive gateway",
+    "rules/conditional-flows > should lint invalid > test case #2 fork after exclusive gateway default",
+    "rules/conditional-flows > should lint invalid > test case #3 fork after task",
+    "rules/conditional-flows > should lint invalid > test case #4 fork after task default"
+  ],
+  "bpmnlint/test/rules/end-event-required.mjs": [
+    "rules/end-event-required > should lint valid > test case #1",
+    "rules/end-event-required > should lint valid > test case #2",
+    "rules/end-event-required > should lint valid > test case #3",
+    "rules/end-event-required > should lint invalid > test case #1",
+    "rules/end-event-required > should lint invalid > test case #2",
+    "rules/end-event-required > should lint invalid > test case #3"
+  ],
+  "bpmnlint/test/rules/event-based-gateway.mjs": [
+    "rules/event-based-gateway > should lint valid > test case #1",
+    "rules/event-based-gateway > should lint invalid > test case #1",
+    "rules/event-based-gateway > should lint invalid > test case #2",
+    "rules/event-based-gateway > should lint invalid > test case #3"
+  ],
+  "bpmnlint/test/rules/event-sub-process-typed-start-event.mjs": [
+    "rules/event-sub-process-typed-start-event > should lint valid > test case #1",
+    "rules/event-sub-process-typed-start-event > should lint valid > test case #2",
+    "rules/event-sub-process-typed-start-event > should lint valid > test case #3",
+    "rules/event-sub-process-typed-start-event > should lint valid > test case #4",
+    "rules/event-sub-process-typed-start-event > should lint valid > test case #5",
+    "rules/event-sub-process-typed-start-event > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/fake-join.mjs": [
+    "rules/fake-join > should lint valid > test case #1",
+    "rules/fake-join > should lint valid > test case #2",
+    "rules/fake-join > should lint invalid > test case #1",
+    "rules/fake-join > should lint invalid > test case #2"
+  ],
+  "bpmnlint/test/rules/global.mjs": [
+    "rules/global > should lint valid > test case #1",
+    "rules/global > should lint valid > test case #2",
+    "rules/global > should lint valid > test case #3",
+    "rules/global > should lint valid > test case #4",
+    "rules/global > should lint invalid > test case #1",
+    "rules/global > should lint invalid > test case #2",
+    "rules/global > should lint invalid > test case #3",
+    "rules/global > should lint invalid > test case #4",
+    "rules/global > should lint invalid > test case #5",
+    "rules/global > should lint invalid > test case #6",
+    "rules/global > should lint invalid > test case #7",
+    "rules/global > should lint invalid > test case #8",
+    "rules/global > should lint invalid > test case #9",
+    "rules/global > should lint invalid > test case #10",
+    "rules/global > should lint invalid > test case #11",
+    "rules/global > should lint invalid > test case #12"
+  ],
+  "bpmnlint/test/rules/label-required.mjs": [
+    "rules/label-required > should lint valid > test case #1",
+    "rules/label-required > should lint valid > test case #2",
+    "rules/label-required > should lint valid > test case #3",
+    "rules/label-required > should lint valid > test case #4",
+    "rules/label-required > should lint valid > test case #5",
+    "rules/label-required > should lint valid > test case #6",
+    "rules/label-required > should lint invalid > test case #1",
+    "rules/label-required > should lint invalid > test case #2",
+    "rules/label-required > should lint invalid > test case #3",
+    "rules/label-required > should lint invalid > test case #4",
+    "rules/label-required > should lint invalid > test case #5",
+    "rules/label-required > should lint invalid > test case #6",
+    "rules/label-required > should lint invalid > test case #7"
+  ],
+  "bpmnlint/test/rules/link-event.mjs": [
+    "rules/link-event > should lint valid > test case #1",
+    "rules/link-event > should lint valid > test case #2",
+    "rules/link-event > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/no-bpmndi.mjs": [
+    "rules/no-bpmndi > should lint valid > test case #1",
+    "rules/no-bpmndi > should lint valid > test case #2",
+    "rules/no-bpmndi > should lint valid > test case #3",
+    "rules/no-bpmndi > should lint valid > test case #4",
+    "rules/no-bpmndi > should lint valid > test case #5",
+    "rules/no-bpmndi > should lint valid > test case #6",
+    "rules/no-bpmndi > should lint valid > test case #7",
+    "rules/no-bpmndi > should lint valid > test case #8",
+    "rules/no-bpmndi > should lint valid > test case #9",
+    "rules/no-bpmndi > should lint valid > test case #10",
+    "rules/no-bpmndi > should lint valid > test case #11",
+    "rules/no-bpmndi > should lint valid > test case #12",
+    "rules/no-bpmndi > should lint valid > test case #13",
+    "rules/no-bpmndi > should lint valid > test case #14",
+    "rules/no-bpmndi > should lint valid > test case #15",
+    "rules/no-bpmndi > should lint invalid > test case #1",
+    "rules/no-bpmndi > should lint invalid > test case #2",
+    "rules/no-bpmndi > should lint invalid > test case #3",
+    "rules/no-bpmndi > should lint invalid > test case #4",
+    "rules/no-bpmndi > should lint invalid > test case #5",
+    "rules/no-bpmndi > should lint invalid > test case #6",
+    "rules/no-bpmndi > should lint invalid > test case #7",
+    "rules/no-bpmndi > should lint invalid > test case #8",
+    "rules/no-bpmndi > should lint invalid > test case #9",
+    "rules/no-bpmndi > should lint invalid > test case #10",
+    "rules/no-bpmndi > should lint invalid > test case #11",
+    "rules/no-bpmndi > should lint invalid > test case #12",
+    "rules/no-bpmndi > should lint invalid > test case #13",
+    "rules/no-bpmndi > should lint invalid > test case #14",
+    "rules/no-bpmndi > should lint invalid > test case #15"
+  ],
+  "bpmnlint/test/rules/no-complex-gateway.mjs": [
+    "rules/no-complex-gateway > should lint valid > test case #1",
+    "rules/no-complex-gateway > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/no-disconnected.mjs": [
+    "rules/no-disconnected > should lint valid > test case #1",
+    "rules/no-disconnected > should lint valid > test case #2",
+    "rules/no-disconnected > should lint valid > test case #3",
+    "rules/no-disconnected > should lint valid > test case #4",
+    "rules/no-disconnected > should lint valid > test case #5",
+    "rules/no-disconnected > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/no-duplicate-sequence-flows.mjs": [
+    "rules/no-duplicate-sequence-flows > should lint valid > test case #1",
+    "rules/no-duplicate-sequence-flows > should lint invalid > test case #1",
+    "rules/no-duplicate-sequence-flows > should lint invalid > test case #2",
+    "rules/no-duplicate-sequence-flows > should lint invalid > test case #3"
+  ],
+  "bpmnlint/test/rules/no-gateway-join-fork.mjs": [
+    "rules/no-gateway-join-fork > should lint valid > test case #1",
+    "rules/no-gateway-join-fork > should lint valid > test case #2",
+    "rules/no-gateway-join-fork > should lint valid > test case #3",
+    "rules/no-gateway-join-fork > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/no-implicit-end.mjs": [
+    "rules/no-implicit-end > should lint valid > test case #1",
+    "rules/no-implicit-end > should lint valid > test case #2",
+    "rules/no-implicit-end > should lint valid > test case #3",
+    "rules/no-implicit-end > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/no-implicit-split.mjs": [
+    "rules/no-implicit-split > should lint valid > test case #1",
+    "rules/no-implicit-split > should lint valid > test case #2",
+    "rules/no-implicit-split > should lint invalid > test case #1",
+    "rules/no-implicit-split > should lint invalid > test case #2",
+    "rules/no-implicit-split > should lint invalid > test case #3"
+  ],
+  "bpmnlint/test/rules/no-implicit-start.mjs": [
+    "rules/no-implicit-start > should lint valid > test case #1",
+    "rules/no-implicit-start > should lint valid > test case #2",
+    "rules/no-implicit-start > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/no-inclusive-gateway.mjs": [
+    "rules/no-inclusive-gateway > should lint valid > test case #1",
+    "rules/no-inclusive-gateway > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/no-overlapping-elements.mjs": [
+    "rules/no-overlapping-elements > should lint valid > test case #1",
+    "rules/no-overlapping-elements > should lint valid > test case #2",
+    "rules/no-overlapping-elements > should lint valid > test case #3",
+    "rules/no-overlapping-elements > should lint valid > test case #4",
+    "rules/no-overlapping-elements > should lint valid > test case #5",
+    "rules/no-overlapping-elements > should lint valid > test case #6",
+    "rules/no-overlapping-elements > should lint valid > test case #7",
+    "rules/no-overlapping-elements > should lint valid > test case #8",
+    "rules/no-overlapping-elements > should lint invalid > test case #1",
+    "rules/no-overlapping-elements > should lint invalid > test case #2",
+    "rules/no-overlapping-elements > should lint invalid > test case #3",
+    "rules/no-overlapping-elements > should lint invalid > test case #4",
+    "rules/no-overlapping-elements > should lint invalid > test case #5",
+    "rules/no-overlapping-elements > should lint invalid > test case #6",
+    "rules/no-overlapping-elements > should lint invalid > test case #7",
+    "rules/no-overlapping-elements > should lint invalid > test case #8 report in element order",
+    "rules/no-overlapping-elements > should lint invalid > test case #9"
+  ],
+  "bpmnlint/test/rules/single-blank-start-event.mjs": [
+    "rules/single-blank-start-event > should lint valid > test case #1",
+    "rules/single-blank-start-event > should lint valid > test case #2",
+    "rules/single-blank-start-event > should lint valid > test case #3",
+    "rules/single-blank-start-event > should lint valid > test case #4",
+    "rules/single-blank-start-event > should lint valid > test case #5",
+    "rules/single-blank-start-event > should lint valid > test case #6",
+    "rules/single-blank-start-event > should lint valid > test case #7",
+    "rules/single-blank-start-event > should lint invalid > test case #1",
+    "rules/single-blank-start-event > should lint invalid > test case #2"
+  ],
+  "bpmnlint/test/rules/single-event-definition.mjs": [
+    "rules/single-event-definition > should lint valid > test case #1",
+    "rules/single-event-definition > should lint valid > test case #2",
+    "rules/single-event-definition > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/standard-size.mjs": [
+    "rules/standard-size > should lint valid > test case #1",
+    "rules/standard-size > should lint valid > test case #2",
+    "rules/standard-size > should lint valid > test case #3",
+    "rules/standard-size > should lint valid > test case #4",
+    "rules/standard-size > should lint valid > test case #5",
+    "rules/standard-size > should lint valid > test case #6",
+    "rules/standard-size > should lint valid > test case #7 configured size",
+    "rules/standard-size > should lint valid > test case #8 ignore malformed config",
+    "rules/standard-size > should lint valid > test case #9 ignore malformed empty pool config",
+    "rules/standard-size > should lint invalid > test case #1",
+    "rules/standard-size > should lint invalid > test case #2",
+    "rules/standard-size > should lint invalid > test case #3",
+    "rules/standard-size > should lint invalid > test case #4",
+    "rules/standard-size > should lint invalid > test case #5 configured size",
+    "rules/standard-size > should lint invalid > test case #6 configured empty pool size"
+  ],
+  "bpmnlint/test/rules/start-event-required.mjs": [
+    "rules/start-event-required > should lint valid > test case #1",
+    "rules/start-event-required > should lint valid > test case #2",
+    "rules/start-event-required > should lint valid > test case #3",
+    "rules/start-event-required > should lint invalid > test case #1",
+    "rules/start-event-required > should lint invalid > test case #2",
+    "rules/start-event-required > should lint invalid > test case #3"
+  ],
+  "bpmnlint/test/rules/sub-process-blank-start-event.mjs": [
+    "rules/sub-process-blank-start-event > should lint valid > test case #1",
+    "rules/sub-process-blank-start-event > should lint valid > test case #2",
+    "rules/sub-process-blank-start-event > should lint valid > test case #3",
+    "rules/sub-process-blank-start-event > should lint valid > test case #4",
+    "rules/sub-process-blank-start-event > should lint invalid > test case #1",
+    "rules/sub-process-blank-start-event > should lint invalid > test case #2"
+  ],
+  "bpmnlint/test/rules/superfluous-gateway.mjs": [
+    "rules/superfluous-gateway > should lint valid > test case #1",
+    "rules/superfluous-gateway > should lint valid > test case #2",
+    "rules/superfluous-gateway > should lint invalid > test case #1"
+  ],
+  "bpmnlint/test/rules/superfluous-label.mjs": [
+    "rules/superfluous-label > should lint valid > test case #1 unlabeled flow, labeled XOR/OR fork, conditional and default flows",
+    "rules/superfluous-label > should lint invalid > test case #1 labeled unconditional flows"
+  ],
+  "bpmnlint/test/rules/superfluous-termination.mjs": [
+    "rules/superfluous-termination > should lint valid > test case #1",
+    "rules/superfluous-termination > should lint valid > test case #2",
+    "rules/superfluous-termination > should lint valid > test case #3",
+    "rules/superfluous-termination > should lint valid > test case #4",
+    "rules/superfluous-termination > should lint invalid > test case #1",
+    "rules/superfluous-termination > should lint invalid > test case #3",
+    "rules/superfluous-termination > should lint invalid > test case #5"
+  ],
+  "bpmnlint/test/spec/config-spec.mjs": [
+    "config > all > should contain all lint rules",
+    "config > correctness > should contain relevant lint rules"
+  ],
+  "bpmnlint/test/spec/linter-spec.mjs": [
+    "linter > constructor > should require { resolver } config",
+    "linter > #applyRule > should succeed",
+    "linter > #applyRule > should succeed with <enter> and <leave> hooks",
+    "linter > #applyRule > should fail with rule error",
+    "linter > #applyRule > should fail without check",
+    "linter > #applyRule > should fail without <enter> or <leave> hook",
+    "linter > #lint > config > should apply global config",
+    "linter > #lint > config > should apply local config",
+    "linter > #lint > rules > should resolve",
+    "linter > #lint > rules > should resolve and configure > warn",
+    "linter > #lint > rules > should resolve and configure > error",
+    "linter > #lint > rules > should resolve and configure > info",
+    "linter > #lint > rules > should resolve async",
+    "linter > #lint > rules > should handle unresolved",
+    "linter > #lint > rules > should not resolve disabled",
+    "linter > #parseRuleValue > should extract { category, config }",
+    "linter > #resolveConfiguredRules > should resolve extended > single parent",
+    "linter > #resolveConfiguredRules > should resolve extended > multiple parents > should resolve extended",
+    "linter > #resolveConfiguredRules > should resolve extended > multiple parents > should normalize rule names",
+    "linter > #resolveConfiguredRules > should resolve extended > scoped > should normalize shortcut",
+    "linter > #resolveConfiguredRules > should resolve extended > scoped > should normalize full package name",
+    "linter > #resolveConfiguredRules > should resolve extended > scoped > should normalize multiple",
+    "linter > #resolveConfiguredRules > should throw on missing",
+    "linter > #parseRuleName > should parse built-in",
+    "linter > #parseRuleName > should parse built-in without prefix",
+    "linter > #parseRuleName > should parse external",
+    "linter > #parseRuleName > should parse external with full package name",
+    "linter > #parseRuleName > should parse scoped",
+    "linter > #parseRuleName > should parse scoped with full package name",
+    "linter > #parseRuleName > should fail to parse with missing package",
+    "linter > #parseRuleName > should fail to parse nonsense",
+    "linter > #parseConfigName > should parse built-in > all",
+    "linter > #parseConfigName > should parse built-in > recommended",
+    "linter > #parseConfigName > should parse external",
+    "linter > #parseConfigName > should parse external with full package name",
+    "linter > #parseConfigName > should parse scoped",
+    "linter > #parseConfigName > should parse scoped with full package name",
+    "linter > #parseConfigName > should throw on invalid name",
+    "linter > #parseConfigName > should throw error on invalid scoped name",
+    "linter > #parseConfigName > should throw error on namespaced default config",
+    "linter > #parseConfigName > should throw error on non-sense name",
+    "linter > reporting > should attach rule <meta> to report",
+    "linter > rule transformation > should transform rules via hook"
+  ],
+  "bpmnlint/test/spec/resolver/node-resolver-spec.mjs": [
+    "resolver/node-resolver > #resolveRule > built-in > should resolve",
+    "resolver/node-resolver > #resolveRule > built-in > should fail to resolve",
+    "resolver/node-resolver > #resolveRule > plugin - foreign > should resolve > via custom path (exported through $PKG.rules[$NAME]) > relative resolution",
+    "resolver/node-resolver > #resolveRule > plugin - foreign > should resolve > via custom path (exported through $PKG.rules[$NAME]) > absolute resolution",
+    "resolver/node-resolver > #resolveRule > plugin - foreign > should resolve > via default location ($PKG/rules/$NAME)",
+    "resolver/node-resolver > #resolveRule > plugin - foreign > should fail to resolve > handling non-existing rule",
+    "resolver/node-resolver > #resolveRule > plugin - foreign > should fail to resolve > handling non-existing plugin",
+    "resolver/node-resolver > #resolveRule > plugin - foreign > should fail to resolve > handling illegal $PKG.rules[$NAME] export",
+    "resolver/node-resolver > #resolveRule > plugin - local > should resolve > via custom path (exported through $PKG.rules[$NAME]) > relative resolution",
+    "resolver/node-resolver > #resolveRule > plugin - local > should resolve > via custom path (exported through $PKG.rules[$NAME]) > absolute resolution",
+    "resolver/node-resolver > #resolveRule > plugin - local > should resolve > via default location ($PKG/rules/$NAME)",
+    "resolver/node-resolver > #resolveRule > plugin - local > should fail to resolve > handling non-existing rule",
+    "resolver/node-resolver > #resolveRule > plugin - local > should fail to resolve > handling illegal $PKG.rules[$NAME] export",
+    "resolver/node-resolver > #resolveConfig > built-in > all",
+    "resolver/node-resolver > #resolveConfig > built-in > recommended",
+    "resolver/node-resolver > #resolveConfig > built-in > should fail to resolve",
+    "resolver/node-resolver > #resolveConfig > plugin - foreign > should resolve > exported ($PKG.configs[$NAME])",
+    "resolver/node-resolver > #resolveConfig > plugin - foreign > should resolve > non-exported ($PKG/config/$NAME)",
+    "resolver/node-resolver > #resolveConfig > plugin - foreign > should fail to resolve (non-existing plugin)",
+    "resolver/node-resolver > #resolveConfig > plugin - foreign > should fail to resolve (non-existing config)",
+    "resolver/node-resolver > #resolveConfig > plugin - local > should resolve > exported ($PKG.configs[$NAME])",
+    "resolver/node-resolver > #resolveConfig > plugin - local > should resolve > non-exported ($PKG/config/$NAME)",
+    "resolver/node-resolver > #resolveConfig > plugin - local > should fail to resolve"
+  ],
+  "bpmnlint/test/spec/resolver/static-resolver-spec.mjs": [
+    "resolver/static-resolver > #resolveRule > should resolve rule",
+    "resolver/static-resolver > #resolveRule > should throw on unresolved rule",
+    "resolver/static-resolver > #resolveConfig > should resolve config",
+    "resolver/static-resolver > #resolveConfig > should throw on unresolved config"
+  ],
+  "bpmnlint/test/spec/support/compile-config-spec.mjs": [
+    "support/compile-config > should import rules",
+    "support/compile-config > should import moddle extensions",
+    "support/compile-config > should import namespaced",
+    "support/compile-config > should import custom path rules > through external source",
+    "support/compile-config > should import custom path rules > through local source",
+    "support/compile-config > should import custom path rules > handling illegal path errors",
+    "support/compile-config > should resolve extends",
+    "support/compile-config > error handling > should throw on illegal moddle extensions"
+  ],
+  "bpmnlint/test/spec/test-rule-spec.mjs": [
+    "test-rule > should return check function reported messages (id, message)",
+    "test-rule > should return check function reported messages (id, message, path)",
+    "test-rule > should return check function reported messages (id, message, { path })",
+    "test-rule > should return { enter, leave } hook reported messages",
+    "test-rule > should empty messages"
+  ],
+  "bpmnlint/test/spec/testers/helpers-spec.mjs": [
+    "testers/helper > #createModdle > should create moddle with extension",
+    "testers/helper > #readModdle > should read moddle with extension"
+  ],
+  "bpmnlint/test/spec/testers/rule-tester-spec.mjs": [
+    "testers/rule-tester > #expectEqual > should not be equal",
+    "testers/rule-tester > #expectEqual > should be equal (moddle element with ID)",
+    "testers/rule-tester > #expectEqual > should be equal (moddle element with no ID)",
+    "testers/rule-tester > #getTitle > it should get name (index)",
+    "testers/rule-tester > #getTitle > it should get name (index and name)",
+    "testers/rule-tester > #replacer > should replace node",
+    "testers/rule-tester > #verify > with local config > rules/with-local-config > should lint invalid > test case #1 with config",
+    "testers/rule-tester > #verify > with <meta> > rules/with-local-config > should lint invalid > test case #1 with config"
+  ],
+  "bpmnlint/test/spec/traverse-spec.mjs": [
+    "traverse > traversal > should traverse diagram with one node",
+    "traverse > traversal > should traverse diagram with generic element",
+    "traverse > traversal > should traverse diagram with collaboration",
+    "traverse > traversal > should traverse diagram with simple process",
+    "traverse > enter/leave hooks > should <enter> and <leave>",
+    "traverse > enter/leave hooks > should <leave> only",
+    "traverse > enter/leave hooks > should <enter> and <leave> generic element",
+    "traverse > sub-tree skipping > should skip if <enter> returns false",
+    "traverse > sub-tree skipping > should skip if node is simple type"
+  ],
+  "bpmnlint-utils/test/spec/index-spec.js": [
+    "utils > is(node, type) > should match node",
+    "utils > is(node, type) > should not match node",
+    "utils > isAny(node, [ ...types ]) > should match node",
+    "utils > isAny(node, [ ...types ]) > should not match node"
+  ],
+  "moddle-utils/test/index.spec.js": [
+    "index > #getPath > should return path (flow element)",
+    "index > #getPath > should return path (extension element)",
+    "index > #getPath > should return relative path (extension element)",
+    "index > #getPath > should return null instead of path ($parent=undefined)",
+    "index > #getPath > should return null instead of relative path ($parent=undefined)",
+    "index > #getPath > should return null (moddleElement=undefined)",
+    "index > #getPath > should return [] (moddleElement=parentModdleElement)",
+    "index > #pathConcat > should concat (string[], string[])",
+    "index > #pathConcat > should concat (string[], (number|string)[], (number|string)[])",
+    "index > #pathConcat > should concat (string[], number, string)",
+    "index > #pathConcat > should return null (null)",
+    "index > #pathConcat > should return null (undefined)",
+    "index > #pathEquals > should be equal (string, string)",
+    "index > #pathEquals > should not be equal (string, string)",
+    "index > #pathEquals > should be equal (string, string[])",
+    "index > #pathEquals > should not be equal (string, string[])",
+    "index > #pathEquals > should be equal (string[], string[])",
+    "index > #pathEquals > should not be equal (string[], string[])",
+    "index > #pathEquals > should be equal (custom separator)",
+    "index > #pathEquals > should not be equal (null)",
+    "index > #pathEquals > should not be equal (undefined)",
+    "index > #pathParse > should parse path",
+    "index > #pathParse > should parse path (custom separator)",
+    "index > #pathParse > should not parse path (null)",
+    "index > #pathStringify > should stringify path",
+    "index > #pathStringify > should stringify path (custom separator)",
+    "index > #pathStringify > should not stringify path (null)"
   ]
 }

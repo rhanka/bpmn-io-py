@@ -99,3 +99,44 @@ vendor = [
   { from = "github", path = "lib", dest = "tests/upstream/bpmn-auto-layout/lib" },
   { from = "github", path = "test", dest = "tests/upstream/bpmn-auto-layout/test" },
 ]
+
+[upstream.bpmnlint]
+npm = "bpmnlint"
+version = "11.15.0"
+repo = "bpmn-io/bpmnlint"
+tag = "v11.15.0"
+commit = "de71146c4a55c7834061c7e5e06c97907d9cdff8"
+license = "MIT"
+vendor = [
+  { from = "github", path = "lib", dest = "tests/upstream/bpmnlint/lib" },
+  { from = "github", path = "rules", dest = "tests/upstream/bpmnlint/rules" },
+  { from = "github", path = "config", dest = "tests/upstream/bpmnlint/config" },
+  { from = "github", path = "test", dest = "tests/upstream/bpmnlint/test" },
+  { from = "github", path = "LICENSE", dest = "tests/upstream/bpmnlint/LICENSE" },
+]
+
+[upstream.bpmnlint-utils]
+npm = "bpmnlint-utils"
+version = "1.1.1"
+repo = "bpmn-io/bpmnlint-utils"
+tag = "v1.1.1"
+commit = "83543fa1261b2098fa90a17ebccdf7c63d75ee64"
+license = "MIT"
+vendor = [
+  { from = "github", path = "lib", dest = "tests/upstream/bpmnlint-utils/lib" },
+  { from = "github", path = "test", dest = "tests/upstream/bpmnlint-utils/test" },
+  { from = "github", path = "LICENSE", dest = "tests/upstream/bpmnlint-utils/LICENSE" },
+]
+
+[upstream."@bpmn-io/moddle-utils"]
+npm = "@bpmn-io/moddle-utils"
+version = "0.3.0"
+repo = "bpmn-io/moddle-utils"
+tag = "v0.3.0"
+commit = "30e00f7dfc76ad0a0ef9ad40cc28c80e0d5a5349"
+license = "MIT"
+vendor = [
+  { from = "github", path = "index.js", dest = "tests/upstream/moddle-utils/index.js" },
+  { from = "github", path = "test", dest = "tests/upstream/moddle-utils/test" },
+  { from = "github", path = "LICENSE", dest = "tests/upstream/moddle-utils/LICENSE" },
+]

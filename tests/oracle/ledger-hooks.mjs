@@ -15,7 +15,19 @@ const PINNED = new Set([
   'moddle-xml',
   'bpmn-moddle',
   'bpmn-auto-layout',
+  'bpmnlint',
+  'bpmnlint-utils',
+  '@bpmn-io/moddle-utils',
 ]);
+
+function pinnedName(specifier) {
+  for (const name of PINNED) {
+    if (specifier === name || specifier.startsWith(`${name}/`)) {
+      return name;
+    }
+  }
+  return null;
+}
 
 const STUBS = new Map(
   Object.entries({
@@ -27,6 +39,7 @@ const STUBS = new Map(
     table: './stubs/misc.mjs',
     'fast-glob': './stubs/fast-glob.mjs',
     '@rollup/plugin-node-resolve': './stubs/misc.mjs',
+    'zeebe-bpmn-moddle/resources/zeebe.json': './stubs/zeebe.json',
   }),
 );
 
@@ -42,14 +55,27 @@ function pinnedEntry(name) {
 }
 
 export async function resolve(specifier, context, next) {
-  if (PINNED.has(specifier)) {
+  const pinned = pinnedName(specifier);
+  if (pinned === specifier) {
     return { url: pinnedEntry(specifier), shortCircuit: true };
+  }
+  if (pinned) {
+    const sub = specifier.slice(pinned.length + 1);
+    return { url: new URL(`./node_modules/${pinned}/${sub}`, HERE).href, shortCircuit: true };
   }
   if (STUBS.has(specifier)) {
     return { url: new URL(STUBS.get(specifier), HERE).href, shortCircuit: true };
   }
   const resolved = await next(specifier, context);
-  if (resolved.url.includes('/tests/upstream/') && resolved.url.endsWith('.js')) {
+  // bpmnlint ships CommonJS `.js` files; forcing ESM there breaks the CJS
+  // default-export interop its `.mjs` suites rely on. Every other vendored
+  // package ships ESM `.js` files that need the explicit format (the vendored
+  // trees carry no package.json of their own).
+  if (
+    resolved.url.includes('/tests/upstream/') &&
+    !resolved.url.includes('/tests/upstream/bpmnlint/') &&
+    resolved.url.endsWith('.js')
+  ) {
     return { ...resolved, format: 'module' };
   }
   return resolved;
