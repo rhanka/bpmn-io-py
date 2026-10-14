@@ -214,6 +214,17 @@ def test_compile_illegal_path_errors() -> None:
 
 @pytest.mark.upstream(
     "bpmnlint/test/spec/support/compile-config-spec.mjs",
+    "support/compile-config > should resolve extends",
+)
+def test_compile_resolve_extends() -> None:
+    code = compile_config({"extends": "bpmnlint:recommended"})
+
+    assert "conditional-flows" in code
+    assert "single-blank-start-event" in code
+
+
+@pytest.mark.upstream(
+    "bpmnlint/test/spec/support/compile-config-spec.mjs",
     "support/compile-config > error handling > should throw on illegal moddle extensions",
 )
 def test_compile_illegal_moddle_extensions() -> None:
