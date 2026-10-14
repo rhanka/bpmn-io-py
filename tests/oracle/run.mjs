@@ -81,6 +81,18 @@ async function call({ package: name, path: dotted, args }) {
   return await target(...revive(args ?? []));
 }
 
+async function lintReports({ xml, config }) {
+  const { BpmnModdle } = await import('bpmn-moddle');
+  const bpmnlint = await import('bpmnlint');
+  const Linter = bpmnlint.Linter ?? bpmnlint.default.Linter;
+  const nodeResolverModule = await import('bpmnlint/lib/resolver/node-resolver.js');
+  const NodeResolver = nodeResolverModule.default ?? nodeResolverModule;
+  const moddle = new BpmnModdle();
+  const { rootElement } = await moddle.fromXML(xml);
+  const linter = new Linter({ resolver: new NodeResolver() });
+  return await linter.lint(rootElement, config);
+}
+
 function serializeError(err) {
   return err instanceof Error ? err.message : String(err);
 }
@@ -169,6 +181,7 @@ async function main() {
       'model-serialize-batch': (args) => modelSerializeBatch(args.inputs),
       'layout-process-batch': (args) => layoutProcessBatch(args.inputs),
       saxen: (args) => saxen(args),
+      'lint-reports': (args) => lintReports(args),
     };
     const run = OPS[payload.op];
     if (!run) {

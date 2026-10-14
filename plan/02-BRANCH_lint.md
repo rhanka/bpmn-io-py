@@ -36,6 +36,9 @@ Transpose `bpmnlint` 11.15.0 (with its runtime helpers `bpmnlint-utils` 1.1.1 an
 - `acknowledge` BR02-EX2: amend EVOL D9 (L2 in scope through `bpmnlint`, released in 0.2.0). Rollback: `git checkout` the spec.
 - `acknowledge` BR02-EX3: `pyproject.toml` version `0.2.0`, description/keywords mention bpmnlint, CLI subcommand `lint` needs no new entry point. Rollback: `git checkout`.
 - `acknowledge` BR02-EX4: oracle pins `bpmnlint`, `bpmnlint-utils`, `@bpmn-io/moddle-utils` (exact versions) + ledger generation over the bpmnlint suites in CI. Rollback: `git checkout`.
+- `acknowledge` BR02-D1: the oracle differential on canonical lint reports needs the built-in
+  rules, so the `lint-reports` oracle op lands in Lot 13 and its differential test lands with
+  the rules in Lot 14. Rollback: drop the op from `tests/oracle/run.mjs`.
 - `acknowledge` BR02-R0: 0.1.0 shipped without lint; this branch releases 0.2.0 on its own (tag `v0.2.0` after merge, Trusted Publishing already configured by the owner).
 
 ## Orchestration Mode (AI-selected)
@@ -54,10 +57,10 @@ Transpose `bpmnlint` 11.15.0 (with its runtime helpers `bpmnlint-utils` 1.1.1 an
 - [x] **Lot 12 — Helpers**
   - [x] `src/bpmn_io/_moddle_utils.py` (from `moddle-utils/index.js`) and `src/bpmn_io/_bpmnlint_utils.py` (from `bpmnlint-utils/lib/**`), with every upstream test claimed and an oracle differential per helper.
   - [x] Lot gate.
-- [ ] **Lot 13 — Linter core**
-  - [ ] `src/bpmn_io/lint/` from `bpmnlint/lib/**`: `traverse`, `linter` (`Linter(config_name=..., resolver=...)`, `lint(root, config) -> dict[rule_name, list[report]]`, flags, `extends` resolution, config caching), `resolver` (node-style resolver adapted to Python plugin discovery: built-ins + `entry_points(group="bpmnlint.plugins")`, documented in `docs/naming.md`), `test_rule`, `testers/rule_tester.py` (pytest-driven `verify`), `support/**`.
-  - [ ] `tests/lint/test_*.py`: claim every case of `test/spec/**` and `test/integration/**`; CLI/bundling/compilation suites claimed N-A with reason (JS packaging) or adapted to `bpmn-io lint`; oracle differential on canonical reports for every bpmnlint test diagram.
-  - [ ] Lot gate.
+- [x] **Lot 13 — Linter core**
+  - [x] `src/bpmn_io/lint/` from `bpmnlint/lib/**`: `traverse`, `linter` (`Linter(config_name=..., resolver=...)`, `lint(root, config) -> dict[rule_name, list[report]]`, flags, `extends` resolution, config caching), `resolver` (node-style resolver adapted to Python plugin discovery: built-ins + `entry_points(group="bpmnlint.plugins")`, documented in `docs/naming.md`), `test_rule`, `testers/rule_tester.py` (pytest-driven `verify`), `support/**`.
+  - [x] `tests/lint/test_*.py`: claim every case of `test/spec/**` and `test/integration/**`; CLI/bundling/compilation suites claimed N-A with reason (JS packaging) or adapted to `bpmn-io lint`; oracle differential on canonical reports for every bpmnlint test diagram.
+  - [x] Lot gate.
 - [ ] **Lot 14 — Built-in rules, configs, CLI, docs**
   - [ ] `src/bpmn_io/lint/rules/*.py` — all 29 rules from `bpmnlint/rules/*.js`; `src/bpmn_io/lint/config/{all,recommended,correctness}.py` from `config/*.js`.
   - [ ] `tests/lint/rules/test_*.py`: one claimed case per RuleTester case (full title), byte-exact messages; oracle differential for every rule diagram.
