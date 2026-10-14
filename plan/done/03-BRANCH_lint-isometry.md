@@ -31,7 +31,7 @@ Close the isometry gaps found after the 0.2.0 release by an independent Python/N
   - [x] Audit ALL 58 `prop_list()` call sites against the upstream rule source: keep the `|| []` fallback only where upstream has it (`|| []`, `?.`, `get()` on an isMany property); use the strict read elsewhere. Record the audit table in `docs/naming.md` § bpmnlint property access.
   - [x] Linter reports the raised error as `rule-error` with the same message (already the upstream path); unit tests per affected rule with the empty-definitions diagram.
   - [x] Flip the Lot 16 xfails; lot gate.
-- [ ] **Lot 18 — CLI JSON, Dependabot, release 0.2.1**
+- [x] **Lot 18 — CLI JSON, Dependabot, release 0.2.1**
   - [x] CLI `--json` serializes reports with JSON.stringify semantics (omit undefined keys) + test (F2).
   - [x] `.github/dependabot.yml` excludes `tests/upstream/**` (BR03-EX2) (F4).
-  - [ ] CHANGELOG 0.2.1, version bump (BR03-EX1), PR → CI green → merge commit → tag `v0.2.1` → verify PyPI and GitHub release → move this file to `plan/done/`.
+  - [x] CHANGELOG 0.2.1, version bump (BR03-EX1), PR → CI green → merge commit → tag `v0.2.1` → verify PyPI and GitHub release → move this file to `plan/done/`.
