@@ -25,6 +25,8 @@ Deliver the Python library's share of lot 0 of the `profile-mechanism/1` design 
 - `acknowledge` BR04-EX2: sdist includes `contracts/`, `CONTRACTS.toml`, `CONTRACTS.lock`; no runtime dependency added. Rollback: `git checkout`.
 - `acknowledge` BR04-EX3: attribution for any vendored third-party data (for example Unicode Character Database 15.0.0 files, Unicode license). Rollback: `git checkout`.
 - `open` Q1 (conductor): canonical home of the **public** neutral corpus. Proposed default: this repository (`contracts/`) is canonical for public synthetic contract artifacts and corpus cases; bpmn-canvas vendors them by manifest hash; private fixtures stay in the conductor repository. Until answered, the corpus is authored here and offered to the conductor.
+  - 2026-10-14, conductor (provisional, pending bpmn-canvas confirmation): agreed. The public neutral corpus is canonical in `contracts/` of this repository; the **manifest hash** is authoritative, not the repository. bpmn-canvas vendors by that hash; private fixtures stay in the conductor repository. Authoring proceeds here.
+- `open` G1 (conductor): Lot 19 starts only after the conductor's R3.1 signal (SHA-256 of DESIGN.md and companions, validator green).
 
 ## Plan / Todo (lot-based)
 - [ ] **Lot 19 — Pin the R3.1 contract artifacts**
