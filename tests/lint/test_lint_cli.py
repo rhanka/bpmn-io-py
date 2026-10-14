@@ -74,3 +74,11 @@ def test_lint_max_warnings(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -
     assert main(["lint", str(FAKE_JOIN_INVALID)]) == 0
     capsys.readouterr()
     assert main(["lint", "--max-warnings", "0", str(FAKE_JOIN_INVALID)]) == 1
+
+
+def test_lint_config_name_and_json(capsys: pytest.CaptureFixture[str]) -> None:
+    assert main(["lint", "--config", "recommended", "--json", str(INVALID)]) == 1
+    payload = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+    assert payload["ok"] is False
+    assert payload["file"] == str(INVALID)
+    assert payload["reports"]["label-required"][0]["message"] == "Element is missing label/name"

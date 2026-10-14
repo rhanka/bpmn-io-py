@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from bpmn_io.lint.linter import Resolver
     from bpmn_io.moddle.base import ModdleElement
 
+from bpmn_io._js import UNDEFINED
 from bpmn_io._moddle_utils import path_stringify
 from bpmn_io.auto_layout import LayoutError, layout_process
 from bpmn_io.bpmn_moddle.simple import create_moddle
@@ -187,8 +188,16 @@ def _print_lint_reports(file: str, results: dict[str, list[dict[str, Any]]]) -> 
     return error_count, warning_count
 
 
+#: Built-in config names accepted by ``lint --config NAME``.
+_LINT_BUILTIN_CONFIGS = ("all", "correctness", "recommended")
+
+
 def _load_lint_config(config_arg: str | None) -> dict[str, Any] | None:
-    """Load the lint config JSON (``--config`` or ``.bpmnlintrc``); None on failure."""
+    """Load the lint config (built-in name, ``--config`` path or ``.bpmnlintrc``)."""
+    if config_arg in _LINT_BUILTIN_CONFIGS:
+        return {"extends": f"bpmnlint:{config_arg}"}
+    if config_arg and config_arg.startswith("bpmnlint:"):
+        return {"extends": config_arg}
     config_path = config_arg or ".bpmnlintrc"
     try:
         config_string = Path(config_path).read_text(encoding="utf-8")
@@ -231,7 +240,24 @@ def _lint_moddle(config: dict[str, Any]) -> BpmnModdle | None:
     return create_moddle()
 
 
-def _lint_file(file: str, config: dict[str, Any], model: BpmnModdle) -> tuple[int, int]:
+def _jsonable(value: object) -> object:
+    """Convert lint reports to JSON-safe data (``UNDEFINED`` becomes ``None``)."""
+    if value is UNDEFINED:
+        return None
+    if isinstance(value, dict):
+        return {key: _jsonable(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_jsonable(item) for item in value]
+    return value
+
+
+def _lint_file(
+    file: str,
+    config: dict[str, Any],
+    model: BpmnModdle,
+    *,
+    as_json: bool = False,
+) -> tuple[int, int]:
     """Lint one diagram file and print its reports."""
     xml = _read_input(file)
     if xml is None:
@@ -240,10 +266,13 @@ def _lint_file(file: str, config: dict[str, Any], model: BpmnModdle) -> tuple[in
     try:
         result = model.from_xml(xml)
     except ParseError as err:
-        return _print_lint_reports(
-            file,
-            {"": [{"message": f"Parse error: {err.message}", "category": "error"}]},
-        )
+        reports: dict[str, list[dict[str, Any]]] = {
+            "": [{"message": f"Parse error: {err.message}", "category": "error"}],
+        }
+        if as_json:
+            _out(json.dumps({"ok": False, "file": file, "reports": _jsonable(reports)}))
+            return 1, 0
+        return _print_lint_reports(file, reports)
 
     import_reports: dict[str, list[dict[str, Any]]] = {}
     if result.warnings:
@@ -268,7 +297,32 @@ def _lint_file(file: str, config: dict[str, Any], model: BpmnModdle) -> tuple[in
         _err(f"bpmn-io: {err}")
         return 1, 0
 
-    return _print_lint_reports(file, {**import_reports, **lint_reports})
+    all_reports = {**import_reports, **lint_reports}
+    if as_json:
+        error_count = sum(
+            1
+            for reports in all_reports.values()
+            for report in reports
+            if report.get("category") == "error"
+        )
+        warning_count = sum(
+            1
+            for reports in all_reports.values()
+            for report in reports
+            if report.get("category") != "error"
+        )
+        _out(
+            json.dumps(
+                {
+                    "ok": error_count == 0,
+                    "file": file,
+                    "reports": _jsonable(all_reports),
+                },
+            ),
+        )
+        return error_count, warning_count
+
+    return _print_lint_reports(file, all_reports)
 
 
 def _cmd_lint(
@@ -277,6 +331,7 @@ def _cmd_lint(
     config_arg: str | None,
     init: bool,
     max_warnings: int,
+    as_json: bool = False,
 ) -> int:
     """Lint diagram files against a bpmnlint config (adapted JS CLI)."""
     if init:
@@ -303,14 +358,15 @@ def _cmd_lint(
 
     error_count = 0
     warning_count = 0
-    _out("")
+    if not as_json:
+        _out("")
     for file in actual_files:
-        errors, warnings = _lint_file(file, config, model)
+        errors, warnings = _lint_file(file, config, model, as_json=as_json)
         error_count += errors
         warning_count += warnings
 
     problem_count = error_count + warning_count
-    if problem_count:
+    if problem_count and not as_json:
         _out("")
         _out(
             f"✖ {problem_count} problem{'s' if problem_count != 1 else ''} "
@@ -370,6 +426,7 @@ def _run_lint(args: argparse.Namespace) -> int:
         config_arg=args.config,
         init=args.init,
         max_warnings=args.max_warnings,
+        as_json=args.json,
     )
 
 
@@ -404,13 +461,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--config",
         "-c",
         default=None,
-        help="path to configuration file; overrides .bpmnlintrc if present",
+        help="built-in config name (all, correctness, recommended) or path to a "
+        "configuration file; overrides .bpmnlintrc if present",
     )
     lint_parser.add_argument(
         "--init",
         action="store_true",
         help="generate a .bpmnlintrc file in the current working directory",
     )
+    lint_parser.add_argument("--json", action="store_true", help="JSON output on stdout")
     lint_parser.add_argument(
         "--max-warnings",
         type=int,

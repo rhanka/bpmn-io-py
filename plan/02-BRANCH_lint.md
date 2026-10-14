@@ -65,12 +65,12 @@ Transpose `bpmnlint` 11.15.0 (with its runtime helpers `bpmnlint-utils` 1.1.1 an
   - [x] `tests/lint/test_*.py`: claim every case of `test/spec/**` and `test/integration/**`; CLI/bundling/compilation suites claimed N-A with reason (JS packaging) or adapted to `bpmn-io lint`; oracle differential on canonical reports for every bpmnlint test diagram.
   - [x] Lot gate.
 - [x] **Lot 14 — Built-in rules, configs, CLI, docs**
-  - [ ] `src/bpmn_io/lint/rules/*.py` — all 29 rules from `bpmnlint/rules/*.js`; `src/bpmn_io/lint/config/{all,recommended,correctness}.py` from `config/*.js`.
-  - [ ] `tests/lint/rules/test_*.py`: one claimed case per RuleTester case (full title), byte-exact messages; oracle differential for every rule diagram.
-  - [ ] `bpmn-io lint <file> [--config NAME] [--json]` with stable exit codes (0 clean, 1 errors) + tests; README (lint section, upstream table), CHANGELOG 0.2.0.
+  - [x] `src/bpmn_io/lint/rules/*.py` — all 29 rules from `bpmnlint/rules/*.js`; `src/bpmn_io/lint/config/{all,recommended,correctness}.py` from `config/*.js`.
+  - [x] `tests/lint/rules/test_*.py`: one claimed case per RuleTester case (full title), byte-exact messages; oracle differential for every rule diagram.
+  - [x] `bpmn-io lint <file> [--config NAME] [--json]` with stable exit codes (0 clean, 1 errors) + tests; README (lint section, upstream table), CHANGELOG 0.2.0.
   - [x] Lot gate.
 - [ ] **Lot 15 — Release 0.2.0**
-  - [ ] `port_coverage.py --strict` 100 % over all suites incl. bpmnlint; full gate green; CI green on the PR.
-  - [ ] Version `0.2.0` (BR02-EX3); EVOL D9 amended (BR02-EX2).
+  - [x] `port_coverage.py --strict` 100 % over all suites incl. bpmnlint; full gate green; CI green on the PR.
+  - [x] Version `0.2.0` (BR02-EX3); EVOL D9 amended (BR02-EX2).
   - [ ] Mark the PR ready, merge commit (NO squash, NO rebase), preserve branch, tag `v0.2.0` on `main`, verify the PyPI release and the GitHub release.
   - [ ] Move this file to `plan/done/02-BRANCH_lint.md`.
