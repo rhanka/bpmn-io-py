@@ -4,6 +4,31 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] - 2026-10-14
+
+### Fixed
+
+- bpmnlint isometry on definitions without root elements: the `global` and
+  `no-bpmndi` rules now reproduce the upstream `rule-error` reports
+  (`Cannot read properties of undefined (reading 'filter')`, resp.
+  `'map'`) instead of silently reporting nothing. JS property access in
+  lint rules now distinguishes the direct read (`strict_get`, returning
+  `UNDEFINED` when unset) from `get()` on an `isMany` property and from
+  `|| []` fallbacks (full audit of every `prop_list()` call site in
+  `docs/naming.md`).
+- `bpmn-io lint --json` now omits report keys whose value is `undefined`
+  (JSON.stringify semantics) instead of writing `"id": null` for elements
+  without an id. The library API still exposes `UNDEFINED`.
+
+### Changed
+
+- The lint oracle differential now covers every vendored `.bpmn` diagram
+  (394 files) under both `bpmnlint:recommended` and `bpmnlint:all`, with
+  the same parse outcome asserted on both sides.
+- Dependabot no longer opens updates on vendored upstream manifests
+  (`tests/upstream/**` excluded); `/tests/oracle` remains the
+  upstream-moved signal.
+
 ## [0.1.0] - 2026-09-24
 
 ### Added

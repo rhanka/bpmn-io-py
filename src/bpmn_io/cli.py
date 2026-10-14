@@ -241,11 +241,16 @@ def _lint_moddle(config: dict[str, Any]) -> BpmnModdle | None:
 
 
 def _jsonable(value: object) -> object:
-    """Convert lint reports to JSON-safe data (``UNDEFINED`` becomes ``None``)."""
+    """Convert lint reports to JSON-safe data (JSON.stringify semantics).
+
+    Object keys whose value is ``UNDEFINED`` are omitted (upstream
+    ``JSON.stringify`` drops them); ``UNDEFINED`` array entries become
+    ``None`` (``null``). The library API keeps ``UNDEFINED`` untouched.
+    """
     if value is UNDEFINED:
         return None
     if isinstance(value, dict):
-        return {key: _jsonable(item) for key, item in value.items()}
+        return {key: _jsonable(item) for key, item in value.items() if item is not UNDEFINED}
     if isinstance(value, (list, tuple)):
         return [_jsonable(item) for item in value]
     return value

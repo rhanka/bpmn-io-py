@@ -11,6 +11,8 @@ updates:
     groups:
       dev-tooling: { patterns: ["*"] }
   # The oracle pins the upstream JS packages: a Dependabot PR here IS the "upstream moved" signal.
+  # Vendored upstream manifests (tests/upstream/**) are pinned by UPSTREAM.lock and never edited.
   - package-ecosystem: npm
     directory: /tests/oracle
     schedule: { interval: daily }
+    exclude-paths: ["tests/upstream/**"]

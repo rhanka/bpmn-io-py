@@ -106,7 +106,11 @@ async function lintReports({ xml, config }) {
 async function lintReportsBatch({ items }) {
   const results = [];
   for (const item of items) {
-    results.push(await lintReports(item));
+    try {
+      results.push({ reports: await lintReports(item) });
+    } catch (error) {
+      results.push({ error: error?.message ?? String(error) });
+    }
   }
   return results;
 }
