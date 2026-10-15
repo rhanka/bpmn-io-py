@@ -1,0 +1,5 @@
+# Byte identity must hold on every OS: files whose SHA-256 is pinned
+# (vendored upstream sources read as golden bytes, contract artifacts and
+# corpus cases verified by manifest hashes) check out unconverted everywhere.
+tests/upstream/** -text
+contracts/** -text

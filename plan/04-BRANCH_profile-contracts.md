@@ -18,7 +18,7 @@ Deliver the Python library's share of lot 0 of the `profile-mechanism/1` design 
 ## Branch Scope Boundaries (MANDATORY)
 - **Allowed Paths**: `contracts/**`, `CONTRACTS.toml`, `CONTRACTS.lock`, `scripts/sync_contracts.py`, `tests/contracts/**`, `tests/oracle/**` (except `tests/oracle/node_modules/**`), `spec/SPEC_PROFILE_MECHANISM_PY.md`, `docs/profile.md`, `plan/04-BRANCH_profile-contracts.md`
 - **Forbidden Paths**: `src/**`, `tests/upstream/**`, `UPSTREAM.toml`, `UPSTREAM.lock`, `LICENSE`, `plan/done/**`, `tmp/**`
-- **Conditional Paths**: `.github/workflows/ci.yml` (BR04-EX1), `pyproject.toml` (BR04-EX2), `THIRD_PARTY_NOTICES.md` (BR04-EX3)
+- **Conditional Paths**: `.github/workflows/ci.yml` (BR04-EX1), `pyproject.toml` (BR04-EX2), `THIRD_PARTY_NOTICES.md` (BR04-EX3), `.gitattributes` (BR04-EX4)
 
 ## Feedback Loop
 - `acknowledge` BR04-EX1: CI runs `scripts/sync_contracts.py --check` and the contract corpus oracle tests. Rollback: `git checkout`.
@@ -41,6 +41,7 @@ Deliver the Python library's share of lot 0 of the `profile-mechanism/1` design 
 - `acknowledge` BR04-EX2 Lot 19: sdist `include` gains `contracts`, `CONTRACTS.toml`, `CONTRACTS.lock`; no runtime dependency added (`dependencies` stays empty). Rollback: `git checkout`.
 - `fix` Lot 19 supervisor correction 2026-10-15: `CONTRACTS.toml`, `CONTRACTS.lock` and `scripts/sync_contracts.py` named the private conductor folder (absolute local path). Fixed in a separate commit: the source is described neutrally (`conductor design folder, revision R3.1 (local, read-only)`), the folder location is NOT committed (copy mode takes `--source <dir>` or env `PROFILE_CONTRACTS_SOURCE`, never needed by `--check`), wording reworked to `conductor folder`, and the brand guard test now scans every git-tracked file outside `tests/upstream/**`, `tmp/**` and `plan/**` (only the guard's own `re.compile` pattern lines may spell a guarded token).
 - `acknowledge` end of mission (supervisor): do NOT open the PR at the end; stop after Lot 21 is green on CI. The supervisor opens the PR; Lot 22 review stays supervisor-driven.
+- `acknowledge` BR04-EX4 (supervisor correction 2): root `.gitattributes` pins byte identity (`tests/upstream/** -text`, `contracts/** -text`) so pinned SHA-256 holds on every OS (Windows `core.autocrlf` converted vendored `.js` to CRLF and broke the recommended-source hash). Bytes are NOT normalised in tests. Rollback: `git checkout`.
 
 ## Plan / Todo (lot-based)
 - [x] **Lot 19 — Pin the R3.1 contract artifacts**
