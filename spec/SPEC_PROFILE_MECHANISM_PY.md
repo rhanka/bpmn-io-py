@@ -1,0 +1,296 @@
+# SPEC PROFILE MECHANISM PY — Python binding of `profile-mechanism/1` (lot 0)
+
+Status: binding contract for `bpmn_io.profile` (target 0.3.0). This spec produces
+**no interpreter**: no loader, compiler, evaluator, validator, encoder, lint bridge
+or CLI code. It freezes the Python-side meaning of every R3.1 contract so lots 1–2
+can implement against it. Normative design authority is DESIGN.md R3.1 (SHA-256
+`020270f65e0be7b119365bb402ff062cf406fca92940709dd987d9dfdc8173f8`), its
+`CONVERGENCE-R3.md` lot-0 errata, and `CONSENSUS-R3-bpmn-py.md` item M1. Pinned
+contract bytes live in `contracts/profile-mechanism/1/` (`CONTRACTS.toml` /
+`CONTRACTS.lock`). Where this spec and a pinned byte disagree, the byte wins and
+the mismatch is reported in the plan Feedback Loop, never patched locally.
+
+Naming follows `docs/naming.md`: DESIGN camelCase operations become snake_case
+functions, types stay PascalCase, BPMN property names are unchanged. All
+computation is synchronous (async-to-sync mechanical mapping); editor scheduling
+from DESIGN §8 stays out of the headless scope.
+
+## 1. JSON Schema 2020-12 validation strategy (consensus M1)
+
+`bpmn_io.profile` ships a dedicated standard-library validator for the closed
+`profile-mechanism/1` schema subset, with no runtime dependency. `jsonschema`
+stays a test-only differential reference against Ajv.
+
+### 1.1 Closed keyword set
+
+The supported keywords are exactly the 28 DESIGN §2.1 names:
+
+`$schema`, `$id`, `$comment`, `title`, `$defs`, `$ref`, `type`, `properties`,
+`required`, `additionalProperties` (Boolean closure only), `items`, `minItems`,
+`maxItems`, `uniqueItems`, `minLength`, `pattern`, `enum`, `const`, `minimum`,
+`maximum`, `exclusiveMinimum`, `exclusiveMaximum`, `allOf`, `anyOf`, `oneOf`,
+`not`, `if`, `then`, `else`. Boolean schemas are admitted.
+
+Audit result (verified against the pinned bytes before writing this spec): the
+three pinned schemas (`profile-mechanism-1`, `compiled-lint-options`,
+`neutral-provider-arguments`) use only these keywords, and every one of the 28
+is exercised by at least one of them. A supplied schema using any other keyword
+(`format`, `patternProperties`, `unevaluated*`, …) refuses schema loading with
+`profile-schema-keyword`. Visit schema positions only: a data property named
+`format` is not a keyword. Unknown regexes refuse with `profile-schema-pattern`.
+
+### 1.2 Pattern evaluation
+
+Python pattern validation MUST use `re.fullmatch` on the expression with its
+outer `^`/`$` anchors removed (equivalently `\Z` end). Rationale: Python `$`
+accepts a trailing newline, so `re.match`/`re.search` accept `"id\n"` where Ajv
+refuses it. The distinct pinned regex inventory is exactly these eight
+(displayed with schema anchors):
+
+~~~text
+^[A-Za-z_][A-Za-z0-9_.:/-]*$
+^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$
+^[a-z]{2}(?:-[A-Z]{2})?$
+^[0-9a-f]{64}$
+^[A-Za-z_][A-Za-z0-9_]*$
+^(?:/(?:[^~/]|~[01])*)*$
+^(?:bpmnlint:recommended|plugin:[A-Za-z_][A-Za-z0-9_.-]*/[A-Za-z_][A-Za-z0-9_.-]*)$
+^[A-Za-z_][A-Za-z0-9_.:/-]*/[1-9][0-9]*$
+~~~
+
+Corpus witnesses: rejected `"id\n"`, accepted `1.0`, rejected fractional `1.5`,
+rejected unregistered external `$ref` (lot 21).
+
+### 1.3 Scalar semantics (JSON Schema, not Python accidents)
+
+- `bool` is never `number`/`integer`, despite Python subclassing.
+- Integer means any finite number with zero fractional part: `1.0` in an
+  integer field is accepted (canonical form `1`); `1.5` refuses.
+- String length counts Unicode code points.
+- `enum`/`const`/`uniqueItems` compare JSON values structurally and distinguish
+  `true` from `1`.
+- The lexical checks of §2 still precede validation.
+
+### 1.4 Reference scope
+
+`$ref` resolves only within the current schema (`#/$defs/...`, including JSON
+Pointer escapes) or against an explicitly supplied, digest-pinned schema
+registry passed as `schema_bytes`. The profile schema is self-contained. The
+compiled-lint schema references one pinned external URN,
+`urn:profile-mechanism:1:profile#/$defs/rule`, which must be supplied
+explicitly; without that pin it refuses with `profile-schema-ref`. No
+filesystem or network resolution. Data failures validate as `profile-schema`.
+
+## 2. Strict lexical pre-parse (DESIGN §2.1)
+
+Before `json.loads`, reject with these codes (observed in the design's
+executable checks, applied here verbatim):
+
+| Check | Code |
+|---|---|
+| Duplicate decoded object keys (`"a"` vs `"a"`) | `profile-json-duplicate-key` |
+| Lone surrogates in decoded strings | `profile-unicode` |
+| Non-finite numeric tokens (including `1e400`) | `profile-number` |
+| Mathematically integral tokens outside ±9007199254740991 (including `9007199254740993` before rounding) | `profile-number` |
+| Malformed JSON otherwise | `profile-json` |
+
+Negative zero is accepted and canonicalizes to zero. Fractional binary64 values
+must be finite. A syntax parser cannot rely on a runtime accepting Infinity or
+silently rounding an unsafe integer.
+
+## 3. Canonical bytes `profile-c14n/2` (DESIGN §3.1)
+
+`H(x) = lowercase_hex(SHA256(UTF8(JCS(x))))`; `B(bytes)` is the same over raw
+bytes. JCS: UTF-16 code-unit key ordering, no insignificant whitespace, UTF-8
+without BOM, ECMAScript shortest binary64 number rendering, `-0` as `0`, JSON
+escaping, no Unicode normalization, no trailing newline in hashed bytes. Arrays
+keep order. Reject NaN/infinities, duplicate keys, lone surrogates.
+
+Normative number vectors (DESIGN §14.3): `1e21`→`1e+21`, `1e-7`→`1e-7`,
+`-0`→`0`, `5e-324`→`5e-324`. A key `U+10000` sorts before `U+E000` (UTF-16
+order); neither runtime may substitute its default scalar-key sort. Python
+deltas from `json.dumps`: integral floats render via `int` first (`1.0`→`1`),
+`-0.0`→`0`, keys sort by UTF-16 code units, `ensure_ascii=False`.
+
+`semanticRevision = H({tree, profileIdentity, bindings})` (acceptance context);
+`baseRevision` for ordinary operations is the input envelope revision; initial
+import and `viewRevision` follow §3.1 exactly.
+
+## 4. Identity `stable-id/1` (DESIGN §3.2)
+
+~~~text
+g_ + lowercase_hex_sha256(UTF8(JCS(["profile-mechanism/1", ownerId, slot, stableKey])))
+~~~
+
+Full-length digest. For an allocated create, `ownerId` is the explicitly
+evaluated argument, never inferred from the nearest container; the virtual root
+allocation owner is the literal `document-root/1`. Containment identity writes
+no id/slot/key/ownerId. Existing valid imported IDs survive; collisions refuse
+with `id-collision`, never suffix or overwrite. Authoring grammar
+`^[A-Za-z_][A-Za-z0-9_.-]{0,255}$` applies to native IDs and ID references.
+
+Pinned fixture vector (both runtimes agree): owner `Process_1`, slot `aid`,
+key `new-note` allocates
+`g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c`
+(`neutral-fixture.json`).
+
+## 5. Unicode case policy (UCD 15.0.0, no runtime `str.upper()`)
+
+Casing uses the pinned Unicode full default case mappings (multi-code-point
+mappings included), version 15.0.0, with no locale-dependent behavior and no
+normalization. Data source: Unicode Character Database 15.0.0. Candidate
+derived upper table held in the workbench tree: 1525 entries, version
+`15.0.0`, SHA-256 `257475a40a73bda0c0052b372cc0fc06cbf02c8ff3a12f4df2b757e41f42813d`
+(full mappings verified: `ß`→`SS`). Generation rule: unconditional full
+uppercase mapping per code point (single or multi-code-point result), keyed by
+code point; conditional locale-sensitive entries excluded. The symmetric lower
+table is generated by the same rule in lot 2. Vendoring the table requires the
+Unicode license attribution (plan BR04-EX3).
+
+## 6. Signature table (DESIGN §2.5, results §10.1)
+
+Pure operations return `PureResult`: success `{status: "ok", payload,
+diagnostics}`, refusal `{status: "refused", code, diagnostics}`. Document
+operations return `Result`: success `{status: "ok", operation, profileIdentity,
+baseRevision, revision, report, payload}`, refusal `{status: "refused",
+operation, profileIdentity?, baseRevision?, code, diagnostics, report}`.
+Python names are snake_case with identical fields.
+
+| DESIGN ABI | Python name | Inputs → payload |
+|---|---|---|
+| `loadProfile` | `load_profile` | `(data: bytes, *, schema_bytes, descriptor_pins, base_bytes, asset_bag, capabilities)` → `ValidatedProfile` |
+| `compileProfile` | `compile_profile` | `(validated, registry_set)` → `CompiledProfile` |
+| `evaluatePredicate` | `evaluate_predicate` | `(ast, read_context, bindings)` → `bool` |
+| `select` | `select` | `(selector, read_context, bindings)` → ordered `ElementHandle[]` |
+| `planRecipe` | `plan_recipe` | `(recipe, read_context, params, authority)` → `WritePlan` |
+| `applyPlan` | `apply_plan` | `(plan, staged_tree, staged_envelope)` → `ChangeReport` |
+| `complete` | `complete` | `(compiled, envelope, mode)` → `DocumentEnvelope` |
+| `normalize` | `normalize` | `(compiled, envelope, placement_intent?)` → `{envelope, placements, report}` |
+| `validate` | `validate` | `(compiled, envelope, *, phase, readiness_policy)` → `ValidationReport` |
+| `resolveTheme` | `resolve_theme` | `(compiled, envelope, layout, theme_id, overrides, di_styles)` → `RenderData` |
+| `mapExport` | `map_export` | `(compiled, envelope, layout, r, format)` → `PreparedArtifact` |
+| `serializePrepared` | `serialize_prepared` | `(prepared, pinned_writer_options)` → `{format, bytes, digest, id_map, capability}` |
+| `prepareExport` | `prepare_export` | `(compiled, envelope, options)` → `PreparedArtifact` (synchronous in Python) |
+
+`validate` here is `bpmn_io.profile.validate`, distinct from the schema
+validator of §1. `ReadContext` carries only profile identity, descriptor /
+effective-base index, immutable native tree/index, immutable source
+coordinates, support bindings, stage and validated command inputs, plus
+immutable layout/R bindings for theme/export evaluation.
+
+`Report/2` entries carry exactly `code, severity, classification, stage, ruleId,
+messageKey, disposition`, `source`/`result` coordinates
+(`domain, pointer, targetId, provenance`), optional `originalType?, property?,
+beforePresent, before?, afterPresent, after?, causedBy?, pageId?,
+occurrenceKey?, emittedType?, legacyCode?, lossClass?`. `idMap` sorts by
+`(domain, pageId, occurrenceKey, sourceId, resultId)` in UTF-16. Capability is
+the worst occurrence/page/format outcome (`engine-byte-compatible < structural
+< unsupported`).
+
+## 7. Reconciliation with the pinned schemas
+
+Checked field by field before writing this spec; no mismatch found:
+
+- Compiled lint options (§6.3): the pinned schema requires exactly the seven
+  keys `mechanismVersion, profileDigest, phase, readinessPolicy, compiledRules,
+  bindings, severityPolicyDigest`, and `compiledRules` items resolve through
+  the pinned profile URN (§1.4).
+- Provider arguments (§11): the pinned schema requires exactly `id, adapter,
+  apiVersion, allowedKeywords, optionalTransport, maxOutputTokens, models,
+  qualification, argumentSchemaDigest`.
+- Registry: `providerAdapters` (id + `argumentSchemaDigest`),
+  `regionTokenPattern`/`regionTokenSchema`, `renderTokens` — as consumed by
+  §§2.5/9.3.
+- Profile `$defs` (27: `action, citation, exportSpec, field, glyph, lintPhase,
+  lintSetting, literalEntry, message, migration, namedText, namedValue, notion,
+  parameter, pathCommand, pin, predicate, producerDelta, provider, recipe,
+  resource, rule, selector, surface, theme, value, write`) cover the §2
+  operator/action tables; compiler rules CR-01–CR-14 and the action/write
+  matrix are enforced by the lot-2 implementation, not the syntax schema.
+
+Boundary (not a mismatch): `DocumentEnvelope/1`, `Snapshot/1`, `Layout/1`,
+`RenderData/1`, `Result/1`, `Report/2` and the §3.3 compatibility matrix are
+DESIGN-prose contracts with no JSON Schema pinned in lot 0 — they govern
+operation results, not profile authoring data. Their field tables above are the
+binding until lot 2 decides whether they need pinned schemas.
+
+## 8. Lot 1 interface (copied from DESIGN R3.1, not re-decided)
+
+New profile entry point, distinct from the literal `bpmn-io lint`:
+
+- Python: `bpmn_io.profile.lint(envelope, compiled, *, phase, readiness_policy)`
+  returning the unified `Result/1`. Profile ok holds iff the operation
+  succeeded and no unresolved unified error entry remains; counts are over
+  unresolved unified info/warn/error entries.
+- CLI: `bpmn-io profile lint --input envelope.json --profile profile.json
+  --schema profile-mechanism-1.schema.json --base base.json --descriptors
+  descriptors.json --registry registry.json --phase post-normalize
+  --readiness-policy accept --json`. Each path is an explicit local pinned
+  input; `--phase` accepts only the five §6.2 stages (`import, pre-normalize,
+  post-normalize, post-layout, release`); `--readiness-policy` is `draft` or
+  `accept`; `--json` writes one `Result/1` to stdout, diagnostics to stderr.
+  Exit 0 means ok, 1 means refused/remaining error, 2 means invalid invocation.
+  CLI implementation and exit-code tests remain lot 1.
+- `StaticResolver` over an explicit pinned allowlist (or an equivalently
+  filtering wrapper); unrestricted `importlib` fallback is prohibited in the
+  profile path. Unknown names resolve to `None` (adapter: `lint-rule-unknown` /
+  `lint-config-unknown`); thrown lookup exceptions from a wrapped Node-style
+  resolver are caught and mapped the same way. Cache key: exact upstream
+  artifact digest, pinned resolver-registry digest, normalized package name,
+  rule-or-config kind, export name — immutable factories/configs only, never
+  configured rule instances or findings; options, profile digest and severity
+  policy digest stay per stage/evaluation. A fresh `Linter` and fresh rule
+  instances per stage/evaluation, so A→B→A cannot reuse B options.
+- Severity transport: numeric `0=off, 1=warn, 2=error, 3=info`; effective `info`
+  travels as `warn` and is restored by the adapter in both runtimes (adapter
+  choice, pinned by the lot-1 transport vector).
+
+## 9. Refusal code inventory (verbatim from DESIGN)
+
+Schema/data: `profile-schema`, `profile-schema-keyword`,
+`profile-schema-pattern`, `profile-schema-ref`, `profile-schema-version`,
+`profile-symbol`, `profile-type`, `profile-cycle`, `profile-value-context`,
+`profile-selector-order`, `profile-selector-property`, `profile-bounds`,
+`profile-create-identity`, `profile-bind-fallbacks`, `profile-action-phase`,
+`profile-ui-parameters`, `profile-export-field`, `profile-migration-endpoint`,
+`profile-write-set`, `profile-write-conflict`, `profile-capability`,
+`profile-resource-missing`, `profile-producer`, `profile-pin`,
+`profile-notion-kind`, `profile-glyph-shape`, `profile-ambiguous-notion`,
+`profile-ambiguous-binding`, `profile-open`. Lexical: `profile-json`,
+`profile-json-duplicate-key`, `profile-unicode`, `profile-number`.
+Compatibility (§3.3): `document-version-unsupported`, `profile-metadata-missing`,
+`profile-metadata-conflict`, `mechanism-version-unsupported`,
+`document-mechanism-unsupported`, `mechanism-migration-required`,
+`base-mismatch`, `descriptor-mismatch`, `profile-major-mismatch`,
+`profile-digest-mismatch`, `profile-patch-migration-required`,
+`profile-patch-downgrade-required`, `profile-minor-migration-required`,
+`profile-minor-downgrade-required`, `profile-source-unavailable`.
+Identity/graph: `id-collision`, `descriptor-role-unknown`,
+`support-binding-conflict`, `io-set-selection-required`,
+`responsibility-preservation-required`, `normalization-not-fixed`,
+`reference-dangling`. Lint adapter (§6): `lint-config-incomplete`,
+`lint-config-unknown`, `lint-rule-unknown`, `lint-config-cycle`,
+`lint-rule-error`. Export/render (§§9–10): `export-field-invalid`,
+`export-parent-order`, `export-parent-invalid`, `export-id-ambiguous`,
+`export-occurrence-ambiguous`, `export-format-unsupported`, `legacy-unmapped`,
+`render-stale`, `render-unsupported`, `render-region-missing`,
+`render-style-conflict`, `render-token-invalid`, `theme-geometry-conflict`,
+`snapshot-schema`, `snapshot-stale`, `transaction-reentrant`,
+`transaction-entry-unsupported`, `input-conflict`, `document-not-loaded`,
+`operation-cancelled`, `operation-error`, `canvas-disposed`,
+`resource-limit`. Call/migration evidence: `call-kind-ambiguous`,
+`call-kind-marker-duplicate`, `call-kind-marker-invalid`, `call-kind-conflict`,
+`call-target-empty`, `call-target-type`, `call-target-required`,
+`profile-migration-endpoint`, `ambiguous-evidence`. Losses use
+`export-loss/<class>` with `lossClass` from the closed §10.2 set.
+
+## 10. Open points for lots 1–2 (not decided here)
+
+- Symmetric lower-case table generated by the §5 rule, with corpus vectors.
+- Whether operation envelopes (`Result/1`, `Report/2`, `Snapshot/1`, R) need
+  pinned JSON Schemas or stay prose contracts with golden corpus cases.
+- `prepare_export` orchestration detail (C → lint → N → layout → R → map under
+  accept policy) and receipt format, lot 1.
+- Call-kind discriminator encoding and producer-base admission stay governed by
+  the design's owner gates; this spec quotes neither the marker text nor its
+  carrier field, and adds no new policy.
