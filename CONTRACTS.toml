@@ -1,0 +1,41 @@
+# Pinned profile-mechanism/1 contract artifacts (lot 0, DESIGN.md R3.1).
+# `scripts/sync_contracts.py --source <conductor-folder>` copies the listed
+# files from the local read-only conductor folder after verifying the DESIGN
+# hash and every conductor-manifest line, and records per-file sha256 digests
+# in CONTRACTS.lock. The folder location is deliberately NOT pinned here
+# (copy mode reads --source or env PROFILE_CONTRACTS_SOURCE).
+# `scripts/sync_contracts.py --check` is offline (CI): it compares TOML pins,
+# lock digests and vendored bytes, like `scripts/sync_upstream.py --check`.
+
+[profile-mechanism]
+source = "conductor design folder, revision R3.1 (local, read-only)"
+design_file = "DESIGN.md"
+design_sha256 = "020270f65e0be7b119365bb402ff062cf406fca92940709dd987d9dfdc8173f8"
+manifest_file = "MANIFEST-R31.sha256"
+manifest_sha256 = "5ef4f9142c2d3c8377cf893c5a2271e06a0e4bb6fce524c493058bbee9102af6"
+dest = "contracts/profile-mechanism/1"
+artifacts = [
+  "profile-mechanism-1.schema.json",
+  "compiled-lint-options.schema.json",
+  "neutral-provider-arguments.schema.json",
+  "neutral-profile.json",
+  "neutral-grid-profile.json",
+  "neutral-grid-profile.v1.json",
+  "neutral-base.json",
+  "neutral-descriptors.json",
+  "neutral-metrics.json",
+  "neutral-registry.json",
+  "neutral-fixture.json",
+  "neutral-grid-fixture.json",
+  "neutral-support-fixture.R31.json",
+  "neutral-chain-rule.json",
+  "lint-policy-r3.json",
+  "bpmnlint-11.15.0-recommended.json",
+  "r3-digest-vectors.json",
+]
+
+# Migration source pinned by neutral-profile.json migrations[0].from. It is absent
+# from the conductor manifest, so it is pinned here by its raw SHA-256 instead.
+[profile-mechanism.extra."neutral-profile.R2.json"]
+sha256 = "3640934c2c17894e150f93b6915f8f22fd94071f5589f924f01a37c080482801"
+reason = "migration source pinned by neutral-profile.json migrations[0].from"
