@@ -1,0 +1,94 @@
+{
+  "comparators": [
+    {
+      "id": "ajv-2020",
+      "kind": "reference",
+      "note": "Ajv 8.17.1, 2020 build, design validator options (strict true, strictRequired false, allowUnionTypes, allErrors)"
+    },
+    {
+      "id": "python-jsonschema",
+      "kind": "reference",
+      "note": "jsonschema 4.26 with a fullmatch pattern override; the stock re.search divergence is a documented expected difference per case, never hidden"
+    },
+    {
+      "id": "design-subset-audit",
+      "kind": "reference",
+      "note": "closed 29-keyword rule, spec section 1.1"
+    },
+    {
+      "id": "design-lexical-probe",
+      "kind": "reference",
+      "note": "tests/oracle/profile_references.mjs lexical op implementing DESIGN section 2.1"
+    },
+    {
+      "id": "rfc8785-canonicalize",
+      "kind": "reference",
+      "note": "canonicalize 5.1.0"
+    },
+    {
+      "id": "node-crypto",
+      "kind": "reference",
+      "note": "Node crypto SHA-256 digests"
+    },
+    {
+      "id": "python-hashlib",
+      "kind": "reference",
+      "note": "Python hashlib SHA-256 digests"
+    },
+    {
+      "id": "profile-c14n/2",
+      "kind": "mechanism",
+      "note": "canonical digest definition, DESIGN section 3.1"
+    },
+    {
+      "id": "stable-id/1",
+      "kind": "mechanism",
+      "note": "allocator definition, DESIGN section 3.2"
+    },
+    {
+      "id": "profile-report/2",
+      "kind": "format",
+      "note": "unified report shape, DESIGN section 10.1"
+    },
+    {
+      "id": "lot-1-lint",
+      "kind": "deferred",
+      "note": "executed in lot 1; lot 0 checks shape only"
+    }
+  ],
+  "corpusVersion": "1.0.0",
+  "files": {
+    "profile-parity-corpus/1/cases/identity-stable-id.json": "59ca51c94f5010267b2991b74fc42d7d04a004ed3890ef8c546ec016301df84f",
+    "profile-parity-corpus/1/cases/jcs-escapes.json": "71a5af8cb8735f034b8411a44cc1e46090083f235509b98d1629c0020f294fdc",
+    "profile-parity-corpus/1/cases/jcs-key-order.json": "2a2b0ddc4eeaede4cdac346ae46d5b048b8f25d051b41785eaddbb3e4e491a84",
+    "profile-parity-corpus/1/cases/jcs-numbers.json": "bb22448419b5d26311f475995cb5bf3f357e90ca0983ee20f0d2018766fa4bbf",
+    "profile-parity-corpus/1/cases/lexical-duplicate-keys.json": "e80d676c8ec87622237ed49d45cc7afacc5e961e7ddc5d587a05507103143754",
+    "profile-parity-corpus/1/cases/lexical-lone-surrogate.json": "91c50aedf5f18a77a077bbf03759ef5bbca410df42cb3a5fa71a385db3c923ed",
+    "profile-parity-corpus/1/cases/lexical-negative-zero.json": "1985e4adbc558d886e23f2eec4e73db42421761e12ef0c452babc0f60b39a9e7",
+    "profile-parity-corpus/1/cases/lexical-nonfinite.json": "6a1317b6a5a1cfd094fbe492490dad6ddba8368efc35c0e34e40dd6f5c667edd",
+    "profile-parity-corpus/1/cases/lexical-unsafe-integer.json": "484810960757c8751f827f71a4a97ba84594ac2acff698181a729ce6a3ea725b",
+    "profile-parity-corpus/1/cases/lint-alternating-profiles.json": "ffee88821fa36459281a5cf28bb25a37c8fadb76452954afd786e69af98a76c5",
+    "profile-parity-corpus/1/cases/lint-extends-cycle.json": "3a555cff08084af99c6d0df132b602abf66f83ef4b03b706b8cf98cb8a594b60",
+    "profile-parity-corpus/1/cases/lint-info-through-warn.json": "e2465ab1db8b251a214220e5569c9b4d78d935bb0bc21d3e5c505833e939b329",
+    "profile-parity-corpus/1/cases/lint-pointer-escaping.json": "997b8497ac3c0e15f73be8cae4787d94f7e9e8d0c602b52ff70502de4821c836",
+    "profile-parity-corpus/1/cases/lint-unknown-lookup-none.json": "906c557637730127c28ed34ff50d5e740ecd8b4bce3fa87705adfd5cdbd985c4",
+    "profile-parity-corpus/1/cases/lint-unknown-lookup-thrown.json": "5fc2c11aa7be5a131390bab26e3c2343f9a3dcd872ae3fc2166eec8ac9c0d5b8",
+    "profile-parity-corpus/1/cases/lint-warning-through-error.json": "234bb75352bea7cb6d0df9669bef8d8a7709011bc32e42901301ac88211d8f4e",
+    "profile-parity-corpus/1/cases/lint-whitelist-escape.json": "0bd1846712d24e352a56958881c3b6bca35c00f0d830ffac2a0e641d2e2373d5",
+    "profile-parity-corpus/1/cases/schema-external-ref-pinned.json": "51896e0e59a7548d1bd97758025ee7ab20d6057a3d75a507eb6aeba2771e8c18",
+    "profile-parity-corpus/1/cases/schema-external-ref-unknown.json": "cdf0852e2baf9bb874e43a9e66bb7d73867e6e177693eda9bf1e5f092e2a9f81",
+    "profile-parity-corpus/1/cases/schema-id-newline.json": "c9bf3354764280495e8209732a20666a5fc3692af797f8336557c0de5d9fbc56",
+    "profile-parity-corpus/1/cases/schema-integer-fraction.json": "78c7e1a4e6b5d5dd9dd4c644f1db643038a671685f4544e924b9dbcf66ab24c9",
+    "profile-parity-corpus/1/cases/schema-integer-one-zero.json": "bf9a39a8536fda13bcd04cf2cc321bc082bd05e1f337b8e0a586d6575f92ec42",
+    "profile-parity-corpus/1/cases/schema-keyword-subset.json": "3bf7f4146eb48c7760449e573bae136bfabc9c84e759d1c3bd1471ede96b5412"
+  },
+  "format": "profile-parity-corpus/1",
+  "notes": [
+    "profileArtifact null marks mechanism-level vectors independent of any single profile.",
+    "files covers every file under profile-parity-corpus/1/ except manifest.json itself (a manifest cannot pin its own bytes).",
+    "The corpus manifest hash pinned by consumers is SHA-256 over manifest.json, recorded at tag time.",
+    "Expected outputs are goldens authored from the DESIGN text and checked against the reference comparators, never generated by an implementation."
+  ],
+  "sourceRepository": "rhanka/bpmn-io-py",
+  "sourceTag": "profile-corpus-v1.0.0"
+}
