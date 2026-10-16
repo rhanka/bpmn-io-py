@@ -2,14 +2,12 @@
 
 Status: binding contract for `bpmn_io.profile` (target 0.3.0). This spec produces
 **no interpreter**: no loader, compiler, evaluator, validator, encoder, lint bridge
-or CLI code. It freezes the Python-side meaning of every R3.1 contract so lots 1–2
-can implement against it. Normative design authority is DESIGN.md R3.1 (SHA-256
-`020270f65e0be7b119365bb402ff062cf406fca92940709dd987d9dfdc8173f8`), its
-`CONVERGENCE-R3.md` lot-0 errata, and `CONSENSUS-R3-bpmn-py.md` item M1. The
-R3.2 lexical erratum (DESIGN §2.1.1, normative codes and precedence) and the R3.3
-compatibility erratum (DESIGN §3.3, P1/P2 with two new codes; DESIGN.md R3.3
-SHA-256 `48139f5fd5bd789eacbf271081a95432c54d8361b1e52404e3443a25fa65782f`)
-are authoritative for §§2/9.1 as noted there. Pinned
+or CLI code. It freezes the Python-side meaning of every R3.3 contract so lots 1–2
+can implement against it. Normative design authority is DESIGN.md R3.3 (SHA-256
+`48139f5fd5bd789eacbf271081a95432c54d8361b1e52404e3443a25fa65782f`), through the
+lineage R3.1 (SHA-256 `020270f65e0be7b119365bb402ff062cf406fca92940709dd987d9dfdc8173f8`)
+→ R3.2 lexical erratum (DESIGN §2.1.1) → R3.3 compatibility erratum (DESIGN §3.3),
+with `CONVERGENCE-R3.md` lot-0 errata and `CONSENSUS-R3-bpmn-py.md` item M1. Pinned
 contract bytes live in `contracts/profile-mechanism/1/` (`CONTRACTS.toml` /
 `CONTRACTS.lock`). Where this spec and a pinned byte disagree, the byte wins and
 the mismatch is reported in the plan Feedback Loop, never patched locally.
@@ -256,7 +254,7 @@ pinned since R3.3 (`compatibility-codes.json`, 20 codes;
 `compatibility-verdict.schema.json`, `refusalCode` enum plus `ok`/`refused`
 shape); the §9.1 binding applies them in DESIGN row order with P1/P2.
 
-## 8. Lot 1 interface (copied from DESIGN R3.1, not re-decided)
+## 8. Lot 1 interface (copied from DESIGN R3.3, not re-decided)
 
 New profile entry point, distinct from the literal `bpmn-io lint`:
 
