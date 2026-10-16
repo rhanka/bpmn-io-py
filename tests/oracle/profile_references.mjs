@@ -184,20 +184,14 @@ function lexicalCheck(text) {
   }
   if (r === 'number') return code('profile-number');
   if (r !== true || i !== tokens.length) return code('profile-json');
+  // DESIGN §2.1.1 step 3: the traversal above already decoded every string
+  // token and checked its Unicode scalars, so any remaining whole-text grammar
+  // failure (for example leading U+00A0 skipped by the pre-scan) is
+  // profile-json, never profile-unicode.
   try {
-    const value = JSON.parse(text);
-    const scan = (x) => {
-      if (typeof x === 'string') {
-        for (const c of x) {
-          const n = c.codePointAt(0);
-          if (n >= 0xd800 && n <= 0xdfff) throw new Error('surrogate');
-        }
-      } else if (Array.isArray(x)) x.forEach(scan);
-      else if (x !== null && typeof x === 'object') Object.values(x).forEach(scan);
-    };
-    scan(value);
+    JSON.parse(text);
   } catch {
-    return code('profile-unicode');
+    return code('profile-json');
   }
   return { status: 'ok' };
 }

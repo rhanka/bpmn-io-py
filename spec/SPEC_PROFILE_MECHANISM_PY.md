@@ -105,12 +105,15 @@ the same profile text:
 | Duplicate decoded object keys (`"a"` vs `"a"`) | `profile-json-duplicate-key` |
 | Lone surrogates in decoded strings | `profile-unicode` |
 | Non-finite numeric tokens (including `1e400`) | `profile-number` |
-| Mathematically integral tokens outside ±9007199254740991 (including `9007199254740993` before rounding) | `profile-number` |
+| Number tokens whose binary64 conversion (ECMAScript `Number`) is non-finite, or integral and outside ±9007199254740991 (DESIGN:92) | `profile-number` |
 | Malformed JSON otherwise | `profile-json` |
 
 Negative zero is accepted and canonicalizes to zero. Fractional binary64 values
-must be finite. A syntax parser cannot rely on a runtime accepting Infinity or
-silently rounding an unsafe integer.
+must be finite; a token whose converted binary64 value is integral is judged by
+the integer rule above even when the token itself is not mathematically
+integral (`9007199254740991.5` converts to the unsafe integer
+`9007199254740992`). A syntax parser cannot rely on a runtime accepting
+Infinity or silently rounding an unsafe integer.
 
 ## 3. Canonical bytes `profile-c14n/2` (DESIGN §3.1)
 
