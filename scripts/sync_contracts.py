@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Vendor profile-mechanism/1 contract artifacts at a pinned R3.1 revision.
+"""Vendor profile-mechanism/1 contract artifacts at a pinned R3.3 revision.
 
 Usage:
   scripts/sync_contracts.py --source <conductor-folder>
@@ -7,7 +7,7 @@ Usage:
 
 Pins live in CONTRACTS.toml at the repository root. The conductor folder is
 read-only: this script copies bytes and verifies them against the conductor
-manifest (MANIFEST-R31.sha256) before writing; it never writes back there.
+manifest (MANIFEST-R33.sha256) before writing; it never writes back there.
 The folder location is deliberately NOT committed: copy mode takes it from
 ``--source`` (or env ``PROFILE_CONTRACTS_SOURCE``), while ``--check`` is
 offline (like scripts/sync_upstream.py --check) and never needs it.
