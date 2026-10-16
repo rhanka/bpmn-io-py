@@ -41,3 +41,13 @@ artifacts = [
 [profile-mechanism.extra."neutral-profile.R2.json"]
 sha256 = "3640934c2c17894e150f93b6915f8f22fd94071f5589f924f01a37c080482801"
 reason = "migration source pinned by neutral-profile.json migrations[0].from"
+
+# R3.3 addendum (same pattern as the R3.1 extra pin): the public matrix-vector
+# variant, verified line by line against a second conductor manifest. The
+# non-public bytes its manifest line replaces are never vendored here.
+[profile-mechanism.addendum]
+manifest_file = "MANIFEST-R33-ADDENDUM.sha256"
+manifest_sha256 = "1588c8a1f1818e84647359de4d9c90ff6382b8404d128947f66c858b65963222"
+artifacts = [
+  "r33-matrix-vectors.public.json",
+]

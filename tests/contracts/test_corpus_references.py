@@ -48,7 +48,9 @@ CASE_KEYS = frozenset(
         "comparatorIds",
     }
 )
-OPERATIONS = frozenset({"loadProfile", "profile-c14n/2", "stable-id/1", "validate"})
+OPERATIONS = frozenset(
+    {"loadProfile", "profile-c14n/2", "stable-id/1", "validate", "check_compatibility"}
+)
 
 
 def _node() -> str:
@@ -154,7 +156,7 @@ def test_manifest_covers_every_corpus_file() -> None:
         assert set(case) >= CASE_KEYS - {"commandArtifact"}, f"missing keys in {rel}"
         assert case["operation"] in OPERATIONS, f"unknown operation in {rel}"
         status = case["expectedStatus"]
-        assert status == "ok" or (
+        assert status in {"ok", "refused"} or (
             status.startswith("refused:") and len(status) > len("refused:")
         ), f"bad status in {rel}"
         assert set(case["comparatorIds"]) <= comparator_ids, f"unknown comparator in {rel}"

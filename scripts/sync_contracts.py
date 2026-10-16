@@ -8,6 +8,10 @@ Usage:
 Pins live in CONTRACTS.toml at the repository root. The conductor folder is
 read-only: this script copies bytes and verifies them against the conductor
 manifest (MANIFEST-R33.sha256) before writing; it never writes back there.
+Files listed under [profile-mechanism.addendum] are verified the same way
+against a second conductor manifest (for example MANIFEST-R33-ADDENDUM.sha256
+for the public matrix-vector variant); the non-public bytes it replaces are
+never vendored here.
 The folder location is deliberately NOT committed: copy mode takes it from
 ``--source`` (or env ``PROFILE_CONTRACTS_SOURCE``), while ``--check`` is
 offline (like scripts/sync_upstream.py --check) and never needs it.
@@ -60,16 +64,28 @@ def _expected_files(section: dict[str, object]) -> dict[str, str]:
     dest = str(section["dest"])
     artifacts = section["artifacts"]
     extra = section.get("extra", {})
+    addendum = section.get("addendum", {})
     if not isinstance(artifacts, list) or not all(isinstance(a, str) for a in artifacts):
         msg = "CONTRACTS.toml: [profile-mechanism] artifacts must be a list of str"
         raise SystemExit(msg)
     if not isinstance(extra, dict):
         msg = "CONTRACTS.toml: [profile-mechanism.extra] must be a table"
         raise SystemExit(msg)
+    if not isinstance(addendum, dict):
+        msg = "CONTRACTS.toml: [profile-mechanism.addendum] must be a table"
+        raise SystemExit(msg)
+    addendum_artifacts = addendum.get("artifacts", [])
+    if not isinstance(addendum_artifacts, list) or not all(
+        isinstance(a, str) for a in addendum_artifacts
+    ):
+        msg = "CONTRACTS.toml: [profile-mechanism.addendum] artifacts must be a list of str"
+        raise SystemExit(msg)
     expected: dict[str, str] = {}
     for name in artifacts:
         expected[f"{dest}/{name}"] = ""
     for name in extra:
+        expected[f"{dest}/{name}"] = ""
+    for name in addendum_artifacts:
         expected[f"{dest}/{name}"] = ""
     return expected
 
@@ -102,41 +118,29 @@ def _resolve_source(explicit: str | None) -> Path:
     return source
 
 
-def vendor(explicit_source: str | None) -> None:
-    pins = load_pins()
-    section = _contract_section(pins)
-    source_dir = _resolve_source(explicit_source)
-    design_file = str(section["design_file"])
-    manifest_file = str(section["manifest_file"])
-    dest = ROOT / str(section["dest"])
-    artifacts = section["artifacts"]
-    extra = section.get("extra", {})
-    if not isinstance(artifacts, list) or not isinstance(extra, dict):
-        msg = "CONTRACTS.toml: malformed [profile-mechanism] section"
-        raise SystemExit(msg)
-
-    design_bytes = (source_dir / design_file).read_bytes()
-    design_digest = sha256(design_bytes)
-    if design_digest != section["design_sha256"]:
-        msg = (
-            f"DESIGN hash mismatch: {design_file} is {design_digest}, "
-            f"CONTRACTS.toml pins {section['design_sha256']}"
-        )
-        raise SystemExit(msg)
-
+def _verified_manifest(source_dir: Path, manifest_file: str, pinned: str) -> dict[str, str]:
+    """Read a conductor manifest after checking its file hash against the pin."""
     manifest_bytes = (source_dir / manifest_file).read_bytes()
     manifest_digest = sha256(manifest_bytes)
-    if manifest_digest != section["manifest_sha256"]:
+    if manifest_digest != pinned:
         msg = (
             f"conductor manifest hash mismatch: {manifest_file} is {manifest_digest}, "
-            f"CONTRACTS.toml pins {section['manifest_sha256']}"
+            f"CONTRACTS.toml pins {pinned}"
         )
         raise SystemExit(msg)
-    manifest = _parse_manifest(manifest_bytes.decode("utf-8"))
+    return _parse_manifest(manifest_bytes.decode("utf-8"))
 
-    dest.mkdir(parents=True, exist_ok=True)
+
+def _copy_manifest_artifacts(
+    source_dir: Path,
+    dest: Path,
+    manifest: dict[str, str],
+    manifest_file: str,
+    names: list[object],
+) -> dict[str, str]:
+    """Copy manifest-pinned artifacts into the destination directory."""
     files: dict[str, str] = {}
-    for name in artifacts:
+    for name in names:
         if not isinstance(name, str) or "/" in name or name in (".", ".."):
             msg = f"refusing unsafe artifact name {name!r}"
             raise SystemExit(msg)
@@ -150,6 +154,40 @@ def vendor(explicit_source: str | None) -> None:
         target = dest / name
         target.write_bytes(data)
         files[str(target.relative_to(ROOT))] = sha256(data)
+    return files
+
+
+def vendor(explicit_source: str | None) -> None:
+    pins = load_pins()
+    section = _contract_section(pins)
+    source_dir = _resolve_source(explicit_source)
+    design_file = str(section["design_file"])
+    manifest_file = str(section["manifest_file"])
+    dest = ROOT / str(section["dest"])
+    artifacts = section["artifacts"]
+    extra = section.get("extra", {})
+    addendum = section.get("addendum", {})
+    if (
+        not isinstance(artifacts, list)
+        or not isinstance(extra, dict)
+        or not isinstance(addendum, dict)
+    ):
+        msg = "CONTRACTS.toml: malformed [profile-mechanism] section"
+        raise SystemExit(msg)
+
+    design_bytes = (source_dir / design_file).read_bytes()
+    design_digest = sha256(design_bytes)
+    if design_digest != section["design_sha256"]:
+        msg = (
+            f"DESIGN hash mismatch: {design_file} is {design_digest}, "
+            f"CONTRACTS.toml pins {section['design_sha256']}"
+        )
+        raise SystemExit(msg)
+
+    manifest = _verified_manifest(source_dir, manifest_file, str(section["manifest_sha256"]))
+
+    dest.mkdir(parents=True, exist_ok=True)
+    files = _copy_manifest_artifacts(source_dir, dest, manifest, manifest_file, artifacts)
     for name, spec in extra.items():
         if not isinstance(spec, dict) or "sha256" not in spec:
             msg = f"CONTRACTS.toml: extra {name!r} needs a sha256 pin"
@@ -162,6 +200,21 @@ def vendor(explicit_source: str | None) -> None:
         target.write_bytes(data)
         files[str(target.relative_to(ROOT))] = sha256(data)
 
+    if addendum:
+        addendum_manifest_file = str(addendum["manifest_file"])
+        addendum_manifest = _verified_manifest(
+            source_dir, addendum_manifest_file, str(addendum["manifest_sha256"])
+        )
+        names = addendum.get("artifacts", [])
+        if not isinstance(names, list):
+            msg = "CONTRACTS.toml: [profile-mechanism.addendum] artifacts must be a list"
+            raise SystemExit(msg)
+        files.update(
+            _copy_manifest_artifacts(
+                source_dir, dest, addendum_manifest, addendum_manifest_file, names
+            )
+        )
+
     ledger = {
         "design_file": design_file,
         "design_sha256": section["design_sha256"],
@@ -171,6 +224,9 @@ def vendor(explicit_source: str | None) -> None:
         "manifest_sha256": section["manifest_sha256"],
         "source": section.get("source", ""),
     }
+    if addendum:
+        ledger["addendum_manifest_file"] = addendum["manifest_file"]
+        ledger["addendum_manifest_sha256"] = addendum["manifest_sha256"]
     LOCK.write_text(json.dumps(ledger, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"wrote {LOCK.relative_to(ROOT)} ({len(files)} files)")
 
@@ -181,7 +237,22 @@ def _check_pins(section: dict[str, object], ledger: dict[str, object]) -> int:
         if ledger.get(field) != section.get(field):
             print(f"PINS     {field}: lock {ledger.get(field)!r} != toml {section.get(field)!r}")
             bad += 1
-    # The vendored set must be exactly the TOML artifact list plus extras.
+    # The vendored set must be exactly the TOML artifact list plus extras
+    # and addendum artifacts.
+    addendum = section.get("addendum", {})
+    if addendum:
+        for toml_field, lock_field in (
+            ("manifest_file", "addendum_manifest_file"),
+            ("manifest_sha256", "addendum_manifest_sha256"),
+        ):
+            if ledger.get(lock_field) != addendum.get(toml_field):
+                print(f"PINS     {lock_field}: lock != toml")
+                print(f"         lock {ledger.get(lock_field)!r}")
+                print(f"         toml {addendum.get(toml_field)!r}")
+                bad += 1
+    elif ledger.get("addendum_manifest_file") or ledger.get("addendum_manifest_sha256"):
+        print("PINS     lock carries addendum pins not pinned in CONTRACTS.toml")
+        bad += 1
     want = set(_expected_files(section))
     got = set(ledger.get("files", {}))
     if got != want:
