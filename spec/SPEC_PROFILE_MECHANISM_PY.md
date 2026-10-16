@@ -204,9 +204,11 @@ Python names are snake_case with identical fields.
 | `validate` | `validate` | `(compiled, envelope, *, phase, readiness_policy)` → `ValidationReport` |
 | `resolveTheme` | `resolve_theme` | `(compiled, envelope, layout, theme_id, overrides, di_styles)` → `RenderData` |
 | `mapExport` | `map_export` | `(compiled, envelope, layout, r, format)` → `PreparedArtifact` |
-| `serializePrepared` | `serialize_prepared` | `(prepared, pinned_writer_options)` → `{format, bytes, digest, id_map, capability}` |
+| `serializePrepared` | `serialize_prepared` | `(prepared, pinned_writer_options)` → `{format, bytes, digest, idMap, capability}` |
 | `prepareExport` | `prepare_export` | `(compiled, envelope, options)` → `PreparedArtifact` (synchronous in Python) |
-| compatibility decision (§3.3, no DESIGN ABI name) | `check_compatibility` | `(runtime, injected_identity, document_identity, *, source_availability, selected_migration, required_capabilities, required_assets, envelope_valid)` → verdict `{status: "ok"}` or `{status: "refused", code}` (§9.1) |
+| compatibility decision (§3.3, no DESIGN ABI name) | `check_compatibility` | `(runtime, injected_identity, document_identity, *, document_version, host_identity, snapshot_identity, source_availability, selected_migration, required_capabilities, required_assets, envelope_valid)` → verdict `{status: "ok"}` or `{status: "refused", code?}` (§9.1) |
+
+Wire/result field names are exactly DESIGN's (`idMap` in `serializePrepared`, `code` in verdicts); a Python attribute may use a different spelling only if the serialized field stays the DESIGN name. A refusal without `code` is only the exact-but-invalid envelope bare refusal (DESIGN:324); every other refusal carries a `code`.
 
 `validate` here is `bpmn_io.profile.validate`, distinct from the schema
 validator of §1. `ReadContext` carries only profile identity, descriptor /
@@ -216,9 +218,9 @@ immutable layout/R bindings for theme/export evaluation.
 
 `Report/2` entries carry exactly `code, severity, classification, stage, ruleId,
 messageKey, disposition`, `source`/`result` coordinates
-(`domain, pointer, targetId, provenance`), optional `originalType?, property?,
-beforePresent, before?, afterPresent, after?, causedBy?, pageId?,
-occurrenceKey?, emittedType?, legacyCode?, lossClass?`. `idMap` sorts by
+(`domain, pointer, targetId, provenance`), required `beforePresent,
+afterPresent`, optional `originalType?, property?, before?, after?, causedBy?,
+pageId?, occurrenceKey?, emittedType?, legacyCode?, lossClass?`. `idMap` sorts by
 `(domain, pageId, occurrenceKey, sourceId, resultId)` in UTF-16. Capability is
 the worst occurrence/page/format outcome (`engine-byte-compatible < structural
 < unsupported`).
@@ -247,8 +249,8 @@ Checked field by field before writing this spec; no mismatch found:
 Boundary (not a mismatch): `DocumentEnvelope/1`, `Snapshot/1`, `Layout/1`,
 `RenderData/1`, `Result/1` and `Report/2` are DESIGN-prose contracts with no JSON
 Schema pinned in lot 0 — they govern operation results, not profile authoring
-data. Their field tables above are the binding until lot 2 decides whether they
-need pinned schemas. The §3.3 compatibility decision function stays prose (no
+data. Their shapes in §6 (the signature table and the `Report/2` entry fields)
+are the binding until lot 2 decides whether they need pinned schemas. The §3.3 compatibility decision function stays prose (no
 executable matrix in lot 0), but its refusal-code registry and verdict shape are
 pinned since R3.3 (`compatibility-codes.json`, 20 codes;
 `compatibility-verdict.schema.json`, `refusalCode` enum plus `ok`/`refused`
@@ -336,8 +338,12 @@ Identity/graph: `id-collision`, `descriptor-role-unknown`,
 
 `check_compatibility` applies the DESIGN §3.3 rows in order (DESIGN.md R3.3
 lines 294–324, changelog §15.5) before C/N/theme/export or edit, and returns
-exactly one verdict: `{status: "ok"}` or `{status: "refused", code}` with `code`
-from the 20-code registry. Source-dependent remedies (P1, lines 298–299): at the
+exactly one verdict: `{status: "ok"}` or `{status: "refused", code?}` with `code`
+from the 20-code registry when present. Its inputs carry the envelope
+`document_version` and the host, snapshot and document identities that the
+first rows decide on (lines 302–304), alongside the runtime, the injected and
+document profile identities, source availability, the selected migration, the
+required capabilities/assets and envelope validity. Source-dependent remedies (P1, lines 298–299): at the
 first applicable row whose only remedies need the exact source package or a
 source-validated migration — mechanism-differ, schema-differ,
 base/descriptor-mismatch, business-ID/major-mismatch, patch/minor rows — an
