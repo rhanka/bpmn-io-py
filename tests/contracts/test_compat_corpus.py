@@ -102,17 +102,17 @@ def test_compat_group_matches_pinned_verdict_artifacts() -> None:
 
 
 def test_compat_cases_match_vendored_vectors() -> None:
-    """Every case carries its vector's input and outcome verbatim by caseId."""
+    """Every case carries its vector's input, verdict and outcome verbatim by caseId."""
     by_id = _vectors_by_case_id()
     assert len(by_id) == 151
-    seen = 0
+    seen: set[str] = set()
     for rel, case in _cases():
         assert isinstance(case, dict)
         if not Path(rel).name.startswith("compat-"):
             continue
-        seen += 1
         case_id = str(case["caseId"])
         assert case_id in by_id, f"{rel}: no vendored vector"
+        seen.add(case_id)
         vector = by_id[case_id]
         assert isinstance(vector, dict)
         inputs = case["inputArtifacts"]
@@ -120,5 +120,6 @@ def test_compat_cases_match_vendored_vectors() -> None:
         assert _by_role(inputs, "matrixInput")["json"] == vector["input"], rel
         expected = vector.get("expectedR33", vector.get("expected"))
         assert isinstance(expected, dict)
+        assert _by_role(case["expectedArtifacts"], "verdict")["json"] == expected["verdict"], rel
         assert _by_role(case["expectedArtifacts"], "outcome")["json"] == expected["output"], rel
-    assert seen == 151, f"expected 151 compat cases, saw {seen}"
+    assert seen == set(by_id), "compat caseId set must equal the vector file set exactly"
