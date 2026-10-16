@@ -108,7 +108,7 @@ Deliver the Python library's share of lot 0 of the `profile-mechanism/1` design 
 - [ ] **Lot 22b — Closing-review fixes (double review REWORK on c25a5ba)**
   - [x] B1: `.gitattributes` `-text` covers every executable comparator source pinned by the corpus manifest (BR04-EX4 conditional path, acknowledged in the Feedback Loop with rollback); a new test asserts `git check-attr text` is `unset` for each pinned comparator path (skips only if git is absent).
   - [x] B2: the compat corpus test asserts per-`caseId` verdict equality with the vector `expectedR33.verdict` and exact `caseId` set equality with the vector file (not only the count).
-  - [ ] m1: spec §7 boundary cites the normative DESIGN R3.3 shape sections (`DocumentEnvelope/1` §5.1, `Snapshot/1` §8.1.1, `Layout/1`/`RenderData/1` §9.1, `Result/1`/`Report/2` §10.1) instead of spec §6.
+  - [x] m1: spec §7 boundary cites the normative DESIGN R3.3 shape sections (`DocumentEnvelope/1` §5.1, `Snapshot/1` §8.1.1, `Layout/1`/`RenderData/1` §9.1, `Result/1`/`Report/2` §10.1) instead of spec §6.
   - [ ] Lot gate.
 - [ ] **Lot 22 — Review and handoff**
   - [ ] PR to `main` (no release, no version change). Double review (Muse wonder max + Astra xhigh, read-only) of the contracts, the Python binding and the corpus; consensus file sent to the conductor with the corpus manifest hash.

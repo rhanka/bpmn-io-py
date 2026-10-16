@@ -258,8 +258,11 @@ Checked field by field before writing this spec; no mismatch found:
 Boundary (not a mismatch): `DocumentEnvelope/1`, `Snapshot/1`, `Layout/1`,
 `RenderData/1`, `Result/1` and `Report/2` are DESIGN-prose contracts with no JSON
 Schema pinned in lot 0 — they govern operation results, not profile authoring
-data. Their shapes in §6 (the signature table and the `Report/2` entry fields)
-are the binding until lot 2 decides whether they need pinned schemas. The §3.3 compatibility decision function stays prose (no
+data. Their normative shapes are the DESIGN R3.3 sections (`DocumentEnvelope/1`
+§5.1, `Snapshot/1` §8.1.1, `Layout/1` and `RenderData/1` §9.1 with digests in
+§9.2, `Result/1` and `Report/2` §10.1) — the §6 signature table only names the
+operations returning them — and stay the binding until lot 2 decides whether
+they need pinned schemas. The §3.3 compatibility decision function stays prose (no
 executable matrix in lot 0), but its refusal-code registry and verdict shape are
 pinned since R3.3 (`compatibility-codes.json`, 20 codes;
 `compatibility-verdict.schema.json`, `refusalCode` enum plus `ok`/`refused`
