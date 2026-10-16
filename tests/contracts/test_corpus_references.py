@@ -162,6 +162,46 @@ def test_manifest_covers_every_corpus_file() -> None:
         assert set(case["comparatorIds"]) <= comparator_ids, f"unknown comparator in {rel}"
 
 
+def test_group_case_counts() -> None:
+    """Pinned per-group case counts; any added case updates this table."""
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    counts = {"schema-": 0, "lexical-": 0, "jcs-": 0, "identity-": 0, "compat-": 0, "lint-": 0}
+    for rel in manifest["files"]:
+        case = json.loads((ROOT / "contracts" / rel).read_text(encoding="utf-8"))
+        assert isinstance(case, dict)
+        if Path(rel).name.startswith("compat-"):
+            counts["compat-"] += 1
+            continue
+        case_id = str(case["caseId"])
+        for prefix in ("schema-", "lexical-", "jcs-", "identity-", "lint-"):
+            if case_id.startswith(prefix):
+                counts[prefix] += 1
+                break
+        else:
+            pytest.fail(f"{rel}: case outside pinned groups")
+    assert counts == {
+        "schema-": 6,
+        "lexical-": 7,
+        "jcs-": 3,
+        "identity-": 1,
+        "compat-": 151,
+        "lint-": 8,
+    }, counts
+
+
+def test_executable_comparator_pins() -> None:
+    """Manifest pins every executable oracle source with a zero tolerance."""
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    pinned = manifest["executables"]
+    assert isinstance(pinned, list)
+    assert len(pinned) == 2
+    for entry in pinned:
+        assert isinstance(entry, dict)
+        assert entry["tolerance"] == "zero", entry["file"]
+        digest = hashlib.sha256((ROOT / str(entry["file"])).read_bytes()).hexdigest()
+        assert digest == entry["sha256"], entry["file"]
+
+
 def _ajv(tmp: Path, schema: Json, data: Json | None, registry: list[Json]) -> Json:
     schema_file = tmp / "schema.json"
     schema_file.write_text(json.dumps(schema), encoding="utf-8")
@@ -288,6 +328,20 @@ def _check_fragment_case(tmp: Path, rel: str, case: dict[str, Json]) -> None:
     _check_second_references(frag_schema["json"], data, authored, rel)
 
 
+def _check_subset_case(rel: str, case: dict[str, Json]) -> None:
+    """The authored closed-subset witness names a keyword outside the subset."""
+    authored = _by_role(case["expectedArtifacts"], "verdict")
+    assert isinstance(authored, dict)
+    payload = authored["json"]
+    assert isinstance(payload, dict)
+    closed = payload["closedSubset"]
+    assert isinstance(closed, dict)
+    assert case["expectedStatus"] == "refused:profile-schema-keyword", rel
+    assert len(CLOSED_29) == 29
+    assert closed["known"] is False, rel
+    assert closed["keyword"] not in CLOSED_29, f"{rel}: subset audit constant drifted"
+
+
 def _check_registry_cases(tmp: Path, rel: str, case: dict[str, Json]) -> None:
     """Pinned vs unknown external $ref behavior."""
     inputs = case["inputArtifacts"]
@@ -299,13 +353,12 @@ def _check_registry_cases(tmp: Path, rel: str, case: dict[str, Json]) -> None:
         assert isinstance(data, dict)
         result = _ajv(tmp, schema, data["json"], registry)
         assert result.get("ok") is True, f"{rel}: pinned external ref must compile"
+        assert case["expectedStatus"] == "ok", rel
     if case["caseId"] == "schema-external-ref-unknown":
         result = _ajv(tmp, schema, None, [])
         assert result.get("ok") is False, f"{rel}: unknown ref must fail load"
         assert "can't resolve reference" in str(result.get("error", "")), rel
-    if case["caseId"] == "schema-keyword-subset":
-        assert len(CLOSED_29) == 29
-        assert "format" not in CLOSED_29, "subset audit constant drifted"
+        assert case["expectedStatus"] == "refused:profile-schema-ref", rel
 
 
 @pytest.mark.oracle
@@ -326,6 +379,8 @@ def test_schema_group_matches_references() -> None:
                 _check_fragment_case(tmp, rel, case)
             if "schema" in roles:
                 _check_registry_cases(tmp, rel, case)
+            if str(case["caseId"]) == "schema-keyword-subset":
+                _check_subset_case(rel, case)
 
 
 @pytest.mark.oracle

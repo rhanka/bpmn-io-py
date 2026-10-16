@@ -101,7 +101,7 @@ Deliver the Python library's share of lot 0 of the `profile-mechanism/1` design 
   - [x] R4: spec signature fixes (`idMap` wire name; `check_compatibility` identities; bare refusal with no code; required present flags; dangling "field tables" reference).
   - [x] R5: oracle lexical-order bug fix (final-parse failure → `profile-json`); new corpus cases (leading U+00A0 text; unsafe integral binary64 `9007199254740991.5`); converted-binary64 rule in the spec; manifest SHA-256 recomputed (corpus stays 1.0.0).
   - [x] R6: Unicode case policy keeps the Final_Sigma context rule (drop only language-tagged conditions); uppercase table unchanged (rationale recorded); add the ΟΣ→ος vector as a lot-2 expectation.
-  - [ ] R7: oracle strength (compat input/outcome parity against the vendored vectors; closed-subset reachability plus expectedStatus use; per-group case counts; executable comparator hashes with zero tolerances in the manifest plus a verifying test).
+  - [x] R7: oracle strength (compat input/outcome parity against the vendored vectors; closed-subset reachability plus expectedStatus use; per-group case counts; executable comparator hashes with zero tolerances in the manifest plus a verifying test).
   - [ ] Lot gate.
 - [ ] **Lot 22 — Review and handoff**
   - [ ] PR to `main` (no release, no version change). Double review (Muse wonder max + Astra xhigh, read-only) of the contracts, the Python binding and the corpus; consensus file sent to the conductor with the corpus manifest hash.

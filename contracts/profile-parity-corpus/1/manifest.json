@@ -62,6 +62,18 @@
     }
   ],
   "corpusVersion": "1.0.0",
+  "executables": [
+    {
+      "file": "tests/oracle/profile_references.mjs",
+      "sha256": "e02c9881bb7f32fcec286c02aa951185dc6156a0a159a6681ac993087af117fb",
+      "tolerance": "zero"
+    },
+    {
+      "file": "tests/oracle/profile_c14n.mjs",
+      "sha256": "7a1e5c7e081e29901c14dd204b348554c905057f26019b5c304ee6eb34050bbb",
+      "tolerance": "zero"
+    }
+  ],
   "files": {
     "profile-parity-corpus/1/cases/compat-001-s2b-compat-exact.json": "6b46826a33fabdeac6d9138f53db24f474ba7be42a65faa07076996130889133",
     "profile-parity-corpus/1/cases/compat-002-s2b-compat-document-0.json": "fc2def3ff9c13b5e1cd834c4ff2ba67f163fc26022bda7f6463d76c53a163cc4",
