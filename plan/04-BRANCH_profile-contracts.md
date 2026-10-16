@@ -93,6 +93,15 @@ Deliver the Python library's share of lot 0 of the `profile-mechanism/1` design 
   - [x] Brand guard passes on every new file. Recompute and record the corpus manifest SHA-256 (corpusVersion stays 1.0.0).
   - [x] Cross-comparison with the resealed sibling-checkout R3.3 vectors (executed, read-only): method, counts and every difference recorded in the Feedback Loop; no unilateral correction of either side; no sibling files copied into this repository.
   - [x] Lot gate.
+- [ ] **Lot 22a — Review fixes (double review REWORK)**
+  - [ ] R1: add `plan/BRIEF-profile-contracts.md` to Allowed Paths (this branch modifies it for neutral wording).
+  - [ ] R2: harden `scripts/sync_contracts.py --check` (extra-pin TOML↔lock comparison; design/manifest/addendum file-name TOML↔lock comparison; POSIX lock paths) with negative tests on in-memory/tmp copies.
+  - [ ] R3: spec authority to DESIGN R3.3 throughout (R3.1→R3.2→R3.3 lineage retained in one sentence).
+  - [ ] R4: spec signature fixes (`idMap` wire name; `check_compatibility` identities; bare refusal with no code; required present flags; dangling "field tables" reference).
+  - [ ] R5: oracle lexical-order bug fix (final-parse failure → `profile-json`); new corpus cases (leading U+00A0 text; unsafe integral binary64 `9007199254740991.5`); converted-binary64 rule in the spec; manifest SHA-256 recomputed (corpus stays 1.0.0).
+  - [ ] R6: Unicode case policy keeps the Final_Sigma context rule (drop only language-tagged conditions); uppercase table unchanged (rationale recorded); add the ΟΣ→ος vector as a lot-2 expectation.
+  - [ ] R7: oracle strength (compat input/outcome parity against the vendored vectors; closed-subset reachability plus expectedStatus use; per-group case counts; executable comparator hashes with zero tolerances in the manifest plus a verifying test).
+  - [ ] Lot gate.
 - [ ] **Lot 22 — Review and handoff**
   - [ ] PR to `main` (no release, no version change). Double review (Muse wonder max + Astra xhigh, read-only) of the contracts, the Python binding and the corpus; consensus file sent to the conductor with the corpus manifest hash.
   - [ ] Merge after green CI and consensus; on `main`, create and push the annotated tag `profile-corpus-v1.0.0` (the `sourceTag` of the manifest), send the conductor the manifest SHA-256 and the tag commit; move this file to `plan/done/`.
