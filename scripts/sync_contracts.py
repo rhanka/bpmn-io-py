@@ -153,7 +153,7 @@ def _copy_manifest_artifacts(
             raise SystemExit(msg)
         target = dest / name
         target.write_bytes(data)
-        files[str(target.relative_to(ROOT))] = sha256(data)
+        files[target.relative_to(ROOT).as_posix()] = sha256(data)
     return files
 
 
@@ -198,7 +198,7 @@ def vendor(explicit_source: str | None) -> None:
             raise SystemExit(msg)
         target = dest / name
         target.write_bytes(data)
-        files[str(target.relative_to(ROOT))] = sha256(data)
+        files[target.relative_to(ROOT).as_posix()] = sha256(data)
 
     if addendum:
         addendum_manifest_file = str(addendum["manifest_file"])
@@ -231,12 +231,31 @@ def vendor(explicit_source: str | None) -> None:
     print(f"wrote {LOCK.relative_to(ROOT)} ({len(files)} files)")
 
 
+def _check_extra_pins(section: dict[str, object], ledger: dict[str, object]) -> int:
+    """Compare every [profile-mechanism.extra] TOML pin with the lock digest."""
+    bad = 0
+    extra = section.get("extra", {})
+    locked_files = ledger.get("files", {})
+    if not isinstance(extra, dict) or not isinstance(locked_files, dict):
+        print("PINS     extra/files is not a table")
+        return 1
+    dest = str(section.get("dest", ""))
+    for name, spec in extra.items():
+        want = spec.get("sha256") if isinstance(spec, dict) else None
+        rel = f"{dest}/{name}"
+        if locked_files.get(rel) != want:
+            print(f"PINS     extra {rel}: lock digest != toml pin")
+            bad += 1
+    return bad
+
+
 def _check_pins(section: dict[str, object], ledger: dict[str, object]) -> int:
     bad = 0
-    for field in ("design_sha256", "manifest_sha256", "dest"):
+    for field in ("design_file", "design_sha256", "manifest_file", "manifest_sha256", "dest"):
         if ledger.get(field) != section.get(field):
             print(f"PINS     {field}: lock {ledger.get(field)!r} != toml {section.get(field)!r}")
             bad += 1
+    bad += _check_extra_pins(section, ledger)
     # The vendored set must be exactly the TOML artifact list plus extras
     # and addendum artifacts.
     addendum = section.get("addendum", {})
@@ -281,8 +300,9 @@ def _check_bytes(section: dict[str, object], ledger: dict[str, object]) -> int:
     dest_root = ROOT / str(section["dest"])
     if dest_root.is_dir():
         for path in sorted(dest_root.rglob("*")):
-            if path.is_file() and str(path.relative_to(ROOT)) not in locked:
-                print(f"EXTRA    {path.relative_to(ROOT)}")
+            rel = path.relative_to(ROOT).as_posix()
+            if path.is_file() and rel not in locked:
+                print(f"EXTRA    {rel}")
                 bad += 1
     else:
         print(f"MISSING  {section['dest']}/")
