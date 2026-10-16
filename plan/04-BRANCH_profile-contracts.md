@@ -104,6 +104,11 @@ Deliver the Python library's share of lot 0 of the `profile-mechanism/1` design 
   - [x] R6: Unicode case policy keeps the Final_Sigma context rule (drop only language-tagged conditions); uppercase table unchanged (rationale recorded); add the ΟΣ→ος vector as a lot-2 expectation.
   - [x] R7: oracle strength (compat input/outcome parity against the vendored vectors; closed-subset reachability plus expectedStatus use; per-group case counts; executable comparator hashes with zero tolerances in the manifest plus a verifying test).
   - [x] Lot gate.
+- [ ] **Lot 22b — Closing-review fixes (double review REWORK on c25a5ba)**
+  - [ ] B1: `.gitattributes` `-text` covers every executable comparator source pinned by the corpus manifest (BR04-EX4 conditional path, acknowledged in the Feedback Loop with rollback); a new test asserts `git check-attr text` is `unset` for each pinned comparator path (skips only if git is absent).
+  - [ ] B2: the compat corpus test asserts per-`caseId` verdict equality with the vector `expectedR33.verdict` and exact `caseId` set equality with the vector file (not only the count).
+  - [ ] m1: spec §7 boundary cites the normative DESIGN R3.3 shape sections (`DocumentEnvelope/1` §5.1, `Snapshot/1` §8.1.1, `Layout/1`/`RenderData/1` §9.1, `Result/1`/`Report/2` §10.1) instead of spec §6.
+  - [ ] Lot gate.
 - [ ] **Lot 22 — Review and handoff**
   - [ ] PR to `main` (no release, no version change). Double review (Muse wonder max + Astra xhigh, read-only) of the contracts, the Python binding and the corpus; consensus file sent to the conductor with the corpus manifest hash.
   - [ ] Merge after green CI and consensus; on `main`, create and push the annotated tag `profile-corpus-v1.0.0` (the `sourceTag` of the manifest), send the conductor the manifest SHA-256 and the tag commit; move this file to `plan/done/`.
