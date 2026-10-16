@@ -202,6 +202,36 @@ def test_executable_comparator_pins() -> None:
         assert digest == entry["sha256"], entry["file"]
 
 
+def test_pinned_comparators_are_gitattributes_text_unset() -> None:
+    """Pinned oracle sources check out byte-identical on every OS (BR04-EX4).
+
+    The manifest pins SHA-256 over these files with zero tolerance and this
+    non-oracle test re-hashes them on every job, so a CRLF checkout would
+    break the hashes. Each pinned comparator path must resolve to
+    ``text: unset`` (never converted), like ``contracts/**``.
+    """
+    exe = shutil.which("git")
+    if exe is None:
+        pytest.skip("pinned-comparator bytes guard needs git")
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    pinned = manifest["executables"]
+    assert isinstance(pinned, list)
+    assert len(pinned) == 2
+    for entry in pinned:
+        assert isinstance(entry, dict)
+        rel = str(entry["file"])
+        proc = subprocess.run(  # noqa: S603 — fixed argv ([git, check-attr]), no shell.
+            [exe, "check-attr", "text", "--", rel],
+            capture_output=True,
+            text=True,
+            timeout=60,
+            cwd=ROOT,
+            check=False,
+        )
+        assert proc.returncode == 0, rel
+        assert proc.stdout.strip() == f"{rel}: text: unset", rel
+
+
 def _ajv(tmp: Path, schema: Json, data: Json | None, registry: list[Json]) -> Json:
     schema_file = tmp / "schema.json"
     schema_file.write_text(json.dumps(schema), encoding="utf-8")
