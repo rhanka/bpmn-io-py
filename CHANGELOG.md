@@ -4,6 +4,19 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.2] - 2026-10-16
+
+### Added
+
+- `contracts/profile-mechanism/1/`: vendored, SHA-256-pinned contract files
+  for the profile mechanism, declared in `CONTRACTS.toml` / `CONTRACTS.lock`
+  and verified offline by `scripts/sync_contracts.py --check`.
+- `contracts/profile-parity-corpus/1/`: language-neutral parity corpus
+  (format `profile-parity-corpus/1`, corpus version 1.0.0, git tag
+  `profile-corpus-v1.0.0`), shipped in the sdist.
+- `spec/SPEC_PROFILE_MECHANISM_PY.md`: Python binding of the profile
+  mechanism. No runtime API yet; the library code is unchanged.
+
 ## [0.2.1] - 2026-10-14
 
 ### Fixed
