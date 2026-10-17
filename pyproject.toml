@@ -48,7 +48,7 @@ test = ["pytest>=8.4", "pytest-cov>=7", "hypothesis>=6", "lxml>=6", "jsonschema>
 packages = ["src/bpmn_io"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src", "tests", "scripts", "README.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "UPSTREAM.toml", "UPSTREAM.lock"]
+include = ["src", "tests", "scripts", "contracts", "README.md", "CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "UPSTREAM.toml", "UPSTREAM.lock", "CONTRACTS.toml", "CONTRACTS.lock"]
 exclude = ["tests/oracle/node_modules"]
 
 [tool.ruff]

@@ -1,0 +1,9 @@
+# Byte identity must hold on every OS: files whose SHA-256 is pinned
+# (vendored upstream sources read as golden bytes, contract artifacts and
+# corpus cases verified by manifest hashes, plus every executable oracle
+# source pinned by the corpus manifest with zero tolerance) check out
+# unconverted everywhere.
+tests/upstream/** -text
+contracts/** -text
+tests/oracle/profile_references.mjs -text
+tests/oracle/profile_c14n.mjs -text
