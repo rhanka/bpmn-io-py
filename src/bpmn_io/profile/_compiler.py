@@ -155,7 +155,12 @@ class RegistrySet:
 
 @dataclass(frozen=True)
 class CompiledProfile:
-    """One immutable compiled profile with indexes and identity."""
+    """One immutable compiled profile with indexes, identity and validation records.
+
+    ``validation`` retains the raw profile validation records verbatim so the
+    lint lane can derive its stage transport; record shape is validated there,
+    not here.
+    """
 
     profile_digest: str
     notions: dict[str, dict[str, object]]
@@ -163,6 +168,7 @@ class CompiledProfile:
     rules: dict[str, dict[str, object]]
     descriptor_digest: str
     registry_digest: str
+    validation: tuple[object, ...] = ()
 
 
 def _default_registry() -> RegistrySet:
@@ -673,6 +679,8 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
     # descriptor-specific path checks run when a context is supplied.
     _ = descriptor_context
 
+    validation_raw = profile.get("validation")
+    validation_entries = tuple(validation_raw) if isinstance(validation_raw, list) else ()
     compiled = CompiledProfile(
         profile_digest=validated.digest,
         notions={k: {} for k in notions},
@@ -680,5 +688,6 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         rules={str(r.get("id")): r for r in rules_raw if isinstance(r, dict)},
         descriptor_digest=validated.digest,
         registry_digest=digest(sorted(registry.capabilities)),
+        validation=validation_entries,
     )
     return PureSuccess(payload=compiled)

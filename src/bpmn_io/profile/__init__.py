@@ -1,9 +1,8 @@
 """Neutral profile mechanism (DESIGN R3.3, binding signatures).
 
 Implements profile loading, compilation and evaluation over the native
-moddle tree, canonical bytes, identities, compatibility, envelopes, results
-and the headless native bridge. The ``lint`` entry point is re-exported
-lazily so this package imports without the parallel lint lane.
+moddle tree, canonical bytes, identities, compatibility, envelopes, results,
+the headless native bridge and the lint bridge over the literal port.
 """
 
 from __future__ import annotations
@@ -39,6 +38,7 @@ from bpmn_io.profile._inventory import (
     scan_text_for_hashes,
 )
 from bpmn_io.profile._lexical import LexicalError, LexicalOk, check_lexical
+from bpmn_io.profile._lint import lint
 from bpmn_io.profile._loader import ValidatedProfile, load_profile
 from bpmn_io.profile._results import (
     Coordinate,
@@ -130,10 +130,3 @@ __all__ = [
     "validate_envelope",
     "worst_capability",
 ]
-
-
-def lint(*a: object, **k: object) -> object:
-    """Profile lint entry point owned by the parallel lane (lazy import)."""
-    from ._lint import lint as _l  # type: ignore[import-not-found]  # noqa: PLC0415
-
-    return _l(*a, **k)

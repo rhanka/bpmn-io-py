@@ -1,16 +1,19 @@
-# DESIGN R3.3 §6.4: `bpmn_io.profile.lint` (lot-1 bridge; re-exported by lot 2).
+# DESIGN R3.3 §6.4: `bpmn_io.profile.lint` (lint bridge over the literal port).
 """Profile lint bridge over the literal bpmnlint 11.15.0 port.
 
 :func:`lint` evaluates one ``(phase, readiness_policy)`` stage against the
-immutable input tree and returns the unified ``Result/1``. Until lot 2
-lands, ``compiled`` carries the compiled lint data as plain JSON-compatible
-dicts: ``compiledOptions`` (the seven closed keys, validated here against
-the contract schema mirror in :mod:`transform`), ``validation`` (the
-validation records to select the stage table from) and an optional
-``registry`` (named ``plugin:<package>/<config>`` configs for ``extends``;
-the pinned ``bpmnlint:recommended`` parent always comes from the literal
-port). Profile identity and revision fields stay absent here: the caller
-owning the input bytes (the CLI) patches them in, since identity is
+immutable input tree and returns the unified ``Result/1``. ``compiled``
+carries the compiled lint data either as plain JSON-compatible dicts
+(``compiledOptions`` — the seven closed keys, validated here against the
+contract schema mirror in :mod:`transform` — plus ``validation``, the
+validation records to select the stage table from, and an optional
+``registry`` of named ``plugin:<package>/<config>`` configs for
+``extends``; the pinned ``bpmnlint:recommended`` parent always comes from
+the literal port) or as the :class:`CompiledProfile` produced by
+``compile_profile``, from which the same transport is derived (an optional
+``registry`` argument supplies the extends configs in that form only).
+Profile identity and revision fields stay absent here: the caller owning
+the input bytes (the CLI) patches them in, since identity is
 omitted — never fabricated — when the loader has none (DESIGN R3.3 §10.1).
 """
 
@@ -21,6 +24,7 @@ from typing import Any
 
 from bpmn_io.lint import Linter
 from bpmn_io.moddle.base import ModdleElement
+from bpmn_io.profile._compiler import CompiledProfile
 from bpmn_io.profile._lint.errors import (
     ConfigIncompleteError,
     ConfigUnknownError,
@@ -53,22 +57,27 @@ REPORT_VERSION = "2"
 
 def lint(
     envelope: ModdleElement,
-    compiled: dict[str, Any],
+    compiled: CompiledProfile | dict[str, Any],
     *,
     phase: str,
     readiness_policy: str,
+    registry: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Lint the immutable ``envelope`` tree and return the unified ``Result/1``.
 
     ``envelope`` is the Definitions root (never mutated); ``phase`` is one
     of the five execution stages and ``readiness_policy`` is ``draft`` or
-    ``accept``. Contradictory invocations (unknown stage/policy, a
-    non-element envelope, malformed ``compiled`` or compiled options bound
-    to another stage/policy) raise ``ValueError``. Domain failures (unknown
-    lookups, extends cycles, incomplete tables, profile data violations)
-    return a ``refused`` result with the stable adapter code. Wrong types
-    raise ``TypeError``; wrong values (unknown stage/policy, options bound
-    to another stage/policy) raise ``ValueError``.
+    ``accept``. ``compiled`` is either the transport dicts (``compiledOptions``,
+    ``validation``, optional ``registry``) or the :class:`CompiledProfile`
+    produced by ``compile_profile``, from which the same transport is derived;
+    ``registry`` supplies the extends configs for the compiled form only and
+    contradicts a transport dict. Contradictory invocations (unknown
+    stage/policy, a non-element envelope, malformed ``compiled`` or compiled
+    options bound to another stage/policy) raise ``ValueError``. Domain
+    failures (unknown lookups, extends cycles, incomplete tables, profile
+    data violations) return a ``refused`` result with the stable adapter
+    code. Wrong types raise ``TypeError``; wrong values (unknown
+    stage/policy, options bound to another stage/policy) raise ``ValueError``.
     """
     if phase not in STAGES:
         msg = f"unknown lint phase: {phase!r}"
@@ -77,9 +86,12 @@ def lint(
         msg = f"unknown readiness policy: {readiness_policy!r}"
         raise ValueError(msg)
     try:
+        transport = _require_compiled(
+            compiled, phase=phase, readiness_policy=readiness_policy, registry=registry
+        )
         return _lint(
             _require_envelope(envelope),
-            _require_compiled(compiled),
+            transport,
             phase=phase,
             readiness_policy=readiness_policy,
         )
@@ -95,12 +107,59 @@ def _require_envelope(envelope: object) -> ModdleElement:
     return envelope
 
 
-def _require_compiled(compiled: object) -> dict[str, Any]:
-    """Narrow the compiled data to its object shape (``TypeError`` otherwise)."""
+def _require_compiled(
+    compiled: object,
+    *,
+    phase: str,
+    readiness_policy: str,
+    registry: Mapping[str, Any] | None,
+) -> dict[str, Any]:
+    """Narrow the compiled data to its transport shape (``TypeError`` otherwise)."""
+    if isinstance(compiled, CompiledProfile):
+        return _transport_from_compiled(
+            compiled, phase=phase, readiness_policy=readiness_policy, registry=registry
+        )
     if not isinstance(compiled, dict):
-        msg = f"compiled must be an object, got {type(compiled).__name__}"
+        msg = f"compiled must be an object or CompiledProfile, got {type(compiled).__name__}"
         raise TypeError(msg)
+    if registry is not None:
+        msg = "registry contradicts a compiled transport dict (it carries its own)"
+        raise ValueError(msg)
     return compiled
+
+
+def _transport_from_compiled(
+    compiled: CompiledProfile,
+    *,
+    phase: str,
+    readiness_policy: str,
+    registry: Mapping[str, Any] | None,
+) -> dict[str, Any]:
+    """Derive the lint transport from a :class:`CompiledProfile`.
+
+    Mirrors the profile-to-transport derivation (validation records plus the
+    compiled rules in profile order, digested for this stage/policy); record
+    shape failures surface as refused results through the shared path.
+    """
+    rules = [rule for rule in compiled.rules.values() if isinstance(rule, dict)]
+    validation = list(compiled.validation)
+    record = select_record(validation, phase=phase, readiness_policy=readiness_policy)
+    flattened = flatten_policy(record, registry)
+    options = {
+        "mechanismVersion": "1",
+        "profileDigest": compiled.profile_digest,
+        "phase": phase,
+        "readinessPolicy": readiness_policy,
+        "compiledRules": rules,
+        "bindings": [],
+        "severityPolicyDigest": flattened.severity_policy_digest,
+    }
+    validate_compiled_options(options)
+    return {
+        "compiledOptions": options,
+        "validation": validation,
+        "registry": dict(registry) if registry is not None else {},
+    }
 
 
 def _lint(
