@@ -121,7 +121,7 @@ class HeadlessBridge:
             else make_imported_di(envelope.tree, "")
         )
         if self.envelope is not None:
-            self.history.append((self.envelope, self.imported_di))
+            self.history.append((self.envelope, copy.deepcopy(self.imported_di)))
         self.envelope = committed
         self.imported_di = stored_di
         return ResultSuccess(
@@ -293,7 +293,7 @@ class HeadlessBridge:
             )
         envelope, stored_di = self.history.pop()
         self.envelope = envelope
-        self.imported_di = stored_di
+        self.imported_di = copy.deepcopy(stored_di)
         return ResultSuccess(
             operation="undo",
             profile_identity=dict(envelope.profile_identity),

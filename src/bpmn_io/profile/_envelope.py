@@ -54,12 +54,16 @@ class DocumentEnvelope:
     semantic_revision: str
 
     def to_json(self) -> dict[str, object]:
-        """Return the wire representation."""
+        """Return the wire representation.
+
+        Every container is deep-copied: mutating the returned document
+        never changes the envelope.
+        """
         return {
             "documentVersion": self.document_version,
-            "profileIdentity": self.profile_identity,
-            "tree": self.tree,
-            "bindings": list(self.bindings),
+            "profileIdentity": copy.deepcopy(self.profile_identity),
+            "tree": copy.deepcopy(self.tree),
+            "bindings": copy.deepcopy(self.bindings),
             "semanticRevision": self.semantic_revision,
         }
 
