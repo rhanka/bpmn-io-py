@@ -106,8 +106,6 @@ def test_oracle_f7_parity(vector_id: str) -> None:
     """Node writer bytes equal Python F7 bytes wherever both encode."""
     if not _node_available():
         pytest.skip("oracle needs node and `npm ci` in tests/oracle")
-    if vector_id == "entity-upper-01":
-        pytest.skip("sealed literal-port divergence (strict xfail in test_f1_vectors)")
     xml = (VECTORS / f"{vector_id}.input.xml").read_text(encoding="utf-8")
     env = _call({"op": "serialize", "xml": xml, "format": False, "preamble": True})
     parsed = parse_xml(xml)

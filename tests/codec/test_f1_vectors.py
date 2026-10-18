@@ -251,17 +251,8 @@ def _walk(root: object) -> list:
     return seen
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "F1 plan rev d writer rule vs literal-port transcription: upstream escapeAttr "
-        "covers lone `'` (tests/upstream/moddle-xml/lib/write.js) while the Python "
-        "port merged it into a two-character alternative; the Node oracle stays "
-        "authoritative for escaping"
-    ),
-)
 def test_port_apostrophe_escaping_matches_oracle() -> None:
-    """Sealed divergence: Python F7 must equal the Node oracle bytes (xfails today)."""
+    """Python F7 equals the Node oracle bytes on the apostrophe vector."""
     xml = (VECTORS / "entity-upper-01.input.xml").read_text(encoding="utf-8")
     serialized = serialize_xml(parse_xml(xml).value)
     expected = (VECTORS / "entity-upper-01.f7.xml").read_text(encoding="utf-8")

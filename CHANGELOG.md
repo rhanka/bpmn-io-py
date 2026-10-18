@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- XML writer now escapes a lone apostrophe in attribute values as `&#39;`,
+  like moddle-xml 12.3.1 (behaviour change vs 0.2.2).
+
 ## [0.2.2] - 2026-10-16
 
 ### Added

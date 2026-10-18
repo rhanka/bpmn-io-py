@@ -68,7 +68,7 @@ __all__ = [
 #: XML preamble prepended unless the writer is created with ``preamble=False``.
 XML_PREAMBLE = '<?xml version="1.0" encoding="UTF-8"?>\n'
 
-_ESCAPE_ATTR_CHARS = re.compile('<|>|\'"|"|&|\n\r|\n')
+_ESCAPE_ATTR_CHARS = re.compile("<|>|'|\"|&|\n\r|\n")
 _ESCAPE_CHARS = re.compile("<|>|&")
 
 _ESCAPE_ATTR_MAP = {
