@@ -9,7 +9,6 @@ pins the equality) and the UTF-16 ordering plus profile-c14n/2 helpers.
 
 from __future__ import annotations
 
-import json
 import re
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Final, Union
@@ -193,45 +192,24 @@ JsonValue = Union["dict[str, JsonValue]", "list[JsonValue]", str, int, float, bo
 JsonObject = dict[str, "JsonValue"]
 
 
-def _normalize_numbers(value: JsonValue) -> JsonValue:
-    """Map JSON numbers to ECMAScript shortest-round-trip rendering inputs."""
-    if isinstance(value, float):
-        if value == 0:
-            return 0
-        if value.is_integer():
-            return int(value)
-        return value
-    if isinstance(value, dict):
-        return {key: _normalize_numbers(entry) for key, entry in value.items()}
-    if isinstance(value, list):
-        return [_normalize_numbers(entry) for entry in value]
-    return value
-
-
 def _c14n(value: JsonValue) -> str:
     """Render canonical JSON (profile-c14n/2: UTF-16 key order, tight)."""
-    normalized = _normalize_numbers(value)
-    if isinstance(normalized, list):
-        return "[" + ",".join(_c14n(entry) for entry in normalized) + "]"
-    if isinstance(normalized, dict):
-        keys = sorted(normalized.keys(), key=utf16_key)
-        return (
-            "{"
-            + ",".join(
-                json.dumps(key, ensure_ascii=False) + ":" + _c14n(normalized[key]) for key in keys
-            )
-            + "}"
-        )
-    return json.dumps(normalized, ensure_ascii=False, separators=(",", ":"))
+    from bpmn_io.codec._jcs import canonicalize  # noqa: PLC0415 - codec-local renderer
+
+    return canonicalize(value)
 
 
 def c14n_bytes(value: JsonValue) -> bytes:
     """Return the UTF-8 profile-c14n/2 bytes of ``value`` (size metric).
 
-    Lone surrogates (which always fail O1 downstream) encode as 3-byte
+    Number rendering is the codec-local RFC 8785 implementation
+    (:mod:`bpmn_io.codec._jcs`), independent of the profile lane. Lone
+    surrogates (which always fail O1 downstream) encode as 3-byte
     sequences so the metric stays total and deterministic.
     """
-    return _c14n(value).encode("utf-8", "surrogatepass")
+    from bpmn_io.codec._jcs import canonical_bytes  # noqa: PLC0415 - codec-local renderer
+
+    return canonical_bytes(value)
 
 
 _QNAME_RE: Final = re.compile(r"^[A-Za-z_][A-Za-z0-9_.-]*(:[A-Za-z_][A-Za-z0-9_.-]*)?$")

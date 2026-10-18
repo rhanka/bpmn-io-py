@@ -13,6 +13,7 @@ import math
 from typing import TYPE_CHECKING, Any, Final, TypeGuard, cast
 
 from bpmn_io._js import UNDEFINED
+from bpmn_io.codec._jcs import canonical_size
 from bpmn_io.codec._model import (
     CodecResult,
     Diagnostic,
@@ -20,7 +21,6 @@ from bpmn_io.codec._model import (
     JsonValue,
     NativeElement,
     build_model,
-    c14n_bytes,
     escape_pointer,
     is_valid_qname,
     resolve_limits,
@@ -73,7 +73,7 @@ class _Projector:
         self.nodes = 0
         self.seen: set[int] = set()
 
-    def _enter(self, path: str) -> None:
+    def _enter(self, path: str, depth: int) -> None:
         """Count one node, refusing beyond depth or total limits."""
         self.nodes += 1
         if self.nodes > self.limits["xml-elements"]:
@@ -85,7 +85,6 @@ class _Projector:
                     detail=f"node count exceeds {self.limits['xml-elements']}",
                 )
             )
-        depth = path.count("/") + 1 if path else 1
         if depth > self.limits["xml-depth"]:
             raise _AbortError(
                 Diagnostic(
@@ -97,7 +96,7 @@ class _Projector:
             )
 
     def _check_string(self, text: str, what: str, path: str | None) -> None:
-        """Enforce the UTF-16 string limit on one projected string."""
+        """Enforce the UTF-16 value limit on one projected string."""
         if utf16_len(text) > self.limits["xml-attr-value-utf16"]:
             raise _AbortError(
                 Diagnostic(
@@ -105,6 +104,30 @@ class _Projector:
                     path=path,
                     target=None,
                     detail=f"{what} exceeds the UTF-16 string limit",
+                )
+            )
+
+    def _check_name(self, text: str, what: str, path: str | None) -> None:
+        """Enforce the UTF-16 name limit on one projected name."""
+        if utf16_len(text) > self.limits["xml-attr-name-utf16"]:
+            raise _AbortError(
+                Diagnostic(
+                    code="xml-attribute-length-limit",
+                    path=path,
+                    target=None,
+                    detail=f"{what} exceeds the UTF-16 name limit",
+                )
+            )
+
+    def _check_attr_count(self, count: int, what: str, path: str | None) -> None:
+        """Enforce the per-element attribute count on one projected node."""
+        if count > self.limits["xml-attributes-per-element"]:
+            raise _AbortError(
+                Diagnostic(
+                    code="xml-attribute-count-limit",
+                    path=path,
+                    target=None,
+                    detail=f"{what} exceeds {self.limits['xml-attributes-per-element']}",
                 )
             )
 
@@ -119,11 +142,11 @@ class _Projector:
                     detail="project root is not a native element",
                 )
             )
-        # Iterative post-order: (element, path, visited-children?).
+        # Iterative post-order: (element, path, depth, visited-children?).
         results: dict[int, JsonObject] = {}
-        stack: list[tuple[Any, str, bool]] = [(root, "", False)]
+        stack: list[tuple[Any, str, int, bool]] = [(root, "", 1, False)]
         while stack:
-            element, path, expanded = stack.pop()
+            element, path, depth, expanded = stack.pop()
             if expanded:
                 results[id(element)] = self._assemble(element, path, results)
                 continue
@@ -137,10 +160,10 @@ class _Projector:
                     )
                 )
             self.seen.add(id(element))
-            self._enter(path)
-            stack.append((element, path, True))
+            self._enter(path, depth)
+            stack.append((element, path, depth, True))
             for child, child_path in self._child_paths(element, path):
-                stack.append((child, child_path, False))
+                stack.append((child, child_path, depth + 1, False))
         return results[id(root)]
 
     def _child_paths(self, element: NativeElement, path: str) -> list[tuple[NativeElement, str]]:
@@ -215,9 +238,10 @@ class _Projector:
                         detail=f"generic attribute <{key}> is not a string"[:_MAX_DETAIL],
                     )
                 )
-            self._check_string(key, "generic attribute name", path or None)
+            self._check_name(key, "generic attribute name", path or None)
             self._check_string(value, "generic attribute value", path or None)
             attrs[key] = value
+        self._check_attr_count(len(attrs), "generic attribute count", path or None)
         if raw.get("attrs_"):
             raise _AbortError(
                 Diagnostic(
@@ -237,8 +261,8 @@ class _Projector:
         node: dict[str, Any] = {"$type": "$any"}
         name = element.type_
         uri = element.descriptor_.ns_uri
-        self._check_string(name, "generic qname", path or None)
-        self._check_string(uri, "generic namespace URI", path or None)
+        self._check_name(name, "generic qname", path or None)
+        self._check_name(uri, "generic namespace URI", path or None)
         node["$name"] = {"qname": name, "uri": uri}
         node["$attrs"] = self._generic_attrs(element, path)
         if "$body" in raw:
@@ -325,8 +349,9 @@ class _Projector:
                         detail="typed foreign attribute is not a string pair",
                     )
                 )
-            self._check_string(key, "foreign attribute name", path or None)
+            self._check_name(key, "foreign attribute name", path or None)
             self._check_string(value, "foreign attribute value", path or None)
+        self._check_attr_count(len(attrs), "foreign attribute count", path or None)
         node["$attrs"] = attrs
         return {key: node[key] for key in sorted(node.keys(), key=utf16_key)}
 
@@ -419,7 +444,10 @@ def project(
         value = projector.run(root)
     except _AbortError as abort:
         return CodecResult(ok=False, value=None, diagnostics=(abort.diagnostic,))
-    size = len(c14n_bytes(value))
+    try:
+        size = canonical_size(value)
+    except Exception:  # noqa: BLE001 - untrusted trees may not canonicalize
+        size = 0
     if size > resolved["json-object-bytes"]:
         return CodecResult(
             ok=False,
@@ -467,7 +495,7 @@ class _Validator:
         self.seen: set[int] = set()
 
     def _check_string(self, text: str, what: str, path: str | None) -> None:
-        """Enforce the UTF-16 string limit on one input string."""
+        """Enforce the UTF-16 value limit on one input string."""
         if utf16_len(text) > self.limits["xml-attr-value-utf16"]:
             raise _AbortError(
                 Diagnostic(
@@ -475,6 +503,18 @@ class _Validator:
                     path=path,
                     target=None,
                     detail=f"{what} exceeds the UTF-16 string limit",
+                )
+            )
+
+    def _check_name(self, text: str, what: str, path: str | None) -> None:
+        """Enforce the UTF-16 name limit on one input name."""
+        if utf16_len(text) > self.limits["xml-attr-name-utf16"]:
+            raise _AbortError(
+                Diagnostic(
+                    code="xml-attribute-length-limit",
+                    path=path,
+                    target=None,
+                    detail=f"{what} exceeds the UTF-16 name limit",
                 )
             )
 
@@ -540,7 +580,7 @@ class _Validator:
                         detail="$type is not a string",
                     )
                 )
-            self._check_string(type_name, "$type", path or None)
+            self._check_name(type_name, "$type", path or None)
             if type_name == "$any":
                 self._validate_generic(node, path, depth, stack)
             else:
@@ -549,6 +589,29 @@ class _Validator:
     def _push_child(self, value: JsonValue, path: str, depth: int, stack: list[Any]) -> None:
         """Queue one contained child node for validation."""
         stack.append((value, path, depth + 1))
+
+    def _reject_generic_in_typed_slot(
+        self, item: JsonValue, prop: PropertyDescriptor, where: str
+    ) -> None:
+        """Refuse a generic node in a slot whose type cannot hold extensions.
+
+        Generic nodes are valid in descriptor slots of type ``Element``
+        (including ``extensionElements.values``) and in generic ``$children``;
+        every other typed slot refuses with ``descriptor-mismatch``.
+        """
+        if isinstance(item, dict) and item.get("$type") == "$any" and prop.type != "Element":
+            raise _AbortError(
+                Diagnostic(
+                    code="descriptor-mismatch",
+                    path=where,
+                    target=None,
+                    detail=(
+                        f"generic node in typed slot <{prop.name}> of type <{prop.type}>"[
+                            :_MAX_DETAIL
+                        ]
+                    ),
+                )
+            )
 
     def _validate_generic(
         self, node: dict[str, Any], path: str, depth: int, stack: list[Any]
@@ -587,8 +650,8 @@ class _Validator:
             )
         qname = name["qname"]
         uri = name["uri"]
-        self._check_string(qname, "$name.qname", path or None)
-        self._check_string(uri, "$name.uri", path or None)
+        self._check_name(qname, "$name.qname", path or None)
+        self._check_name(uri, "$name.uri", path or None)
         if not is_valid_qname(qname):
             raise _AbortError(
                 Diagnostic(
@@ -695,7 +758,7 @@ class _Validator:
                         detail="$attrs holds a non-string pair",
                     )
                 )
-            self._check_string(key, "attribute name", key_path)
+            self._check_name(key, "attribute name", key_path)
             self._check_string(value, "attribute value", key_path)
 
     def _validate_typed(
@@ -756,7 +819,7 @@ class _Validator:
                     detail=f"foreign attribute <{key}> is not a string"[:_MAX_DETAIL],
                 )
             )
-        self._check_string(key, "foreign attribute name", path or None)
+        self._check_name(key, "foreign attribute name", path or None)
         self._check_string(value, "foreign attribute value", path or None)
 
     def _validate_slot(
@@ -794,6 +857,7 @@ class _Validator:
                             detail=f"slot <{prop.name}> holds an incompatible node",
                         )
                     )
+                self._reject_generic_in_typed_slot(item, prop, where)
                 self._push_child(item, where, depth, stack)
                 continue
             if item is None or isinstance(item, (str, bool, int, float)):
@@ -808,6 +872,15 @@ class _Validator:
                     )
                 if isinstance(item, str):
                     self._check_string(item, "property value", where)
+                elif isinstance(item, float) and not math.isfinite(item):
+                    raise _AbortError(
+                        Diagnostic(
+                            code="invalid-any",
+                            path=where,
+                            target=None,
+                            detail="non-finite number is not representable",
+                        )
+                    )
                 continue
             raise _AbortError(
                 Diagnostic(
@@ -926,6 +999,13 @@ class _Builder:
             return candidate
         return None
 
+    @staticmethod
+    def _assignable(prop: PropertyDescriptor, target: NativeElement) -> bool:
+        """Return whether ``target`` may fill the reference slot ``prop``."""
+        if prop.type == "Element":
+            return True
+        return prop.type in getattr(target.descriptor_, "all_types_by_name", ())
+
     def _resolve(self) -> None:
         """Resolve pending references; misses warn and unset (native parity)."""
         for element, prop, ref_id, path in self.pending:
@@ -940,6 +1020,18 @@ class _Builder:
                     )
                 )
                 continue
+            if not self._assignable(prop, target):
+                raise _AbortError(
+                    Diagnostic(
+                        code="descriptor-mismatch",
+                        path=path or None,
+                        target=None,
+                        detail=(
+                            f"reference slot <{prop.name}> holds "
+                            f"<{target.type_}>, not <{prop.type}>"[:_MAX_DETAIL]
+                        ),
+                    )
+                )
             if prop.is_many:
                 collection = element.get(prop.name)
                 if isinstance(collection, list):
@@ -1021,6 +1113,9 @@ class _Builder:
     ) -> None:
         """Fill one scalar slot, coercing simple-typed values natively."""
         items = value if isinstance(value, list) else [value]
+        if prop.is_many and not items:
+            element.set(prop.name, [])
+            return
         if prop.is_many:
             collection = element.get(prop.name)
             if not isinstance(collection, list):
@@ -1042,6 +1137,9 @@ class _Builder:
     ) -> None:
         """Build one containment slot's children with parent links."""
         items = value if isinstance(value, list) else [value]
+        if prop.is_many and not items:
+            element.set(prop.name, [])
+            return
         for index, item in enumerate(items):
             suffix = "/" + str(index) if isinstance(value, list) else ""
             child_path = base_path + suffix
@@ -1129,8 +1227,15 @@ def hydrate(
             value=None,
             diagnostics=(model_diagnostic,),  # type: ignore[arg-type]
         )
+    validator = _Validator(model, resolved)
     try:
-        input_size = len(c14n_bytes(data))
+        validator.run(data)
+    except _AbortError as abort:
+        return CodecResult(ok=False, value=None, diagnostics=(abort.diagnostic,))
+    # Measured after validation: the walk above bounded depth and shape, so
+    # the iterative measure below never faces unbounded nesting.
+    try:
+        input_size = canonical_size(data)
     except Exception:  # noqa: BLE001 - untrusted input may not canonicalize
         input_size = 0
     if input_size > resolved["json-object-bytes"]:
@@ -1148,9 +1253,7 @@ def hydrate(
                 ),
             ),
         )
-    validator = _Validator(model, resolved)
     try:
-        validator.run(data)
         builder = _Builder(model)
         value = builder.run(data)
     except _AbortError as abort:

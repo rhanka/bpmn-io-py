@@ -20,6 +20,7 @@ the pinned tokenizer walk in :mod:`bpmn_io.codec.xml_boundary`, not here.
 from __future__ import annotations
 
 import re
+import sys
 from dataclasses import dataclass, field
 from typing import Final
 
@@ -47,6 +48,21 @@ _KNOWN_ENTITIES: Final = frozenset(
 
 #: XML namespace of the reserved ``xml`` prefix.
 _XML_URI: Final = "http://www.w3.org/XML/1998/namespace"
+
+#: Failsafe numeric-reference digit bound when the interpreter disables its
+#: own ``int`` string-conversion ceiling (``get_int_max_str_digits() == 0``):
+#: the default ceiling, so overlong references still refuse before allocation.
+_FAILSAFE_REF_DIGITS: Final = 4300
+
+#: Detail prefix cap for overlong references (details never carry megabytes).
+_MAX_REF_DETAIL: Final = 64
+
+
+def _digit_cap() -> int:
+    """Return the exact digit-run bound the native ``int()`` enforces here."""
+    cap = sys.get_int_max_str_digits()
+    return cap if cap > 0 else _FAILSAFE_REF_DIGITS
+
 
 #: Reserved names refused as full foreign attribute names (closed union).
 _RESERVED: Final = frozenset(
@@ -137,7 +153,13 @@ def _coord(detail: str, line: int, col: int, kind: str) -> str:
 def _check_entity_refs(
     chunk: str, line: int, col: int, out: list[Diagnostic], events: list[ScanEvent]
 ) -> None:
-    """Refuse unknown named references; record truncating numeric ones."""
+    """Refuse unknown named references; record truncating numeric ones.
+
+    Digit runs beyond the bounded conversion refuse with
+    ``xml-entity-reference-unsupported`` before native construction: the
+    literal reader port would raise ``ValueError`` on them, so letting them
+    through would trade a typed refusal for an uncontracted exception.
+    """
     for match in _ENTITY_REF_RE.finditer(chunk):
         decimal, hex_digits, named = match.group(1, 2, 3)
         if named is not None:
@@ -149,6 +171,24 @@ def _check_entity_refs(
                     path=None,
                     target=None,
                     detail=_coord(f"undeclared named reference <&{named};>", line, col, "entity"),
+                )
+            )
+            return
+        digits = decimal if decimal is not None else hex_digits
+        assert digits is not None  # noqa: S101 - the pattern always binds one group
+        if len(digits) > _digit_cap():
+            shown = match.group(0)[:_MAX_REF_DETAIL]
+            out.append(
+                Diagnostic(
+                    code="xml-entity-reference-unsupported",
+                    path=None,
+                    target=None,
+                    detail=_coord(
+                        f"overlong numeric reference <{shown}...> exceeds the bounded conversion",
+                        line,
+                        col,
+                        "entity",
+                    ),
                 )
             )
             return

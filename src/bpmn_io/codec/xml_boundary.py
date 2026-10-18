@@ -18,6 +18,7 @@ Enforces safety and reports native losses without changing the literal
 from __future__ import annotations
 
 import re
+from contextlib import contextmanager
 from typing import TYPE_CHECKING, Any, Final
 
 from bpmn_io._js import UNDEFINED
@@ -33,6 +34,8 @@ from bpmn_io.codec._model import (
 from bpmn_io.codec._scan import ScanEvent, scan_source
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from bpmn_io.bpmn_moddle.bpmn_moddle import BpmnModdle
     from bpmn_io.moddle.descriptor_builder import PropertyDescriptor
     from bpmn_io.moddle.registry import PackageDef
@@ -63,8 +66,39 @@ ENCODING_NAMES: Final[dict[str, str]] = {
     "latin-1": "latin",
 }
 
-#: XML declaration encoding probe (ASCII-only prefix scan).
+#: XML declaration encoding probe (ASCII-only declaration scan).
 _DECLARATION_RE: Final = re.compile(r"<\?xml\s[^?]*?encoding\s*=\s*[\"']([^\"']+)[\"']")
+
+#: Byte opener of an XML declaration (the scan starts here, never mid-input).
+_DECL_OPEN: Final = b"<?xml"
+
+#: Byte terminator of an XML declaration.
+_DECL_CLOSE: Final = b"?>"
+
+#: UTF-8 byte-order mark skipped before the declaration opener.
+_UTF8_BOM: Final = b"\xef\xbb\xbf"
+
+
+def _declared_encoding(source: bytes) -> str | None:
+    """Return the encoding declared by ``source``, or None when absent.
+
+    The declaration is analyzed integrally within the input bound (opener at
+    the start modulo a BOM, through its terminator) instead of a fixed head
+    window, so padding inside ``<?xml ... ?>`` cannot hide an unregistered
+    name. Anything unparseable fails open to the default (the native reader
+    decides malformed inputs).
+    """
+    text = source.removeprefix(_UTF8_BOM)
+    if not text.startswith(_DECL_OPEN):
+        return None
+    end = text.find(_DECL_CLOSE, len(_DECL_OPEN))
+    if end < 0:
+        return None
+    match = _DECLARATION_RE.search(text[: end + len(_DECL_CLOSE)].decode("latin1"))
+    if match is None:
+        return None
+    return match.group(1).strip().lower()
+
 
 #: Native truncation marker (reused MAX_WARNINGS semantics, never edited).
 _TRUNCATION_MESSAGE: Final = "too many warnings, further warnings truncated"
@@ -110,14 +144,13 @@ def decode_source(source: bytes | str) -> tuple[str | None, list[Diagnostic]]:
     """
     if isinstance(source, str):
         return source, []
-    head = source[:2048].decode("latin1")
-    match = _DECLARATION_RE.search(head)
-    if match is None:
+    declared = _declared_encoding(source)
+    if declared is None:
         try:
             return source.decode("utf-8"), []
         except UnicodeDecodeError as err:
             return None, [_refusal("invalid-encoding", f"bytes are not valid UTF-8: {err}")]
-    return _decode_declared(source, match.group(1).strip().lower())
+    return _decode_declared(source, declared)
 
 
 class _Counter:
@@ -379,6 +412,63 @@ def cap_diagnostics(diagnostics: list[Diagnostic], *, truncated: bool) -> list[D
     return kept
 
 
+@contextmanager
+def _record_warnings() -> Iterator[list[ParseWarning]]:
+    """Capture every native warning past the reader's own cap (bounded).
+
+    Wraps the warning sink the literal reader exposes
+    (``ParseContext.add_warning``) without modifying the port: the reader
+    still caps its own list, while the adapter retains the first omitted
+    warning to point the truncation diagnostic at it. At most 1001 warnings
+    are retained (the 1000 emitted plus the first omitted).
+    """
+    from bpmn_io.moddle_xml.read import ParseContext  # noqa: PLC0415 - port sink, wrapped only
+
+    original = ParseContext.add_warning
+    recorded: list[ParseWarning] = []
+
+    def _recording(self: ParseContext, warning: ParseWarning) -> None:
+        """Record one warning, then delegate to the capped native sink."""
+        if len(recorded) <= 1000:
+            recorded.append(warning)
+        original(self, warning)
+
+    ParseContext.add_warning = _recording  # type: ignore[method-assign]
+    try:
+        yield recorded
+    finally:
+        ParseContext.add_warning = original  # type: ignore[method-assign]
+
+
+def _cap_parse_diagnostics(
+    diagnostics: list[Diagnostic], *, truncated: bool, recorded: list[ParseWarning]
+) -> list[Diagnostic]:
+    """Cap parse diagnostics at 1000 warnings plus one truncation diagnostic.
+
+    The truncation diagnostic points at the first omitted warning observed
+    through the recording sink; without a recorded omission the historical
+    fallback (the next mapped diagnostic, if any) applies.
+    """
+    if len(diagnostics) <= 1000 and not truncated:
+        return diagnostics
+    kept = diagnostics[:1000]
+    omitted_path: str | None = None
+    if truncated and len(recorded) > 1000:
+        omitted = map_native_warning(recorded[1000])
+        omitted_path = omitted.path if omitted is not None else None
+    elif len(diagnostics) > 1000:
+        omitted_path = diagnostics[1000].path
+    kept.append(
+        Diagnostic(
+            code="moddle-warning-truncated",
+            path=omitted_path,
+            target=None,
+            detail="further warnings truncated at the 1000-warning cap",
+        )
+    )
+    return kept
+
+
 def _fail(diagnostic: Diagnostic) -> CodecResult:
     """Wrap one refusal diagnostic in a failed result."""
     return CodecResult(ok=False, value=None, diagnostics=(diagnostic,))
@@ -465,7 +555,8 @@ def parse_xml(
             value=None,
             diagnostics=(model_diagnostic,),  # type: ignore[arg-type]
         )
-    result, failure = _construct(model, text)
+    with _record_warnings() as recorded:
+        result, failure = _construct(model, text)
     if failure is not None:
         return failure
     assert result is not None  # noqa: S101 - construction either returns or fails
@@ -480,7 +571,7 @@ def parse_xml(
     return CodecResult(
         ok=True,
         value=result.root_element,
-        diagnostics=tuple(cap_diagnostics(mapped, truncated=truncated)),
+        diagnostics=tuple(_cap_parse_diagnostics(mapped, truncated=truncated, recorded=recorded)),
     )
 
 
