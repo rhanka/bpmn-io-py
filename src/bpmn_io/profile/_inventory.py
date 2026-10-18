@@ -45,6 +45,11 @@ def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def _ascii_lower(text: str) -> str:
+    """Lowercase ASCII letters only (lexicon tokens match ``[A-Za-z0-9_]+``)."""
+    return "".join(chr(ord(char) + 32) if "A" <= char <= "Z" else char for char in text)
+
+
 def scan_text_for_hashes(text: str, guarded: frozenset[str] = INVENTORY_HASHES) -> list[str]:
     """Scan one text for hashed lexicon hits (first hit per line)."""
     found: list[str] = []
@@ -55,10 +60,10 @@ def scan_text_for_hashes(text: str, guarded: frozenset[str] = INVENTORY_HASHES) 
             hits.extend(
                 part
                 for part in parts
-                if len(part) >= 3 and _sha256(part.lower().encode()) in guarded
+                if len(part) >= 3 and _sha256(_ascii_lower(part).encode()) in guarded
             )
         candidates = _BRACKETED.findall(line) + _WORD_PAIR.findall(line)
-        hits.extend(c for c in candidates if _sha256(c.lower().encode()) in guarded)
+        hits.extend(c for c in candidates if _sha256(_ascii_lower(c).encode()) in guarded)
         if hits:
             found.append(f"line {lineno}: {hits[0]!r}")
     return found

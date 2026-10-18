@@ -35,6 +35,7 @@ SYNC = _load()
 # White-box pin tests access the script's comparison helpers directly.
 check_pins = SYNC._check_pins  # noqa: SLF001
 contract_section = SYNC._contract_section  # noqa: SLF001
+check_unicode_case = SYNC._check_unicode_case  # noqa: SLF001
 
 SECTION: dict[str, Any] = {
     "source": "conductor design folder, revision R3.3 (local, read-only)",
@@ -108,3 +109,24 @@ def test_real_repo_pins_pass() -> None:
     section = contract_section(SYNC.load_pins())
     ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
     assert check_pins(section, ledger) == 0
+
+
+def test_real_unicode_case_pins_pass() -> None:
+    pins = SYNC.load_pins()
+    ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
+    assert check_unicode_case(pins, ledger) == 0
+
+
+def test_unicode_case_tampered_lock_fails(capsys: pytest.CaptureFixture[str]) -> None:
+    pins = SYNC.load_pins()
+    ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
+    locked = ledger["unicode-case"]["files"]
+    locked["contracts/unicode-case/15.0.0/case-table.json"] = "0" * 64
+    assert check_unicode_case(pins, ledger) > 0
+    assert "PINS" in capsys.readouterr().out or "MODIFIED" in capsys.readouterr().out
+
+
+def test_unicode_case_missing_section_fails() -> None:
+    ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
+    assert check_unicode_case({}, ledger) > 0
+    assert check_unicode_case(SYNC.load_pins(), {}) > 0
