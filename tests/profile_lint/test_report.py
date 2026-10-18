@@ -183,6 +183,32 @@ def test_profile_metadata_violations_are_rule_errors() -> None:
     assert len(entries) == 1
 
 
+def test_entries_sort_by_execution_stage_order() -> None:
+    """Cross-stage entries follow the §6.2 execution order, not alphabet."""
+    from bpmn_io.profile._lint.report import standard_entry as _standard
+
+    late = _standard(
+        rule_name="label-required",
+        severity="error",
+        classification="readiness",
+        stage="post-layout",
+        pointer="/p",
+        target_id="Task_1",
+        provenance="exact",
+    )
+    early = _standard(
+        rule_name="label-required",
+        severity="error",
+        classification="readiness",
+        stage="pre-normalize",
+        pointer="/p",
+        target_id="Task_1",
+        provenance="exact",
+    )
+    ordered = sort_entries([late, early], ["standard", "standard"])
+    assert [entry["stage"] for entry in ordered] == ["pre-normalize", "post-layout"]
+
+
 def test_rule_error_category_maps_to_adapter() -> None:
     """A standard rule that threw becomes an adapter lint-rule-error."""
     entries, _ = build_unified(
