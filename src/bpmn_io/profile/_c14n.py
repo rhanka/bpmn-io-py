@@ -12,11 +12,11 @@ import hashlib
 import json
 import math
 from decimal import Decimal
-from typing import Any, Final
+from typing import Final
 
 __all__ = ["digest", "digest_bytes", "jcs", "jcs_bytes"]
 
-_Json = dict[str, Any] | list[Any] | str | int | float | bool | None
+_Json = dict[str, object] | list[object] | str | int | float | bool | None
 
 
 def _check_string(value: str) -> None:
@@ -73,7 +73,7 @@ def _escape_key(key: str) -> str:
     return json.dumps(key, ensure_ascii=False)
 
 
-def _render(value: _Json) -> str:  # noqa: PLR0911
+def _render(value: object) -> str:  # noqa: PLR0911
     """Render one JSON value to its canonical text."""
     if value is None:
         return "null"
@@ -96,17 +96,17 @@ def _render(value: _Json) -> str:  # noqa: PLR0911
     raise TypeError(msg)
 
 
-def jcs(value: _Json) -> str:
+def jcs(value: object) -> str:
     """Return the canonical JSON text for ``value``."""
     return _render(value)
 
 
-def jcs_bytes(value: _Json) -> bytes:
+def jcs_bytes(value: object) -> bytes:
     """Return the canonical UTF-8 bytes for ``value`` (no BOM, no newline)."""
     return _render(value).encode("utf-8")
 
 
-def digest(value: _Json) -> str:
+def digest(value: object) -> str:
     """Return ``H(x)``: lowercase hex SHA-256 over UTF-8 JCS bytes."""
     return hashlib.sha256(jcs_bytes(value)).hexdigest()
 
