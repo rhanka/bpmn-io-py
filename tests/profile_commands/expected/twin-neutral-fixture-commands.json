@@ -1,0 +1,294 @@
+{
+  "case": "twin-neutral-fixture-commands",
+  "clause": "DESIGN R3.3 \u00a714.2 L954 twin semantic command expectations; \u00a78.3 L649 typed recipes; \u00a77.1 L538 C on the stage",
+  "derivation": "The two commands of the vendored neutral fixture (add-note on Task_B, create-aid with key new-note) are issued through their UI entries task-note and aid-create in one batch. The committed tree equals the vendored expected.completed tree byte for byte, including the isExecutable=false that C adds on the stage.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_B",
+                "name": "Ready"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_A",
+                "name": ""
+              }
+            ],
+            "artifacts": []
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "7fa1a5fb0a0e96ea40329ef20c807aea1b301b272b052cb54c176a066012ae22",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "entry": "task-note",
+              "target": "Task_B",
+              "value": "Preserved source"
+            },
+            {
+              "entry": "aid-create",
+              "owner": "Process_1",
+              "key": "new-note",
+              "value": "helper"
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_B",
+                      "name": "Ready"
+                    },
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_A",
+                      "name": ""
+                    }
+                  ],
+                  "artifacts": []
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "7fa1a5fb0a0e96ea40329ef20c807aea1b301b272b052cb54c176a066012ae22"
+          },
+          "semanticRevision": "7fa1a5fb0a0e96ea40329ef20c807aea1b301b272b052cb54c176a066012ae22"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "ok",
+        "operation": "applyCommands",
+        "baseRevision": "7fa1a5fb0a0e96ea40329ef20c807aea1b301b272b052cb54c176a066012ae22",
+        "revision": "b96edad7beb7b801161fa344cd2a1e79fbf606266c167833cd98155593efe4da",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_B",
+                      "name": "Ready",
+                      "documentation": [
+                        {
+                          "$type": "bpmn:Documentation",
+                          "text": "Preserved source",
+                          "textFormat": "text/plain"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_A",
+                      "name": ""
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+                      "text": "[Aid] helper"
+                    }
+                  ],
+                  "isExecutable": false
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "b96edad7beb7b801161fa344cd2a1e79fbf606266c167833cd98155593efe4da"
+          },
+          "semanticRevision": "b96edad7beb7b801161fa344cd2a1e79fbf606266c167833cd98155593efe4da",
+          "transactionId": "tx-1",
+          "changed": true
+        },
+        "payloadKeys": [
+          "changed",
+          "envelope",
+          "semanticRevision",
+          "transactionId",
+          "viewRevision"
+        ]
+      },
+      {
+        "status": "ok",
+        "operation": "getDefinitions",
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_1",
+                "flowElements": [
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_B",
+                    "name": "Ready",
+                    "documentation": [
+                      {
+                        "$type": "bpmn:Documentation",
+                        "text": "Preserved source",
+                        "textFormat": "text/plain"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_A",
+                    "name": ""
+                  }
+                ],
+                "artifacts": [
+                  {
+                    "$type": "bpmn:TextAnnotation",
+                    "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+                    "text": "[Aid] helper"
+                  }
+                ],
+                "isExecutable": false
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "b96edad7beb7b801161fa344cd2a1e79fbf606266c167833cd98155593efe4da"
+        },
+        "payloadKeys": [
+          "bindings",
+          "documentVersion",
+          "profileIdentity",
+          "semanticRevision",
+          "tree"
+        ]
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "7fa1a5fb0a0e96ea40329ef20c807aea1b301b272b052cb54c176a066012ae22",
+    "ids": [
+      {
+        "ownerId": "Process_1",
+        "slot": "aid",
+        "key": "new-note",
+        "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "case": "compile-message-missing-fallback",
+  "clause": "DESIGN R3.3 \u00a78.3 L659 missing fallback text is a compiler error",
+  "derivation": "A message with only an fr text is added while policies.localeFallback is en; the DESIGN names no code, so the lot-5 binding uses the CR-05 missing-symbol code profile-symbol (DESIGN L190).",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "add",
+          "path": "/messages/-",
+          "value": {
+            "id": "label.extra",
+            "texts": [
+              {
+                "name": "fr",
+                "value": "Extra"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-symbol"
+    }
+  }
+}

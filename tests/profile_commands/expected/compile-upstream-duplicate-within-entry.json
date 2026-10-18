@@ -1,0 +1,27 @@
+{
+  "case": "compile-upstream-duplicate-within-entry",
+  "clause": "DESIGN R3.3 \u00a78.3 L659 duplicate mappings are a compile error",
+  "derivation": "task-create lists create.task twice; the same upstream ID maps twice, which is a duplicate mapping (schema upstreamEntries has no uniqueItems, so the compiler refuses with profile-symbol).",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/ui/1/upstreamEntries",
+          "value": [
+            "create.task",
+            "create.task"
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-symbol"
+    }
+  }
+}

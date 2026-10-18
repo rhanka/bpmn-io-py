@@ -1,0 +1,163 @@
+{
+  "case": "copy-unknown-id",
+  "clause": "DESIGN R3.3 \u00a78.3 L657 validated native fragment; \u00a72.2 L132 dangling references",
+  "derivation": "copy of a missing ID refuses reference-dangling; a stale baseRevision refuses operation-error (lot-5 stale binding).",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Review"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_2",
+                "name": "Approve"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Aid_1",
+                "text": "[Aid] helper"
+              },
+              {
+                "$type": "bpmn:Association",
+                "id": "Link_1",
+                "associationDirection": "None",
+                "sourceRef": "Aid_1",
+                "targetRef": "Task_2"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "copy",
+        "args": {
+          "baseRevision": "ecf31de3a0666107b0fd4df112b224b3acbfa47bd95bb3999fafd733c6f0de8a",
+          "elementIds": [
+            "Nope"
+          ]
+        }
+      },
+      {
+        "op": "copy",
+        "args": {
+          "baseRevision": "0000000000000000000000000000000000000000000000000000000000000000",
+          "elementIds": [
+            "Aid_1"
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    },
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_2",
+                      "name": "Approve"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_1",
+                      "text": "[Aid] helper"
+                    },
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "Link_1",
+                      "associationDirection": "None",
+                      "sourceRef": "Aid_1",
+                      "targetRef": "Task_2"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "ecf31de3a0666107b0fd4df112b224b3acbfa47bd95bb3999fafd733c6f0de8a"
+          },
+          "semanticRevision": "ecf31de3a0666107b0fd4df112b224b3acbfa47bd95bb3999fafd733c6f0de8a"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "refused",
+        "code": "reference-dangling"
+      },
+      {
+        "status": "refused",
+        "code": "operation-error"
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "ecf31de3a0666107b0fd4df112b224b3acbfa47bd95bb3999fafd733c6f0de8a"
+  }
+}

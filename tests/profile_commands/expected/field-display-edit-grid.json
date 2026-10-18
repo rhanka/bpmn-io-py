@@ -1,0 +1,279 @@
+{
+  "case": "field-display-edit-grid",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 field display is a Value expression independent of its storage path; \u00a72.2 L116 Unicode 15.0.0 full case mapping",
+  "derivation": "The grid aid body field displays case-upper(stripPrefix(text, [Note] plus space)): stored [Note] stra\u00dfe displays STRASSE (full mapping expands \u00df). Editing the body with neu stores [Note] neu and displays NEU; the stored text never receives the display casing.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-grid.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": true,
+            "flowElements": [
+              {
+                "$type": "bpmn:ServiceTask",
+                "id": "Task_1",
+                "name": "Review"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Aid_1",
+                "text": "[Note] stra\u00dfe"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "list_fields",
+        "args": {
+          "baseRevision": "a3726caae085cefa1023a2fc97bc81d815089a63243a4203d867f560cc4f3831",
+          "targetId": "Aid_1",
+          "locale": "en"
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "a3726caae085cefa1023a2fc97bc81d815089a63243a4203d867f560cc4f3831",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "field": "body",
+              "target": "Aid_1",
+              "value": "neu"
+            }
+          ]
+        }
+      },
+      {
+        "op": "list_fields",
+        "args": {
+          "baseRevision": "f1edbd1b27e87d50de4a92d4b72b403a281f9d2f52391920aca46c8e9b509f9f",
+          "targetId": "Aid_1",
+          "locale": "en"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.5.0",
+              "sha256": "028bdabec188e02b0291b92dfc3b12e2d0dfbbd6facac7baa18b9f33c092dfae",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": true,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_1",
+                      "text": "[Note] stra\u00dfe"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "a3726caae085cefa1023a2fc97bc81d815089a63243a4203d867f560cc4f3831"
+          },
+          "semanticRevision": "a3726caae085cefa1023a2fc97bc81d815089a63243a4203d867f560cc4f3831"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "ok",
+        "payload": {
+          "revision": "a3726caae085cefa1023a2fc97bc81d815089a63243a4203d867f560cc4f3831",
+          "targetId": "Aid_1",
+          "fields": [
+            {
+              "notion": "aid",
+              "field": "body",
+              "widget": "multiline",
+              "path": "/text",
+              "label": {
+                "key": "label.aid",
+                "text": "Aid"
+              },
+              "message": {
+                "key": "invalid",
+                "text": "Name is required."
+              },
+              "present": true,
+              "display": "STRASSE",
+              "mutable": true,
+              "choices": [],
+              "targetTypes": []
+            }
+          ]
+        },
+        "payloadKeys": [
+          "fields",
+          "revision",
+          "targetId"
+        ]
+      },
+      {
+        "status": "ok",
+        "operation": "applyCommands",
+        "baseRevision": "a3726caae085cefa1023a2fc97bc81d815089a63243a4203d867f560cc4f3831",
+        "revision": "f1edbd1b27e87d50de4a92d4b72b403a281f9d2f52391920aca46c8e9b509f9f",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.5.0",
+              "sha256": "028bdabec188e02b0291b92dfc3b12e2d0dfbbd6facac7baa18b9f33c092dfae",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": true,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_1",
+                      "text": "[Note] neu"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "f1edbd1b27e87d50de4a92d4b72b403a281f9d2f52391920aca46c8e9b509f9f"
+          },
+          "semanticRevision": "f1edbd1b27e87d50de4a92d4b72b403a281f9d2f52391920aca46c8e9b509f9f",
+          "transactionId": "tx-1",
+          "changed": true
+        },
+        "payloadKeys": [
+          "changed",
+          "envelope",
+          "semanticRevision",
+          "transactionId",
+          "viewRevision"
+        ]
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "revision": "f1edbd1b27e87d50de4a92d4b72b403a281f9d2f52391920aca46c8e9b509f9f",
+          "targetId": "Aid_1",
+          "fields": [
+            {
+              "notion": "aid",
+              "field": "body",
+              "widget": "multiline",
+              "path": "/text",
+              "label": {
+                "key": "label.aid",
+                "text": "Aid"
+              },
+              "message": {
+                "key": "invalid",
+                "text": "Name is required."
+              },
+              "present": true,
+              "display": "NEU",
+              "mutable": true,
+              "choices": [],
+              "targetTypes": []
+            }
+          ]
+        },
+        "payloadKeys": [
+          "fields",
+          "revision",
+          "targetId"
+        ]
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "a3726caae085cefa1023a2fc97bc81d815089a63243a4203d867f560cc4f3831"
+  }
+}

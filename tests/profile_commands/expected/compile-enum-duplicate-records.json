@@ -1,0 +1,33 @@
+{
+  "case": "compile-enum-duplicate-records",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 unique choices; schema field choices uniqueItems",
+  "derivation": "Two identical choice records violate the pinned schema uniqueItems keyword, so load refuses profile-schema before compilation.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/notions/6/fields/0/choices",
+          "value": [
+            {
+              "name": "one",
+              "value": "One"
+            },
+            {
+              "name": "one",
+              "value": "One"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-schema"
+    }
+  }
+}

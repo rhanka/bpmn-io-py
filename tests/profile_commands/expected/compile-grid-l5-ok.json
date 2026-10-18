@@ -1,0 +1,17 @@
+{
+  "case": "compile-grid-l5-ok",
+  "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10; \u00a78.3 L655",
+  "derivation": "The composed grid fixture compiles: its three UI entries and two fields bind every required parameter exactly once and every label and validation message has text for policies.localeFallback (en).",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-grid.json",
+      "delta": []
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "ok"
+    }
+  }
+}

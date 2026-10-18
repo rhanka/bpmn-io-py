@@ -1,0 +1,405 @@
+{
+  "case": "replace-replacement-map",
+  "clause": "DESIGN R3.3 \u00a78.3 L651 otherwise report an approved replacement map; \u00a710.1 L753 idMap",
+  "derivation": "task-to-service converts Task_2 to another native type: the convert recipe creates bpmn:ServiceTask stable-id/1(Process_1, service, r1) carrying name Fixed (appended) and removes Task_2 (unreferenced). The ID cannot survive a type change in the recipe grammar, so the result reports the replacement map in report.idMap with domain migration (lot-5 binding of the DESIGN replacement map).",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Review"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_2",
+                "name": "Fixed"
+              },
+              {
+                "$type": "bpmn:ServiceTask",
+                "id": "Service_1",
+                "name": "Notify"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_1",
+                "dataStoreRef": "Store_1"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Aid_1",
+                "text": "[Aid] helper"
+              },
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Note_1",
+                "text": "plain note"
+              },
+              {
+                "$type": "bpmn:Association",
+                "id": "Link_1",
+                "associationDirection": "None",
+                "sourceRef": "Aid_1",
+                "targetRef": "Task_1"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_1",
+            "name": "Archive"
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "entry": "task-to-service",
+              "target": "Task_2",
+              "key": "r1"
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    },
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_2",
+                      "name": "Fixed"
+                    },
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "Service_1",
+                      "name": "Notify"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "Ref_1",
+                      "dataStoreRef": "Store_1"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_1",
+                      "text": "[Aid] helper"
+                    },
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_1",
+                      "text": "plain note"
+                    },
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "Link_1",
+                      "associationDirection": "None",
+                      "sourceRef": "Aid_1",
+                      "targetRef": "Task_1"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_1",
+                  "name": "Archive"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c"
+          },
+          "semanticRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "ok",
+        "operation": "applyCommands",
+        "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+        "revision": "80936a7fbbad0ca888bf4df0fdc73a1bf6e5b878bc62dd994c73f5502542364e",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    },
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "Service_1",
+                      "name": "Notify"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "Ref_1",
+                      "dataStoreRef": "Store_1"
+                    },
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "g_9e40ec6e7be17f42450a21ea110bda93d7a9743fbe5be90c005c380433e73e82",
+                      "name": "Fixed"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_1",
+                      "text": "[Aid] helper"
+                    },
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_1",
+                      "text": "plain note"
+                    },
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "Link_1",
+                      "associationDirection": "None",
+                      "sourceRef": "Aid_1",
+                      "targetRef": "Task_1"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_1",
+                  "name": "Archive"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "80936a7fbbad0ca888bf4df0fdc73a1bf6e5b878bc62dd994c73f5502542364e"
+          },
+          "semanticRevision": "80936a7fbbad0ca888bf4df0fdc73a1bf6e5b878bc62dd994c73f5502542364e",
+          "transactionId": "tx-1",
+          "changed": true
+        },
+        "payloadKeys": [
+          "changed",
+          "envelope",
+          "semanticRevision",
+          "transactionId",
+          "viewRevision"
+        ],
+        "report": {
+          "idMap": [
+            {
+              "sourceId": "Task_2",
+              "resultId": "g_9e40ec6e7be17f42450a21ea110bda93d7a9743fbe5be90c005c380433e73e82",
+              "domain": "migration"
+            }
+          ]
+        }
+      },
+      {
+        "status": "ok",
+        "operation": "getDefinitions",
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_1",
+                "isExecutable": false,
+                "flowElements": [
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_1",
+                    "name": "Review"
+                  },
+                  {
+                    "$type": "bpmn:ServiceTask",
+                    "id": "Service_1",
+                    "name": "Notify"
+                  },
+                  {
+                    "$type": "bpmn:DataStoreReference",
+                    "id": "Ref_1",
+                    "dataStoreRef": "Store_1"
+                  },
+                  {
+                    "$type": "bpmn:ServiceTask",
+                    "id": "g_9e40ec6e7be17f42450a21ea110bda93d7a9743fbe5be90c005c380433e73e82",
+                    "name": "Fixed"
+                  }
+                ],
+                "artifacts": [
+                  {
+                    "$type": "bpmn:TextAnnotation",
+                    "id": "Aid_1",
+                    "text": "[Aid] helper"
+                  },
+                  {
+                    "$type": "bpmn:TextAnnotation",
+                    "id": "Note_1",
+                    "text": "plain note"
+                  },
+                  {
+                    "$type": "bpmn:Association",
+                    "id": "Link_1",
+                    "associationDirection": "None",
+                    "sourceRef": "Aid_1",
+                    "targetRef": "Task_1"
+                  }
+                ]
+              },
+              {
+                "$type": "bpmn:DataStore",
+                "id": "Store_1",
+                "name": "Archive"
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "80936a7fbbad0ca888bf4df0fdc73a1bf6e5b878bc62dd994c73f5502542364e"
+        },
+        "payloadKeys": [
+          "bindings",
+          "documentVersion",
+          "profileIdentity",
+          "semanticRevision",
+          "tree"
+        ]
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+    "ids": [
+      {
+        "ownerId": "Process_1",
+        "slot": "service",
+        "key": "r1",
+        "id": "g_9e40ec6e7be17f42450a21ea110bda93d7a9743fbe5be90c005c380433e73e82"
+      }
+    ]
+  }
+}

@@ -1,0 +1,257 @@
+{
+  "case": "io-set-selection-required",
+  "clause": "DESIGN R3.3 \u00a78.3 L651 the updater asks for set selection when several valid sets exist; \u00a77.1 L547 refuse io-set-selection-required, never update the first set silently",
+  "derivation": "input-create adds DataInput stable-id/1(Process_1, input, in-2) covered by no InputSet while Process_1 has two InputSets. The fixture complete recipe complete-io-selection refuses io-set-selection-required during C on the stage; the whole batch is discarded, the tree is unchanged and no history entry exists.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "ioSpecification": {
+              "$type": "bpmn:InputOutputSpecification",
+              "dataInputs": [
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "In_1",
+                  "name": "Order"
+                }
+              ],
+              "inputSets": [
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "Set_1",
+                  "dataInputRefs": [
+                    "In_1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "Set_2",
+                  "dataInputRefs": [
+                    "In_1"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "7850f2182a419e5391325360a2d53f1492c4c546a77581edc3bd695d875c8b97",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "entry": "input-create",
+              "owner": "Process_1",
+              "key": "in-2",
+              "value": "Invoice"
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      },
+      {
+        "op": "undo",
+        "args": {
+          "expectedRevision": "7850f2182a419e5391325360a2d53f1492c4c546a77581edc3bd695d875c8b97",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          }
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_1",
+                        "name": "Order"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_1",
+                        "dataInputRefs": [
+                          "In_1"
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_2",
+                        "dataInputRefs": [
+                          "In_1"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "7850f2182a419e5391325360a2d53f1492c4c546a77581edc3bd695d875c8b97"
+          },
+          "semanticRevision": "7850f2182a419e5391325360a2d53f1492c4c546a77581edc3bd695d875c8b97"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "io-set-selection-required"
+      },
+      {
+        "status": "ok",
+        "operation": "getDefinitions",
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_1",
+                "isExecutable": false,
+                "ioSpecification": {
+                  "$type": "bpmn:InputOutputSpecification",
+                  "dataInputs": [
+                    {
+                      "$type": "bpmn:DataInput",
+                      "id": "In_1",
+                      "name": "Order"
+                    }
+                  ],
+                  "inputSets": [
+                    {
+                      "$type": "bpmn:InputSet",
+                      "id": "Set_1",
+                      "dataInputRefs": [
+                        "In_1"
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:InputSet",
+                      "id": "Set_2",
+                      "dataInputRefs": [
+                        "In_1"
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "7850f2182a419e5391325360a2d53f1492c4c546a77581edc3bd695d875c8b97"
+        },
+        "payloadKeys": [
+          "bindings",
+          "documentVersion",
+          "profileIdentity",
+          "semanticRevision",
+          "tree"
+        ]
+      },
+      {
+        "status": "refused",
+        "operation": "undo",
+        "code": "operation-error"
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "7850f2182a419e5391325360a2d53f1492c4c546a77581edc3bd695d875c8b97",
+    "ids": [
+      {
+        "ownerId": "Process_1",
+        "slot": "input",
+        "key": "in-2",
+        "id": "g_9e60a3fe7ffb796481f25c7e8d5530a4899d1bee7886f8b671285dc628d02e2d"
+      }
+    ]
+  }
+}

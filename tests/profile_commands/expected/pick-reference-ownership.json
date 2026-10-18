@@ -1,0 +1,507 @@
+{
+  "case": "pick-reference-ownership",
+  "clause": "DESIGN R3.3 \u00a78.3 L657 filtered by effective reference ownership; submitted ID revalidated at commit",
+  "derivation": "The inputs field of Set_A2 offers only the DataInputs of its own Process_A (In_A1, In_A2 in ID order); In_B1 of Process_B is never offered, even for the query First that it also matches. Submitting In_B1 anyway is refused profile-type at commit; submitting In_A1 appends it to Set_A2.dataInputRefs.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "isExecutable": false,
+            "ioSpecification": {
+              "$type": "bpmn:InputOutputSpecification",
+              "dataInputs": [
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "In_A2",
+                  "name": "Second"
+                },
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "In_A1",
+                  "name": "First"
+                }
+              ],
+              "inputSets": [
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "Set_A1",
+                  "dataInputRefs": [
+                    "In_A1",
+                    "In_A2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "Set_A2",
+                  "dataInputRefs": []
+                }
+              ]
+            }
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_B",
+            "isExecutable": false,
+            "ioSpecification": {
+              "$type": "bpmn:InputOutputSpecification",
+              "dataInputs": [
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "In_B1",
+                  "name": "First"
+                }
+              ],
+              "inputSets": [
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "Set_B1",
+                  "dataInputRefs": [
+                    "In_B1"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "a1e33eaa8b3ffaca541879bf038fa07bd8a8ce6be9a31b7207d4c8e727b60ed1",
+          "targetId": "Set_A2",
+          "fieldId": "inputs",
+          "query": "",
+          "offset": 0,
+          "limit": 10
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "a1e33eaa8b3ffaca541879bf038fa07bd8a8ce6be9a31b7207d4c8e727b60ed1",
+          "targetId": "Set_A2",
+          "fieldId": "inputs",
+          "query": "First",
+          "offset": 0,
+          "limit": 10
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "a1e33eaa8b3ffaca541879bf038fa07bd8a8ce6be9a31b7207d4c8e727b60ed1",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "field": "inputs",
+              "target": "Set_A2",
+              "value": "In_B1"
+            }
+          ]
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "a1e33eaa8b3ffaca541879bf038fa07bd8a8ce6be9a31b7207d4c8e727b60ed1",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-2",
+          "commands": [
+            {
+              "field": "inputs",
+              "target": "Set_A2",
+              "value": "In_A1"
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_A2",
+                        "name": "Second"
+                      },
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_A1",
+                        "name": "First"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_A1",
+                        "dataInputRefs": [
+                          "In_A1",
+                          "In_A2"
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_A2",
+                        "dataInputRefs": []
+                      }
+                    ]
+                  }
+                },
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_B",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_B1",
+                        "name": "First"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_B1",
+                        "dataInputRefs": [
+                          "In_B1"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "a1e33eaa8b3ffaca541879bf038fa07bd8a8ce6be9a31b7207d4c8e727b60ed1"
+          },
+          "semanticRevision": "a1e33eaa8b3ffaca541879bf038fa07bd8a8ce6be9a31b7207d4c8e727b60ed1"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "ok",
+        "payload": {
+          "candidates": [
+            {
+              "id": "In_A1",
+              "type": "bpmn:DataInput",
+              "label": "First"
+            },
+            {
+              "id": "In_A2",
+              "type": "bpmn:DataInput",
+              "label": "Second"
+            }
+          ],
+          "revision": "a1e33eaa8b3ffaca541879bf038fa07bd8a8ce6be9a31b7207d4c8e727b60ed1"
+        },
+        "payloadKeys": [
+          "candidates",
+          "revision"
+        ]
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "candidates": [
+            {
+              "id": "In_A1",
+              "type": "bpmn:DataInput",
+              "label": "First"
+            }
+          ],
+          "revision": "a1e33eaa8b3ffaca541879bf038fa07bd8a8ce6be9a31b7207d4c8e727b60ed1"
+        },
+        "payloadKeys": [
+          "candidates",
+          "revision"
+        ]
+      },
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "profile-type"
+      },
+      {
+        "status": "ok",
+        "operation": "applyCommands",
+        "baseRevision": "a1e33eaa8b3ffaca541879bf038fa07bd8a8ce6be9a31b7207d4c8e727b60ed1",
+        "revision": "1f42966bdd420719378f084ce1fe0a593bbacc94136f0da9efe2132359c4d6a5",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_A2",
+                        "name": "Second"
+                      },
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_A1",
+                        "name": "First"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_A1",
+                        "dataInputRefs": [
+                          "In_A1",
+                          "In_A2"
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_A2",
+                        "dataInputRefs": [
+                          "In_A1"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_B",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_B1",
+                        "name": "First"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_B1",
+                        "dataInputRefs": [
+                          "In_B1"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "1f42966bdd420719378f084ce1fe0a593bbacc94136f0da9efe2132359c4d6a5"
+          },
+          "semanticRevision": "1f42966bdd420719378f084ce1fe0a593bbacc94136f0da9efe2132359c4d6a5",
+          "transactionId": "tx-2",
+          "changed": true
+        },
+        "payloadKeys": [
+          "changed",
+          "envelope",
+          "semanticRevision",
+          "transactionId",
+          "viewRevision"
+        ]
+      },
+      {
+        "status": "ok",
+        "operation": "getDefinitions",
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_A",
+                "isExecutable": false,
+                "ioSpecification": {
+                  "$type": "bpmn:InputOutputSpecification",
+                  "dataInputs": [
+                    {
+                      "$type": "bpmn:DataInput",
+                      "id": "In_A2",
+                      "name": "Second"
+                    },
+                    {
+                      "$type": "bpmn:DataInput",
+                      "id": "In_A1",
+                      "name": "First"
+                    }
+                  ],
+                  "inputSets": [
+                    {
+                      "$type": "bpmn:InputSet",
+                      "id": "Set_A1",
+                      "dataInputRefs": [
+                        "In_A1",
+                        "In_A2"
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:InputSet",
+                      "id": "Set_A2",
+                      "dataInputRefs": [
+                        "In_A1"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_B",
+                "isExecutable": false,
+                "ioSpecification": {
+                  "$type": "bpmn:InputOutputSpecification",
+                  "dataInputs": [
+                    {
+                      "$type": "bpmn:DataInput",
+                      "id": "In_B1",
+                      "name": "First"
+                    }
+                  ],
+                  "inputSets": [
+                    {
+                      "$type": "bpmn:InputSet",
+                      "id": "Set_B1",
+                      "dataInputRefs": [
+                        "In_B1"
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "1f42966bdd420719378f084ce1fe0a593bbacc94136f0da9efe2132359c4d6a5"
+        },
+        "payloadKeys": [
+          "bindings",
+          "documentVersion",
+          "profileIdentity",
+          "semanticRevision",
+          "tree"
+        ]
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "a1e33eaa8b3ffaca541879bf038fa07bd8a8ce6be9a31b7207d4c8e727b60ed1"
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "case": "l10n-resolution-order",
+  "clause": "DESIGN R3.3 \u00a78.3 L659 localization uses exact requested locale, then policies.localeFallback, then the stable message key",
+  "derivation": "label.store has en and fr texts: fr is exact; de, fr-CA (no BCP 47 truncation) and FR (case-sensitive) fall back to en; label.aid has only en; label.note de is exact; a key that is not a profile message (a library diagnostic key) resolves to the key itself.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "steps": [
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.store",
+          "locale": "fr"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.store",
+          "locale": "de"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.store",
+          "locale": "fr-CA"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.store",
+          "locale": "FR"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.aid",
+          "locale": "fr"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.note",
+          "locale": "de"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.store",
+          "locale": "en"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "bpmnlint.no-disconnected",
+          "locale": "fr"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "steps": [
+      {
+        "status": "ok",
+        "payload": {
+          "key": "label.store",
+          "text": "D\u00e9p\u00f4t",
+          "source": "exact"
+        },
+        "payloadKeys": [
+          "key",
+          "source",
+          "text"
+        ]
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "key": "label.store",
+          "text": "Store",
+          "source": "fallback"
+        },
+        "payloadKeys": [
+          "key",
+          "source",
+          "text"
+        ]
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "key": "label.store",
+          "text": "Store",
+          "source": "fallback"
+        },
+        "payloadKeys": [
+          "key",
+          "source",
+          "text"
+        ]
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "key": "label.store",
+          "text": "Store",
+          "source": "fallback"
+        },
+        "payloadKeys": [
+          "key",
+          "source",
+          "text"
+        ]
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "key": "label.aid",
+          "text": "Aid",
+          "source": "fallback"
+        },
+        "payloadKeys": [
+          "key",
+          "source",
+          "text"
+        ]
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "key": "label.note",
+          "text": "Notiz",
+          "source": "exact"
+        },
+        "payloadKeys": [
+          "key",
+          "source",
+          "text"
+        ]
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "key": "label.store",
+          "text": "Store",
+          "source": "exact"
+        },
+        "payloadKeys": [
+          "key",
+          "source",
+          "text"
+        ]
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "key": "bpmnlint.no-disconnected",
+          "text": "bpmnlint.no-disconnected",
+          "source": "key"
+        },
+        "payloadKeys": [
+          "key",
+          "source",
+          "text"
+        ]
+      }
+    ]
+  }
+}

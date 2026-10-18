@@ -1,0 +1,23 @@
+{
+  "case": "compile-ui-parameter-missing",
+  "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 every required recipe parameter supplied exactly once; \u00a78.3 L655",
+  "derivation": "The value->name binding of task-create is removed; required create-task parameter name is no longer supplied, so compilation refuses profile-ui-parameters.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "remove",
+          "path": "/ui/1/parameters/2"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-ui-parameters"
+    }
+  }
+}

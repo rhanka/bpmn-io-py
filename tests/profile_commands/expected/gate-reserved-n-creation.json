@@ -1,0 +1,392 @@
+{
+  "case": "gate-reserved-n-creation",
+  "clause": "DESIGN R3.3 \u00a77.2 L554 OPEN-RESERVED-N: affected N editing disabled with profile-open; \u00a713 L917; \u00a716 L1160 item 11 technical gate pending",
+  "derivation": "The fixture profile plus the vendored support recipe ensure-supports: aid-create on Process_A (no supports) stages a valid edit, but N would persist five new support objects and bindings. Support creation by an edit stays disabled while the OPEN-RESERVED-N technical gate is open, so the batch refuses profile-open and nothing is created.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "ensure-supports",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "root",
+                "path": "/rootElements",
+                "mode": "create"
+              },
+              {
+                "binding": "envelope",
+                "path": "/bindings",
+                "mode": "binding"
+              },
+              {
+                "binding": "collaboration",
+                "path": "/participants",
+                "mode": "create"
+              },
+              {
+                "binding": "main",
+                "path": "/processRef",
+                "mode": "reference"
+              },
+              {
+                "binding": "self",
+                "path": "/laneSets",
+                "mode": "create"
+              },
+              {
+                "binding": "laneSet",
+                "path": "/lanes",
+                "mode": "create"
+              }
+            ],
+            "steps": [
+              {
+                "op": "ensure",
+                "as": "collaboration",
+                "type": "bpmn:Collaboration",
+                "parent": "root",
+                "property": "rootElements",
+                "owner": "self",
+                "role": "collaboration",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "root"
+                },
+                "slot": "collaboration",
+                "key": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "collaboration"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "main",
+                "type": "bpmn:Participant",
+                "parent": "collaboration",
+                "property": "participants",
+                "owner": "self",
+                "role": "main-participant",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "main-participant",
+                "key": {
+                  "op": "literal",
+                  "value": "main-participant"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "main-participant"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "assignRef",
+                "target": "main",
+                "path": "/processRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "self"
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "laneSet",
+                "type": "bpmn:LaneSet",
+                "parent": "self",
+                "property": "laneSets",
+                "owner": "self",
+                "role": "lane-set",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "lane-set",
+                "key": {
+                  "op": "literal",
+                  "value": "lane-set"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "lane-set"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "lane",
+                "type": "bpmn:Lane",
+                "parent": "laneSet",
+                "property": "lanes",
+                "owner": "self",
+                "role": "external-lane",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "external-lane",
+                "key": {
+                  "op": "literal",
+                  "value": "external-lane"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "external-lane"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "band",
+                "type": "bpmn:Participant",
+                "parent": "collaboration",
+                "property": "participants",
+                "owner": "self",
+                "role": "reference-band",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "reference-band",
+                "key": {
+                  "op": "literal",
+                  "value": "reference-band"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "reference-band"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_support",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "name": "Process_A",
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "fd7dfcfd7581868fde8346a58fda244ea4c296abb6f389b1514a3f1593a5c0b1",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "entry": "aid-create",
+              "owner": "Process_A",
+              "key": "g1",
+              "value": "x"
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "c45a28cacf175fb5ae8e5326d0d27e1005787b48fc6060d3d8a8da420db49925",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_support",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "name": "Process_A",
+                  "isExecutable": false
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "fd7dfcfd7581868fde8346a58fda244ea4c296abb6f389b1514a3f1593a5c0b1"
+          },
+          "semanticRevision": "fd7dfcfd7581868fde8346a58fda244ea4c296abb6f389b1514a3f1593a5c0b1"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "profile-open"
+      },
+      {
+        "status": "ok",
+        "operation": "getDefinitions",
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "c45a28cacf175fb5ae8e5326d0d27e1005787b48fc6060d3d8a8da420db49925",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_support",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_A",
+                "name": "Process_A",
+                "isExecutable": false
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "fd7dfcfd7581868fde8346a58fda244ea4c296abb6f389b1514a3f1593a5c0b1"
+        },
+        "payloadKeys": [
+          "bindings",
+          "documentVersion",
+          "profileIdentity",
+          "semanticRevision",
+          "tree"
+        ]
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "fd7dfcfd7581868fde8346a58fda244ea4c296abb6f389b1514a3f1593a5c0b1",
+    "ids": [
+      {
+        "ownerId": "Process_A",
+        "slot": "aid",
+        "key": "g1",
+        "id": "g_8d75fdf280e1dfb7efc466887d1e47b81abaa7399e30f5e060f22634e31d767b"
+      }
+    ],
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.5.0",
+      "sha256": "c45a28cacf175fb5ae8e5326d0d27e1005787b48fc6060d3d8a8da420db49925",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

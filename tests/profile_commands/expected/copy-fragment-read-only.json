@@ -1,0 +1,228 @@
+{
+  "case": "copy-fragment-read-only",
+  "clause": "DESIGN R3.3 \u00a78.3 L657 copy is read-only and returns PureResult<validated native fragment>; \u00a710.1 L737",
+  "derivation": "copy of [Link_1, Aid_1, Aid_1] returns one fragment whose elements are deduplicated and ordered by UTF-16 ID (Aid_1 before Link_1), each a deep copy with its containment property; the snapshot is unchanged and no history entry exists.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Review"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_2",
+                "name": "Approve"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Aid_1",
+                "text": "[Aid] helper"
+              },
+              {
+                "$type": "bpmn:Association",
+                "id": "Link_1",
+                "associationDirection": "None",
+                "sourceRef": "Aid_1",
+                "targetRef": "Task_2"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "get_snapshot",
+        "save": "s0"
+      },
+      {
+        "op": "copy",
+        "args": {
+          "baseRevision": "ecf31de3a0666107b0fd4df112b224b3acbfa47bd95bb3999fafd733c6f0de8a",
+          "elementIds": [
+            "Link_1",
+            "Aid_1",
+            "Aid_1"
+          ]
+        }
+      },
+      {
+        "op": "get_snapshot"
+      },
+      {
+        "op": "undo",
+        "args": {
+          "expectedRevision": "ecf31de3a0666107b0fd4df112b224b3acbfa47bd95bb3999fafd733c6f0de8a",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          }
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    },
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_2",
+                      "name": "Approve"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_1",
+                      "text": "[Aid] helper"
+                    },
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "Link_1",
+                      "associationDirection": "None",
+                      "sourceRef": "Aid_1",
+                      "targetRef": "Task_2"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "ecf31de3a0666107b0fd4df112b224b3acbfa47bd95bb3999fafd733c6f0de8a"
+          },
+          "semanticRevision": "ecf31de3a0666107b0fd4df112b224b3acbfa47bd95bb3999fafd733c6f0de8a"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "ok",
+        "operation": "getSnapshot",
+        "payloadKeys": [
+          "envelope",
+          "presentation",
+          "snapshotVersion",
+          "viewRevision"
+        ]
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "fragmentVersion": "1",
+          "sourceRevision": "ecf31de3a0666107b0fd4df112b224b3acbfa47bd95bb3999fafd733c6f0de8a",
+          "elements": [
+            {
+              "property": "artifacts",
+              "element": {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Aid_1",
+                "text": "[Aid] helper"
+              }
+            },
+            {
+              "property": "artifacts",
+              "element": {
+                "$type": "bpmn:Association",
+                "id": "Link_1",
+                "associationDirection": "None",
+                "sourceRef": "Aid_1",
+                "targetRef": "Task_2"
+              }
+            }
+          ]
+        },
+        "payloadKeys": [
+          "elements",
+          "fragmentVersion",
+          "sourceRevision"
+        ]
+      },
+      {
+        "status": "ok",
+        "operation": "getSnapshot",
+        "equal": [
+          {
+            "pointer": "/payload",
+            "saved": "s0",
+            "savedPointer": "/payload"
+          }
+        ],
+        "payloadKeys": [
+          "envelope",
+          "presentation",
+          "snapshotVersion",
+          "viewRevision"
+        ]
+      },
+      {
+        "status": "refused",
+        "operation": "undo",
+        "code": "operation-error"
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "ecf31de3a0666107b0fd4df112b224b3acbfa47bd95bb3999fafd733c6f0de8a"
+  }
+}

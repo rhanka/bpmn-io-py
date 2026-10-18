@@ -1,0 +1,250 @@
+{
+  "case": "surface-handles-and-values",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 owner/target/source are validated native handles; L659 no implicit scalar coercion; \u00a72.2 L132 dangling references are integrity errors",
+  "derivation": "Owner Process_9 does not exist (reference-dangling). The string parameter name receives a number, a Boolean and null; none is coerced or treated as absent, each refuses profile-type. The tree is unchanged.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Review"
+              }
+            ],
+            "artifacts": []
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "entry": "task-create",
+              "owner": "Process_9",
+              "key": "k1",
+              "value": "Draft"
+            }
+          ]
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-2",
+          "commands": [
+            {
+              "entry": "task-create",
+              "owner": "Process_1",
+              "key": "k1",
+              "value": 5
+            }
+          ]
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-3",
+          "commands": [
+            {
+              "entry": "task-create",
+              "owner": "Process_1",
+              "key": "k1",
+              "value": true
+            }
+          ]
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-4",
+          "commands": [
+            {
+              "entry": "task-create",
+              "owner": "Process_1",
+              "key": "k1",
+              "value": null
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": []
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3"
+          },
+          "semanticRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "reference-dangling"
+      },
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "profile-type"
+      },
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "profile-type"
+      },
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "profile-type"
+      },
+      {
+        "status": "ok",
+        "operation": "getDefinitions",
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_1",
+                "isExecutable": false,
+                "flowElements": [
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_1",
+                    "name": "Review"
+                  }
+                ],
+                "artifacts": []
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3"
+        },
+        "payloadKeys": [
+          "bindings",
+          "documentVersion",
+          "profileIdentity",
+          "semanticRevision",
+          "tree"
+        ]
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3"
+  }
+}

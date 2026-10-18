@@ -1,0 +1,383 @@
+{
+  "case": "create-reference-then-connect",
+  "clause": "DESIGN R3.3 \u00a78.3 L651 reference creation creates DataStore + DataStoreReference; connecting it to a Task creates Association, overriding the upstream DataInputAssociation default; \u00a74.4 L408 store name",
+  "derivation": "store-create (value Ledger) creates a root bpmn:DataStore named Ledger with stable-id/1(Definitions_1, store, s1) and an unnamed bpmn:DataStoreReference in Process_1 with stable-id/1(Process_1, reference, s1) whose dataStoreRef is assigned natively. The upstream connect gesture from that reference to Task_1 resolves to reference-link and appends one bpmn:Association (link recipe, direction None) to Process_1.artifacts; no DataInputAssociation or port is created on Task_1.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Review"
+              }
+            ],
+            "artifacts": []
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "entry": "store-create",
+              "owner": "Process_1",
+              "key": "s1",
+              "value": "Ledger"
+            }
+          ]
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "5df1a5b51121b5fe1df4b0969d580e9e8408a956af2e63f96f236b8a3a5c203a",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-2",
+          "commands": [
+            {
+              "upstream": "connect",
+              "owner": "Process_1",
+              "source": "g_4eb6d8b0bb4726e2f73ad27bee8d14c3493dcf09c23e410929bedd111066cecf",
+              "target": "Task_1",
+              "key": "c1"
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": []
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3"
+          },
+          "semanticRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "ok",
+        "operation": "applyCommands",
+        "baseRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3",
+        "revision": "5df1a5b51121b5fe1df4b0969d580e9e8408a956af2e63f96f236b8a3a5c203a",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "g_4eb6d8b0bb4726e2f73ad27bee8d14c3493dcf09c23e410929bedd111066cecf",
+                      "dataStoreRef": "g_4133c5f1c8ce56f3c224afb1b4ae7e5c6085b0b01f2c55825a8cb112cd9dfb67"
+                    }
+                  ],
+                  "artifacts": []
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "g_4133c5f1c8ce56f3c224afb1b4ae7e5c6085b0b01f2c55825a8cb112cd9dfb67",
+                  "name": "Ledger"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "5df1a5b51121b5fe1df4b0969d580e9e8408a956af2e63f96f236b8a3a5c203a"
+          },
+          "semanticRevision": "5df1a5b51121b5fe1df4b0969d580e9e8408a956af2e63f96f236b8a3a5c203a",
+          "transactionId": "tx-1",
+          "changed": true
+        },
+        "payloadKeys": [
+          "changed",
+          "envelope",
+          "semanticRevision",
+          "transactionId",
+          "viewRevision"
+        ]
+      },
+      {
+        "status": "ok",
+        "operation": "applyCommands",
+        "baseRevision": "5df1a5b51121b5fe1df4b0969d580e9e8408a956af2e63f96f236b8a3a5c203a",
+        "revision": "71b4bbb05092ea7ec368a3771679809cb8ab86953f4cbf94c4c837762246b51c",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "g_4eb6d8b0bb4726e2f73ad27bee8d14c3493dcf09c23e410929bedd111066cecf",
+                      "dataStoreRef": "g_4133c5f1c8ce56f3c224afb1b4ae7e5c6085b0b01f2c55825a8cb112cd9dfb67"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "g_365a28ee66c340bc4d3043259440d85a649769146dea28df59724bf0643769ac",
+                      "associationDirection": "None",
+                      "sourceRef": "g_4eb6d8b0bb4726e2f73ad27bee8d14c3493dcf09c23e410929bedd111066cecf",
+                      "targetRef": "Task_1"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "g_4133c5f1c8ce56f3c224afb1b4ae7e5c6085b0b01f2c55825a8cb112cd9dfb67",
+                  "name": "Ledger"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "71b4bbb05092ea7ec368a3771679809cb8ab86953f4cbf94c4c837762246b51c"
+          },
+          "semanticRevision": "71b4bbb05092ea7ec368a3771679809cb8ab86953f4cbf94c4c837762246b51c",
+          "transactionId": "tx-2",
+          "changed": true
+        },
+        "payloadKeys": [
+          "changed",
+          "envelope",
+          "semanticRevision",
+          "transactionId",
+          "viewRevision"
+        ]
+      },
+      {
+        "status": "ok",
+        "operation": "getDefinitions",
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_1",
+                "isExecutable": false,
+                "flowElements": [
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_1",
+                    "name": "Review"
+                  },
+                  {
+                    "$type": "bpmn:DataStoreReference",
+                    "id": "g_4eb6d8b0bb4726e2f73ad27bee8d14c3493dcf09c23e410929bedd111066cecf",
+                    "dataStoreRef": "g_4133c5f1c8ce56f3c224afb1b4ae7e5c6085b0b01f2c55825a8cb112cd9dfb67"
+                  }
+                ],
+                "artifacts": [
+                  {
+                    "$type": "bpmn:Association",
+                    "id": "g_365a28ee66c340bc4d3043259440d85a649769146dea28df59724bf0643769ac",
+                    "associationDirection": "None",
+                    "sourceRef": "g_4eb6d8b0bb4726e2f73ad27bee8d14c3493dcf09c23e410929bedd111066cecf",
+                    "targetRef": "Task_1"
+                  }
+                ]
+              },
+              {
+                "$type": "bpmn:DataStore",
+                "id": "g_4133c5f1c8ce56f3c224afb1b4ae7e5c6085b0b01f2c55825a8cb112cd9dfb67",
+                "name": "Ledger"
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "71b4bbb05092ea7ec368a3771679809cb8ab86953f4cbf94c4c837762246b51c"
+        },
+        "payloadKeys": [
+          "bindings",
+          "documentVersion",
+          "profileIdentity",
+          "semanticRevision",
+          "tree"
+        ]
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "456380e5834600058f5030bb54dcdb77015c74af0d75604e9d5197303b583ef3",
+    "ids": [
+      {
+        "ownerId": "Definitions_1",
+        "slot": "store",
+        "key": "s1",
+        "id": "g_4133c5f1c8ce56f3c224afb1b4ae7e5c6085b0b01f2c55825a8cb112cd9dfb67"
+      },
+      {
+        "ownerId": "Process_1",
+        "slot": "reference",
+        "key": "s1",
+        "id": "g_4eb6d8b0bb4726e2f73ad27bee8d14c3493dcf09c23e410929bedd111066cecf"
+      },
+      {
+        "ownerId": "Process_1",
+        "slot": "link",
+        "key": "c1",
+        "id": "g_365a28ee66c340bc4d3043259440d85a649769146dea28df59724bf0643769ac"
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "case": "compile-enum-empty-choices",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 enum fields require nonempty unique choices; schema field allOf enum->choices minItems 1",
+  "derivation": "The link direction enum field (notion index 6) gets an empty choices array; the pinned schema conditional rejects it before compilation, so load refuses profile-schema.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/notions/6/fields/0/choices",
+          "value": []
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-schema"
+    }
+  }
+}

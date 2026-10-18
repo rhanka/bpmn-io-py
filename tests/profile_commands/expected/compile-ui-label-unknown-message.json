@@ -1,0 +1,24 @@
+{
+  "case": "compile-ui-label-unknown-message",
+  "clause": "DESIGN R3.3 \u00a72.4.1 L190 CR-05 every referenced message exists",
+  "derivation": "task-create refers to an undefined message label.unknown, so compilation refuses profile-symbol.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/ui/1/label",
+          "value": "label.unknown"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-symbol"
+    }
+  }
+}

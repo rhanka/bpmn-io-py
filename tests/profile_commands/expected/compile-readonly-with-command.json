@@ -1,0 +1,24 @@
+{
+  "case": "compile-readonly-with-command",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 and L659 readonly fields omit command; schema readonly->not required command",
+  "derivation": "The readonly note text field (notion index 2) receives command rename; the schema conditional refuses profile-schema.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "add",
+          "path": "/notions/2/fields/0/command",
+          "value": "rename"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-schema"
+    }
+  }
+}

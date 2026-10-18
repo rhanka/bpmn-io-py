@@ -1,0 +1,259 @@
+{
+  "case": "pick-field-states",
+  "clause": "DESIGN R3.3 \u00a78.3 L657 filtered by field visibility/mutability; \u00a710.1 L737 PureResult read query",
+  "derivation": "store-view is visible but not mutable, so no candidate is offered; the text field name of Task_1 is not a reference widget (profile-type); an unknown field refuses profile-symbol; a missing target refuses reference-dangling; a stale baseRevision refuses operation-error.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Archive task"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_1",
+                "dataStoreRef": "Store_b"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "store_a",
+            "name": "Archive"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_b",
+            "name": "archive box"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_B",
+            "name": "ARCHIVE"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_10",
+            "name": "Caf\u00e9"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_9",
+            "name": "Cafe\u0301"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store-x",
+            "name": "\ud835\udc9crchive"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store.y"
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "targetId": "Ref_1",
+          "fieldId": "store-view",
+          "query": "",
+          "offset": 0,
+          "limit": 100
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "targetId": "Task_1",
+          "fieldId": "name",
+          "query": "",
+          "offset": 0,
+          "limit": 100
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "targetId": "Ref_1",
+          "fieldId": "nope",
+          "query": "",
+          "offset": 0,
+          "limit": 100
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "targetId": "Ref_9",
+          "fieldId": "store",
+          "query": "",
+          "offset": 0,
+          "limit": 100
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "0000000000000000000000000000000000000000000000000000000000000000",
+          "targetId": "Ref_1",
+          "fieldId": "store",
+          "query": "",
+          "offset": 0,
+          "limit": 100
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Archive task"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "Ref_1",
+                      "dataStoreRef": "Store_b"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "store_a",
+                  "name": "Archive"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_b",
+                  "name": "archive box"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_B",
+                  "name": "ARCHIVE"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_10",
+                  "name": "Caf\u00e9"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_9",
+                  "name": "Cafe\u0301"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store-x",
+                  "name": "\ud835\udc9crchive"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store.y"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
+          },
+          "semanticRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "ok",
+        "payload": {
+          "candidates": [],
+          "revision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
+        },
+        "payloadKeys": [
+          "candidates",
+          "revision"
+        ]
+      },
+      {
+        "status": "refused",
+        "code": "profile-type"
+      },
+      {
+        "status": "refused",
+        "code": "profile-symbol"
+      },
+      {
+        "status": "refused",
+        "code": "reference-dangling"
+      },
+      {
+        "status": "refused",
+        "code": "operation-error"
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
+  }
+}

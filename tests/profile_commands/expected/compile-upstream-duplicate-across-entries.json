@@ -1,0 +1,26 @@
+{
+  "case": "compile-upstream-duplicate-across-entries",
+  "clause": "DESIGN R3.3 \u00a78.3 L659 each upstream ID maps to exactly one enabled surface recipe; duplicate mappings are a compile error",
+  "derivation": "UI entry Zeta-task (index 2) is changed to list create.task, already listed by task-create. One upstream ID then maps to two entries; the DESIGN names no code, so the lot-5 binding uses the CR-05 namespace-uniqueness code profile-symbol (DESIGN L190).",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/ui/2/upstreamEntries",
+          "value": [
+            "create.task"
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-symbol"
+    }
+  }
+}

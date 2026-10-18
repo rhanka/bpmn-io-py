@@ -1,0 +1,23 @@
+{
+  "case": "compile-mutable-without-command",
+  "clause": "DESIGN R3.3 \u00a78.3 L659 mutable fields require a valid recipe; schema else->required command,parameters",
+  "derivation": "The mutable task name field loses its command; the schema requires command and parameters for a non-readonly field whose mutable predicate is not literally false, so load refuses profile-schema.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "remove",
+          "path": "/notions/0/fields/0/command"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-schema"
+    }
+  }
+}

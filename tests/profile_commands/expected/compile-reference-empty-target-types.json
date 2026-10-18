@@ -1,0 +1,24 @@
+{
+  "case": "compile-reference-empty-target-types",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 reference fields require nonempty admitted targetTypes; schema reference->targetTypes minItems 1",
+  "derivation": "The reference store field (notion index 3) gets targetTypes []; the schema conditional refuses profile-schema.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/notions/3/fields/0/targetTypes",
+          "value": []
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-schema"
+    }
+  }
+}

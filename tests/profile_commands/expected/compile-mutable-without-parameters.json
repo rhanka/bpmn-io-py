@@ -1,0 +1,23 @@
+{
+  "case": "compile-mutable-without-parameters",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 mutable fields require a complete parameter map; schema else->required parameters",
+  "derivation": "The mutable task name field loses its parameters array; the schema refuses profile-schema.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "remove",
+          "path": "/notions/0/fields/0/parameters"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-schema"
+    }
+  }
+}

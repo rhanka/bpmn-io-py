@@ -1,0 +1,440 @@
+{
+  "case": "field-not-editable",
+  "clause": "DESIGN R3.3 \u00a78.3 L653 visibility/mutability predicates; L659 readonly fields omit commands; \u00a78.3 L649 authorization enforced programmatically",
+  "derivation": "store-view (mutable false), store-hint (hidden: Ref_1 has no name), the readonly note text and the aid body of Aid_2 (mutable predicate false for [Aid] locked) are not editable: check_field reports profile-producer and each submit refuses profile-producer (lot-5 code binding). The aid body lists mutable false; nothing changes.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Review"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_2",
+                "name": "Fixed"
+              },
+              {
+                "$type": "bpmn:ServiceTask",
+                "id": "Service_1",
+                "name": "Notify"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_1",
+                "dataStoreRef": "Store_1"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Aid_1",
+                "text": "[Aid] helper"
+              },
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Note_1",
+                "text": "plain note"
+              },
+              {
+                "$type": "bpmn:Association",
+                "id": "Link_1",
+                "associationDirection": "None",
+                "sourceRef": "Aid_1",
+                "targetRef": "Task_1"
+              },
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Aid_2",
+                "text": "[Aid] locked"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_1",
+            "name": "Archive"
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "check_field",
+        "args": {
+          "baseRevision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838",
+          "targetId": "Ref_1",
+          "fieldId": "store-view",
+          "value": "Store_1"
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "field": "store-view",
+              "target": "Ref_1",
+              "value": "Store_1"
+            }
+          ]
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-2",
+          "commands": [
+            {
+              "field": "store-hint",
+              "target": "Ref_1",
+              "value": "Local"
+            }
+          ]
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-3",
+          "commands": [
+            {
+              "field": "text",
+              "target": "Note_1",
+              "value": "x"
+            }
+          ]
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-4",
+          "commands": [
+            {
+              "field": "body",
+              "target": "Aid_2",
+              "value": "x"
+            }
+          ]
+        }
+      },
+      {
+        "op": "list_fields",
+        "args": {
+          "baseRevision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838",
+          "targetId": "Aid_2",
+          "locale": "en"
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    },
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_2",
+                      "name": "Fixed"
+                    },
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "Service_1",
+                      "name": "Notify"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "Ref_1",
+                      "dataStoreRef": "Store_1"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_1",
+                      "text": "[Aid] helper"
+                    },
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_1",
+                      "text": "plain note"
+                    },
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "Link_1",
+                      "associationDirection": "None",
+                      "sourceRef": "Aid_1",
+                      "targetRef": "Task_1"
+                    },
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_2",
+                      "text": "[Aid] locked"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_1",
+                  "name": "Archive"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838"
+          },
+          "semanticRevision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "ok",
+        "payload": {
+          "revision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838",
+          "valid": false,
+          "code": "profile-producer",
+          "messageKey": "invalid"
+        },
+        "payloadKeys": [
+          "code",
+          "messageKey",
+          "revision",
+          "valid"
+        ]
+      },
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "profile-producer"
+      },
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "profile-producer"
+      },
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "profile-producer"
+      },
+      {
+        "status": "refused",
+        "operation": "applyCommands",
+        "code": "profile-producer"
+      },
+      {
+        "status": "ok",
+        "payload": {
+          "revision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838",
+          "targetId": "Aid_2",
+          "fields": [
+            {
+              "notion": "aid",
+              "field": "body",
+              "widget": "multiline",
+              "path": "/text",
+              "label": {
+                "key": "label.aid",
+                "text": "Aid"
+              },
+              "message": {
+                "key": "invalid",
+                "text": "Name is required."
+              },
+              "present": true,
+              "display": "locked",
+              "mutable": false,
+              "choices": [],
+              "targetTypes": []
+            }
+          ]
+        },
+        "payloadKeys": [
+          "fields",
+          "revision",
+          "targetId"
+        ]
+      },
+      {
+        "status": "ok",
+        "operation": "getDefinitions",
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_1",
+                "isExecutable": false,
+                "flowElements": [
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_1",
+                    "name": "Review"
+                  },
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_2",
+                    "name": "Fixed"
+                  },
+                  {
+                    "$type": "bpmn:ServiceTask",
+                    "id": "Service_1",
+                    "name": "Notify"
+                  },
+                  {
+                    "$type": "bpmn:DataStoreReference",
+                    "id": "Ref_1",
+                    "dataStoreRef": "Store_1"
+                  }
+                ],
+                "artifacts": [
+                  {
+                    "$type": "bpmn:TextAnnotation",
+                    "id": "Aid_1",
+                    "text": "[Aid] helper"
+                  },
+                  {
+                    "$type": "bpmn:TextAnnotation",
+                    "id": "Note_1",
+                    "text": "plain note"
+                  },
+                  {
+                    "$type": "bpmn:Association",
+                    "id": "Link_1",
+                    "associationDirection": "None",
+                    "sourceRef": "Aid_1",
+                    "targetRef": "Task_1"
+                  },
+                  {
+                    "$type": "bpmn:TextAnnotation",
+                    "id": "Aid_2",
+                    "text": "[Aid] locked"
+                  }
+                ]
+              },
+              {
+                "$type": "bpmn:DataStore",
+                "id": "Store_1",
+                "name": "Archive"
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838"
+        },
+        "payloadKeys": [
+          "bindings",
+          "documentVersion",
+          "profileIdentity",
+          "semanticRevision",
+          "tree"
+        ]
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "1e06b0cc92048c309be5c595b3e3d7639d8ff90694b5705afe786ded10478838"
+  }
+}

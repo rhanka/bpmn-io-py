@@ -1,0 +1,252 @@
+{
+  "case": "pick-paging-bounds",
+  "clause": "DESIGN R3.3 \u00a78.3 L657 paging integers are safe and bounded; \u00a72.1 L50 safe integers",
+  "derivation": "A negative offset or limit, an unsafe limit 2^53, a Boolean offset and a fractional offset are not safe nonnegative integers; the DESIGN names no code, the lot-5 binding refuses profile-bounds (CR-04 bounds).",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Archive task"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_1",
+                "dataStoreRef": "Store_b"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "store_a",
+            "name": "Archive"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_b",
+            "name": "archive box"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_B",
+            "name": "ARCHIVE"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_10",
+            "name": "Caf\u00e9"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_9",
+            "name": "Cafe\u0301"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store-x",
+            "name": "\ud835\udc9crchive"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store.y"
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "targetId": "Ref_1",
+          "fieldId": "store",
+          "query": "",
+          "offset": -1,
+          "limit": 5
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "targetId": "Ref_1",
+          "fieldId": "store",
+          "query": "",
+          "offset": 0,
+          "limit": -1
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "targetId": "Ref_1",
+          "fieldId": "store",
+          "query": "",
+          "offset": 0,
+          "limit": 9007199254740992
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "targetId": "Ref_1",
+          "fieldId": "store",
+          "query": "",
+          "offset": true,
+          "limit": 5
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "targetId": "Ref_1",
+          "fieldId": "store",
+          "query": "",
+          "offset": 1.5,
+          "limit": 5
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Archive task"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "Ref_1",
+                      "dataStoreRef": "Store_b"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "store_a",
+                  "name": "Archive"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_b",
+                  "name": "archive box"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_B",
+                  "name": "ARCHIVE"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_10",
+                  "name": "Caf\u00e9"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_9",
+                  "name": "Cafe\u0301"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store-x",
+                  "name": "\ud835\udc9crchive"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store.y"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
+          },
+          "semanticRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "refused",
+        "code": "profile-bounds"
+      },
+      {
+        "status": "refused",
+        "code": "profile-bounds"
+      },
+      {
+        "status": "refused",
+        "code": "profile-bounds"
+      },
+      {
+        "status": "refused",
+        "code": "profile-bounds"
+      },
+      {
+        "status": "refused",
+        "code": "profile-bounds"
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
+  }
+}

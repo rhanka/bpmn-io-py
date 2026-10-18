@@ -1,0 +1,24 @@
+{
+  "case": "compile-ui-icon-unknown-glyph",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 UI entries have icon {theme,glyph}; \u00a72.4.1 L190 CR-05 referenced glyphs exist",
+  "derivation": "task-create names glyph missing-glyph, absent from theme plain, so compilation refuses profile-symbol.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/ui/1/icon/glyph",
+          "value": "missing-glyph"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-symbol"
+    }
+  }
+}

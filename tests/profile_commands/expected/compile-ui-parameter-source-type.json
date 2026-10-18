@@ -1,0 +1,24 @@
+{
+  "case": "compile-ui-parameter-source-type",
+  "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 typed bindings; \u00a78.3 L655 owner/target/source are native handles, value is the typed field value",
+  "derivation": "The element parameter owner of task-create is bound from source value (a scalar), so the binding is ill-typed and compilation refuses profile-ui-parameters.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/ui/1/parameters/0/source",
+          "value": "value"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-ui-parameters"
+    }
+  }
+}

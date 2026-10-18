@@ -1,0 +1,154 @@
+{
+  "case": "field-display-prefix-exact",
+  "clause": "DESIGN R3.3 \u00a72.2 L115 stripPrefix removes exactly one matching prefix, otherwise returns the value unchanged; \u00a78.3 L655",
+  "derivation": "[Aid]helper is recognized as aid (recognition prefix [Aid]) but the display prefix is [Aid] with a space; it does not match, so the display is the unchanged stored text.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": []
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Review"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Aid_9",
+                "text": "[Aid]helper"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "list_fields",
+        "args": {
+          "baseRevision": "e4cd3712ea6babdc7f47c2c254b0970f8ece9fd4db6c024aa627ed48d638a5f4",
+          "targetId": "Aid_9",
+          "locale": "en"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_9",
+                      "text": "[Aid]helper"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "e4cd3712ea6babdc7f47c2c254b0970f8ece9fd4db6c024aa627ed48d638a5f4"
+          },
+          "semanticRevision": "e4cd3712ea6babdc7f47c2c254b0970f8ece9fd4db6c024aa627ed48d638a5f4"
+        },
+        "payloadKeys": [
+          "envelope",
+          "historyEpoch",
+          "semanticRevision",
+          "viewRevision"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "status": "ok",
+        "payload": {
+          "revision": "e4cd3712ea6babdc7f47c2c254b0970f8ece9fd4db6c024aa627ed48d638a5f4",
+          "targetId": "Aid_9",
+          "fields": [
+            {
+              "notion": "aid",
+              "field": "body",
+              "widget": "multiline",
+              "path": "/text",
+              "label": {
+                "key": "label.aid",
+                "text": "Aid"
+              },
+              "message": {
+                "key": "invalid",
+                "text": "Name is required."
+              },
+              "present": true,
+              "display": "[Aid]helper",
+              "mutable": true,
+              "choices": [],
+              "targetTypes": []
+            }
+          ]
+        },
+        "payloadKeys": [
+          "fields",
+          "revision",
+          "targetId"
+        ]
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "e4cd3712ea6babdc7f47c2c254b0970f8ece9fd4db6c024aa627ed48d638a5f4"
+  }
+}

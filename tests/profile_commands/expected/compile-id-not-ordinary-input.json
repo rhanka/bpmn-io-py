@@ -1,0 +1,68 @@
+{
+  "case": "compile-id-not-ordinary-input",
+  "clause": "DESIGN R3.3 \u00a78.3 L653 IDs/ports/hashes are not ordinary inputs; \u00a72.4 L165 set cannot modify existing IDs; \u00a72.4.1 L206",
+  "derivation": "A recipe that sets /id on its target is added; an existing ID is never writable, so compilation refuses profile-producer (the code of the executable design checker for an id mutation).",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "set-id",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/id",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/id",
+                "value": {
+                  "op": "param",
+                  "name": "value"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-producer"
+    }
+  }
+}
