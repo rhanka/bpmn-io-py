@@ -34,7 +34,7 @@ from bpmn_io.profile._lint.errors import (
     ProfileLintError,
     RuleUnknownError,
 )
-from bpmn_io.profile._lint.index import build_id_index
+from bpmn_io.profile._lint.index import build_id_index, walk_tree
 from bpmn_io.profile._lint.report import adapter_entry, build_unified, to_jsonable
 from bpmn_io.profile._lint.resolver import ProfileResolver
 from bpmn_io.profile._lint.transform import (
@@ -246,6 +246,7 @@ def _lint(
         msg = f"lint evaluation failed: {err}"
         raise ProfileLintError(msg) from err
     index = build_id_index(envelope)
+    known_pointers = {pointer for _, pointer in walk_tree(envelope)}
     policy = {**flattened.standard, **flattened.subrules}
     stage_rules = [
         rule
@@ -254,7 +255,12 @@ def _lint(
     ]
     compiled_by_id = {f"profile:{rule['id']}": rule for rule in stage_rules}
     entries, counts = build_unified(
-        raw, phase=phase, policy=policy, compiled_rules=compiled_by_id, index=index
+        raw,
+        phase=phase,
+        policy=policy,
+        compiled_rules=compiled_by_id,
+        index=index,
+        known_pointers=known_pointers,
     )
     return {
         "status": "ok",

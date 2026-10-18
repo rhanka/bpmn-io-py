@@ -66,7 +66,25 @@ def test_unresolvable_id_yields_unavailable() -> None:
 
 
 def test_absolute_pointer_passthrough() -> None:
-    """Generic producers may supply an already absolute pointer."""
+    """Generic producers may supply an already absolute pointer that exists."""
+    entries, _ = build_unified(
+        {
+            "label-required": [
+                {"id": None, "message": "m", "path": "/rootElements/0/flowElements/0"}
+            ]
+        },
+        phase="post-normalize",
+        policy=_policy(),
+        compiled_rules={},
+        index=_index(),
+    )
+    (entry,) = entries
+    assert entry["source"]["pointer"] == "/rootElements/0/flowElements/0"
+    assert entry["source"]["provenance"] == "exact"
+
+
+def test_absolute_pointer_missing_refused() -> None:
+    """A well-formed but unknown absolute pointer stays unavailable."""
     entries, _ = build_unified(
         {"label-required": [{"id": None, "message": "m", "path": "/abs/pointer"}]},
         phase="post-normalize",
@@ -75,8 +93,8 @@ def test_absolute_pointer_passthrough() -> None:
         index=_index(),
     )
     (entry,) = entries
-    assert entry["source"]["pointer"] == "/abs/pointer"
-    assert entry["source"]["provenance"] == "exact"
+    assert entry["source"]["pointer"] is None
+    assert entry["source"]["provenance"] == "unavailable"
 
 
 def test_standard_identity_and_severity() -> None:

@@ -14,6 +14,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from collections.abc import Collection
+
     from bpmn_io.moddle.base import ModdleElement
 
 __all__ = ["build_id_index", "escape_segment", "resolve_pointer", "walk_tree"]
@@ -98,10 +100,80 @@ def _valid_segments(path: Any) -> list[str | int] | None:  # noqa: ANN401
     return segments
 
 
+def _is_valid_absolute_pointer(value: str) -> bool:
+    """Check the RFC 6901 syntax of a generic absolute pointer.
+
+    ``""`` names the document root; otherwise the pointer starts with
+    ``/`` and every ``~`` opens exactly ``~0`` or ``~1`` — any other
+    ``~``, including one closing a segment, is invalid.
+    """
+    if value == "":
+        return True
+    if not value.startswith("/"):
+        return False
+    position = 0
+    while position < len(value):
+        if value[position] == "~":
+            if position + 1 >= len(value) or value[position + 1] not in ("0", "1"):
+                return False
+            position += 2
+        else:
+            position += 1
+    return True
+
+
+def _is_at_or_under(pointer: str, base: str) -> bool:
+    """Check that ``pointer`` names ``base`` itself or one of its children."""
+    if pointer == base:
+        return True
+    if base == "":
+        return pointer.startswith("/")
+    return pointer.startswith(f"{base}/")
+
+
+def _exists_in_index(pointer: str, index: dict[str, str]) -> bool:
+    """Check existence against the ID index alone (``""`` is the live root)."""
+    return pointer == "" or pointer in set(index.values())
+
+
+def _resolve_generic_pointer(
+    index: dict[str, str],
+    path: str,
+    *,
+    base: str | None,
+    has_id: bool,
+    known_pointers: Collection[str] | None,
+) -> tuple[str | None, str]:
+    """Validate one generic absolute pointer (syntax, scope, existence)."""
+    if not _is_valid_absolute_pointer(path):
+        return None, "unavailable"
+    if has_id and (base is None or not _is_at_or_under(path, base)):
+        return None, "unavailable"
+    if known_pointers is not None and path not in known_pointers:
+        return None, "unavailable"
+    if (
+        known_pointers is None
+        and not _exists_in_index(path, index)
+        and not (has_id and base is not None and _is_at_or_under(path, base))
+    ):
+        return None, "unavailable"
+    return path, "exact"
+
+
+def _append_segments(base: str, segments: list[str | int]) -> str:
+    """Append escaped segments to a base pointer."""
+    resolved = base
+    for segment in segments:
+        text = str(segment) if isinstance(segment, int) else escape_segment(segment)
+        resolved += f"/{text}"
+    return resolved
+
+
 def resolve_pointer(
     index: dict[str, str],
     reported_id: Any,  # noqa: ANN401 - upstream report content
     path: Any,  # noqa: ANN401 - upstream report content
+    known_pointers: Collection[str] | None = None,
 ) -> tuple[str | None, str]:
     """Resolve ``(reported_id, path)`` to ``(pointer, provenance)``.
 
@@ -109,31 +181,26 @@ def resolve_pointer(
     string/integer segments: the reported ID resolves in the immutable
     input index and the escaped segments append to its absolute source
     pointer (``[]`` points at the node itself). A verbatim absolute
-    pointer (a string starting with ``/``) passes through only as supplied
-    by generic producers — with no reported ID, or with a reported ID the
-    index knows; a pointer for an unknown ID is refused, never exact.
+    pointer (``""`` or a string starting with ``/``) is accepted as
+    ``exact`` only when it is syntactically valid RFC 6901, resolves in
+    the immutable input (the ``known_pointers`` walk set when supplied,
+    else the ID index with any at-or-under-base pointer read as an
+    ID-less child), and lies at or under the absolute source pointer of
+    the reported ID — so ID-less children of that node are accepted.
     Anything else yields ``(None, "unavailable")``; the adapter never
     fabricates the root pointer.
     """
     has_id = isinstance(reported_id, str) and reported_id != ""
     base = index.get(reported_id) if has_id else None
     if isinstance(path, str):
-        if path.startswith("/"):
-            # Generic absolute pointer: exact unless it names an unknown ID.
-            resolved = path if base is not None or not has_id else None
-        elif has_id and base is not None and path:
-            resolved = f"{base}/{escape_segment(path)}"
-        else:
-            resolved = None
-    else:
-        segments = _valid_segments(path)
-        if segments is None or base is None:
-            resolved = None
-        else:
-            resolved = base
-            for segment in segments:
-                text = str(segment) if isinstance(segment, int) else escape_segment(segment)
-                resolved += f"/{text}"
-    if resolved is None:
+        if path == "" or path.startswith("/"):
+            return _resolve_generic_pointer(
+                index, path, base=base, has_id=has_id, known_pointers=known_pointers
+            )
+        if has_id and base is not None and path:
+            return f"{base}/{escape_segment(path)}", "exact"
         return None, "unavailable"
-    return resolved, "exact"
+    segments = _valid_segments(path)
+    if segments is None or base is None:
+        return None, "unavailable"
+    return _append_segments(base, segments), "exact"

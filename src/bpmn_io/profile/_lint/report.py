@@ -15,7 +15,10 @@ unresolved ``info`` / ``warn`` / ``error`` entries.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Collection
 
 from bpmn_io._js import UNDEFINED
 from bpmn_io.profile._lint.c14n import utf16_key
@@ -212,21 +215,25 @@ def sort_entries(entries: list[dict[str, Any]], origins: list[str]) -> list[dict
     return [entry for entry, _ in paired]
 
 
-def build_unified(
+def build_unified(  # noqa: PLR0913 - unified entries carry index plus walk set
     raw: dict[str, list[dict[str, Any]]],
     *,
     phase: str,
     policy: dict[str, dict[str, str]],
     compiled_rules: dict[str, dict[str, Any]],
     index: dict[str, str],
+    known_pointers: Collection[str] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, int]]:
     """Build unified entries and severity counts from raw upstream reports.
 
     ``policy`` maps every effective rule name (standard names and
     ``profile:<id>``) to its ``{"severity", "classification"}`` row;
     ``compiled_rules`` maps ``profile:<id>`` to its compiled rule record
-    for metadata validation; ``index`` resolves reported IDs. Returns
-    ``(entries, counts)`` with entries merged, deduplicated and sorted.
+    for metadata validation; ``index`` resolves reported IDs and
+    ``known_pointers`` carries the immutable input walk set generic
+    absolute pointers resolve against (None keeps the ID-index reading).
+    Returns ``(entries, counts)`` with entries merged, deduplicated and
+    sorted.
     """
     entries: list[dict[str, Any]] = []
     origins: list[str] = []
@@ -248,14 +255,24 @@ def build_unified(
             if row is not None and _raw_category(report) != _RULE_ERROR_CATEGORY:
                 _emit(
                     _standard_report(
-                        report, rule_name=rule_name, phase=phase, row=row, index=index
+                        report,
+                        rule_name=rule_name,
+                        phase=phase,
+                        row=row,
+                        index=index,
+                        known_pointers=known_pointers,
                     ),
                     ORIGIN_STANDARD,
                 )
             else:
                 _emit(
                     _standard_report(
-                        report, rule_name=rule_name, phase=phase, row=row, index=index
+                        report,
+                        rule_name=rule_name,
+                        phase=phase,
+                        row=row,
+                        index=index,
+                        known_pointers=known_pointers,
                     ),
                     ORIGIN_ADAPTER,
                 )
@@ -313,18 +330,21 @@ def _reported_id(report: Any) -> str | None:  # noqa: ANN401 - upstream report c
     return None
 
 
-def _standard_report(
+def _standard_report(  # noqa: PLR0913 - standard entries carry index plus walk set
     report: Any,  # noqa: ANN401 - upstream report content
     *,
     rule_name: str,
     phase: str,
     row: dict[str, str] | None,
     index: dict[str, str],
+    known_pointers: Collection[str] | None = None,
 ) -> dict[str, Any]:
     """Map one standard raw finding to its unified entry."""
     if _raw_category(report) == _RULE_ERROR_CATEGORY or row is None:
         return adapter_entry("lint-rule-error", stage=phase)
-    pointer, provenance = resolve_pointer(index, _reported_id(report), report.get("path", []))
+    pointer, provenance = resolve_pointer(
+        index, _reported_id(report), report.get("path", []), known_pointers
+    )
     return standard_entry(
         rule_name=rule_name,
         severity=row["severity"],
