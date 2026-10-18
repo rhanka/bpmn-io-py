@@ -1,0 +1,23 @@
+{
+ "id": "loss-mixed-01",
+ "title": "Mixed text/child interleaving preserved as body+children with a diagnostic",
+ "design": [
+  "mixed-text/child ordering loss"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "project": {
+  "diagnostics": [
+   {
+    "code": "moddle-content-normalized",
+    "path": "/rootElements/0/extensionElements/values/0",
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}

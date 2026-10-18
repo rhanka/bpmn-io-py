@@ -1,0 +1,33 @@
+{
+ "id": "prefix-collision-01",
+ "title": "Occupied-prefix local rebinding (native ns0 anonymization)",
+ "design": [
+  "occupied-prefix collision",
+  "native limitation shared by both lanes: anonymized empty-URI generics refuse hydrate (invalid-namespace) and F7 (writer throws)"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "hydrate": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "invalid-namespace",
+    "path": "/rootElements/0/extensionElements/values/0",
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": false,
+  "native": "throws identically in both lanes",
+  "diagnostics": [
+   {
+    "code": "xml-invalid",
+    "path": null,
+    "target": null
+   }
+  ]
+ }
+}

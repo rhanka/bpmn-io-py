@@ -1,0 +1,14 @@
+{
+ "id": "xsi-absent-01",
+ "title": "Absent discriminator resolves the declared slot type",
+ "design": [
+  "absent discriminator; first-pass delta is empty (frozen)"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "serialize": {
+  "ok": true
+ }
+}

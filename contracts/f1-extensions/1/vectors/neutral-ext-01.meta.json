@@ -1,0 +1,25 @@
+{
+ "id": "neutral-ext-01",
+ "title": "Synthetic neutral extensionElements: nested generics, foreign attrs, unregistered xmlns",
+ "design": [
+  "matrix (c) mandatory",
+  "generic-descendant rule",
+  "mixed body+children"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "project": {
+  "diagnostics": [
+   {
+    "code": "moddle-content-normalized",
+    "path": "/rootElements/0/extensionElements/values/0",
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}

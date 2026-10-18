@@ -1,0 +1,24 @@
+{
+ "$type": "bpmn:Definitions",
+ "id": "D1",
+ "rootElements": [
+  {
+   "$type": "bpmn:Process",
+   "id": "P1",
+   "$attrs": {}
+  },
+  {
+   "$type": "bpmn:Process",
+   "id": "P2",
+   "$attrs": {
+    "xmlns:vendor": "http://example.com/vendor",
+    "xmlns:color": "http://www.omg.org/spec/BPMN/non-normative/color/1.0",
+    "vendor:flag": "x",
+    "color:foreground": "#ff0000"
+   }
+  }
+ ],
+ "$attrs": {
+  "xmlns:bpmn": "http://www.omg.org/spec/BPMN/20100524/MODEL"
+ }
+}

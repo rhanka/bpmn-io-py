@@ -1,0 +1,20 @@
+{
+ "id": "entity-num-01",
+ "title": "Supplementary-plane numeric reference truncates with a diagnostic",
+ "design": [
+  "D4 truncation diagnostic preserved; F7 keeps the truncated value"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": [
+   {
+    "code": "moddle-content-normalized",
+    "path": null,
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}

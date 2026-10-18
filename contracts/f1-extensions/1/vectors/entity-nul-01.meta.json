@@ -1,0 +1,21 @@
+{
+ "id": "entity-nul-01",
+ "title": "NUL numeric reference decodes exactly, then O1 refuses F7",
+ "design": [
+  "D4 numeric loss vectors and their F7 O1 interaction"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "serialize": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "invalid-xml-character",
+    "path": "/rootElements/0/extensionElements/values/0/$body",
+    "target": null
+   }
+  ]
+ }
+}

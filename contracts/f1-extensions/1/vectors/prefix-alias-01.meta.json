@@ -1,0 +1,15 @@
+{
+ "id": "prefix-alias-01",
+ "title": "Same URI bound to two prefixes (retained aliasing)",
+ "design": [
+  "same-URI aliases retained",
+  "URI never inferred from spelling"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "serialize": {
+  "ok": true
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "id": "reserved-json-proto-01",
+ "title": "JSON $attrs key colliding with a prototype hook",
+ "design": [
+  "D1 no dynamic hasattr; __proto__ enumerated"
+ ],
+ "hydrate": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "reserved-name",
+    "path": "/rootElements/0/extensionElements/values/0/$attrs/__proto__",
+    "target": null
+   }
+  ]
+ }
+}

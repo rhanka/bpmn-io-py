@@ -1,0 +1,41 @@
+{
+ "$type": "bpmn:Definitions",
+ "id": "D1",
+ "rootElements": [
+  {
+   "$type": "bpmn:Process",
+   "id": "P1",
+   "extensionElements": {
+    "$type": "bpmn:ExtensionElements",
+    "values": [
+     {
+      "$type": "$any",
+      "$name": {
+       "qname": "v:a",
+       "uri": "http://example.com/vendor"
+      },
+      "$attrs": {
+       "v:k": "1"
+      }
+     },
+     {
+      "$type": "$any",
+      "$name": {
+       "qname": "v:b",
+       "uri": "http://example.com/vendor"
+      },
+      "$attrs": {
+       "v:k": "2"
+      }
+     }
+    ],
+    "$attrs": {}
+   },
+   "$attrs": {}
+  }
+ ],
+ "$attrs": {
+  "xmlns:bpmn": "http://www.omg.org/spec/BPMN/20100524/MODEL",
+  "xmlns:v": "http://example.com/vendor"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "id": "entity-upper-01",
+ "title": "Uppercase entity variants decode natively",
+ "design": [
+  "D4 uppercase variants accepted; vector documents the behavior"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "serialize": {
+  "ok": true,
+  "note": "apostrophe escaping differs in the literal Python port (sealed xfail)",
+  "f7Expect": "xfail-port"
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "id": "safety-doctype-01",
+ "title": "DOCTYPE refused before native construction",
+ "design": [
+  "shared DTD/entity/XXE refusal"
+ ],
+ "parse": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "xml-doctype-forbidden",
+    "path": null,
+    "target": null
+   }
+  ]
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "id": "o2-pointer-escape-01",
+ "title": "Diagnostic paths escape ~ and / per RFC 6901",
+ "design": [
+  "O2 escaped pointer segments"
+ ],
+ "hydrate": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "invalid-any",
+    "path": "/rootElements/0/extensionElements/values/0/$attrs/a~0b~1c",
+    "target": null
+   }
+  ]
+ }
+}

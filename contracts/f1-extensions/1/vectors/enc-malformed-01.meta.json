@@ -1,0 +1,17 @@
+{
+ "id": "enc-malformed-01",
+ "title": "Malformed UTF-8 bytes refuse with invalid-encoding",
+ "design": [
+  "malformed byte input"
+ ],
+ "parse": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "invalid-encoding",
+    "path": null,
+    "target": null
+   }
+  ]
+ }
+}

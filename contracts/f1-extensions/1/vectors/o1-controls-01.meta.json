@@ -1,0 +1,17 @@
+{
+ "id": "o1-controls-01",
+ "title": "O1 refuses C0 controls and DEL",
+ "design": [
+  "O1 forbidden controls"
+ ],
+ "serialize": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "invalid-xml-character",
+    "path": "/rootElements/0/extensionElements/values/0/$body",
+    "target": null
+   }
+  ]
+ }
+}

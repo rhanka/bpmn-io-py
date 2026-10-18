@@ -1,0 +1,29 @@
+{
+ "$type": "bpmn:Definitions",
+ "id": "D1",
+ "$attrs": {},
+ "rootElements": [
+  {
+   "$type": "bpmn:Process",
+   "id": "P1",
+   "$attrs": {},
+   "extensionElements": {
+    "$type": "bpmn:ExtensionElements",
+    "$attrs": {},
+    "values": [
+     {
+      "$type": "$any",
+      "$name": {
+       "qname": "ven:note",
+       "uri": "http://example.com/vendor"
+      },
+      "$attrs": {
+       "xmlns:ven": "http://example.com/vendor"
+      },
+      "$body": "a\u0001b"
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "id": "safety-entity-01",
+ "title": "Standalone ENTITY declaration refused (isolates its code)",
+ "design": [
+  "standalone ENTITY vector"
+ ],
+ "parse": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "xml-entity-declaration-forbidden",
+    "path": null,
+    "target": null
+   }
+  ]
+ }
+}

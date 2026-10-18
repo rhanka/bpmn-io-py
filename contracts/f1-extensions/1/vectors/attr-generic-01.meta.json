@@ -1,0 +1,15 @@
+{
+ "id": "attr-generic-01",
+ "title": "Foreign attributes on generic owners, empty and non-empty",
+ "design": [
+  "matrix (b)",
+  "generic $attrs incl declarations"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "serialize": {
+  "ok": true
+ }
+}
