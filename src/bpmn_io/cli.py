@@ -5,16 +5,17 @@ from __future__ import annotations
 import argparse
 import contextlib
 import glob as glob_module
+import hashlib
 import json
 import re
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, cast
 
 if TYPE_CHECKING:
     from bpmn_io.bpmn_moddle import BpmnModdle
     from bpmn_io.lint.linter import Resolver
-    from bpmn_io.moddle.base import ModdleElement
 
 from bpmn_io._js import UNDEFINED
 from bpmn_io._moddle_utils import path_stringify
@@ -23,7 +24,17 @@ from bpmn_io.bpmn_moddle.simple import create_moddle
 from bpmn_io.check import check
 from bpmn_io.lint import Linter
 from bpmn_io.lint.resolver import NodeResolver
+from bpmn_io.moddle.base import ModdleElement
 from bpmn_io.moddle_xml.read import ParseError
+from bpmn_io.profile._lint import lint as run_profile_lint
+from bpmn_io.profile._lint.c14n import digest as profile_digest
+from bpmn_io.profile._lint.errors import ProfileLintError
+from bpmn_io.profile._lint.report import adapter_entry as profile_adapter_entry
+from bpmn_io.profile._lint.transform import (
+    flatten_policy,
+    select_record,
+    validate_compiled_options,
+)
 
 __all__ = ["main"]
 
@@ -435,6 +446,321 @@ def _run_lint(args: argparse.Namespace) -> int:
     )
 
 
+class _InvalidInvocationError(Exception):
+    """A profile-lint input problem (one stderr line, exit 2)."""
+
+
+@dataclass(frozen=True)
+class _ProfileLintArgs:
+    """Parsed ``profile lint`` invocation (paths plus stage and policy)."""
+
+    input_path: str
+    profile_path: str
+    schema_path: str
+    base_path: str
+    descriptors_path: str
+    registry_path: str
+    phase: str
+    readiness_policy: str
+
+
+@dataclass
+class _ProfileInputs:
+    """Parsed profile-lint documents ready for the lint bridge."""
+
+    xml: str
+    envelope_bytes: bytes
+    profile_doc: dict[str, Any]
+    base_doc: dict[str, Any]
+    descriptors_doc: dict[str, Any]
+    validation: list[Any]
+    compiled_rules: list[Any]
+    extra_configs: dict[str, Any]
+
+
+def _read_json_input(label: str, path: str) -> tuple[dict[str, Any], bytes]:
+    """Read and parse a profile-lint JSON input (raises on any problem)."""
+    try:
+        text = Path(path).read_text(encoding="utf-8")
+    except (OSError, UnicodeError, ValueError) as err:
+        msg = f"cannot read {label} {path!r}: {err}"
+        raise _InvalidInvocationError(msg) from err
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError as err:
+        msg = f"could not parse {label} {path}: {err}"
+        raise _InvalidInvocationError(msg) from err
+    if not isinstance(data, dict):
+        msg = f"could not parse {label} {path}: expected a JSON object"
+        raise _InvalidInvocationError(msg)
+    return data, text.encode("utf-8")
+
+
+def _require_doc_id(label: str, doc: dict[str, Any]) -> None:
+    """Require a string ``id`` on a profile-lint identity document."""
+    doc_id = doc.get("id")
+    if not isinstance(doc_id, str) or not doc_id:
+        msg = f"{label} must carry a string id"
+        raise _InvalidInvocationError(msg)
+
+
+def _read_profile_inputs(args: _ProfileLintArgs) -> _ProfileInputs:
+    """Read and shape-check every profile-lint input file."""
+    envelope_doc, envelope_bytes = _read_json_input("--input", args.input_path)
+    profile_doc, _ = _read_json_input("--profile", args.profile_path)
+    schema_doc, _ = _read_json_input("--schema", args.schema_path)
+    base_doc, _ = _read_json_input("--base", args.base_path)
+    descriptors_doc, _ = _read_json_input("--descriptors", args.descriptors_path)
+    registry_doc, _ = _read_json_input("--registry", args.registry_path)
+    if schema_doc.get("$id") != "urn:profile-mechanism:1:profile":
+        msg = "--schema is not the pinned profile schema"
+        raise _InvalidInvocationError(msg)
+    xml = envelope_doc.get("xml")
+    if not isinstance(xml, str) or not xml:
+        msg = "--input must be a JSON object with an xml string"
+        raise _InvalidInvocationError(msg)
+    _require_doc_id("--base", base_doc)
+    _require_doc_id("--descriptors", descriptors_doc)
+    _require_doc_id("--registry", registry_doc)
+    validation = profile_doc.get("validation")
+    compiled_rules = profile_doc.get("rules")
+    if not isinstance(validation, list) or not isinstance(compiled_rules, list):
+        msg = "--profile must carry validation and rules arrays"
+        raise _InvalidInvocationError(msg)
+    extra_configs = registry_doc.get("configs")
+    if extra_configs is None:
+        extra_configs = {}
+    if not isinstance(extra_configs, dict):
+        msg = "--registry configs must be an object when present"
+        raise _InvalidInvocationError(msg)
+    return _ProfileInputs(
+        xml=xml,
+        envelope_bytes=envelope_bytes,
+        profile_doc=profile_doc,
+        base_doc=base_doc,
+        descriptors_doc=descriptors_doc,
+        validation=validation,
+        compiled_rules=compiled_rules,
+        extra_configs=extra_configs,
+    )
+
+
+def _profile_identity_for(inputs: _ProfileInputs) -> dict[str, Any]:
+    """Build the ``Result/1`` profile identity from the pinned inputs."""
+    return {
+        "mechanismVersion": str(inputs.profile_doc.get("mechanismVersion", "1")),
+        "schemaVersion": str(inputs.profile_doc.get("schemaVersion", "")),
+        "profile": str(inputs.profile_doc.get("profile", "")),
+        "version": str(inputs.profile_doc.get("version", "")),
+        "sha256": profile_digest(inputs.profile_doc),
+        "base": {
+            "id": str(inputs.base_doc.get("id")),
+            "version": str(inputs.base_doc.get("version", "")),
+            "sha256": profile_digest(inputs.base_doc),
+        },
+        "descriptors": [
+            {
+                "id": str(inputs.descriptors_doc.get("id")),
+                "sha256": profile_digest(inputs.descriptors_doc),
+            }
+        ],
+    }
+
+
+def _build_cli_transport(
+    inputs: _ProfileInputs,
+    profile_digest_value: str,
+    *,
+    phase: str,
+    readiness_policy: str,
+) -> dict[str, Any]:
+    """Build the validated transport options for the CLI invocation."""
+    record = select_record(inputs.validation, phase=phase, readiness_policy=readiness_policy)
+    flattened = flatten_policy(record, inputs.extra_configs)
+    transport = {
+        "mechanismVersion": "1",
+        "profileDigest": profile_digest_value,
+        "phase": phase,
+        "readinessPolicy": readiness_policy,
+        "compiledRules": inputs.compiled_rules,
+        "bindings": [],
+        "severityPolicyDigest": flattened.severity_policy_digest,
+    }
+    validate_compiled_options(transport)
+    return transport
+
+
+def _cmd_profile_lint(args: _ProfileLintArgs) -> int:
+    """Lint one document envelope against a profile (DESIGN R3.3 §6.4).
+
+    Exit 0 means ok, 1 means refused or a remaining error, 2 means invalid
+    invocation. Exactly one ``Result/1`` goes to stdout; diagnostics use
+    stderr. No module discovery or network follows profile data.
+    """
+    try:
+        inputs = _read_profile_inputs(args)
+    except _InvalidInvocationError as err:
+        _err(f"bpmn-io: profile lint: {err}")
+        return 2
+    profile_identity = _profile_identity_for(inputs)
+    revision = hashlib.sha256(inputs.envelope_bytes).hexdigest()
+
+    try:
+        transport = _build_cli_transport(
+            inputs,
+            str(profile_identity["sha256"]),
+            phase=args.phase,
+            readiness_policy=args.readiness_policy,
+        )
+    except Exception as err:  # noqa: BLE001 - profile data failures are refused results
+        return _profile_lint_refused(
+            str(err),
+            code=_profile_lint_code(err),
+            phase=args.phase,
+            identity=profile_identity,
+            revision=revision,
+        )
+
+    model = create_moddle()
+    try:
+        parsed = model.from_xml(inputs.xml)
+    except ParseError as err:
+        return _profile_lint_refused(
+            f"input does not parse: {err.message}",
+            code="operation-error",
+            phase=args.phase,
+            identity=profile_identity,
+            revision=revision,
+        )
+    root = parsed.root_element
+    if not isinstance(root, ModdleElement):
+        _err("bpmn-io: profile lint: input is not a BPMN definitions tree")
+        return 2
+    try:
+        result = run_profile_lint(
+            root,
+            {
+                "compiledOptions": transport,
+                "validation": inputs.validation,
+                "registry": inputs.extra_configs,
+            },
+            phase=args.phase,
+            readiness_policy=args.readiness_policy,
+        )
+    except (ValueError, TypeError) as err:
+        _err(f"bpmn-io: profile lint: {err}")
+        return 2
+    result["profileIdentity"] = profile_identity
+    result["baseRevision"] = revision
+    result["revision"] = revision
+    report = result.get("report")
+    if isinstance(report, dict):
+        report["inputRevision"] = revision
+        report["outputRevision"] = revision
+    if parsed.warnings:
+        _attach_import_warnings(result, parsed.warnings, phase=args.phase)
+    ordered: dict[str, Any] = {
+        key: result[key]
+        for key in (
+            "status",
+            "operation",
+            "profileIdentity",
+            "baseRevision",
+            "revision",
+            "report",
+            "payload",
+        )
+        if key in result
+    }
+    ordered.update({key: result[key] for key in result if key not in ordered})
+    _out(json.dumps(ordered, sort_keys=True))
+    payload = result.get("payload")
+    ok = result.get("status") == "ok" and isinstance(payload, dict) and payload.get("ok") is True
+    return 0 if ok else 1
+
+
+def _profile_lint_code(err: Exception) -> str:
+    """Map a pre-evaluation profile failure to its stable refusal code."""
+    if isinstance(err, ProfileLintError):
+        return err.code
+    return "operation-error"
+
+
+def _profile_lint_refused(
+    message: str,
+    *,
+    code: str,
+    phase: str,
+    identity: dict[str, Any] | None = None,
+    revision: str | None = None,
+) -> int:
+    """Print a refused profile-lint ``Result/1`` on stdout (exit 1)."""
+    result: dict[str, Any] = {
+        "status": "refused",
+        "operation": "validate",
+        "code": code,
+        "diagnostics": [message],
+        "report": {
+            "reportVersion": "2",
+            "operation": "validate",
+            "entries": [profile_adapter_entry(code, stage=phase, disposition="refused")],
+            "rawStandardFindings": {},
+            "idMap": [],
+            "artifacts": [],
+        },
+    }
+    if identity is not None:
+        result["profileIdentity"] = identity
+    if revision is not None:
+        result["baseRevision"] = revision
+        result["revision"] = revision
+    _out(json.dumps(result, sort_keys=True))
+    return 1
+
+
+def _attach_import_warnings(
+    result: dict[str, Any],
+    warnings: list[Any],
+    *,
+    phase: str,
+) -> None:
+    """Surface native import warnings as integrity entries (never dropped).
+
+    Each warning becomes an observed ``lint-rule-error`` entry (like the
+    standard interface, which reports them as errors) and its text joins
+    ``payload.importWarnings`` so nothing is lost from the unified shape.
+    """
+    texts: list[str] = []
+    for warning in warnings:
+        message = str(getattr(warning, "message", warning)).splitlines()
+        texts.append(f"Import warning: {message[0] if message else warning}")
+    report = result.get("report")
+    if isinstance(report, dict) and isinstance(report.get("entries"), list):
+        report["entries"].extend(
+            profile_adapter_entry("lint-rule-error", stage=phase) for _ in texts
+        )
+    payload = result.get("payload")
+    if isinstance(payload, dict):
+        payload["importWarnings"] = texts
+        payload["ok"] = False
+
+
+def _run_profile_lint(args: argparse.Namespace) -> int:
+    """Dispatch the profile lint subcommand."""
+    return _cmd_profile_lint(
+        _ProfileLintArgs(
+            input_path=args.input,
+            profile_path=args.profile,
+            schema_path=args.schema,
+            base_path=args.base,
+            descriptors_path=args.descriptors,
+            registry_path=args.registry,
+            phase=args.phase,
+            readiness_policy=args.readiness_policy,
+        )
+    )
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Create the bpmn-io argument parser."""
     parser = argparse.ArgumentParser(
@@ -444,7 +770,7 @@ def build_parser() -> argparse.ArgumentParser:
         "1 finding or processing failure, 2 usage or IO error.",
     )
     sub = parser.add_subparsers(
-        dest="command", metavar="check|roundtrip|layout|lint", required=True
+        dest="command", metavar="check|roundtrip|layout|lint|profile", required=True
     )
     commands: tuple[tuple[str, str, Any], ...] = (
         ("check", "parse a file and report integrity findings", _run_check),
@@ -482,6 +808,40 @@ def build_parser() -> argparse.ArgumentParser:
         help="number of warnings to trigger nonzero exit code - default: -1",
     )
     lint_parser.set_defaults(func=_run_lint)
+
+    profile_parser = sub.add_parser(
+        "profile",
+        help="profile mechanism operations (lot 1: lint only)",
+    )
+    profile_sub = profile_parser.add_subparsers(
+        dest="profile_command", metavar="lint", required=True
+    )
+    profile_lint_parser = profile_sub.add_parser(
+        "lint",
+        help="lint a document envelope against a profile (unified Result/1)",
+    )
+    profile_lint_parser.add_argument("--input", required=True, help="envelope JSON file")
+    profile_lint_parser.add_argument("--profile", required=True, help="profile JSON file")
+    profile_lint_parser.add_argument("--schema", required=True, help="profile schema JSON file")
+    profile_lint_parser.add_argument("--base", required=True, help="effective-base JSON file")
+    profile_lint_parser.add_argument("--descriptors", required=True, help="descriptors JSON file")
+    profile_lint_parser.add_argument("--registry", required=True, help="registry JSON file")
+    profile_lint_parser.add_argument(
+        "--phase",
+        required=True,
+        choices=("import", "pre-normalize", "post-normalize", "post-layout", "release"),
+        help="execution stage to lint",
+    )
+    profile_lint_parser.add_argument(
+        "--readiness-policy",
+        required=True,
+        choices=("draft", "accept"),
+        help="readiness policy to lint under",
+    )
+    profile_lint_parser.add_argument(
+        "--json", action="store_true", required=True, help="write one Result/1 to stdout"
+    )
+    profile_lint_parser.set_defaults(func=_run_profile_lint)
     return parser
 
 
