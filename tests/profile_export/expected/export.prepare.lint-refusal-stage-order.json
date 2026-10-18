@@ -1,0 +1,112 @@
+{
+  "case": "export.prepare.lint-refusal-stage-order",
+  "clause": "DESIGN R3.3 \u00a710.2 prepareExport; \u00a76.2 stage table",
+  "witness": "stage order: the first blocking lint stage (pre-normalize, accept) refuses with the complete report so far",
+  "derivation": "Unpatched neutral profile on the neutral-fixture input (Task_A unnamed, no events, no flows). C runs on a copy, then the pre-normalize accept table blocks: bpmnlint end-event-required (first unresolved error in profile-report/2 order, ruleId end-event-required) and the profile subrule task-named-pre-normalize on Task_A; no later stage runs, so no entry has stage normalize or later; inputs unmutated.",
+  "operation": "prepare_export",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": []
+    },
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_1",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_B",
+              "name": "Ready"
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_A",
+              "name": ""
+            }
+          ],
+          "artifacts": []
+        }
+      ]
+    },
+    "bindings": [],
+    "options": {
+      "format": "drawio",
+      "themeId": "plain",
+      "overrides": {
+        "semantic": [],
+        "occurrence": []
+      },
+      "diStyles": {
+        "native": [],
+        "bioc": []
+      },
+      "diagrams": [
+        {
+          "$type": "bpmndi:BPMNDiagram",
+          "id": "P1",
+          "name": "Main",
+          "plane": {
+            "$type": "bpmndi:BPMNPlane",
+            "id": "P1-plane",
+            "bpmnElement": "Process_1",
+            "planeElement": [
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "s-a",
+                "bpmnElement": "Task_A",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 100,
+                  "y": 100,
+                  "width": 100,
+                  "height": 80
+                }
+              },
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "s-b",
+                "bpmnElement": "Task_B",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 300,
+                  "y": 100,
+                  "width": 100,
+                  "height": 80
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "bpmnlint/end-event-required",
+    "stagesOnly": [
+      "complete",
+      "pre-normalize"
+    ],
+    "includes": [
+      {
+        "stage": "pre-normalize",
+        "code": "bpmnlint/end-event-required",
+        "severity": "error",
+        "ruleId": "end-event-required"
+      },
+      {
+        "stage": "pre-normalize",
+        "code": "task-name-missing-pre-normalize",
+        "severity": "error",
+        "ruleId": "task-named-pre-normalize",
+        "targetId": "Task_A"
+      }
+    ],
+    "inputsUnchanged": true
+  },
+  "author": "spec-seal"
+}

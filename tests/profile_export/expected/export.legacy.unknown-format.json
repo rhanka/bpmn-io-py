@@ -1,0 +1,68 @@
+{
+  "case": "export.legacy.unknown-format",
+  "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
+  "witness": "IoError unknown-format row",
+  "derivation": "Listed io-error code unknown-format -> export-format-unsupported / export.format-unsupported / integrity / error, legacyCode kept; no ids: one entry with unavailable source.",
+  "operation": "map_legacy_diagnostics",
+  "input": {
+    "legacy": {
+      "producer": "io-error",
+      "code": "unknown-format"
+    },
+    "manifest": {
+      "adapter": "legacy-export/1",
+      "entries": [
+        {
+          "producer": "io-error",
+          "legacyCode": "unknown-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "unsupported-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "invalid-reference"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "missing-endpoint"
+        },
+        {
+          "producer": "fidelity-notice",
+          "legacyCode": "style-dropped"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      {
+        "code": "export-format-unsupported",
+        "severity": "error",
+        "classification": "integrity",
+        "stage": "export",
+        "ruleId": "legacy-export/1",
+        "messageKey": "export.format-unsupported",
+        "disposition": "refused",
+        "source": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "legacyCode": "unknown-format"
+      }
+    ]
+  },
+  "author": "spec-seal"
+}

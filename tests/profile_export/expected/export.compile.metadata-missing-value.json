@@ -1,0 +1,62 @@
+{
+  "case": "export.compile.metadata-missing-value",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
+  "witness": "metadata requires name and value",
+  "derivation": "Added metadata recipe emitting [name] only: profile-export-field.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-meta",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "pages",
+              "where": {
+                "op": "true"
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "emit",
+                "as": "out",
+                "kind": "metadata",
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "k"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-export-field"
+  },
+  "author": "spec-seal"
+}

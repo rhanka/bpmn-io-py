@@ -1,0 +1,30 @@
+{
+  "case": "export.compile.page-shape",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
+  "witness": "page.shape cannot pass",
+  "derivation": "export-pages adds field shape: not in the page vocabulary, profile-export-field.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/recipes/6/steps/0/fields/-",
+          "value": {
+            "name": "shape",
+            "value": {
+              "op": "literal",
+              "value": "rect"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-export-field"
+  },
+  "author": "spec-seal"
+}

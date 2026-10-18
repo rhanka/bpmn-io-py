@@ -1,0 +1,70 @@
+{
+  "case": "export.legacy.fidelity-notice-loss",
+  "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
+  "witness": "known FidelityNotice with a declared loss class maps like the loss action",
+  "derivation": "Listed fidelity-notice style-dropped carrying lossClass appearance: export-loss/appearance / export.loss.appearance / loss / warn, disposition mapped, legacyCode kept, unavailable provenance stays explicit.",
+  "operation": "map_legacy_diagnostics",
+  "input": {
+    "legacy": {
+      "producer": "fidelity-notice",
+      "code": "style-dropped",
+      "lossClass": "appearance"
+    },
+    "manifest": {
+      "adapter": "legacy-export/1",
+      "entries": [
+        {
+          "producer": "io-error",
+          "legacyCode": "unknown-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "unsupported-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "invalid-reference"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "missing-endpoint"
+        },
+        {
+          "producer": "fidelity-notice",
+          "legacyCode": "style-dropped"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      {
+        "code": "export-loss/appearance",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "legacy-export/1",
+        "messageKey": "export.loss.appearance",
+        "disposition": "mapped",
+        "source": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "legacyCode": "style-dropped",
+        "lossClass": "appearance"
+      }
+    ]
+  },
+  "author": "spec-seal"
+}

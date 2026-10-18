@@ -1,0 +1,71 @@
+{
+  "case": "export.legacy.missing-endpoint",
+  "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
+  "witness": "IoError missing-endpoint row",
+  "derivation": "Listed code missing-endpoint with ids [Flow_1], no index: reference-dangling, pointer null, provenance unavailable.",
+  "operation": "map_legacy_diagnostics",
+  "input": {
+    "legacy": {
+      "producer": "io-error",
+      "code": "missing-endpoint",
+      "ids": [
+        "Flow_1"
+      ]
+    },
+    "manifest": {
+      "adapter": "legacy-export/1",
+      "entries": [
+        {
+          "producer": "io-error",
+          "legacyCode": "unknown-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "unsupported-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "invalid-reference"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "missing-endpoint"
+        },
+        {
+          "producer": "fidelity-notice",
+          "legacyCode": "style-dropped"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      {
+        "code": "reference-dangling",
+        "severity": "error",
+        "classification": "integrity",
+        "stage": "export",
+        "ruleId": "legacy-export/1",
+        "messageKey": "reference-dangling",
+        "disposition": "refused",
+        "source": {
+          "domain": "tree",
+          "pointer": null,
+          "targetId": "Flow_1",
+          "provenance": "unavailable"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "legacyCode": "missing-endpoint"
+      }
+    ]
+  },
+  "author": "spec-seal"
+}

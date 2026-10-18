@@ -1,0 +1,79 @@
+{
+  "case": "export.compile.edge-missing-target",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
+  "witness": "edge requires id, source and target",
+  "derivation": "Added edge recipe emitting fields [id, source]: missing target, profile-export-field.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-edges",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/emittedType"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "edge"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "emit",
+                "as": "out",
+                "kind": "edge",
+                "fields": [
+                  {
+                    "name": "id",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "self",
+                      "domain": "edge"
+                    }
+                  },
+                  {
+                    "name": "source",
+                    "value": {
+                      "op": "literal",
+                      "value": "e_1"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-export-field"
+  },
+  "author": "spec-seal"
+}

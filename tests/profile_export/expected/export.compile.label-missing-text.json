@@ -1,0 +1,72 @@
+{
+  "case": "export.compile.label-missing-text",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
+  "witness": "label requires id and text",
+  "derivation": "Added label recipe emitting [id] only: profile-export-field.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-labels",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/emittedType"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "edge"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "emit",
+                "as": "out",
+                "kind": "label",
+                "fields": [
+                  {
+                    "name": "id",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "self",
+                      "domain": "label"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-export-field"
+  },
+  "author": "spec-seal"
+}

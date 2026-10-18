@@ -1,0 +1,30 @@
+{
+  "case": "export.compile.node-fill-number",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
+  "witness": "string fields need strings",
+  "derivation": "export-nodes adds fill literal 255 (number): wrong type, profile-export-field.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/recipes/7/steps/0/fields/-",
+          "value": {
+            "name": "fill",
+            "value": {
+              "op": "literal",
+              "value": 255
+            }
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-export-field"
+  },
+  "author": "spec-seal"
+}

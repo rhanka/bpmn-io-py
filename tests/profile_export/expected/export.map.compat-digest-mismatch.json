@@ -1,0 +1,785 @@
+{
+  "case": "export.map.compat-digest-mismatch",
+  "clause": "DESIGN R3.3 \u00a73.3 compatibility decision; \u00a710.2",
+  "witness": "compatibility rows apply before export",
+  "derivation": "Envelope identity = the unpatched neutral identity (same profile id and version, known different sha256) while the compiled profile is the patched one: profile-digest-mismatch before any freshness or emission step.",
+  "operation": "map_export",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "flow",
+            "kind": "native",
+            "nativeType": "bpmn:SequenceFlow",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "flow",
+            "labels": [
+              {
+                "name": "en",
+                "value": "flow"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:SequenceFlow"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:SequenceFlow",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "flow",
+                "tokens": [
+                  {
+                    "name": "stroke",
+                    "value": "#333333"
+                  }
+                ],
+                "label": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/name"
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "remove",
+          "path": "/recipes/7"
+        },
+        {
+          "op": "remove",
+          "path": "/recipes/6"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-pages",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "pages",
+              "where": {
+                "op": "true"
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "emit",
+                "as": "page",
+                "kind": "page",
+                "fields": [
+                  {
+                    "name": "id",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "self",
+                      "domain": "page"
+                    }
+                  },
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/name"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-nodes",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/emittedType"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "node"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "emit",
+                "as": "node",
+                "kind": "node",
+                "fields": [
+                  {
+                    "name": "id",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "self",
+                      "domain": "node"
+                    }
+                  },
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/label/text"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-edges",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/emittedType"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "edge"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "current",
+                "select": {
+                  "from": "self",
+                  "via": "self",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "page-occurrence"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "src",
+                "select": {
+                  "from": "render",
+                  "via": "occurrences",
+                  "where": {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "equal",
+                        "left": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/pageId"
+                        },
+                        "right": {
+                          "op": "read",
+                          "binding": "current",
+                          "path": "/pageId"
+                        }
+                      },
+                      {
+                        "op": "equal",
+                        "left": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/occurrenceKey"
+                        },
+                        "right": {
+                          "op": "read",
+                          "binding": "current",
+                          "path": "/sourceOccurrence/occurrenceKey"
+                        }
+                      }
+                    ]
+                  },
+                  "order": "page-occurrence"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "tgt",
+                "select": {
+                  "from": "render",
+                  "via": "occurrences",
+                  "where": {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "equal",
+                        "left": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/pageId"
+                        },
+                        "right": {
+                          "op": "read",
+                          "binding": "current",
+                          "path": "/pageId"
+                        }
+                      },
+                      {
+                        "op": "equal",
+                        "left": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/occurrenceKey"
+                        },
+                        "right": {
+                          "op": "read",
+                          "binding": "current",
+                          "path": "/targetOccurrence/occurrenceKey"
+                        }
+                      }
+                    ]
+                  },
+                  "order": "page-occurrence"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "emit",
+                "as": "link",
+                "kind": "edge",
+                "fields": [
+                  {
+                    "name": "id",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "self",
+                      "domain": "edge"
+                    }
+                  },
+                  {
+                    "name": "source",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "src",
+                      "domain": "node"
+                    }
+                  },
+                  {
+                    "name": "target",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "tgt",
+                      "domain": "node"
+                    }
+                  },
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/label/text"
+                    }
+                  },
+                  {
+                    "name": "arrow",
+                    "value": {
+                      "op": "literal",
+                      "value": "filled"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/exports/0/recipes",
+          "value": [
+            "export-pages",
+            "export-nodes",
+            "export-edges"
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/exports/0/capabilities",
+          "value": [
+            {
+              "when": {
+                "op": "true"
+              },
+              "class": "structural",
+              "losses": []
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/exports/0/idPolicy",
+          "value": "counter"
+        },
+        {
+          "op": "replace",
+          "path": "/exports/0/counterOrigin",
+          "value": 0
+        },
+        {
+          "op": "replace",
+          "path": "/exports/0/format",
+          "value": "drawio"
+        }
+      ]
+    },
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_x",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_x",
+          "isExecutable": false,
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_A",
+              "name": "Draft"
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_B",
+              "name": "Ready"
+            },
+            {
+              "$type": "bpmn:SequenceFlow",
+              "id": "Flow_1",
+              "name": "go",
+              "sourceRef": "Task_A",
+              "targetRef": "Task_B"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "layout": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "P1",
+          "name": "Main",
+          "order": 0,
+          "semanticRootId": "Process_x",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 300000,
+            "height": 80000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "P1",
+          "occurrenceKey": "e-flow",
+          "semanticId": "Flow_1",
+          "role": "edge",
+          "bounds": {
+            "x": 200000,
+            "y": 140000,
+            "width": 100000,
+            "height": 0
+          },
+          "label": {
+            "text": "go",
+            "bounds": {
+              "x": 230000,
+              "y": 120000,
+              "width": 40000,
+              "height": 14000
+            },
+            "lines": [
+              "go"
+            ]
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "s-task-a"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "s-task-b"
+          },
+          "waypoints": [
+            {
+              "x": 200000,
+              "y": 140000
+            },
+            {
+              "x": 300000,
+              "y": 140000
+            }
+          ]
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "s-task-a",
+          "semanticId": "Task_A",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Draft",
+            "bounds": {
+              "x": 100000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Draft"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "s-task-b",
+          "semanticId": "Task_B",
+          "role": "shape",
+          "bounds": {
+            "x": 300000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Ready",
+            "bounds": {
+              "x": 300000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Ready"
+            ]
+          }
+        }
+      ]
+    },
+    "r": {
+      "renderVersion": "1",
+      "binding": {
+        "semanticRevision": "7e0bc80aaf358b569baeddf0f36373c242c1497a01522a903c7297a6e702ff38",
+        "profileDigest": "0ed3a8a21e6d01e17d1d30ea22a35c0a6cad4ab2fe4547b5a8ee95f0e41ee3d8",
+        "descriptorDigest": "f66cec713b5cf4361896f3183372486d6e29314299858d8098d4a5024f0a8f90",
+        "layoutDigest": "eba231ce79f3e34a94080281abce633df2441b78c8bf76faac055da817fe79d8",
+        "themeId": "plain",
+        "themeDigest": "f92028d0dfee919ce1a1b0264830872007d25c3702827a1cf640f6df1421e4bc",
+        "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+        "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+        "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+        "payloadDigest": "8f95e5696aff67444467c7d6840170b68a493f4c99eb33dc9f7023a750a84386"
+      },
+      "pages": [
+        {
+          "pageId": "P1",
+          "name": "Main",
+          "order": 0,
+          "semanticRootId": "Process_x",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 300000,
+            "height": 80000
+          }
+        }
+      ],
+      "occurrences": [
+        {
+          "pageId": "P1",
+          "occurrenceKey": "e-flow",
+          "semanticId": "Flow_1",
+          "role": "edge",
+          "bounds": {
+            "x": 200000,
+            "y": 140000,
+            "width": 100000,
+            "height": 0
+          },
+          "label": {
+            "text": "go",
+            "bounds": {
+              "x": 230000,
+              "y": 120000,
+              "width": 40000,
+              "height": 14000
+            },
+            "lines": [
+              "go"
+            ]
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "s-task-a"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "s-task-b"
+          },
+          "waypoints": [
+            {
+              "x": 200000,
+              "y": 140000
+            },
+            {
+              "x": 300000,
+              "y": 140000
+            }
+          ],
+          "emittedType": "edge",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#333333"
+            }
+          ],
+          "glyphId": "flow"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "s-task-a",
+          "semanticId": "Task_A",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Draft",
+            "bounds": {
+              "x": 100000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Draft"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "task"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "s-task-b",
+          "semanticId": "Task_B",
+          "role": "shape",
+          "bounds": {
+            "x": 300000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Ready",
+            "bounds": {
+              "x": 300000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Ready"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "task"
+        }
+      ],
+      "coverage": [
+        {
+          "semanticId": "Definitions_x",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Flow_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "e-flow"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Process_x",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Task_A",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "s-task-a"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Task_B",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "s-task-b"
+            }
+          ],
+          "disposition": "rendered"
+        }
+      ],
+      "diagnostics": []
+    },
+    "format": "drawio",
+    "envelopeIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-digest-mismatch"
+  },
+  "author": "spec-seal"
+}

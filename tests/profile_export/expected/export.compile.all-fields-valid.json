@@ -1,0 +1,191 @@
+{
+  "case": "export.compile.all-fields-valid",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
+  "witness": "every optional common field with its type compiles",
+  "derivation": "Node fields id, name, shape, fill, stroke, textColor, fontFamily (strings) and fontSize, strokeWidth (numbers); an added edge recipe with id, source, target, name, stroke, dash, arrow (strings) and strokeWidth (number): valid against export-ir/1.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/recipes/7/steps/0/fields",
+          "value": [
+            {
+              "name": "id",
+              "value": {
+                "op": "outputId",
+                "binding": "self",
+                "domain": "node"
+              }
+            },
+            {
+              "name": "name",
+              "value": {
+                "op": "read",
+                "binding": "self",
+                "path": "/label/text"
+              }
+            },
+            {
+              "name": "shape",
+              "value": {
+                "op": "literal",
+                "value": "rect"
+              }
+            },
+            {
+              "name": "fill",
+              "value": {
+                "op": "literal",
+                "value": "#ffffff"
+              }
+            },
+            {
+              "name": "stroke",
+              "value": {
+                "op": "literal",
+                "value": "#000000"
+              }
+            },
+            {
+              "name": "textColor",
+              "value": {
+                "op": "literal",
+                "value": "#000000"
+              }
+            },
+            {
+              "name": "fontFamily",
+              "value": {
+                "op": "literal",
+                "value": "fixture-sans"
+              }
+            },
+            {
+              "name": "fontSize",
+              "value": {
+                "op": "literal",
+                "value": 10
+              }
+            },
+            {
+              "name": "strokeWidth",
+              "value": {
+                "op": "literal",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-edges",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/emittedType"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "edge"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "emit",
+                "as": "out",
+                "kind": "edge",
+                "fields": [
+                  {
+                    "name": "id",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "self",
+                      "domain": "edge"
+                    }
+                  },
+                  {
+                    "name": "source",
+                    "value": {
+                      "op": "literal",
+                      "value": "e_1"
+                    }
+                  },
+                  {
+                    "name": "target",
+                    "value": {
+                      "op": "literal",
+                      "value": "e_2"
+                    }
+                  },
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "n"
+                    }
+                  },
+                  {
+                    "name": "stroke",
+                    "value": {
+                      "op": "literal",
+                      "value": "#000000"
+                    }
+                  },
+                  {
+                    "name": "dash",
+                    "value": {
+                      "op": "literal",
+                      "value": "dashed"
+                    }
+                  },
+                  {
+                    "name": "arrow",
+                    "value": {
+                      "op": "literal",
+                      "value": "open"
+                    }
+                  },
+                  {
+                    "name": "strokeWidth",
+                    "value": {
+                      "op": "literal",
+                      "value": 2
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok"
+  },
+  "author": "spec-seal"
+}

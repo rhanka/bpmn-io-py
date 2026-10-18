@@ -1,0 +1,201 @@
+{
+  "case": "export.prepare.missing-support",
+  "clause": "DESIGN R3.3 \u00a710.2 prepareExport; \u00a76.2 stage table",
+  "witness": "preparation never creates supports: placements into an unbound region refuse profile-open",
+  "derivation": "Same as export.prepare.success but keeping place-task: N places Task_A/Task_B in region content, no support binding exists and support creation is gated (OPEN-RESERVED-N), so N or the layout refuses profile-open; no artifact; no stage after layout.",
+  "operation": "prepare_export",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/21/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/21/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/21/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/21/severity",
+          "value": "off"
+        }
+      ]
+    },
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_p",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_p",
+          "isExecutable": false,
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_A",
+              "name": "Draft"
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_B",
+              "name": "Ready"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "options": {
+      "format": "drawio",
+      "themeId": "plain",
+      "overrides": {
+        "semantic": [],
+        "occurrence": []
+      },
+      "diStyles": {
+        "native": [],
+        "bioc": []
+      },
+      "diagrams": [
+        {
+          "$type": "bpmndi:BPMNDiagram",
+          "id": "P1",
+          "name": "Main",
+          "plane": {
+            "$type": "bpmndi:BPMNPlane",
+            "id": "P1-plane",
+            "bpmnElement": "Process_p",
+            "planeElement": [
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "s-task-a",
+                "bpmnElement": "Task_A",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 100,
+                  "y": 100,
+                  "width": 100,
+                  "height": 80
+                }
+              },
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "s-task-b",
+                "bpmnElement": "Task_B",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 300,
+                  "y": 100,
+                  "width": 100,
+                  "height": 80
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-open",
+    "stagesOnly": [
+      "complete",
+      "pre-normalize",
+      "normalize",
+      "post-normalize",
+      "layout"
+    ],
+    "inputsUnchanged": true
+  },
+  "author": "spec-seal"
+}

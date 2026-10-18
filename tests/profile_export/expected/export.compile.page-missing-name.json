@@ -1,0 +1,33 @@
+{
+  "case": "export.compile.page-missing-name",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
+  "witness": "page requires string id and name",
+  "derivation": "export-pages emits page fields [id] only: missing name, profile-export-field.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/recipes/6/steps/0/fields",
+          "value": [
+            {
+              "name": "id",
+              "value": {
+                "op": "outputId",
+                "binding": "self",
+                "domain": "page"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-export-field"
+  },
+  "author": "spec-seal"
+}

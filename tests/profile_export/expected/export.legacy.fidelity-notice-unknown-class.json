@@ -1,0 +1,69 @@
+{
+  "case": "export.legacy.fidelity-notice-unknown-class",
+  "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
+  "witness": "a FidelityNotice without a closed loss class is not known",
+  "derivation": "style-dropped is listed, but its lossClass 'cosmetic' is outside the closed set: legacy-unmapped.",
+  "operation": "map_legacy_diagnostics",
+  "input": {
+    "legacy": {
+      "producer": "fidelity-notice",
+      "code": "style-dropped",
+      "lossClass": "cosmetic"
+    },
+    "manifest": {
+      "adapter": "legacy-export/1",
+      "entries": [
+        {
+          "producer": "io-error",
+          "legacyCode": "unknown-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "unsupported-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "invalid-reference"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "missing-endpoint"
+        },
+        {
+          "producer": "fidelity-notice",
+          "legacyCode": "style-dropped"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      {
+        "code": "legacy-unmapped",
+        "severity": "error",
+        "classification": "integrity",
+        "stage": "export",
+        "ruleId": "legacy-export/1",
+        "messageKey": "legacy.unmapped",
+        "disposition": "refused",
+        "source": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "legacyCode": "style-dropped"
+      }
+    ]
+  },
+  "author": "spec-seal"
+}
