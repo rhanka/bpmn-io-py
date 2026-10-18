@@ -1,0 +1,193 @@
+{
+  "case": "cn-c-is-executable-neutral",
+  "clause": "DESIGN R3.3 §7.1 Completion C (Process); §14.4",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "neutral",
+  "derivation": "The neutral profile's only complete recipe sets isExecutable to the literal false on every Process: the existing opposite value is overwritten (set has no only-if-absent mode) and the empty Process receives it too. The two neutral profiles choose opposite literals, so a hard-coded default fails one case.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_exec",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_main",
+            "isExecutable": true,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_main",
+                "name": "Work"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_empty"
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "ea887afeeba0c8e1f061039fdfe3ff9268093e04f5efe37049d6d2ed918a78eb"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "ea887afeeba0c8e1f061039fdfe3ff9268093e04f5efe37049d6d2ed918a78eb",
+    "revision": "8b88ae8e87ce4a248d36b637bb6a0827ed7c69625855acf9c5a003f119ec01db",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-process",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0",
+            "targetId": "Process_main",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0",
+            "targetId": "Process_main",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": true,
+          "after": false,
+          "property": "isExecutable"
+        },
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-process",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1",
+            "targetId": "Process_empty",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1",
+            "targetId": "Process_empty",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": false,
+          "property": "isExecutable"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "inputRevision": "ea887afeeba0c8e1f061039fdfe3ff9268093e04f5efe37049d6d2ed918a78eb",
+      "outputRevision": "8b88ae8e87ce4a248d36b637bb6a0827ed7c69625855acf9c5a003f119ec01db"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_exec",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_main",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_main",
+                "name": "Work"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_empty",
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "8b88ae8e87ce4a248d36b637bb6a0827ed7c69625855acf9c5a003f119ec01db"
+    }
+  },
+  "fixedPoint": true
+}

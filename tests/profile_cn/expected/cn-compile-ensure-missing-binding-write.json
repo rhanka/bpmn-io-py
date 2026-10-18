@@ -1,0 +1,15 @@
+{
+  "case": "cn-compile-ensure-missing-binding-write",
+  "clause": "DESIGN R3.3 §2.4.1 CR-06 write set; action/write matrix (ensure)",
+  "author": "spec-seal",
+  "operation": "compile_profile",
+  "profile": "support-no-binding-write",
+  "derivation": "Every ensure demands {envelope,/bindings,binding} (DESIGN §2.4.1 action/write matrix: parent/property create AND envelope /bindings binding). The variant drops that declared write from ensure-supports, so the declared and required write sets differ and compilation refuses profile-write-set.",
+  "input": {
+    "variant": "support-no-binding-write"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-write-set"
+  }
+}

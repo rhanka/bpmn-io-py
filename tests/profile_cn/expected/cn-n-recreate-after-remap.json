@@ -1,0 +1,316 @@
+{
+  "case": "cn-n-recreate-after-remap",
+  "clause": "DESIGN R3.3 §7.2 support deletion/recreation/remap; §7.3 deletion/recreation (later need triggers ensure with the current ownerId)",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "cn-n",
+  "derivation": "Input is the cn-plan-create-process-input output: the new Process IO needs the external-lane role again. The bound LaneSet is reused; the deleted lane's identity ended, so ensure creates stable-id(Process_X, external-lane, external-lane) with the current ownerId (g_11a96576...), different from the deleted g_8cb2e97e..., and reports it. The DataInput is placed in region interface without anchor.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_del",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_X",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_A1",
+                "name": "Work"
+              }
+            ],
+            "laneSets": [
+              {
+                "$type": "bpmn:LaneSet",
+                "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
+                "name": "lane-set"
+              }
+            ],
+            "ioSpecification": {
+              "$type": "bpmn:InputOutputSpecification",
+              "dataInputs": [
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "g_11c0faff8eb428f6a9f8f0e9dcef3bf459d9e79c4fedfdc9bd458a2cecf7a3af",
+                  "name": "Request"
+                }
+              ]
+            }
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                "name": "main-participant",
+                "processRef": "Process_X"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "ownerId": "Process_X",
+          "role": "collaboration",
+          "targetId": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595"
+        },
+        {
+          "ownerId": "Process_X",
+          "role": "lane-set",
+          "targetId": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61"
+        },
+        {
+          "ownerId": "Process_X",
+          "role": "main-participant",
+          "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
+        }
+      ],
+      "semanticRevision": "e5a215cb35ae7b8af74bba02457d80a64bb0598705d71e57d7229ba8318293ea"
+    },
+    "activation": "qualification",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "normalize",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n/1",
+      "version": "1.0.0",
+      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "e5a215cb35ae7b8af74bba02457d80a64bb0598705d71e57d7229ba8318293ea",
+    "revision": "d4bc426add71187ff4997ddde8c72d1525c190affa598943d6438c89f2bd11d1",
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [
+        {
+          "code": "normalize/ensure",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "ensure-external-lane",
+          "messageKey": "normalize.ensure",
+          "disposition": "corrected",
+          "source": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "generated"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/laneSets/0/lanes/0",
+            "targetId": "g_11a96576e7bac86fbc25effbcedfca1b77a5d69a51805e7069039ac1946cf044",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": {
+            "$type": "bpmn:Lane",
+            "id": "g_11a96576e7bac86fbc25effbcedfca1b77a5d69a51805e7069039ac1946cf044",
+            "name": "external-lane"
+          },
+          "property": "lanes"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "inputRevision": "e5a215cb35ae7b8af74bba02457d80a64bb0598705d71e57d7229ba8318293ea",
+      "outputRevision": "d4bc426add71187ff4997ddde8c72d1525c190affa598943d6438c89f2bd11d1"
+    },
+    "payload": {
+      "envelope": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_del",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_X",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A1",
+                  "name": "Work"
+                }
+              ],
+              "laneSets": [
+                {
+                  "$type": "bpmn:LaneSet",
+                  "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
+                  "name": "lane-set",
+                  "lanes": [
+                    {
+                      "$type": "bpmn:Lane",
+                      "id": "g_11a96576e7bac86fbc25effbcedfca1b77a5d69a51805e7069039ac1946cf044",
+                      "name": "external-lane"
+                    }
+                  ]
+                }
+              ],
+              "ioSpecification": {
+                "$type": "bpmn:InputOutputSpecification",
+                "dataInputs": [
+                  {
+                    "$type": "bpmn:DataInput",
+                    "id": "g_11c0faff8eb428f6a9f8f0e9dcef3bf459d9e79c4fedfdc9bd458a2cecf7a3af",
+                    "name": "Request"
+                  }
+                ]
+              }
+            },
+            {
+              "$type": "bpmn:Collaboration",
+              "id": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595",
+              "name": "collaboration",
+              "participants": [
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                  "name": "main-participant",
+                  "processRef": "Process_X"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [
+          {
+            "ownerId": "Process_X",
+            "role": "collaboration",
+            "targetId": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595"
+          },
+          {
+            "ownerId": "Process_X",
+            "role": "external-lane",
+            "targetId": "g_11a96576e7bac86fbc25effbcedfca1b77a5d69a51805e7069039ac1946cf044"
+          },
+          {
+            "ownerId": "Process_X",
+            "role": "lane-set",
+            "targetId": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61"
+          },
+          {
+            "ownerId": "Process_X",
+            "role": "main-participant",
+            "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
+          }
+        ],
+        "semanticRevision": "d4bc426add71187ff4997ddde8c72d1525c190affa598943d6438c89f2bd11d1"
+      },
+      "placements": [
+        {
+          "elementId": "g_11c0faff8eb428f6a9f8f0e9dcef3bf459d9e79c4fedfdc9bd458a2cecf7a3af",
+          "ownerProcessId": "Process_X",
+          "regionKey": "interface",
+          "relatedAssociationIds": []
+        }
+      ],
+      "report": {
+        "reportVersion": "2",
+        "operation": "normalize",
+        "entries": [
+          {
+            "code": "normalize/ensure",
+            "severity": "info",
+            "classification": "repairable",
+            "stage": "normalize",
+            "ruleId": "ensure-external-lane",
+            "messageKey": "normalize.ensure",
+            "disposition": "corrected",
+            "source": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "generated"
+            },
+            "result": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/laneSets/0/lanes/0",
+              "targetId": "g_11a96576e7bac86fbc25effbcedfca1b77a5d69a51805e7069039ac1946cf044",
+              "provenance": "generated"
+            },
+            "beforePresent": false,
+            "afterPresent": true,
+            "after": {
+              "$type": "bpmn:Lane",
+              "id": "g_11a96576e7bac86fbc25effbcedfca1b77a5d69a51805e7069039ac1946cf044",
+              "name": "external-lane"
+            },
+            "property": "lanes"
+          }
+        ],
+        "rawStandardFindings": [],
+        "idMap": [],
+        "artifacts": [],
+        "inputRevision": "e5a215cb35ae7b8af74bba02457d80a64bb0598705d71e57d7229ba8318293ea",
+        "outputRevision": "d4bc426add71187ff4997ddde8c72d1525c190affa598943d6438c89f2bd11d1"
+      }
+    }
+  },
+  "fixedPoint": true
+}

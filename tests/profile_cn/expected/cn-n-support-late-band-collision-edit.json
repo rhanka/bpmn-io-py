@@ -1,0 +1,87 @@
+{
+  "case": "cn-n-support-late-band-collision-edit",
+  "clause": "DESIGN R3.3 §7.2 OPEN-RESERVED-N; §13; §16 item 11",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "support",
+  "derivation": "Same input as cn-n-support-late-band-collision with the default edit activation: the first ensure (Collaboration) would create, so profile-open is reported before the fifth ensure's id-collision (refusals follow recipe/candidate/step order).",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_support",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "name": "Process_A",
+            "isExecutable": false
+          },
+          {
+            "$type": "bpmn:Participant",
+            "id": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769",
+            "name": "Unrelated occupant"
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "ab93ec3a1acb9b443de800fed1984879839e118997478c60186cc2221072706a"
+    },
+    "activation": "edit",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "normalize",
+    "code": "profile-open",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+        }
+      ]
+    },
+    "baseRevision": "ab93ec3a1acb9b443de800fed1984879839e118997478c60186cc2221072706a"
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "case": "cn-remap-internal-call-and-dangling",
+  "clause": "DESIGN R3.3 §5.2 ID remapping (separate approved import migration); §13 OPEN-ID; §7.3 ID remaps, native references",
+  "author": "spec-seal",
+  "operation": "remap_ids",
+  "profile": "cn-n",
+  "derivation": "The total map renames Process_sub and Task_m. Call_in's internal calledElement is rewritten to Process_child; Call_out's calledElement names no in-document element: it stays unchanged (never fetched) and yields one reference-dangling integrity observation (stage import). idMap lists every ID-bearing element.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_map",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_main",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_in",
+                "name": "Call child",
+                "calledElement": "Process_sub"
+              },
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_out",
+                "name": "Call outside",
+                "calledElement": "Process_external"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_m",
+                "name": "Main work"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_sub",
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "5ae5a24bf75f1090e4d495868eb04ad753724d51cbf070ad7aab4dc1841b7966"
+    },
+    "idMap": {
+      "Process_sub": "Process_child",
+      "Task_m": "Task_main"
+    },
+    "activation": "qualification"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "remapIds",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n/1",
+      "version": "1.0.0",
+      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "5ae5a24bf75f1090e4d495868eb04ad753724d51cbf070ad7aab4dc1841b7966",
+    "revision": "046be8f77f7d147d3b5c13c2226eb5fdfe7559c1ff34185e4a4a445f4a669913",
+    "report": {
+      "reportVersion": "2",
+      "operation": "remapIds",
+      "entries": [
+        {
+          "code": "reference-dangling",
+          "severity": "error",
+          "classification": "integrity",
+          "stage": "import",
+          "ruleId": "remap-ids",
+          "messageKey": "reference-dangling",
+          "disposition": "observed",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1",
+            "targetId": "Call_out",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1",
+            "targetId": "Call_out",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": "Process_external",
+          "after": "Process_external",
+          "property": "calledElement"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [
+        {
+          "sourceId": "Call_in",
+          "resultId": "Call_in",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Call_out",
+          "resultId": "Call_out",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Definitions_map",
+          "resultId": "Definitions_map",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Process_main",
+          "resultId": "Process_main",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Process_sub",
+          "resultId": "Process_child",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Task_m",
+          "resultId": "Task_main",
+          "domain": "migration"
+        }
+      ],
+      "artifacts": [],
+      "inputRevision": "5ae5a24bf75f1090e4d495868eb04ad753724d51cbf070ad7aab4dc1841b7966",
+      "outputRevision": "046be8f77f7d147d3b5c13c2226eb5fdfe7559c1ff34185e4a4a445f4a669913"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_map",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_main",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_in",
+                "name": "Call child",
+                "calledElement": "Process_child"
+              },
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_out",
+                "name": "Call outside",
+                "calledElement": "Process_external"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_main",
+                "name": "Main work"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_child",
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "046be8f77f7d147d3b5c13c2226eb5fdfe7559c1ff34185e4a4a445f4a669913"
+    }
+  }
+}

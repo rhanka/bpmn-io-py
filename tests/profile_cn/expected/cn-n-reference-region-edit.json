@@ -1,0 +1,133 @@
+{
+  "case": "cn-n-reference-region-edit",
+  "clause": "DESIGN R3.3 §7.2 OPEN-RESERVED-N; §13; §16 item 11",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "cn-n",
+  "derivation": "Same input as cn-n-reference-region-multi-process with the default edit activation: the Collaboration ensure would create a support, so N refuses profile-open.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_ref",
+        "rootElements": [
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_shared",
+            "name": "Shared register"
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_A",
+                "name": "Use register A"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_A",
+                "dataStoreRef": "Store_shared"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:Association",
+                "id": "Link_A",
+                "sourceRef": "Ref_A",
+                "targetRef": "Task_A",
+                "associationDirection": "One"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_B",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_B",
+                "name": "Use register B"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_B",
+                "dataStoreRef": "Store_shared"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:Association",
+                "id": "Link_B",
+                "sourceRef": "Task_B",
+                "targetRef": "Ref_B",
+                "associationDirection": "None"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "829988e5c92a068b50ba116a83ac40856faf661691acfefa2aa92c0f52bcbbde"
+    },
+    "activation": "edit",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "normalize",
+    "code": "profile-open",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n/1",
+      "version": "1.0.0",
+      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "829988e5c92a068b50ba116a83ac40856faf661691acfefa2aa92c0f52bcbbde"
+  }
+}

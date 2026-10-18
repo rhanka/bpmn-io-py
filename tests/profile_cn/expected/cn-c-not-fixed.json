@@ -1,0 +1,88 @@
+{
+  "case": "cn-c-not-fixed",
+  "clause": "DESIGN R3.3 §2.4 bounded second evaluation; §7.3 rollback on non-fixed point",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "cn-c-unfixed",
+  "derivation": "suffix-task-name sets name := concat(name, '!'): the first pass gives 'A!', the bounded second evaluation would give 'A!!', so C(C(x)) != C(x) and C refuses normalization-not-fixed, rolling back the whole stage.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c-unfixed/1",
+        "version": "1.0.0",
+        "sha256": "21cd4759cbdb251ba1879e8d9f969f13cc30ace506050567008e998e6299cc4b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_nf",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "A"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "1db98a5bf950b86d4f87bbb74d3f2c983593fddaa91d26fcaea46d68f463b977"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "complete",
+    "code": "normalization-not-fixed",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-c-unfixed/1",
+      "version": "1.0.0",
+      "sha256": "21cd4759cbdb251ba1879e8d9f969f13cc30ace506050567008e998e6299cc4b",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "1db98a5bf950b86d4f87bbb74d3f2c983593fddaa91d26fcaea46d68f463b977"
+  }
+}

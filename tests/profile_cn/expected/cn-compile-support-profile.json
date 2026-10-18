@@ -1,0 +1,33 @@
+{
+  "case": "cn-compile-support-profile",
+  "clause": "DESIGN R3.3 §2.4.1 CR-05/CR-06/CR-07 for ensure; §7.3 (fixture compiles)",
+  "author": "spec-seal",
+  "operation": "compile_profile",
+  "profile": "support",
+  "derivation": "The R3.1 check compiles the support recipe against the fixture descriptors and base. ensure registers its as-handle, demands {parent,/property,create} and {envelope,/bindings,binding}, and declared writes are compared as a set (identical demands coalesce). Expected: ok with the listed identity.",
+  "input": {
+    "variant": "support"
+  },
+  "expected": {
+    "status": "ok",
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+        }
+      ]
+    }
+  }
+}

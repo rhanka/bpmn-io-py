@@ -1,0 +1,82 @@
+{
+  "case": "cn-n-support-creation-gated",
+  "clause": "DESIGN R3.3 §7.2 OPEN-RESERVED-N; §13; §16 item 11",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "support",
+  "derivation": "Same input as cn-n-support-one-process with the default edit activation: the first ensure would create a persisted support while the OPEN-RESERVED-N technical gate is open (§16 item 11 owner part ratified, twin proof pending), so N refuses profile-open and the caller tree and bindings are unchanged.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_support",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "name": "Process_A",
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "8560df7bdd37e82e9a614ef813baa8a2256d6fd4cc5bf857165210d799b71ce5"
+    },
+    "activation": "edit",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "normalize",
+    "code": "profile-open",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+        }
+      ]
+    },
+    "baseRevision": "8560df7bdd37e82e9a614ef813baa8a2256d6fd4cc5bf857165210d799b71ce5"
+  }
+}

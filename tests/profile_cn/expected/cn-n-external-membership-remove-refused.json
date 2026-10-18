@@ -1,0 +1,210 @@
+{
+  "case": "cn-n-external-membership-remove-refused",
+  "clause": "DESIGN R3.3 §7.2 External membership; §4.1 external/internal/incomplete calls; §4.4; §13 OPEN-EXTERNAL, OPEN-SHARING; §16 items 2, 4; §7.3 preserved original memberships",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "cn-n-relocate",
+  "derivation": "Call_ext is already a member of business lane Lane_alpha; the relocate variant plans assignRef(remove) of that membership. No accepted persisted representation of original responsibility exists (§4.4, §16 item 4), so its status is unresolved and N refuses responsibility-preservation-required atomically, retaining every original membership.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-relocate/1",
+        "version": "1.0.0",
+        "sha256": "4698483fd8f488e696d71ae03a25bf7f09cb2bf5fa41365a0af92393ab47be41",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_ext",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_E",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_ext",
+                "name": "External supplier",
+                "documentation": [
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "Source: supplier call",
+                    "textFormat": "text/plain"
+                  },
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "external",
+                    "textFormat": "text/x-neutral-call-kind"
+                  }
+                ]
+              },
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_int",
+                "name": "Run sub-process",
+                "calledElement": "Process_sub"
+              },
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_inc",
+                "name": "Undecided call"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_E",
+                "name": "Prepare"
+              }
+            ],
+            "laneSets": [
+              {
+                "$type": "bpmn:LaneSet",
+                "id": "LS_E",
+                "name": "lane-set",
+                "lanes": [
+                  {
+                    "$type": "bpmn:Lane",
+                    "id": "Lane_zeta",
+                    "name": "Zeta",
+                    "flowNodeRef": [
+                      "Call_int",
+                      "Call_inc",
+                      "Task_E"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Lane",
+                    "id": "Lane_alpha",
+                    "name": "Alpha",
+                    "flowNodeRef": [
+                      "Call_ext"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Lane",
+                    "id": "Lane_ext",
+                    "name": "external-lane"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_sub",
+            "isExecutable": false
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "Collab_E",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "Main_E",
+                "name": "main-participant",
+                "processRef": "Process_E"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "Collab_sub",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "Main_sub",
+                "name": "main-participant",
+                "processRef": "Process_sub"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "ownerId": "Process_E",
+          "role": "collaboration",
+          "targetId": "Collab_E"
+        },
+        {
+          "ownerId": "Process_E",
+          "role": "external-lane",
+          "targetId": "Lane_ext"
+        },
+        {
+          "ownerId": "Process_E",
+          "role": "lane-set",
+          "targetId": "LS_E"
+        },
+        {
+          "ownerId": "Process_E",
+          "role": "main-participant",
+          "targetId": "Main_E"
+        },
+        {
+          "ownerId": "Process_sub",
+          "role": "collaboration",
+          "targetId": "Collab_sub"
+        },
+        {
+          "ownerId": "Process_sub",
+          "role": "main-participant",
+          "targetId": "Main_sub"
+        }
+      ],
+      "semanticRevision": "d6ec54e656794bd848c4517860a0a1a98efdc2f3959ffd044307a39cd4440cf3"
+    },
+    "activation": "qualification",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "normalize",
+    "code": "responsibility-preservation-required",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n-relocate/1",
+      "version": "1.0.0",
+      "sha256": "4698483fd8f488e696d71ae03a25bf7f09cb2bf5fa41365a0af92393ab47be41",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "d6ec54e656794bd848c4517860a0a1a98efdc2f3959ffd044307a39cd4440cf3"
+  }
+}

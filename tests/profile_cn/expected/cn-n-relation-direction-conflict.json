@@ -1,0 +1,141 @@
+{
+  "case": "cn-n-relation-direction-conflict",
+  "clause": "DESIGN R3.3 §7.2 Relation direction (conflicting pairs refuse); §2.4 write conflicts",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "cn-n-conflict",
+  "derivation": "The conflict variant adds a recipe setting the same reversed association's associationDirection to Both while reverse-reference-links sets One: two different scalar values for one target/path refuse profile-write-conflict; nothing is applied.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-conflict/1",
+        "version": "1.0.0",
+        "sha256": "ac034ad2ac53cbc924bce33b4fc55392425efcce80280af34edb5b1bb904a77e",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_rev",
+        "rootElements": [
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_S",
+            "name": "Register"
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_R",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_R",
+                "name": "Consult"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_R",
+                "dataStoreRef": "Store_S"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:Association",
+                "id": "Link_R",
+                "sourceRef": "Task_R",
+                "targetRef": "Ref_R",
+                "associationDirection": "None"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "Collab_R",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "Main_R",
+                "name": "main-participant",
+                "processRef": "Process_R"
+              },
+              {
+                "$type": "bpmn:Participant",
+                "id": "Band_R",
+                "name": "reference-band"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "ownerId": "Process_R",
+          "role": "collaboration",
+          "targetId": "Collab_R"
+        },
+        {
+          "ownerId": "Process_R",
+          "role": "main-participant",
+          "targetId": "Main_R"
+        },
+        {
+          "ownerId": "Process_R",
+          "role": "reference-band",
+          "targetId": "Band_R"
+        }
+      ],
+      "semanticRevision": "b0d5126d57a674a5e2f17a0323f8127044bd5bf0fd543bb738aa5300dca4ae9e"
+    },
+    "activation": "edit",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "normalize",
+    "code": "profile-write-conflict",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n-conflict/1",
+      "version": "1.0.0",
+      "sha256": "ac034ad2ac53cbc924bce33b4fc55392425efcce80280af34edb5b1bb904a77e",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "b0d5126d57a674a5e2f17a0323f8127044bd5bf0fd543bb738aa5300dca4ae9e"
+  }
+}

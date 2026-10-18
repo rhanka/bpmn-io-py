@@ -1,0 +1,73 @@
+{
+  "case": "cn-plan-ambiguous-binding",
+  "clause": "DESIGN R3.3 §2.4 action grammar; §2.4.1 action/write matrix; §2.5 planRecipe/applyPlan; §2.4 bind cardinality",
+  "author": "spec-seal",
+  "operation": "plan_recipe+apply_plan",
+  "profile": "cn-n",
+  "derivation": "rename-only-task binds one Task among the owner's flowElements with cardinality one; Process_amb has two, so planning refuses profile-ambiguous-binding (array order never chooses a winner).",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_amb",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_amb",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "One"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_2",
+                "name": "Two"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "7cddb7700c735368301e4012a937bc2598683a0730e9302df092728bbee971f0"
+    },
+    "recipe": "rename-only-task",
+    "params": {
+      "owner": "Process_amb"
+    },
+    "authority": {
+      "actor": "editor",
+      "activation": "edit",
+      "deletionIntent": false
+    }
+  },
+  "expected": {
+    "plan": {
+      "status": "refused",
+      "code": "profile-ambiguous-binding",
+      "diagnostics": []
+    }
+  }
+}

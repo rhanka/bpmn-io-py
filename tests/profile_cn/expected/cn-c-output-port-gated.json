@@ -1,0 +1,104 @@
+{
+  "case": "cn-c-output-port-gated",
+  "clause": "DESIGN R3.3 §7.1 Completion C (Ports); §13 OPEN-IO; §16 item 8",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "cn-c",
+  "derivation": "Filling the absent sourceRef of a DataOutputAssociation is the missing-output-source producer exception gated by OPEN-IO (technical gate open; §16 item 8 requires an explicitly accepted code-creation authority). With the default edit activation C refuses profile-open and commits nothing.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_out",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_O",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:DataObject",
+                "id": "DO_O"
+              },
+              {
+                "$type": "bpmn:DataObjectReference",
+                "id": "Ref_O",
+                "dataObjectRef": "DO_O"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_O",
+                "name": "Produce output",
+                "dataOutputAssociations": [
+                  {
+                    "$type": "bpmn:DataOutputAssociation",
+                    "id": "DOA_missing",
+                    "targetRef": "Ref_O"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "56ffab8417a058600042530f7d230a55a9567b7f23399d20ae5b5b15ffcbe92d"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "complete",
+    "code": "profile-open",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-c/1",
+      "version": "1.0.0",
+      "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "56ffab8417a058600042530f7d230a55a9567b7f23399d20ae5b5b15ffcbe92d"
+  }
+}

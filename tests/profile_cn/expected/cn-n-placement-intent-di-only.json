@@ -1,0 +1,200 @@
+{
+  "case": "cn-n-placement-intent-di-only",
+  "clause": "DESIGN R3.3 §8.2 step 3 (placement intent, DI-only moves); §3.1",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "neutral",
+  "derivation": "Same as cn-n-place-neutral with placement intent [{elementId: Task_A}] for a DI-only move: the intent is validated but N's semantic outputs depend only on the tree, so envelope, placements and report are identical (a DI-only drag changes only viewRevision, which N does not compute).",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_B",
+                "name": "Ready",
+                "documentation": [
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "Preserved source",
+                    "textFormat": "text/plain"
+                  }
+                ]
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_A",
+                "name": ""
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+                "text": "[Aid] helper"
+              }
+            ],
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7"
+    },
+    "activation": "edit",
+    "placementIntent": [
+      {
+        "elementId": "Task_A"
+      }
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "normalize",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7",
+    "revision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7",
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "inputRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7",
+      "outputRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7"
+    },
+    "payload": {
+      "envelope": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_1",
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_B",
+                  "name": "Ready",
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "Preserved source",
+                      "textFormat": "text/plain"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A",
+                  "name": ""
+                }
+              ],
+              "artifacts": [
+                {
+                  "$type": "bpmn:TextAnnotation",
+                  "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+                  "text": "[Aid] helper"
+                }
+              ],
+              "isExecutable": false
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7"
+      },
+      "placements": [
+        {
+          "elementId": "Task_A",
+          "ownerProcessId": "Process_1",
+          "regionKey": "content",
+          "relatedAssociationIds": []
+        },
+        {
+          "elementId": "Task_B",
+          "ownerProcessId": "Process_1",
+          "regionKey": "content",
+          "relatedAssociationIds": []
+        }
+      ],
+      "report": {
+        "reportVersion": "2",
+        "operation": "normalize",
+        "entries": [],
+        "rawStandardFindings": [],
+        "idMap": [],
+        "artifacts": [],
+        "inputRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7",
+        "outputRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7"
+      }
+    }
+  },
+  "fixedPoint": true
+}

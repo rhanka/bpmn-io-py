@@ -1,0 +1,207 @@
+{
+  "case": "cn-n-external-membership-edit",
+  "clause": "DESIGN R3.3 §7.2 External membership; §4.1 external/internal/incomplete calls; §4.4; §13 OPEN-EXTERNAL, OPEN-SHARING; §16 items 2, 4",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "cn-n",
+  "derivation": "Same input as cn-n-external-membership-append with the default edit activation: the appendUnique is an effective Lane.flowNodeRef change of the external branch of N, gated by OPEN-EXTERNAL (encoding proof) and OPEN-RESERVED-N, so N refuses profile-open.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_ext",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_E",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_ext",
+                "name": "External supplier",
+                "documentation": [
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "Source: supplier call",
+                    "textFormat": "text/plain"
+                  },
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "external",
+                    "textFormat": "text/x-neutral-call-kind"
+                  }
+                ]
+              },
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_int",
+                "name": "Run sub-process",
+                "calledElement": "Process_sub"
+              },
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_inc",
+                "name": "Undecided call"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_E",
+                "name": "Prepare"
+              }
+            ],
+            "laneSets": [
+              {
+                "$type": "bpmn:LaneSet",
+                "id": "LS_E",
+                "name": "lane-set",
+                "lanes": [
+                  {
+                    "$type": "bpmn:Lane",
+                    "id": "Lane_zeta",
+                    "name": "Zeta",
+                    "flowNodeRef": [
+                      "Call_int",
+                      "Call_inc",
+                      "Task_E"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Lane",
+                    "id": "Lane_alpha",
+                    "name": "Alpha"
+                  },
+                  {
+                    "$type": "bpmn:Lane",
+                    "id": "Lane_ext",
+                    "name": "external-lane"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_sub",
+            "isExecutable": false
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "Collab_E",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "Main_E",
+                "name": "main-participant",
+                "processRef": "Process_E"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "Collab_sub",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "Main_sub",
+                "name": "main-participant",
+                "processRef": "Process_sub"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "ownerId": "Process_E",
+          "role": "collaboration",
+          "targetId": "Collab_E"
+        },
+        {
+          "ownerId": "Process_E",
+          "role": "external-lane",
+          "targetId": "Lane_ext"
+        },
+        {
+          "ownerId": "Process_E",
+          "role": "lane-set",
+          "targetId": "LS_E"
+        },
+        {
+          "ownerId": "Process_E",
+          "role": "main-participant",
+          "targetId": "Main_E"
+        },
+        {
+          "ownerId": "Process_sub",
+          "role": "collaboration",
+          "targetId": "Collab_sub"
+        },
+        {
+          "ownerId": "Process_sub",
+          "role": "main-participant",
+          "targetId": "Main_sub"
+        }
+      ],
+      "semanticRevision": "1f4237e971ff14a6f6f077e4919c33289c1e971bdfc7cddd3512a3de42ea80c9"
+    },
+    "activation": "edit",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "normalize",
+    "code": "profile-open",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n/1",
+      "version": "1.0.0",
+      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "1f4237e971ff14a6f6f077e4919c33289c1e971bdfc7cddd3512a3de42ea80c9"
+  }
+}

@@ -1,0 +1,353 @@
+{
+  "case": "cn-c-identity-grid",
+  "clause": "DESIGN R3.3 §3.2 ID allocation; §7.1 Completion C (Identity/defaults, Process)",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "grid",
+  "derivation": "C first allocates the missing Definitions id with owner document-root/1, slot definitions, key root, then fills missing child ids top-down with ownerId = the containing element id, slot = the descriptor-qualified containment property (bpmn:rootElements, bpmn:flowElements) and stableKey = JCS([contentSignature, duplicateOrdinal]); the two identical ID-less Review tasks get ordinals 0 and 1, Task_kept and Process_empty keep their ids, the ID-less Documentation stays ID-less. The profile complete-process recipe then sets isExecutable=true on every Process including the empty one. Entries are sorted per §10.1.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "flowElements": [
+              {
+                "$type": "bpmn:ServiceTask",
+                "name": "Review"
+              },
+              {
+                "$type": "bpmn:ServiceTask",
+                "name": "Review"
+              },
+              {
+                "$type": "bpmn:ServiceTask",
+                "id": "Task_kept",
+                "name": "Kept"
+              },
+              {
+                "$type": "bpmn:ServiceTask",
+                "name": "Other",
+                "documentation": [
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "Source note"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_empty"
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "f8d8cdd517c7ff2756bc4f14d10c5845c76c2bf86d1c94d37a25ef4e9dfffaaa"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-grid/1",
+      "version": "2.0.0",
+      "sha256": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "f8d8cdd517c7ff2756bc4f14d10c5845c76c2bf86d1c94d37a25ef4e9dfffaaa",
+    "revision": "e0da4e3c9db17f4e24a3980c6cc1e4808ce18917654cbd06448b0a070e42d1c1",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-process",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0",
+            "targetId": "g_907c58be38b03a733fcb44f6e1bb62fe71d3397df79c92d5938ce7738cebd353",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": true,
+          "property": "isExecutable"
+        },
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-process",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1",
+            "targetId": "Process_empty",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1",
+            "targetId": "Process_empty",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": true,
+          "property": "isExecutable"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "",
+            "targetId": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0",
+            "targetId": "g_907c58be38b03a733fcb44f6e1bb62fe71d3397df79c92d5938ce7738cebd353",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_907c58be38b03a733fcb44f6e1bb62fe71d3397df79c92d5938ce7738cebd353",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0",
+            "targetId": "g_1f382c1815e3ab94ea6875b01f2f8bbb40652880caa85c5e18754cf143aec7ac",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_1f382c1815e3ab94ea6875b01f2f8bbb40652880caa85c5e18754cf143aec7ac",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1",
+            "targetId": "g_4c60976961ad398555cf314aeaef851c6c977017a8c270d283929790baae803d",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_4c60976961ad398555cf314aeaef851c6c977017a8c270d283929790baae803d",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3",
+            "targetId": "g_3b60299b04ef4fe3fbf7816755fe1c92f4331ab6f31f28a05fa038c85880f927",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_3b60299b04ef4fe3fbf7816755fe1c92f4331ab6f31f28a05fa038c85880f927",
+          "property": "id"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "inputRevision": "f8d8cdd517c7ff2756bc4f14d10c5845c76c2bf86d1c94d37a25ef4e9dfffaaa",
+      "outputRevision": "e0da4e3c9db17f4e24a3980c6cc1e4808ce18917654cbd06448b0a070e42d1c1"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "flowElements": [
+              {
+                "$type": "bpmn:ServiceTask",
+                "name": "Review",
+                "id": "g_1f382c1815e3ab94ea6875b01f2f8bbb40652880caa85c5e18754cf143aec7ac"
+              },
+              {
+                "$type": "bpmn:ServiceTask",
+                "name": "Review",
+                "id": "g_4c60976961ad398555cf314aeaef851c6c977017a8c270d283929790baae803d"
+              },
+              {
+                "$type": "bpmn:ServiceTask",
+                "id": "Task_kept",
+                "name": "Kept"
+              },
+              {
+                "$type": "bpmn:ServiceTask",
+                "name": "Other",
+                "documentation": [
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "Source note"
+                  }
+                ],
+                "id": "g_3b60299b04ef4fe3fbf7816755fe1c92f4331ab6f31f28a05fa038c85880f927"
+              }
+            ],
+            "id": "g_907c58be38b03a733fcb44f6e1bb62fe71d3397df79c92d5938ce7738cebd353",
+            "isExecutable": true
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_empty",
+            "isExecutable": true
+          }
+        ],
+        "id": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21"
+      },
+      "bindings": [],
+      "semanticRevision": "e0da4e3c9db17f4e24a3980c6cc1e4808ce18917654cbd06448b0a070e42d1c1"
+    }
+  },
+  "fixedPoint": true
+}

@@ -1,0 +1,92 @@
+{
+  "case": "cn-c-id-collision",
+  "clause": "DESIGN R3.3 §3.2 (computed collision is id-collision); §7.3 rollback",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "neutral",
+  "derivation": "The ID-less task would receive stable-id(Process_1, bpmn:flowElements, JCS([H({$type:bpmn:Task,name:Dup}),0])), which another task already carries: a computed collision with a different object refuses id-collision; no suffix, overwrite or reidentification, and nothing is committed.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_col",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "name": "Dup"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "g_4557f3129568147950f4d0d3d580033abdd88743301189f6de7ea14d6837b4e1",
+                "name": "Occupant"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "77ad7ddd80779c5ee6044e7d8c4fe2e189c0329844499d5426958070bce2e477"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "complete",
+    "code": "id-collision",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "77ad7ddd80779c5ee6044e7d8c4fe2e189c0329844499d5426958070bce2e477"
+  }
+}

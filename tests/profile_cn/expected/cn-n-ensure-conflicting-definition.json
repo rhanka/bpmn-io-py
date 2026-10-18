@@ -1,0 +1,133 @@
+{
+  "case": "cn-n-ensure-conflicting-definition",
+  "clause": "DESIGN R3.3 §2.4 (conflicting ensure definitions refuse); §7.2 Structure",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "cn-n-ensure-conflict",
+  "derivation": "The variant appends a recipe ensuring (Process_A, reference-band) with name 'band' while ensure-reference-band declares 'reference-band': identical ensure plans coalesce, conflicting definitions refuse profile-write-conflict (qualification, so no gate intervenes).",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-ensure-conflict/1",
+        "version": "1.0.0",
+        "sha256": "53909ab84534c96b1b3ed47a0b1e699e4728c6e54569a2508a2b6c91c16feaa2",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_ref",
+        "rootElements": [
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_shared",
+            "name": "Shared register"
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_A",
+                "name": "Use register A"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_A",
+                "dataStoreRef": "Store_shared"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:Association",
+                "id": "Link_A",
+                "sourceRef": "Ref_A",
+                "targetRef": "Task_A",
+                "associationDirection": "One"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_B",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_B",
+                "name": "Use register B"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_B",
+                "dataStoreRef": "Store_shared"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:Association",
+                "id": "Link_B",
+                "sourceRef": "Task_B",
+                "targetRef": "Ref_B",
+                "associationDirection": "None"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "107122752cf7bf8dbbfb83cf3fef14f4b6f07e67cf10a5a6560bb7239e6b70d5"
+    },
+    "activation": "qualification",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "normalize",
+    "code": "profile-write-conflict",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n-ensure-conflict/1",
+      "version": "1.0.0",
+      "sha256": "53909ab84534c96b1b3ed47a0b1e699e4728c6e54569a2508a2b6c91c16feaa2",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "107122752cf7bf8dbbfb83cf3fef14f4b6f07e67cf10a5a6560bb7239e6b70d5"
+  }
+}

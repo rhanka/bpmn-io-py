@@ -1,0 +1,138 @@
+{
+  "case": "cn-plan-create-task-neutral",
+  "clause": "DESIGN R3.3 §2.4 action grammar; §2.4.1 action/write matrix; §2.5 planRecipe/applyPlan; §3.2 allocated create",
+  "author": "spec-seal",
+  "operation": "plan_recipe+apply_plan",
+  "profile": "neutral",
+  "derivation": "create-task on the vendored neutral input: one allocated create of bpmn:Task (the two profiles differ in task subtype) with ownerId = the owner parameter's id, slot task, key = the key parameter, appended to Process_1.flowElements. Explicit commands report no Report/2 entry (spec §3.3); created lists the new id.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_B",
+                "name": "Ready"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_A",
+                "name": ""
+              }
+            ],
+            "artifacts": []
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "9c4c6e42acdc67dff8f6aca8375ae37415733f0a58e42ef8c1a296c05b297b11"
+    },
+    "recipe": "create-task",
+    "params": {
+      "owner": "Process_1",
+      "key": "k-new",
+      "name": "New task"
+    },
+    "authority": {
+      "actor": "editor",
+      "activation": "edit",
+      "deletionIntent": false
+    }
+  },
+  "expected": {
+    "plan": {
+      "status": "ok",
+      "payload": {
+        "planVersion": "1",
+        "phase": "create",
+        "actor": "editor",
+        "activation": "edit",
+        "baseRevision": "9c4c6e42acdc67dff8f6aca8375ae37415733f0a58e42ef8c1a296c05b297b11",
+        "writes": [
+          {
+            "op": "create",
+            "recipeId": "create-task",
+            "type": "bpmn:Task",
+            "parent": {
+              "id": "Process_1"
+            },
+            "property": "flowElements",
+            "id": "g_b8f4b8b61d3654926e4e44ae15143cf474cb72698f307ca0295fd4274a1f16d4",
+            "fields": {
+              "name": "New task"
+            }
+          }
+        ]
+      },
+      "diagnostics": []
+    },
+    "apply": {
+      "status": "ok",
+      "payload": {
+        "reportVersion": "change/1",
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_1",
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_B",
+                  "name": "Ready"
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A",
+                  "name": ""
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "g_b8f4b8b61d3654926e4e44ae15143cf474cb72698f307ca0295fd4274a1f16d4",
+                  "name": "New task"
+                }
+              ],
+              "artifacts": []
+            }
+          ]
+        },
+        "bindings": [],
+        "entries": [],
+        "placements": [],
+        "created": [
+          "g_b8f4b8b61d3654926e4e44ae15143cf474cb72698f307ca0295fd4274a1f16d4"
+        ],
+        "removed": []
+      },
+      "diagnostics": []
+    }
+  }
+}

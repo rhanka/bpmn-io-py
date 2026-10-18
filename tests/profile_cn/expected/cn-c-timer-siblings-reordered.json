@@ -1,0 +1,192 @@
+{
+  "case": "cn-c-timer-siblings-reordered",
+  "clause": "DESIGN R3.3 §3.2 (later reorders never reallocate IDs)",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "cn-c",
+  "derivation": "Input is the cn-c-timer-siblings output with the two identified starts swapped: every id is present, later reorders never reallocate, so C is a no-op (no entry).",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_timer",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_T",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:StartEvent",
+                "name": "Every hour",
+                "eventDefinitions": [
+                  {
+                    "$type": "bpmn:TimerEventDefinition",
+                    "timeDuration": {
+                      "$type": "bpmn:FormalExpression",
+                      "body": "PT1H"
+                    },
+                    "id": "g_c3afaa3b12d2cabbd183adbdee38a27b18022539b502d23460991ae39de449b2"
+                  }
+                ],
+                "id": "g_8c2f78454c1b8308c01442e61b46fb3d87653f3d7700f5b0a38479a93c1d1785"
+              },
+              {
+                "$type": "bpmn:StartEvent",
+                "name": "Every hour",
+                "eventDefinitions": [
+                  {
+                    "$type": "bpmn:TimerEventDefinition",
+                    "timeDuration": {
+                      "$type": "bpmn:FormalExpression",
+                      "body": "PT1H"
+                    },
+                    "id": "g_d08d82ce99f6bedf5dc45aece958f2b7da29232a873bf3c9082a3a81382f956b"
+                  }
+                ],
+                "id": "g_8a2b3f0c3b50ed490466a82844d6811cf64af45a7936ba4ffe0637c125960bcd"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_T",
+                "name": "Hourly"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-c/1",
+      "version": "1.0.0",
+      "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7",
+    "revision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "inputRevision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7",
+      "outputRevision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_timer",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_T",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:StartEvent",
+                "name": "Every hour",
+                "eventDefinitions": [
+                  {
+                    "$type": "bpmn:TimerEventDefinition",
+                    "timeDuration": {
+                      "$type": "bpmn:FormalExpression",
+                      "body": "PT1H"
+                    },
+                    "id": "g_c3afaa3b12d2cabbd183adbdee38a27b18022539b502d23460991ae39de449b2"
+                  }
+                ],
+                "id": "g_8c2f78454c1b8308c01442e61b46fb3d87653f3d7700f5b0a38479a93c1d1785"
+              },
+              {
+                "$type": "bpmn:StartEvent",
+                "name": "Every hour",
+                "eventDefinitions": [
+                  {
+                    "$type": "bpmn:TimerEventDefinition",
+                    "timeDuration": {
+                      "$type": "bpmn:FormalExpression",
+                      "body": "PT1H"
+                    },
+                    "id": "g_d08d82ce99f6bedf5dc45aece958f2b7da29232a873bf3c9082a3a81382f956b"
+                  }
+                ],
+                "id": "g_8a2b3f0c3b50ed490466a82844d6811cf64af45a7936ba4ffe0637c125960bcd"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_T",
+                "name": "Hourly"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7"
+    }
+  },
+  "fixedPoint": true
+}

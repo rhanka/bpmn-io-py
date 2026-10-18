@@ -1,0 +1,15 @@
+{
+  "case": "cn-compile-port-without-authority",
+  "clause": "DESIGN R3.3 §7.1 Completion C (Ports); §13 OPEN-IO; §16 item 8; §2.4.1 CR-06",
+  "author": "spec-seal",
+  "operation": "compile_profile",
+  "profile": "cn-c-noauth",
+  "derivation": "The producerDelta replaces code by dropped on DataInputAssociation.targetRef, so the input-port recipe's assignRef has no code producer: CR-06 refuses profile-producer (no implicit port authority).",
+  "input": {
+    "variant": "cn-c-noauth"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-producer"
+  }
+}

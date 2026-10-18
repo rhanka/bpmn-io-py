@@ -1,0 +1,15 @@
+{
+  "case": "cn-compile-ensure-non-support-type",
+  "clause": "DESIGN R3.3 §2.4 ensure restriction; §2.4.1 CR-06",
+  "author": "spec-seal",
+  "operation": "compile_profile",
+  "profile": "support-task-ensure",
+  "derivation": "ensure is restricted to declared structural support types (Collaboration, Participant, LaneSet, Lane); the variant ensures a bpmn:Task under Process flowElements (admitted containment) and refuses profile-producer.",
+  "input": {
+    "variant": "support-task-ensure"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-producer"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "case": "cn-compile-create-identity-mismatch",
+  "clause": "DESIGN R3.3 §2.4 create identity; §2.4.1 CR-07",
+  "author": "spec-seal",
+  "operation": "compile_profile",
+  "profile": "neutral-containment-task",
+  "derivation": "create-task is rewritten with identity containment while bpmn:Task is ID-bearing in the neutral descriptors: identity mode must agree with effective id admission (CR-07), so compilation refuses profile-create-identity.",
+  "input": {
+    "variant": "neutral-containment-task"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-create-identity"
+  }
+}
