@@ -231,7 +231,7 @@ def build_unified(  # noqa: PLR0913 - unified entries carry index plus walk set
     ``compiled_rules`` maps ``profile:<id>`` to its compiled rule record
     for metadata validation; ``index`` resolves reported IDs and
     ``known_pointers`` carries the immutable input walk set generic
-    absolute pointers resolve against (None keeps the ID-index reading).
+    absolute pointers resolve against (None makes those pointers unavailable).
     Returns ``(entries, counts)`` with entries merged, deduplicated and
     sorted.
     """

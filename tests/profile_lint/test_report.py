@@ -77,6 +77,7 @@ def test_absolute_pointer_passthrough() -> None:
         policy=_policy(),
         compiled_rules={},
         index=_index(),
+        known_pointers=set(_index().values()),
     )
     (entry,) = entries
     assert entry["source"]["pointer"] == "/rootElements/0/flowElements/0"

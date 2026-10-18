@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from bpmn_io.profile._lint.index import build_id_index, resolve_pointer, walk_tree
 from tests.profile_lint.helpers import NAMED_TASK_DOC, parse
 
@@ -50,8 +52,8 @@ def test_unknown_id_absolute_pointer_refused() -> None:
 
 def test_absent_id_absolute_pointer_passes_through() -> None:
     """A generic absolute pointer without a reported ID stays exact."""
-    index = _index()
-    pointer, provenance = resolve_pointer(index, None, "/rootElements/0/flowElements/1")
+    index, known = _child_index()
+    pointer, provenance = resolve_pointer(index, None, "/rootElements/0/flowElements/1", known)
     assert pointer == "/rootElements/0/flowElements/1"
     assert provenance == "exact"
 
@@ -91,16 +93,16 @@ def test_slash_in_property_name_escapes() -> None:
 
 def test_generic_invented_escape_refused() -> None:
     """A generic pointer with a bad ``~`` escape stays unavailable (syntax)."""
-    index, _ = _child_index()
-    pointer, provenance = resolve_pointer(index, "Task_A", "/invented~2")
+    index, known = _child_index()
+    pointer, provenance = resolve_pointer(index, "Task_A", "/invented~2", known)
     assert pointer is None
     assert provenance == "unavailable"
 
 
 def test_generic_trailing_escape_refused() -> None:
     """A generic pointer ending in ``~`` stays unavailable (syntax)."""
-    index, _ = _child_index()
-    pointer, provenance = resolve_pointer(index, "Task_A", f"{index['Task_A']}/foo~")
+    index, known = _child_index()
+    pointer, provenance = resolve_pointer(index, "Task_A", f"{index['Task_A']}/foo~", known)
     assert pointer is None
     assert provenance == "unavailable"
 
@@ -117,16 +119,40 @@ def test_generic_missing_child_refused() -> None:
 
 def test_generic_pointer_under_other_id_refused() -> None:
     """A pointer that exists under another id stays unavailable (scope)."""
-    index, _ = _child_index()
-    pointer, provenance = resolve_pointer(index, "Task_A", index["Task_B"])
+    index, known = _child_index()
+    pointer, provenance = resolve_pointer(index, "Task_A", index["Task_B"], known)
     assert pointer is None
     assert provenance == "unavailable"
 
 
 def test_generic_idless_child_accepted() -> None:
     """A valid ID-less child of the reported id stays exact."""
-    index, _ = _child_index()
+    index, known = _child_index()
     child = f"{index['Task_A']}/documentation/0"
-    pointer, provenance = resolve_pointer(index, "Task_A", child)
+    assert child in known
+    assert child not in index.values()
+    pointer, provenance = resolve_pointer(index, "Task_A", child, known)
     assert pointer == child
     assert provenance == "exact"
+
+
+@pytest.mark.parametrize(
+    ("reported_id", "path", "exists"),
+    [
+        ("Task_A", "/rootElements/0/flowElements/0/documentation/99", False),
+        ("Task_A", "/rootElements/0/flowElements/0/documentation/0", True),
+        ("Task_A", "/rootElements/0/flowElements/0", True),
+        (None, "/rootElements/0/flowElements/0", True),
+        ("D1", "", True),
+        (None, "", True),
+    ],
+)
+def test_generic_pointer_without_known_pointers_refused(
+    reported_id: str | None, path: str, *, exists: bool
+) -> None:
+    """DESIGN R3.3 §6.4: no generic pointer is exact without the verified walk set."""
+    index, known = _child_index()
+    assert (path in known) is exists
+    pointer, provenance = resolve_pointer(index, reported_id, path)
+    assert pointer is None
+    assert provenance == "unavailable"
