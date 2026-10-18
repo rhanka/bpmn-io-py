@@ -8,12 +8,15 @@ of raising. No editor scheduling, browser handle or network access.
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
+from bpmn_io.profile._c14n import digest
 from bpmn_io.profile._envelope import (
     DocumentEnvelope,
     complete_envelope,
+    make_imported_di,
     validate_bindings,
     validate_envelope,
 )
@@ -27,13 +30,31 @@ if TYPE_CHECKING:
 __all__ = ["HeadlessBridge", "create_bridge"]
 
 
+def _check_imported_di(record: object) -> str | None:
+    """Validate one caller-supplied DI record with its digest (refusal or None)."""
+    if not isinstance(record, dict):
+        return "snapshot-schema"
+    if (
+        set(record.keys()) != {"descriptorDigest", "diagrams", "sha256"}
+        or not isinstance(record.get("descriptorDigest"), str)
+        or not isinstance(record.get("diagrams"), list)
+        or not isinstance(record.get("sha256"), str)
+    ):
+        return "snapshot-schema"
+    want = digest({"descriptorDigest": record["descriptorDigest"], "diagrams": record["diagrams"]})
+    if record["sha256"] != want:
+        return "snapshot-schema"
+    return None
+
+
 @dataclass
 class HeadlessBridge:
     """One in-memory document session over native JSON trees."""
 
     descriptor_context: DescriptorContext | None = None
     envelope: DocumentEnvelope | None = None
-    history: list[DocumentEnvelope] = field(default_factory=list)
+    history: list[tuple[DocumentEnvelope, dict[str, object]]] = field(default_factory=list)
+    imported_di: dict[str, object] = field(default_factory=dict)
     disposed: bool = False
 
     def set_descriptor_context(self, context: DescriptorContext) -> None:
@@ -46,8 +67,15 @@ class HeadlessBridge:
         *,
         expected_revision: str | None = None,
         codec: Callable[[bytes], object] | None = None,
+        imported_di: dict[str, object] | None = None,
     ) -> ResultSuccess | ResultRefused:
-        """Load one envelope, guarding the expected revision."""
+        """Load one envelope, guarding the expected revision.
+
+        The committed tree is always the DI-free semantic projection;
+        presentation extracted from the supplied tree is preserved
+        separately as the session DI record (never silently lost). An
+        explicit ``imported_di`` record overrides the extracted one.
+        """
         _ = codec
         report = Report(operation="setDefinitions", entries=())
         if self.disposed:
@@ -57,7 +85,7 @@ class HeadlessBridge:
                 diagnostics=(),
                 report=report,
             )
-        code = validate_envelope(envelope.to_json())
+        code = validate_envelope(envelope.to_json(), committed=False)
         if code is not None:
             return ResultRefused(
                 operation="setDefinitions",
@@ -66,6 +94,16 @@ class HeadlessBridge:
                 report=report,
                 profile_identity=dict(envelope.profile_identity),
             )
+        if imported_di is not None:
+            code = _check_imported_di(imported_di)
+            if code is not None:
+                return ResultRefused(
+                    operation="setDefinitions",
+                    code=code,
+                    diagnostics=(),
+                    report=report,
+                    profile_identity=dict(envelope.profile_identity),
+                )
         if expected_revision is not None and (
             self.envelope is None or self.envelope.semantic_revision != expected_revision
         ):
@@ -76,19 +114,26 @@ class HeadlessBridge:
                 report=report,
                 profile_identity=dict(envelope.profile_identity),
             )
+        committed = complete_envelope(envelope.profile_identity, envelope.tree, envelope.bindings)
+        stored_di = (
+            copy.deepcopy(imported_di)
+            if imported_di is not None
+            else make_imported_di(envelope.tree, "")
+        )
         if self.envelope is not None:
-            self.history.append(self.envelope)
-        self.envelope = envelope
+            self.history.append((self.envelope, self.imported_di))
+        self.envelope = committed
+        self.imported_di = stored_di
         return ResultSuccess(
             operation="setDefinitions",
-            profile_identity=dict(envelope.profile_identity),
-            base_revision=envelope.semantic_revision,
-            revision=envelope.semantic_revision,
+            profile_identity=dict(committed.profile_identity),
+            base_revision=committed.semantic_revision,
+            revision=committed.semantic_revision,
             report=report,
             payload={
-                "envelope": envelope.to_json(),
-                "semanticRevision": envelope.semantic_revision,
-                "viewRevision": envelope.semantic_revision,
+                "envelope": committed.to_json(),
+                "semanticRevision": committed.semantic_revision,
+                "viewRevision": committed.semantic_revision,
             },
         )
 
@@ -214,11 +259,7 @@ class HeadlessBridge:
                 "themeId": "plain",
                 "overrides": {"semantic": [], "occurrence": []},
                 "diStyles": {"native": [], "bioc": []},
-                "importedDi": {
-                    "descriptorDigest": "",
-                    "diagrams": [],
-                    "sha256": "",
-                },
+                "importedDi": copy.deepcopy(self.imported_di),
                 "selection": [],
                 "activePageId": "",
             },
@@ -250,8 +291,9 @@ class HeadlessBridge:
                 diagnostics=(),
                 report=report,
             )
-        envelope = self.history.pop()
+        envelope, stored_di = self.history.pop()
         self.envelope = envelope
+        self.imported_di = stored_di
         return ResultSuccess(
             operation="undo",
             profile_identity=dict(envelope.profile_identity),
