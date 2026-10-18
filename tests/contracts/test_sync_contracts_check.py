@@ -35,6 +35,9 @@ SYNC = _load()
 # White-box pin tests access the script's comparison helpers directly.
 check_pins = SYNC._check_pins  # noqa: SLF001
 contract_section = SYNC._contract_section  # noqa: SLF001
+check_unicode_case = SYNC._check_unicode_case  # noqa: SLF001
+check_self_hosted = SYNC._check_self_hosted  # noqa: SLF001
+check_f1_from_pins = SYNC._check_f1_from_pins  # noqa: SLF001
 
 SECTION: dict[str, Any] = {
     "source": "conductor design folder, revision R3.3 (local, read-only)",
@@ -108,3 +111,58 @@ def test_real_repo_pins_pass() -> None:
     section = contract_section(SYNC.load_pins())
     ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
     assert check_pins(section, ledger) == 0
+
+
+def test_real_unicode_case_pins_pass() -> None:
+    pins = SYNC.load_pins()
+    ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
+    assert check_unicode_case(pins, ledger) == 0
+
+
+def test_unicode_case_tampered_lock_fails(capsys: pytest.CaptureFixture[str]) -> None:
+    pins = SYNC.load_pins()
+    ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
+    locked = ledger["unicode-case"]["files"]
+    locked["contracts/unicode-case/15.0.0/case-table.json"] = "0" * 64
+    assert check_unicode_case(pins, ledger) > 0
+    assert "PINS" in capsys.readouterr().out or "MODIFIED" in capsys.readouterr().out
+
+
+def test_unicode_case_missing_section_fails() -> None:
+    ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
+    assert check_unicode_case({}, ledger) > 0
+    assert check_unicode_case(SYNC.load_pins(), {}) > 0
+
+
+def test_real_self_hosted_dispatch_passes() -> None:
+    pins = SYNC.load_pins()
+    ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
+    assert check_self_hosted(pins, ledger) == 0
+
+
+def test_f1_tampered_lock_fails(capsys: pytest.CaptureFixture[str]) -> None:
+    pins = SYNC.load_pins()
+    ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
+    locked = ledger["f1-extensions"]["files"]
+    first = min(locked)
+    locked[first] = "0" * 64
+    assert check_f1_from_pins(pins, ledger) > 0
+    assert check_self_hosted(pins, ledger) > 0
+    assert "F1" in capsys.readouterr().out
+
+
+def test_f1_missing_section_fails() -> None:
+    ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
+    assert check_f1_from_pins({}, ledger) > 0
+    assert check_f1_from_pins(SYNC.load_pins(), {}) > 0
+
+
+def test_self_hosted_reports_either_side() -> None:
+    pins = SYNC.load_pins()
+    ledger = json.loads((ROOT / "CONTRACTS.lock").read_text(encoding="utf-8"))
+    bad_pins = copy.deepcopy(pins)
+    del bad_pins["unicode-case"]
+    assert check_self_hosted(bad_pins, ledger) > 0
+    bad_ledger = copy.deepcopy(ledger)
+    del bad_ledger["f1-extensions"]
+    assert check_self_hosted(pins, bad_ledger) > 0

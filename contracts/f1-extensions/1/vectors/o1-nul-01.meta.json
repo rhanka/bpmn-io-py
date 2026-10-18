@@ -1,0 +1,17 @@
+{
+ "id": "o1-nul-01",
+ "title": "O1 refuses NUL in a generic body",
+ "design": [
+  "O1 every typed and generic string"
+ ],
+ "serialize": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "invalid-xml-character",
+    "path": "/rootElements/0/extensionElements/values/0/$body",
+    "target": null
+   }
+  ]
+ }
+}

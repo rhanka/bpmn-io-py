@@ -1,0 +1,14 @@
+{
+ "id": "loss-whitespace-01",
+ "title": "Insignificant inter-element whitespace stays silent",
+ "design": [
+  "whitespace gaps carry no information (explicit exception)"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "serialize": {
+  "ok": true
+ }
+}

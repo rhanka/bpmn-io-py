@@ -1,0 +1,90 @@
+{
+  "$comment": "Python-lane step-7 receipt (F1 plan rev d, m5). Independent runtime evidence from the published bpmn_io.codec modules; Node evidence alone proves no runtime parity.",
+  "contract": "f1-extensions/1",
+  "runtime": "python",
+  "package": "bpmn-io",
+  "packageVersion": "0.2.2",
+  "note": "D5 publishes bpmn_io.codec in 0.3.0 on owner GO; this receipt pins the implementing checkout, not the release.",
+  "nativePins": {
+    "bpmn-moddle": "10.3.1",
+    "moddle-xml": "12.3.1",
+    "moddle": "8.2.1",
+    "saxen": "11.2.0"
+  },
+  "modules": [
+    "src/bpmn_io/codec/__init__.py",
+    "src/bpmn_io/codec/_model.py",
+    "src/bpmn_io/codec/_scan.py",
+    "src/bpmn_io/codec/json.py",
+    "src/bpmn_io/codec/serialize.py",
+    "src/bpmn_io/codec/xml_boundary.py"
+  ],
+  "results": {
+    "vectors": 47,
+    "matrix": {
+      "a": "decl-01",
+      "b": [
+        "attr-typed-01",
+        "attr-generic-01"
+      ],
+      "c": "neutral-ext-01"
+    },
+    "oracleParity": {
+      "wire": "equal on every XML vector (tests/oracle/test_oracle_f1.py)",
+      "f7": "equal wherever both lanes encode (same suite)"
+    },
+    "xfail": [
+      "test_port_apostrophe_escaping_matches_oracle (strict): literal-port transcription, Node authoritative"
+    ]
+  },
+  "expansion": {
+    "A1": {
+      "obligation": "Opaque unknown-namespace content round-trips without interpretation.",
+      "evidence": [
+        "neutral-ext-01 (nested generics, foreign attrs, unregistered xmlns)",
+        "loss-unknown-child-01 (out-of-slot drops stay typed)",
+        "multipackage-01 (two vendor namespaces on one owner)"
+      ]
+    },
+    "A2": {
+      "obligation": "Unregistered xmlns declarations are carried in JSON, never a side table.",
+      "evidence": [
+        "decl-01 (retained aliases and default reset)",
+        "neutral-ext-01 ($attrs holds xmlns:ven/xmlns:other)",
+        "prefix-alias-01 (same-URI aliases retained)"
+      ]
+    },
+    "G1": {
+      "obligation": "Lossless generic preservation: XML to native to JSON to native to XML keeps every retained QName, URI, value, body and child order.",
+      "evidence": [
+        "project(hydrate(J)) == J on every sealed wire (test_f1_vectors)",
+        "hydrate(project(M)) fixed points incl. MIWG originals (test_miwg)",
+        "F7 byte parity with the Node oracle (test_oracle_f1)"
+      ]
+    },
+    "G2": {
+      "obligation": "Receiver-side acceptance: unknown content never breaks typed processing, and every native loss or refusal surfaces as a typed diagnostic.",
+      "evidence": [
+        "reserved-name refusals before construction (reserved-*)",
+        "1000-warning cap + truncation pointing at the first omitted warning (warning-cap-01 sealed vector)",
+        "limit-1/limit/limit+1 for every limit (test_safety)",
+        "O1 string gates + O2 complete tuples (o1-*, o2-*)",
+        "MIWG round trips with typed diagnostics only (test_miwg)"
+      ]
+    }
+  },
+  "divergences": [
+    "F7 apostrophe escaping: Node writes &#39;, the literal Python port writes a raw quote (strict xfail; literal ports stay untouched).",
+    "O1-dirty trees: Python refuses before encoding while the literal Node writer emits raw bytes (entity-nul-01, entity-surrogate-01; no F7 golden is stored for lone-surrogate trees).",
+    "ns0-anonymized generics (rebinding/default reset) project but refuse hydrate/F7 identically in both lanes.",
+    "Warning-cap truncation: both lanes point at the first omitted warning (warning-cap-01); the Python adapter observes it by wrapping the native warning sink."
+  ],
+  "designDefaults": [
+    "O1 forbidden controls -> C0 minus TAB/LF/CR plus DEL plus C1 (F1 plan step 5).",
+    "xml-entity-reference-unsupported refuses (error severity, fail-closed).",
+    "unknown-type native failures share invalid-xsi-type (native messages do not distinguish them).",
+    "Whitespace-only gaps stay silent (no information); comments/PIs/CDATA/truncation always diagnose.",
+    "Element-count limit-1/limit enforced at the pre-pass unit level (native construction at that scale is not covered end to end).",
+    "Report/2 import-stage entries stay outside this lot; the diagnostic tuples are the handoff payload."
+  ]
+}

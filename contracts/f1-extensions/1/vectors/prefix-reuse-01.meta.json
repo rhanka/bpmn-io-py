@@ -1,0 +1,14 @@
+{
+ "id": "prefix-reuse-01",
+ "title": "One prefix reused across sibling generics",
+ "design": [
+  "prefix reuse follows the literal writer"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "serialize": {
+  "ok": true
+ }
+}

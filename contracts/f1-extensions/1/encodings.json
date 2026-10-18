@@ -1,0 +1,22 @@
+{
+  "$comment": "Explicit input-encoding registry. Contract f1-extensions/1, step-1 exit seal (m3). Names match case-insensitively against the XML declaration encoding value; an absent declaration means UTF-8.",
+  "default": "utf-8",
+  "emitted": "utf-8",
+  "encodings": {
+    "utf-8": { "codec": "utf-8-strict", "note": "XML default when no declaration is present." },
+    "utf8": { "codec": "utf-8-strict", "note": "Alias accepted natively." },
+    "ascii": { "codec": "utf-8-strict", "note": "ASCII bytes decode identically under strict UTF-8." },
+    "us-ascii": { "codec": "utf-8-strict", "note": "Alias accepted natively." },
+    "iso-8859-1": { "codec": "byte-to-u0000-u00ff", "note": "Actual byte to U+0000..U+00FF mapping; bytes 0x80-0x9F land on U+0080..U+009F, never on C1 control remaps." },
+    "iso8859-1": { "codec": "byte-to-u0000-u00ff", "note": "Alias accepted natively." },
+    "iso88591": { "codec": "byte-to-u0000-u00ff", "note": "Alias accepted natively." },
+    "latin1": { "codec": "byte-to-u0000-u00ff", "note": "Alias accepted natively." },
+    "latin-1": { "codec": "byte-to-u0000-u00ff", "note": "Alias accepted natively." }
+  },
+  "rules": [
+    "Any other declared name refuses with unsupported-encoding before tokenization.",
+    "Bytes that are malformed for the selected codec refuse with invalid-encoding.",
+    "Raw bytes are hashed before decoding; emitted bytes always follow the native writer (UTF-8 preamble).",
+    "Named references decode with the pinned native semantics only: the five predefined lowercase names, their five uppercase variants, and decimal/hex numeric references. Anything else is xml-entity-reference-unsupported."
+  ]
+}

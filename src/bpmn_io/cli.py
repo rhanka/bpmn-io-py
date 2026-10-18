@@ -8,22 +8,38 @@ import glob as glob_module
 import json
 import re
 import sys
+from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, NoReturn, cast
 
 if TYPE_CHECKING:
     from bpmn_io.bpmn_moddle import BpmnModdle
     from bpmn_io.lint.linter import Resolver
-    from bpmn_io.moddle.base import ModdleElement
 
 from bpmn_io._js import UNDEFINED
 from bpmn_io._moddle_utils import path_stringify
 from bpmn_io.auto_layout import LayoutError, layout_process
 from bpmn_io.bpmn_moddle.simple import create_moddle
 from bpmn_io.check import check
+from bpmn_io.codec import hydrate, parse_xml, project
 from bpmn_io.lint import Linter
 from bpmn_io.lint.resolver import NodeResolver
+from bpmn_io.moddle.base import ModdleElement
 from bpmn_io.moddle_xml.read import ParseError
+from bpmn_io.profile import (
+    PureRefused,
+    check_compatibility,
+    compile_profile,
+    create_descriptor_context,
+    import_envelope,
+    load_profile,
+    validate_envelope,
+)
+from bpmn_io.profile import lint as run_profile_lint
+from bpmn_io.profile._compiler import CompiledProfile, DescriptorContext
+from bpmn_io.profile._envelope import DocumentEnvelope, initial_base_revision
+from bpmn_io.profile._lint.report import adapter_entry as profile_adapter_entry
+from bpmn_io.profile._loader import ValidatedProfile
 
 __all__ = ["main"]
 
@@ -435,6 +451,545 @@ def _run_lint(args: argparse.Namespace) -> int:
     )
 
 
+class _InvalidInvocationError(Exception):
+    """A profile-lint input problem (one stderr line, exit 2)."""
+
+
+@dataclass(frozen=True)
+class _ProfileLintArgs:
+    """Parsed ``profile lint`` invocation (paths plus stage and policy)."""
+
+    input_path: str
+    profile_path: str
+    schema_path: str
+    base_path: str
+    descriptors_path: str
+    registry_path: str
+    phase: str
+    readiness_policy: str
+
+
+@dataclass(frozen=True)
+class _PinnedInputs:
+    """Profile-lint pinned inputs as raw bytes plus parsed documents."""
+
+    input_doc: dict[str, Any]
+    profile_bytes: bytes
+    schema_doc: dict[str, Any]
+    schema_bytes: bytes
+    base_bytes: bytes
+    descriptors_doc: dict[str, Any]
+    descriptors_bytes: bytes
+    extra_configs: dict[str, Any]
+
+
+class _ProfileRefusalError(Exception):
+    """A profile-lint contract failure (refused ``Result/1``, exit 1)."""
+
+    def __init__(
+        self,
+        code: str,
+        message: str,
+        *,
+        revision: str | None = None,
+    ) -> None:
+        """Create the refusal with its stable ``code`` and known ``revision``."""
+        super().__init__(message)
+        self.code = code
+        self.message = message
+        self.revision = revision
+
+
+def _refuse(code: str, message: str, *, revision: str | None = None) -> NoReturn:
+    """Raise the profile-lint refusal for one contract failure."""
+    raise _ProfileRefusalError(code, message, revision=revision)
+
+
+#: ``$id`` of the pinned profile schema (DESIGN §1: self-contained, closed).
+_PROFILE_SCHEMA_ID = "urn:profile-mechanism:1:profile"
+
+#: Runtime contract of the profile lint CLI (mechanism 1, schema 1.0.0 and
+#: the six generic capabilities). The CLI holds the exact profile bytes, so
+#: the compatibility source counts as known and available.
+_PROFILE_LINT_RUNTIME: dict[str, list[str]] = {
+    "mechanisms": ["1"],
+    "schemas": ["1.0.0"],
+    "capabilities": [
+        "predicates/1",
+        "selectors/1",
+        "recipes/1",
+        "profile-lint/1",
+        "render-data/1",
+        "export-ir/1",
+    ],
+    "assets": [],
+}
+
+
+def _raw_bytes(label: str, path: str) -> bytes:
+    """Read one pinned input as raw bytes (raises on any input problem)."""
+    try:
+        return Path(path).read_bytes()
+    except (OSError, ValueError) as err:
+        # ValueError: embedded-NUL path (reachable via API use of main()).
+        msg = f"cannot read {label} {path!r}: {err}"
+        raise _InvalidInvocationError(msg) from err
+
+
+def _read_json_input(label: str, path: str) -> tuple[dict[str, Any], bytes]:
+    """Read and parse a profile-lint JSON input (raises on any problem)."""
+    raw = _raw_bytes(label, path)
+    try:
+        data = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as err:
+        msg = f"could not parse {label} {path}: {err}"
+        raise _InvalidInvocationError(msg) from err
+    if not isinstance(data, dict):
+        msg = f"could not parse {label} {path}: expected a JSON object"
+        raise _InvalidInvocationError(msg)
+    return data, raw
+
+
+def _read_pinned_inputs(args: _ProfileLintArgs) -> _PinnedInputs:
+    """Read every profile-lint pinned input (raises on any input problem)."""
+    input_doc, _ = _read_json_input("--input", args.input_path)
+    _, profile_bytes = _read_json_input("--profile", args.profile_path)
+    schema_doc, schema_bytes = _read_json_input("--schema", args.schema_path)
+    _, base_bytes = _read_json_input("--base", args.base_path)
+    descriptors_doc, descriptors_bytes = _read_json_input("--descriptors", args.descriptors_path)
+    registry_doc, _ = _read_json_input("--registry", args.registry_path)
+    extra_configs = registry_doc.get("configs")
+    if extra_configs is None:
+        extra_configs = {}
+    if not isinstance(extra_configs, dict):
+        msg = "--registry configs must be an object when present"
+        raise _InvalidInvocationError(msg)
+    return _PinnedInputs(
+        input_doc=input_doc,
+        profile_bytes=profile_bytes,
+        schema_doc=schema_doc,
+        schema_bytes=schema_bytes,
+        base_bytes=base_bytes,
+        descriptors_doc=descriptors_doc,
+        descriptors_bytes=descriptors_bytes,
+        extra_configs=extra_configs,
+    )
+
+
+def _pinned_schema_ok(doc: dict[str, Any]) -> bool:
+    """Return whether ``doc`` is the pinned profile schema beyond its ``$id``.
+
+    The self-contained closed schema carries its object type, the false
+    ``additionalProperties`` closure and its ``$defs``/``properties`` maps;
+    a schema reduced to ``$id`` validates everything and is refused here.
+    """
+    definitions = doc.get("$defs")
+    return (
+        doc.get("$id") == _PROFILE_SCHEMA_ID
+        and doc.get("type") == "object"
+        and doc.get("additionalProperties") is False
+        and isinstance(doc.get("properties"), dict)
+        and isinstance(definitions, dict)
+        and len(definitions) > 0
+        and isinstance(doc.get("required"), list)
+    )
+
+
+def _refusal_message(code: str, diagnostics: tuple[object, ...]) -> str:
+    """Render one refusal message with its stable code and diagnostics."""
+    details = "; ".join(str(entry) for entry in diagnostics if str(entry))
+    return f"{code}{(': ' + details) if details else ''}"
+
+
+def _compile_for_lint(
+    inputs: _PinnedInputs,
+) -> tuple[ValidatedProfile, CompiledProfile]:
+    """Load, pin-check and compile the pinned profile (raises on refusal)."""
+    loaded = load_profile(
+        inputs.profile_bytes,
+        schema_bytes=inputs.schema_bytes,
+        base_bytes=inputs.base_bytes,
+        capabilities=list(_PROFILE_LINT_RUNTIME["capabilities"]),
+    )
+    if isinstance(loaded, PureRefused):
+        _refuse(loaded.code, _refusal_message(loaded.code, loaded.diagnostics))
+    if not isinstance(loaded.payload, ValidatedProfile):
+        _refuse("operation-error", "operation-error: loader returned no profile")
+    validated = loaded.payload
+    pin = _descriptor_pin(validated, inputs.descriptors_doc)
+    context_result = create_descriptor_context(
+        [
+            {
+                "id": str(inputs.descriptors_doc.get("id")),
+                "sha256": pin,
+                "descriptorBytes": inputs.descriptors_bytes,
+            }
+        ]
+    )
+    if isinstance(context_result, PureRefused):
+        _refuse(
+            context_result.code,
+            _refusal_message(context_result.code, context_result.diagnostics),
+        )
+    if not isinstance(context_result.payload, DescriptorContext):
+        _refuse("operation-error", "operation-error: descriptor context is open")
+    ratified_base = _ratified_base(inputs.base_bytes)
+    compiled_result = compile_profile(
+        validated, descriptor_context=context_result.payload, base=ratified_base
+    )
+    if isinstance(compiled_result, PureRefused):
+        _refuse(
+            compiled_result.code,
+            _refusal_message(compiled_result.code, compiled_result.diagnostics),
+        )
+    if not isinstance(compiled_result.payload, CompiledProfile):
+        _refuse("operation-error", "operation-error: compiler returned no profile")
+    return validated, compiled_result.payload
+
+
+def _ratified_base(base_bytes: bytes) -> dict[str, Any]:
+    """Return the pin-checked base document for producer rights (raises on refusal).
+
+    ``load_profile`` already hash-pinned these bytes against the profile
+    ``base.sha256``; the compiler folds the base field producers into the
+    effective rights, so recipe writes check against ratified data here.
+    """
+    try:
+        document = json.loads(base_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as err:
+        _refuse("operation-error", f"operation-error: base is not a JSON object: {err}")
+    if not isinstance(document, dict):
+        _refuse("operation-error", "operation-error: base is not a JSON object")
+    return document
+
+
+def _descriptor_pin(validated: ValidatedProfile, descriptors_doc: dict[str, Any]) -> str:
+    """Return the profile pin matching the descriptors file (raises on refusal)."""
+    doc_id = descriptors_doc.get("id")
+    for entry in validated.descriptors:
+        if (
+            isinstance(doc_id, str)
+            and doc_id
+            and entry.get("id") == doc_id
+            and isinstance(entry.get("sha256"), str)
+            and entry.get("sha256")
+        ):
+            return str(entry.get("sha256"))
+    code = "descriptor-mismatch"
+    msg = f"{code}: descriptors <{doc_id!r}> match no profile pin"
+    _refuse(code, msg)
+
+
+def _profile_identity(validated: ValidatedProfile) -> dict[str, Any]:
+    """Build the ``Result/1`` profile identity from a validated profile."""
+    profile = validated.profile
+    base = validated.base
+    return {
+        "mechanismVersion": str(profile.get("mechanismVersion", "1")),
+        "schemaVersion": str(profile.get("schemaVersion", "")),
+        "profile": str(profile.get("profile", "")),
+        "version": str(profile.get("version", "")),
+        "sha256": validated.digest,
+        "base": {
+            "id": str(base.get("id")),
+            "version": str(base.get("version", "")),
+            "sha256": str(base.get("sha256")),
+        },
+        "descriptors": [
+            {"id": str(entry.get("id")), "sha256": str(entry.get("sha256"))}
+            for entry in validated.descriptors
+        ],
+    }
+
+
+def _check_compatibility(
+    injected: dict[str, Any],
+    document: dict[str, Any],
+    *,
+    document_version: str,
+    revision: str | None = None,
+) -> None:
+    """Apply the §3.3 decision rows for the lint operation (raises on refusal)."""
+    verdict = check_compatibility(
+        cast("dict[str, object]", _PROFILE_LINT_RUNTIME),
+        cast("dict[str, object]", injected),
+        cast("dict[str, object]", document),
+        document_version=document_version,
+        source_availability="known-and-available",
+        required_capabilities=["profile-lint/1"],
+        envelope_valid=True,
+    )
+    if verdict.get("status") != "ok":
+        raw = verdict.get("code")
+        name = raw if isinstance(raw, str) and raw else "operation-error"
+        _refuse(name, _refusal_message(name, ()), revision=revision)
+
+
+@dataclass
+class _LintTree:
+    """One evaluation tree with its warnings and §3.1 revisions."""
+
+    root: ModdleElement
+    warnings: list[Any]
+    base_revision: str
+    revision: str
+    bindings: list[dict[str, Any]]
+
+
+def _input_kind(doc: dict[str, Any]) -> str:
+    """Return the ``--input`` source kind (raises on an unknown shape)."""
+    if "documentVersion" in doc:
+        return "envelope"
+    if isinstance(doc.get("xml"), str) and doc.get("xml"):
+        return "xml"
+    msg = "--input must be a document envelope or an object with an xml string"
+    raise _InvalidInvocationError(msg)
+
+
+def _load_invocation(args: _ProfileLintArgs) -> tuple[_PinnedInputs, str]:
+    """Read and gate every invocation-level input (raises on any problem)."""
+    inputs = _read_pinned_inputs(args)
+    if not _pinned_schema_ok(inputs.schema_doc):
+        msg = "--schema is not the pinned profile schema"
+        raise _InvalidInvocationError(msg)
+    return inputs, _input_kind(inputs.input_doc)
+
+
+def _tree_from_xml(xml: str, identity: dict[str, Any]) -> _LintTree:
+    """Parse an XML source through the codec and moddle legs (raises on refusal)."""
+    xml_bytes = xml.encode("utf-8")
+    parsed = parse_xml(xml_bytes)
+    if not parsed.ok or parsed.value is None:
+        code = "document-not-loaded"
+        _refuse(code, f"{code}: xml did not parse")
+    projected = project(parsed.value)
+    if not projected.ok or not isinstance(projected.value, dict):
+        code = "document-not-loaded"
+        _refuse(code, f"{code}: xml did not project")
+    imported = import_envelope(
+        projected.value, cast("dict[str, object]", identity), source_format="bpmn-xml"
+    )
+    if isinstance(imported, PureRefused):
+        _refuse(imported.code, _refusal_message(imported.code, imported.diagnostics))
+    if not isinstance(imported.payload, DocumentEnvelope):
+        _refuse("operation-error", "operation-error: import returned no envelope")
+    envelope = imported.payload
+    envelope_code = validate_envelope(envelope.to_json())
+    if envelope_code is not None:
+        _refuse(envelope_code, envelope_code)
+    _check_compatibility(
+        identity, identity, document_version="1", revision=envelope.semantic_revision
+    )
+    model = create_moddle()
+    try:
+        from_xml = model.from_xml(xml)
+    except ParseError as err:
+        code = "operation-error"
+        _refuse(code, f"{code}: input does not parse: {err.message}")
+    if not isinstance(from_xml.root_element, ModdleElement):
+        code = "operation-error"
+        _refuse(code, f"{code}: input is not a BPMN definitions tree")
+    return _LintTree(
+        root=from_xml.root_element,
+        warnings=list(from_xml.warnings),
+        base_revision=initial_base_revision("bpmn-xml", source_bytes=xml_bytes),
+        revision=envelope.semantic_revision,
+        bindings=[dict(entry) for entry in envelope.bindings],
+    )
+
+
+def _tree_from_envelope(doc: dict[str, Any], identity: dict[str, Any]) -> _LintTree:
+    """Materialize a ``DocumentEnvelope`` input for lint (raises on refusal)."""
+    envelope_code = validate_envelope(doc)
+    if envelope_code is not None:
+        _refuse(envelope_code, envelope_code)
+    document_identity = doc.get("profileIdentity")
+    document_version = doc.get("documentVersion")
+    if not isinstance(document_identity, dict) or not isinstance(document_version, str):
+        code = "profile-schema"
+        _refuse(code, f"{code}: envelope identity is open")
+    claimed = doc.get("semanticRevision")
+    _check_compatibility(
+        identity,
+        document_identity,
+        document_version=document_version,
+        revision=claimed if isinstance(claimed, str) and claimed else None,
+    )
+    hydrated = hydrate(doc.get("tree"))
+    if not hydrated.ok or not isinstance(hydrated.value, ModdleElement):
+        code = "document-not-loaded"
+        _refuse(code, f"{code}: envelope tree did not hydrate")
+    revision = doc.get("semanticRevision")
+    if not isinstance(revision, str) or not revision:
+        code = "profile-schema"
+        _refuse(code, f"{code}: envelope revision is open")
+    raw_bindings = doc.get("bindings")
+    # validate_envelope above closed the envelope, so bindings is an array here.
+    support = [dict(entry) for entry in raw_bindings] if isinstance(raw_bindings, list) else []
+    return _LintTree(
+        root=hydrated.value,
+        warnings=[],
+        base_revision=revision,
+        revision=revision,
+        bindings=support,
+    )
+
+
+def _cmd_profile_lint(args: _ProfileLintArgs) -> int:
+    """Lint one document envelope against a profile (DESIGN R3.3 §6.4).
+
+    The ``--input`` file carries either a ``DocumentEnvelope`` or an object
+    with an ``xml`` string. The profile travels the contract path — loader,
+    descriptor pin-check, compiler, codec, envelope validation and the §3.3
+    compatibility rows — before the lint bridge evaluates the compiled
+    profile; revisions follow §3.1 (initial-import base for XML sources,
+    the envelope revision for read-only envelope lint).
+
+    Exit 0 means ok, 1 means refused or a remaining error, 2 means invalid
+    invocation. Exactly one ``Result/1`` goes to stdout; diagnostics use
+    stderr. No module discovery or network follows profile data.
+    """
+    try:
+        inputs, kind = _load_invocation(args)
+    except _InvalidInvocationError as err:
+        _err(f"bpmn-io: profile lint: {err}")
+        return 2
+
+    try:
+        validated, compiled = _compile_for_lint(inputs)
+    except _ProfileRefusalError as err:
+        return _profile_lint_refused(err.message, code=err.code, phase=args.phase)
+    profile_identity = _profile_identity(validated)
+
+    try:
+        if kind == "envelope":
+            tree = _tree_from_envelope(inputs.input_doc, profile_identity)
+        else:
+            tree = _tree_from_xml(str(inputs.input_doc.get("xml")), profile_identity)
+    except _ProfileRefusalError as err:
+        return _profile_lint_refused(
+            err.message,
+            code=err.code,
+            phase=args.phase,
+            identity=profile_identity,
+            revision=err.revision,
+        )
+    try:
+        result = run_profile_lint(
+            tree.root,
+            compiled,
+            phase=args.phase,
+            readiness_policy=args.readiness_policy,
+            registry=inputs.extra_configs,
+            bindings=tree.bindings,
+        )
+    except (ValueError, TypeError) as err:
+        _err(f"bpmn-io: profile lint: {err}")
+        return 2
+    result["profileIdentity"] = profile_identity
+    result["baseRevision"] = tree.base_revision
+    result["revision"] = tree.revision
+    report = result.get("report")
+    if isinstance(report, dict):
+        report["inputRevision"] = tree.base_revision
+        report["outputRevision"] = tree.revision
+    if tree.warnings:
+        _attach_import_warnings(result, tree.warnings, phase=args.phase)
+    ordered: dict[str, Any] = {
+        key: result[key]
+        for key in (
+            "status",
+            "operation",
+            "profileIdentity",
+            "baseRevision",
+            "revision",
+            "report",
+            "payload",
+        )
+        if key in result
+    }
+    ordered.update({key: result[key] for key in result if key not in ordered})
+    _out(json.dumps(ordered, sort_keys=True))
+    payload = result.get("payload")
+    ok = result.get("status") == "ok" and isinstance(payload, dict) and payload.get("ok") is True
+    return 0 if ok else 1
+
+
+def _profile_lint_refused(
+    message: str,
+    *,
+    code: str,
+    phase: str,
+    identity: dict[str, Any] | None = None,
+    revision: str | None = None,
+) -> int:
+    """Print a refused profile-lint ``Result/1`` on stdout (exit 1)."""
+    result: dict[str, Any] = {
+        "status": "refused",
+        "operation": "validate",
+        "code": code,
+        "diagnostics": [message],
+        "report": {
+            "reportVersion": "2",
+            "operation": "validate",
+            "entries": [profile_adapter_entry(code, stage=phase, disposition="refused")],
+            "rawStandardFindings": {},
+            "idMap": [],
+            "artifacts": [],
+        },
+    }
+    if identity is not None:
+        result["profileIdentity"] = identity
+    if revision is not None:
+        result["baseRevision"] = revision
+        result["revision"] = revision
+    _out(json.dumps(result, sort_keys=True))
+    return 1
+
+
+def _attach_import_warnings(
+    result: dict[str, Any],
+    warnings: list[Any],
+    *,
+    phase: str,
+) -> None:
+    """Surface native import warnings as integrity entries (never dropped).
+
+    Each warning becomes an observed ``lint-rule-error`` entry (like the
+    standard interface, which reports them as errors) and its text joins
+    ``payload.importWarnings`` so nothing is lost from the unified shape.
+    """
+    texts: list[str] = []
+    for warning in warnings:
+        message = str(getattr(warning, "message", warning)).splitlines()
+        texts.append(f"Import warning: {message[0] if message else warning}")
+    report = result.get("report")
+    if isinstance(report, dict) and isinstance(report.get("entries"), list):
+        report["entries"].extend(
+            profile_adapter_entry("lint-rule-error", stage=phase) for _ in texts
+        )
+    payload = result.get("payload")
+    if isinstance(payload, dict):
+        payload["importWarnings"] = texts
+        payload["ok"] = False
+
+
+def _run_profile_lint(args: argparse.Namespace) -> int:
+    """Dispatch the profile lint subcommand."""
+    return _cmd_profile_lint(
+        _ProfileLintArgs(
+            input_path=args.input,
+            profile_path=args.profile,
+            schema_path=args.schema,
+            base_path=args.base,
+            descriptors_path=args.descriptors,
+            registry_path=args.registry,
+            phase=args.phase,
+            readiness_policy=args.readiness_policy,
+        )
+    )
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Create the bpmn-io argument parser."""
     parser = argparse.ArgumentParser(
@@ -444,7 +999,7 @@ def build_parser() -> argparse.ArgumentParser:
         "1 finding or processing failure, 2 usage or IO error.",
     )
     sub = parser.add_subparsers(
-        dest="command", metavar="check|roundtrip|layout|lint", required=True
+        dest="command", metavar="check|roundtrip|layout|lint|profile", required=True
     )
     commands: tuple[tuple[str, str, Any], ...] = (
         ("check", "parse a file and report integrity findings", _run_check),
@@ -482,6 +1037,40 @@ def build_parser() -> argparse.ArgumentParser:
         help="number of warnings to trigger nonzero exit code - default: -1",
     )
     lint_parser.set_defaults(func=_run_lint)
+
+    profile_parser = sub.add_parser(
+        "profile",
+        help="profile mechanism operations (lot 1: lint only)",
+    )
+    profile_sub = profile_parser.add_subparsers(
+        dest="profile_command", metavar="lint", required=True
+    )
+    profile_lint_parser = profile_sub.add_parser(
+        "lint",
+        help="lint a document envelope against a profile (unified Result/1)",
+    )
+    profile_lint_parser.add_argument("--input", required=True, help="envelope JSON file")
+    profile_lint_parser.add_argument("--profile", required=True, help="profile JSON file")
+    profile_lint_parser.add_argument("--schema", required=True, help="profile schema JSON file")
+    profile_lint_parser.add_argument("--base", required=True, help="effective-base JSON file")
+    profile_lint_parser.add_argument("--descriptors", required=True, help="descriptors JSON file")
+    profile_lint_parser.add_argument("--registry", required=True, help="registry JSON file")
+    profile_lint_parser.add_argument(
+        "--phase",
+        required=True,
+        choices=("import", "pre-normalize", "post-normalize", "post-layout", "release"),
+        help="execution stage to lint",
+    )
+    profile_lint_parser.add_argument(
+        "--readiness-policy",
+        required=True,
+        choices=("draft", "accept"),
+        help="readiness policy to lint under",
+    )
+    profile_lint_parser.add_argument(
+        "--json", action="store_true", required=True, help="write one Result/1 to stdout"
+    )
+    profile_lint_parser.set_defaults(func=_run_profile_lint)
     return parser
 
 

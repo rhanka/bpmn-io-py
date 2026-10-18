@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/rhanka/bpmn-io-py/contracts/f1-extensions/1/f1-wire.schema.json",
+  "$comment": "F1 extension-preserving wire model, contract f1-extensions/1. DESIGN R3.3 authority is cited by section only; no external text is reproduced here.",
+  "title": "F1 wire model",
+  "description": "Lossless JSON projection of the native tree produced by bpmn-moddle 10.3.1 / moddle-xml 12.3.1. Generic dispatch on $type '$any' precedes every registered-type guard.",
+  "type": "object",
+  "oneOf": [
+    { "$ref": "#/$defs/typedElement" },
+    { "$ref": "#/$defs/genericElement" }
+  ],
+  "$defs": {
+    "qname": {
+      "title": "Prefixed element or attribute name",
+      "type": "string",
+      "pattern": "^([A-Za-z_][A-Za-z0-9_.-]*:)?[A-Za-z_][A-Za-z0-9_.-]*$"
+    },
+    "stringMap": {
+      "title": "String-to-string map (foreign attributes)",
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "elementName": {
+      "title": "Generic element identity",
+      "type": "object",
+      "properties": {
+        "qname": { "$ref": "#/$defs/qname" },
+        "uri": { "type": "string" }
+      },
+      "required": ["qname", "uri"],
+      "additionalProperties": false
+    },
+    "reference": {
+      "title": "Typed reference by id",
+      "type": "object",
+      "properties": {
+        "$ref": { "type": "string" }
+      },
+      "required": ["$ref"],
+      "additionalProperties": false
+    },
+    "genericElement": {
+      "title": "Generic ($any) element",
+      "type": "object",
+      "properties": {
+        "$type": { "const": "$any" },
+        "$name": { "$ref": "#/$defs/elementName" },
+        "$attrs": { "$ref": "#/$defs/stringMap" },
+        "$body": { "type": "string" },
+        "$children": {
+          "type": "array",
+          "items": { "$ref": "#" }
+        }
+      },
+      "required": ["$type", "$name", "$attrs"],
+      "additionalProperties": false
+    },
+    "typedElement": {
+      "title": "Registered-type element",
+      "type": "object",
+      "properties": {
+        "$type": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_.-]*:[A-Za-z_][A-Za-z0-9_.-]*$" },
+        "$attrs": { "$ref": "#/$defs/stringMap" }
+      },
+      "required": ["$type"],
+      "additionalProperties": { "$ref": "#/$defs/propertyValue" }
+    },
+    "propertyValue": {
+      "title": "One registered property value",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "number" },
+        { "type": "boolean" },
+        { "type": "null" },
+        { "$ref": "#/$defs/reference" },
+        { "$ref": "#" },
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "number" },
+              { "type": "boolean" },
+              { "type": "null" },
+              { "$ref": "#/$defs/reference" },
+              { "$ref": "#" }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "$comment": "F1 resource limits. Contract f1-extensions/1. Every limit ships limit-1, limit and limit+1 vectors with identical counting and precedence in both runtimes.",
+  "precedence": "Total input-size checks precede tokenization; afterwards document order decides the first violation. Limits are checked before allocation: traversal is bounded with explicit stacks, and no bare stack overflow or allocation failure is an accepted diagnostic.",
+  "limits": {
+    "xml-input-bytes": {
+      "value": 67108864,
+      "unit": "bytes",
+      "counts": "Raw XML input bytes as received, before decoding.",
+      "code": "xml-input-size-limit"
+    },
+    "xml-decoded-bytes": {
+      "value": 67108864,
+      "unit": "UTF-8 bytes",
+      "counts": "Decoded character data re-encoded as UTF-8, checked independently from the raw size.",
+      "code": "xml-input-size-limit"
+    },
+    "xml-depth": {
+      "value": 256,
+      "unit": "elements",
+      "counts": "Nesting depth with the root element counting as 1. Applies to XML input, JSON input and native-model traversal alike.",
+      "code": "xml-depth-limit"
+    },
+    "xml-elements": {
+      "value": 1000000,
+      "unit": "elements",
+      "counts": "Total elements (XML), nodes (JSON) or visited elements (native traversal), including nested generic content.",
+      "code": "xml-element-count-limit"
+    },
+    "xml-attributes-per-element": {
+      "value": 1024,
+      "unit": "attributes",
+      "counts": "Attributes of one element including namespace declarations; on JSON input, $attrs entries of one node.",
+      "code": "xml-attribute-count-limit"
+    },
+    "xml-attr-name-utf16": {
+      "value": 1048576,
+      "unit": "UTF-16 code units",
+      "counts": "One attribute name; on JSON input, every map key and $name part. Counted in Python as len(s.encode('utf-16-le', 'surrogatepass')) // 2 (lone surrogates count as one unit).",
+      "code": "xml-attribute-length-limit"
+    },
+    "xml-attr-value-utf16": {
+      "value": 1048576,
+      "unit": "UTF-16 code units",
+      "counts": "One attribute value; on JSON input, every string value including $body. Counted in Python as len(s.encode('utf-16-le', 'surrogatepass')) // 2 (lone surrogates count as one unit).",
+      "code": "xml-attribute-length-limit"
+    },
+    "json-object-bytes": {
+      "value": 67108864,
+      "unit": "UTF-8 bytes",
+      "counts": "Object entry size: the UTF-8 byte length of the profile-c14n/2 (JCS) bytes of the projected JSON, excluding runtime links.",
+      "code": "xml-input-size-limit"
+    },
+    "warning-cap": {
+      "value": 1000,
+      "unit": "diagnostics",
+      "counts": "Maximum collected warnings per conversion; the first omitted warning yields exactly one moddle-warning-truncated diagnostic.",
+      "code": "moddle-warning-truncated"
+    }
+  }
+}

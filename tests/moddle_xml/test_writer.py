@@ -1534,6 +1534,26 @@ def test_076_write_explicitly_remapped_xsi_type() -> None:
     )
 
 
+def test_attribute_escaping_lone_apostrophe() -> None:
+    """A lone apostrophe in attributes escapes as ``&#39;``, like upstream.
+
+    Regression for the literal-port transcription of ``ESCAPE_ATTR_CHARS``
+    (``moddle-xml/lib/write.js``): the port merged the lone-apostrophe
+    alternative into a two-character sequence, leaving ``'`` raw and
+    crashing on ``'"``. The pinned Node reference stays authoritative.
+    """
+    model = _model("properties")
+    writer = _writer()
+    complex_elem = model.create("props:Complex", {"id": "a'\"b&c<d>e'f"})
+
+    xml = writer.to_xml(complex_elem)
+
+    assert xml == (
+        '<props:complex xmlns:props="http://properties" '
+        'id="a&#39;&#34;b&#38;c&#60;d&#62;e&#39;f" />'
+    )
+
+
 @pytest.mark.upstream("moddle-xml/test/spec/writer.js", "should write explicitly remapped xmi:type")
 def test_077_write_explicitly_remapped_xmi_type() -> None:
     model = _model(

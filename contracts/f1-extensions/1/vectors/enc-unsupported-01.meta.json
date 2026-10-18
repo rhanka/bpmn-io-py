@@ -1,0 +1,19 @@
+{
+ "id": "enc-unsupported-01",
+ "title": "Unregistered declared encoding refuses byte input",
+ "design": [
+  "explicit input-encoding registry; str input only warns natively"
+ ],
+ "parse": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "unsupported-encoding",
+    "path": null,
+    "target": null
+   }
+  ],
+  "bytesOnly": true
+ },
+ "asBytes": true
+}

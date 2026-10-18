@@ -51,3 +51,30 @@ manifest_sha256 = "1588c8a1f1818e84647359de4d9c90ff6382b8404d128947f66c858b65963
 artifacts = [
   "r33-matrix-vectors.public.json",
 ]
+
+# Self-hosted Unicode 15.0.0 case tables: language-neutral contract vendored
+# by hash for the JS library. The raw UCD sources are never vendored here;
+# scripts/gen_unicode_case.py verifies them against [unicode-case.sources]
+# and scripts/sync_contracts.py --check verifies the contract files.
+[unicode-case]
+format = "unicode-case/1"
+unicode_version = "15.0.0"
+dest = "contracts/unicode-case/15.0.0"
+artifacts = [
+  "case-table.json",
+  "vectors.json",
+  "manifest.json",
+]
+
+[unicode-case.sources]
+"UnicodeData.txt" = { size = 1913704, sha256 = "806e9aed65037197f1ec85e12be6e8cd870fc5608b4de0fffd990f689f376a73" }
+"SpecialCasing.txt" = { size = 16832, sha256 = "78b29c64b5840d25c11a9f31b665ee551b8a499eca6c70d770fcad7dd710f494" }
+"DerivedCoreProperties.txt" = { size = 1053943, sha256 = "d367290bc0867e6b484c68370530bdd1a08b6b32404601b8c7accaf83e05628d" }
+# Self-hosted F1 extension-preservation contract (this repository is the
+# canonical owner; F1 plan rev d). No external source: files are authored
+# here, expectations trace to the DESIGN/F1 text and the pinned Node
+# references under tests/oracle/. `scripts/sync_contracts.py --check`
+# verifies the manifest and lock offline; `--f1-manifest` rewrites them.
+[f1-extensions]
+dest = "contracts/f1-extensions/1"
+manifest = "MANIFEST.sha256"
