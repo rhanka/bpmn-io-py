@@ -39,18 +39,22 @@ def test_envelope_round_trip_and_revision() -> None:
 
 
 def test_envelope_import_codec_boundary() -> None:
-    """Raw document bytes without a codec refuse with the closed code."""
+    """Bytes decode through the wired default; junk refuses; injection wins."""
     from bpmn_io.profile import import_envelope
 
-    refused = import_envelope(b'{"tree": {}}', _identity())
-    assert refused.status == "refused"
-    assert refused.code == "document-not-loaded"  # type: ignore[union-attr]
-    wired = import_envelope(
+    wired = import_envelope(b'{"tree": {}}', _identity())
+    assert wired.status == "ok"
+    assert wired.payload is not None
+    for junk in (b"not json", b"[1, 2]", b"\xff\xfe"):
+        refused = import_envelope(junk, _identity())
+        assert refused.status == "refused"
+        assert refused.code == "document-not-loaded"  # type: ignore[union-attr]
+    injected = import_envelope(
         b'{"$type": "bpmn:Definitions"}',
         _identity(),
         codec=lambda raw: json.loads(raw.decode("utf-8")),
     )
-    assert wired.status == "ok"
+    assert injected.status == "ok"
 
 
 def test_results_codec_is_canonical() -> None:

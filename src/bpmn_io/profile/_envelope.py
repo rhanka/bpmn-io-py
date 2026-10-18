@@ -1,9 +1,10 @@
 """Document envelope, support ownership and import projection (§5).
 
 Closed ``DocumentEnvelope/1`` with sorted bindings, semantic revision via the
-descriptor-driven projection, support import rules and the injected-codec
-boundary (``codec`` callable, default ``None`` refuses when document JSON
-must be parsed).
+descriptor-driven projection, support import rules and the codec boundary:
+callers may inject a ``codec`` callable, otherwise the wired
+``bpmn_io.codec`` default parses the source bytes (document JSON for
+``native-json``, the native tree projection for ``bpmn-xml``).
 """
 
 from __future__ import annotations
@@ -183,6 +184,39 @@ def complete_envelope(
     )
 
 
+def _default_codec(source_format: str) -> Callable[[bytes], object]:
+    """Return the wired ``bpmn_io.codec`` document decoder for one format.
+
+    ``bpmn-xml`` parses through the codec lane (parse then project to the
+    document JSON of the native tree, DESIGN §5/§8.1); any other format reads
+    raw document JSON bytes. Failures raise and stay typed at the boundary.
+    """
+
+    def _decode_xml(raw: bytes) -> object:
+        from bpmn_io.codec import parse_xml, project  # noqa: PLC0415 - wired lane, lazy
+
+        parsed = parse_xml(raw)
+        if not parsed.ok or parsed.value is None:
+            msg = "bpmn-xml source did not parse"
+            raise ValueError(msg)
+        projected = project(parsed.value)
+        if not projected.ok or not isinstance(projected.value, dict):
+            msg = "bpmn-xml source did not project"
+            raise ValueError(msg)
+        return projected.value
+
+    def _decode_json(raw: bytes) -> object:
+        try:
+            return json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, ValueError) as err:
+            msg = f"document JSON did not parse: {err}"
+            raise ValueError(msg) from err
+
+    if source_format == "bpmn-xml":
+        return _decode_xml
+    return _decode_json
+
+
 def import_envelope(
     source: object,
     profile_identity: dict[str, object],
@@ -193,21 +227,22 @@ def import_envelope(
     """Import one source into an envelope (projection + bindings).
 
     ``source`` is either an already materialized native JSON tree or raw
-    bytes carrying a document JSON value. When raw bytes must be parsed and
-    no ``codec`` callable was injected, the operation refuses with
-    ``document-not-loaded`` (the supervisor wires the parallel codec lane at
-    integration). ``source_format`` is ``native-json`` or ``bpmn-xml`` and
-    selects the initial-import ``baseRevision`` formula for callers.
+    bytes carrying a document JSON value. When raw bytes must be parsed, an
+    injected ``codec`` callable wins; otherwise the wired ``bpmn_io.codec``
+    default decodes them (document JSON for ``native-json``, parse then
+    project for ``bpmn-xml``). Unparseable sources refuse with
+    ``document-not-loaded``. ``source_format`` is ``native-json`` or
+    ``bpmn-xml`` and selects the initial-import ``baseRevision`` formula for
+    callers.
     """
     _ = source_format
+    decode = codec if codec is not None else _default_codec(source_format)
     tree: object = {}
     if isinstance(source, dict):
         tree = source
     elif isinstance(source, (bytes, bytearray)):
-        if codec is None:
-            return PureRefused(code="document-not-loaded")
         try:
-            tree = codec(bytes(source))
+            tree = decode(bytes(source))
         except Exception:  # noqa: BLE001 - codec failures stay typed
             return PureRefused(code="document-not-loaded")
         if not isinstance(tree, dict):

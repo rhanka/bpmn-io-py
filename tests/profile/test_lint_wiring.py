@@ -105,3 +105,53 @@ def test_registry_contradicts_transport_dicts() -> None:
     compiled_dicts = make_compiled(profile, phase="post-normalize", readiness_policy="accept")
     with pytest.raises(ValueError, match="contradicts"):
         lint(root, compiled_dicts, phase="post-normalize", readiness_policy="accept", registry={})
+
+
+def test_xml_to_lint_end_to_end() -> None:
+    """XML → codec parse/project → envelope → compatibility and lint."""
+    from bpmn_io.codec import parse_xml, project
+    from bpmn_io.profile import check_compatibility, import_envelope, lint
+
+    profile, compiled = _compile_neutral()
+    xml_bytes = NAMED_TASK_DOC.encode("utf-8")
+    parsed = parse_xml(xml_bytes)
+    assert parsed.ok, parsed.diagnostics
+    assert parsed.value is not None
+    projected = project(parsed.value)
+    assert projected.ok, projected.diagnostics
+    assert isinstance(projected.value, dict)
+    identity: dict[str, Any] = {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": profile["profile"],
+        "version": profile["version"],
+        "sha256": "00" * 32,
+        "base": profile["base"],
+        "descriptors": profile["descriptors"],
+    }
+    imported = import_envelope(projected.value, identity)  # type: ignore[arg-type]
+    assert imported.status == "ok"
+    assert imported.payload is not None
+    via_default = import_envelope(xml_bytes, identity, source_format="bpmn-xml")  # type: ignore[arg-type]
+    assert via_default.status == "ok"
+    assert via_default.payload is not None
+    assert via_default.payload.tree == imported.payload.tree  # type: ignore[union-attr]
+    runtime: dict[str, Any] = {
+        "mechanisms": ["1"],
+        "schemas": ["1.0.0"],
+        "capabilities": [],
+        "assets": [],
+    }
+    verdict = check_compatibility(
+        runtime,  # type: ignore[arg-type]
+        dict(identity),
+        dict(identity),
+        document_version="1",
+        source_availability="known-and-available",
+    )
+    assert verdict == {"status": "ok"}
+    result = lint(
+        parse(NAMED_TASK_DOC), compiled, phase="post-normalize", readiness_policy="accept"
+    )
+    assert result["status"] == "ok"
+    assert result["payload"] == {"ok": False, "counts": {"info": 0, "warn": 0, "error": 10}}

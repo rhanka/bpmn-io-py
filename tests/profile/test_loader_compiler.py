@@ -96,7 +96,7 @@ def test_loader_rejects_bad_base_pin() -> None:
 
 
 def test_loader_needs_codec_boundary_documented() -> None:
-    """Envelope import without an injected codec refuses without parsing."""
+    """Envelope import decodes document JSON through the wired codec default."""
     from bpmn_io.profile import import_envelope
 
     profile = json.loads(_read("neutral-profile.json").decode("utf-8"))
@@ -110,7 +110,9 @@ def test_loader_needs_codec_boundary_documented() -> None:
         "base": profile["base"],
         "descriptors": profile["descriptors"],
     }
-    refused = import_envelope(b'{"tree": {}}', identity)  # type: ignore[arg-type]
+    wired = import_envelope(b'{"tree": {}}', identity)  # type: ignore[arg-type]
+    assert wired.status == "ok"
+    refused = import_envelope(b"not json", identity)  # type: ignore[arg-type]
     assert refused.status == "refused"
     assert refused.code == "document-not-loaded"  # type: ignore[union-attr]
 
