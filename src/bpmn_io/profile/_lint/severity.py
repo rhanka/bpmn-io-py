@@ -29,6 +29,10 @@ CLASSIFICATIONS = ("integrity", "readiness", "repairable", "advisory")
 
 _NUMERIC_SEVERITIES = ("off", "warn", "error", "info")
 
+#: ASCII-only case fold for severity words (severity words are ASCII,
+#: DESIGN R3.3 §6.3; non-ASCII input never folds and refuses below).
+_ASCII_FOLD = str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")
+
 
 def normalize_severity(value: Any) -> str:  # noqa: ANN401 - JSON-dynamic input
     """Resolve a severity word or number to its effective severity word.
@@ -52,7 +56,7 @@ def normalize_severity(value: Any) -> str:  # noqa: ANN401 - JSON-dynamic input
         msg = f"invalid severity: {value!r}"
         raise ProfileDataError(msg)
     if isinstance(value, str):
-        word = value.lower()
+        word = value.translate(_ASCII_FOLD)
         if word in SEVERITIES:
             return word
         msg = f"invalid severity: {value!r}"

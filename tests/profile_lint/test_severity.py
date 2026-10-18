@@ -16,6 +16,15 @@ def test_words_resolve_case_insensitively() -> None:
     assert normalize_severity("info") == "info"
 
 
+def test_ascii_fold_is_exact_and_non_ascii_refuses() -> None:
+    """ASCII casing folds to the word; non-ASCII letters never fold to one."""
+    assert normalize_severity("Error") == "error"
+    assert normalize_severity("InFo") == "info"
+    for bad in ("οff", "İNFO", "oﬀ", "errοr"):
+        with pytest.raises(ProfileDataError):
+            normalize_severity(bad)
+
+
 def test_numerics_resolve() -> None:
     """Numeric severities resolve 0=off, 1=warn, 2=error, 3=info."""
     assert [normalize_severity(n) for n in (0, 1, 2, 3)] == ["off", "warn", "error", "info"]
