@@ -1,0 +1,32 @@
+{
+  "case": "render.legacy.alias-absent",
+  "clause": "DESIGN R3.3 \u00a79.5 Legacy themes",
+  "witness": "no built-in legacy look mapping",
+  "derivation": "legend has no compatibility record; generic code has no business enum, so the adapter refuses legacy-unmapped (spec \u00a79).",
+  "operation": "resolve_legacy_theme",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/compatibilityAliases",
+          "value": [
+            {
+              "kind": "theme",
+              "old": "standard",
+              "destination": "plain",
+              "mode": "explicit-adapter"
+            }
+          ]
+        }
+      ]
+    },
+    "legacyName": "legend"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "legacy-unmapped"
+  },
+  "author": "spec-seal"
+}

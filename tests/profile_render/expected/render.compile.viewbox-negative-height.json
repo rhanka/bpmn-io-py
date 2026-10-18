@@ -1,0 +1,53 @@
+{
+  "case": "render.compile.viewbox-negative-height",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "path glyph viewBox needs a positive height",
+  "derivation": "Added path glyph with viewBox [0,0,24,-24] and valid commands: CR-09 refuses profile-glyph-shape.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "mark",
+            "kind": "path",
+            "viewBox": [
+              0,
+              0,
+              24,
+              -24
+            ],
+            "commands": [
+              {
+                "command": "M",
+                "values": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "command": "L",
+                "values": [
+                  24,
+                  24
+                ]
+              },
+              {
+                "command": "Z",
+                "values": []
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-glyph-shape"
+  },
+  "author": "spec-seal"
+}

@@ -1,0 +1,45 @@
+{
+  "case": "render.compile.template-param-type",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "template parameter of the wrong type",
+  "derivation": "Added corner-fold glyph with headerRotation \"90\" (string); wrong types refuse profile-glyph-shape.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "fold",
+            "kind": "template",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": [],
+            "template": "corner-fold",
+            "parameters": [
+              {
+                "name": "foldRatio",
+                "value": 0.25
+              },
+              {
+                "name": "headerRotation",
+                "value": "90"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-glyph-shape"
+  },
+  "author": "spec-seal"
+}

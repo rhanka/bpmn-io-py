@@ -1,0 +1,45 @@
+{
+  "case": "render.compile.template-param-extra",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "template glyph with an extra parameter",
+  "derivation": "Added band-stripe glyph with stripeWidth and an extra headerHeight; extras refuse profile-glyph-shape.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "stripe",
+            "kind": "template",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": [],
+            "template": "band-stripe",
+            "parameters": [
+              {
+                "name": "stripeWidth",
+                "value": 10
+              },
+              {
+                "name": "headerHeight",
+                "value": 10
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-glyph-shape"
+  },
+  "author": "spec-seal"
+}

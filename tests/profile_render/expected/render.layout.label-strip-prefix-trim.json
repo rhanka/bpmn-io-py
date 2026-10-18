@@ -1,0 +1,258 @@
+{
+  "case": "render.layout.label-strip-prefix-trim",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "stripPrefix after the ecma262-2024-start leading trim; U+0085 and U+200B are not trimmed; the body is never trimmed",
+  "derivation": "Recognition and label both use trim ecma262-2024-start (\u00a72.3 set): NBSP+BOM, IDEOGRAPHIC SPACE and LINE SEPARATOR+TAB are trimmed before '[Aid] ' is removed once; U+0085 and U+200B are outside the set, so those notes are not recognized and get no label; the remaining body keeps its own leading space.",
+  "operation": "compute_layout",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/notions/1/recognition/args/1/trim",
+          "value": "ecma262-2024-start"
+        },
+        {
+          "op": "replace",
+          "path": "/notions/1/renderBindings/0/label/trim",
+          "value": "ecma262-2024-start"
+        }
+      ]
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_t",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_t",
+          "isExecutable": false,
+          "artifacts": [
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_1",
+              "text": "\u00a0\ufeff[Aid] x"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_2",
+              "text": "\u0085[Aid] y"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_3",
+              "text": "\u200b[Aid] z"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_4",
+              "text": "\u3000[Aid]  two spaces"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_5",
+              "text": "\u2028\t[Aid] w"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "placements": [],
+    "diagrams": [
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "P1",
+        "name": "Texts",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "P1-plane",
+          "bpmnElement": "Process_t",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "a-Note_1",
+              "bpmnElement": "Note_1",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 0,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "b-Note_2",
+              "bpmnElement": "Note_2",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 50,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "c-Note_3",
+              "bpmnElement": "Note_3",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 100,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "d-Note_4",
+              "bpmnElement": "Note_4",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 150,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "e-Note_5",
+              "bpmnElement": "Note_5",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 200,
+                "width": 200,
+                "height": 40
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "P1",
+          "name": "Texts",
+          "order": 0,
+          "semanticRootId": "Process_t",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 200000,
+            "height": 240000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "P1",
+          "occurrenceKey": "a-Note_1",
+          "semanticId": "Note_1",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "x",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "x"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "b-Note_2",
+          "semanticId": "Note_2",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 50000,
+            "width": 200000,
+            "height": 40000
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "c-Note_3",
+          "semanticId": "Note_3",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 100000,
+            "width": 200000,
+            "height": 40000
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "d-Note_4",
+          "semanticId": "Note_4",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 150000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": " two spaces",
+            "bounds": {
+              "x": 0,
+              "y": 150000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              " two spaces"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "e-Note_5",
+          "semanticId": "Note_5",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 200000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "w",
+            "bounds": {
+              "x": 0,
+              "y": 200000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "w"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "author": "spec-seal"
+}

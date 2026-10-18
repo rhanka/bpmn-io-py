@@ -1,0 +1,135 @@
+{
+  "case": "render.layout.stripe-region-missing",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "a synthetic stripe whose owner has no matching region refuses",
+  "derivation": "No support binding for (Process_1, side) and no placements: the side-stripe of Process_1 on page P-main cannot resolve its region: render-region-missing.",
+  "operation": "compute_layout",
+  "input": {
+    "profile": {
+      "base": "neutral-grid-profile.json",
+      "patch": []
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_1",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "isExecutable": true,
+          "laneSets": [
+            {
+              "$type": "bpmn:LaneSet",
+              "id": "LaneSet_1",
+              "lanes": [
+                {
+                  "$type": "bpmn:Lane",
+                  "id": "Lane_side",
+                  "name": "side"
+                }
+              ]
+            }
+          ],
+          "flowElements": [
+            {
+              "$type": "bpmn:ServiceTask",
+              "id": "Task_B",
+              "name": "Ready"
+            },
+            {
+              "$type": "bpmn:ServiceTask",
+              "id": "Task_A",
+              "name": "Check"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:Association",
+              "id": "Z-consumer",
+              "sourceRef": "Task_A",
+              "targetRef": "Task_B",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Y-consumer",
+              "sourceRef": "Task_A",
+              "targetRef": "Task_B",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "A-producer",
+              "sourceRef": "Task_B",
+              "targetRef": "Task_A",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_1",
+              "text": "[Note] stra\u00dfe"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "placements": [],
+    "diagrams": [
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "P-main",
+        "name": "Main",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "P-main-plane",
+          "bpmnElement": "Process_1",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Task_A_di",
+              "bpmnElement": "Task_A",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 100,
+                "y": 200,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Task_B_di",
+              "bpmnElement": "Task_B",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 300,
+                "y": 200,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Note_1_di",
+              "bpmnElement": "Note_1",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 100,
+                "y": 350,
+                "width": 150,
+                "height": 40
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "status": "refused",
+    "code": "render-region-missing"
+  },
+  "author": "spec-seal"
+}

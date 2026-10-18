@@ -1,0 +1,32 @@
+{
+  "case": "render.legacy.alias-removed",
+  "clause": "DESIGN R3.3 \u00a79.5 Legacy themes",
+  "witness": "a removed legacy alias maps to nothing",
+  "derivation": "Record {kind:theme, old:colored, destination:plain, mode:remove}: a removal record is not a mapping; legacy-unmapped.",
+  "operation": "resolve_legacy_theme",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/compatibilityAliases",
+          "value": [
+            {
+              "kind": "theme",
+              "old": "colored",
+              "destination": "plain",
+              "mode": "remove"
+            }
+          ]
+        }
+      ]
+    },
+    "legacyName": "colored"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "legacy-unmapped"
+  },
+  "author": "spec-seal"
+}

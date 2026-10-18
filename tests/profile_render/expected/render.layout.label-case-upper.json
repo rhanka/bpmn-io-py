@@ -1,0 +1,415 @@
+{
+  "case": "render.layout.label-case-upper",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "Unicode 15.0.0 full upper mapping after stripPrefix, prefix removed exactly once",
+  "derivation": "aid label = case(upper, stripPrefix(text, '[Aid] ')): U+00DF -> SS, U+0130 stays U+0130, U+0264 has no uppercase in 15.0.0 (stays), U+FB06 -> ST, U+03C2 -> U+03A3; '[Aid] [Aid] x' loses one prefix only; '[Aid]x' is recognized ([Aid] prefix) but does not match '[Aid] ', so the whole text is cased; a line feed splits label lines. Contract vectors: contracts/unicode-case/15.0.0/vectors.json.",
+  "operation": "compute_layout",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/notions/1/renderBindings/0/label",
+          "value": {
+            "op": "case",
+            "value": {
+              "op": "stripPrefix",
+              "value": {
+                "op": "read",
+                "binding": "self",
+                "path": "/text"
+              },
+              "prefix": "[Aid] ",
+              "trim": "none"
+            },
+            "mode": "upper",
+            "unicode": "15.0.0"
+          }
+        }
+      ]
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_t",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_t",
+          "isExecutable": false,
+          "artifacts": [
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_s",
+              "text": "[Aid] stra\u00dfe"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_i",
+              "text": "[Aid] \u0130stanbul"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_g",
+              "text": "[Aid] \u0264"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_f",
+              "text": "[Aid] \ufb06"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_c",
+              "text": "[Aid] \u03c2"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_d",
+              "text": "[Aid] [Aid] x"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_n",
+              "text": "[Aid]x"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_m",
+              "text": "[Aid] two\nlines"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "placements": [],
+    "diagrams": [
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "P1",
+        "name": "Texts",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "P1-plane",
+          "bpmnElement": "Process_t",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "a-Note_s",
+              "bpmnElement": "Note_s",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 0,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "b-Note_i",
+              "bpmnElement": "Note_i",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 50,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "c-Note_g",
+              "bpmnElement": "Note_g",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 100,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "d-Note_f",
+              "bpmnElement": "Note_f",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 150,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "e-Note_c",
+              "bpmnElement": "Note_c",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 200,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "f-Note_d",
+              "bpmnElement": "Note_d",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 250,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "g-Note_n",
+              "bpmnElement": "Note_n",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 300,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "h-Note_m",
+              "bpmnElement": "Note_m",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 350,
+                "width": 200,
+                "height": 40
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "P1",
+          "name": "Texts",
+          "order": 0,
+          "semanticRootId": "Process_t",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 200000,
+            "height": 390000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "P1",
+          "occurrenceKey": "a-Note_s",
+          "semanticId": "Note_s",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "STRASSE",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "STRASSE"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "b-Note_i",
+          "semanticId": "Note_i",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 50000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "\u0130STANBUL",
+            "bounds": {
+              "x": 0,
+              "y": 50000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "\u0130STANBUL"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "c-Note_g",
+          "semanticId": "Note_g",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 100000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "\u0264",
+            "bounds": {
+              "x": 0,
+              "y": 100000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "\u0264"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "d-Note_f",
+          "semanticId": "Note_f",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 150000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "ST",
+            "bounds": {
+              "x": 0,
+              "y": 150000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "ST"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "e-Note_c",
+          "semanticId": "Note_c",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 200000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "\u03a3",
+            "bounds": {
+              "x": 0,
+              "y": 200000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "\u03a3"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "f-Note_d",
+          "semanticId": "Note_d",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 250000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "[AID] X",
+            "bounds": {
+              "x": 0,
+              "y": 250000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "[AID] X"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "g-Note_n",
+          "semanticId": "Note_n",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 300000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "[AID]X",
+            "bounds": {
+              "x": 0,
+              "y": 300000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "[AID]X"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "h-Note_m",
+          "semanticId": "Note_m",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 350000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "TWO\nLINES",
+            "bounds": {
+              "x": 0,
+              "y": 350000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "TWO",
+              "LINES"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "author": "spec-seal"
+}

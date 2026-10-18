@@ -1,0 +1,32 @@
+{
+  "case": "render.legacy.alias-wrong-kind",
+  "clause": "DESIGN R3.3 \u00a79.5 Legacy themes",
+  "witness": "only kind theme records map looks",
+  "derivation": "Record {kind:marker, old:standard, ...} is not a theme alias; legacy-unmapped.",
+  "operation": "resolve_legacy_theme",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/compatibilityAliases",
+          "value": [
+            {
+              "kind": "marker",
+              "old": "standard",
+              "destination": "plain",
+              "mode": "explicit-adapter"
+            }
+          ]
+        }
+      ]
+    },
+    "legacyName": "standard"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "legacy-unmapped"
+  },
+  "author": "spec-seal"
+}

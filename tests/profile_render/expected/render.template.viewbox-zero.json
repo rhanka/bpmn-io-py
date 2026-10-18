@@ -1,0 +1,38 @@
+{
+  "case": "render.template.viewbox-zero",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "template parameter or viewBox violation refuses",
+  "derivation": "viewBox width 0 (positive width required): template parameter duplicates, wrong types, missing fields or extras (and non-positive viewBox) refuse profile-glyph-shape (\u00a79.3).",
+  "operation": "template_geometry",
+  "input": {
+    "glyph": {
+      "id": "band",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        0,
+        80
+      ],
+      "commands": [],
+      "template": "header-band",
+      "parameters": [
+        {
+          "name": "headerHeight",
+          "value": 12
+        }
+      ]
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 100000,
+      "height": 80000
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-glyph-shape"
+  },
+  "author": "spec-seal"
+}

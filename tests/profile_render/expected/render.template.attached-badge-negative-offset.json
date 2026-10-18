@@ -1,0 +1,63 @@
+{
+  "case": "render.template.attached-badge-negative-offset",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "signed tick offsets",
+  "derivation": "offsetX -20000, offsetY 0 on node (100000,100000,100000,80000): badge (80000,180000,40000,20000).",
+  "operation": "template_geometry",
+  "input": {
+    "glyph": {
+      "id": "badge",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        40,
+        20
+      ],
+      "commands": [],
+      "template": "attached-badge",
+      "parameters": [
+        {
+          "name": "offsetX",
+          "value": -20000
+        },
+        {
+          "name": "offsetY",
+          "value": 0
+        },
+        {
+          "name": "hideSource",
+          "value": false
+        },
+        {
+          "name": "markerShift",
+          "value": 0
+        }
+      ]
+    },
+    "bounds": {
+      "x": 100000,
+      "y": 100000,
+      "width": 100000,
+      "height": 80000
+    },
+    "badgeSize": {
+      "width": 40000,
+      "height": 20000
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "badge": {
+        "x": 80000,
+        "y": 180000,
+        "width": 40000,
+        "height": 20000
+      },
+      "markerShift": 0,
+      "hideSource": false
+    }
+  },
+  "author": "spec-seal"
+}

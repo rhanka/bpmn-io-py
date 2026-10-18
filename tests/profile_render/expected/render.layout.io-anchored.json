@@ -1,0 +1,396 @@
+{
+  "case": "render.layout.io-anchored",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
+  "witness": "Process IO row: anchor centres, clamp, collision shift, placement order not x order",
+  "derivation": "Region (Process_1, content) -> Lane_ext (0,0,600000,100000); tokens hw 30000, p 10000, g 20000, mh 80000; contentLeft 40000. Items in placement order In_A, In_B, Out_C (36000 x 50000, no labels). In_A anchors on Task_1 centre 150000: left 132000. In_B anchors on Task_2 centre 350000: left 332000 (no collision). Out_C anchors on Task_2 (opposite endpoint of Assoc_C2): 332000 collides with 368000 + 20000, so left 388000. Right edge 424000 + 10000 fits. RH = max(80000, 50000 + 20000) = 80000 <= 100000; centres at y 50000 -> objects at y 25000. Other shapes are transcribed; Lane_ext role = binding role content.",
+  "operation": "compute_layout",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/themes/0/tokens",
+          "value": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            },
+            {
+              "name": "region.content.headerWidth",
+              "value": 30000
+            },
+            {
+              "name": "region.content.padding",
+              "value": 10000
+            },
+            {
+              "name": "region.content.gap",
+              "value": 20000
+            },
+            {
+              "name": "region.content.minHeight",
+              "value": 80000
+            }
+          ]
+        }
+      ]
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_io",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "isExecutable": false,
+          "ioSpecification": {
+            "$type": "bpmn:InputOutputSpecification",
+            "dataInputs": [
+              {
+                "$type": "bpmn:DataInput",
+                "id": "In_A",
+                "name": "Alpha"
+              },
+              {
+                "$type": "bpmn:DataInput",
+                "id": "In_B",
+                "name": "Beta"
+              }
+            ],
+            "dataOutputs": [
+              {
+                "$type": "bpmn:DataOutput",
+                "id": "Out_C",
+                "name": "Result"
+              }
+            ]
+          },
+          "laneSets": [
+            {
+              "$type": "bpmn:LaneSet",
+              "id": "LaneSet_1",
+              "lanes": [
+                {
+                  "$type": "bpmn:Lane",
+                  "id": "Lane_ext",
+                  "name": "outside"
+                },
+                {
+                  "$type": "bpmn:Lane",
+                  "id": "Lane_work",
+                  "name": "work"
+                }
+              ]
+            }
+          ],
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_1",
+              "name": "Check"
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_2",
+              "name": "Store"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_A1",
+              "sourceRef": "In_A",
+              "targetRef": "Task_1",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_B2",
+              "sourceRef": "In_B",
+              "targetRef": "Task_2",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_C2",
+              "sourceRef": "Task_2",
+              "targetRef": "Out_C",
+              "associationDirection": "One"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [
+      {
+        "ownerId": "Process_1",
+        "role": "content",
+        "targetId": "Lane_ext"
+      }
+    ],
+    "placements": [
+      {
+        "elementId": "In_A",
+        "ownerProcessId": "Process_1",
+        "regionKey": "content",
+        "relatedAssociationIds": [
+          "Assoc_A1"
+        ],
+        "anchorAssociationId": "Assoc_A1"
+      },
+      {
+        "elementId": "In_B",
+        "ownerProcessId": "Process_1",
+        "regionKey": "content",
+        "relatedAssociationIds": [
+          "Assoc_B2"
+        ],
+        "anchorAssociationId": "Assoc_B2"
+      },
+      {
+        "elementId": "Out_C",
+        "ownerProcessId": "Process_1",
+        "regionKey": "content",
+        "relatedAssociationIds": [
+          "Assoc_C2"
+        ],
+        "anchorAssociationId": "Assoc_C2"
+      }
+    ],
+    "diagrams": [
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "P1",
+        "name": "Main",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "P1-plane",
+          "bpmnElement": "Process_1",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Lane_ext_di",
+              "bpmnElement": "Lane_ext",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 0,
+                "width": 600,
+                "height": 100
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Lane_work_di",
+              "bpmnElement": "Lane_work",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 100,
+                "width": 600,
+                "height": 200
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Task_1_di",
+              "bpmnElement": "Task_1",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 100,
+                "y": 150,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Task_2_di",
+              "bpmnElement": "Task_2",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 300,
+                "y": 150,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "In_A_di",
+              "bpmnElement": "In_A",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 10,
+                "y": 10,
+                "width": 36,
+                "height": 50
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "In_B_di",
+              "bpmnElement": "In_B",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 60,
+                "y": 10,
+                "width": 36,
+                "height": 50
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Out_C_di",
+              "bpmnElement": "Out_C",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 110,
+                "y": 10,
+                "width": 36,
+                "height": 50
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "P1",
+          "name": "Main",
+          "order": 0,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 600000,
+            "height": 300000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "P1",
+          "occurrenceKey": "In_A_di",
+          "semanticId": "In_A",
+          "role": "content",
+          "bounds": {
+            "x": 132000,
+            "y": 25000,
+            "width": 36000,
+            "height": 50000
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "In_B_di",
+          "semanticId": "In_B",
+          "role": "content",
+          "bounds": {
+            "x": 332000,
+            "y": 25000,
+            "width": 36000,
+            "height": 50000
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Lane_ext_di",
+          "semanticId": "Lane_ext",
+          "role": "content",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 600000,
+            "height": 100000
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Lane_work_di",
+          "semanticId": "Lane_work",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 100000,
+            "width": 600000,
+            "height": 200000
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Out_C_di",
+          "semanticId": "Out_C",
+          "role": "content",
+          "bounds": {
+            "x": 388000,
+            "y": 25000,
+            "width": 36000,
+            "height": 50000
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Task_1_di",
+          "semanticId": "Task_1",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 150000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Check",
+            "bounds": {
+              "x": 100000,
+              "y": 150000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Check"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Task_2_di",
+          "semanticId": "Task_2",
+          "role": "shape",
+          "bounds": {
+            "x": 300000,
+            "y": 150000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Store",
+            "bounds": {
+              "x": 300000,
+              "y": 150000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Store"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "author": "spec-seal"
+}

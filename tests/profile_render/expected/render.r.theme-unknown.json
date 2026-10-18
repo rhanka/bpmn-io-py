@@ -1,0 +1,185 @@
+{
+  "case": "render.r.theme-unknown",
+  "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
+  "witness": "an unresolvable theme id is an unresolved input",
+  "derivation": "No theme or alias 'standard' in the neutral profile: render-stale.",
+  "operation": "resolve_theme",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": []
+    },
+    "themeId": "standard",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_1",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "isExecutable": false,
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_B",
+              "name": "Ready"
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_A",
+              "name": "Draft"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_1",
+              "text": "[Aid] helper"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "layout": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "Z-page",
+          "name": "First sheet",
+          "order": 0,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 250000,
+            "height": 180000
+          }
+        },
+        {
+          "pageId": "A-page",
+          "name": "Second sheet",
+          "order": 1,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 50000,
+            "y": 60000,
+            "width": 100000,
+            "height": 80000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "aa-task-b",
+          "semanticId": "Task_B",
+          "role": "shape",
+          "bounds": {
+            "x": 250000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Ready",
+            "bounds": {
+              "x": 250000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Ready"
+            ]
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "mm-note",
+          "semanticId": "Note_1",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 240000,
+            "width": 120000,
+            "height": 40000
+          },
+          "label": {
+            "text": "helper",
+            "bounds": {
+              "x": 100000,
+              "y": 240000,
+              "width": 120000,
+              "height": 40000
+            },
+            "lines": [
+              "helper"
+            ]
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "zz-task-a",
+          "semanticId": "Task_A",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Draft",
+            "bounds": {
+              "x": 100000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Draft"
+            ]
+          }
+        },
+        {
+          "pageId": "A-page",
+          "occurrenceKey": "zz-task-a-2",
+          "semanticId": "Task_A",
+          "role": "shape",
+          "bounds": {
+            "x": 50000,
+            "y": 60000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Draft",
+            "bounds": {
+              "x": 50000,
+              "y": 60000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Draft"
+            ]
+          }
+        }
+      ]
+    },
+    "overrides": {
+      "semantic": [],
+      "occurrence": []
+    },
+    "diStyles": {
+      "native": [],
+      "bioc": []
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "render-stale"
+  },
+  "author": "spec-seal"
+}

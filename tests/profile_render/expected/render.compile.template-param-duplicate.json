@@ -1,0 +1,57 @@
+{
+  "case": "render.compile.template-param-duplicate",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "duplicate template parameter",
+  "derivation": "Added attached-badge glyph listing offsetX twice; duplicates refuse profile-glyph-shape.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "badge",
+            "kind": "template",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": [],
+            "template": "attached-badge",
+            "parameters": [
+              {
+                "name": "offsetX",
+                "value": 0
+              },
+              {
+                "name": "offsetX",
+                "value": 1
+              },
+              {
+                "name": "offsetY",
+                "value": 0
+              },
+              {
+                "name": "hideSource",
+                "value": false
+              },
+              {
+                "name": "markerShift",
+                "value": 0
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-glyph-shape"
+  },
+  "author": "spec-seal"
+}

@@ -1,0 +1,45 @@
+{
+  "case": "render.template.band-stripe",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "band-stripe takes a leading vertical rectangle of width min(stripeWidth, region.width), full height",
+  "derivation": "Region (0,0,500016,100000); stripeWidth 20000 < region width 500016; height = region height 100000.",
+  "operation": "template_geometry",
+  "input": {
+    "glyph": {
+      "id": "stripe",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        100,
+        80
+      ],
+      "commands": [],
+      "template": "band-stripe",
+      "parameters": [
+        {
+          "name": "stripeWidth",
+          "value": 20000
+        }
+      ]
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 500016,
+      "height": 100000
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "stripe": {
+        "x": 0,
+        "y": 0,
+        "width": 20000,
+        "height": 100000
+      }
+    }
+  },
+  "author": "spec-seal"
+}

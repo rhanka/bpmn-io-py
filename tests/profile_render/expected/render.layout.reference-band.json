@@ -1,0 +1,328 @@
+{
+  "case": "render.layout.reference-band",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
+  "witness": "reference band uses its bound participant rectangle with the same header/padding rule",
+  "derivation": "Region (Process_1, reference-band) -> Band_1 (0,250000,600000,90000); tokens hw 20000, p 5000, g 10000, mh 60000; contentLeft 25000. Both references anchor on Task_1 (centre x 200000): Ref_1 left 175000, Ref_2 collides with 225000+10000 -> 235000. RH = max(60000, 50000+10000) = 60000 <= 90000; centre y 295000, objects at y 270000. The collaboration plane gives semanticRootId Collab_1.",
+  "operation": "compute_layout",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/themes/0/tokens",
+          "value": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            },
+            {
+              "name": "region.content.headerWidth",
+              "value": 30000
+            },
+            {
+              "name": "region.content.padding",
+              "value": 10000
+            },
+            {
+              "name": "region.content.gap",
+              "value": 20000
+            },
+            {
+              "name": "region.content.minHeight",
+              "value": 80000
+            },
+            {
+              "name": "region.reference-band.headerWidth",
+              "value": 20000
+            },
+            {
+              "name": "region.reference-band.padding",
+              "value": 5000
+            },
+            {
+              "name": "region.reference-band.gap",
+              "value": 10000
+            },
+            {
+              "name": "region.reference-band.minHeight",
+              "value": 60000
+            }
+          ]
+        }
+      ]
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_rb",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "isExecutable": false,
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_1",
+              "name": "Check"
+            },
+            {
+              "$type": "bpmn:DataStoreReference",
+              "id": "Ref_1",
+              "dataStoreRef": "Store_1"
+            },
+            {
+              "$type": "bpmn:DataStoreReference",
+              "id": "Ref_2",
+              "dataStoreRef": "Store_2"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_R1",
+              "sourceRef": "Ref_1",
+              "targetRef": "Task_1",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_R2",
+              "sourceRef": "Ref_2",
+              "targetRef": "Task_1",
+              "associationDirection": "One"
+            }
+          ]
+        },
+        {
+          "$type": "bpmn:DataStore",
+          "id": "Store_1",
+          "name": "Spec"
+        },
+        {
+          "$type": "bpmn:DataStore",
+          "id": "Store_2",
+          "name": "Plan"
+        },
+        {
+          "$type": "bpmn:Collaboration",
+          "id": "Collab_1",
+          "participants": [
+            {
+              "$type": "bpmn:Participant",
+              "id": "Main_P",
+              "name": "main",
+              "processRef": "Process_1"
+            },
+            {
+              "$type": "bpmn:Participant",
+              "id": "Band_1",
+              "name": "band"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [
+      {
+        "ownerId": "Process_1",
+        "role": "reference-band",
+        "targetId": "Band_1"
+      }
+    ],
+    "placements": [
+      {
+        "elementId": "Ref_1",
+        "ownerProcessId": "Process_1",
+        "regionKey": "reference-band",
+        "relatedAssociationIds": [
+          "Assoc_R1"
+        ],
+        "anchorAssociationId": "Assoc_R1"
+      },
+      {
+        "elementId": "Ref_2",
+        "ownerProcessId": "Process_1",
+        "regionKey": "reference-band",
+        "relatedAssociationIds": [
+          "Assoc_R2"
+        ],
+        "anchorAssociationId": "Assoc_R2"
+      }
+    ],
+    "diagrams": [
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "Collab",
+        "name": "Collaboration",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "Collab-plane",
+          "bpmnElement": "Collab_1",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Main_P_di",
+              "bpmnElement": "Main_P",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 0,
+                "width": 600,
+                "height": 250
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Band_1_di",
+              "bpmnElement": "Band_1",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 250,
+                "width": 600,
+                "height": 90
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Task_1_di",
+              "bpmnElement": "Task_1",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 150,
+                "y": 80,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Ref_1_di",
+              "bpmnElement": "Ref_1",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 10,
+                "y": 260,
+                "width": 50,
+                "height": 50
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Ref_2_di",
+              "bpmnElement": "Ref_2",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 80,
+                "y": 260,
+                "width": 50,
+                "height": 50
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "Collab",
+          "name": "Collaboration",
+          "order": 0,
+          "semanticRootId": "Collab_1",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 600000,
+            "height": 340000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "Collab",
+          "occurrenceKey": "Band_1_di",
+          "semanticId": "Band_1",
+          "role": "reference-band",
+          "bounds": {
+            "x": 0,
+            "y": 250000,
+            "width": 600000,
+            "height": 90000
+          }
+        },
+        {
+          "pageId": "Collab",
+          "occurrenceKey": "Main_P_di",
+          "semanticId": "Main_P",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 600000,
+            "height": 250000
+          }
+        },
+        {
+          "pageId": "Collab",
+          "occurrenceKey": "Ref_1_di",
+          "semanticId": "Ref_1",
+          "role": "reference-band",
+          "bounds": {
+            "x": 175000,
+            "y": 270000,
+            "width": 50000,
+            "height": 50000
+          }
+        },
+        {
+          "pageId": "Collab",
+          "occurrenceKey": "Ref_2_di",
+          "semanticId": "Ref_2",
+          "role": "reference-band",
+          "bounds": {
+            "x": 235000,
+            "y": 270000,
+            "width": 50000,
+            "height": 50000
+          }
+        },
+        {
+          "pageId": "Collab",
+          "occurrenceKey": "Task_1_di",
+          "semanticId": "Task_1",
+          "role": "shape",
+          "bounds": {
+            "x": 150000,
+            "y": 80000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Check",
+            "bounds": {
+              "x": 150000,
+              "y": 80000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Check"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "author": "spec-seal"
+}

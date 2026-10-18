@@ -1,0 +1,51 @@
+{
+  "case": "render.template.header-band-clamped",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "headerHeight larger than h is clamped by min(headerHeight,h)",
+  "derivation": "headerHeight 90000 > h 80000: min = 80000, header covers the bounds, body (100000,280000,100000,0).",
+  "operation": "template_geometry",
+  "input": {
+    "glyph": {
+      "id": "band",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        100,
+        80
+      ],
+      "commands": [],
+      "template": "header-band",
+      "parameters": [
+        {
+          "name": "headerHeight",
+          "value": 90000
+        }
+      ]
+    },
+    "bounds": {
+      "x": 100000,
+      "y": 200000,
+      "width": 100000,
+      "height": 80000
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "header": {
+        "x": 100000,
+        "y": 200000,
+        "width": 100000,
+        "height": 80000
+      },
+      "body": {
+        "x": 100000,
+        "y": 280000,
+        "width": 100000,
+        "height": 0
+      }
+    }
+  },
+  "author": "spec-seal"
+}

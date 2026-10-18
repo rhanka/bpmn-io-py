@@ -1,0 +1,24 @@
+{
+  "case": "render.compile.region-token-fraction",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-09 presentation",
+  "witness": "region tokens are nonnegative integer ticks",
+  "derivation": "region.content.padding = 1.5 fails the pinned regionTokenSchema {type:integer, minimum:0} (\u00a79.4); CR-09 refuses profile-type.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/themes/0/tokens/3/value",
+          "value": 1.5
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-type"
+  },
+  "author": "spec-seal"
+}

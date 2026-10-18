@@ -1,0 +1,71 @@
+{
+  "case": "render.template.corner-fold-rotation-center",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "header text rotates about its label bounds centre; the centre rounds once, ties to even",
+  "derivation": "headerRotation 90; label bounds (100000,200000,50001,20001): centre x = 100000+25000.5 -> 125000, y = 200000+10000.5 -> 210000 (ties to even); fold as render.template.corner-fold.",
+  "operation": "template_geometry",
+  "input": {
+    "glyph": {
+      "id": "fold",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        100,
+        80
+      ],
+      "commands": [],
+      "template": "corner-fold",
+      "parameters": [
+        {
+          "name": "foldRatio",
+          "value": 0.25
+        },
+        {
+          "name": "headerRotation",
+          "value": 90
+        }
+      ]
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 100000,
+      "height": 80000
+    },
+    "labelBounds": {
+      "x": 100000,
+      "y": 200000,
+      "width": 50001,
+      "height": 20001
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "fold": 20000,
+      "foldPath": [
+        {
+          "x": 80000,
+          "y": 0
+        },
+        {
+          "x": 80000,
+          "y": 20000
+        },
+        {
+          "x": 100000,
+          "y": 20000
+        }
+      ],
+      "labelRotation": {
+        "angle": 90,
+        "center": {
+          "x": 125000,
+          "y": 210000
+        }
+      }
+    }
+  },
+  "author": "spec-seal"
+}

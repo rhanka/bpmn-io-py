@@ -1,0 +1,72 @@
+{
+  "case": "render.compile.path-valid",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "path glyph with M, L, C, Q, Z of the right arities and a positive viewBox compiles",
+  "derivation": "Every DESIGN path condition holds (positive viewBox, nonempty commands, M/L two, C six, Q four, Z zero values); compilation succeeds.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "mark",
+            "kind": "path",
+            "viewBox": [
+              0,
+              0,
+              24,
+              24
+            ],
+            "commands": [
+              {
+                "command": "M",
+                "values": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "command": "L",
+                "values": [
+                  24,
+                  0
+                ]
+              },
+              {
+                "command": "C",
+                "values": [
+                  24,
+                  6,
+                  18,
+                  12,
+                  12,
+                  12
+                ]
+              },
+              {
+                "command": "Q",
+                "values": [
+                  6,
+                  12,
+                  0,
+                  24
+                ]
+              },
+              {
+                "command": "Z",
+                "values": []
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok"
+  },
+  "author": "spec-seal"
+}

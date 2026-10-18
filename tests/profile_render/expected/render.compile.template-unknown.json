@@ -1,0 +1,36 @@
+{
+  "case": "render.compile.template-unknown",
+  "clause": "DESIGN R3.3 \u00a79.3 OPEN-RENDER-PRIMITIVES; \u00a72.4.1 schema authority",
+  "witness": "a composite outside the closed template set cannot be expressed",
+  "derivation": "template wavy-document is outside the closed enum header-band|corner-fold|attached-badge|band-stripe; load_profile refuses profile-schema (composites stay disabled).",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "doc",
+            "kind": "template",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": [],
+            "template": "wavy-document",
+            "parameters": []
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-schema"
+  },
+  "author": "spec-seal"
+}

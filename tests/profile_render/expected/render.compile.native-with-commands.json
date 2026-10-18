@@ -1,0 +1,32 @@
+{
+  "case": "render.compile.native-with-commands",
+  "clause": "DESIGN R3.3 \u00a72.4.1 schema authority; \u00a79.3 glyph shape conditionals",
+  "witness": "native glyph with commands is a schema violation",
+  "derivation": "The pinned schema requires empty commands for kind native (if/then maxItems 0); schema validation precedes compilation, so load_profile refuses profile-schema.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/themes/0/glyphs/0/commands",
+          "value": [
+            {
+              "command": "M",
+              "values": [
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-schema"
+  },
+  "author": "spec-seal"
+}

@@ -1,0 +1,17 @@
+{
+  "case": "render.compile.grid-profile",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "the second neutral profile with its header-band glyph and synthetic side stripe compiles",
+  "derivation": "neutral-grid-profile.json unpatched: header-band headerHeight 12 is a nonnegative integer, every token matches its signature.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-grid-profile.json",
+      "patch": []
+    }
+  },
+  "expected": {
+    "status": "ok"
+  },
+  "author": "spec-seal"
+}

@@ -1,0 +1,29 @@
+{
+  "case": "render.compile.viewbox-zero-width",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "native glyph viewBox needs a positive width",
+  "derivation": "neutral theme glyph task with viewBox [0,0,0,80]; the schema admits any number, the compiler (CR-09) refuses a non-positive width with profile-glyph-shape.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/themes/0/glyphs/0/viewBox",
+          "value": [
+            0,
+            0,
+            0,
+            80
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-glyph-shape"
+  },
+  "author": "spec-seal"
+}

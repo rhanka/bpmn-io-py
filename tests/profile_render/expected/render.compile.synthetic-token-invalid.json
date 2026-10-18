@@ -1,0 +1,24 @@
+{
+  "case": "render.compile.synthetic-token-invalid",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-09 presentation",
+  "witness": "synthetic occurrence tokens follow the same signatures",
+  "derivation": "Grid side-stripe token fill #eef (three digits) fails the color signature; CR-09 refuses profile-type.",
+  "operation": "load_and_compile",
+  "input": {
+    "profile": {
+      "base": "neutral-grid-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/themes/0/syntheticOccurrences/0/tokens/0/value",
+          "value": "#eef"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-type"
+  },
+  "author": "spec-seal"
+}

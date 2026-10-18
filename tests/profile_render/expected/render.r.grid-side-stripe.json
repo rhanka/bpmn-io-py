@@ -1,0 +1,472 @@
+{
+  "case": "render.r.grid-side-stripe",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "R of the second neutral profile: header-band glyph, ServiceTask glyph, synthetic stripe style, unsupported support lane",
+  "derivation": "Layout = render.layout.grid-side-stripe payload. Lane_side has geometry but no notion/glyph: no occurrence, coverage unsupported. The stripe has no semanticId (not in coverage), glyph aid, style = declaration tokens {fill #eeeeff} at binding level + theme stroke. Associations have no geometry and no glyph: nonvisual.",
+  "operation": "resolve_theme",
+  "input": {
+    "profile": {
+      "base": "neutral-grid-profile.json",
+      "patch": []
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_1",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "isExecutable": true,
+          "laneSets": [
+            {
+              "$type": "bpmn:LaneSet",
+              "id": "LaneSet_1",
+              "lanes": [
+                {
+                  "$type": "bpmn:Lane",
+                  "id": "Lane_side",
+                  "name": "side"
+                }
+              ]
+            }
+          ],
+          "flowElements": [
+            {
+              "$type": "bpmn:ServiceTask",
+              "id": "Task_B",
+              "name": "Ready"
+            },
+            {
+              "$type": "bpmn:ServiceTask",
+              "id": "Task_A",
+              "name": "Check"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:Association",
+              "id": "Z-consumer",
+              "sourceRef": "Task_A",
+              "targetRef": "Task_B",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Y-consumer",
+              "sourceRef": "Task_A",
+              "targetRef": "Task_B",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "A-producer",
+              "sourceRef": "Task_B",
+              "targetRef": "Task_A",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_1",
+              "text": "[Note] stra\u00dfe"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [
+      {
+        "ownerId": "Process_1",
+        "role": "side",
+        "targetId": "Lane_side"
+      }
+    ],
+    "layout": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "P-main",
+          "name": "Main",
+          "order": 0,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 500016,
+            "height": 390000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Lane_side_di",
+          "semanticId": "Lane_side",
+          "role": "side",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 500016,
+            "height": 100000
+          }
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Note_1_di",
+          "semanticId": "Note_1",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 350000,
+            "width": 150000,
+            "height": 40000
+          },
+          "label": {
+            "text": "STRASSE",
+            "bounds": {
+              "x": 100000,
+              "y": 350000,
+              "width": 150000,
+              "height": 40000
+            },
+            "lines": [
+              "STRASSE"
+            ]
+          }
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Task_A_di",
+          "semanticId": "Task_A",
+          "role": "side",
+          "bounds": {
+            "x": 300000,
+            "y": 9500,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Check",
+            "bounds": {
+              "x": 348500,
+              "y": 89500,
+              "width": 3000,
+              "height": 1000
+            },
+            "lines": [
+              "Check"
+            ]
+          }
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Task_B_di",
+          "semanticId": "Task_B",
+          "role": "side",
+          "bounds": {
+            "x": 400008,
+            "y": 9500,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Ready",
+            "bounds": {
+              "x": 448508,
+              "y": 89500,
+              "width": 3000,
+              "height": 1000
+            },
+            "lines": [
+              "Ready"
+            ]
+          }
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "[\"side-stripe\",\"Process_1\",\"P-main\"]",
+          "role": "band-stripe",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 500016,
+            "height": 100000
+          },
+          "label": {
+            "text": "Auxiliary",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 500016,
+              "height": 100000
+            },
+            "lines": [
+              "Auxiliary"
+            ]
+          }
+        }
+      ]
+    },
+    "overrides": {
+      "semantic": [],
+      "occurrence": []
+    },
+    "diStyles": {
+      "native": [],
+      "bioc": []
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "renderVersion": "1",
+      "binding": {
+        "semanticRevision": "2373211d27c0be67b2a8961d544708492adf164713e25c54442fdc86e7112e69",
+        "profileDigest": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+        "descriptorDigest": "f66cec713b5cf4361896f3183372486d6e29314299858d8098d4a5024f0a8f90",
+        "layoutDigest": "18bac15fa4c6028f3d9c2805b9bab332f863c0c863973aa09ffb7776c85a6158",
+        "themeId": "plain",
+        "themeDigest": "f82f7c3fa2bd76fc17fd8f107bd9f6110d37d7e4cdc4014d4f45fc87cc189922",
+        "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+        "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+        "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+        "payloadDigest": "333274bee32600e04c43e61f6c7fbfbe452367558a91d55d650c0af8fb1567e4"
+      },
+      "pages": [
+        {
+          "pageId": "P-main",
+          "name": "Main",
+          "order": 0,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 500016,
+            "height": 390000
+          }
+        }
+      ],
+      "occurrences": [
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Note_1_di",
+          "semanticId": "Note_1",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 350000,
+            "width": 150000,
+            "height": 40000
+          },
+          "label": {
+            "text": "STRASSE",
+            "bounds": {
+              "x": 100000,
+              "y": 350000,
+              "width": 150000,
+              "height": 40000
+            },
+            "lines": [
+              "STRASSE"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#eeeeff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "aid"
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Task_A_di",
+          "semanticId": "Task_A",
+          "role": "side",
+          "bounds": {
+            "x": 300000,
+            "y": 9500,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Check",
+            "bounds": {
+              "x": 348500,
+              "y": 89500,
+              "width": 3000,
+              "height": 1000
+            },
+            "lines": [
+              "Check"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "task"
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Task_B_di",
+          "semanticId": "Task_B",
+          "role": "side",
+          "bounds": {
+            "x": 400008,
+            "y": 9500,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Ready",
+            "bounds": {
+              "x": 448508,
+              "y": 89500,
+              "width": 3000,
+              "height": 1000
+            },
+            "lines": [
+              "Ready"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "task"
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "[\"side-stripe\",\"Process_1\",\"P-main\"]",
+          "role": "band-stripe",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 500016,
+            "height": 100000
+          },
+          "label": {
+            "text": "Auxiliary",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 500016,
+              "height": 100000
+            },
+            "lines": [
+              "Auxiliary"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#eeeeff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "aid"
+        }
+      ],
+      "coverage": [
+        {
+          "semanticId": "A-producer",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Definitions_1",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "LaneSet_1",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Lane_side",
+          "occurrences": [],
+          "disposition": "unsupported"
+        },
+        {
+          "semanticId": "Note_1",
+          "occurrences": [
+            {
+              "pageId": "P-main",
+              "occurrenceKey": "Note_1_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Process_1",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Task_A",
+          "occurrences": [
+            {
+              "pageId": "P-main",
+              "occurrenceKey": "Task_A_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Task_B",
+          "occurrences": [
+            {
+              "pageId": "P-main",
+              "occurrenceKey": "Task_B_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Y-consumer",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Z-consumer",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        }
+      ],
+      "diagnostics": []
+    }
+  },
+  "inputFrom": [
+    {
+      "case": "render.layout.grid-side-stripe",
+      "pointer": "/expected/payload",
+      "inputPointer": "/input/layout"
+    }
+  ],
+  "author": "spec-seal"
+}

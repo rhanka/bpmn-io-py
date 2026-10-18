@@ -1,0 +1,34 @@
+{
+  "case": "render.legacy.alias-mapped",
+  "clause": "DESIGN R3.3 \u00a79.5 Legacy themes",
+  "witness": "a legacy look name resolves only through injected compatibility data",
+  "derivation": "compatibilityAliases [{kind:theme, old:standard, destination:plain, mode:explicit-adapter}] maps standard to the injected theme plain (\u00a79.5).",
+  "operation": "resolve_legacy_theme",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/compatibilityAliases",
+          "value": [
+            {
+              "kind": "theme",
+              "old": "standard",
+              "destination": "plain",
+              "mode": "explicit-adapter"
+            }
+          ]
+        }
+      ]
+    },
+    "legacyName": "standard"
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "themeId": "plain"
+    }
+  },
+  "author": "spec-seal"
+}
