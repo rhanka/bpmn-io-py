@@ -550,6 +550,29 @@ class _Validator:
         """Queue one contained child node for validation."""
         stack.append((value, path, depth + 1))
 
+    def _reject_generic_in_typed_slot(
+        self, item: JsonValue, prop: PropertyDescriptor, where: str
+    ) -> None:
+        """Refuse a generic node in a slot whose type cannot hold extensions.
+
+        Generic nodes are valid in descriptor slots of type ``Element``
+        (including ``extensionElements.values``) and in generic ``$children``;
+        every other typed slot refuses with ``descriptor-mismatch``.
+        """
+        if isinstance(item, dict) and item.get("$type") == "$any" and prop.type != "Element":
+            raise _AbortError(
+                Diagnostic(
+                    code="descriptor-mismatch",
+                    path=where,
+                    target=None,
+                    detail=(
+                        f"generic node in typed slot <{prop.name}> of type <{prop.type}>"[
+                            :_MAX_DETAIL
+                        ]
+                    ),
+                )
+            )
+
     def _validate_generic(
         self, node: dict[str, Any], path: str, depth: int, stack: list[Any]
     ) -> None:
@@ -794,6 +817,7 @@ class _Validator:
                             detail=f"slot <{prop.name}> holds an incompatible node",
                         )
                     )
+                self._reject_generic_in_typed_slot(item, prop, where)
                 self._push_child(item, where, depth, stack)
                 continue
             if item is None or isinstance(item, (str, bool, int, float)):
@@ -808,6 +832,15 @@ class _Validator:
                     )
                 if isinstance(item, str):
                     self._check_string(item, "property value", where)
+                elif isinstance(item, float) and not math.isfinite(item):
+                    raise _AbortError(
+                        Diagnostic(
+                            code="invalid-any",
+                            path=where,
+                            target=None,
+                            detail="non-finite number is not representable",
+                        )
+                    )
                 continue
             raise _AbortError(
                 Diagnostic(
@@ -926,6 +959,13 @@ class _Builder:
             return candidate
         return None
 
+    @staticmethod
+    def _assignable(prop: PropertyDescriptor, target: NativeElement) -> bool:
+        """Return whether ``target`` may fill the reference slot ``prop``."""
+        if prop.type == "Element":
+            return True
+        return prop.type in getattr(target.descriptor_, "all_types_by_name", ())
+
     def _resolve(self) -> None:
         """Resolve pending references; misses warn and unset (native parity)."""
         for element, prop, ref_id, path in self.pending:
@@ -940,6 +980,18 @@ class _Builder:
                     )
                 )
                 continue
+            if not self._assignable(prop, target):
+                raise _AbortError(
+                    Diagnostic(
+                        code="descriptor-mismatch",
+                        path=path or None,
+                        target=None,
+                        detail=(
+                            f"reference slot <{prop.name}> holds "
+                            f"<{target.type_}>, not <{prop.type}>"[:_MAX_DETAIL]
+                        ),
+                    )
+                )
             if prop.is_many:
                 collection = element.get(prop.name)
                 if isinstance(collection, list):
@@ -1021,6 +1073,9 @@ class _Builder:
     ) -> None:
         """Fill one scalar slot, coercing simple-typed values natively."""
         items = value if isinstance(value, list) else [value]
+        if prop.is_many and not items:
+            element.set(prop.name, [])
+            return
         if prop.is_many:
             collection = element.get(prop.name)
             if not isinstance(collection, list):
@@ -1042,6 +1097,9 @@ class _Builder:
     ) -> None:
         """Build one containment slot's children with parent links."""
         items = value if isinstance(value, list) else [value]
+        if prop.is_many and not items:
+            element.set(prop.name, [])
+            return
         for index, item in enumerate(items):
             suffix = "/" + str(index) if isinstance(value, list) else ""
             child_path = base_path + suffix

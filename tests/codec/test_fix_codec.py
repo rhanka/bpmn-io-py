@@ -68,3 +68,98 @@ def test_fix12_object_size_uses_true_jcs_length() -> None:
     assert not refused.ok
     assert [d.code for d in refused.diagnostics] == ["xml-input-size-limit"]
     assert hydrate(wire, limits={"json-object-bytes": size}).ok
+
+
+def test_fix10_generic_in_typed_slot_refuses() -> None:
+    """A generic node in `documentation` refuses with descriptor-mismatch."""
+    from bpmn_io.codec import hydrate
+
+    wire = {
+        "$type": "bpmn:Task",
+        "id": "T1",
+        "documentation": [
+            {
+                "$type": "$any",
+                "$name": {"qname": "ven:note", "uri": VEN_URI},
+                "$attrs": {},
+            }
+        ],
+        "$attrs": {},
+    }
+    result = hydrate(wire)
+    assert not result.ok
+    assert [d.code for d in result.diagnostics] == ["descriptor-mismatch"]
+
+
+def test_fix10_reference_target_type_checked() -> None:
+    """A Process as SequenceFlow.sourceRef refuses with descriptor-mismatch."""
+    from bpmn_io.codec import hydrate
+
+    wire = {
+        "$type": "bpmn:Definitions",
+        "id": "D",
+        "targetNamespace": "http://example.com/x",
+        "rootElements": [
+            {
+                "$type": "bpmn:Process",
+                "id": "P",
+                "flowElements": [
+                    {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "F1",
+                        "sourceRef": {"$ref": "P"},
+                        "targetRef": {"$ref": "T1"},
+                    },
+                    {"$type": "bpmn:Task", "id": "T1"},
+                ],
+            }
+        ],
+        "$attrs": {},
+    }
+    result = hydrate(wire)
+    assert not result.ok
+    assert [d.code for d in result.diagnostics] == ["descriptor-mismatch"]
+
+
+def test_fix10_reference_valid_target_resolves() -> None:
+    """A Task as SequenceFlow.sourceRef still resolves with identity."""
+    from bpmn_io.codec import hydrate
+
+    wire = {
+        "$type": "bpmn:Definitions",
+        "id": "D",
+        "targetNamespace": "http://example.com/x",
+        "rootElements": [
+            {
+                "$type": "bpmn:Process",
+                "id": "P",
+                "flowElements": [
+                    {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "F1",
+                        "sourceRef": {"$ref": "T1"},
+                        "targetRef": {"$ref": "T1"},
+                    },
+                    {"$type": "bpmn:Task", "id": "T1"},
+                ],
+            }
+        ],
+        "$attrs": {},
+    }
+    result = hydrate(wire)
+    assert result.ok, result.diagnostics
+    flow = result.value.get("rootElements")[0].get("flowElements")[0]
+    task = result.value.get("rootElements")[0].get("flowElements")[1]
+    assert flow.get("sourceRef") is task
+
+
+def test_fix10_empty_collection_survives_round_trip() -> None:
+    """An explicit flowElements:[] is still present after hydrate->project."""
+    from bpmn_io.codec import hydrate, project
+
+    wire = {"$type": "bpmn:Process", "id": "P", "flowElements": [], "$attrs": {}}
+    hydrated = hydrate(wire)
+    assert hydrated.ok, hydrated.diagnostics
+    projected = project(hydrated.value)
+    assert projected.ok, projected.diagnostics
+    assert projected.value == wire

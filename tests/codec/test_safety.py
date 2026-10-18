@@ -293,11 +293,6 @@ def test_reference_to_generic_id_warns() -> None:
                 "flowElements": [
                     {"$type": "bpmn:Task", "id": "T", "$attrs": {}},
                     {
-                        "$type": "$any",
-                        "$name": {"qname": "ven:g", "uri": VEN_URI},
-                        "$attrs": {"id": "G"},
-                    },
-                    {
                         "$type": "bpmn:SequenceFlow",
                         "id": "F",
                         "$attrs": {},
@@ -305,15 +300,26 @@ def test_reference_to_generic_id_warns() -> None:
                         "targetRef": {"$ref": "T"},
                     },
                 ],
+                "extensionElements": {
+                    "$type": "bpmn:ExtensionElements",
+                    "$attrs": {},
+                    "values": [
+                        {
+                            "$type": "$any",
+                            "$name": {"qname": "ven:g", "uri": VEN_URI},
+                            "$attrs": {"id": "G"},
+                        },
+                    ],
+                },
             }
         ],
     }
     result = hydrate(data)
     assert result.ok
     assert [(d.code, d.path) for d in result.diagnostics] == [
-        ("moddle-warning", "/rootElements/0/flowElements/2/sourceRef")
+        ("moddle-warning", "/rootElements/0/flowElements/1/sourceRef")
     ]
-    flow = result.value.get("rootElements")[0].get("flowElements")[2]
+    flow = result.value.get("rootElements")[0].get("flowElements")[1]
     assert flow.get("targetRef").get("id") == "T"
 
 
