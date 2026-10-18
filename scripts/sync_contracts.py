@@ -310,6 +310,166 @@ def _check_bytes(section: dict[str, object], ledger: dict[str, object]) -> int:
     return bad
 
 
+def _unicode_case_targets(
+    pins: dict[str, object], ledger: dict[str, object]
+) -> tuple[dict[str, object], dict[str, object]] | None:
+    """Return the ([unicode-case], lock entry) pair, or None after reporting."""
+    section = pins.get("unicode-case")
+    locked = ledger.get("unicode-case")
+    if not isinstance(section, dict):
+        print("PINS     CONTRACTS.toml: missing [unicode-case] section")
+        return None
+    if not isinstance(locked, dict):
+        print("PINS     CONTRACTS.lock: missing unicode-case entry")
+        return None
+    return section, locked
+
+
+def _unicode_case_want(section: dict[str, object]) -> set[str] | None:
+    """Return the expected vendored paths, or None after reporting."""
+    artifacts = section.get("artifacts")
+    if not isinstance(artifacts, list) or not all(isinstance(a, str) for a in artifacts):
+        print("PINS     CONTRACTS.toml: [unicode-case] artifacts must be a list of str")
+        return None
+    dest = str(section.get("dest", ""))
+    return {f"{dest}/{name}" for name in artifacts}
+
+
+def _check_unicode_case_files(
+    section: dict[str, object], locked: dict[str, object], want: set[str]
+) -> int:
+    """Compare lock digests with the contract bytes; flag extras."""
+    bad = 0
+    dest = str(section.get("dest", ""))
+    locked_files = locked.get("files")
+    if not isinstance(locked_files, dict):
+        print("PINS     CONTRACTS.lock: unicode-case files is not a table")
+        return 1
+    if set(locked_files) != want:
+        for rel in sorted(want - set(locked_files)):
+            print(f"PINS     unicode-case lock is missing {rel}")
+        for rel in sorted(set(locked_files) - want):
+            print(f"PINS     unicode-case lock lists {rel} not pinned in CONTRACTS.toml")
+        bad += 1
+    for rel in sorted(want):
+        path = ROOT / rel
+        if not path.is_file():
+            print(f"MISSING  {rel}")
+            bad += 1
+        elif sha256(path.read_bytes()) != locked_files.get(rel):
+            print(f"MODIFIED {rel}")
+            bad += 1
+    dest_root = ROOT / dest
+    if not dest_root.is_dir():
+        print(f"MISSING  {dest}/")
+        return bad + 1
+    for path in sorted(dest_root.rglob("*")):
+        rel = path.relative_to(ROOT).as_posix()
+        if path.is_file() and rel not in locked_files:
+            print(f"EXTRA    {rel}")
+            bad += 1
+    return bad
+
+
+def _check_unicode_case_manifest(section: dict[str, object], locked: dict[str, object]) -> int:
+    """Compare the manifest record with the TOML pins and the file bytes."""
+    bad = 0
+    dest = str(section.get("dest", ""))
+    try:
+        manifest = json.loads((ROOT / dest / "manifest.json").read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        print(f"MISSING  {dest}/manifest.json")
+        return 1
+    except json.JSONDecodeError:
+        print(f"PINS     {dest}/manifest.json is not JSON")
+        return 1
+    if not isinstance(manifest, dict):
+        print(f"PINS     {dest}/manifest.json is not a JSON object")
+        return 1
+    if manifest.get("format") != section.get("format"):
+        print(f"PINS     {dest}/manifest.json format != toml")
+        bad += 1
+    if manifest.get("unicodeVersion") != section.get("unicode_version"):
+        print(f"PINS     {dest}/manifest.json unicodeVersion != toml")
+        bad += 1
+    bad += _check_unicode_case_manifest_files(locked, manifest, dest)
+    bad += _check_unicode_case_manifest_sources(section, manifest, dest)
+    return bad
+
+
+def _check_unicode_case_manifest_files(
+    locked: dict[str, object],
+    manifest: dict[str, object],
+    dest: str,
+) -> int:
+    """Compare the manifest file record with the lock digests and file bytes."""
+    bad = 0
+    manifest_files = manifest.get("files")
+    locked_files = locked.get("files")
+    if not isinstance(manifest_files, dict) or not isinstance(locked_files, dict):
+        print(f"PINS     {dest}/manifest.json files is not a table")
+        return 1
+    for name in ("case-table.json", "vectors.json"):
+        path = ROOT / dest / name
+        actual = sha256(path.read_bytes()) if path.is_file() else None
+        if manifest_files.get(name) != actual or locked_files.get(f"{dest}/{name}") != actual:
+            print(f"PINS     {dest}/manifest.json files[{name}] != file bytes")
+            bad += 1
+    return bad
+
+
+def _check_unicode_case_manifest_sources(
+    section: dict[str, object], manifest: dict[str, object], dest: str
+) -> int:
+    """Compare the manifest source record with the TOML source pins."""
+    toml_sources = section.get("sources")
+    manifest_sources = manifest.get("sources")
+    if not isinstance(toml_sources, dict):
+        print("PINS     CONTRACTS.toml: [unicode-case.sources] must be a table")
+        return 1
+    if not isinstance(manifest_sources, list):
+        print(f"PINS     {dest}/manifest.json sources is not a list")
+        return 1
+    pinned = {
+        name: (spec.get("size"), spec.get("sha256"))
+        for name, spec in toml_sources.items()
+        if isinstance(spec, dict)
+    }
+    recorded = {
+        entry.get("file"): (entry.get("size"), entry.get("sha256"))
+        for entry in manifest_sources
+        if isinstance(entry, dict)
+    }
+    if recorded != pinned or len(pinned) != len(toml_sources):
+        print(f"PINS     {dest}/manifest.json sources != toml pins")
+        return 1
+    return 0
+
+
+def _check_unicode_case(pins: dict[str, object], ledger: dict[str, object]) -> int:
+    """Verify the self-hosted unicode-case/1 contract (offline, hash-based).
+
+    The raw UCD sources are never vendored, so their pins in
+    ``[unicode-case.sources]`` are compared with the manifest's source record;
+    every contract file is compared with the lock digest and the manifest's
+    file record.
+    """
+    targets = _unicode_case_targets(pins, ledger)
+    if targets is None:
+        return 1
+    section, locked = targets
+    bad = 0
+    for field in ("format", "unicode_version", "dest"):
+        if locked.get(field) != section.get(field):
+            print(f"PINS     unicode-case {field}: lock != toml")
+            bad += 1
+    want = _unicode_case_want(section)
+    if want is None:
+        return bad + 1
+    bad += _check_unicode_case_files(section, locked, want)
+    return bad + _check_unicode_case_manifest(section, locked)
+
+
 def check() -> int:
     pins = load_pins()
     section = _contract_section(pins)
@@ -321,7 +481,11 @@ def check() -> int:
     if not isinstance(ledger, dict):
         print(f"PINS     {LOCK.relative_to(ROOT)} is not a JSON object")
         return 1
-    bad = _check_pins(section, ledger) + _check_bytes(section, ledger)
+    bad = (
+        _check_pins(section, ledger)
+        + _check_bytes(section, ledger)
+        + _check_unicode_case(pins, ledger)
+    )
     print("ok" if not bad else f"{bad} problem(s)")
     return 1 if bad else 0
 
