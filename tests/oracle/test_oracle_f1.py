@@ -53,6 +53,39 @@ def _xml_vector_ids() -> list[str]:
     return sorted(p.name.removesuffix(".input.xml") for p in VECTORS.glob("*.input.xml"))
 
 
+def _node_canonicalize(payload: object) -> str:
+    """Canonical bytes from the pinned Node `canonicalize` reference (RFC 8785)."""
+    script = (
+        "import canonicalize from 'canonicalize';"
+        "const value = JSON.parse(process.argv[1]);"
+        "process.stdout.write(canonicalize(value));"
+    )
+    proc = subprocess.run(  # noqa: S603 — fixed argv ([node, inline import, JSON]), no shell.
+        [_node_executable(), "--input-type=module", "-e", script, json.dumps(payload)],
+        capture_output=True,
+        text=True,
+        timeout=120,
+        cwd=ORACLE.parent,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr[-2000:]
+    return proc.stdout
+
+
+@pytest.mark.parametrize(
+    "number",
+    [1e-6, 1e21, -0.0, 5e-324, 0.1 + 0.2, 1e-7, 1e20, 100000.0],
+)
+def test_oracle_jcs_number_parity(number: float) -> None:
+    """Codec JCS bytes equal the Node reference on every number vector."""
+    if not _node_available():
+        pytest.skip("oracle needs node and `npm ci` in tests/oracle")
+    from bpmn_io.codec._model import c14n_bytes
+
+    payload = {"v": number}
+    assert c14n_bytes(payload).decode("utf-8") == _node_canonicalize(payload)
+
+
 @pytest.mark.parametrize("vector_id", _xml_vector_ids())
 def test_oracle_wire_parity(vector_id: str) -> None:
     """Node wire output equals the Python projection for every XML vector."""
