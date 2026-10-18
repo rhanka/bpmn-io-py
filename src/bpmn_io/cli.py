@@ -26,7 +26,7 @@ from bpmn_io.lint import Linter
 from bpmn_io.lint.resolver import NodeResolver
 from bpmn_io.moddle.base import ModdleElement
 from bpmn_io.moddle_xml.read import ParseError
-from bpmn_io.profile._lint import lint as run_profile_lint
+from bpmn_io.profile import lint as run_profile_lint
 from bpmn_io.profile._lint.c14n import digest as profile_digest
 from bpmn_io.profile._lint.errors import ProfileLintError
 from bpmn_io.profile._lint.report import adapter_entry as profile_adapter_entry
