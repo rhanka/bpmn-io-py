@@ -1,0 +1,18 @@
+{
+  "$comment": "Effective-order tables and XML writer rules. Contract f1-extensions/1. F7 delegates to moddle-xml 12.3.1; no adapter adds an XML sorting policy. Attribute source order is excluded from preservation; intra-property array order (extensionElements.values, $children, other containment arrays) is preserved; inter-property source interleaving is not reconstructed.",
+  "zone": "Effective descriptor order governs XML child order for registered properties: attributes first (descriptor filter order), then contained properties in effective-descriptor order. Generic attributes and declarations follow the writer's existing generic-attribute/declaration handling; escaping, format and preamble behaviour are the native writer's own.",
+  "referenceImplementation": "bpmn-moddle 10.3.1 / moddle-xml 12.3.1, verified through tests/oracle/f1_references.mjs descriptorOrder against the pinned packages.",
+  "effectiveOrder": {
+    "bpmn:Definitions": ["id", "documentation", "extensionDefinitions", "extensionElements", "name", "targetNamespace", "expressionLanguage", "typeLanguage", "imports", "extensions", "rootElements", "diagrams", "exporter", "relationships", "exporterVersion"],
+    "bpmn:Process": ["id", "documentation", "extensionDefinitions", "extensionElements", "name", "ioSpecification", "supportedInterfaceRef", "ioBinding", "processType", "isClosed", "auditing", "monitoring", "properties", "laneSets", "flowElements", "artifacts", "resources", "correlationSubscriptions", "supports", "definitionalCollaborationRef", "isExecutable"],
+    "bpmn:ExtensionElements": ["valueRef", "values", "extensionAttributeDefinition"],
+    "bpmn:FormalExpression": ["id", "documentation", "extensionDefinitions", "extensionElements", "body", "language", "evaluatesToTypeRef"],
+    "bpmn:Task": ["id", "documentation", "extensionDefinitions", "extensionElements", "name", "auditing", "monitoring", "categoryValueRef", "incoming", "outgoing", "lanes", "isForCompensation", "default", "ioSpecification", "boundaryEventRefs", "properties", "dataInputAssociations", "dataOutputAssociations", "startQuantity", "resources", "completionQuantity", "loopCharacteristics", "incomingConversationLinks", "outgoingConversationLinks"]
+  },
+  "writerRules": [
+    "Prefix reuse, generation, counters, collision suffixes, scope and declaration placement follow the literal writer exactly; vectors freeze reuse, generation, occupied-prefix collision, same-URI aliases, local rebinding, default reset and known-package declaration placement.",
+    "The xml prefix is never declared; its URI is fixed.",
+    "Comparator rule: changed retained QName/URI/value/body/child order is a preservation failure; attribute-order-only differences are not; CDATA versus text is not a tree distinction.",
+    "Every native loss of lexical information (comments, processing instructions, discarded whitespace, CDATA boundaries, mixed-text interleaving) is visible as a diagnostic, never silent."
+  ]
+}

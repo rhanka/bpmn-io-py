@@ -1,0 +1,17 @@
+{
+ "id": "o2-unresolved-ref-01",
+ "title": "Unresolved typed reference warns with a complete tuple",
+ "design": [
+  "O2 invalid references with stable paths"
+ ],
+ "hydrate": {
+  "ok": true,
+  "diagnostics": [
+   {
+    "code": "moddle-warning",
+    "path": "/rootElements/0/flowElements/0/sourceRef",
+    "target": null
+   }
+  ]
+ }
+}

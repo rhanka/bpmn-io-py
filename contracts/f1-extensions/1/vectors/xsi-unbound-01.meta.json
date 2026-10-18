@@ -1,0 +1,20 @@
+{
+ "id": "xsi-unbound-01",
+ "title": "xsi:type value with an unbound prefix refuses the subtree",
+ "design": [
+  "unbound discriminator prefix"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": [
+   {
+    "code": "invalid-xsi-type",
+    "path": null,
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}

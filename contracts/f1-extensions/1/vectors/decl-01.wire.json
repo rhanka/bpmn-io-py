@@ -1,0 +1,23 @@
+{
+ "$type": "bpmn:Definitions",
+ "id": "D1",
+ "rootElements": [
+  {
+   "$type": "bpmn:Process",
+   "id": "P1",
+   "flowElements": [
+    {
+     "$type": "bpmn:Task",
+     "id": "T1",
+     "$attrs": {}
+    }
+   ],
+   "$attrs": {}
+  }
+ ],
+ "$attrs": {
+  "xmlns:bpmn": "http://www.omg.org/spec/BPMN/20100524/MODEL",
+  "xmlns:b": "http://www.omg.org/spec/BPMN/20100524/MODEL",
+  "xmlns": "http://example.com/default"
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "id": "loss-cdata-01",
+ "title": "CDATA boundary erasure surfaces; identical decoding preserved",
+ "design": [
+  "CDATA-boundary loss vector; CDATA versus text is not a tree distinction"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": [
+   {
+    "code": "moddle-content-normalized",
+    "path": null,
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}

@@ -4,6 +4,7 @@
 Usage:
   scripts/sync_contracts.py --source <conductor-folder>
   scripts/sync_contracts.py --check    # verify pins, vendored files and absence of extras (CI)
+  scripts/sync_contracts.py --f1-manifest  # rewrite the f1-extensions manifest+lock (write mode)
 
 Pins live in CONTRACTS.toml at the repository root. The conductor folder is
 read-only: this script copies bytes and verifies them against the conductor
@@ -485,16 +486,175 @@ def check() -> int:
         _check_pins(section, ledger)
         + _check_bytes(section, ledger)
         + _check_unicode_case(pins, ledger)
+        + _check_f1(_f1_section(pins), ledger)
     )
     print("ok" if not bad else f"{bad} problem(s)")
     return 1 if bad else 0
+
+
+def _f1_section(pins: dict[str, object]) -> dict[str, object]:
+    section = pins.get("f1-extensions")
+    if not isinstance(section, dict):
+        msg = "CONTRACTS.toml: missing [f1-extensions] section"
+        raise SystemExit(msg)
+    return section
+
+
+def _f1_manifest_entries(dest: Path, manifest_name: str) -> dict[str, str]:
+    """Parse the self-hosted ``<sha>  <name>`` manifest lines (Node-verifiable)."""
+    text = (dest / manifest_name).read_text(encoding="utf-8")
+    entries: dict[str, str] = {}
+    for lineno, line in enumerate(text.splitlines(), 1):
+        stripped = line.strip()
+        if not stripped:
+            continue
+        parts = stripped.split()
+        if len(parts) != 2 or len(parts[0]) != 64:
+            msg = f"malformed f1 manifest line {lineno}: {line!r}"
+            raise SystemExit(msg)
+        digest, name = parts
+        if name in (".", "..") or ".." in name.split("/") or name.startswith("/"):
+            msg = f"unsafe f1 manifest name {name!r}"
+            raise SystemExit(msg)
+        entries[name] = digest
+    return entries
+
+
+def _check_f1(section: dict[str, object], ledger: dict[str, object]) -> int:
+    """Verify the self-hosted f1-extensions contract (offline, no source)."""
+    block, bad = _f1_lock_block(section, ledger)
+    if block is None:
+        return bad
+    dest = ROOT / str(section.get("dest", ""))
+    manifest_name = str(section.get("manifest", ""))
+    manifest_path = dest / manifest_name
+    if not manifest_path.is_file():
+        print(f"F1       missing {manifest_path.relative_to(ROOT)}")
+        return bad + 1
+    if block.get("manifest_sha256") != sha256(manifest_path.read_bytes()):
+        print("F1       manifest bytes != lock manifest_sha256")
+        bad += 1
+    try:
+        entries = _f1_manifest_entries(dest, manifest_name)
+    except SystemExit as err:
+        print(f"F1       {err}")
+        return bad + 1
+    locked_files = block.get("files", {})
+    if not isinstance(locked_files, dict):
+        print("F1       lock files is not a table")
+        return bad + 1
+    want = {f"{section.get('dest')}/{name}": digest for name, digest in entries.items()}
+    bad += _check_f1_file_set(want, locked_files)
+    bad += _check_f1_file_bytes(section, manifest_name, want, locked_files)
+    bad += _check_f1_extras(dest, manifest_name, want)
+    return bad
+
+
+def _f1_lock_block(
+    section: dict[str, object], ledger: dict[str, object]
+) -> tuple[dict[str, object] | None, int]:
+    """Validate the lock's f1-extensions block header against the TOML pins."""
+    block = ledger.get("f1-extensions")
+    if not isinstance(block, dict):
+        print("F1       lock has no f1-extensions block")
+        return None, 1
+    bad = 0
+    for field in ("dest", "manifest"):
+        if block.get(field) != section.get(field):
+            print(f"F1       {field}: lock {block.get(field)!r} != toml {section.get(field)!r}")
+            bad += 1
+    return block, bad
+
+
+def _check_f1_file_set(want: dict[str, str], locked_files: dict[str, object]) -> int:
+    """Compare the manifest file set against the lock file set."""
+    if set(locked_files) == set(want):
+        return 0
+    for rel in sorted(set(want) - set(locked_files)):
+        print(f"F1       lock is missing {rel}")
+    for rel in sorted(set(locked_files) - set(want)):
+        print(f"F1       lock lists {rel} not in the manifest")
+    return 1
+
+
+def _check_f1_file_bytes(
+    section: dict[str, object],
+    manifest_name: str,
+    want: dict[str, str],
+    locked_files: dict[str, object],
+) -> int:
+    """Verify every manifest-listed file exists with matching bytes."""
+    bad = 0
+    for rel, digest in want.items():
+        if rel == f"{section.get('dest')}/{manifest_name}":
+            continue
+        path = ROOT / rel
+        if not path.is_file():
+            print(f"F1       missing {rel}")
+            bad += 1
+        elif sha256(path.read_bytes()) != digest:
+            print(f"F1       modified {rel}")
+            bad += 1
+        elif locked_files.get(rel) != digest:
+            print(f"F1       lock digest != manifest for {rel}")
+            bad += 1
+    return bad
+
+
+def _check_f1_extras(dest: Path, manifest_name: str, want: dict[str, str]) -> int:
+    """Refuse files on disk that the manifest does not list."""
+    bad = 0
+    on_disk = {
+        p.relative_to(ROOT).as_posix()
+        for p in dest.rglob("*")
+        if p.is_file() and p.name != manifest_name
+    }
+    for rel in sorted(on_disk - set(want)):
+        print(f"F1       extra {rel}")
+        bad += 1
+    return bad
+
+
+def write_f1_manifest() -> None:
+    """Rewrite the f1-extensions manifest and lock block from working-tree bytes."""
+    pins = load_pins()
+    section = _f1_section(pins)
+    dest = ROOT / str(section["dest"])
+    manifest_name = str(section["manifest"])
+    files = sorted(
+        p.relative_to(dest).as_posix()
+        for p in dest.rglob("*")
+        if p.is_file() and p.name != manifest_name
+    )
+    lines = []
+    digests: dict[str, str] = {}
+    for name in files:
+        digest = sha256((dest / name).read_bytes())
+        digests[f"{section['dest']}/{name}"] = digest
+        lines.append(f"{digest}  {name}\n")
+    (dest / manifest_name).write_text("".join(lines), encoding="utf-8")
+    ledger = json.loads(LOCK.read_text(encoding="utf-8"))
+    ledger["f1-extensions"] = {
+        "dest": section["dest"],
+        "files": dict(sorted(digests.items())),
+        "manifest": manifest_name,
+        "manifest_sha256": sha256((dest / manifest_name).read_bytes()),
+    }
+    LOCK.write_text(json.dumps(ledger, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(f"wrote {dest.relative_to(ROOT)}/{manifest_name} ({len(files)} files)")
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Vendor pinned profile-mechanism/1 contracts.")
     parser.add_argument("--check", action="store_true", help="offline pin verification (CI)")
     parser.add_argument("--source", default=None, help="conductor folder (copy mode only)")
+    parser.add_argument(
+        "--f1-manifest", action="store_true", help="rewrite the f1-extensions manifest+lock"
+    )
     args = parser.parse_args(argv)
+    if args.f1_manifest:
+        write_f1_manifest()
+        return 0
     if args.check:
         return check()
     vendor(args.source)

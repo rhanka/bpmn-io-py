@@ -1,0 +1,21 @@
+{
+ "id": "attr-typed-01",
+ "title": "Foreign attributes on a typed owner, empty and non-empty",
+ "design": [
+  "matrix (b)",
+  "registered-namespace unknown attribute warns"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": [
+   {
+    "code": "moddle-warning",
+    "path": "/rootElements/1/color:foreground",
+    "target": "P2"
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}

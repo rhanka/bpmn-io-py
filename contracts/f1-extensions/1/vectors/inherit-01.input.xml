@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" id="D1">
+  <bpmn:process id="P1">
+    <bpmn:userTask id="T1" name="Do it" implementation="##WebService">
+      <bpmn:incoming>F1</bpmn:incoming>
+      <bpmn:outgoing>F2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="F1" sourceRef="T1" targetRef="T1" />
+    <bpmn:sequenceFlow id="F2" sourceRef="T1" targetRef="T1" />
+  </bpmn:process>
+</bpmn:definitions>

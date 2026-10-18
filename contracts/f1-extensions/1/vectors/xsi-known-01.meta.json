@@ -1,0 +1,15 @@
+{
+ "id": "xsi-known-01",
+ "title": "Recognized xsi:type subtype with retained discriminator",
+ "design": [
+  "xsi slot/type resolution",
+  "retained xsi:type in $attrs"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "serialize": {
+  "ok": true
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "id": "safety-entity-ref-01",
+ "title": "Undeclared named reference refused",
+ "design": [
+  "undeclared named references"
+ ],
+ "parse": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "xml-entity-reference-unsupported",
+    "path": null,
+    "target": null
+   }
+  ]
+ }
+}

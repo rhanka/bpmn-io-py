@@ -1,0 +1,17 @@
+{
+ "id": "reserved-xml-01",
+ "title": "XML foreign attribute colliding with a Python member (D1)",
+ "design": [
+  "D1 reserved-name refusal BEFORE native construction"
+ ],
+ "parse": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "reserved-name",
+    "path": "/ven:evil",
+    "target": null
+   }
+  ]
+ }
+}

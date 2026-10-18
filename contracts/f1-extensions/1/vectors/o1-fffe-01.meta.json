@@ -1,0 +1,17 @@
+{
+ "id": "o1-fffe-01",
+ "title": "O1 refuses U+FFFE/U+FFFF",
+ "design": [
+  "O1 noncharacters"
+ ],
+ "serialize": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "invalid-xml-character",
+    "path": "/rootElements/0/extensionElements/values/0/$body",
+    "target": null
+   }
+  ]
+ }
+}

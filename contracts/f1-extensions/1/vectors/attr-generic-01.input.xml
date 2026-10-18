@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" id="D1">
+  <bpmn:process id="P1">
+    <bpmn:extensionElements>
+      <ven:bare xmlns:ven="http://example.com/vendor" />
+      <ven:full xmlns:ven="http://example.com/vendor" ven:a="1" plain="x">body-text</ven:full>
+    </bpmn:extensionElements>
+  </bpmn:process>
+</bpmn:definitions>

@@ -70,3 +70,11 @@ artifacts = [
 "UnicodeData.txt" = { size = 1913704, sha256 = "806e9aed65037197f1ec85e12be6e8cd870fc5608b4de0fffd990f689f376a73" }
 "SpecialCasing.txt" = { size = 16832, sha256 = "78b29c64b5840d25c11a9f31b665ee551b8a499eca6c70d770fcad7dd710f494" }
 "DerivedCoreProperties.txt" = { size = 1053943, sha256 = "d367290bc0867e6b484c68370530bdd1a08b6b32404601b8c7accaf83e05628d" }
+# Self-hosted F1 extension-preservation contract (this repository is the
+# canonical owner; F1 plan rev d). No external source: files are authored
+# here, expectations trace to the DESIGN/F1 text and the pinned Node
+# references under tests/oracle/. `scripts/sync_contracts.py --check`
+# verifies the manifest and lock offline; `--f1-manifest` rewrites them.
+[f1-extensions]
+dest = "contracts/f1-extensions/1"
+manifest = "MANIFEST.sha256"

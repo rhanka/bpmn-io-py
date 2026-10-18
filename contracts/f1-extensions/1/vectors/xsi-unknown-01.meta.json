@@ -1,0 +1,20 @@
+{
+ "id": "xsi-unknown-01",
+ "title": "Unknown xsi:type discriminator refuses the subtree",
+ "design": [
+  "unknown typed discriminators follow native refusal"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": [
+   {
+    "code": "invalid-xsi-type",
+    "path": null,
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "id": "decl-01",
+ "title": "Declarations only: retained aliases and default reset",
+ "design": [
+  "matrix (a)",
+  "xmlns retained in $attrs",
+  "no separate declarations array"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "serialize": {
+  "ok": true
+ }
+}

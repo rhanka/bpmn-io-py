@@ -1,0 +1,25 @@
+{
+ "id": "xsi-conflict-01",
+ "title": "xsi:type naming an incompatible registered type (native acceptance)",
+ "design": [
+  "conflicting discriminator follows native acceptance + loss diagnostics"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": [
+   {
+    "code": "moddle-warning",
+    "path": "/rootElements/0/flowElements/0/conditionExpression/language",
+    "target": null
+   },
+   {
+    "code": "moddle-content-dropped",
+    "path": null,
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}

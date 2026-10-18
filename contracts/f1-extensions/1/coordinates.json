@@ -1,0 +1,11 @@
+{
+  "$comment": "Versioned source-coordinate domain for XML event observation. Contract f1-extensions/1, step-1 exit seal (m1).",
+  "domain": "f1-xml-source/1",
+  "grammar": "detail ::= domain '@' line ':' column ':' kind; domain ::= 'f1-xml-source/1'; line ::= [1-9][0-9]*; column ::= [1-9][0-9]*; kind ::= 'comment' | 'pi' | 'whitespace' | 'cdata-boundary' | 'mixed-text' | 'skipped-subtree' | 'declaration' | 'entity' | 'doctype'",
+  "rules": [
+    "Event observation carries location, count and reason only; no token stream, original text payload or reconstruction metadata is retained.",
+    "Constructs absent from the native tree (comments, processing instructions, discarded whitespace, CDATA boundaries, mixed-text ordering) are reported on the nearest retained ancestor pointer, with f1-xml-source/1 coordinates in the detail string.",
+    "Warning adapters retain these pointers even when the reader skips an entire subtree.",
+    "Coordinates are immutable: they are indexed before projection and never rewritten by it."
+  ]
+}

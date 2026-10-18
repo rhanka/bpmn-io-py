@@ -1,0 +1,17 @@
+{
+ "id": "reserved-xml-proto-01",
+ "title": "XML foreign attribute colliding with a JS hook (D1)",
+ "design": [
+  "D1 closed union across both runtimes"
+ ],
+ "parse": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "reserved-name",
+    "path": "/ven:evil",
+    "target": null
+   }
+  ]
+ }
+}

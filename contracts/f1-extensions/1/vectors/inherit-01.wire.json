@@ -1,0 +1,55 @@
+{
+ "$type": "bpmn:Definitions",
+ "id": "D1",
+ "rootElements": [
+  {
+   "$type": "bpmn:Process",
+   "id": "P1",
+   "flowElements": [
+    {
+     "$type": "bpmn:UserTask",
+     "id": "T1",
+     "name": "Do it",
+     "incoming": [
+      {
+       "$ref": "F1"
+      }
+     ],
+     "outgoing": [
+      {
+       "$ref": "F2"
+      }
+     ],
+     "implementation": "##WebService",
+     "$attrs": {}
+    },
+    {
+     "$type": "bpmn:SequenceFlow",
+     "id": "F1",
+     "sourceRef": {
+      "$ref": "T1"
+     },
+     "targetRef": {
+      "$ref": "T1"
+     },
+     "$attrs": {}
+    },
+    {
+     "$type": "bpmn:SequenceFlow",
+     "id": "F2",
+     "sourceRef": {
+      "$ref": "T1"
+     },
+     "targetRef": {
+      "$ref": "T1"
+     },
+     "$attrs": {}
+    }
+   ],
+   "$attrs": {}
+  }
+ ],
+ "$attrs": {
+  "xmlns:bpmn": "http://www.omg.org/spec/BPMN/20100524/MODEL"
+ }
+}

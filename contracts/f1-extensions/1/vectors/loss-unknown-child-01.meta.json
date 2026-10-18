@@ -1,0 +1,20 @@
+{
+ "id": "loss-unknown-child-01",
+ "title": "Out-of-slot unknown child drops with a typed diagnostic",
+ "design": [
+  "unknown children outside permitted extension slots"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": [
+   {
+    "code": "moddle-content-dropped",
+    "path": null,
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}

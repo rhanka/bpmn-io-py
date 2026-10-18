@@ -1,0 +1,33 @@
+{
+ "id": "prefix-defaultreset-01",
+ "title": "Default-namespace reset with no-namespace generics (native ns0 anonymization)",
+ "design": [
+  "default reset preserved natively",
+  "no-namespace URI representation is empty-string; anonymized prefixed names refuse hydrate and F7 in both lanes"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": []
+ },
+ "hydrate": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "invalid-namespace",
+    "path": "/rootElements/0/extensionElements/values/0",
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": false,
+  "native": "throws identically in both lanes",
+  "diagnostics": [
+   {
+    "code": "xml-invalid",
+    "path": null,
+    "target": null
+   }
+  ]
+ }
+}

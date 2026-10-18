@@ -1,0 +1,20 @@
+{
+ "id": "enc-latin-01",
+ "title": "ISO-8859-1 bytes decode with the true U+0000..U+00FF mapping",
+ "design": [
+  "0x80-0x9F land on U+0080..U+009F; raw bytes hashed before decoding"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": [
+   {
+    "code": "moddle-warning",
+    "path": null,
+    "target": null
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}

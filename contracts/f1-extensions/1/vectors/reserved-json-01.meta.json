@@ -1,0 +1,17 @@
+{
+ "id": "reserved-json-01",
+ "title": "JSON $attrs key colliding with a runtime link",
+ "design": [
+  "D1 JSON collision vector"
+ ],
+ "hydrate": {
+  "ok": false,
+  "diagnostics": [
+   {
+    "code": "reserved-name",
+    "path": "/rootElements/0/extensionElements/values/0/$attrs/$parent",
+    "target": null
+   }
+  ]
+ }
+}

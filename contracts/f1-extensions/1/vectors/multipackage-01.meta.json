@@ -1,0 +1,26 @@
+{
+ "id": "multipackage-01",
+ "title": "Foreign attributes from two descriptor packages on one owner",
+ "design": [
+  "multi-package order",
+  "unknown registered-namespace attributes warn"
+ ],
+ "parse": {
+  "ok": true,
+  "diagnostics": [
+   {
+    "code": "moddle-warning",
+    "path": "/rootElements/0/flowElements/0/color:foreground",
+    "target": "T1"
+   },
+   {
+    "code": "moddle-warning",
+    "path": "/rootElements/0/flowElements/0/bioc:fill",
+    "target": "T1"
+   }
+  ]
+ },
+ "serialize": {
+  "ok": true
+ }
+}
