@@ -250,3 +250,32 @@ def test_fix11_hydrate_enforces_name_length_limit() -> None:
     result = hydrate(wire, limits={"xml-attr-name-utf16": 1})
     assert not result.ok
     assert [d.code for d in result.diagnostics] == ["xml-attribute-length-limit"]
+
+
+def _padded_declaration(encoding: str, pad: int) -> bytes:
+    """One Definitions document whose declaration hides `encoding` past `pad` spaces."""
+    head = "<?xml " + " " * pad + f'version="1.0" encoding="{encoding}"?>'
+    body = (
+        f'<bpmn:definitions xmlns:bpmn="{MODEL_URI}" id="D">'
+        '<bpmn:process id="P"><bpmn:extensionElements>'
+        f'<ven:n xmlns:ven="{VEN_URI}">caf\u00e9</ven:n>'
+        "</bpmn:extensionElements></bpmn:process></bpmn:definitions>"
+    )
+    return (head + body).encode("latin1")
+
+
+def test_fix13_late_unregistered_encoding_refuses() -> None:
+    """windows-1252 declared past the old 2048-byte window still refuses."""
+    from bpmn_io.codec import parse_xml
+
+    result = parse_xml(_padded_declaration("windows-1252", 2050))
+    assert not result.ok
+    assert [d.code for d in result.diagnostics] == ["unsupported-encoding"]
+
+
+def test_fix13_late_latin1_decodes() -> None:
+    """ISO-8859-1 declared past the old window decodes instead of misfiring."""
+    from bpmn_io.codec import parse_xml
+
+    result = parse_xml(_padded_declaration("ISO-8859-1", 2050))
+    assert result.ok, result.diagnostics
