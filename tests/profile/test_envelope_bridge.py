@@ -10,7 +10,7 @@ MECHANISM = ROOT / "contracts" / "profile-mechanism" / "1"
 
 
 def _identity() -> dict[str, object]:
-    profile = json.loads((MECHANISM / "neutral-profile.json").read_text())
+    profile = json.loads((MECHANISM / "neutral-profile.json").read_text(encoding="utf-8"))
     assert isinstance(profile, dict)
     return {
         "mechanismVersion": "1",

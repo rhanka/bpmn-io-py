@@ -75,7 +75,9 @@ def test_canonical_expectations_hold() -> None:
 
     vectors = F1 / "vectors"
     for path in sorted(vectors.glob("*.expect.txt")):
-        source = json.loads(path.with_suffix("").with_suffix(".input.json").read_text())
+        source = json.loads(
+            path.with_suffix("").with_suffix(".input.json").read_text(encoding="utf-8")
+        )
         assert c14n_bytes(source).decode("utf-8") == path.read_text(encoding="utf-8").rstrip("\n")
 
 

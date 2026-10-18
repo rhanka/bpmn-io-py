@@ -86,7 +86,7 @@ def test_schema_mutation_cases() -> None:
                     "contracts/profile-mechanism/1/profile-mechanism-1.schema.json"
                 ],
             }
-        ).read_text()
+        ).read_text(encoding="utf-8")
     )
     for rel, case in _cases():
         assert isinstance(case, dict)
@@ -100,7 +100,7 @@ def test_schema_mutation_cases() -> None:
         assert isinstance(mutation, dict)
         spec = mutation["json"]
         assert isinstance(spec, dict)
-        profile = json.loads(_artifact_path(case["profileArtifact"]).read_text())
+        profile = json.loads(_artifact_path(case["profileArtifact"]).read_text(encoding="utf-8"))
         pointer = str(spec["pointer"]).split("/")[1:]
         target = profile
         for part in pointer[:-1]:
@@ -157,11 +157,11 @@ def test_schema_registry_cases() -> None:
             continue
         inputs = case["inputArtifacts"]
         assert isinstance(inputs, list)
-        schema = json.loads(_artifact_path(_by_role(inputs, "schema")).read_text())
+        schema = json.loads(_artifact_path(_by_role(inputs, "schema")).read_text(encoding="utf-8"))
         if case["caseId"] == "schema-external-ref-pinned":
             registry_entry = _by_role(inputs, "registry")
             assert isinstance(registry_entry, dict)
-            registry_doc = json.loads(_artifact_path(registry_entry).read_text())
+            registry_doc = json.loads(_artifact_path(registry_entry).read_text(encoding="utf-8"))
             pinned_id = str(registry_doc.get("$id", ""))
             assert pinned_id != ""
             data = _by_role(inputs, "fragmentData")
