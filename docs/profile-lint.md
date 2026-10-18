@@ -2,13 +2,16 @@
 
 The `bpmn_io.profile._lint` subpackage evaluates profile rules over the
 literal `bpmn_io.lint` port (bpmnlint 11.15.0) and returns the unified
-`Result/1` report. Until the loader, compiler and evaluator land, the
-`compiled` argument of `lint` carries the compiled lint data as plain
-JSON-compatible dicts: `compiledOptions` (the seven closed keys, validated
-against the contract schema), `validation` (the validation records the
-stage table is selected from) and an optional `registry` (named
-`plugin:<package>/<config>` configs for `extends`; the pinned
-`bpmnlint:recommended` parent always comes from the literal port).
+`Result/1` report, re-exported as `bpmn_io.profile.lint`. The `compiled`
+argument of `lint` carries the compiled lint data either as plain
+JSON-compatible dicts (`compiledOptions` — the seven closed keys, validated
+against the contract schema — plus `validation`, the validation records the
+stage table is selected from, and an optional `registry` of named
+`plugin:<package>/<config>` configs for `extends`) or as the
+`CompiledProfile` produced by `compile_profile`, from which the same
+transport is derived (an optional `registry` argument supplies the extends
+configs in that form only). The pinned `bpmnlint:recommended` parent always
+comes from the literal port.
 
 ## Plugin
 

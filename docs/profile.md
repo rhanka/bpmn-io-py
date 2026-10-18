@@ -24,9 +24,8 @@ Python binding follows `spec/SPEC_PROFILE_MECHANISM_PY.md`.
 - `src/bpmn_io/profile/_results.py` — `PureResult`/`Result` and `Report/2`.
 - `src/bpmn_io/profile/_bridge.py` — headless native counterpart (§8.1).
 - `src/bpmn_io/profile/_inventory.py` — hash-only externalization checks (§12).
-
-`lint` is re-exported lazily from `._lint` so this package imports without
-the parallel lane.
+- `src/bpmn_io/profile/_lint/` — lint bridge over the literal port (§6.4),
+  re-exported as `bpmn_io.profile.lint`.
 
 ## Usage
 
@@ -41,9 +40,12 @@ compiled = compile_profile(loaded.payload)
 text = jcs({"b": 1, "a": 2})
 ```
 
-Document JSON parsing stays behind an injected `codec` callable (default
-`None` refuses with `document-not-loaded`); the integration wires the
-parallel codec lane.
+`import_envelope` accepts an injected `codec` callable for raw sources;
+by default the wired `bpmn_io.codec` decodes them (document JSON for
+`native-json`, parse then project for `bpmn-xml`). Unparseable sources
+refuse with `document-not-loaded`. `lint` accepts the `CompiledProfile`
+from `compile_profile` (see `docs/profile-lint.md`) as well as the
+transport dicts.
 
 ## Compatibility
 
@@ -59,3 +61,5 @@ verdicts plus ordering probes.
 - `tests/profile/test_loader_compiler.py` — neutral substitution and negatives.
 - `tests/profile/test_evaluate.py` — native-tree evaluation.
 - `tests/profile/test_envelope_bridge.py` — envelope, codec and bridge.
+- `tests/profile/test_lint_wiring.py` — load → compile → lint and the
+  XML → codec → envelope → compatibility chain.
