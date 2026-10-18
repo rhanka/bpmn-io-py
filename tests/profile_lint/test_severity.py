@@ -20,7 +20,7 @@ def test_ascii_fold_is_exact_and_non_ascii_refuses() -> None:
     """ASCII casing folds to the word; non-ASCII letters never fold to one."""
     assert normalize_severity("Error") == "error"
     assert normalize_severity("InFo") == "info"
-    for bad in ("οff", "İNFO", "oﬀ", "errοr"):
+    for bad in ("οff", "İNFO", "oﬀ", "errοr"):  # noqa: RUF001 - non-ASCII fold boundary
         with pytest.raises(ProfileDataError):
             normalize_severity(bad)
 
