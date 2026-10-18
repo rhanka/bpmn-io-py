@@ -39,6 +39,9 @@ Changelog = "https://github.com/rhanka/bpmn-io-py/blob/main/CHANGELOG.md"
 [project.scripts]
 bpmn-io = "bpmn_io.cli:main"
 
+[project.entry-points."bpmnlint.plugins"]
+bpmnlint-plugin-profile-mechanism = "bpmn_io.profile._lint.plugin"
+
 [dependency-groups]
 dev = [{ include-group = "lint" }, { include-group = "test" }, "pre-commit>=4"]
 lint = ["ruff>=0.14", "mypy>=1.19", "lxml-stubs>=0.5"]
