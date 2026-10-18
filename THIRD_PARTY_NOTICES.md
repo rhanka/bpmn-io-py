@@ -21,6 +21,23 @@ MIT License, with the original copyright notice preserved. bpmn-io is an indepen
 Exact tags, commits and per-file sha256 digests of every vendored file are recorded in
 `UPSTREAM.toml` and `UPSTREAM.lock`.
 
+## Reference BPMN files (CC-BY-3.0)
+
+The files `contracts/f1-extensions/1/miwg/B.1.0.bpmn`,
+`contracts/f1-extensions/1/miwg/C.4.0.bpmn`,
+`contracts/f1-extensions/1/miwg/C.5.0.bpmn` and
+`contracts/f1-extensions/1/miwg/LICENSE.txt` are unchanged originals from
+the `bpmn-miwg-test-suite` repository at commit
+`386baa55bf9a200f13ce26bef18557eceb19031f`, used as F1 round-trip
+references. Their license is Creative Commons Attribution 3.0 Unported
+(`CC-BY-3.0`); the license text is vendored unchanged as
+`contracts/f1-extensions/1/miwg/LICENSE.txt`. Per-file SHA-256:
+
+- `B.1.0.bpmn`: `cf3764f7a15a7f3402eabcc0a90dd67c81d29a3512e3cf959792dd1d27fe77e2`
+- `C.4.0.bpmn`: `7edfadee4c488f7192bca9313613e2b3fb14634c073bc9d759823d0cc8a7faf7`
+- `C.5.0.bpmn`: `f8c125a7c492d218d1f6962fe03920bec4b1e4a9c2efae0746926667a67f44cc`
+- `LICENSE.txt`: `c2d2fd90db5f6fd71d942918bf935ab393d0826c3e354c7e32f065b902899755`
+
 The BPMN 2.0 descriptors were generated upstream from the OMG BPMN 2.0 specification metamodel
 (CMOF). The OMG XSD schema files are **not** redistributed by this package.
 
