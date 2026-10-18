@@ -105,25 +105,35 @@ def resolve_pointer(
 ) -> tuple[str | None, str]:
     """Resolve ``(reported_id, path)`` to ``(pointer, provenance)``.
 
-    The reported ID resolves in the immutable input index and escaped path
-    segments append to its absolute source pointer. A verbatim absolute
-    pointer (a string starting with ``/``) passes through as supplied by
-    generic producers. Anything else yields ``(None, "unavailable")``.
+    The upstream path is either one property-name string or an array of
+    string/integer segments: the reported ID resolves in the immutable
+    input index and the escaped segments append to its absolute source
+    pointer (``[]`` points at the node itself). A verbatim absolute
+    pointer (a string starting with ``/``) passes through only as supplied
+    by generic producers — with no reported ID, or with a reported ID the
+    index knows; a pointer for an unknown ID is refused, never exact.
+    Anything else yields ``(None, "unavailable")``; the adapter never
+    fabricates the root pointer.
     """
+    has_id = isinstance(reported_id, str) and reported_id != ""
+    base = index.get(reported_id) if has_id else None
     if isinstance(path, str):
         if path.startswith("/"):
-            return path, "exact"
+            # Generic absolute pointer: exact unless it names an unknown ID.
+            resolved = path if base is not None or not has_id else None
+        elif has_id and base is not None and path:
+            resolved = f"{base}/{escape_segment(path)}"
+        else:
+            resolved = None
+    else:
+        segments = _valid_segments(path)
+        if segments is None or base is None:
+            resolved = None
+        else:
+            resolved = base
+            for segment in segments:
+                text = str(segment) if isinstance(segment, int) else escape_segment(segment)
+                resolved += f"/{text}"
+    if resolved is None:
         return None, "unavailable"
-    segments = _valid_segments(path)
-    if segments is None:
-        return None, "unavailable"
-    if not isinstance(reported_id, str) or not reported_id:
-        return None, "unavailable"
-    base = index.get(reported_id)
-    if base is None:
-        return None, "unavailable"
-    pointer = base
-    for segment in segments:
-        text = str(segment) if isinstance(segment, int) else escape_segment(segment)
-        pointer += f"/{text}"
-    return pointer, "exact"
+    return resolved, "exact"

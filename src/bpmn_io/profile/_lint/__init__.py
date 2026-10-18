@@ -89,11 +89,13 @@ def lint(
         transport = _require_compiled(
             compiled, phase=phase, readiness_policy=readiness_policy, registry=registry
         )
+        notions = dict(compiled.notions) if isinstance(compiled, CompiledProfile) else {}
         return _lint(
             _require_envelope(envelope),
             transport,
             phase=phase,
             readiness_policy=readiness_policy,
+            notions=notions,
         )
     except ProfileLintError as err:
         return _refused(err, phase=phase)
@@ -168,6 +170,7 @@ def _lint(
     *,
     phase: str,
     readiness_policy: str,
+    notions: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Implement :func:`lint` (domain errors propagate as unified entries)."""
     options = compiled.get("compiledOptions")
@@ -199,6 +202,10 @@ def _lint(
     transport_options = build_transport_options(options, flattened, options["compiledRules"])
     upstream_config = build_upstream_config(flattened, transport_options)
     resolver = ProfileResolver()
+    resolver.set_profile_context(
+        notions=dict(notions or {}),
+        bindings=list(transport_options.get("bindings") or []),
+    )
     _preresolve(upstream_config, resolver)
     linter = Linter(resolver=resolver)
     try:

@@ -73,13 +73,24 @@ def _compiled_rules(config: Any) -> tuple[list[dict[str, Any]], str]:  # noqa: A
     return compiled, phase
 
 
-def factory(config: Any = None) -> dict[str, Any]:  # noqa: ANN401 - upstream factory shape
+def factory(
+    config: Any = None,  # noqa: ANN401 - upstream factory shape
+    *,
+    notions: dict[str, dict[str, Any]] | None = None,
+    bindings: list[dict[str, Any]] | tuple[dict[str, Any], ...] | None = None,
+) -> dict[str, Any]:
     """Create the ``profile-mechanism/profile`` rule for ``compiledOptions``.
 
-    The factory itself is immutable and safe to cache; every call returns a
-    fresh rule instance with its own per-call guard, so ``A→B→A`` reuse of
-    the factory can never leak options or findings between evaluations.
+    The factory itself is immutable and safe to cache only without a stage
+    context; every call returns a fresh rule instance with its own per-call
+    guard, so ``A→B→A`` reuse of the factory can never leak options or
+    findings between evaluations. ``notions`` and ``bindings`` supply the
+    stage evaluation context (compiled notions, envelope support bindings);
+    the lint bridge passes them through its resolver, never through the
+    closed transport options.
     """
+    context_notions = dict(notions) if notions else {}
+    context_bindings = list(bindings) if bindings else []
     state = {"evaluated": False}
 
     def check(node: ModdleElement, reporter: Reporter) -> None:
@@ -93,7 +104,13 @@ def factory(config: Any = None) -> dict[str, Any]:  # noqa: ANN401 - upstream fa
                 rule for rule in compiled if isinstance(rule, dict) and rule.get("phase") == phase
             ]
             for rule in stage_rules:
-                for finding in evaluate_rule(rule, reporter.moddle_root):
+                for finding in evaluate_rule(
+                    rule,
+                    reporter.moddle_root,
+                    phase=phase,
+                    notions=context_notions,
+                    bindings=context_bindings,
+                ):
                     report = finding.raw_report()
                     reporter.report(
                         report["id"],

@@ -198,3 +198,97 @@ def test_digest_mismatch_refuses() -> None:
     refused = lint(parse(CLEAN_DOC), compiled, phase="post-normalize", readiness_policy="accept")
     assert refused["status"] == "refused"
     assert refused["code"] == "profile-schema"
+
+
+def _prefixed_profile() -> dict[str, Json]:
+    """Neutral profile plus one valid textPrefix rule and its setting."""
+    profile = contract("neutral-profile.json")
+    assert isinstance(profile, dict)
+    rule: dict[str, Json] = {
+        "id": "task-prefixed",
+        "phase": "post-normalize",
+        "select": {
+            "from": "root",
+            "via": "all",
+            "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Task",
+                "mode": "exact",
+            },
+            "order": "id",
+        },
+        "assert": {
+            "op": "textPrefix",
+            "value": {"op": "read", "binding": "self", "path": "/name"},
+            "prefix": "R",
+            "trim": "none",
+        },
+        "code": "task-prefix-missing",
+        "message": "invalid",
+        "classification": "readiness",
+    }
+    rules = [*(profile["rules"] if isinstance(profile["rules"], list) else []), rule]
+    validation = profile["validation"]
+    assert isinstance(validation, list)
+    records = []
+    for entry in validation:
+        assert isinstance(entry, dict)
+        patched = entry
+        if entry.get("id") == "post-normalize" and entry.get("policy") == "accept":
+            settings = [*entry["settings"]] if isinstance(entry.get("settings"), list) else []
+            settings.append(
+                {
+                    "rule": "profile:task-prefixed",
+                    "severity": "error",
+                    "classification": "readiness",
+                }
+            )
+            patched = {**entry, "settings": settings}
+        records.append(patched)
+    return {**profile, "rules": rules, "validation": records}
+
+
+def test_text_prefix_rule_evaluates_end_to_end() -> None:
+    """A valid textPrefix rule evaluates instead of refusing lint-rule-error."""
+    compiled = make_compiled(_prefixed_profile(), phase="post-normalize", readiness_policy="accept")
+    result = lint(
+        parse(NAMED_TASK_DOC), compiled, phase="post-normalize", readiness_policy="accept"
+    )
+    assert result["status"] == "ok"
+    entries = result["report"]["entries"]
+    assert [entry["code"] for entry in entries if entry["ruleId"] == "adapter"] == []
+    prefixed = [entry for entry in entries if entry["ruleId"] == "profile:task-prefixed"]
+    assert [(entry["code"], entry["source"]["targetId"]) for entry in prefixed] == [
+        ("task-prefix-missing", "Task_A")
+    ]
+
+
+def test_compiled_profile_path_matches_transport() -> None:
+    """lint() over compile_profile output agrees with the transport dicts."""
+    from bpmn_io.profile import compile_profile, load_profile
+
+    root = parse(NAMED_TASK_DOC)
+    profile = contract("neutral-profile.json")
+    assert isinstance(profile, dict)
+    expected = lint(root, _compiled(), phase="post-normalize", readiness_policy="accept")
+    schema = contract("profile-mechanism-1.schema.json")
+    import json as _json
+
+    loaded = load_profile(
+        _json.dumps(profile).encode("utf-8"),
+        schema_bytes=_json.dumps(schema).encode("utf-8"),
+    )
+    assert loaded.status == "ok"
+    assert isinstance(loaded.payload, object)
+    compiled_result = compile_profile(loaded.payload)  # type: ignore[arg-type]
+    assert compiled_result.status == "ok"
+    actual = lint(
+        root,
+        compiled_result.payload,  # type: ignore[arg-type]
+        phase="post-normalize",
+        readiness_policy="accept",
+    )
+    assert actual["status"] == "ok"
+    assert actual["payload"] == expected["payload"]
+    assert actual["report"]["entries"] == expected["report"]["entries"]

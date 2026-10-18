@@ -195,8 +195,19 @@ def merge_key(entry: dict[str, Any], origin: str) -> tuple[str, str, str, str, s
     )
 
 
+#: Execution-stage rank for the Report/2 comparator (DESIGN R3.3 §6.2
+#: pipeline order, not alphabet). Unknown stages sort after the known ones.
+_STAGE_RANK = {
+    "import": 0,
+    "pre-normalize": 1,
+    "post-normalize": 2,
+    "post-layout": 3,
+    "release": 4,
+}
+
+
 def sort_entries(entries: list[dict[str, Any]], origins: list[str]) -> list[dict[str, Any]]:
-    """Sort entries per Report/2 within-stage order (UTF-16 throughout)."""
+    """Sort entries per the Report/2 comparator (stage rank, then UTF-16)."""
     paired = sorted(zip(entries, origins, strict=True), key=lambda pair: _sort_tuple(pair[0]))
     return [entry for entry, _ in paired]
 
@@ -258,14 +269,15 @@ def build_unified(
     return ordered, counts
 
 
-def _sort_tuple(entry: dict[str, Any]) -> tuple[bytes, bytes, bytes, bytes, bytes]:
-    """Return the within-stage sort tuple of one entry."""
+def _sort_tuple(entry: dict[str, Any]) -> tuple[int, bytes, bytes, bytes, bytes]:
+    """Return the Report/2 sort tuple of one entry."""
     source = entry.get("source")
     pointer = source.get("pointer") if isinstance(source, dict) else None
     target = source.get("targetId") if isinstance(source, dict) else None
+    stage = str(entry.get("stage"))
     return (
+        _STAGE_RANK.get(stage, len(_STAGE_RANK)),
         utf16_key(str(entry.get("ruleId"))),
-        utf16_key(str(entry.get("stage"))),
         utf16_key(pointer if isinstance(pointer, str) else ""),
         utf16_key(target if isinstance(target, str) else ""),
         utf16_key(str(entry.get("code"))),
