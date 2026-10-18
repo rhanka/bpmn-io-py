@@ -1,62 +1,34 @@
-# DESIGN R3.3 §§2.2-2.3: declarative rule evaluation for the lint bridge (lot-1 subset).
-"""Evaluate compiled declarative profile rules against the immutable input tree.
+# DESIGN R3.3 §§2.2-2.3, §6.4: declarative rule evaluation via the full evaluator.
+"""Evaluate compiled declarative profile rules through the full evaluator.
 
-Lot 1 covers the recognition subset used by the neutral fixtures: selectors
-with ``from: root`` / ``via: all`` / ``order: id``, the predicates
-``true`` / ``false`` / ``all`` / ``any`` / ``not`` / ``typeIs`` /
-``present`` / ``equal`` / ``count``, and the values ``literal`` / ``read`` /
-``id``. Anything else (other traversals, text, reachability, binding and
-export-only operators) raises :class:`EvaluationError`, which the caller
-reports as ``lint-rule-error``: the evaluator is unavailable for that rule,
-never silently false. Lot 2 replaces this module with the full evaluator;
-the subfinding shape it returns is already the final one.
+Rule selection and assertion run on :func:`bpmn_io.profile.evaluate_predicate`
+and :func:`bpmn_io.profile.select` over one immutable :class:`ReadContext`
+built from the lint input tree: the stage snapshot carries the lint ``phase``,
+the envelope support bindings and the compiled notions. Declared rule
+bindings (``bind`` records with ``as`` / ``select`` / ``cardinality``)
+evaluate per candidate before the assertion. A refused selection or
+assertion (unknown operator, unbound name, cardinality mismatch, missing
+pointer, unavailable capability) raises :class:`EvaluationError`, which the
+caller reports as ``lint-rule-error``: the evaluator is unavailable for that
+rule, never silently false.
 
-Semantics follow DESIGN R3.3 exactly within the subset: ``present`` is
-false only for ``MISSING`` (empty string, ``false`` and zero are present);
-``equal`` needs the same scalar type and value with no coercion and is
-false when either side is ``MISSING``; ``where`` errors are errors, never
-false; ``all`` / ``any`` evaluate every branch in array order and propagate
-errors. A failing assertion emits one subfinding per candidate.
+Failing assertions emit one subfinding per candidate, ID-bearing candidates
+first in selector order, then ID-less candidates by source pointer.
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
-from bpmn_io._bpmnlint_utils import is_
-from bpmn_io._js import UNDEFINED
+from bpmn_io.profile._evaluate import ReadContext, evaluate_predicate, select
 from bpmn_io.profile._lint.c14n import utf16_key
 from bpmn_io.profile._lint.index import walk_tree
+from bpmn_io.profile._results import PureRefused
 
 if TYPE_CHECKING:
     from bpmn_io.moddle.base import ModdleElement
 
-__all__ = ["MISSING", "EvaluationError", "SubFinding", "evaluate_rule"]
-
-#: Predicate operators evaluated here (DESIGN R3.3 §2.3, lot-1 subset).
-_PREDICATES = frozenset(
-    {"true", "false", "all", "any", "not", "typeIs", "present", "equal", "count"}
-)
-
-#: Value operators evaluated here (DESIGN R3.3 §2.2, lot-1 subset).
-_VALUES = frozenset({"literal", "read", "id"})
-
-
-class _Missing:
-    """Sentinel for absent values (distinct from ``None`` and ``null``)."""
-
-    def __repr__(self) -> str:
-        """Describe the sentinel for diagnostics."""
-        return "MISSING"
-
-    def __bool__(self) -> bool:
-        """Refuse truthiness tests: missing values decide explicitly."""
-        msg = "MISSING must never be tested for truthiness"
-        raise EvaluationError(msg)
-
-
-#: The absent-value sentinel returned by ``read`` for missing properties.
-MISSING = _Missing()
+__all__ = ["EvaluationError", "SubFinding", "evaluate_rule"]
 
 
 class EvaluationError(Exception):
@@ -94,11 +66,22 @@ class SubFinding:
         }
 
 
-def evaluate_rule(rule: dict[str, Any], root: ModdleElement) -> list[SubFinding]:
+def evaluate_rule(
+    rule: dict[str, Any],
+    root: ModdleElement,
+    *,
+    phase: str,
+    notions: dict[str, dict[str, Any]] | None = None,
+    bindings: list[dict[str, Any]] | tuple[dict[str, Any], ...] | None = None,
+) -> list[SubFinding]:
     """Evaluate one compiled rule on ``root`` and return its subfindings.
 
-    Rules of another phase are skipped by the caller; this function assumes
-    the rule belongs to the current stage. The input tree is only read.
+    ``phase`` is the current lint stage carried by the read context;
+    ``notions`` maps compiled notion IDs to their records for
+    notions-aware operators; ``bindings`` carries the envelope support
+    bindings. Rules of another phase are skipped by the caller; this
+    function assumes the rule belongs to the current stage. The input
+    tree is only read.
     """
     rule_id = rule.get("id")
     code = rule.get("code")
@@ -112,256 +95,151 @@ def evaluate_rule(rule: dict[str, Any], root: ModdleElement) -> list[SubFinding]
     if not isinstance(message, str) or not message:
         msg = f"compiled rule <{rule_id}> misses its string message"
         raise EvaluationError(msg)
-    profile_rule_id = f"profile:{rule_id}"
-    candidates = _select(rule.get("select"), root)
     assertion = rule.get("assert")
     if not isinstance(assertion, dict):
         msg = f"compiled rule <{rule_id}> misses its assert predicate"
         raise EvaluationError(msg)
+    profile_rule_id = f"profile:{rule_id}"
+    context, pointers = _read_context(root, phase=phase, bindings=bindings)
+    base_bindings: dict[str, Any] = {"root": root, "notions": dict(notions or {})}
+    declared = rule.get("bindings", [])
+    if not isinstance(declared, list):
+        msg = f"compiled rule <{rule_id}> bindings must be an array"
+        raise EvaluationError(msg)
+    candidates = _select(rule.get("select"), context, base_bindings, rule_id=rule_id)
     findings: list[SubFinding] = []
-    for node, pointer in candidates:
-        holds = _predicate(assertion, {"root": root, "self": node})
-        if not isinstance(holds, bool):
-            msg = f"compiled rule <{rule_id}> assert is not a predicate"
-            raise EvaluationError(msg)
+    anonymous: list[SubFinding] = []
+    for handle in candidates:
+        local = _bind_rule(declared, context, base_bindings, handle.element, rule_id=rule_id)
+        local["self"] = handle.element
+        holds = _evaluate(assertion, context, local, rule_id=rule_id)
         if not holds:
-            target = node.get("id")
-            findings.append(
-                SubFinding(
-                    profile_rule_id=profile_rule_id,
-                    code=code,
-                    message_key=message,
-                    source_pointer=pointer,
-                    target_id=target if isinstance(target, str) and target else None,
-                )
+            finding = SubFinding(
+                profile_rule_id=profile_rule_id,
+                code=code,
+                message_key=message,
+                source_pointer=_pointer_for(pointers, handle.element, rule_id=rule_id),
+                target_id=handle.element_id,
             )
-    return findings
+            if handle.element_id is None:
+                anonymous.append(finding)
+            else:
+                findings.append(finding)
+    anonymous.sort(key=lambda finding: utf16_key(finding.source_pointer))
+    return findings + anonymous
 
 
-def _select(selector: Any, root: ModdleElement) -> list[tuple[ModdleElement, str]]:  # noqa: ANN401
-    """Run a recognition selector and return ordered ``(node, pointer)`` pairs."""
-    if not isinstance(selector, dict):
-        msg = "selector must be an object"
-        raise EvaluationError(msg)
-    if selector.get("from") != "root":
-        msg = f"unsupported selector from: {selector.get('from')!r}"
-        raise EvaluationError(msg)
-    if selector.get("via") != "all":
-        msg = f"unsupported selector via: {selector.get('via')!r}"
-        raise EvaluationError(msg)
-    if selector.get("order") != "id":
-        msg = f"unsupported selector order: {selector.get('order')!r}"
-        raise EvaluationError(msg)
-    where = selector.get("where")
-    if not isinstance(where, dict):
-        msg = "selector misses its where predicate"
-        raise EvaluationError(msg)
-    matched = [
-        (node, pointer)
-        for node, pointer in walk_tree(root)
-        if _predicate(where, {"root": root, "self": node}) is True
-    ]
-    return _order_by_id(matched)
+def _read_context(
+    root: ModdleElement,
+    *,
+    phase: str,
+    bindings: list[dict[str, Any]] | tuple[dict[str, Any], ...] | None,
+) -> tuple[ReadContext, dict[int, str]]:
+    """Build the immutable read context and handle-pointer map of ``root``."""
+    pairs = walk_tree(root)
+    elements = tuple(node for node, _ in pairs)
+    by_id: dict[str, object] = {
+        node_id: node
+        for node, _ in pairs
+        if isinstance((node_id := node.get("id")), str) and node_id
+    }
+    support = tuple(dict(entry) for entry in bindings) if bindings else ()
+    return ReadContext(root=root, elements=elements, by_id=by_id, bindings=support, stage=phase), {
+        id(node): pointer for node, pointer in pairs
+    }
 
 
-def _order_by_id(
-    pairs: list[tuple[ModdleElement, str]],
-) -> list[tuple[ModdleElement, str]]:
-    """Order handles: ID-bearing first (UTF-16 ID), then ID-less by pointer.
+def _select(
+    selector: Any,  # noqa: ANN401 - compiled rule content
+    context: ReadContext,
+    bindings: dict[str, Any],
+    *,
+    rule_id: str,
+) -> list[Any]:
+    """Run one selector through the full evaluator (refusals stay errors)."""
+    result = select(selector, context, bindings)
+    if isinstance(result, PureRefused):
+        msg = f"compiled rule <{rule_id}> selection is unavailable: {result.code}"
+        raise EvaluationError(msg)
+    handles = result.payload
+    if not isinstance(handles, list):
+        msg = f"compiled rule <{rule_id}> selection is unavailable"
+        raise EvaluationError(msg)
+    return handles
 
-    Deduplicates by native handle, never by optional ID.
+
+def _evaluate(
+    assertion: dict[str, Any],
+    context: ReadContext,
+    bindings: dict[str, Any],
+    *,
+    rule_id: str,
+) -> bool:
+    """Run one assert predicate through the full evaluator (never false)."""
+    result = evaluate_predicate(assertion, context, bindings)
+    if isinstance(result, PureRefused):
+        msg = f"compiled rule <{rule_id}> assertion is unavailable: {result.code}"
+        raise EvaluationError(msg)
+    if not isinstance(result.payload, bool):
+        msg = f"compiled rule <{rule_id}> assert is not a predicate"
+        raise EvaluationError(msg)
+    return result.payload
+
+
+def _bind_rule(
+    declared: list[Any],
+    context: ReadContext,
+    base: dict[str, Any],
+    candidate: Any,  # noqa: ANN401 - native element handle
+    *,
+    rule_id: str,
+) -> dict[str, Any]:
+    """Evaluate the declared rule bindings of one candidate (in order)."""
+    bindings = dict(base)
+    bindings["self"] = candidate
+    for entry in declared:
+        if not isinstance(entry, dict):
+            msg = f"compiled rule <{rule_id}> binding must be an object"
+            raise EvaluationError(msg)
+        name = entry.get("as")
+        if not isinstance(name, str) or not name:
+            msg = f"compiled rule <{rule_id}> binding misses its name"
+            raise EvaluationError(msg)
+        handles = _select(entry.get("select"), context, bindings, rule_id=rule_id)
+        bound = _apply_cardinality(entry.get("cardinality"), handles, rule_id)
+        if bound is not None:
+            bindings[name] = bound
+    return bindings
+
+
+def _apply_cardinality(cardinality: Any, handles: list[Any], rule_id: str) -> Any:  # noqa: ANN401
+    """Bind one selection under its cardinality (mismatches refuse).
+
+    ``one`` needs exactly one handle, ``zeroOrOne`` at most one (absent
+    bindings simply stay unbound) and ``first`` takes the ordered head.
+    A mismatch is an unavailable evaluation, never a false assertion
+    (DESIGN R3.3 §6.4 outcome table).
     """
-    seen: set[int] = set()
-    unique: list[tuple[ModdleElement, str]] = []
-    for node, pointer in pairs:
-        handle = id(node)
-        if handle in seen:
-            continue
-        seen.add(handle)
-        unique.append((node, pointer))
-
-    def _key(pair: tuple[ModdleElement, str]) -> tuple[int, bytes, bytes]:
-        node, pointer = pair
-        node_id = node.get("id")
-        if isinstance(node_id, str) and node_id:
-            return (0, utf16_key(node_id), b"")
-        return (1, b"", utf16_key(pointer))
-
-    unique.sort(key=_key)
-    return unique
-
-
-def _predicate(node: Any, bindings: dict[str, Any]) -> Any:  # noqa: ANN401
-    """Evaluate a predicate AST node (errors propagate, never become false)."""
-    if not isinstance(node, dict):
-        msg = f"predicate must be an object, got {node!r}"
-        raise EvaluationError(msg)
-    op = node.get("op")
-    if op not in _PREDICATES:
-        msg = f"unsupported predicate op: {op!r}"
-        raise EvaluationError(msg)
-    if op == "true":
-        return True
-    if op == "false":
-        return False
-    return _compound(op, node, bindings)
-
-
-def _compound(op: str, node: dict[str, Any], bindings: dict[str, Any]) -> bool:
-    """Evaluate a compound predicate through its dedicated handler."""
-    if op in ("all", "any"):
-        return _branch(op, node, bindings)
-    if op == "not":
-        return _negation(node, bindings)
-    if op == "typeIs":
-        return _type_is(node, bindings)
-    if op == "present":
-        return _value(node.get("value"), bindings) is not MISSING
-    if op == "equal":
-        return _equal(node.get("left"), node.get("right"), bindings)
-    return _count(node, bindings)
-
-
-def _negation(node: dict[str, Any], bindings: dict[str, Any]) -> bool:
-    """Evaluate ``not`` over exactly one ``arg`` predicate."""
-    arg = node.get("arg")
-    if not isinstance(arg, dict):
-        msg = "not needs exactly one arg predicate"
-        raise EvaluationError(msg)
-    return not _predicate(arg, bindings)
-
-
-def _branch(op: str, node: dict[str, Any], bindings: dict[str, Any]) -> bool:
-    """Evaluate ``all`` / ``any`` over every branch in array order."""
-    args = node.get("args")
-    if not isinstance(args, list) or not args:
-        msg = f"{op} needs a nonempty args array"
-        raise EvaluationError(msg)
-    results = [_predicate(arg, bindings) for arg in args]
-    if any(not isinstance(result, bool) for result in results):
-        msg = f"{op} branches must be predicates"
-        raise EvaluationError(msg)
-    return all(results) if op == "all" else any(results)
-
-
-def _binding(name: Any, bindings: dict[str, Any]) -> ModdleElement:  # noqa: ANN401
-    """Resolve a binding name to its element (MISSING use refuses)."""
-    if not isinstance(name, str) or name not in bindings:
-        msg = f"undeclared binding: {name!r}"
-        raise EvaluationError(msg)
-    value = bindings[name]
-    if value is MISSING:
-        msg = f"required use of MISSING binding: {name!r}"
-        raise EvaluationError(msg)
-    if not hasattr(value, "get") or not hasattr(value, "type_"):
-        msg = f"binding is not an element: {name!r}"
-        raise EvaluationError(msg)
-    return cast("ModdleElement", value)
-
-
-def _type_is(node: dict[str, Any], bindings: dict[str, Any]) -> bool:
-    """Evaluate ``typeIs`` in exact or assignable mode."""
-    element = _binding(node.get("binding"), bindings)
-    expected = node.get("type")
-    mode = node.get("mode")
-    if not isinstance(expected, str) or not expected:
-        msg = f"invalid typeIs type: {expected!r}"
-        raise EvaluationError(msg)
-    if mode not in ("exact", "assignable"):
-        msg = f"invalid typeIs mode: {mode!r}"
-        raise EvaluationError(msg)
-    if mode == "assignable":
-        return is_(element, expected)
-    actual = getattr(element, "type_", None)
-    wanted = expected if ":" in expected else f"bpmn:{expected}"
-    return actual == wanted
-
-
-def _equal(left: Any, right: Any, bindings: dict[str, Any]) -> bool:  # noqa: ANN401
-    """Evaluate ``equal``: same scalar type and value, no coercion."""
-    first = _value(left, bindings)
-    second = _value(right, bindings)
-    if first is MISSING or second is MISSING:
-        return False
-    if isinstance(first, bool) or isinstance(second, bool):
-        return isinstance(first, bool) and isinstance(second, bool) and first == second
-    if not isinstance(first, (str, int, float)) or not isinstance(second, (str, int, float)):
-        msg = f"equal needs scalar operands, got {first!r} and {second!r}"
-        raise EvaluationError(msg)
-    return type(first) is type(second) and first == second
-
-
-def _value(node: Any, bindings: dict[str, Any]) -> Any:  # noqa: ANN401
-    """Evaluate a value AST node (scalars, MISSING, or element handles)."""
-    if not isinstance(node, dict):
-        msg = f"value must be an object, got {node!r}"
-        raise EvaluationError(msg)
-    op = node.get("op")
-    if op not in _VALUES:
-        msg = f"unsupported value op: {op!r}"
-        raise EvaluationError(msg)
-    if op == "literal":
-        scalar = node.get("value")
-        if isinstance(scalar, (bool, str, int, float)):
-            return scalar
-        msg = f"literal needs a scalar value, got {scalar!r}"
-        raise EvaluationError(msg)
-    if op == "id":
-        element = _binding(node.get("binding"), bindings)
-        element_id = element.get("id")
-        if not isinstance(element_id, str) or not element_id:
-            msg = "id needs an identified element"
+    if cardinality == "one":
+        if len(handles) != 1:
+            msg = f"compiled rule <{rule_id}> binding <one> matched {len(handles)}"
             raise EvaluationError(msg)
-        return element_id
-    return _read(node, bindings)
-
-
-def _read(node: dict[str, Any], bindings: dict[str, Any]) -> Any:  # noqa: ANN401
-    """Evaluate ``read``: raw scalar/reference value or ``MISSING``."""
-    element = _binding(node.get("binding"), bindings)
-    path = node.get("path")
-    if not isinstance(path, str) or not path.startswith("/"):
-        msg = f"read needs an RFC 6901 path, got {path!r}"
-        raise EvaluationError(msg)
-    current: Any = element
-    for raw in path.split("/")[1:]:
-        segment = raw.replace("~1", "/").replace("~0", "~")
-        numbered = segment.removeprefix("-")
-        if numbered.isdigit() and numbered:
-            msg = "array indexing is not a recognition read"
+        return handles[0].element
+    if cardinality == "zeroOrOne":
+        if len(handles) > 1:
+            msg = f"compiled rule <{rule_id}> binding <zeroOrOne> matched {len(handles)}"
             raise EvaluationError(msg)
-        if not hasattr(current, "get"):
-            return MISSING
-        current = current.get(segment)
-        if current is None or current is UNDEFINED:
-            return MISSING
-    return current
+        return handles[0].element if handles else None
+    if cardinality == "first":
+        return handles[0].element if handles else None
+    msg = f"compiled rule <{rule_id}> binding needs a cardinality"
+    raise EvaluationError(msg)
 
 
-def _count(node: dict[str, Any], bindings: dict[str, Any]) -> bool:
-    """Evaluate ``count`` over a nested selector with inclusive bounds."""
-    selector = node.get("selector")
-    minimum = node.get("min")
-    maximum = node.get("max")
-    if isinstance(minimum, bool) or not isinstance(minimum, int) or minimum < 0:
-        msg = f"count needs a nonnegative min, got {minimum!r}"
+def _pointer_for(pointers: dict[int, str], element: Any, *, rule_id: str) -> str:  # noqa: ANN401
+    """Return the absolute source pointer of one selected element."""
+    pointer = pointers.get(id(element))
+    if pointer is None:
+        msg = f"compiled rule <{rule_id}> candidate misses its source pointer"
         raise EvaluationError(msg)
-    if maximum is not None and (
-        isinstance(maximum, bool) or not isinstance(maximum, int) or maximum < 0
-    ):
-        msg = f"count needs a nonnegative max, got {maximum!r}"
-        raise EvaluationError(msg)
-    if isinstance(maximum, int) and maximum < minimum:
-        msg = f"count min exceeds max: {minimum} > {maximum}"
-        raise EvaluationError(msg)
-    if not isinstance(selector, dict):
-        msg = "count needs a selector"
-        raise EvaluationError(msg)
-    root = bindings.get("root")
-    if root is None or root is MISSING:
-        msg = "count needs the root binding"
-        raise EvaluationError(msg)
-    total = len(_select(selector, root))
-    if total < minimum:
-        return False
-    return maximum is None or total <= maximum
+    return pointer

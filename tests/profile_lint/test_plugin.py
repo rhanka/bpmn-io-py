@@ -85,7 +85,7 @@ def test_rule_failure_stays_a_finding() -> None:
     profile = contract("neutral-profile.json")
     assert isinstance(profile, dict)
     broken = [dict(rule) for rule in profile["rules"] if rule["phase"] == "post-normalize"]
-    broken[0]["assert"] = {"op": "reachable"}
+    broken[0]["assert"] = {"op": "frobnicate"}
     options = {**_options(), "compiledRules": broken}
     linter = Linter(resolver=StaticResolver({"rule:bpmnlint/label-required": factory}))
     reports = linter.lint(parse(CLEAN_DOC), {"rules": {"label-required": ["error", options]}})

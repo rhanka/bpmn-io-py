@@ -210,6 +210,27 @@ class ProfileResolver:
         """Create the adapter with an empty immutable-factory cache."""
         self._plugin_factory = _plugin_factory
         self._cache: dict[tuple[str, str, str, str, str], Any] = {}
+        self._profile_context: dict[str, Any] | None = None
+
+    def set_profile_context(
+        self,
+        *,
+        notions: dict[str, Any],
+        bindings: list[Any] | tuple[Any, ...],
+    ) -> None:
+        """Attach the stage evaluation context for the profile rule.
+
+        ``notions`` maps compiled notion IDs to their records and
+        ``bindings`` carries the envelope support bindings; both are copied
+        so later caller mutation cannot leak between evaluations. The
+        context-bound factory is never stored in the immutable cache: each
+        :meth:`resolve_rule` call for the profile rule returns a fresh
+        closure over a snapshot, so ``A→B→A`` cannot reuse B context.
+        """
+        self._profile_context = {
+            "notions": dict(notions),
+            "bindings": list(bindings),
+        }
 
     @staticmethod
     def normalize_package(pkg: str) -> str:
@@ -237,19 +258,39 @@ class ProfileResolver:
     def resolve_rule(self, pkg: str, rule_name: str) -> Any | None:  # noqa: ANN401
         """Return the immutable rule factory, or ``None`` when not allowlisted."""
         normalized = self.normalize_package(pkg)
+        if normalized == PLUGIN_PACKAGE and rule_name == PLUGIN_RULE_EXPORT:
+            if self._profile_context is not None:
+                return self._profile_factory()
+            key = self.cache_key(normalized, "rule", rule_name)
+            cached = self._cache.get(key)
+            if cached is not None:
+                return cached
+            self._cache[key] = self._plugin_factory
+            return self._plugin_factory
         key = self.cache_key(normalized, "rule", rule_name)
         cached = self._cache.get(key)
         if cached is not None:
             return cached
-        factory: Any | None = None
-        if normalized == PLUGIN_PACKAGE and rule_name == PLUGIN_RULE_EXPORT:
-            factory = self._plugin_factory
-        elif normalized == HOST_PACKAGE and rule_name in _PINNED_FACTORIES:
-            factory = _PINNED_FACTORIES[rule_name]
+        factory: Any | None = (
+            _PINNED_FACTORIES.get(rule_name) if normalized == HOST_PACKAGE else None
+        )
         if factory is None or not callable(factory):
             return None
         self._cache[key] = factory
         return factory
+
+    def _profile_factory(self) -> Any:  # noqa: ANN401 - upstream factory shape
+        """Return the profile rule factory bound to the stage context snapshot."""
+        if self._profile_context is None:
+            return self._plugin_factory
+        notions = dict(self._profile_context["notions"])
+        bindings = list(self._profile_context["bindings"])
+
+        def _bound(config: Any = None) -> Any:  # noqa: ANN401 - upstream factory shape
+            """Create the profile rule with the snapshotted stage context."""
+            return self._plugin_factory(config, notions=notions, bindings=bindings)
+
+        return _bound
 
     def resolve_config(self, pkg: str, config_name: str) -> Any | None:  # noqa: ANN401
         """Return the immutable config, or ``None`` when not allowlisted."""
