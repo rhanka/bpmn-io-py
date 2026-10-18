@@ -83,8 +83,23 @@ def test_validate_rejects_empty_identity_and_tree() -> None:
     from bpmn_io.profile import complete_envelope, validate_envelope
 
     envelope = complete_envelope(_identity(), _tree(), [])
-    assert validate_envelope({**envelope.to_json(), "profileIdentity": {}}) == "profile-schema"
-    assert validate_envelope({**envelope.to_json(), "tree": {}}) == "profile-schema"
+    base = envelope.to_json()
+    tree = base["tree"]
+    identity = base["profileIdentity"]
+    assert isinstance(tree, dict)
+    assert isinstance(identity, dict)
+    fresh_for_empty_identity = complete_envelope({}, tree, []).semantic_revision
+    assert (
+        validate_envelope(
+            {**base, "profileIdentity": {}, "semanticRevision": fresh_for_empty_identity}
+        )
+        == "profile-schema"
+    )
+    fresh_for_empty_tree = complete_envelope(identity, {}, []).semantic_revision
+    assert (
+        validate_envelope({**base, "tree": {}, "semanticRevision": fresh_for_empty_tree})
+        == "profile-schema"
+    )
 
 
 def test_validate_rejects_diagrams_bearing_tree() -> None:
