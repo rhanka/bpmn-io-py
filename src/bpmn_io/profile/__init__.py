@@ -43,6 +43,7 @@ from bpmn_io.profile._lexical import LexicalError, LexicalOk, check_lexical
 from bpmn_io.profile._lint import lint
 from bpmn_io.profile._loader import ValidatedProfile, load_profile
 from bpmn_io.profile._results import (
+    STAGE_ORDER,
     Coordinate,
     PureRefused,
     PureResult,
@@ -81,6 +82,7 @@ __all__ = [
     "INVENTORY_HASHES",
     "PATTERN_INVENTORY",
     "STABLE_ID_PREFIX",
+    "STAGE_ORDER",
     "UNICODE_VERSION_PIN",
     "CompiledProfile",
     "Coordinate",
