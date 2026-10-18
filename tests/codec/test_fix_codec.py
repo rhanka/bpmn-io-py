@@ -163,3 +163,90 @@ def test_fix10_empty_collection_survives_round_trip() -> None:
     projected = project(hydrated.value)
     assert projected.ok, projected.diagnostics
     assert projected.value == wire
+
+
+def _generic_chain(count: int) -> dict:
+    """A root generic wrapping `count` nested generics through $children."""
+    node = {"$type": "$any", "$name": {"qname": "ven:leaf", "uri": VEN_URI}, "$attrs": {}}
+    for _ in range(count):
+        node = {
+            "$type": "$any",
+            "$name": {"qname": "ven:l", "uri": VEN_URI},
+            "$attrs": {},
+            "$children": [node],
+        }
+    return node
+
+
+@pytest.mark.parametrize(
+    ("depth", "ok"),
+    [(255, True), (256, True), (257, False)],
+)
+def test_fix11_depth_counts_agree(depth: int, *, ok: bool) -> None:
+    """Hydrate and project share one depth: both pass or both refuse."""
+    from bpmn_io.codec import hydrate, project
+
+    hydrated = hydrate(_generic_chain(depth - 1))
+    assert hydrated.ok == ok, hydrated.diagnostics
+    if not ok:
+        assert [d.code for d in hydrated.diagnostics] == ["xml-depth-limit"]
+        return
+    projected = project(hydrated.value)
+    assert projected.ok, projected.diagnostics
+
+
+def _many_attr_generic(count: int) -> object:
+    """A native generic element carrying `count` string attributes."""
+    from bpmn_io.codec._model import build_model
+
+    model, _ = build_model(None)
+    element = model.create_any("ven:e", VEN_URI)
+    for index in range(count):
+        element[f"a{index}"] = "v"
+    return element
+
+
+def test_fix11_project_enforces_attribute_count() -> None:
+    """1025 generic attributes refuse project, like they refuse hydrate."""
+    from bpmn_io.codec import project
+
+    result = project(_many_attr_generic(1025))
+    assert not result.ok
+    assert [d.code for d in result.diagnostics] == ["xml-attribute-count-limit"]
+    assert project(_many_attr_generic(1024)).ok
+
+
+def test_fix11_serialize_enforces_attribute_count() -> None:
+    """1025 generic attributes refuse F7 with the same count code."""
+    from bpmn_io.codec import serialize_xml
+
+    result = serialize_xml(_many_attr_generic(1025))
+    assert not result.ok
+    assert [d.code for d in result.diagnostics] == ["xml-attribute-count-limit"]
+
+
+def test_fix11_size_engine_agrees_with_bytes() -> None:
+    """canonical_size equals len(canonical_bytes) on nested mixed data."""
+    from bpmn_io.codec._jcs import canonical_bytes, canonical_size
+
+    data = {
+        "$type": "dc:Bounds",
+        "x": 1e-6,
+        "y": [1, 2.5, -0.0, {"k": "v", "n": None, "t": True}],
+        "$attrs": {"a": "é"},
+    }
+    assert canonical_size(data) == len(canonical_bytes(data))
+
+
+def test_fix11_hydrate_enforces_name_length_limit() -> None:
+    """A name-length limit of 1 refuses a 10-char $attrs key on hydrate."""
+    from bpmn_io.codec import hydrate
+
+    wire = {
+        "$type": "$any",
+        "$name": {"qname": "ven:root", "uri": VEN_URI},
+        "$attrs": {"k" * 10: "v"},
+    }
+    result = hydrate(wire, limits={"xml-attr-name-utf16": 1})
+    assert not result.ok
+    assert [d.code for d in result.diagnostics] == ["xml-attribute-length-limit"]
