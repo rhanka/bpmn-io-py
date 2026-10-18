@@ -2,8 +2,14 @@
 """Generate the pinned Unicode 15.0.0 case tables (language-neutral contract).
 
 Usage:
-  scripts/gen_unicode_case.py --ucd-dir <dir> [--contracts-dir <dir>] [--module <path>]
-  scripts/gen_unicode_case.py --check --ucd-dir <dir> [--contracts-dir <dir>] [--module <path>]
+  scripts/gen_unicode_case.py --ucd-dir <dir> --oracle-vectors <json>
+      [--contracts-dir <dir>] [--module <path>]
+  scripts/gen_unicode_case.py --check --ucd-dir <dir> --oracle-vectors <json>
+      [--contracts-dir <dir>] [--module <path>]
+
+The ``--oracle-vectors`` JSON comes from ``tests/oracle/unicode_case_oracle.py``
+run under a Unicode 15.0.0 interpreter; expected vectors are never derived
+from the tables built here.
 
 Reads the three Unicode Character Database 15.0.0 sources (read-only, never
 vendored) from ``--ucd-dir`` after verifying their sizes and SHA-256 digests
@@ -230,47 +236,47 @@ def parse_derived(data: bytes, wanted: str) -> list[tuple[int, int]]:
     return [(start, end) for start, end in merged]
 
 
-def in_ranges(ranges: list[tuple[int, int]], code: int) -> bool:
-    """Return whether ``code`` falls in the sorted merged ``ranges``."""
-    lo, hi = 0, len(ranges)
-    while lo < hi:
-        mid = (lo + hi) // 2
-        if ranges[mid][0] <= code:
-            lo = mid + 1
-        else:
-            hi = mid
-    return lo > 0 and ranges[lo - 1][0] <= code <= ranges[lo - 1][1]
+def load_oracle_vectors(path: Path) -> list[dict[str, object]]:
+    """Load expected vectors from the independent interpreter oracle output.
+
+    The oracle JSON must be produced by ``tests/oracle/unicode_case_oracle.py``
+    under a Unicode 15.0.0 interpreter (``uv run --no-project --python 3.12``);
+    its ``upper``/``lower`` results come from that interpreter's own case
+    mapping, never from the tables derived here.
+    """
+    try:
+        document = json.loads(path.read_bytes().decode("utf-8"))
+    except (OSError, UnicodeDecodeError, ValueError) as exc:
+        _fail(f"oracle vectors at {path} did not parse: {exc}")
+    if not isinstance(document, dict):
+        _fail(f"oracle vectors at {path} is not an object")
+    if document.get("unicodeVersion") != "15.0.0":
+        _fail(f"oracle vectors at {path} are not Unicode 15.0.0")
+    raw_vectors = document.get("vectors")
+    if not isinstance(raw_vectors, list):
+        _fail(f"oracle vectors at {path} carry no vector list")
+    vectors: list[dict[str, object]] = []
+    for entry in raw_vectors:
+        if (
+            not isinstance(entry, dict)
+            or not isinstance(entry.get("input"), str)
+            or not isinstance(entry.get("upper"), str)
+            or not isinstance(entry.get("lower"), str)
+        ):
+            _fail(f"oracle vectors at {path} carry a malformed entry")
+        vectors.append({"input": entry["input"], "upper": entry["upper"], "lower": entry["lower"]})
+    if [entry["input"] for entry in vectors] != list(VECTOR_INPUTS):
+        _fail(f"oracle vectors at {path} do not cover exactly VECTOR_INPUTS")
+    return vectors
 
 
-def is_final_sigma(text: str, index: int, tables: CaseTables) -> bool:
-    """Return whether the capital sigma at ``index`` is word-final (UCD §3.13)."""
-    pos = index - 1
-    while pos >= 0 and in_ranges(tables.ignorable, ord(text[pos])):
-        pos -= 1
-    if pos < 0 or not in_ranges(tables.cased, ord(text[pos])):
-        return False
-    pos = index + 1
-    while pos < len(text) and in_ranges(tables.ignorable, ord(text[pos])):
-        pos += 1
-    return pos >= len(text) or not in_ranges(tables.cased, ord(text[pos]))
+def derive(sources: dict[str, bytes], oracle_vectors: list[dict[str, object]]) -> dict[str, object]:
+    """Derive tables, sets and the rule descriptor from verified sources.
 
-
-def apply_tables(value: str, mode: str, tables: CaseTables) -> str:
-    """Apply the derived tables (mirrors the runtime; generator side only)."""
-    parts: list[str] = []
-    for index, char in enumerate(value):
-        code = ord(char)
-        if mode == "upper":
-            parts.append("".join(chr(m) for m in tables.upper.get(code, (code,))))
-        elif code == CAPITAL_SIGMA and is_final_sigma(value, index, tables):
-            parts.append(chr(FINAL_SIGMA))
-        else:
-            parts.append("".join(chr(m) for m in tables.lower.get(code, (code,))))
-    return "".join(parts)
-
-
-def derive(sources: dict[str, bytes]) -> dict[str, object]:
-    """Derive tables, sets, rule descriptor and vectors from verified sources."""
+    Expected vectors are not derived here: they come from the independent
+    interpreter oracle (see ``load_oracle_vectors``) so the sealed
+    expectations never mirror the runtime tables.
+    """
     simple_upper, simple_lower = parse_unicode_data(sources["UnicodeData.txt"])
     special_upper, special_lower = parse_special(sources["SpecialCasing.txt"])
     upper: dict[int, tuple[int, ...]] = {cp: (m,) for cp, m in simple_upper.items()}
@@ -299,15 +305,7 @@ def derive(sources: dict[str, bytes]) -> dict[str, object]:
         "lower": [[cp, list(m)] for cp, m in sorted(tables.lower.items())],
         "upper": [[cp, list(m)] for cp, m in sorted(tables.upper.items())],
     }
-    vectors = [
-        {
-            "input": text,
-            "lower": apply_tables(text, "lower", tables),
-            "upper": apply_tables(text, "upper", tables),
-        }
-        for text in VECTOR_INPUTS
-    ]
-    return {"table": table, "vectors": vectors}
+    return {"table": table, "vectors": oracle_vectors}
 
 
 def _mapping_block(label: str, key: str, entries: list[object]) -> list[str]:
@@ -516,6 +514,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--check", action="store_true", help="verify only; write nothing")
     parser.add_argument("--ucd-dir", required=True, help="directory with the 3 UCD 15.0.0 sources")
     parser.add_argument(
+        "--oracle-vectors",
+        required=True,
+        help="oracle JSON from tests/oracle/unicode_case_oracle.py under UCD 15.0.0",
+    )
+    parser.add_argument(
         "--contracts-dir",
         default=None,
         help="contract directory (default: CONTRACTS.toml [unicode-case] dest)",
@@ -538,7 +541,8 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.module) if args.module else ROOT / "src" / "bpmn_io" / "profile" / "_unicode15.py"
     )
     sources = read_sources(Path(args.ucd_dir), section)
-    derived = derive(sources)
+    oracle_vectors = load_oracle_vectors(Path(str(args.oracle_vectors)))
+    derived = derive(sources, oracle_vectors)
     files = build_contract(section, derived, sources)
     module_text = render_module(_as_dict(derived["table"], "table"), sources)
     if args.check:

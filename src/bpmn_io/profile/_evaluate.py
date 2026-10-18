@@ -7,6 +7,7 @@ graph walks). Never mutates native storage.
 
 from __future__ import annotations
 
+import copy
 import math
 from dataclasses import dataclass, field
 
@@ -69,6 +70,7 @@ class ReadContext:
     by_id: dict[str, object] = field(default_factory=dict)
     bindings: tuple[dict[str, object], ...] = ()
     stage: str = "post-normalize"
+    notions: dict[str, object] = field(default_factory=dict)
 
 
 def _element_id(element: object) -> str | None:
@@ -186,10 +188,75 @@ def _index_tree(root: object) -> tuple[tuple[object, ...], dict[str, object]]:
     return tuple(elements), by_id
 
 
-def make_read_context(root: object, stage: str = "post-normalize") -> ReadContext:
-    """Build one read-only context over ``root``."""
+def make_read_context(
+    root: object,
+    stage: str = "post-normalize",
+    notions: dict[str, object] | None = None,
+) -> ReadContext:
+    """Build one read-only context over ``root``.
+
+    ``notions`` maps notion IDs to their recognition tables (compiled
+    ``{"recognition": ...}`` records or raw recognition ASTs); the table is
+    deep-copied so later caller mutations cannot change evaluation.
+    """
     elements, by_id = _index_tree(root)
-    return ReadContext(root=root, elements=elements, by_id=by_id, stage=stage)
+    owned = copy.deepcopy(notions) if notions is not None else {}
+    return ReadContext(root=root, elements=elements, by_id=by_id, stage=stage, notions=owned)
+
+
+def _read_property(element: object, prop: str) -> object:
+    """Read one named property from a dict or native element (None when absent)."""
+    if isinstance(element, dict):
+        return element.get(prop)
+    get = getattr(element, "get", None)
+    if not callable(get):
+        return None
+    try:
+        return get(prop)
+    except Exception:  # noqa: BLE001 - native getters stay total
+        return None
+
+
+def _resolve_single_reference(value: object, read_context: ReadContext) -> list[object]:
+    """Resolve one non-list reference value (dangling selects nothing)."""
+    if isinstance(value, dict):
+        ref = value.get("$ref")
+        if isinstance(ref, str):
+            target = read_context.by_id.get(ref)
+            return [target] if target is not None else []
+        return [value] if isinstance(value.get("$type"), str) else []
+    if isinstance(value, str):
+        target = read_context.by_id.get(value)
+        return [target] if target is not None else []
+    if hasattr(value, "type_"):
+        return [value]
+    return []
+
+
+def _resolve_reference_value(value: object, read_context: ReadContext) -> list[object]:
+    """Resolve one reference value to its target elements (dangling selects nothing)."""
+    if value is None or value is _MISSING or value is UNDEFINED:
+        return []
+    if isinstance(value, list):
+        resolved: list[object] = []
+        for entry in value:
+            resolved.extend(_resolve_reference_value(entry, read_context))
+        return resolved
+    return _resolve_single_reference(value, read_context)
+
+
+def _references_target(value: object, base: object, base_id: str | None) -> bool:
+    """Return whether a property value points at ``base`` (identity or ID)."""
+    if isinstance(value, list):
+        return any(_references_target(entry, base, base_id) for entry in value)
+    if isinstance(value, dict):
+        ref = value.get("$ref")
+        if isinstance(ref, str):
+            return base_id is not None and ref == base_id
+        return value is base
+    if isinstance(value, str):
+        return base_id is not None and value == base_id
+    return value is not None and value is base
 
 
 def _eval_value(  # noqa: C901, PLR0912, PLR0911, PLR0915
@@ -266,7 +333,10 @@ def _eval_value(  # noqa: C901, PLR0912, PLR0911, PLR0915
 
 
 def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
-    node: object, context: ReadContext, bindings: dict[str, object]
+    node: object,
+    context: ReadContext,
+    bindings: dict[str, object],
+    active: frozenset[str] = frozenset(),
 ) -> bool:
     """Evaluate one predicate AST (errors propagate, never coerce to false)."""
     if not isinstance(node, dict):
@@ -282,7 +352,7 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
             raise TypeError("profile-type")  # noqa: EM101
         result = True
         for entry in args:
-            result = _eval_predicate(entry, context, bindings) and result
+            result = _eval_predicate(entry, context, bindings, active) and result
         return result
     if op == "any":
         args = node.get("args")
@@ -290,10 +360,10 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
             raise TypeError("profile-type")  # noqa: EM101
         result = False
         for entry in args:
-            result = _eval_predicate(entry, context, bindings) or result
+            result = _eval_predicate(entry, context, bindings, active) or result
         return result
     if op == "not":
-        return not _eval_predicate(node.get("arg"), context, bindings)
+        return not _eval_predicate(node.get("arg"), context, bindings, active)
     if op == "typeIs":
         binding = node.get("binding")
         type_name = node.get("type")
@@ -306,8 +376,16 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
         actual = _element_type(target)
         if mode == "exact":
             return actual == type_name
-        # Assignable uses prefix closure (descriptor subtypes share prefixes).
-        return actual == type_name or actual.startswith(type_name.rsplit(":", 1)[0] + ":")
+        # Assignable uses native descriptor inheritance (DESIGN §2.2): the
+        # element's own registry-backed subtype check decides. Plain-dict
+        # trees carry no hierarchy, so they degrade to exact matching.
+        instance_of = getattr(target, "instance_of", None)
+        if callable(instance_of):
+            try:
+                return bool(instance_of(type_name))
+            except Exception:  # noqa: BLE001 - evaluation stays total
+                return False
+        return actual == type_name
     if op == "present":
         return _eval_value(node.get("value"), context, bindings) is not _MISSING
     if op == "equal":
@@ -363,10 +441,114 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
                     return True
         return False
     if op == "recognizes":
-        return False
+        return _eval_recognizes(node, context, bindings, active)
     if op == "reachable":
-        return False
+        return _eval_reachable(node, context, bindings)
     raise ValueError("profile-symbol")  # noqa: EM101
+
+
+def _eval_recognizes(
+    node: dict[str, object],
+    context: ReadContext,
+    bindings: dict[str, object],
+    active: frozenset[str],
+) -> bool:
+    """Evaluate one ``recognizes`` predicate against the notion table."""
+    notion = node.get("notion")
+    binding = node.get("binding")
+    if not isinstance(notion, str) or not isinstance(binding, str):
+        raise TypeError("profile-type")  # noqa: EM101
+    if notion not in context.notions:
+        raise ValueError("profile-symbol")  # noqa: EM101
+    if notion in active:
+        raise ValueError("profile-cycle")  # noqa: EM101
+    target = bindings.get(binding, _MISSING)
+    if target is _MISSING:
+        return False
+    record = context.notions[notion]
+    recognition = record.get("recognition") if isinstance(record, dict) else record
+    if recognition is None:
+        return False
+    local = dict(bindings)
+    local["self"] = target
+    return _eval_predicate(recognition, context, local, active | {notion})
+
+
+def _edge_endpoints(element: object, context: ReadContext) -> tuple[list[object], list[object]]:
+    """Read one edge's resolved ``sourceRef``/``targetRef`` endpoints."""
+    sources = _resolve_reference_value(_read_property(element, "sourceRef"), context)
+    targets = _resolve_reference_value(_read_property(element, "targetRef"), context)
+    return sources, targets
+
+
+def _reachability_graph(context: ReadContext, wanted: set[str]) -> dict[int, list[int]]:
+    """Build the resolved sourceRef to targetRef adjacency over edge elements."""
+    adjacency: dict[int, list[int]] = {}
+    for element in context.elements:
+        if _element_type(element) not in wanted:
+            continue
+        origins, ends = _edge_endpoints(element, context)
+        if not origins or not ends:
+            continue
+        for origin in origins:
+            adjacency.setdefault(id(origin), []).extend(id(end) for end in ends)
+    return adjacency
+
+
+def _bfs_reachable(
+    adjacency: dict[int, list[int]],
+    starts: set[int],
+    wanted_ids: set[int],
+    min_hops: int,
+    max_hops: int,
+) -> bool:
+    """Walk breadth-first layers with a visited set (DESIGN §2.2 reachable)."""
+    if min_hops == 0 and starts & wanted_ids:
+        return True
+    visited = set(starts)
+    frontier = set(starts)
+    for depth in range(1, max_hops + 1):
+        reached: set[int] = set()
+        for handle_id in frontier:
+            for end_id in adjacency.get(handle_id, ()):
+                if end_id not in visited:
+                    visited.add(end_id)
+                    reached.add(end_id)
+        if depth >= min_hops and reached & wanted_ids:
+            return True
+        frontier = reached
+        if not frontier:
+            return False
+    return False
+
+
+def _eval_reachable(
+    node: dict[str, object], context: ReadContext, bindings: dict[str, object]
+) -> bool:
+    """Decide bounded directed reachability over resolved reference edges."""
+    source_ast = node.get("source")
+    target_ast = node.get("target")
+    edge_types = node.get("edgeTypes")
+    min_hops = node.get("minHops", 0)
+    max_hops = node.get("maxHops")
+    if not isinstance(edge_types, list) or not edge_types:
+        raise TypeError("profile-type")  # noqa: EM101
+    if not isinstance(min_hops, int) or isinstance(min_hops, bool) or min_hops < 0:
+        raise ValueError("profile-bounds")  # noqa: EM101
+    if max_hops is None:
+        max_hops = len(context.elements)
+    if not isinstance(max_hops, int) or isinstance(max_hops, bool) or max_hops < min_hops:
+        raise ValueError("profile-bounds")  # noqa: EM101
+    wanted = {str(edge) for edge in edge_types if isinstance(edge, str)}
+    sources = _eval_selector(source_ast, context, bindings)
+    targets = _eval_selector(target_ast, context, bindings)
+    if not sources or not targets:
+        return False
+    wanted_ids = {id(handle.element) for handle in targets}
+    starts = {id(handle.element) for handle in sources}
+    return _bfs_reachable(
+        _reachability_graph(context, wanted), starts, wanted_ids, min_hops, max_hops
+    )
 
 
 def _eval_selector(  # noqa: C901, PLR0912, PLR0915
@@ -415,6 +597,24 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
                         if id(child) not in seen:
                             seen.add(id(child))
                             stack.append((child, depth + 1))
+    elif via in ("reference", "inverseReference"):
+        prop = node.get("property")
+        if not isinstance(prop, str) or not prop:
+            raise ValueError("profile-selector-property")  # noqa: EM101
+        if via == "reference":
+            for entry in base:
+                candidates.extend(_resolve_reference_value(_read_property(entry, prop), context))
+        else:
+            for entry in base:
+                entry_id = _element_id(entry)
+                for element in context.elements:
+                    if _references_target(_read_property(element, prop), entry, entry_id):
+                        candidates.append(element)
+    elif via in ("pages", "occurrences", "semantic"):
+        # Render traversals need export render bindings, which the native
+        # headless evaluator never carries: refuse explicitly instead of
+        # returning the source element (DESIGN §2.2 render contexts).
+        raise ValueError("profile-value-context")  # noqa: EM101
     else:
         candidates = list(base)
     where = node.get("where")

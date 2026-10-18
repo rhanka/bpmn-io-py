@@ -8,12 +8,13 @@ UTF-16 ordering. Wire field names stay exactly DESIGN's.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Literal
+from typing import Final, Literal
 
 from bpmn_io.profile._c14n import jcs
 
 __all__ = [
     "CAPABILITY_ORDER",
+    "STAGE_ORDER",
     "Coordinate",
     "PureRefused",
     "PureResult",
@@ -343,38 +344,92 @@ def make_report(operation: str, entries: list[ReportEntry] | None = None) -> Rep
     return Report(operation=operation, entries=tuple(entries or ()))
 
 
-def _entry_sort_key(entry: ReportEntry) -> tuple[str, ...]:
-    """Return the deterministic UTF-16 sort key for one entry."""
-    source_pointer = entry.source.pointer or ""
+#: Fixed pipeline stage order (DESIGN §10.1 ``profile-report/2``).
+STAGE_ORDER: tuple[str, ...] = (
+    "load",
+    "import",
+    "complete",
+    "pre-normalize",
+    "normalize",
+    "post-normalize",
+    "layout",
+    "post-layout",
+    "release",
+    "render",
+    "export",
+)
+
+_STAGE_RANK: dict[str, int] = {name: rank for rank, name in enumerate(STAGE_ORDER)}
+
+_ABSENT: Final[bytes] = b"\x00"
+_PRESENT: Final[bytes] = b"\x01"
+
+
+def _utf16(value: str) -> bytes:
+    """Encode one string in UTF-16 code units (the deterministic sort order)."""
+    return value.encode("utf-16-be")
+
+
+def _optional(value: str | None) -> tuple[bytes, bytes]:
+    """Encode one optional coordinate with absent before present."""
+    if value is None:
+        return (_ABSENT, b"")
+    return (_PRESENT, _utf16(value))
+
+
+def _entry_sort_key(entry: ReportEntry) -> tuple[object, ...]:
+    """Return the deterministic ``profile-report/2`` sort key for one entry.
+
+    Stage order is the fixed §10.1 pipeline order (unknown stages sort
+    after known ones in UTF-16 order); within a stage entries sort by
+    ruleId, source domain/pointer, targetId, code, pageId, occurrenceKey
+    and canonical before/after, every string in UTF-16 code-unit order
+    with absent before present. The result target breaks residual ties so
+    the order is total.
+    """
+    rank = _STAGE_RANK.get(entry.stage)
+    stage_key: tuple[object, ...] = (
+        (0, rank, b"") if rank is not None else (1, 0, _utf16(entry.stage))
+    )
+    before = (_ABSENT, b"") if not entry.before_present else (_PRESENT, _utf16(jcs(entry.before)))
+    after = (_ABSENT, b"") if not entry.after_present else (_PRESENT, _utf16(jcs(entry.after)))
     return (
-        entry.stage,
-        entry.rule_id,
-        entry.source.domain,
-        source_pointer,
-        entry.source.target_id or "",
-        entry.code,
-        entry.page_id or "",
-        entry.occurrence_key or "",
-        jcs(entry.before) if entry.before_present else "",
-        jcs(entry.after) if entry.after_present else "",
+        stage_key,
+        _utf16(entry.rule_id),
+        _utf16(entry.source.domain),
+        _optional(entry.source.pointer),
+        _optional(entry.source.target_id),
+        _utf16(entry.code),
+        _optional(entry.page_id),
+        _optional(entry.occurrence_key),
+        before,
+        after,
+        _optional(entry.result.target_id),
     )
 
 
 def sort_report_entries(
     entries: tuple[ReportEntry, ...] | list[ReportEntry],
 ) -> list[ReportEntry]:
-    """Sort entries by stage, rule, coordinates and canonical values."""
+    """Sort entries per ``profile-report/2`` with duplicate coalescing.
+
+    Entries are ordered by the comparator key; wire-identical neighbours
+    (exact duplicate tuples) coalesce to one. Sort-equal entries that
+    differ on the wire both survive in a deterministic order.
+    """
     ranked = sorted(entries, key=_entry_sort_key)
-    return sorted(
-        ranked,
-        key=lambda e: (
-            e.stage.encode("utf-16-be"),
-            e.rule_id.encode("utf-16-be"),
-            (e.source.pointer or "").encode("utf-16-be"),
-            (e.source.target_id or "").encode("utf-16-be"),
-            e.code.encode("utf-16-be"),
-        ),
-    )
+    coalesced: list[ReportEntry] = []
+    previous_key: tuple[object, ...] | None = None
+    previous_wire = ""
+    for entry in ranked:
+        key = _entry_sort_key(entry)
+        wire = jcs(entry.to_json())
+        if previous_key is not None and key == previous_key and wire == previous_wire:
+            continue
+        previous_key = key
+        previous_wire = wire
+        coalesced.append(entry)
+    return coalesced
 
 
 def sort_id_map(

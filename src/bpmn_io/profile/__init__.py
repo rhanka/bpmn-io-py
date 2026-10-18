@@ -20,7 +20,9 @@ from bpmn_io.profile._compiler import (
 from bpmn_io.profile._envelope import (
     DocumentEnvelope,
     complete_envelope,
+    extract_presentation,
     import_envelope,
+    make_imported_di,
     project_semantic,
     sort_bindings,
     validate_bindings,
@@ -41,6 +43,7 @@ from bpmn_io.profile._lexical import LexicalError, LexicalOk, check_lexical
 from bpmn_io.profile._lint import lint
 from bpmn_io.profile._loader import ValidatedProfile, load_profile
 from bpmn_io.profile._results import (
+    STAGE_ORDER,
     Coordinate,
     PureRefused,
     PureResult,
@@ -60,7 +63,12 @@ from bpmn_io.profile._results import (
     sort_report_entries,
     worst_capability,
 )
-from bpmn_io.profile._schema import CLOSED_KEYWORDS, SchemaRefusal, validate
+from bpmn_io.profile._schema import (
+    CLOSED_KEYWORDS,
+    PATTERN_INVENTORY,
+    SchemaRefusal,
+    validate,
+)
 from bpmn_io.profile._stable_id import STABLE_ID_PREFIX, allocate_stable_id
 from bpmn_io.profile._unicode_case import (
     UNICODE_VERSION_PIN,
@@ -72,7 +80,9 @@ from bpmn_io.profile._unicode_case import (
 __all__ = [
     "CLOSED_KEYWORDS",
     "INVENTORY_HASHES",
+    "PATTERN_INVENTORY",
     "STABLE_ID_PREFIX",
+    "STAGE_ORDER",
     "UNICODE_VERSION_PIN",
     "CompiledProfile",
     "Coordinate",
@@ -105,6 +115,7 @@ __all__ = [
     "digest_bytes",
     "escape_pointer",
     "evaluate_predicate",
+    "extract_presentation",
     "import_envelope",
     "jcs",
     "jcs_bytes",
@@ -112,6 +123,7 @@ __all__ = [
     "load_profile",
     "lower_full",
     "make_coordinate",
+    "make_imported_di",
     "make_report",
     "project_semantic",
     "pure_refused",

@@ -130,7 +130,7 @@ def test_compiler_rejects_unknown_operator() -> None:
         {
             "id": "bad",
             "stage": "post-normalize",
-            "select": {"from": "root", "via": "self", "order": "id"},
+            "select": {"from": "root", "via": "self", "where": {"op": "true"}, "order": "id"},
             "bindings": [],
             "assert": {"op": "frobnicate"},
             "report": {"messageKey": "bad"},
@@ -138,11 +138,21 @@ def test_compiler_rejects_unknown_operator() -> None:
     ]
     schema_bytes = _read("profile-mechanism-1.schema.json")
     loaded = load_profile(json.dumps(profile).encode("utf-8"), schema_bytes=schema_bytes)
-    # The mutated rule still passes the closed schema (generic predicate slot),
-    # so the compiler owns the unknown-operator refusal.
-    if loaded.status != "ok":
-        return
-    compiled = compile_profile(loaded.payload)  # type: ignore[arg-type]
+    # The closed schema pins every operator, so the unknown op refuses here.
+    assert loaded.status == "refused", loaded
+    assert loaded.code == "profile-schema"  # type: ignore[union-attr]
+    # The compiler owns the same refusal for inputs bypassing the loader.
+    from bpmn_io.profile._loader import ValidatedProfile
+
+    direct = ValidatedProfile(
+        profile=profile,
+        digest="test",
+        schema_id="urn:profile-mechanism:1:profile",
+        base={},
+        descriptors=[],
+        capabilities=[],
+    )
+    compiled = compile_profile(direct)
     assert compiled.status == "refused"
     assert compiled.code == "profile-symbol"  # type: ignore[union-attr]
 
