@@ -119,6 +119,13 @@ def test_oracle_f7_parity(vector_id: str) -> None:
         assert not serialized.ok, vector_id
         return
     if not serialized.ok:
+        # The literal writer emits every encodable tree, so the only allowed
+        # Python refusal after a Node success is the O1 string gate.
+        assert serialized.diagnostics, vector_id
+        assert {d.code for d in serialized.diagnostics} == {"invalid-xml-character"}, (
+            vector_id,
+            serialized.diagnostics,
+        )
         return
     assert serialized.value == env["result"]["xml"], vector_id
 

@@ -10,6 +10,7 @@ normalized away here.
 
 from __future__ import annotations
 
+import math
 from typing import Final
 
 from bpmn_io.codec._model import (
@@ -115,6 +116,18 @@ class _O1Walk:
                 )
             )
 
+    def _check_number(self, value: float, where: str, target: str | None) -> None:
+        """Refuse one non-finite number with a complete O2 diagnostic."""
+        if not math.isfinite(value):
+            self.diagnostics.append(
+                Diagnostic(
+                    code="invalid-any",
+                    path=where,
+                    target=target,
+                    detail="non-finite number is not representable",
+                )
+            )
+
     def run(self, root: NativeElement) -> None:
         """Validate every string of the tree reachable for serialization."""
         if not _is_native_element(root):
@@ -187,6 +200,8 @@ class _O1Walk:
                 members += 1
                 self._check_limit_string(value, "generic string", where)
                 _check_o1_string(value, f"<{key}>", where, target, self.diagnostics)
+            elif isinstance(value, float):
+                self._check_number(value, where, target)
             elif isinstance(value, list):
                 for index, item in enumerate(value):
                     if _is_native_element(item):
@@ -223,6 +238,8 @@ class _O1Walk:
         if isinstance(value, str):
             self._check_limit_string(value, "property value", where)
             _check_o1_string(value, f"<{key}>", where, target, self.diagnostics)
+        elif isinstance(value, float):
+            self._check_number(value, where, target)
         elif isinstance(value, list):
             for index, item in enumerate(value):
                 self._check_item(key, item, where + "/" + str(index), target, depth, stack)
@@ -242,6 +259,8 @@ class _O1Walk:
         if isinstance(item, str):
             self._check_limit_string(item, "property value", where)
             _check_o1_string(item, f"<{key}>", where, target, self.diagnostics)
+        elif isinstance(item, float):
+            self._check_number(item, where, target)
         elif _is_native_element(item):
             stack.append((item, where, depth + 1))
 

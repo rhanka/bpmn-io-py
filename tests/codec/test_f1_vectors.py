@@ -146,8 +146,6 @@ def test_vector_stages(vector_id: str) -> None:
     meta = _load_meta(vector_id)
     if meta.get("kind") == "c14n":
         pytest.skip("canonical-form unit vector (see test_utf16_ordering)")
-    if vector_id == "warning-cap-01":
-        pytest.skip("truncation pointer sealed but unmet (see test_warning_cap_pointer)")
     root = _check_parse_stage(meta, vector_id)
     wire = _check_project_stage(meta, vector_id, root)
     native = _check_hydrate_stage(meta, vector_id, wire)
@@ -251,24 +249,6 @@ def _walk(root: object) -> list:
             elif hasattr(value, "descriptor_"):
                 stack.append(value)
     return seen
-
-
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "F1 plan step 3 (D2) truncation pointer vs the literal native "
-        "1000-warning cap (read.py MAX_WARNINGS, unmodified): the first "
-        "omitted warning never reaches the adapter, so its pointer stays "
-        "null; the DESIGN reference is kept in warning-cap-01.meta.json"
-    ),
-)
-def test_warning_cap_pointer() -> None:
-    """Sealed 1001-warning vector: truncation points at the first omitted warning."""
-    meta = _load_meta("warning-cap-01")
-    root = _check_parse_stage(meta, "warning-cap-01")
-    wire = _check_project_stage(meta, "warning-cap-01", root)
-    native = _check_hydrate_stage(meta, "warning-cap-01", wire)
-    _check_serialize_stage(meta, "warning-cap-01", native, root)
 
 
 @pytest.mark.xfail(

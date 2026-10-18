@@ -75,11 +75,11 @@ F7 bytes equal the literal-writer oracle for every encodable tree.
   the native reader (`ns0` with an empty URI); such trees project but
   neither hydrate nor serialize (pinned vectors `prefix-collision-01`,
   `prefix-defaultreset-01`).
-- Past 1000 native warnings the literal reader keeps only an
-  element-less truncation marker, so the adapter cannot point the
-  shared `moddle-warning-truncated` diagnostic at the first omitted
-  warning (its `path` stays `None`; sealed vector `warning-cap-01`
-  with a strict-xfail test names the F1 plan step-3 rule).
+- Past 1000 native warnings the adapter points the shared
+  `moddle-warning-truncated` diagnostic at the first omitted warning,
+  observed by wrapping the warning sink the literal reader exposes
+  (the reader port itself is unmodified; sealed vector
+  `warning-cap-01`).
 - The literal Python port skips escaping a lone `'` where the Node
   writer emits `&#39;` (sealed strict-xfail; the Node oracle stays
   authoritative).

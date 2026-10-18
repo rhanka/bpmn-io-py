@@ -181,6 +181,7 @@ def test_warning_cap_1001() -> None:
     assert codes[:1000] == ["moddle-warning"] * 1000
     assert codes[1000:] == ["moddle-warning-truncated"]
     assert len(result.diagnostics) == 1001
+    assert result.diagnostics[1000].path == "/rootElements/0/bpmn:bogus1000"
 
 
 def test_duplicate_expanded_attribute_refuses() -> None:

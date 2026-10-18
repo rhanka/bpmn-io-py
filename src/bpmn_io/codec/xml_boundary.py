@@ -18,6 +18,7 @@ Enforces safety and reports native losses without changing the literal
 from __future__ import annotations
 
 import re
+from contextlib import contextmanager
 from typing import TYPE_CHECKING, Any, Final
 
 from bpmn_io._js import UNDEFINED
@@ -33,6 +34,8 @@ from bpmn_io.codec._model import (
 from bpmn_io.codec._scan import ScanEvent, scan_source
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from bpmn_io.bpmn_moddle.bpmn_moddle import BpmnModdle
     from bpmn_io.moddle.descriptor_builder import PropertyDescriptor
     from bpmn_io.moddle.registry import PackageDef
@@ -409,6 +412,63 @@ def cap_diagnostics(diagnostics: list[Diagnostic], *, truncated: bool) -> list[D
     return kept
 
 
+@contextmanager
+def _record_warnings() -> Iterator[list[ParseWarning]]:
+    """Capture every native warning past the reader's own cap (bounded).
+
+    Wraps the warning sink the literal reader exposes
+    (``ParseContext.add_warning``) without modifying the port: the reader
+    still caps its own list, while the adapter retains the first omitted
+    warning to point the truncation diagnostic at it. At most 1001 warnings
+    are retained (the 1000 emitted plus the first omitted).
+    """
+    from bpmn_io.moddle_xml.read import ParseContext  # noqa: PLC0415 - port sink, wrapped only
+
+    original = ParseContext.add_warning
+    recorded: list[ParseWarning] = []
+
+    def _recording(self: ParseContext, warning: ParseWarning) -> None:
+        """Record one warning, then delegate to the capped native sink."""
+        if len(recorded) <= 1000:
+            recorded.append(warning)
+        original(self, warning)
+
+    ParseContext.add_warning = _recording  # type: ignore[method-assign]
+    try:
+        yield recorded
+    finally:
+        ParseContext.add_warning = original  # type: ignore[method-assign]
+
+
+def _cap_parse_diagnostics(
+    diagnostics: list[Diagnostic], *, truncated: bool, recorded: list[ParseWarning]
+) -> list[Diagnostic]:
+    """Cap parse diagnostics at 1000 warnings plus one truncation diagnostic.
+
+    The truncation diagnostic points at the first omitted warning observed
+    through the recording sink; without a recorded omission the historical
+    fallback (the next mapped diagnostic, if any) applies.
+    """
+    if len(diagnostics) <= 1000 and not truncated:
+        return diagnostics
+    kept = diagnostics[:1000]
+    omitted_path: str | None = None
+    if truncated and len(recorded) > 1000:
+        omitted = map_native_warning(recorded[1000])
+        omitted_path = omitted.path if omitted is not None else None
+    elif len(diagnostics) > 1000:
+        omitted_path = diagnostics[1000].path
+    kept.append(
+        Diagnostic(
+            code="moddle-warning-truncated",
+            path=omitted_path,
+            target=None,
+            detail="further warnings truncated at the 1000-warning cap",
+        )
+    )
+    return kept
+
+
 def _fail(diagnostic: Diagnostic) -> CodecResult:
     """Wrap one refusal diagnostic in a failed result."""
     return CodecResult(ok=False, value=None, diagnostics=(diagnostic,))
@@ -495,7 +555,8 @@ def parse_xml(
             value=None,
             diagnostics=(model_diagnostic,),  # type: ignore[arg-type]
         )
-    result, failure = _construct(model, text)
+    with _record_warnings() as recorded:
+        result, failure = _construct(model, text)
     if failure is not None:
         return failure
     assert result is not None  # noqa: S101 - construction either returns or fails
@@ -510,7 +571,7 @@ def parse_xml(
     return CodecResult(
         ok=True,
         value=result.root_element,
-        diagnostics=tuple(cap_diagnostics(mapped, truncated=truncated)),
+        diagnostics=tuple(_cap_parse_diagnostics(mapped, truncated=truncated, recorded=recorded)),
     )
 
 

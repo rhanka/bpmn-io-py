@@ -279,3 +279,41 @@ def test_fix13_late_latin1_decodes() -> None:
 
     result = parse_xml(_padded_declaration("ISO-8859-1", 2050))
     assert result.ok, result.diagnostics
+
+
+def test_fix14_truncation_points_at_first_omitted() -> None:
+    """The cap diagnostic points at the first omitted warning (bogus1000)."""
+    from pathlib import Path
+
+    from bpmn_io.codec import parse_xml
+
+    vectors = (
+        Path(__file__).resolve().parent.parent.parent
+        / "contracts"
+        / "f1-extensions"
+        / "1"
+        / "vectors"
+    )
+    result = parse_xml((vectors / "warning-cap-01.input.xml").read_text(encoding="utf-8"))
+    assert result.ok, result.diagnostics
+    assert len(result.diagnostics) == 1001
+    assert [d.code for d in result.diagnostics[:1000]] == ["moddle-warning"] * 1000
+    last = result.diagnostics[1000]
+    assert last.code == "moddle-warning-truncated"
+    assert last.path == "/rootElements/0/bpmn:bogus1000"
+
+
+def test_fix14_nonfinite_geometry_refuses() -> None:
+    """A non-finite Bounds x refuses F7 with a complete O2 diagnostic."""
+    from bpmn_io.codec import serialize_xml
+    from bpmn_io.codec._model import build_model
+
+    model, _ = build_model(None)
+    bounds = model.create("dc:Bounds")
+    bounds.set("x", float("inf"))
+    bounds.set("y", 0.0)
+    bounds.set("width", 10.0)
+    bounds.set("height", 5.0)
+    result = serialize_xml(bounds)
+    assert not result.ok
+    assert [(d.code, d.path) for d in result.diagnostics] == [("invalid-any", "/x")]
