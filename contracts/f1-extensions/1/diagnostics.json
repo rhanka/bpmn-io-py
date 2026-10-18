@@ -1,0 +1,158 @@
+{
+  "$comment": "Closed F1 diagnostic enum, native-code mappings, intra-node priority and ordering. Contract f1-extensions/1.",
+  "codes": {
+    "xml-doctype-forbidden": {
+      "severity": "error",
+      "trigger": "A DOCTYPE declaration is present anywhere in the XML input. Refused before native construction; DTD, external-entity expansion, XXE, XInclude processing and every network or schema resolution stay disabled."
+    },
+    "xml-entity-declaration-forbidden": {
+      "severity": "error",
+      "trigger": "An ENTITY declaration is present, inside or outside a DOCTYPE. Refused before native construction. A standalone ENTITY vector isolates this code from xml-doctype-forbidden."
+    },
+    "xml-entity-reference-unsupported": {
+      "severity": "error",
+      "trigger": "A named character reference other than the ten natively decoded names (five lowercase plus five uppercase variants) appears in markup, an attribute value or character data outside CDATA. Only the five predefined references and numeric references decode with native semantics."
+    },
+    "xml-depth-limit": {
+      "severity": "error",
+      "trigger": "Nesting exceeds the depth limit (root counts as 1), in XML input, JSON input or a native-model traversal."
+    },
+    "xml-element-count-limit": {
+      "severity": "error",
+      "trigger": "The element (XML) or node (JSON, native) count exceeds the element limit, including nested generic input."
+    },
+    "xml-attribute-count-limit": {
+      "severity": "error",
+      "trigger": "One element carries more attributes than allowed, counting namespace declarations; on JSON input this covers $attrs entries plus $children entries of one node."
+    },
+    "xml-attribute-length-limit": {
+      "severity": "error",
+      "trigger": "One attribute name or value exceeds the UTF-16 length limit; on JSON input this covers every string ($name parts, $attrs names and values, $body)."
+    },
+    "xml-input-size-limit": {
+      "severity": "error",
+      "trigger": "A total size bound is exceeded: raw XML input bytes, decoded UTF-8 bytes (checked independently), or the UTF-8 byte length of the profile-c14n/2 form of projected JSON."
+    },
+    "reserved-name": {
+      "severity": "error",
+      "trigger": "A foreign attribute, property or wire key collides with the closed reserved-name list (see reserved-names.json). Both boundary adapters refuse with a pointer BEFORE native construction, preventing silent drops. Schema-owned fields are allowed only in their defined positions."
+    },
+    "invalid-any": {
+      "severity": "error",
+      "trigger": "A generic wire shape is invalid: $name is not {qname, uri} strings, $attrs is not a string-to-string map, $body is not a string, $children is not an array, or a non-string generic attribute value cannot be represented."
+    },
+    "malformed-qname": {
+      "severity": "error",
+      "trigger": "An element or attribute name is not a well-formed QName."
+    },
+    "unbound-prefix": {
+      "severity": "error",
+      "trigger": "A prefixed name has no namespace binding in scope."
+    },
+    "invalid-namespace": {
+      "severity": "error",
+      "trigger": "A namespace binding is invalid (for example a conflicting xml-prefix binding, or an empty URI with a prefixed name)."
+    },
+    "duplicate-attribute": {
+      "severity": "error",
+      "trigger": "Two attributes of one element expand to the same {URI, local-name} pair."
+    },
+    "duplicate-namespace": {
+      "severity": "error",
+      "trigger": "Two declarations of one element bind the same prefix (or default) to different URIs, or the same declaration repeats inconsistently."
+    },
+    "invalid-xsi-type": {
+      "severity": "error",
+      "trigger": "An xsi:type (or equivalent discriminator) value cannot be resolved in its slot, or names an incompatible type."
+    },
+    "unsupported-encoding": {
+      "severity": "error",
+      "trigger": "The XML input declares a byte encoding outside the input-encoding registry (see encodings.json)."
+    },
+    "invalid-encoding": {
+      "severity": "error",
+      "trigger": "The XML input bytes are malformed for their declared (or default UTF-8) encoding."
+    },
+    "xml-invalid": {
+      "severity": "error",
+      "trigger": "The native reader fatally rejects the document and no more specific code applies."
+    },
+    "invalid-xml-character": {
+      "severity": "error",
+      "trigger": "An F7 string carries a character that is invalid in XML 1.0: a lone surrogate, NUL, a forbidden control, or U+FFFE/U+FFFF. Refused before encoding. TAB, LF, CR and valid supplementary-plane characters remain positive cases."
+    },
+    "descriptor-mismatch": {
+      "severity": "error",
+      "trigger": "A node is incompatible with its registered descriptor slot (unknown registered type, wrong containment type, typed-reference target mismatch, injected-descriptor identity failure, cycle, shared child or inconsistent parent)."
+    },
+    "moddle-content-dropped": {
+      "severity": "warning",
+      "trigger": "Source content the native reader skips: unparsable content, unexpected body text, elements outside permitted extension slots. Every case carries a pointer; nothing is silently ignored."
+    },
+    "moddle-content-normalized": {
+      "severity": "warning",
+      "trigger": "A retained value the native reader normalizes (whitespace handling, value coercion, CDATA-versus-text erasure, mixed-text/child ordering loss)."
+    },
+    "moddle-warning": {
+      "severity": "warning",
+      "trigger": "A native warning that is neither dropped content nor normalization (unknown attribute, unresolved reference, encoding fallback, writer namespace notice). Every case carries a pointer."
+    },
+    "moddle-unmapped-diagnostic": {
+      "severity": "warning",
+      "trigger": "Fail-closed fallback: a native warning or loss whose message matches no mapped class. Emitted instead of guessing; never silently dropped."
+    },
+    "moddle-warning-truncated": {
+      "severity": "warning",
+      "trigger": "Both adapters cap warnings at 1000. Exactly one truncation diagnostic is emitted, pointing at the first warning not emitted."
+    }
+  },
+  "nativeMappings": {
+    "unknown attribute": "moddle-warning",
+    "unresolved reference": "moddle-warning",
+    "unsupported document encoding": "moddle-warning",
+    "missing namespace information": "moddle-warning",
+    "missing namespace for prefix": "unbound-prefix",
+    "already defined": "duplicate-attribute (duplicate-namespace when the repeated name is an xmlns declaration)",
+    "unexpected element": "moddle-content-dropped",
+    "unrecognized element": "moddle-content-dropped",
+    "unexpected body text": "moddle-content-dropped",
+    "expected no sub nodes": "moddle-content-dropped",
+    "unknown type": "invalid-xsi-type (native discriminator/type-resolution failure; an unknown registered-prefix element shares this message and code natively)",
+    "unparsable content": "moddle-content-dropped (only when the nested error maps to nothing more specific; the inner code wins by intra-node priority)",
+    "illegal ID": "moddle-content-dropped",
+    "duplicate ID": "moddle-content-dropped",
+    "failed to parse document": "xml-invalid",
+    "too many warnings, further warnings truncated": "moddle-warning-truncated"
+  },
+  "intraNodePriority": [
+    "reserved-name",
+    "malformed-qname",
+    "unbound-prefix",
+    "invalid-namespace",
+    "duplicate-attribute",
+    "duplicate-namespace",
+    "invalid-xsi-type",
+    "invalid-any",
+    "xml-attribute-count-limit",
+    "xml-attribute-length-limit",
+    "descriptor-mismatch",
+    "xml-depth-limit",
+    "xml-element-count-limit",
+    "xml-input-size-limit",
+    "unsupported-encoding",
+    "invalid-encoding",
+    "xml-doctype-forbidden",
+    "xml-entity-declaration-forbidden",
+    "xml-entity-reference-unsupported",
+    "xml-invalid",
+    "invalid-xml-character",
+    "moddle-content-dropped",
+    "moddle-content-normalized",
+    "moddle-warning",
+    "moddle-unmapped-diagnostic",
+    "moddle-warning-truncated"
+  ],
+  "ordering": "Diagnostics are ordered deterministically: structural document traversal order, then UTF-16 code-unit key order within one node. Complete code/path/target tuples are compared.",
+  "pointers": "Paths are RFC 6901 pointers built segment by segment with '~' escaped to '~0' and '/' to '~1'. Dots, indexes and long paths are preserved verbatim. Data without an id uses the nearest original id-bearing ancestor as target; no target is fabricated.",
+  "warningCap": 1000
+}

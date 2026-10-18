@@ -51,3 +51,12 @@ manifest_sha256 = "1588c8a1f1818e84647359de4d9c90ff6382b8404d128947f66c858b65963
 artifacts = [
   "r33-matrix-vectors.public.json",
 ]
+
+# Self-hosted F1 extension-preservation contract (this repository is the
+# canonical owner; F1 plan rev d). No external source: files are authored
+# here, expectations trace to the DESIGN/F1 text and the pinned Node
+# references under tests/oracle/. `scripts/sync_contracts.py --check`
+# verifies the manifest and lock offline; `--f1-manifest` rewrites them.
+[f1-extensions]
+dest = "contracts/f1-extensions/1"
+manifest = "MANIFEST.sha256"
