@@ -10,7 +10,9 @@ stage table is selected from, and an optional `registry` of named
 `plugin:<package>/<config>` configs for `extends`) or as the
 `CompiledProfile` produced by `compile_profile`, from which the same
 transport is derived (an optional `registry` argument supplies the extends
-configs in that form only). The pinned `bpmnlint:recommended` parent always
+configs in that form only, and an optional `bindings` argument supplies the
+envelope support bindings the `boundRole` predicate reads — the transport
+dict already carries its own). The pinned `bpmnlint:recommended` parent always
 comes from the literal port.
 
 ## Plugin

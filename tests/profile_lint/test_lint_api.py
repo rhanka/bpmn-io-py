@@ -95,6 +95,14 @@ def test_invalid_invocations_raise() -> None:
     mismatched = make_compiled(profile, phase="import", readiness_policy="draft")
     with pytest.raises(ValueError, match="another stage/policy"):
         lint(root, mismatched, phase="post-normalize", readiness_policy="accept")
+    with pytest.raises(ValueError, match="contradicts a compiled transport dict"):
+        lint(
+            root,
+            _compiled(),
+            phase="post-normalize",
+            readiness_policy="accept",
+            bindings=[{"ownerId": "Process_1", "role": "support", "targetId": "Task_A"}],
+        )
 
 
 def test_refused_paths_carry_stable_codes() -> None:
@@ -292,3 +300,106 @@ def test_compiled_profile_path_matches_transport() -> None:
     assert actual["status"] == "ok"
     assert actual["payload"] == expected["payload"]
     assert actual["report"]["entries"] == expected["report"]["entries"]
+
+
+def _bound_role_profile() -> dict[str, Json]:
+    """Neutral profile plus one boundRole rule and its setting."""
+    profile = contract("neutral-profile.json")
+    assert isinstance(profile, dict)
+    rule: dict[str, Json] = {
+        "id": "task-supported",
+        "phase": "post-normalize",
+        "select": {
+            "from": "root",
+            "via": "all",
+            "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Task",
+                "mode": "exact",
+            },
+            "order": "id",
+        },
+        "bindings": [
+            {
+                "op": "bind",
+                "as": "proc",
+                "select": {"from": "self", "via": "owner", "where": {"op": "true"}, "order": "id"},
+                "cardinality": "one",
+            }
+        ],
+        "assert": {"op": "boundRole", "binding": "self", "owner": "proc", "role": "support"},
+        "code": "task-support-missing",
+        "message": "invalid",
+        "classification": "readiness",
+    }
+    rules = [*(profile["rules"] if isinstance(profile["rules"], list) else []), rule]
+    validation = profile["validation"]
+    assert isinstance(validation, list)
+    records = []
+    for entry in validation:
+        assert isinstance(entry, dict)
+        patched = entry
+        if entry.get("id") == "post-normalize" and entry.get("policy") == "accept":
+            settings = [*entry["settings"]] if isinstance(entry.get("settings"), list) else []
+            settings.append(
+                {
+                    "rule": "profile:task-supported",
+                    "severity": "error",
+                    "classification": "readiness",
+                }
+            )
+            patched = {**entry, "settings": settings}
+        records.append(patched)
+    return {**profile, "rules": rules, "validation": records}
+
+
+def test_compiled_profile_path_feeds_support_bindings_to_bound_role() -> None:
+    """Envelope support bindings reach boundRole on the CompiledProfile path.
+
+    Task_A is bound to Process_1 by the envelope support record, so only
+    Task_B is reported; without bindings both tasks are reported. The
+    caller list is never retained.
+    """
+    from bpmn_io.profile import compile_profile, load_profile
+
+    schema = contract("profile-mechanism-1.schema.json")
+    loaded = load_profile(
+        json.dumps(_bound_role_profile()).encode("utf-8"),
+        schema_bytes=json.dumps(schema).encode("utf-8"),
+    )
+    assert loaded.status == "ok"
+    assert isinstance(loaded.payload, object)
+    compiled_result = compile_profile(loaded.payload)  # type: ignore[arg-type]
+    assert compiled_result.status == "ok"
+    root = parse(NAMED_TASK_DOC)
+    support = [{"ownerId": "Process_1", "role": "support", "targetId": "Task_A"}]
+    fed = lint(
+        root,
+        compiled_result.payload,  # type: ignore[arg-type]
+        phase="post-normalize",
+        readiness_policy="accept",
+        bindings=support,
+    )
+    assert fed["status"] == "ok"
+    fed_supported = [
+        entry for entry in fed["report"]["entries"] if entry["ruleId"] == "profile:task-supported"
+    ]
+    assert [(entry["source"]["targetId"], entry["code"]) for entry in fed_supported] == [
+        ("Task_B", "task-support-missing")
+    ]
+    bare = lint(
+        root,
+        compiled_result.payload,  # type: ignore[arg-type]
+        phase="post-normalize",
+        readiness_policy="accept",
+    )
+    assert bare["status"] == "ok"
+    bare_supported = [
+        entry for entry in bare["report"]["entries"] if entry["ruleId"] == "profile:task-supported"
+    ]
+    assert [(entry["source"]["targetId"], entry["code"]) for entry in bare_supported] == [
+        ("Task_A", "task-support-missing"),
+        ("Task_B", "task-support-missing"),
+    ]
+    assert support == [{"ownerId": "Process_1", "role": "support", "targetId": "Task_A"}]

@@ -184,7 +184,6 @@ def test_binding_cardinality_violation_refuses() -> None:
         evaluate_rule(rule, parse(NAMED_TASK_DOC), phase="post-normalize")
 
 
-@pytest.mark.xfail(strict=True, reason="needs fix-a/core #3")
 def test_assignable_uses_descriptor_inheritance() -> None:
     """A Task is not assignable to Process (reviewer probe for core #3)."""
     rule = _rule("task-named", "post-normalize")
@@ -201,9 +200,12 @@ def test_assignable_uses_descriptor_inheritance() -> None:
     assert {finding.target_id for finding in findings} == {"Task_A", "Task_B"}
 
 
-@pytest.mark.xfail(strict=True, reason="needs fix-a/core #3")
 def test_reference_traversal_resolves_targets() -> None:
-    """A reference selector yields the referenced targets, not the source."""
+    """A reference selector yields the referenced targets, not the source.
+
+    ``CLEAN_DOC`` Flow_1 targets Task_1 (passes the Task filter) while
+    Flow_2 targets End_1 (fails it), so exactly Flow_2 is reported.
+    """
     base = _rule("task-named", "post-normalize")
     rule = {
         **base,
@@ -237,4 +239,7 @@ def test_reference_traversal_resolves_targets() -> None:
         },
     }
     findings = evaluate_rule(rule, parse(CLEAN_DOC), phase="post-normalize")
-    assert findings == []
+    assert [(finding.target_id, finding.code) for finding in findings] == [
+        ("Flow_2", "task-name-missing")
+    ]
+    assert findings[0].source_pointer == "/rootElements/0/flowElements/4"

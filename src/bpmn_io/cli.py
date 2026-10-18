@@ -633,7 +633,10 @@ def _compile_for_lint(
         )
     if not isinstance(context_result.payload, DescriptorContext):
         _refuse("operation-error", "operation-error: descriptor context is open")
-    compiled_result = compile_profile(validated, descriptor_context=context_result.payload)
+    ratified_base = _ratified_base(inputs.base_bytes)
+    compiled_result = compile_profile(
+        validated, descriptor_context=context_result.payload, base=ratified_base
+    )
     if isinstance(compiled_result, PureRefused):
         _refuse(
             compiled_result.code,
@@ -642,6 +645,22 @@ def _compile_for_lint(
     if not isinstance(compiled_result.payload, CompiledProfile):
         _refuse("operation-error", "operation-error: compiler returned no profile")
     return validated, compiled_result.payload
+
+
+def _ratified_base(base_bytes: bytes) -> dict[str, Any]:
+    """Return the pin-checked base document for producer rights (raises on refusal).
+
+    ``load_profile`` already hash-pinned these bytes against the profile
+    ``base.sha256``; the compiler folds the base field producers into the
+    effective rights, so recipe writes check against ratified data here.
+    """
+    try:
+        document = json.loads(base_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as err:
+        _refuse("operation-error", f"operation-error: base is not a JSON object: {err}")
+    if not isinstance(document, dict):
+        _refuse("operation-error", "operation-error: base is not a JSON object")
+    return document
 
 
 def _descriptor_pin(validated: ValidatedProfile, descriptors_doc: dict[str, Any]) -> str:
@@ -714,6 +733,7 @@ class _LintTree:
     warnings: list[Any]
     base_revision: str
     revision: str
+    bindings: list[dict[str, Any]]
 
 
 def _input_kind(doc: dict[str, Any]) -> str:
@@ -774,6 +794,7 @@ def _tree_from_xml(xml: str, identity: dict[str, Any]) -> _LintTree:
         warnings=list(from_xml.warnings),
         base_revision=initial_base_revision("bpmn-xml", source_bytes=xml_bytes),
         revision=envelope.semantic_revision,
+        bindings=[dict(entry) for entry in envelope.bindings],
     )
 
 
@@ -802,7 +823,16 @@ def _tree_from_envelope(doc: dict[str, Any], identity: dict[str, Any]) -> _LintT
     if not isinstance(revision, str) or not revision:
         code = "profile-schema"
         _refuse(code, f"{code}: envelope revision is open")
-    return _LintTree(root=hydrated.value, warnings=[], base_revision=revision, revision=revision)
+    raw_bindings = doc.get("bindings")
+    # validate_envelope above closed the envelope, so bindings is an array here.
+    support = [dict(entry) for entry in raw_bindings] if isinstance(raw_bindings, list) else []
+    return _LintTree(
+        root=hydrated.value,
+        warnings=[],
+        base_revision=revision,
+        revision=revision,
+        bindings=support,
+    )
 
 
 def _cmd_profile_lint(args: _ProfileLintArgs) -> int:
@@ -851,6 +881,7 @@ def _cmd_profile_lint(args: _ProfileLintArgs) -> int:
             phase=args.phase,
             readiness_policy=args.readiness_policy,
             registry=inputs.extra_configs,
+            bindings=tree.bindings,
         )
     except (ValueError, TypeError) as err:
         _err(f"bpmn-io: profile lint: {err}")

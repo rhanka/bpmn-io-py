@@ -11,7 +11,9 @@ validation records to select the stage table from, and an optional
 ``extends``; the pinned ``bpmnlint:recommended`` parent always comes from
 the literal port) or as the :class:`CompiledProfile` produced by
 ``compile_profile``, from which the same transport is derived (an optional
-``registry`` argument supplies the extends configs in that form only).
+``registry`` argument supplies the extends configs in that form only, and
+an optional ``bindings`` argument supplies the envelope support bindings
+that ``boundRole`` reads — the transport dict already carries its own).
 Profile identity and revision fields stay absent here: the caller owning
 the input bytes (the CLI) patches them in, since identity is
 omitted — never fabricated — when the loader has none (DESIGN R3.3 §10.1).
@@ -55,13 +57,14 @@ OPERATION = "validate"
 REPORT_VERSION = "2"
 
 
-def lint(
+def lint(  # noqa: PLR0913 - envelope, compiled, phase, policy, registry, bindings
     envelope: ModdleElement,
     compiled: CompiledProfile | dict[str, Any],
     *,
     phase: str,
     readiness_policy: str,
     registry: Mapping[str, Any] | None = None,
+    bindings: list[dict[str, Any]] | tuple[dict[str, Any], ...] | None = None,
 ) -> dict[str, Any]:
     """Lint the immutable ``envelope`` tree and return the unified ``Result/1``.
 
@@ -71,7 +74,10 @@ def lint(
     ``validation``, optional ``registry``) or the :class:`CompiledProfile`
     produced by ``compile_profile``, from which the same transport is derived;
     ``registry`` supplies the extends configs for the compiled form only and
-    contradicts a transport dict. Contradictory invocations (unknown
+    contradicts a transport dict. ``bindings`` carries the envelope support
+    bindings the ``boundRole`` predicate reads; it feeds the compiled form
+    only and contradicts a transport dict (which carries its own). The
+    bindings are copied, never retained. Contradictory invocations (unknown
     stage/policy, a non-element envelope, malformed ``compiled`` or compiled
     options bound to another stage/policy) raise ``ValueError``. Domain
     failures (unknown lookups, extends cycles, incomplete tables, profile
@@ -87,7 +93,11 @@ def lint(
         raise ValueError(msg)
     try:
         transport = _require_compiled(
-            compiled, phase=phase, readiness_policy=readiness_policy, registry=registry
+            compiled,
+            phase=phase,
+            readiness_policy=readiness_policy,
+            registry=registry,
+            bindings=bindings,
         )
         notions = dict(compiled.notions) if isinstance(compiled, CompiledProfile) else {}
         return _lint(
@@ -115,17 +125,25 @@ def _require_compiled(
     phase: str,
     readiness_policy: str,
     registry: Mapping[str, Any] | None,
+    bindings: list[dict[str, Any]] | tuple[dict[str, Any], ...] | None,
 ) -> dict[str, Any]:
     """Narrow the compiled data to its transport shape (``TypeError`` otherwise)."""
     if isinstance(compiled, CompiledProfile):
         return _transport_from_compiled(
-            compiled, phase=phase, readiness_policy=readiness_policy, registry=registry
+            compiled,
+            phase=phase,
+            readiness_policy=readiness_policy,
+            registry=registry,
+            bindings=bindings,
         )
     if not isinstance(compiled, dict):
         msg = f"compiled must be an object or CompiledProfile, got {type(compiled).__name__}"
         raise TypeError(msg)
     if registry is not None:
         msg = "registry contradicts a compiled transport dict (it carries its own)"
+        raise ValueError(msg)
+    if bindings is not None:
+        msg = "bindings contradicts a compiled transport dict (it carries its own)"
         raise ValueError(msg)
     return compiled
 
@@ -136,12 +154,14 @@ def _transport_from_compiled(
     phase: str,
     readiness_policy: str,
     registry: Mapping[str, Any] | None,
+    bindings: list[dict[str, Any]] | tuple[dict[str, Any], ...] | None,
 ) -> dict[str, Any]:
     """Derive the lint transport from a :class:`CompiledProfile`.
 
     Mirrors the profile-to-transport derivation (validation records plus the
-    compiled rules in profile order, digested for this stage/policy); record
-    shape failures surface as refused results through the shared path.
+    compiled rules in profile order, digested for this stage/policy, plus the
+    envelope support bindings the ``boundRole`` predicate reads); record and
+    binding shape failures surface as refused results through the shared path.
     """
     rules = [rule for rule in compiled.rules.values() if isinstance(rule, dict)]
     validation = list(compiled.validation)
@@ -153,7 +173,7 @@ def _transport_from_compiled(
         "phase": phase,
         "readinessPolicy": readiness_policy,
         "compiledRules": rules,
-        "bindings": [],
+        "bindings": _copy_support_bindings(bindings),
         "severityPolicyDigest": flattened.severity_policy_digest,
     }
     validate_compiled_options(options)
@@ -162,6 +182,16 @@ def _transport_from_compiled(
         "validation": validation,
         "registry": dict(registry) if registry is not None else {},
     }
+
+
+def _copy_support_bindings(bindings: object) -> list[Any]:
+    """Copy the envelope support bindings (``TypeError`` on a wrong container)."""
+    if bindings is None:
+        return []
+    if not isinstance(bindings, (list, tuple)):
+        msg = f"bindings must be an array of binding records, got {type(bindings).__name__}"
+        raise TypeError(msg)
+    return list(bindings)
 
 
 def _lint(
