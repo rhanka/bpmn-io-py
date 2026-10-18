@@ -471,6 +471,35 @@ def _check_unicode_case(pins: dict[str, object], ledger: dict[str, object]) -> i
     return bad + _check_unicode_case_manifest(section, locked)
 
 
+def _check_f1_from_pins(pins: dict[str, object], ledger: dict[str, object]) -> int:
+    """Verify the self-hosted f1-extensions contract from the pin/ledger pair.
+
+    Missing ``[f1-extensions]`` pins count as a failure (like the
+    unicode-case targets helper) instead of raising, so the unified
+    self-hosted dispatch always reports through ``check()``.
+    """
+    section = pins.get("f1-extensions")
+    if not isinstance(section, dict):
+        print("PINS     CONTRACTS.toml: missing [f1-extensions] section")
+        return 1
+    return _check_f1(section, ledger)
+
+
+#: Every self-hosted (repo-owned) contract check, one coherent dispatch.
+_SELF_HOSTED_CHECKS = (
+    _check_unicode_case,
+    _check_f1_from_pins,
+)
+
+
+def _check_self_hosted(pins: dict[str, object], ledger: dict[str, object]) -> int:
+    """Run every self-hosted contract check through one dispatch table."""
+    bad = 0
+    for check_one in _SELF_HOSTED_CHECKS:
+        bad += check_one(pins, ledger)
+    return bad
+
+
 def check() -> int:
     pins = load_pins()
     section = _contract_section(pins)
@@ -485,8 +514,7 @@ def check() -> int:
     bad = (
         _check_pins(section, ledger)
         + _check_bytes(section, ledger)
-        + _check_unicode_case(pins, ledger)
-        + _check_f1(_f1_section(pins), ledger)
+        + _check_self_hosted(pins, ledger)
     )
     print("ok" if not bad else f"{bad} problem(s)")
     return 1 if bad else 0
