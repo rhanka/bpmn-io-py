@@ -21,6 +21,59 @@ MIT License, with the original copyright notice preserved. bpmn-io is an indepen
 Exact tags, commits and per-file sha256 digests of every vendored file are recorded in
 `UPSTREAM.toml` and `UPSTREAM.lock`.
 
+## Unicode Character Database 15.0.0 (case tables)
+
+The pinned full default case data in `src/bpmn_io/profile/_unicode15.py` is
+derived from the Unicode Character Database 15.0.0 (`UnicodeData.txt`,
+`SpecialCasing.txt`, `DerivedCoreProperties.txt`; source names, sizes and
+SHA-256 recorded in `contracts/unicode-case/15.0.0/manifest.json` and in the
+generated module header). The raw UCD files are not vendored. The derivation
+is reproduced by `scripts/gen_unicode_case.py` (`--check` re-derives from the
+hash-verified sources). Copyright © 1991-2026 Unicode, Inc. Distributed under
+the UNICODE LICENSE V3, reproduced below.
+
+```
+UNICODE LICENSE V3
+
+COPYRIGHT AND PERMISSION NOTICE
+
+Copyright © 1991-2026 Unicode, Inc.
+
+NOTICE TO USER: Carefully read the following legal agreement. BY
+DOWNLOADING, INSTALLING, COPYING OR OTHERWISE USING DATA FILES, AND/OR
+SOFTWARE, YOU UNEQUIVOCALLY ACCEPT, AND AGREE TO BE BOUND BY, ALL OF THE
+TERMS AND CONDITIONS OF THIS AGREEMENT. IF YOU DO NOT AGREE, DO NOT
+DOWNLOAD, INSTALL, COPY, DISTRIBUTE OR USE THE DATA FILES OR SOFTWARE.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of data files and any associated documentation (the "Data Files") or
+software and any associated documentation (the "Software") to deal in the
+Data Files or Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, and/or sell
+copies of the Data Files or Software, and to permit persons to whom the
+Data Files or Software are furnished to do so, provided that either (a)
+this copyright and permission notice appear with all copies of the Data
+Files or Software, or (b) this copyright and permission notice appear in
+associated Documentation.
+
+THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF
+THIRD PARTY RIGHTS.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE
+BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES,
+OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA
+FILES OR SOFTWARE.
+
+Except as contained in this notice, the name of a copyright holder shall
+not be used in advertising or otherwise to promote the sale, use or other
+dealings in these Data Files or Software without prior written
+authorization of the copyright holder.
+```
+
 The BPMN 2.0 descriptors were generated upstream from the OMG BPMN 2.0 specification metamodel
 (CMOF). The OMG XSD schema files are **not** redistributed by this package.
 

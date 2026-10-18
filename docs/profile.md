@@ -14,6 +14,8 @@ Python binding follows `spec/SPEC_PROFILE_MECHANISM_PY.md`.
 - `src/bpmn_io/profile/_c14n.py` — `profile-c14n/2` JCS bytes (§3.1).
 - `src/bpmn_io/profile/_stable_id.py` — `stable-id/1` allocation (§3.2).
 - `src/bpmn_io/profile/_unicode_case.py` — full default case, pinned 15.0.0.
+- `src/bpmn_io/profile/_unicode15.py` — generated frozen 15.0.0 tables
+  (from `contracts/unicode-case/15.0.0/case-table.json`, never edited by hand).
 - `src/bpmn_io/profile/_loader.py` — `load_profile` with digest pins.
 - `src/bpmn_io/profile/_compiler.py` — selectors, predicates, recipes (§2.4.1).
 - `src/bpmn_io/profile/_evaluate.py` — read-only bounded evaluation.
