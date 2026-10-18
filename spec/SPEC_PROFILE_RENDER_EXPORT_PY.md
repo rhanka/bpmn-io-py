@@ -756,6 +756,29 @@ Appendix B (export tree) at the end of this document.
 13. `metricsDigest` over the selected chain's metric resources (§6.1).
 14. `counterOrigin` nonzero under a non-counter policy and `page` with `parent`
     refuse `profile-type` (CR-11 lists both codes).
+15. `measure_text`: `spaceAdvance` applies to U+0020 only; metric values are
+    ticks; `height = lines × (ascent + descent)` (§7).
+16. Labels: line-feed split only, no wrapping; label bounds = DI `BPMNLabel`
+    bounds, else the record bounds; region items keep the DI label size, else
+    the measured size (§4.2, §4.3).
+17. A declared theme `aliases` entry selects that theme; the binding records the
+    theme id (§4.1, §5.1).
+18. Synthetic occurrences are laid out by `compute_layout` (selected theme only)
+    and styled by `resolve_theme`; "represented page" = page root or a
+    transcribed record of the owner (§4.4).
+19. Render bindings follow the selected theme's fallback chain (nearest theme
+    first) (§5.2).
+20. `corner-fold` uses the exact rational of the shortest decimal form of
+    `foldRatio` (§8.2).
+21. Coverage includes `Definitions` and every ID-bearing element (§5.3).
+22. Unresolved DI references refuse `render-stale`; unresolvable edge endpoints
+    refuse `render-unsupported` (§4.1, §4.2).
+23. Loss-action result coordinates point at the last record emitted in the same
+    recipe iteration (`/ir/<index>`), else unavailable (§10.3).
+24. idMap rows only for records emitted while `self` is a PageHandle or a
+    semantic occurrence; artifact `digest = H(ir)` before serialization (§10.3).
+25. `map_export` checks R freshness, not provenance (§10.1).
+26. Additive block-A type extensions and `registry_from_json` (§1).
 
 ## Appendix A — render tree (`tests/profile_render/expected/`, 155 cases)
 
