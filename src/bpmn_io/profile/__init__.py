@@ -60,7 +60,12 @@ from bpmn_io.profile._results import (
     sort_report_entries,
     worst_capability,
 )
-from bpmn_io.profile._schema import CLOSED_KEYWORDS, SchemaRefusal, validate
+from bpmn_io.profile._schema import (
+    CLOSED_KEYWORDS,
+    PATTERN_INVENTORY,
+    SchemaRefusal,
+    validate,
+)
 from bpmn_io.profile._stable_id import STABLE_ID_PREFIX, allocate_stable_id
 from bpmn_io.profile._unicode_case import (
     UNICODE_VERSION_PIN,
@@ -72,6 +77,7 @@ from bpmn_io.profile._unicode_case import (
 __all__ = [
     "CLOSED_KEYWORDS",
     "INVENTORY_HASHES",
+    "PATTERN_INVENTORY",
     "STABLE_ID_PREFIX",
     "UNICODE_VERSION_PIN",
     "CompiledProfile",

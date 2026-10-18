@@ -15,6 +15,7 @@ import re
 
 __all__ = [
     "CLOSED_KEYWORDS",
+    "PATTERN_INVENTORY",
     "SchemaError",
     "SchemaRefusal",
     "validate",
@@ -144,8 +145,29 @@ def _check_type(type_name: str, value: object) -> bool:  # noqa: PLR0911
     return False
 
 
+#: Closed regex inventory (SPEC §1.2, displayed with schema anchors).
+#: Only these eight pinned patterns validate data; any other pattern refuses
+#: schema loading with ``profile-schema-pattern``.
+PATTERN_INVENTORY: tuple[str, ...] = (
+    "^[A-Za-z_][A-Za-z0-9_.:/-]*$",
+    "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+    "^[a-z]{2}(?:-[A-Z]{2})?$",
+    "^[0-9a-f]{64}$",
+    "^[A-Za-z_][A-Za-z0-9_]*$",
+    "^(?:/(?:[^~/]|~[01])*)*$",
+    "^(?:bpmnlint:recommended|plugin:[A-Za-z_][A-Za-z0-9_.-]*/[A-Za-z_][A-Za-z0-9_.-]*)$",
+    "^[A-Za-z_][A-Za-z0-9_.:/-]*/[1-9][0-9]*$",
+)
+
+_INVENTORY_SET: frozenset[str] = frozenset(PATTERN_INVENTORY)
+
+
 def _compile_pattern(pattern: str) -> re.Pattern[str]:
     """Compile one schema pattern with the fullmatch policy."""
+    if pattern not in _INVENTORY_SET:
+        code = "profile-schema-pattern"
+        message = f"pattern outside the closed inventory {pattern!r}"
+        raise SchemaRefusal(code, message)
     body = pattern[1:-1] if pattern.startswith("^") and pattern.endswith("$") else pattern
     try:
         return re.compile(body)
@@ -180,10 +202,16 @@ def _resolve_local_pointer(root: object, pointer: str) -> object:
     return current
 
 
-def _resolve_ref(ref: str, root: object, registry: dict[str, object]) -> object:
-    """Resolve one ``$ref`` against the local root or the pinned registry."""
+def _resolve_ref(ref: str, root: object, registry: dict[str, object]) -> tuple[object, object]:
+    """Resolve one ``$ref``, returning the target and its resource root.
+
+    Local pointers re-anchor to ``root``; an external ``uri#pointer`` target
+    becomes its own resource root so nested local pointers inside the
+    referenced document resolve there (Ajv parity), not against the
+    referring schema.
+    """
     if ref.startswith("#"):
-        return _resolve_local_pointer(root, ref)
+        return _resolve_local_pointer(root, ref), root
     if "#" in ref:
         uri, _, pointer = ref.partition("#")
         target = registry.get(uri)
@@ -196,11 +224,11 @@ def _resolve_ref(ref: str, root: object, registry: dict[str, object]) -> object:
             code = "profile-schema-ref"
             raise SchemaRefusal(code, f"unregistered external ref {ref!r}")
         if pointer in ("", "/"):
-            return target
+            return target, target
         if not pointer.startswith("/"):
             code = "profile-schema-ref"
             raise SchemaRefusal(code, f"unsupported ref {ref!r}")
-        return _resolve_local_pointer(target, "#" + pointer)
+        return _resolve_local_pointer(target, "#" + pointer), target
     code = "profile-schema-ref"
     raise SchemaRefusal(code, f"unsupported ref {ref!r}")
 
@@ -208,11 +236,17 @@ def _resolve_ref(ref: str, root: object, registry: dict[str, object]) -> object:
 def _audit_keywords(  # noqa: C901, PLR0912
     schema: object, registry: dict[str, object], root: object
 ) -> None:
-    """Refuse schemas using keywords outside the closed subset (bounded)."""
-    stack: list[object] = [schema]
+    """Refuse schemas using keywords outside the closed subset (bounded).
+
+    Each stack entry carries its own resource root; an external ``$ref``
+    target is audited once under its own root so its patterns and nested
+    references face the same closed checks (cycle-safe via the seen set).
+    """
+    stack: list[tuple[object, object]] = [(schema, root)]
+    audited: set[int] = set()
     seen = 0
     while stack:
-        current = stack.pop()
+        current, current_root = stack.pop()
         seen += 1
         if seen > 100000 or len(stack) > _MAX_DEPTH * 4:
             message = "schema audit size exceeded"
@@ -221,6 +255,9 @@ def _audit_keywords(  # noqa: C901, PLR0912
             continue
         if not isinstance(current, dict):
             continue
+        if id(current) in audited:
+            continue
+        audited.add(id(current))
         for key, entry in current.items():
             if key not in _CLOSED_SET:
                 code = "profile-schema-keyword"
@@ -235,19 +272,21 @@ def _audit_keywords(  # noqa: C901, PLR0912
         if isinstance(ref, str):
             # Eager resolution refuses unregistered external pins at load,
             # even when no data element reaches the branch (Ajv parity).
-            _resolve_ref(ref, root, registry)
+            resolved, resolved_root = _resolve_ref(ref, current_root, registry)
+            if resolved_root is not current_root and id(resolved) not in audited:
+                stack.append((resolved, resolved_root))
         for key in ("properties", "$defs"):
             branch = current.get(key)
             if isinstance(branch, dict):
-                stack.extend(branch.values())
+                stack.extend((entry, current_root) for entry in branch.values())
         for key in ("items", "not", "if", "then", "else"):
             branch = current.get(key)
             if isinstance(branch, dict | bool):
-                stack.append(branch)
+                stack.append((branch, current_root))
         for key in ("allOf", "anyOf", "oneOf"):
             branch = current.get(key)
             if isinstance(branch, list):
-                stack.extend(branch)
+                stack.extend((entry, current_root) for entry in branch)
 
 
 def _validate_at(  # noqa: C901, PLR0912, PLR0911, PLR0915
@@ -268,11 +307,11 @@ def _validate_at(  # noqa: C901, PLR0912, PLR0911, PLR0915
         ref = schema["$ref"]
         if not isinstance(ref, str):
             return False
-        resolved = _resolve_ref(ref, root, registry)
+        resolved, resolved_root = _resolve_ref(ref, root, registry)
         if len(schema) == 1:
-            return _validate_at(resolved, value, root, registry, depth + 1)
+            return _validate_at(resolved, value, resolved_root, registry, depth + 1)
         merged = {k: v for k, v in schema.items() if k != "$ref"}
-        if not _validate_at(resolved, value, root, registry, depth + 1):
+        if not _validate_at(resolved, value, resolved_root, registry, depth + 1):
             return False
         schema = merged
     schema_type = schema.get("type")
