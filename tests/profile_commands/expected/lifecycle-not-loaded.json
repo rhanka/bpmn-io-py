@@ -1,0 +1,129 @@
+{
+  "case": "lifecycle-not-loaded",
+  "clause": "DESIGN R3.3 \u00a710.1 L737 before an envelope exists, getters return a Result refusal with document-not-loaded and omitted identity/revisions; \u00a78.1 L589",
+  "derivation": "A bridge without a loaded document refuses getters, activation, commands and queries with document-not-loaded; Result refusals omit profileIdentity and baseRevision (and the report omits sourceIdentity and inputRevision).",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
+    },
+    "steps": [
+      {
+        "op": "get_definitions"
+      },
+      {
+        "op": "get_snapshot"
+      },
+      {
+        "op": "activate"
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "f5652ef7f64b1c6d381bd05bdc1341020396f7dd789aa10aab3f19bed2322a2d",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "command": "field",
+              "notion": "task",
+              "field": "name",
+              "context": {
+                "target": "Task_1",
+                "value": "A"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "op": "list_entries",
+        "args": {
+          "baseRevision": "f5652ef7f64b1c6d381bd05bdc1341020396f7dd789aa10aab3f19bed2322a2d",
+          "surface": "palette",
+          "subject": "Process_1",
+          "locale": "en"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "steps": [
+      {
+        "result": {
+          "status": "refused",
+          "operation": "getDefinitions",
+          "code": "document-not-loaded",
+          "diagnostics": [],
+          "report": {
+            "reportVersion": "2",
+            "operation": "getDefinitions",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "refused",
+          "operation": "getSnapshot",
+          "code": "document-not-loaded",
+          "diagnostics": [],
+          "report": {
+            "reportVersion": "2",
+            "operation": "getSnapshot",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "refused",
+          "operation": "activateBusinessProfile",
+          "code": "document-not-loaded",
+          "diagnostics": [],
+          "report": {
+            "reportVersion": "2",
+            "operation": "activateBusinessProfile",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "refused",
+          "operation": "applyCommands",
+          "code": "document-not-loaded",
+          "diagnostics": [],
+          "report": {
+            "reportVersion": "2",
+            "operation": "applyCommands",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "refused",
+          "code": "document-not-loaded",
+          "diagnostics": []
+        }
+      }
+    ]
+  }
+}

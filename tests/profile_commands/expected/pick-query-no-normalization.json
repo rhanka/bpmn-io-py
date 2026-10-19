@@ -1,0 +1,515 @@
+{
+  "case": "pick-query-no-normalization",
+  "clause": "DESIGN R3.3 \u00a78.3 L657 literal substring with no normalization",
+  "derivation": "Precomposed Caf\u00e9 (U+00E9) matches only Store_10; the decomposed sequence e + U+0301 matches only Store_9; Cafe matches only Store_9 (its prefix), not the precomposed label; the astral U+1D49C matches only Store-x. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Archive task"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_1",
+                "dataStoreRef": "Store_b"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "store_a",
+            "name": "Archive"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_b",
+            "name": "archive box"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_B",
+            "name": "ARCHIVE"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_10",
+            "name": "Caf\u00e9"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_9",
+            "name": "Caf\u00e9"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store-x",
+            "name": "\ud835\udc9crchive"
+          },
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store.y"
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "targetId": "Ref_1",
+          "fieldId": "store",
+          "query": "Caf\u00e9",
+          "offset": 0,
+          "limit": 100
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "targetId": "Ref_1",
+          "fieldId": "store",
+          "query": "\u00e9",
+          "offset": 0,
+          "limit": 100
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "targetId": "Ref_1",
+          "fieldId": "store",
+          "query": "Cafe",
+          "offset": 0,
+          "limit": 100
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "targetId": "Ref_1",
+          "fieldId": "store",
+          "query": "\ud835\udc9c",
+          "offset": 0,
+          "limit": 100
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "load": {
+        "status": "ok",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+        "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "outputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Archive task"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "Ref_1",
+                      "dataStoreRef": "Store_b"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "store_a",
+                  "name": "Archive"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_b",
+                  "name": "archive box"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_B",
+                  "name": "ARCHIVE"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_10",
+                  "name": "Caf\u00e9"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_9",
+                  "name": "Caf\u00e9"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store-x",
+                  "name": "\ud835\udc9crchive"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store.y"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+        "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "outputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Archive task"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "Ref_1",
+                      "dataStoreRef": "Store_b"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "store_a",
+                  "name": "Archive"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_b",
+                  "name": "archive box"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_B",
+                  "name": "ARCHIVE"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_10",
+                  "name": "Caf\u00e9"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_9",
+                  "name": "Caf\u00e9"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store-x",
+                  "name": "\ud835\udc9crchive"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store.y"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "candidates": [
+              {
+                "id": "Store_10",
+                "type": "bpmn:DataStore",
+                "label": "Caf\u00e9"
+              }
+            ],
+            "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "candidates": [
+              {
+                "id": "Store_9",
+                "type": "bpmn:DataStore",
+                "label": "Caf\u00e9"
+              }
+            ],
+            "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "candidates": [
+              {
+                "id": "Store_9",
+                "type": "bpmn:DataStore",
+                "label": "Caf\u00e9"
+              }
+            ],
+            "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "candidates": [
+              {
+                "id": "Store-x",
+                "type": "bpmn:DataStore",
+                "label": "\ud835\udc9crchive"
+              }
+            ],
+            "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "diagnostics": []
+        }
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+  }
+}

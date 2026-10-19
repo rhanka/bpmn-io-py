@@ -1,0 +1,47 @@
+{
+  "case": "compile-ui-parameter-source-type",
+  "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 typed bindings; \u00a78.3 L655 owner/target/source are native handles, value is the typed field value",
+  "derivation": "The element parameter owner of task-create is bound from source value (a scalar), so the binding is ill-typed and compilation refuses profile-ui-parameters. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/ui/1/parameters/0/source",
+          "value": "value"
+        }
+      ],
+      "artifact": "artifacts/profiles/compile-ui-parameter-source-type.json"
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-ui-parameters",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "88719cfe3fb5ebeb44f5612d5c28bba26581d0e951f23dce02a1a56247b5d573",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

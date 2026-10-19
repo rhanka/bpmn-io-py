@@ -1,0 +1,544 @@
+{
+  "case": "field-display-edit-grid",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 field display is a Value expression independent of its storage path; \u00a72.2 L116 Unicode 15.0.0 full case mapping",
+  "derivation": "The grid aid body field displays case-upper(stripPrefix(text, [Note] plus space)): stored [Note] stra\u00dfe displays STRASSE (full mapping expands \u00df) while value stays the stored text. Editing the body with neu stores [Note] neu and displays NEU; the stored text never receives the display casing.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-grid.json",
+      "delta": [],
+      "artifact": "artifacts/profiles/grid-lot5.json"
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": true,
+            "flowElements": [
+              {
+                "$type": "bpmn:ServiceTask",
+                "id": "Task_1",
+                "name": "Review"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Aid_1",
+                "text": "[Note] stra\u00dfe"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "list_fields",
+        "args": {
+          "baseRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+          "targetId": "Aid_1",
+          "locale": "en"
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "command": "field",
+              "notion": "aid",
+              "field": "body",
+              "context": {
+                "target": "Aid_1",
+                "value": "neu"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "op": "list_fields",
+        "args": {
+          "baseRevision": "877d3ce07964fa5f731944f397c1d87b299addc11c9ff9097eec977847d62da0",
+          "targetId": "Aid_1",
+          "locale": "en"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "load": {
+        "status": "ok",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-grid/1",
+          "version": "2.6.0",
+          "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+        "revision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+          "outputRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": true,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_1",
+                      "text": "[Note] stra\u00dfe"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118"
+          },
+          "semanticRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-grid/1",
+          "version": "2.6.0",
+          "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+        "revision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+          "outputRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": true,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_1",
+                      "text": "[Note] stra\u00dfe"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118"
+          },
+          "semanticRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "revision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+            "targetId": "Aid_1",
+            "fields": [
+              {
+                "notion": "aid",
+                "field": "body",
+                "widget": "multiline",
+                "path": "/text",
+                "label": {
+                  "key": "label.aid",
+                  "text": "Aid"
+                },
+                "message": {
+                  "key": "invalid",
+                  "text": "Name is required."
+                },
+                "present": true,
+                "display": "STRASSE",
+                "value": "[Note] stra\u00dfe",
+                "mutable": true,
+                "choices": [],
+                "targetTypes": []
+              }
+            ]
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "operation": "applyCommands",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+          "revision": "877d3ce07964fa5f731944f397c1d87b299addc11c9ff9097eec977847d62da0",
+          "report": {
+            "reportVersion": "2",
+            "operation": "applyCommands",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118",
+            "outputRevision": "877d3ce07964fa5f731944f397c1d87b299addc11c9ff9097eec977847d62da0",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "envelope": {
+              "documentVersion": "1",
+              "profileIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-grid/1",
+                "version": "2.6.0",
+                "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+                "base": {
+                  "id": "neutral-base/1",
+                  "version": "lot5-1",
+                  "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-descriptors/1",
+                    "version": "lot5-1",
+                    "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                  }
+                ]
+              },
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "id": "Definitions_1",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "id": "Process_1",
+                    "isExecutable": true,
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:ServiceTask",
+                        "id": "Task_1",
+                        "name": "Review"
+                      }
+                    ],
+                    "artifacts": [
+                      {
+                        "$type": "bpmn:TextAnnotation",
+                        "id": "Aid_1",
+                        "text": "[Note] neu"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "bindings": [],
+              "semanticRevision": "877d3ce07964fa5f731944f397c1d87b299addc11c9ff9097eec977847d62da0"
+            },
+            "semanticRevision": "877d3ce07964fa5f731944f397c1d87b299addc11c9ff9097eec977847d62da0",
+            "viewRevision": {
+              "$unsealed": "lot4-view-revision"
+            },
+            "transactionId": "tx-1",
+            "changed": true
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "revision": "877d3ce07964fa5f731944f397c1d87b299addc11c9ff9097eec977847d62da0",
+            "targetId": "Aid_1",
+            "fields": [
+              {
+                "notion": "aid",
+                "field": "body",
+                "widget": "multiline",
+                "path": "/text",
+                "label": {
+                  "key": "label.aid",
+                  "text": "Aid"
+                },
+                "message": {
+                  "key": "invalid",
+                  "text": "Name is required."
+                },
+                "present": true,
+                "display": "NEU",
+                "value": "[Note] neu",
+                "mutable": true,
+                "choices": [],
+                "targetTypes": []
+              }
+            ]
+          },
+          "diagnostics": []
+        }
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "b401c00c27fda3938a4e1a0a5f7e85d931ad07f823b87ff6eb18851628c21118"
+  }
+}

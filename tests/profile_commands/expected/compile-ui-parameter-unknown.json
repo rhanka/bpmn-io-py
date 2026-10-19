@@ -1,0 +1,50 @@
+{
+  "case": "compile-ui-parameter-unknown",
+  "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 typed gesture/field bindings; \u00a78.3 L655 no ambient parameter",
+  "derivation": "task-create binds a name extra that create-task does not declare; an undeclared parameter binding refuses profile-ui-parameters. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "add",
+          "path": "/ui/1/parameters/-",
+          "value": {
+            "name": "extra",
+            "source": "value"
+          }
+        }
+      ],
+      "artifact": "artifacts/profiles/compile-ui-parameter-unknown.json"
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-ui-parameters",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "899f6912aa645fd2a688b199c5d27ca1101e902bb27c30edf6df6dbea2e6fdd7",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

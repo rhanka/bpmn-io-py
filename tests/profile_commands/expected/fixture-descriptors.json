@@ -1,0 +1,490 @@
+{
+  "case": "fixture-descriptors",
+  "clause": "DESIGN R3.3 \u00a78.1 L606 descriptor package {id,version,sha256,descriptorBytes}; \u00a72.1 L48 closed pins",
+  "derivation": "Union of the vendored neutral descriptor slice, the vendored support-fixture types (Collaboration, Participant, LaneSet, Lane) and the lot-5 types (DataStore, DataStoreReference, InputOutputSpecification, DataInput, InputSet). The committed package bytes (expected.artifact) are exactly the UTF-8 profile-c14n/2 bytes of expected.document (no BOM, no trailing newline), so the raw SHA-256 of the file equals pin.sha256 = H(document) (harmonization A6: raw SHA-256 of committed files).",
+  "author": "spec-seal",
+  "input": {
+    "source": {
+      "file": "contracts/profile-mechanism/1/neutral-descriptors.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/scope",
+          "value": "Synthetic descriptor slice for the lot-5 command expectations; not the complete BPMN descriptor set."
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:Definitions/containment/rootElements/-",
+          "value": "bpmn:Collaboration"
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:Definitions/containment/rootElements/-",
+          "value": "bpmn:DataStore"
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:Process/containment/flowElements/-",
+          "value": "bpmn:DataStoreReference"
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:Process/containment/laneSets",
+          "value": [
+            "bpmn:LaneSet"
+          ]
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:Process/containment/ioSpecification",
+          "value": [
+            "bpmn:InputOutputSpecification"
+          ]
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:Association/references/sourceRef/-",
+          "value": "bpmn:DataStoreReference"
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:Collaboration",
+          "value": {
+            "id": true,
+            "scalars": [
+              "id",
+              "name"
+            ],
+            "containment": {
+              "participants": [
+                "bpmn:Participant"
+              ]
+            },
+            "references": {}
+          }
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:Participant",
+          "value": {
+            "id": true,
+            "scalars": [
+              "id",
+              "name"
+            ],
+            "containment": {},
+            "references": {
+              "processRef": [
+                "bpmn:Process"
+              ]
+            }
+          }
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:LaneSet",
+          "value": {
+            "id": true,
+            "scalars": [
+              "id",
+              "name"
+            ],
+            "containment": {
+              "lanes": [
+                "bpmn:Lane"
+              ]
+            },
+            "references": {}
+          }
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:Lane",
+          "value": {
+            "id": true,
+            "scalars": [
+              "id",
+              "name"
+            ],
+            "containment": {},
+            "references": {
+              "flowNodeRef": [
+                "bpmn:Task"
+              ]
+            }
+          }
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:DataStore",
+          "value": {
+            "id": true,
+            "scalars": [
+              "id",
+              "name"
+            ],
+            "containment": {},
+            "references": {}
+          }
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:DataStoreReference",
+          "value": {
+            "id": true,
+            "scalars": [
+              "id",
+              "name"
+            ],
+            "containment": {},
+            "references": {
+              "dataStoreRef": [
+                "bpmn:DataStore"
+              ]
+            }
+          }
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:InputOutputSpecification",
+          "value": {
+            "id": false,
+            "scalars": [],
+            "containment": {
+              "dataInputs": [
+                "bpmn:DataInput"
+              ],
+              "inputSets": [
+                "bpmn:InputSet"
+              ]
+            },
+            "references": {}
+          }
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:DataInput",
+          "value": {
+            "id": true,
+            "scalars": [
+              "id",
+              "name"
+            ],
+            "containment": {},
+            "references": {}
+          }
+        },
+        {
+          "op": "add",
+          "path": "/types/bpmn:InputSet",
+          "value": {
+            "id": true,
+            "scalars": [
+              "id",
+              "name"
+            ],
+            "containment": {},
+            "references": {
+              "dataInputRefs": [
+                "bpmn:DataInput"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "document": {
+      "id": "neutral-descriptors/1",
+      "scope": "Synthetic descriptor slice for the lot-5 command expectations; not the complete BPMN descriptor set.",
+      "types": {
+        "bpmn:Definitions": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name",
+            "targetNamespace"
+          ],
+          "containment": {
+            "rootElements": [
+              "bpmn:Process",
+              "bpmn:Collaboration",
+              "bpmn:DataStore"
+            ]
+          },
+          "references": {}
+        },
+        "bpmn:Process": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name",
+            "isExecutable"
+          ],
+          "containment": {
+            "flowElements": [
+              "bpmn:Task",
+              "bpmn:ServiceTask",
+              "bpmn:StartEvent",
+              "bpmn:SequenceFlow",
+              "bpmn:ExclusiveGateway",
+              "bpmn:DataStoreReference"
+            ],
+            "artifacts": [
+              "bpmn:TextAnnotation",
+              "bpmn:Association"
+            ],
+            "documentation": [
+              "bpmn:Documentation"
+            ],
+            "laneSets": [
+              "bpmn:LaneSet"
+            ],
+            "ioSpecification": [
+              "bpmn:InputOutputSpecification"
+            ]
+          },
+          "references": {}
+        },
+        "bpmn:Task": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {
+            "documentation": [
+              "bpmn:Documentation"
+            ]
+          },
+          "references": {}
+        },
+        "bpmn:ServiceTask": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {
+            "documentation": [
+              "bpmn:Documentation"
+            ]
+          },
+          "references": {}
+        },
+        "bpmn:TextAnnotation": {
+          "id": true,
+          "scalars": [
+            "id",
+            "text"
+          ],
+          "containment": {},
+          "references": {}
+        },
+        "bpmn:Association": {
+          "id": true,
+          "scalars": [
+            "id",
+            "associationDirection"
+          ],
+          "containment": {},
+          "references": {
+            "sourceRef": [
+              "bpmn:Task",
+              "bpmn:ServiceTask",
+              "bpmn:TextAnnotation",
+              "bpmn:DataStoreReference"
+            ],
+            "targetRef": [
+              "bpmn:Task",
+              "bpmn:ServiceTask",
+              "bpmn:TextAnnotation"
+            ]
+          }
+        },
+        "bpmn:Documentation": {
+          "id": false,
+          "scalars": [
+            "text",
+            "textFormat"
+          ],
+          "containment": {},
+          "references": {}
+        },
+        "bpmn:FormalExpression": {
+          "id": false,
+          "scalars": [
+            "body",
+            "language"
+          ],
+          "containment": {},
+          "references": {}
+        },
+        "bpmn:StartEvent": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {},
+          "references": {
+            "outgoing": [
+              "bpmn:SequenceFlow"
+            ]
+          }
+        },
+        "bpmn:ExclusiveGateway": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {},
+          "references": {
+            "incoming": [
+              "bpmn:SequenceFlow"
+            ],
+            "outgoing": [
+              "bpmn:SequenceFlow"
+            ]
+          }
+        },
+        "bpmn:SequenceFlow": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {},
+          "references": {
+            "sourceRef": [
+              "bpmn:StartEvent",
+              "bpmn:ExclusiveGateway",
+              "bpmn:Task"
+            ],
+            "targetRef": [
+              "bpmn:ExclusiveGateway",
+              "bpmn:Task"
+            ]
+          }
+        },
+        "bpmn:Collaboration": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {
+            "participants": [
+              "bpmn:Participant"
+            ]
+          },
+          "references": {}
+        },
+        "bpmn:Participant": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {},
+          "references": {
+            "processRef": [
+              "bpmn:Process"
+            ]
+          }
+        },
+        "bpmn:LaneSet": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {
+            "lanes": [
+              "bpmn:Lane"
+            ]
+          },
+          "references": {}
+        },
+        "bpmn:Lane": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {},
+          "references": {
+            "flowNodeRef": [
+              "bpmn:Task"
+            ]
+          }
+        },
+        "bpmn:DataStore": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {},
+          "references": {}
+        },
+        "bpmn:DataStoreReference": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {},
+          "references": {
+            "dataStoreRef": [
+              "bpmn:DataStore"
+            ]
+          }
+        },
+        "bpmn:InputOutputSpecification": {
+          "id": false,
+          "scalars": [],
+          "containment": {
+            "dataInputs": [
+              "bpmn:DataInput"
+            ],
+            "inputSets": [
+              "bpmn:InputSet"
+            ]
+          },
+          "references": {}
+        },
+        "bpmn:DataInput": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {},
+          "references": {}
+        },
+        "bpmn:InputSet": {
+          "id": true,
+          "scalars": [
+            "id",
+            "name"
+          ],
+          "containment": {},
+          "references": {
+            "dataInputRefs": [
+              "bpmn:DataInput"
+            ]
+          }
+        }
+      }
+    },
+    "pin": {
+      "id": "neutral-descriptors/1",
+      "version": "lot5-1",
+      "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+    },
+    "artifact": "artifacts/neutral-descriptors.lot5.json"
+  }
+}

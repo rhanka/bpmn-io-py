@@ -1,0 +1,56 @@
+{
+  "case": "compile-enum-duplicate-records",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 unique choices; schema field choices uniqueItems",
+  "derivation": "Two identical choice records violate the pinned schema uniqueItems keyword, so load refuses profile-schema before compilation. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/notions/6/fields/0/choices",
+          "value": [
+            {
+              "name": "one",
+              "value": "One"
+            },
+            {
+              "name": "one",
+              "value": "One"
+            }
+          ]
+        }
+      ],
+      "artifact": "artifacts/profiles/compile-enum-duplicate-records.json"
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-schema",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "478fb47e1ab9a0c127c79651c034cbe83151ce15ca0afe73254e8d86c22e9dcd",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

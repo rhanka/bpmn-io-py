@@ -1,0 +1,631 @@
+{
+  "case": "lint-post-normalize-error-blocks",
+  "clause": "DESIGN R3.3 \u00a76.2 L481 post-N unresolved errors block; L474 draft policy at each lint stage; \u00a710.1 L735 report records attempted candidate diagnostics",
+  "derivation": "The quiet fixture with one changed policy row: profile:task-named in the post-normalize draft record becomes error/integrity while profile:task-named-pre-normalize stays warn/readiness. task-create with key kp and the empty value stages an unnamed bpmn:Task: the pre-normalize stage observes it with a warning (no block), N writes nothing, the post-normalize stage reports task-named as an unresolved error, so the batch refuses with the rule's own code task-name-missing (first unresolved error entry in profile-report/2 order, harmonization C19). Report and diagnostics hold both stage entries; nothing is committed.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "test",
+          "path": "/validation/4/settings/26",
+          "value": {
+            "rule": "profile:task-named",
+            "severity": "warn",
+            "classification": "readiness"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/validation/4/settings/26",
+          "value": {
+            "rule": "profile:task-named",
+            "severity": "error",
+            "classification": "integrity"
+          }
+        }
+      ],
+      "artifact": "artifacts/profiles/neutral-lot5-post-error.json"
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Review"
+              }
+            ],
+            "artifacts": []
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "command": "surface",
+              "entry": "task-create",
+              "context": {
+                "owner": "Process_1",
+                "key": "kp",
+                "value": ""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "load": {
+        "status": "ok",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+        "revision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+          "outputRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": []
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884"
+          },
+          "semanticRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+        "revision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+          "outputRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": []
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884"
+          },
+          "semanticRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "result": {
+          "status": "refused",
+          "operation": "applyCommands",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+          "code": "task-name-missing",
+          "diagnostics": [
+            {
+              "code": "task-name-missing-pre-normalize",
+              "severity": "warn",
+              "classification": "readiness",
+              "stage": "pre-normalize",
+              "ruleId": "task-named-pre-normalize",
+              "messageKey": "invalid",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/1",
+                "targetId": "g_01bb5c2ce18b48d0c5bacc6e744206ee0794902b9116dec9b601dea9c0bc9e84",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            },
+            {
+              "code": "task-name-missing",
+              "severity": "error",
+              "classification": "integrity",
+              "stage": "post-normalize",
+              "ruleId": "task-named",
+              "messageKey": "invalid",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/1",
+                "targetId": "g_01bb5c2ce18b48d0c5bacc6e744206ee0794902b9116dec9b601dea9c0bc9e84",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            }
+          ],
+          "report": {
+            "reportVersion": "2",
+            "operation": "applyCommands",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+            "entries": [
+              {
+                "code": "task-name-missing-pre-normalize",
+                "severity": "warn",
+                "classification": "readiness",
+                "stage": "pre-normalize",
+                "ruleId": "task-named-pre-normalize",
+                "messageKey": "invalid",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/1",
+                  "targetId": "g_01bb5c2ce18b48d0c5bacc6e744206ee0794902b9116dec9b601dea9c0bc9e84",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              },
+              {
+                "code": "task-name-missing",
+                "severity": "error",
+                "classification": "integrity",
+                "stage": "post-normalize",
+                "ruleId": "task-named",
+                "messageKey": "invalid",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/1",
+                  "targetId": "g_01bb5c2ce18b48d0c5bacc6e744206ee0794902b9116dec9b601dea9c0bc9e84",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              }
+            ],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "operation": "getDefinitions",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+          "revision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+          "report": {
+            "reportVersion": "2",
+            "operation": "getDefinitions",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+            "outputRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": []
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884"
+          }
+        }
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "1df8d46fc02b92c9b251558f969d54db772de08afe8f6d5f23e6f1e474f62884",
+    "ids": [
+      {
+        "ownerId": "Process_1",
+        "slot": "task",
+        "key": "kp",
+        "id": "g_01bb5c2ce18b48d0c5bacc6e744206ee0794902b9116dec9b601dea9c0bc9e84"
+      }
+    ],
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

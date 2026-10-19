@@ -1,0 +1,1062 @@
+{
+  "case": "gate-reserved-n-reuse",
+  "clause": "DESIGN R3.3 \u00a77.2 L552 N may reuse profile-declared supports; \u00a75.2 L440 N reuses any correctly bound existing support",
+  "derivation": "With the five imported supports already bound (vendored support case imported support IDs survive), N reuses them and persists no new support or binding (reuse is never gated), so the same aid-create edit commits; bindings are unchanged and the report has no entry.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "ensure-supports",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "root",
+                "path": "/rootElements",
+                "mode": "create"
+              },
+              {
+                "binding": "envelope",
+                "path": "/bindings",
+                "mode": "binding"
+              },
+              {
+                "binding": "collaboration",
+                "path": "/participants",
+                "mode": "create"
+              },
+              {
+                "binding": "main",
+                "path": "/processRef",
+                "mode": "reference"
+              },
+              {
+                "binding": "self",
+                "path": "/laneSets",
+                "mode": "create"
+              },
+              {
+                "binding": "laneSet",
+                "path": "/lanes",
+                "mode": "create"
+              }
+            ],
+            "steps": [
+              {
+                "op": "ensure",
+                "as": "collaboration",
+                "type": "bpmn:Collaboration",
+                "parent": "root",
+                "property": "rootElements",
+                "owner": "self",
+                "role": "collaboration",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "root"
+                },
+                "slot": "collaboration",
+                "key": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "collaboration"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "main",
+                "type": "bpmn:Participant",
+                "parent": "collaboration",
+                "property": "participants",
+                "owner": "self",
+                "role": "main-participant",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "main-participant",
+                "key": {
+                  "op": "literal",
+                  "value": "main-participant"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "main-participant"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "assignRef",
+                "target": "main",
+                "path": "/processRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "self"
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "laneSet",
+                "type": "bpmn:LaneSet",
+                "parent": "self",
+                "property": "laneSets",
+                "owner": "self",
+                "role": "lane-set",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "lane-set",
+                "key": {
+                  "op": "literal",
+                  "value": "lane-set"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "lane-set"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "lane",
+                "type": "bpmn:Lane",
+                "parent": "laneSet",
+                "property": "lanes",
+                "owner": "self",
+                "role": "external-lane",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "external-lane",
+                "key": {
+                  "op": "literal",
+                  "value": "external-lane"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "external-lane"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "band",
+                "type": "bpmn:Participant",
+                "parent": "collaboration",
+                "property": "participants",
+                "owner": "self",
+                "role": "reference-band",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "reference-band",
+                "key": {
+                  "op": "literal",
+                  "value": "reference-band"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "reference-band"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "artifact": "artifacts/profiles/neutral-lot5-gate.json"
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_support",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "name": "Process_A",
+            "laneSets": [
+              {
+                "$type": "bpmn:LaneSet",
+                "id": "Imported_Process_A_lane_set",
+                "name": "lane-set",
+                "lanes": [
+                  {
+                    "$type": "bpmn:Lane",
+                    "id": "Imported_Process_A_external_lane",
+                    "name": "external-lane"
+                  }
+                ]
+              }
+            ],
+            "isExecutable": false
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "Imported_Process_A_collaboration",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "Imported_Process_A_main_participant",
+                "name": "main-participant",
+                "processRef": "Process_A"
+              },
+              {
+                "$type": "bpmn:Participant",
+                "id": "Imported_Process_A_reference_band",
+                "name": "reference-band"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "ownerId": "Process_A",
+          "role": "collaboration",
+          "targetId": "Imported_Process_A_collaboration"
+        },
+        {
+          "ownerId": "Process_A",
+          "role": "external-lane",
+          "targetId": "Imported_Process_A_external_lane"
+        },
+        {
+          "ownerId": "Process_A",
+          "role": "lane-set",
+          "targetId": "Imported_Process_A_lane_set"
+        },
+        {
+          "ownerId": "Process_A",
+          "role": "main-participant",
+          "targetId": "Imported_Process_A_main_participant"
+        },
+        {
+          "ownerId": "Process_A",
+          "role": "reference-band",
+          "targetId": "Imported_Process_A_reference_band"
+        }
+      ]
+    },
+    "steps": [
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "command": "surface",
+              "entry": "aid-create",
+              "context": {
+                "owner": "Process_A",
+                "key": "g2",
+                "value": "x"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "load": {
+        "status": "ok",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+        "revision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+          "outputRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_support",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "name": "Process_A",
+                  "laneSets": [
+                    {
+                      "$type": "bpmn:LaneSet",
+                      "id": "Imported_Process_A_lane_set",
+                      "name": "lane-set",
+                      "lanes": [
+                        {
+                          "$type": "bpmn:Lane",
+                          "id": "Imported_Process_A_external_lane",
+                          "name": "external-lane"
+                        }
+                      ]
+                    }
+                  ],
+                  "isExecutable": false
+                },
+                {
+                  "$type": "bpmn:Collaboration",
+                  "id": "Imported_Process_A_collaboration",
+                  "name": "collaboration",
+                  "participants": [
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "Imported_Process_A_main_participant",
+                      "name": "main-participant",
+                      "processRef": "Process_A"
+                    },
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "Imported_Process_A_reference_band",
+                      "name": "reference-band"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [
+              {
+                "ownerId": "Process_A",
+                "role": "collaboration",
+                "targetId": "Imported_Process_A_collaboration"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "external-lane",
+                "targetId": "Imported_Process_A_external_lane"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "lane-set",
+                "targetId": "Imported_Process_A_lane_set"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "main-participant",
+                "targetId": "Imported_Process_A_main_participant"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "reference-band",
+                "targetId": "Imported_Process_A_reference_band"
+              }
+            ],
+            "semanticRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8"
+          },
+          "semanticRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+        "revision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+          "outputRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_support",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "name": "Process_A",
+                  "laneSets": [
+                    {
+                      "$type": "bpmn:LaneSet",
+                      "id": "Imported_Process_A_lane_set",
+                      "name": "lane-set",
+                      "lanes": [
+                        {
+                          "$type": "bpmn:Lane",
+                          "id": "Imported_Process_A_external_lane",
+                          "name": "external-lane"
+                        }
+                      ]
+                    }
+                  ],
+                  "isExecutable": false
+                },
+                {
+                  "$type": "bpmn:Collaboration",
+                  "id": "Imported_Process_A_collaboration",
+                  "name": "collaboration",
+                  "participants": [
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "Imported_Process_A_main_participant",
+                      "name": "main-participant",
+                      "processRef": "Process_A"
+                    },
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "Imported_Process_A_reference_band",
+                      "name": "reference-band"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [
+              {
+                "ownerId": "Process_A",
+                "role": "collaboration",
+                "targetId": "Imported_Process_A_collaboration"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "external-lane",
+                "targetId": "Imported_Process_A_external_lane"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "lane-set",
+                "targetId": "Imported_Process_A_lane_set"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "main-participant",
+                "targetId": "Imported_Process_A_main_participant"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "reference-band",
+                "targetId": "Imported_Process_A_reference_band"
+              }
+            ],
+            "semanticRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8"
+          },
+          "semanticRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "result": {
+          "status": "ok",
+          "operation": "applyCommands",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+          "revision": "1f4f4cb5b53227fbcb44d07928b0bbeaa5ff82942a8d65ee676e8b085b39b677",
+          "report": {
+            "reportVersion": "2",
+            "operation": "applyCommands",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+            "outputRevision": "1f4f4cb5b53227fbcb44d07928b0bbeaa5ff82942a8d65ee676e8b085b39b677",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "envelope": {
+              "documentVersion": "1",
+              "profileIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral/1",
+                "version": "1.6.0",
+                "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+                "base": {
+                  "id": "neutral-base/1",
+                  "version": "lot5-1",
+                  "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-descriptors/1",
+                    "version": "lot5-1",
+                    "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                  }
+                ]
+              },
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "id": "Definitions_support",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "id": "Process_A",
+                    "name": "Process_A",
+                    "laneSets": [
+                      {
+                        "$type": "bpmn:LaneSet",
+                        "id": "Imported_Process_A_lane_set",
+                        "name": "lane-set",
+                        "lanes": [
+                          {
+                            "$type": "bpmn:Lane",
+                            "id": "Imported_Process_A_external_lane",
+                            "name": "external-lane"
+                          }
+                        ]
+                      }
+                    ],
+                    "isExecutable": false,
+                    "artifacts": [
+                      {
+                        "$type": "bpmn:TextAnnotation",
+                        "id": "g_a70384860ac8aeb4e360c994226d6eaf357bdc17faa12f5f9263385618e1409a",
+                        "text": "[Aid] x"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Collaboration",
+                    "id": "Imported_Process_A_collaboration",
+                    "name": "collaboration",
+                    "participants": [
+                      {
+                        "$type": "bpmn:Participant",
+                        "id": "Imported_Process_A_main_participant",
+                        "name": "main-participant",
+                        "processRef": "Process_A"
+                      },
+                      {
+                        "$type": "bpmn:Participant",
+                        "id": "Imported_Process_A_reference_band",
+                        "name": "reference-band"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "bindings": [
+                {
+                  "ownerId": "Process_A",
+                  "role": "collaboration",
+                  "targetId": "Imported_Process_A_collaboration"
+                },
+                {
+                  "ownerId": "Process_A",
+                  "role": "external-lane",
+                  "targetId": "Imported_Process_A_external_lane"
+                },
+                {
+                  "ownerId": "Process_A",
+                  "role": "lane-set",
+                  "targetId": "Imported_Process_A_lane_set"
+                },
+                {
+                  "ownerId": "Process_A",
+                  "role": "main-participant",
+                  "targetId": "Imported_Process_A_main_participant"
+                },
+                {
+                  "ownerId": "Process_A",
+                  "role": "reference-band",
+                  "targetId": "Imported_Process_A_reference_band"
+                }
+              ],
+              "semanticRevision": "1f4f4cb5b53227fbcb44d07928b0bbeaa5ff82942a8d65ee676e8b085b39b677"
+            },
+            "semanticRevision": "1f4f4cb5b53227fbcb44d07928b0bbeaa5ff82942a8d65ee676e8b085b39b677",
+            "viewRevision": {
+              "$unsealed": "lot4-view-revision"
+            },
+            "transactionId": "tx-1",
+            "changed": true
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "operation": "getDefinitions",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "1f4f4cb5b53227fbcb44d07928b0bbeaa5ff82942a8d65ee676e8b085b39b677",
+          "revision": "1f4f4cb5b53227fbcb44d07928b0bbeaa5ff82942a8d65ee676e8b085b39b677",
+          "report": {
+            "reportVersion": "2",
+            "operation": "getDefinitions",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "1f4f4cb5b53227fbcb44d07928b0bbeaa5ff82942a8d65ee676e8b085b39b677",
+            "outputRevision": "1f4f4cb5b53227fbcb44d07928b0bbeaa5ff82942a8d65ee676e8b085b39b677",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_support",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "name": "Process_A",
+                  "laneSets": [
+                    {
+                      "$type": "bpmn:LaneSet",
+                      "id": "Imported_Process_A_lane_set",
+                      "name": "lane-set",
+                      "lanes": [
+                        {
+                          "$type": "bpmn:Lane",
+                          "id": "Imported_Process_A_external_lane",
+                          "name": "external-lane"
+                        }
+                      ]
+                    }
+                  ],
+                  "isExecutable": false,
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "g_a70384860ac8aeb4e360c994226d6eaf357bdc17faa12f5f9263385618e1409a",
+                      "text": "[Aid] x"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:Collaboration",
+                  "id": "Imported_Process_A_collaboration",
+                  "name": "collaboration",
+                  "participants": [
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "Imported_Process_A_main_participant",
+                      "name": "main-participant",
+                      "processRef": "Process_A"
+                    },
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "Imported_Process_A_reference_band",
+                      "name": "reference-band"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [
+              {
+                "ownerId": "Process_A",
+                "role": "collaboration",
+                "targetId": "Imported_Process_A_collaboration"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "external-lane",
+                "targetId": "Imported_Process_A_external_lane"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "lane-set",
+                "targetId": "Imported_Process_A_lane_set"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "main-participant",
+                "targetId": "Imported_Process_A_main_participant"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "reference-band",
+                "targetId": "Imported_Process_A_reference_band"
+              }
+            ],
+            "semanticRevision": "1f4f4cb5b53227fbcb44d07928b0bbeaa5ff82942a8d65ee676e8b085b39b677"
+          }
+        }
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "89b35f95e29afe33ac6f21d0ea2c6476b49bd6964e8223b4ce118939a2afd7b8",
+    "ids": [
+      {
+        "ownerId": "Process_A",
+        "slot": "aid",
+        "key": "g2",
+        "id": "g_a70384860ac8aeb4e360c994226d6eaf357bdc17faa12f5f9263385618e1409a"
+      }
+    ],
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

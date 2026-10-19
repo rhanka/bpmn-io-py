@@ -1,0 +1,931 @@
+{
+  "case": "pick-reference-ownership",
+  "clause": "DESIGN R3.3 \u00a78.3 L657 filtered by effective reference ownership; submitted ID revalidated at commit",
+  "derivation": "The inputs field of Set_A2 offers only the DataInputs of its own Process_A (In_A1, In_A2 in ID order); In_B1 of Process_B is never offered, even for the query First that it also matches (harmonization B19 ownership rule). Submitting In_B1 anyway is refused profile-type at commit; submitting In_A1 appends it to Set_A2.dataInputRefs.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "isExecutable": false,
+            "ioSpecification": {
+              "$type": "bpmn:InputOutputSpecification",
+              "dataInputs": [
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "In_A2",
+                  "name": "Second"
+                },
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "In_A1",
+                  "name": "First"
+                }
+              ],
+              "inputSets": [
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "Set_A1",
+                  "dataInputRefs": [
+                    "In_A1",
+                    "In_A2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "Set_A2",
+                  "dataInputRefs": []
+                }
+              ]
+            }
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_B",
+            "isExecutable": false,
+            "ioSpecification": {
+              "$type": "bpmn:InputOutputSpecification",
+              "dataInputs": [
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "In_B1",
+                  "name": "First"
+                }
+              ],
+              "inputSets": [
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "Set_B1",
+                  "dataInputRefs": [
+                    "In_B1"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "targetId": "Set_A2",
+          "fieldId": "inputs",
+          "query": "",
+          "offset": 0,
+          "limit": 10
+        }
+      },
+      {
+        "op": "query_references",
+        "args": {
+          "baseRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "targetId": "Set_A2",
+          "fieldId": "inputs",
+          "query": "First",
+          "offset": 0,
+          "limit": 10
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "command": "field",
+              "notion": "input-set",
+              "field": "inputs",
+              "context": {
+                "target": "Set_A2",
+                "value": "In_B1"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-2",
+          "commands": [
+            {
+              "command": "field",
+              "notion": "input-set",
+              "field": "inputs",
+              "context": {
+                "target": "Set_A2",
+                "value": "In_A1"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "load": {
+        "status": "ok",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+        "revision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "outputRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_A2",
+                        "name": "Second"
+                      },
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_A1",
+                        "name": "First"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_A1",
+                        "dataInputRefs": [
+                          "In_A1",
+                          "In_A2"
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_A2",
+                        "dataInputRefs": []
+                      }
+                    ]
+                  }
+                },
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_B",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_B1",
+                        "name": "First"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_B1",
+                        "dataInputRefs": [
+                          "In_B1"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3"
+          },
+          "semanticRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+        "revision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "outputRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_A2",
+                        "name": "Second"
+                      },
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_A1",
+                        "name": "First"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_A1",
+                        "dataInputRefs": [
+                          "In_A1",
+                          "In_A2"
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_A2",
+                        "dataInputRefs": []
+                      }
+                    ]
+                  }
+                },
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_B",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_B1",
+                        "name": "First"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_B1",
+                        "dataInputRefs": [
+                          "In_B1"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3"
+          },
+          "semanticRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "candidates": [
+              {
+                "id": "In_A1",
+                "type": "bpmn:DataInput",
+                "label": "First"
+              },
+              {
+                "id": "In_A2",
+                "type": "bpmn:DataInput",
+                "label": "Second"
+              }
+            ],
+            "revision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "candidates": [
+              {
+                "id": "In_A1",
+                "type": "bpmn:DataInput",
+                "label": "First"
+              }
+            ],
+            "revision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "refused",
+          "operation": "applyCommands",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "code": "profile-type",
+          "diagnostics": [],
+          "report": {
+            "reportVersion": "2",
+            "operation": "applyCommands",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "operation": "applyCommands",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+          "revision": "b12a54bc3a3d74fab6a8bcaba7561b7d2b30ce335b2b0ee43b7addaa1e123900",
+          "report": {
+            "reportVersion": "2",
+            "operation": "applyCommands",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3",
+            "outputRevision": "b12a54bc3a3d74fab6a8bcaba7561b7d2b30ce335b2b0ee43b7addaa1e123900",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "envelope": {
+              "documentVersion": "1",
+              "profileIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral/1",
+                "version": "1.6.0",
+                "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+                "base": {
+                  "id": "neutral-base/1",
+                  "version": "lot5-1",
+                  "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-descriptors/1",
+                    "version": "lot5-1",
+                    "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                  }
+                ]
+              },
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "id": "Definitions_1",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "id": "Process_A",
+                    "isExecutable": false,
+                    "ioSpecification": {
+                      "$type": "bpmn:InputOutputSpecification",
+                      "dataInputs": [
+                        {
+                          "$type": "bpmn:DataInput",
+                          "id": "In_A2",
+                          "name": "Second"
+                        },
+                        {
+                          "$type": "bpmn:DataInput",
+                          "id": "In_A1",
+                          "name": "First"
+                        }
+                      ],
+                      "inputSets": [
+                        {
+                          "$type": "bpmn:InputSet",
+                          "id": "Set_A1",
+                          "dataInputRefs": [
+                            "In_A1",
+                            "In_A2"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:InputSet",
+                          "id": "Set_A2",
+                          "dataInputRefs": [
+                            "In_A1"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "$type": "bpmn:Process",
+                    "id": "Process_B",
+                    "isExecutable": false,
+                    "ioSpecification": {
+                      "$type": "bpmn:InputOutputSpecification",
+                      "dataInputs": [
+                        {
+                          "$type": "bpmn:DataInput",
+                          "id": "In_B1",
+                          "name": "First"
+                        }
+                      ],
+                      "inputSets": [
+                        {
+                          "$type": "bpmn:InputSet",
+                          "id": "Set_B1",
+                          "dataInputRefs": [
+                            "In_B1"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "bindings": [],
+              "semanticRevision": "b12a54bc3a3d74fab6a8bcaba7561b7d2b30ce335b2b0ee43b7addaa1e123900"
+            },
+            "semanticRevision": "b12a54bc3a3d74fab6a8bcaba7561b7d2b30ce335b2b0ee43b7addaa1e123900",
+            "viewRevision": {
+              "$unsealed": "lot4-view-revision"
+            },
+            "transactionId": "tx-2",
+            "changed": true
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "operation": "getDefinitions",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "b12a54bc3a3d74fab6a8bcaba7561b7d2b30ce335b2b0ee43b7addaa1e123900",
+          "revision": "b12a54bc3a3d74fab6a8bcaba7561b7d2b30ce335b2b0ee43b7addaa1e123900",
+          "report": {
+            "reportVersion": "2",
+            "operation": "getDefinitions",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "b12a54bc3a3d74fab6a8bcaba7561b7d2b30ce335b2b0ee43b7addaa1e123900",
+            "outputRevision": "b12a54bc3a3d74fab6a8bcaba7561b7d2b30ce335b2b0ee43b7addaa1e123900",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_A2",
+                        "name": "Second"
+                      },
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_A1",
+                        "name": "First"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_A1",
+                        "dataInputRefs": [
+                          "In_A1",
+                          "In_A2"
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_A2",
+                        "dataInputRefs": [
+                          "In_A1"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_B",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_B1",
+                        "name": "First"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_B1",
+                        "dataInputRefs": [
+                          "In_B1"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "b12a54bc3a3d74fab6a8bcaba7561b7d2b30ce335b2b0ee43b7addaa1e123900"
+          }
+        }
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "f6d215f9af2bd6002f04d6e1fe379fb3c5283a76d4506b086742bf5428d26da3"
+  }
+}

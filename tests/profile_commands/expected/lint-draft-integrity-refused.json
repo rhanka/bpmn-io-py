@@ -1,0 +1,936 @@
+{
+  "case": "lint-draft-integrity-refused",
+  "clause": "DESIGN R3.3 \u00a76.2 L474 edit runs C -> pre-normalize -> N -> post-normalize under draft; L481 a draft policy does not downgrade integrity, post-N unresolved errors block; \u00a78.2 L631 postcheck; L633 refusal",
+  "derivation": "Profile fixture-profile-neutral-lint keeps the vendored validation records. The palette batch of the former create-task-palette-neutral witness (Process_1 holding only Task_1, task-create key k1 value Draft) stages a second unconnected bpmn:Task. C writes nothing; the pre-normalize draft stage evaluates the upstream rules on the C output (bpmnlint 11.15.0 sources: a bpmn:Task without incoming and outgoing sequence flows is reported by no-disconnected, no-implicit-start and no-implicit-end; a Process without StartEvent and EndEvent by start-event-required and end-event-required; label-required and every other recommended rule find nothing; the profile subrule finds no unnamed task). Policy rows: the three connectivity rules error/integrity, the two event rules warn/readiness. An integrity error is never downgraded in draft and is not repairable, so the batch refuses at pre-normalize, before N, with the code of the first unresolved error entry in profile-report/2 order: ruleIds sort end-event-required < no-disconnected < no-implicit-end < no-implicit-start < start-event-required and the Task_1 pointer precedes the new task pointer, so the code is bpmnlint/no-disconnected (harmonization J1, C19). The refusal is atomic: report and diagnostics carry the eight pre-normalize entries (observed, source = the stage element pointer, result unavailable), the tree, IDs and history are unchanged. rawStandardFindings is unsealed (raw upstream transport).",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral-lint.json",
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5-vendored-lint.json"
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Review"
+              }
+            ],
+            "artifacts": []
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "command": "surface",
+              "entry": "task-create",
+              "context": {
+                "owner": "Process_1",
+                "key": "k1",
+                "value": "Draft"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      },
+      {
+        "op": "undo",
+        "args": {
+          "expectedRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          }
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "load": {
+        "status": "ok",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.5.0",
+          "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+        "revision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "outputRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": []
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f"
+          },
+          "semanticRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.5.0",
+          "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+        "revision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "outputRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": []
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f"
+          },
+          "semanticRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "result": {
+          "status": "refused",
+          "operation": "applyCommands",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "code": "bpmnlint/no-disconnected",
+          "diagnostics": [
+            {
+              "code": "bpmnlint/end-event-required",
+              "severity": "warn",
+              "classification": "readiness",
+              "stage": "pre-normalize",
+              "ruleId": "end-event-required",
+              "messageKey": "bpmnlint.end-event-required",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0",
+                "targetId": "Process_1",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            },
+            {
+              "code": "bpmnlint/no-disconnected",
+              "severity": "error",
+              "classification": "integrity",
+              "stage": "pre-normalize",
+              "ruleId": "no-disconnected",
+              "messageKey": "bpmnlint.no-disconnected",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0",
+                "targetId": "Task_1",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            },
+            {
+              "code": "bpmnlint/no-disconnected",
+              "severity": "error",
+              "classification": "integrity",
+              "stage": "pre-normalize",
+              "ruleId": "no-disconnected",
+              "messageKey": "bpmnlint.no-disconnected",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/1",
+                "targetId": "g_f5d19166b5a5969b50e5c18b61f6c4510e8901e6b86cdf7404caacb7c8992628",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            },
+            {
+              "code": "bpmnlint/no-implicit-end",
+              "severity": "error",
+              "classification": "integrity",
+              "stage": "pre-normalize",
+              "ruleId": "no-implicit-end",
+              "messageKey": "bpmnlint.no-implicit-end",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0",
+                "targetId": "Task_1",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            },
+            {
+              "code": "bpmnlint/no-implicit-end",
+              "severity": "error",
+              "classification": "integrity",
+              "stage": "pre-normalize",
+              "ruleId": "no-implicit-end",
+              "messageKey": "bpmnlint.no-implicit-end",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/1",
+                "targetId": "g_f5d19166b5a5969b50e5c18b61f6c4510e8901e6b86cdf7404caacb7c8992628",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            },
+            {
+              "code": "bpmnlint/no-implicit-start",
+              "severity": "error",
+              "classification": "integrity",
+              "stage": "pre-normalize",
+              "ruleId": "no-implicit-start",
+              "messageKey": "bpmnlint.no-implicit-start",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0",
+                "targetId": "Task_1",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            },
+            {
+              "code": "bpmnlint/no-implicit-start",
+              "severity": "error",
+              "classification": "integrity",
+              "stage": "pre-normalize",
+              "ruleId": "no-implicit-start",
+              "messageKey": "bpmnlint.no-implicit-start",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/1",
+                "targetId": "g_f5d19166b5a5969b50e5c18b61f6c4510e8901e6b86cdf7404caacb7c8992628",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            },
+            {
+              "code": "bpmnlint/start-event-required",
+              "severity": "warn",
+              "classification": "readiness",
+              "stage": "pre-normalize",
+              "ruleId": "start-event-required",
+              "messageKey": "bpmnlint.start-event-required",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0",
+                "targetId": "Process_1",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            }
+          ],
+          "report": {
+            "reportVersion": "2",
+            "operation": "applyCommands",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+            "entries": [
+              {
+                "code": "bpmnlint/end-event-required",
+                "severity": "warn",
+                "classification": "readiness",
+                "stage": "pre-normalize",
+                "ruleId": "end-event-required",
+                "messageKey": "bpmnlint.end-event-required",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0",
+                  "targetId": "Process_1",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              },
+              {
+                "code": "bpmnlint/no-disconnected",
+                "severity": "error",
+                "classification": "integrity",
+                "stage": "pre-normalize",
+                "ruleId": "no-disconnected",
+                "messageKey": "bpmnlint.no-disconnected",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/0",
+                  "targetId": "Task_1",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              },
+              {
+                "code": "bpmnlint/no-disconnected",
+                "severity": "error",
+                "classification": "integrity",
+                "stage": "pre-normalize",
+                "ruleId": "no-disconnected",
+                "messageKey": "bpmnlint.no-disconnected",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/1",
+                  "targetId": "g_f5d19166b5a5969b50e5c18b61f6c4510e8901e6b86cdf7404caacb7c8992628",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              },
+              {
+                "code": "bpmnlint/no-implicit-end",
+                "severity": "error",
+                "classification": "integrity",
+                "stage": "pre-normalize",
+                "ruleId": "no-implicit-end",
+                "messageKey": "bpmnlint.no-implicit-end",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/0",
+                  "targetId": "Task_1",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              },
+              {
+                "code": "bpmnlint/no-implicit-end",
+                "severity": "error",
+                "classification": "integrity",
+                "stage": "pre-normalize",
+                "ruleId": "no-implicit-end",
+                "messageKey": "bpmnlint.no-implicit-end",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/1",
+                  "targetId": "g_f5d19166b5a5969b50e5c18b61f6c4510e8901e6b86cdf7404caacb7c8992628",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              },
+              {
+                "code": "bpmnlint/no-implicit-start",
+                "severity": "error",
+                "classification": "integrity",
+                "stage": "pre-normalize",
+                "ruleId": "no-implicit-start",
+                "messageKey": "bpmnlint.no-implicit-start",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/0",
+                  "targetId": "Task_1",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              },
+              {
+                "code": "bpmnlint/no-implicit-start",
+                "severity": "error",
+                "classification": "integrity",
+                "stage": "pre-normalize",
+                "ruleId": "no-implicit-start",
+                "messageKey": "bpmnlint.no-implicit-start",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/1",
+                  "targetId": "g_f5d19166b5a5969b50e5c18b61f6c4510e8901e6b86cdf7404caacb7c8992628",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              },
+              {
+                "code": "bpmnlint/start-event-required",
+                "severity": "warn",
+                "classification": "readiness",
+                "stage": "pre-normalize",
+                "ruleId": "start-event-required",
+                "messageKey": "bpmnlint.start-event-required",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0",
+                  "targetId": "Process_1",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              }
+            ],
+            "rawStandardFindings": {
+              "$unsealed": "raw-lint-transport"
+            },
+            "idMap": [],
+            "artifacts": []
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "operation": "getDefinitions",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "revision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "report": {
+            "reportVersion": "2",
+            "operation": "getDefinitions",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+            "outputRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": []
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f"
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "refused",
+          "operation": "undo",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.5.0",
+            "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+          "code": "operation-error",
+          "diagnostics": [],
+          "report": {
+            "reportVersion": "2",
+            "operation": "undo",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.5.0",
+              "sha256": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          }
+        }
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "802592ba6f7dd9100402ff6aee63bfc4c48ffbf838658db1f8aa324d2468661f",
+    "ids": [
+      {
+        "ownerId": "Process_1",
+        "slot": "task",
+        "key": "k1",
+        "id": "g_f5d19166b5a5969b50e5c18b61f6c4510e8901e6b86cdf7404caacb7c8992628"
+      }
+    ]
+  }
+}

@@ -1,0 +1,924 @@
+{
+  "comparators": [
+    {
+      "id": "lot5-py/step-outcomes",
+      "kind": "parity",
+      "note": "One headless bridge per case: create it with the descriptors artifact (or the bridge input), load the envelope input (with importedDi when given) and activate the compiled profileArtifact, each result matching the setup outcomes; then run the sequence steps in order. Every actual result equals its outcome template under profile-c14n/2 after each {$unsealed} marker is replaced by the actual member it marks (the member must exist); equal/differ compare a pointer with a saved result; signal results match per action. Placeholders {$current} and {$saved} are resolved before the request runs (SPEC_PROFILE_COMMANDS_PY.md section 8)."
+    },
+    {
+      "id": "lot5-py/compile-outcome",
+      "kind": "parity",
+      "note": "loadProfile then compileProfile on the profileArtifact bytes with the base and descriptors artifacts: the first refusal as {status, code, diagnostics}, or the success {status: ok, payload, diagnostics} whose payload (the compiled profile, no wire shape) is the {$unsealed: compiled-profile} member."
+    },
+    {
+      "id": "lot5-py/compiled-identity",
+      "kind": "parity",
+      "note": "The profileIdentity record (DESIGN R3.3 \u00a75.1) carried by the compiled profile of a compile success, exact under profile-c14n/2."
+    },
+    {
+      "id": "profile-c14n/2",
+      "kind": "mechanism",
+      "note": "RFC 8785 JCS bytes, UTF-16 key order (DESIGN R3.3 \u00a73.1)."
+    },
+    {
+      "id": "stable-id/1",
+      "kind": "mechanism",
+      "note": "Allocated IDs recompute (DESIGN R3.3 \u00a73.2)."
+    }
+  ],
+  "corpusVersion": "lot5-py-1",
+  "files": {
+    "artifacts/neutral-base.lot5.json": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768",
+    "artifacts/neutral-descriptors.lot5.json": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067",
+    "artifacts/profiles/compile-enum-duplicate-records.json": "478fb47e1ab9a0c127c79651c034cbe83151ce15ca0afe73254e8d86c22e9dcd",
+    "artifacts/profiles/compile-enum-duplicate-values.json": "d17b19e7db902fe97df858e024f89787e58c2dbe6fea78cd99bb8026e10fa08d",
+    "artifacts/profiles/compile-enum-empty-choices.json": "be9cddc32a75d0fba9b956399d006b2123e1b8c9e2e680008b2fe3d870214069",
+    "artifacts/profiles/compile-field-parameter-missing.json": "02678f525a71ae4bc86324397313cef3b9cd551c78e998800e65bf8c990f2722",
+    "artifacts/profiles/compile-id-not-ordinary-input.json": "c64ba27299c79a10bf83cd4d8f0718fdf52a0486c691f66afa5803a72f8ed6a6",
+    "artifacts/profiles/compile-message-missing-fallback.json": "4cc60c09f9b779334ee70d939bd034f93f96c24a45d3c20267e7ae53702179d6",
+    "artifacts/profiles/compile-mutable-without-command.json": "b52445b0c434801ff2990372002636ef60091e56e8a10e0c85cc2d8e7a34df6d",
+    "artifacts/profiles/compile-mutable-without-parameters.json": "8b0c5a4a54fc979174966e79a88a522b9f29c84a1093683dbd1115656fec69d7",
+    "artifacts/profiles/compile-readonly-with-command.json": "7eb8de80aabc4be6f494ebc6e52246e501c36aacbc5da19ebb795e1c8724893e",
+    "artifacts/profiles/compile-reference-empty-target-types.json": "d9f81307974660bab421ff0ac6980a78de51086281874d9bfb8f5d0081f29344",
+    "artifacts/profiles/compile-ui-icon-unknown-glyph.json": "326aa3721dfbdb11e281055cc61f4a6d09aeab861609305ca907bf7932fa36b5",
+    "artifacts/profiles/compile-ui-label-unknown-message.json": "7c3c4bb492c89ce46f4259848dd47ae80f74cea4eab93e8bc9403f5cd5124cc1",
+    "artifacts/profiles/compile-ui-parameter-duplicate.json": "c50f93d80a4478a925b0c07f4bb36a4737d59eaa3902fe8d084b4fbbcf37072c",
+    "artifacts/profiles/compile-ui-parameter-missing.json": "d06d2cfea4ec3dff1856ce345b3febc1ba8da7c979e2a6ee866854b6993ed9ea",
+    "artifacts/profiles/compile-ui-parameter-source-type.json": "88719cfe3fb5ebeb44f5612d5c28bba26581d0e951f23dce02a1a56247b5d573",
+    "artifacts/profiles/compile-ui-parameter-unknown.json": "899f6912aa645fd2a688b199c5d27ca1101e902bb27c30edf6df6dbea2e6fdd7",
+    "artifacts/profiles/compile-upstream-duplicate-across-entries.json": "92a160ce956745f9384e70b154c48344349f3a6e71d56686cdad1a1e290a0168",
+    "artifacts/profiles/compile-upstream-duplicate-within-entry.json": "af75fc5c8070b5e42aeb5d7d99fe8b32c9ca000cf34023b9f88fb38bed5ad447",
+    "artifacts/profiles/grid-lot5.json": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+    "artifacts/profiles/neutral-lot5-gate.json": "2ecd79f1342f99339e44c57630fa8d4f068aeb058f70048c5464417f5f2569d9",
+    "artifacts/profiles/neutral-lot5-guard.json": "1ea5cf611aa8a58c5191784b17394ad4d6a6833b73e85b80f47f7d359973b486",
+    "artifacts/profiles/neutral-lot5-post-error.json": "d9a3a10014a9ffeee1e1df07c2a03d03aff116c58862720e017944bf23b49610",
+    "artifacts/profiles/neutral-lot5-vendored-lint.json": "27afdf96cc197544c9daf701ce8b2aab009212620b1a285568a1f66fd8a419e5",
+    "artifacts/profiles/neutral-lot5.json": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+    "parity/lot5-py-compile-enum-duplicate-records.json": "2d34ad37b976a21994206b967a677cb367f74a5fd41df6b79756f09a4144a5db",
+    "parity/lot5-py-compile-enum-duplicate-values.json": "df1bbee2fd95f0cb503705d07221d4819a2e9998b3b49ca1baaba8814279aabf",
+    "parity/lot5-py-compile-enum-empty-choices.json": "ddaa944c321566d8d2a9f617f79ab419963d981ec5a76beec7920f62ccea235d",
+    "parity/lot5-py-compile-field-parameter-missing.json": "4faad6cad072072c0b78f6bf8c81f9ec96f9d865f2fd9ee03cd6f4da5ebe93ab",
+    "parity/lot5-py-compile-grid-l5-ok.json": "8e1db276c3fe837b54293fcbd212631722f9fabc7fa3b9153a40a8ad4acc41de",
+    "parity/lot5-py-compile-id-not-ordinary-input.json": "4c6029f25cc45881c4e328c1bbc49bd65fb7bfc36dd04c3e2f9ff77a684d6283",
+    "parity/lot5-py-compile-message-missing-fallback.json": "04840748fcbf7e6193c843708016a5627275950264e9af10af4ef0252466ae8c",
+    "parity/lot5-py-compile-mutable-without-command.json": "708e7696132055a0a98f78b060185575a3e6b52bc7617b370ce411772f9de379",
+    "parity/lot5-py-compile-mutable-without-parameters.json": "10574c679ba7364eabadb7075361a9d43334f2ee6666124810c368760a6d9c28",
+    "parity/lot5-py-compile-neutral-l5-ok.json": "a4b401bdb30fa7a98c16d3be97b3b56a0e8d45c688be17a03c444e9c63de4b13",
+    "parity/lot5-py-compile-readonly-with-command.json": "0ff3c33dc651ea64d4bca61fad2fa7cb90c1202431452e17b1bfa064adda57c1",
+    "parity/lot5-py-compile-reference-empty-target-types.json": "a254b36c126fd5c44542d35c04611aa125a320d92c6962cef1caebd7d7c6ec13",
+    "parity/lot5-py-compile-ui-icon-unknown-glyph.json": "2914abcf5b178cb28ae5ed366280dff6b5a8458eff6275d58b4473ed937abd56",
+    "parity/lot5-py-compile-ui-label-unknown-message.json": "3be312a9df3325131c90326ff27220b7da388371b30ecbf2d3d787b47ae63c79",
+    "parity/lot5-py-compile-ui-parameter-duplicate.json": "eac2d9422d2f6c5c32b3e4325941f0134d5ae98c70b67e3838a3323bee481509",
+    "parity/lot5-py-compile-ui-parameter-missing.json": "de18ed1a907a648cbf7f5306f68f81846322a899004a256db6975e64b5fdd41d",
+    "parity/lot5-py-compile-ui-parameter-source-type.json": "ba9456a29d5836eb891856be4044e8f31c57d9bf18a1ea13d95a59b5027b6f5d",
+    "parity/lot5-py-compile-ui-parameter-unknown.json": "4334c27b0151a7172a067c212c5dc6e6dcead805b6c758af9f2b9dd016ba8f9b",
+    "parity/lot5-py-compile-upstream-duplicate-across-entries.json": "084f043e1b630f99d5e4b022b4bac04e1cfcc82cc7ce39b31b9247ae439d2dbf",
+    "parity/lot5-py-compile-upstream-duplicate-within-entry.json": "08f41107bf0f5446bc40906e24c97ea82fea3ee878f158f6bb503884167859f4",
+    "parity/lot5-py-copy-fragment-preorder.json": "95c1f84ac5d0ff2d6652ac49deab6fc5e293cf2cd5ec3b90665c5469bc1eaad6",
+    "parity/lot5-py-copy-fragment-read-only.json": "ca30d7a27377f46938990bc531bf2b1722de0e42dd60c8bf270467be67fdc8fa",
+    "parity/lot5-py-copy-unknown-id.json": "0a5fe33a3dd87e8368fdb34f8e5f1493e170582da7702d4d0670e354cde91a98",
+    "parity/lot5-py-create-append-task.json": "0f13b384cb4c17c98a581a3bd2d21ea3a6920fbde5ec2c874f93274ce00340f1",
+    "parity/lot5-py-create-reference-then-connect.json": "ee57980560ac0a3fbf9c30adeb801975ef365ce0a638e5b118ffd526d80b3a59",
+    "parity/lot5-py-create-task-palette-grid.json": "52e2974648fe9fb4cd7cf8da770fb7a0c8e3df9fffed75e8ecb9c55e27e53c1c",
+    "parity/lot5-py-create-task-palette-neutral.json": "388e790fa9bc3ea00c2d59df2c557d8c0c32201c38b168c7f6870f72436170dd",
+    "parity/lot5-py-delete-includes-dependents.json": "f93d1e4fb148a38012c4c6ef8902706909dbf2906757ee80b424bc089c87839b",
+    "parity/lot5-py-delete-refuses-dependents.json": "822938fe3012f4368fa4ef1ec298bbc9ef3c8d6fb5f2c05e7307ea53a3257925",
+    "parity/lot5-py-delete-unreferenced.json": "b7800a3cbac6c0b082e6b47294b216d2aa0cf4dfaa17ebfd8c68678b6101d2da",
+    "parity/lot5-py-field-clear-optional-reference.json": "8200a795aba25bbe1ee493587415e180df27a8e63462df3e10f2281070f9dca0",
+    "parity/lot5-py-field-display-edit-grid.json": "9c53f4aa749f044956b35db1fdc270aee8ba7004a18ec37c18da35b04aa7dc11",
+    "parity/lot5-py-field-display-prefix-exact.json": "b5aca49e38ac2eb46fab7a6694db2d35167dafbe99ea857fd57c18f6612d3ae7",
+    "parity/lot5-py-field-edit-restores-marker.json": "525520f3c817778a615c5b22a4505de4f982288c96f89b395f5ec7a7dcad0506",
+    "parity/lot5-py-field-empty-string-explicit.json": "9493f2d0447ee04ff59fa90c6431a9ffacc29d8e82639ed468e053754eb73cdf",
+    "parity/lot5-py-field-enum-validation.json": "dc43c2f6a45edf0b73d647828172f182c492d3f48721a11571bcdb948e4d038a",
+    "parity/lot5-py-field-listing-widgets.json": "80837cb5d88dab6d6abfeb495611ca218f489db2395fa4f0af62b769da93cad3",
+    "parity/lot5-py-field-not-editable.json": "0f7793acd50ba670725064c3cd4936230cae46550684c3c79486480057fb52f8",
+    "parity/lot5-py-field-reference-submits-ids.json": "ca0c76e51dec5d7b7bf25e77bf3da50fe4579c5d499c18a30ac88099d4e45baa",
+    "parity/lot5-py-field-unknown.json": "1cfe1ed4af3a3cd4a359ae42b09e9c7e29d8a97689c2729e0fd8b4bd7e27b127",
+    "parity/lot5-py-field-value-omitted-or-coerced.json": "78aaa82a82bcc912fdcf12d4e7cb8891eba9067cf4f7149d0ea7d0d95367b864",
+    "parity/lot5-py-field-visible-predicate.json": "26480fe7d16f7fd89061ea0d3dcbe16f615b571ab65c649c2e5b6238b42f1265",
+    "parity/lot5-py-gate-external-creation.json": "c74e723dab5aca5f20508ffba5eb111d4cdbf0e03a39ff266e7e4da6fdf8691b",
+    "parity/lot5-py-gate-reserved-n-creation.json": "2c5868a1f0053e7c416c201229b067c1f36d2f4702cfa9e30f452d22cb7317bc",
+    "parity/lot5-py-gate-reserved-n-reuse.json": "7543a1b9918599bcd6aa607a1f77583ed9ffc7e4d9777636b57c821c41f8a4f9",
+    "parity/lot5-py-history-batch-one-step.json": "f549acb0c18306c09672a91720c5077359a776e8db4f75900923354cce7d5d84",
+    "parity/lot5-py-history-change-events.json": "629ea36dce3f3ebaaa309d34f767148c2ac4a669ec1ee328c4bdba41e460423f",
+    "parity/lot5-py-history-load-epoch.json": "9e08b17e226aeb9b25b6f5134ce066312ba553bb600101881299733e05325c1c",
+    "parity/lot5-py-history-noop-no-entry.json": "65e802ee005fb9674ab35c390351fe4b6cd88cd9a94cd5daf2e477a8d34f6e57",
+    "parity/lot5-py-history-refusal-preserves-state.json": "24c2a16f67580b31740a139090ac6167482f38efcce7672e012aa52289a17e8e",
+    "parity/lot5-py-history-restore-bindings-presentation.json": "4038d4d18294a54b5c48881e72d458f7927fb960ef1f0d18cb4b0d046f75144f",
+    "parity/lot5-py-history-stale-revisions.json": "acd54ee090496a2a5177788cf57224194baa482456eca90c02f4d265a0b9cf3e",
+    "parity/lot5-py-history-undo-redo-guards.json": "31d44b0b1bfaee3649aaf5fea5cc164cec4ed635946324329089439637e05f0f",
+    "parity/lot5-py-history-undo-redo-roundtrip.json": "8df7244a14ba47f265964706eb3bda475b742f7636bc3e637f706de4eebc57a6",
+    "parity/lot5-py-io-set-explicit-selection.json": "a78a04ae6f9a65e9f57718eb395ce122ccf947286da47e3829f9f78dc6505582",
+    "parity/lot5-py-io-set-selection-required.json": "fbd5b8d7ecdbb0bf8824d36d40b2aa6a2e3953ac48474fd2f0338fa709f6da03",
+    "parity/lot5-py-l10n-resolution-order.json": "d4f9affd13948fe0835ad2f6aab9e5b9bb96f00ff6115aa12f979b2aa69e9935",
+    "parity/lot5-py-lifecycle-activation-descriptor-mismatch.json": "ac19dde43878d9f7795eb697b3bcbc9f2bab13f696116d1f3f318acead487096",
+    "parity/lot5-py-lifecycle-dispose.json": "f51363829e9577cb218ec5d805addb09d5b4c66ccf1646d12ae7c5146a81c3f3",
+    "parity/lot5-py-lifecycle-not-loaded.json": "c4975691ddca0f1a407c332e9f06339e1fbda31a75babf7ee4fc1d87b4e40ef5",
+    "parity/lot5-py-lint-draft-integrity-refused.json": "87786834debe67a7951e6596f04c4a50a7e20d6cf806abf7d73cffad0362f4df",
+    "parity/lot5-py-lint-draft-warnings-commit.json": "1accb7a7b6f543b2cfe7d06020fff23d828c78319ccd24191014dc2fafcaee7e",
+    "parity/lot5-py-lint-noop-correction-report.json": "26865f7413c889ebc2a861fcafbffc3a46ee9f9cfd70192cebdee9547bac890c",
+    "parity/lot5-py-lint-post-normalize-error-blocks.json": "93fee018ae6ed1a56d2f1f75544a49ae1a3397eeadf51e0dd9e2ef8b9c92f1e6",
+    "parity/lot5-py-paste-batch-one-step.json": "dd3f3f0c5ca2cd73c715ca13174d7b336c55e45cbe7eda96b1bc7aee5ad5dbe8",
+    "parity/lot5-py-paste-dangling-external-refused.json": "8e749e5e782abbef0c19f97fe90cc56e8ff1464a1c29c33782ab590c244d19f6",
+    "parity/lot5-py-paste-key-collision.json": "b361cc1c6356b928b9c1605ee4b604c3541b0b50f2fb5c581d4bafdf43cbe0ba",
+    "parity/lot5-py-paste-normalize-refused.json": "ea7d46168e35ce6467690d7a5a3287467c50e0e83f674fe4543726526d64954c",
+    "parity/lot5-py-paste-remap-preserves-external.json": "b7617e9c5b33af5c70236005c8e9dac79566e963707599db987399f924d25305",
+    "parity/lot5-py-pick-field-states.json": "e3bc1109fbfab194f99f1f29fa169b02d424aeab30e15f4d082eb1c6b124a841",
+    "parity/lot5-py-pick-filter-sort.json": "7528f188d0588e84c94504a8317b3e389d6798af8994405b189df6c21f59e98b",
+    "parity/lot5-py-pick-paging-bounds.json": "fc005a27f14c1e8657def2f579086a4e391159221f3df4b0cf6172f05c46d82b",
+    "parity/lot5-py-pick-paging.json": "8830b2db6ce85273dec926e82de3c97a53df041bead6df781cde9c67ff097469",
+    "parity/lot5-py-pick-query-case-sensitive.json": "2d57d8676b740cef09269ae4dea78f02c44bb143782227b7b3aafaec9727c374",
+    "parity/lot5-py-pick-query-no-normalization.json": "60487ed4fa7eeab89a3b43e209d643817efeee75f0fbe7913004c1378151e606",
+    "parity/lot5-py-pick-reference-ownership.json": "7bedc13423a91cce2d6f6a82028d517ab3edb5f3dd20bf63e26a78cc7458b0ce",
+    "parity/lot5-py-replace-dependency-refused.json": "9758fe01870aae1ac94b397eb6d63ae19ba570443f1974191f59d92f6203ca89",
+    "parity/lot5-py-replace-preserves-id.json": "5410cc68ed2c910ea0e1ffe2bbacdc934b2ffd76bf7a2b1bfae1cef4b7cdd4e3",
+    "parity/lot5-py-replace-replacement-map.json": "caed8cbf4e743cafd049272ffb1a1c4ada562d45107a9bf5c09d4f9d83ceed17",
+    "parity/lot5-py-surface-append-when.json": "df9f4eedb1efd2c1a76c3732f712583d720ab79bb667020fcc6822477430f8bc",
+    "parity/lot5-py-surface-connect-when.json": "ae63ec73f95a5803f220701e20f291aa924dee54d3ce49014a060402dbdd83d7",
+    "parity/lot5-py-surface-context-when.json": "25b7df8e728c2e059be11c9be027f30274ff00da6a19ea6626867cce43a831b0",
+    "parity/lot5-py-surface-delete-when.json": "1ee27e65498e2ba7c49eed530e796e100480f9a6a2446e4f67f9f8222b27094e",
+    "parity/lot5-py-surface-direct-edit-when.json": "99ea8093e6ad5b5db60e282b5b53fc2a536c4799c04ca8ad771b6c40f933a25b",
+    "parity/lot5-py-surface-gesture-parameters.json": "0af37f6e36f71b1839aecfafa3b0597cc8bd4d1c71f6963e6283492c406c5626",
+    "parity/lot5-py-surface-handles-and-values.json": "86deb4cb037c0f9eea2566a14cf09e816f25482a8a3959c044b726415704a6aa",
+    "parity/lot5-py-surface-palette-entries-grid.json": "33e0e2928a63b9d3a45c518ec5585b3df398a1502cf934693b4c494da2572195",
+    "parity/lot5-py-surface-palette-entries-localized.json": "efdf4ebc1b4dbd3e93125615f7ad014454da764b0581477114d88aef916f4dc8",
+    "parity/lot5-py-surface-palette-entries-order.json": "3d3231cfe66bf3dddb8e55d3caa346c480cc8b8d5636d5e22d08481f4df96f62",
+    "parity/lot5-py-surface-palette-when.json": "a72228b32798cd7cd03b7b46a5b4e0b722e88e761b2220e7c66c1f0760d023a7",
+    "parity/lot5-py-surface-paste-when.json": "37240a0c6acdeedcd3382867fd4ee7c28e74b278b245769ac1b02a4037ae9ccb",
+    "parity/lot5-py-surface-raw-recipe-command.json": "ec9ca001474f8e849e8b7a0c42330ec62ca68fc4e39ff4df706b2987ef4b8a55",
+    "parity/lot5-py-surface-replace-when.json": "a0c91d3f77ee16a04d450d6e549997ebbde1efa74954e70b650854f123acf8d8",
+    "parity/lot5-py-surface-unknown-entry.json": "68ea91adfff56f05e2b046e0cadfc1824529400a45265b9f4c9e631a54f10cf1",
+    "parity/lot5-py-surface-unlisted-upstream.json": "b838222e3ba877409bc5863c2db7324e39d73683952cab4c1e80cd41db1b73e0",
+    "parity/lot5-py-surface-upstream-mapped.json": "1b1725d2bfae185cf37600e8aa65c89a85eba66950f6ab7d0d9a8d1e57440ced",
+    "parity/lot5-py-twin-grid-fixture-commands.json": "7e6c798b733a3ed5c3185a12a677ab385e90124ad2294b4dcf7da3d54cce5fd5",
+    "parity/lot5-py-twin-neutral-fixture-commands.json": "b1297af763f02fbefb123d1ea21b2383212002759b0a3bf099c1c7e090146c1e",
+    "parity/lot5-py-tx-cancelled.json": "b30b150c053697644a6099fbc06538d495cb851d55adddfd851ac66857a0485b",
+    "parity/lot5-py-tx-dispose-during-transaction.json": "24b89801cb2053b7593e3715199c1a5d3c24f4b8a7a27c4adf94691081a29b60",
+    "parity/lot5-py-tx-reentrant-refused.json": "a5dafbe1507156fbd8dc894ed2c207ca0e99834eb1114502063571f4958c2182"
+  },
+  "format": "profile-parity-corpus/1",
+  "notes": [
+    "pathBase is the directory every path below is relative to.",
+    "Each parity case is a transcription of the harness case of the same name (lot5-py- prefix removed); derive_helper.py check re-derives it byte for byte.",
+    "Profile and package artifacts are the exact profile-c14n/2 bytes of their compositions, so raw SHA-256 equals H(document).",
+    "vendored lists the JS cases vendored by the block-B parity sync (source: the JS repository path; sha256: the pin of the owning JS seal); their harness records and raw files live under pathBase, and they are not re-published under parity/ because the owning JS seal publishes their corpus records."
+  ],
+  "pathBase": "tests/profile_commands/expected/",
+  "vendored": [
+    {
+      "caseId": "l3-tx-incremental-draft",
+      "source": "tests/fixtures/lot3-cn/expectations/cases/l3-tx-incremental-draft.json",
+      "sha256": "b6d947ff17000c1af7d6faeffe7e886cae8bb6fa2b2b92e3f39c4683200243ea"
+    },
+    {
+      "caseId": "lot5-connect-001-flow-programmatic",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/connect-001-flow-programmatic.json",
+      "sha256": "dd5864416b925b15045c79f6ba0d48aab5e5202f8442309e7dd328b4b58685b3"
+    },
+    {
+      "caseId": "lot5-connect-003-reference-link-programmatic",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/connect-003-reference-link-programmatic.json",
+      "sha256": "96963a3100a81fdb0f80b2e428a11c1cddaee306919658329ea5fa8711bcf533"
+    },
+    {
+      "caseId": "lot5-connect-005-item-input",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/connect-005-item-input.json",
+      "sha256": "298667fdbec3a35823559a4b44dc398497a8ef700aa30b6f8d2f1ea50bff130d"
+    },
+    {
+      "caseId": "lot5-connect-006-item-output",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/connect-006-item-output.json",
+      "sha256": "1e5db209072fd8f21f6338a24d34dd8ca8991fab56be5042e1dbf83ad6109a67"
+    },
+    {
+      "caseId": "lot5-connect-007-annotation-link",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/connect-007-annotation-link.json",
+      "sha256": "cf1df507a3847c36873b6dbdc152c1e6a417afe9a5530520e7948360edaecd08"
+    },
+    {
+      "caseId": "lot5-connect-008-reference-to-call",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/connect-008-reference-to-call.json",
+      "sha256": "6f73ddb86e835e766a7a30708d10fecc671bfcd064f702fc633d1e13cd0a91ee"
+    },
+    {
+      "caseId": "lot5-connect-009-ineligible-target-noop",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/connect-009-ineligible-target-noop.json",
+      "sha256": "9a2445f2b6de63f9cffe7989bb98d3b14941079b3c00800a06f13a61614dcf98"
+    },
+    {
+      "caseId": "lot5-connect-011-flow-from-end",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/connect-011-flow-from-end.json",
+      "sha256": "00b21d9e092c2997234f26787b660e82cc5224f755abdb5cd8595ccf37cf4a04"
+    },
+    {
+      "caseId": "lot5-context-001-append-task-programmatic",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/context-001-append-task-programmatic.json",
+      "sha256": "80e6e61bbaf17f52bc689dfda2533a6c4d248754bd985fdd785dff1d3c47c8c8"
+    },
+    {
+      "caseId": "lot5-context-003-append-end",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/context-003-append-end.json",
+      "sha256": "f1131b32416e4a0a2dcdb22f292b2298e94424c9c8dae55919d73f5f07ab0af7"
+    },
+    {
+      "caseId": "lot5-context-004-aid-attach",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/context-004-aid-attach.json",
+      "sha256": "77d3ee7f8311072b46548fe0ddd39c1100367a06ba9728ab60144c0c3def9499"
+    },
+    {
+      "caseId": "lot5-context-005-append-on-end",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/context-005-append-on-end.json",
+      "sha256": "185e43b868cf2b941e2b347d1312d631c14ee6861f0c8f82418b6f247ce78f4e"
+    },
+    {
+      "caseId": "lot5-context-006-call-unlink",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/context-006-call-unlink.json",
+      "sha256": "2994158698029f05ffec9457a1b2e6a69fbe5fc0550573d75b5d105fcf6db4a9"
+    },
+    {
+      "caseId": "lot5-context-007-call-unlink-noop",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/context-007-call-unlink-noop.json",
+      "sha256": "a9852a52a7e36dcb03c7868a5145d843c35a40fe80c4f6b3901f49a3cf0070e7"
+    },
+    {
+      "caseId": "lot5-delete-001-reference-with-links",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/delete-001-reference-with-links.json",
+      "sha256": "00cf63d41d6125045518609cf1cf9996e2104bce33939320ad11b3f78ab2d5b2"
+    },
+    {
+      "caseId": "lot5-delete-002-unconnected-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/delete-002-unconnected-task.json",
+      "sha256": "048a9dff905c786528c129b9137b171a5659e672ef9aff3e8384ed3654bb6cda"
+    },
+    {
+      "caseId": "lot5-delete-003-outgoing-only",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/delete-003-outgoing-only.json",
+      "sha256": "c7a9c140280c9fb83ea8e6b265ef675ebfca197006a72f1a3e7472fa8fe0407f"
+    },
+    {
+      "caseId": "lot5-delete-004-incoming-refused",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/delete-004-incoming-refused.json",
+      "sha256": "86a76fdeb16cb2dedcabe865378f51b14bf18193d2e24e3232c539715d877ae0"
+    },
+    {
+      "caseId": "lot5-delete-005-flow",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/delete-005-flow.json",
+      "sha256": "e78b8f307a66961db53b1ca400656d4b8dc838a897266e0c4f0f6fb14d6ee593"
+    },
+    {
+      "caseId": "lot5-delete-008-multi-atomic",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/delete-008-multi-atomic.json",
+      "sha256": "6f1e69ada6ec27ee59628eaa052064590ca0938396b3df9ada2efe4b4d92db19"
+    },
+    {
+      "caseId": "lot5-delete-009-annotation-with-link",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/delete-009-annotation-with-link.json",
+      "sha256": "a265c607df82bc42bc6e4e46b00e7c5e7610efc8b30f3ee1471d0546f3abe51a"
+    },
+    {
+      "caseId": "lot5-delete-010-process-disabled",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/delete-010-process-disabled.json",
+      "sha256": "dd38d350fd56c727d6fdfcbd018e17bc1cb91040820d3635f8822db66cefd4a1"
+    },
+    {
+      "caseId": "lot5-delete-011-last-element-keeps-empty-array",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/delete-011-last-element-keeps-empty-array.json",
+      "sha256": "96a7587563eee3c7111612025536d9484fb7596e35bdcacc7962272569d7b584"
+    },
+    {
+      "caseId": "lot5-demo-001-acceptance-script",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/demo-001-acceptance-script.json",
+      "sha256": "1dd0ebe06eb1149129434330f8b60ff90558430d8ed1ddf4fa9dcbd3c1992cb8"
+    },
+    {
+      "caseId": "lot5-fields-001-state-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-001-state-task.json",
+      "sha256": "9f17745a75d8fbcaea2789274c174c507d273302ff2c7fdb2d72c86370388112"
+    },
+    {
+      "caseId": "lot5-fields-002-state-task-fr",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-002-state-task-fr.json",
+      "sha256": "305d6777833a9b1a5058280ee4dc17440f66c878c9290db0a1979edece30a6b7"
+    },
+    {
+      "caseId": "lot5-fields-003-state-aid",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-003-state-aid.json",
+      "sha256": "758f70e62bb310aa0e83fa93a9b40d982453e9f5464d69574331a47e6b849c77"
+    },
+    {
+      "caseId": "lot5-fields-004-state-aid-no-space",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-004-state-aid-no-space.json",
+      "sha256": "d2e1ad12ca293825fcfde55bb1f0c5fb0d53898c48ecb0330dfc556e774842f6"
+    },
+    {
+      "caseId": "lot5-fields-005-state-note-leading-space",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-005-state-note-leading-space.json",
+      "sha256": "7c6f223107a64cb6f555d4412a7c4e595bf7ec05477bf0ec55447c0fa8f8fa3f"
+    },
+    {
+      "caseId": "lot5-fields-006-state-process",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-006-state-process.json",
+      "sha256": "3123fbe37e1de316a8895aca70cfadfff63884b9be598579dd9ef164ad02a2f9"
+    },
+    {
+      "caseId": "lot5-fields-007-state-call",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-007-state-call.json",
+      "sha256": "6259bba7b9459f9235e27371ce926731a6bd3ddbb0648a5de95dc68d77cfc4eb"
+    },
+    {
+      "caseId": "lot5-fields-008-state-user-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-008-state-user-task.json",
+      "sha256": "d4ffe6ea5c060d5bb93df24c0cc277e08fd847719d63c82056122ae2f8ed714c"
+    },
+    {
+      "caseId": "lot5-fields-009-edit-task-name",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-009-edit-task-name.json",
+      "sha256": "acb521d710d4a06ed57a84d61c44a81ff65cca9143fd0b0b79d998544a007d24"
+    },
+    {
+      "caseId": "lot5-fields-010-edit-situations-crlf",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-010-edit-situations-crlf.json",
+      "sha256": "b82af8ad6aacb89d4e03011294ed7d3e187da308fafc4e471af9f47a83a0e87d"
+    },
+    {
+      "caseId": "lot5-fields-011-edit-empty-name",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-011-edit-empty-name.json",
+      "sha256": "133b801223ce84e4972831d83846dcef4e100a44145841e0eefc7de5c594c112"
+    },
+    {
+      "caseId": "lot5-fields-012-edit-aid-body",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-012-edit-aid-body.json",
+      "sha256": "6171dc8aa245170629080dcc0bdc1ea244b97871d2187a884fd0b03a43e02c1f"
+    },
+    {
+      "caseId": "lot5-fields-013-edit-aid-body-typed-marker",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-013-edit-aid-body-typed-marker.json",
+      "sha256": "0879e2d115cf1583a64fac1b8779a090a64c8a87186caa126519ac22eecc3847"
+    },
+    {
+      "caseId": "lot5-fields-014-edit-aid-no-space-keeps-evidence",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-014-edit-aid-no-space-keeps-evidence.json",
+      "sha256": "2ca27256a8f8263fba2f3c6ed576ec207f1b2cd79e7c1784e844870e73f1ed53"
+    },
+    {
+      "caseId": "lot5-fields-015-edit-call-target-keeps-evidence",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-015-edit-call-target-keeps-evidence.json",
+      "sha256": "15fca3a746d89d33a9db408958bfa7fba239a7f9e5787606566205df7a7eb497"
+    },
+    {
+      "caseId": "lot5-fields-016-edit-process-kind",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-016-edit-process-kind.json",
+      "sha256": "2c16cbedf58c6812494fa70ea9063b7a7e52181ef45de239eb73f21b277bca8b"
+    },
+    {
+      "caseId": "lot5-fields-017-edit-reference-override",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-017-edit-reference-override.json",
+      "sha256": "d83b1a7d07cd056f3eedb0c2ea336966fe52f8d7a5cc7f3b6be9cd75475ea343"
+    },
+    {
+      "caseId": "lot5-fields-018-edit-store-title",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-018-edit-store-title.json",
+      "sha256": "5487f58de0362873327dc00be1a2bc1e7ce81293606b118ea2b937d22f16c2a9"
+    },
+    {
+      "caseId": "lot5-fields-019-edit-no-op",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-019-edit-no-op.json",
+      "sha256": "fdc449859941f68869e4d24804cae860d2bf9d899c809dbeb29a29598be96698"
+    },
+    {
+      "caseId": "lot5-fields-020-edit-call-target-wrong-type",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-020-edit-call-target-wrong-type.json",
+      "sha256": "abd56455d9b3846cfaeea45aa6686ace00ce9458cd189f6fee7afde39d70e6ba"
+    },
+    {
+      "caseId": "lot5-fields-021-edit-call-target-dangling",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-021-edit-call-target-dangling.json",
+      "sha256": "853db461d15d01ce387dd6ac6947fa2f434d3a76a0829b4d1cb82348f23bb1c1"
+    },
+    {
+      "caseId": "lot5-fields-022-edit-enum-not-a-choice",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-022-edit-enum-not-a-choice.json",
+      "sha256": "774327c51d14aa70f57e9180be12106e860d9c8670fb6ee884cec374e8c3a209"
+    },
+    {
+      "caseId": "lot5-fields-023-edit-readonly",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-023-edit-readonly.json",
+      "sha256": "380b8b2710ba24f900514a7494444c318c9d5d05378087fc0bbf40a5904c610d"
+    },
+    {
+      "caseId": "lot5-fields-024-edit-number-no-coercion",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-024-edit-number-no-coercion.json",
+      "sha256": "764c09607c401485fffe3747fb16ab62f7486d0583fad54bd4e196d5b12898b3"
+    },
+    {
+      "caseId": "lot5-fields-027-candidates-all",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-027-candidates-all.json",
+      "sha256": "6d2daab6fd9ca11afb8229929894763a9206ac086057f5075c614f59029f8480"
+    },
+    {
+      "caseId": "lot5-fields-028-candidates-case",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-028-candidates-case.json",
+      "sha256": "3483392ebf2a352643e8b4e1a50b071d720b7949cc643d43293f0e1fe645d2b2"
+    },
+    {
+      "caseId": "lot5-fields-029-candidates-case-miss",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-029-candidates-case-miss.json",
+      "sha256": "c5041d027d2c9528c024e160f87199f1120472352cb0a65d14b1ec6e1e1eae4d"
+    },
+    {
+      "caseId": "lot5-fields-030-candidates-normalization",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-030-candidates-normalization.json",
+      "sha256": "ee876ef9f21ad502d7323b9cb39c9158399110c55ce0600e740b71a91c8b92b4"
+    },
+    {
+      "caseId": "lot5-fields-031-candidates-paging",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-031-candidates-paging.json",
+      "sha256": "3be21d70761d29d19736a841d7c4f5d21df2daee35e6049c76e206b8fadc613e"
+    },
+    {
+      "caseId": "lot5-fields-032-candidates-astral",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-032-candidates-astral.json",
+      "sha256": "acff0b27b2b71a794e76e68f0acc45b387447dd48d5d4f4f841ba93c256f8a73"
+    },
+    {
+      "caseId": "lot5-fields-033-candidates-unknown-field",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-033-candidates-unknown-field.json",
+      "sha256": "5678981a30c8c4304d44db96284989b85f410c34519f43c59e3cb27da2ee1b56"
+    },
+    {
+      "caseId": "lot5-fields-034-state-call-locked",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-034-state-call-locked.json",
+      "sha256": "8c86d526df296ddf23b877b08f88caa89345635cdf6fcf86186a818d8cad8d12"
+    },
+    {
+      "caseId": "lot5-fields-035-state-call-hidden",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-035-state-call-hidden.json",
+      "sha256": "53c64564b4ebf5c2ca34e244144ce21fd15e707ba5b31b5e92cbe43368bbb1d9"
+    },
+    {
+      "caseId": "lot5-fields-036-state-choice-upper",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-036-state-choice-upper.json",
+      "sha256": "821a6fd2e41cc2a0077764f0ccbb5ec8bbf9fd542b18f210807c6ad97df544a8"
+    },
+    {
+      "caseId": "lot5-fields-037-state-aid-link-anchor",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-037-state-aid-link-anchor.json",
+      "sha256": "19b5de70861e0b0b16e7cf6610b21814dcc051011447a15d9e19b2196be959b4"
+    },
+    {
+      "caseId": "lot5-fields-038-state-no-fields",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-038-state-no-fields.json",
+      "sha256": "b2d0a48dcfbd25264083070221d8c83c542d42ea878b228438d778d6bd7b77ff"
+    },
+    {
+      "caseId": "lot5-fields-039-check-enum",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-039-check-enum.json",
+      "sha256": "5893b34b459dc395d613535398f19fd3eefcaa9b8d531a5e79e6f1af64537ccf"
+    },
+    {
+      "caseId": "lot5-fields-040-check-reference",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-040-check-reference.json",
+      "sha256": "24a763fefcf96eb866d6bb4b0f6fd52665a7b19187c5c6cf797ea87e6af009a4"
+    },
+    {
+      "caseId": "lot5-fields-041-check-text",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-041-check-text.json",
+      "sha256": "8f91804ba3664f86c4ebe4dce9ebb2049d74cbb9e0d2a73abfd44769597bfe13"
+    },
+    {
+      "caseId": "lot5-fields-042-check-denied",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-042-check-denied.json",
+      "sha256": "5be1f15b88b9eeb15dec2a7f41d6582b9ab73d982c5084b4d02e3773ee3241a3"
+    },
+    {
+      "caseId": "lot5-fields-043-check-unknown-field",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-043-check-unknown-field.json",
+      "sha256": "14956e1bc482674f73d2a9f1cd9dfb020e7e7266747e69aa2f03bf8216e78ca6"
+    },
+    {
+      "caseId": "lot5-fields-044-check-unknown-target",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-044-check-unknown-target.json",
+      "sha256": "4e6cc4052b4c7f35058fb0d557019055721fb8c0d91fcd76c973e89afd366207"
+    },
+    {
+      "caseId": "lot5-fields-045-check-stale-revision",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-045-check-stale-revision.json",
+      "sha256": "5a011a6826d1ede10071a233f46aad1991385cacbf424561325dc07a2776a386"
+    },
+    {
+      "caseId": "lot5-fields-046-edit-locked-target",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-046-edit-locked-target.json",
+      "sha256": "4442de7a178bdff1e6d75a72394817f5af891b1878a54db0e45d1213a0f2fe02"
+    },
+    {
+      "caseId": "lot5-fields-047-edit-hidden-target",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-047-edit-hidden-target.json",
+      "sha256": "4ca554dfd14c73cb62c519b91eb8ca79b5cbbe534af1a54f7dd672ad7e8e4092"
+    },
+    {
+      "caseId": "lot5-fields-048-edit-unknown-field",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-048-edit-unknown-field.json",
+      "sha256": "96dc066431a2f05dfa9f14d6b0ffcfceb9cca74840a364777a4149fbd5efb740"
+    },
+    {
+      "caseId": "lot5-fields-049-edit-unknown-target",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-049-edit-unknown-target.json",
+      "sha256": "320cd4aa79a50f5a59c587677337262daa86e1a89d0b11c17d53db7eab328b59"
+    },
+    {
+      "caseId": "lot5-fields-050-edit-value-omitted",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-050-edit-value-omitted.json",
+      "sha256": "c39dbf8580836f4ae5146c29a0c880cdf527918143218245a131053e64e99ed1"
+    },
+    {
+      "caseId": "lot5-fields-051-edit-boolean-no-coercion",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-051-edit-boolean-no-coercion.json",
+      "sha256": "d92024eb3ae796b4706f80d56a00bf4218199224a2077dbc80b8dcd0a3b55890"
+    },
+    {
+      "caseId": "lot5-fields-052-edit-aid-link-anchor",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-052-edit-aid-link-anchor.json",
+      "sha256": "bf0ac6809d4557f4bc4e648a3dc7c8e5008881708f41f7aa1055b9c7bdbebcd2"
+    },
+    {
+      "caseId": "lot5-fields-053-edit-aid-link-other-process",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-053-edit-aid-link-other-process.json",
+      "sha256": "fc26e864f394c092e87aa81590b53bd849f1ae59b94b2da570e2471f629ef09d"
+    },
+    {
+      "caseId": "lot5-fields-054-candidates-anchor-ownership",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-054-candidates-anchor-ownership.json",
+      "sha256": "0ef238684c9fd03b234993eaebe5822806d7b6752a6b97fac888b79a779b42e3"
+    },
+    {
+      "caseId": "lot5-fields-055-candidates-locked-field",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-055-candidates-locked-field.json",
+      "sha256": "28cc76e8616324970634c2e29bd0c9ba985c3cb8110ce5890cdf8271c11696ee"
+    },
+    {
+      "caseId": "lot5-fields-056-candidates-hidden-field",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-056-candidates-hidden-field.json",
+      "sha256": "2ab59bb550989942d701d4f61bf4a0246b345e8ec4252b1897f198572d552497"
+    },
+    {
+      "caseId": "lot5-fields-057-candidates-not-reference",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-057-candidates-not-reference.json",
+      "sha256": "c4a607290df0cc9612faefd02d539a39761c19cccdee4b89202c38e7e7233086"
+    },
+    {
+      "caseId": "lot5-fields-058-candidates-negative-offset",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-058-candidates-negative-offset.json",
+      "sha256": "f6c9f5cac447205a657c0428c2d1d2f5d9fd05e0a7bf3435c3b7a9e0181ac805"
+    },
+    {
+      "caseId": "lot5-fields-059-candidates-fractional-limit",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-059-candidates-fractional-limit.json",
+      "sha256": "1cecc4ea21e16aee0b3abb0d8d2f94f6316dd176812a33de277a4e303256d8f3"
+    },
+    {
+      "caseId": "lot5-fields-060-candidates-boolean-limit",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-060-candidates-boolean-limit.json",
+      "sha256": "168b117d1ab3ea528a63807d7d5044757a1219b34119aeb450b0995d5e1bf046"
+    },
+    {
+      "caseId": "lot5-fields-061-candidates-unknown-target",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-061-candidates-unknown-target.json",
+      "sha256": "4b7d15683086c750eac04c58f39c49a2f89908ae89739daac8970cf0d9a184b1"
+    },
+    {
+      "caseId": "lot5-fields-062-candidates-stale-revision",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-062-candidates-stale-revision.json",
+      "sha256": "9d52c86aee6f437e8d76cbcb06e50c1168927be1357892b3865dbb167654a650"
+    },
+    {
+      "caseId": "lot5-fields-063-commit-time-invalidation",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/fields-063-commit-time-invalidation.json",
+      "sha256": "84e8c69095b9fef9e4f0d69473d843c0aee17636f0fa7b1f5d24bce16b5d8a61"
+    },
+    {
+      "caseId": "lot5-history-001-refusal-leaves-no-entry",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/history-001-refusal-leaves-no-entry.json",
+      "sha256": "6becf3ccadbfb6ad45cf4242b8910271614d5facaf1b22e946ffe266206e5184"
+    },
+    {
+      "caseId": "lot5-history-002-noop-leaves-no-entry",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/history-002-noop-leaves-no-entry.json",
+      "sha256": "0fcc2d8be33859ec1461cc905d145a785b9af08c763df599bcc468224483a7cb"
+    },
+    {
+      "caseId": "lot5-history-003-entry-point-chain",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/history-003-entry-point-chain.json",
+      "sha256": "7e8e142cbbaaf8644af3dcd58863d40360a1e287bb264209c9e2bb9f0a26ce4f"
+    },
+    {
+      "caseId": "lot5-history-004-insertion-key-reuse",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/history-004-insertion-key-reuse.json",
+      "sha256": "f93a9e6206ed8589534e8e93c42e071ab11c683998c289119b5397247c00f9b2"
+    },
+    {
+      "caseId": "lot5-history-005-paste-key-reuse",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/history-005-paste-key-reuse.json",
+      "sha256": "aa1d367ba2194f3a8979f58a6934d978b525ea80c791f4c0c9de2fb51f908c29"
+    },
+    {
+      "caseId": "lot5-history-012-empty-batch-noop",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/history-012-empty-batch-noop.json",
+      "sha256": "260953d18de76782682602e30edc08f0f4ddf44647f5493fe93cc2f0a4f3fabf"
+    },
+    {
+      "caseId": "lot5-palette-001-task-programmatic",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-001-task-programmatic.json",
+      "sha256": "6738690c90d3826b99c86a8a5f162eccff57f21329780a3bf3d249fa76a36a79"
+    },
+    {
+      "caseId": "lot5-palette-003-user-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-003-user-task.json",
+      "sha256": "b9566091e5ff7dda6d824f9b8220a34b592e051101a88ae307cd93d24eb36adb"
+    },
+    {
+      "caseId": "lot5-palette-004-start",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-004-start.json",
+      "sha256": "11b27f1f35a9199e9042f1f7504a9d2e57c201257ebd38036f187073d7988fab"
+    },
+    {
+      "caseId": "lot5-palette-005-end",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-005-end.json",
+      "sha256": "c8a3982dd61ffa28d04db9731cbbf0699b04a416cb6a8e101486609ff2212ec8"
+    },
+    {
+      "caseId": "lot5-palette-006-gateway",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-006-gateway.json",
+      "sha256": "39ad45eb3d3bb0c9c66f97b5a3a5ed967678e936642c983c7e2461fc6c43a27b"
+    },
+    {
+      "caseId": "lot5-palette-007-call",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-007-call.json",
+      "sha256": "eeaafc4354029d9aff9f1eca1f767bd5c8c8d779287561f0964369d9370e2da7"
+    },
+    {
+      "caseId": "lot5-palette-008-reference",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-008-reference.json",
+      "sha256": "1ec16ccbb7f69f0a3033e1c9a71bd11ef4133f266bca6774ff82c5bbd6c538ff"
+    },
+    {
+      "caseId": "lot5-palette-009-item",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-009-item.json",
+      "sha256": "446259b4ab482d1bf8530bef983b8396211d52136b9a4861bf200d218ee34bf6"
+    },
+    {
+      "caseId": "lot5-palette-010-aid",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-010-aid.json",
+      "sha256": "aae650344442d14fe5c7440d1abedca378e86980515ce3ac18e7461c2d021245"
+    },
+    {
+      "caseId": "lot5-palette-013-input-set-b-programmatic",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-013-input-set-b-programmatic.json",
+      "sha256": "91915a7f39b4b524b8d50707cd65229cee45b2c14dd1eb11413cd842b5b5a2b2"
+    },
+    {
+      "caseId": "lot5-palette-015-input-missing-target",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-015-input-missing-target.json",
+      "sha256": "e02ac9543b125c7c3141e615587fa77d753b96ac1c7d013905e78cc6624524e3"
+    },
+    {
+      "caseId": "lot5-palette-016-disabled-owner",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-016-disabled-owner.json",
+      "sha256": "c1bf9dc2b012fb07a3274ee228f666d8e948235a13fe44a483966ec0747f368c"
+    },
+    {
+      "caseId": "lot5-palette-017-unknown-entry",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-017-unknown-entry.json",
+      "sha256": "6f00c33d8fdd867052bee34b9de4cf788b2eb7b4f9021f787e676ca5b93ab022"
+    },
+    {
+      "caseId": "lot5-palette-018-final-only-report",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-018-final-only-report.json",
+      "sha256": "01215759d5aea4713dc858dfe2d5a1ab50cec366fd5a7ff7c8a7d6b6e91d68f7"
+    },
+    {
+      "caseId": "lot5-palette-019-contrast-theme-same-tree",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-019-contrast-theme-same-tree.json",
+      "sha256": "d167c08295941d533b0674d92e64d17b052ea1f889900d57f0998bfea9a200a9"
+    },
+    {
+      "caseId": "lot5-palette-020-upstream-command-mapped",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-020-upstream-command-mapped.json",
+      "sha256": "5879430315459cbf7764d6dfe360c950a21fcd5662611dcb34df54d75aa87865"
+    },
+    {
+      "caseId": "lot5-palette-021-unlisted-upstream",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-021-unlisted-upstream.json",
+      "sha256": "9fa971e89c4ab84d408b253ee8fe015fe0b195512e8cf92e62efd6821ecef7ad"
+    },
+    {
+      "caseId": "lot5-palette-022-bare-recipe-command",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-022-bare-recipe-command.json",
+      "sha256": "01afcd7521b1e9fc4eaa3abad393d9570fcdfbce66b0d75cc7bdf21ba8989d6e"
+    },
+    {
+      "caseId": "lot5-palette-023-unknown-member",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-023-unknown-member.json",
+      "sha256": "d371b8216f549a0190a6599bfe5ae48a09c303307cc2a5ff98d5f16a1a8eccca"
+    },
+    {
+      "caseId": "lot5-palette-024-extra-source",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-024-extra-source.json",
+      "sha256": "6a784f59f9dd947a60ca42b19c1805b73d8de21f5832fb56988897363e9307bc"
+    },
+    {
+      "caseId": "lot5-palette-025-non-string-handle",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-025-non-string-handle.json",
+      "sha256": "0fbe0cff7ea9afa1989244203a6173d989d4ec74f1704f6b60e2a216508303d3"
+    },
+    {
+      "caseId": "lot5-palette-026-dangling-handle",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-026-dangling-handle.json",
+      "sha256": "cbb68bf0fa435257d0b53f3760fe0337e586903faa70eb5b5ca8ea258ce07c51"
+    },
+    {
+      "caseId": "lot5-palette-027-null-value",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-027-null-value.json",
+      "sha256": "77f6b8e933ec8bb9c63b4dff7bfa25f1f507b3e700d1f16625b49fee65a57def"
+    },
+    {
+      "caseId": "lot5-palette-028-number-value",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-028-number-value.json",
+      "sha256": "62870ed768e85bd930b32b7910f4e4e3d34cae08aae4e1b0878fea9643c924a8"
+    },
+    {
+      "caseId": "lot5-palette-029-input-loose-two-sets",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-029-input-loose-two-sets.json",
+      "sha256": "b4d4ad083b52c46e09c74b7c185584fc55242e26f9f41689ac18914f42df390e"
+    },
+    {
+      "caseId": "lot5-palette-030-cancelled-before-call",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/palette-030-cancelled-before-call.json",
+      "sha256": "bdcfab2c49d2e17410744f5aeaa9a13466ee976db411b99cfd749be723392e7e"
+    },
+    {
+      "caseId": "lot5-paste-001-copy-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-001-copy-task.json",
+      "sha256": "e9d46e7a0e172a32d61d97d59911432d7d8aa37e51ead21b99d5ca55dc5b9815"
+    },
+    {
+      "caseId": "lot5-paste-002-copy-group",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-002-copy-group.json",
+      "sha256": "fc4cf78fd9db32628be8eed4d6c43c5f177503e2a87dbb3a63b124947172ecdd"
+    },
+    {
+      "caseId": "lot5-paste-003-paste-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-003-paste-task.json",
+      "sha256": "5454e14c6c6728f5b77062f0027d1a06c5130426ceba5423df8152353e46d04f"
+    },
+    {
+      "caseId": "lot5-paste-005-paste-group",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-005-paste-group.json",
+      "sha256": "3bc16e6081b883e3062b7be0955c4ef197366c40b681f85bdda441ced413e951"
+    },
+    {
+      "caseId": "lot5-paste-006-paste-reference-shared-store",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-006-paste-reference-shared-store.json",
+      "sha256": "19dfd637ea1a049139968c91bc69a4c603d2425290ad33df64b7a65104b296d1"
+    },
+    {
+      "caseId": "lot5-paste-007-paste-cross-document-dangling",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-007-paste-cross-document-dangling.json",
+      "sha256": "6b0d0a34719b3fb244ee16317445e4d364a82076432d367923fa0f0eadab617b"
+    },
+    {
+      "caseId": "lot5-paste-008-paste-batch-one-pass",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-008-paste-batch-one-pass.json",
+      "sha256": "5781c51fe5ea63a0244885cf421ed9e0eb17bb5888db027b31365bc73f93ede1"
+    },
+    {
+      "caseId": "lot5-paste-009-paste-into-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-009-paste-into-task.json",
+      "sha256": "63691e5e54f8c035fc5651e54c33318948e2378a7dde7d92ebc12127f510f3a2"
+    },
+    {
+      "caseId": "lot5-paste-011-copy-stale-revision",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-011-copy-stale-revision.json",
+      "sha256": "d415bf4d03ec949c03730355fafee64dc6a554f86cf28bea1ee5d4334281a62b"
+    },
+    {
+      "caseId": "lot5-paste-012-copy-unknown-id",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-012-copy-unknown-id.json",
+      "sha256": "1fcf9bee5b1810a079618ebf7649340d0b80f1a8363cd386c8cec4e04ee2cd48"
+    },
+    {
+      "caseId": "lot5-paste-013-copy-definitions-root",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-013-copy-definitions-root.json",
+      "sha256": "520070c364f817ea6bce5c705aa0bd5ba1f4d4441bf64c5fe1b83d956519b077"
+    },
+    {
+      "caseId": "lot5-paste-014-paste-then-edit-same-batch",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-014-paste-then-edit-same-batch.json",
+      "sha256": "53bf07764d0d7b36f2403242c174658cd797d9e9a835034d33a436c3e7b468eb"
+    },
+    {
+      "caseId": "lot5-paste-015-paste-call-keeps-evidence",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/paste-015-paste-call-keeps-evidence.json",
+      "sha256": "6ace02b5cc413f4321d6bdd142923cac21659578a4387ae16c41602c98d6c3e3"
+    },
+    {
+      "caseId": "lot5-replace-001-task-to-user-programmatic",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/replace-001-task-to-user-programmatic.json",
+      "sha256": "91fabf745f369bb5d70f24905d39c7e55ea048829e065a2a9499559871a511fd"
+    },
+    {
+      "caseId": "lot5-replace-003-user-to-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/replace-003-user-to-task.json",
+      "sha256": "57fd2a7bce8a17bd5066087b29b4f6ff482c93f20bf3248bc470286074370fbb"
+    },
+    {
+      "caseId": "lot5-replace-004-exact-type-refusal",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/replace-004-exact-type-refusal.json",
+      "sha256": "f376709c9f22fb33391befd91e54824ec1a45614e4a51c44e855beab09a67bdf"
+    },
+    {
+      "caseId": "lot5-replace-005-reference-to-item",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/replace-005-reference-to-item.json",
+      "sha256": "2e81c4660d0e7b58bcad4fcaaf806be7ac1d2f5e7d06205be4fab7d76c2c783d"
+    },
+    {
+      "caseId": "lot5-replace-006-reference-to-item-linked",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/replace-006-reference-to-item-linked.json",
+      "sha256": "59069af8052437fc8ae80f44a131fef46583c704f68b6b37e0b37f896fdfe90f"
+    },
+    {
+      "caseId": "lot5-replace-007-referenced-task-refused",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/replace-007-referenced-task-refused.json",
+      "sha256": "3d9f0a97cb2fc1ee32c881c9bd7fd6e890f7740053b6678d3ff585d508650d20"
+    },
+    {
+      "caseId": "lot5-replace-008-note-to-aid-same-type",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/replace-008-note-to-aid-same-type.json",
+      "sha256": "3bca7a7f1075346a5c48e0ac4e01a2aed43c2030abdd0dbf9fe7bb6782456f12"
+    },
+    {
+      "caseId": "lot5-surfaces-001-palette-plain-en",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-001-palette-plain-en.json",
+      "sha256": "96228d4c9c4ef7cf5962d54e718a7183f51103d805a7d8f45157f19f8f5c10dd"
+    },
+    {
+      "caseId": "lot5-surfaces-002-palette-contrast-en",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-002-palette-contrast-en.json",
+      "sha256": "6b3d6ca1499d1d8ac53186d9bfd355cb2ae6a523e67253db71bbacf6b243813e"
+    },
+    {
+      "caseId": "lot5-surfaces-003-palette-locale-fr",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-003-palette-locale-fr.json",
+      "sha256": "a09e152c9b8e0bbf3faa99297e7d30f31bb9e1a7d6517930327c7c6163ed857f"
+    },
+    {
+      "caseId": "lot5-surfaces-004-palette-locale-fr-ca",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-004-palette-locale-fr-ca.json",
+      "sha256": "f3725cf004c0f5e9dbabbf4f7fe3e26623bc3df9e1f4b9623458117f330df653"
+    },
+    {
+      "caseId": "lot5-surfaces-005-element-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-005-element-task.json",
+      "sha256": "193937f03507e08465508e55d46ee4376b85a54b6188fb19bd6c605afa2765c5"
+    },
+    {
+      "caseId": "lot5-surfaces-006-element-user-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-006-element-user-task.json",
+      "sha256": "0878d4bc4577513237975d8ddedab83ab798599d2281addf5283960566211e7a"
+    },
+    {
+      "caseId": "lot5-surfaces-007-element-end",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-007-element-end.json",
+      "sha256": "d75ea5043ffe66b6a6b4bbb786b27d14ab50e03cc25b4b5bfb1312e7563c8011"
+    },
+    {
+      "caseId": "lot5-surfaces-008-element-reference",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-008-element-reference.json",
+      "sha256": "3ee1774dcf9c4d4d7afd900c76faca72d4db95c9954090eebdccd56d9be41f0a"
+    },
+    {
+      "caseId": "lot5-surfaces-009-element-annotation",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-009-element-annotation.json",
+      "sha256": "b30d6bfecb3d7ed9348575997167ce7e1d67da6b1822a770eb6831462fe17a55"
+    },
+    {
+      "caseId": "lot5-surfaces-010-element-call",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-010-element-call.json",
+      "sha256": "28aa3f222515ee90011756dfcae71fad538c38af62ad435a089061cc14ba6f08"
+    },
+    {
+      "caseId": "lot5-surfaces-013-compile-duplicate-upstream",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-013-compile-duplicate-upstream.json",
+      "sha256": "08c547b9695f40cb3333a9abe4777aefe5ae7e0320e1a38b8c7c5dfd22413a7a"
+    },
+    {
+      "caseId": "lot5-surfaces-014-compile-missing-fallback-text",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/surfaces-014-compile-missing-fallback-text.json",
+      "sha256": "4289a5b90b172d088d028e771df6796ebc882c8c80f526ec91d8bcad6b3093ea"
+    },
+    {
+      "caseId": "lot5-twin-001-assignable-rule-user-task",
+      "source": "tests/fixtures/lot5-ui/expectations/cases/twin-001-assignable-rule-user-task.json",
+      "sha256": "aca34a665c61aacbb56a531cd8b98ba3ebdb8cb5ce80140c7fffd1cd2c8f8965"
+    }
+  ]
+}

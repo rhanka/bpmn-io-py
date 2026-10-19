@@ -1,0 +1,679 @@
+{
+  "case": "io-set-explicit-selection",
+  "clause": "DESIGN R3.3 \u00a78.3 L651 set selection; \u00a77.1 L547 explicit selection command; \u00a78.3 L653 C/N once for the batch",
+  "derivation": "One batch creates the same DataInput and then selects Set_2 explicitly (input-select-set, source = the new ID). C runs once after the whole batch, finds no uncovered input and accepts: the input is appended to dataInputs and to Set_2.dataInputRefs only; Set_1 keeps its membership. A per-command C would have refused the intermediate state.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "ioSpecification": {
+              "$type": "bpmn:InputOutputSpecification",
+              "dataInputs": [
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "In_1",
+                  "name": "Order"
+                }
+              ],
+              "inputSets": [
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "Set_1",
+                  "dataInputRefs": [
+                    "In_1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "Set_2",
+                  "dataInputRefs": [
+                    "In_1"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "apply_commands",
+        "args": {
+          "baseRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+          "expectedViewRevision": {
+            "$current": "viewRevision"
+          },
+          "transactionId": "tx-1",
+          "commands": [
+            {
+              "command": "surface",
+              "entry": "input-create",
+              "context": {
+                "owner": "Process_1",
+                "key": "in-2",
+                "value": "Invoice"
+              }
+            },
+            {
+              "command": "surface",
+              "entry": "input-select-set",
+              "context": {
+                "target": "Set_2",
+                "source": "g_9e60a3fe7ffb796481f25c7e8d5530a4899d1bee7886f8b671285dc628d02e2d"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "op": "get_definitions"
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "load": {
+        "status": "ok",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+        "revision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+          "outputRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_1",
+                        "name": "Order"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_1",
+                        "dataInputRefs": [
+                          "In_1"
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_2",
+                        "dataInputRefs": [
+                          "In_1"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f"
+          },
+          "semanticRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+        "revision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+          "outputRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_1",
+                        "name": "Order"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_1",
+                        "dataInputRefs": [
+                          "In_1"
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_2",
+                        "dataInputRefs": [
+                          "In_1"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f"
+          },
+          "semanticRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "result": {
+          "status": "ok",
+          "operation": "applyCommands",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+          "revision": "dfbddeec8e2ca9d9c31914d350f262f36e5a2a687ac9c4607a5e5de1886b44c9",
+          "report": {
+            "reportVersion": "2",
+            "operation": "applyCommands",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+            "outputRevision": "dfbddeec8e2ca9d9c31914d350f262f36e5a2a687ac9c4607a5e5de1886b44c9",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "envelope": {
+              "documentVersion": "1",
+              "profileIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral/1",
+                "version": "1.6.0",
+                "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+                "base": {
+                  "id": "neutral-base/1",
+                  "version": "lot5-1",
+                  "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-descriptors/1",
+                    "version": "lot5-1",
+                    "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                  }
+                ]
+              },
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "id": "Definitions_1",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "id": "Process_1",
+                    "isExecutable": false,
+                    "ioSpecification": {
+                      "$type": "bpmn:InputOutputSpecification",
+                      "dataInputs": [
+                        {
+                          "$type": "bpmn:DataInput",
+                          "id": "In_1",
+                          "name": "Order"
+                        },
+                        {
+                          "$type": "bpmn:DataInput",
+                          "id": "g_9e60a3fe7ffb796481f25c7e8d5530a4899d1bee7886f8b671285dc628d02e2d",
+                          "name": "Invoice"
+                        }
+                      ],
+                      "inputSets": [
+                        {
+                          "$type": "bpmn:InputSet",
+                          "id": "Set_1",
+                          "dataInputRefs": [
+                            "In_1"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:InputSet",
+                          "id": "Set_2",
+                          "dataInputRefs": [
+                            "In_1",
+                            "g_9e60a3fe7ffb796481f25c7e8d5530a4899d1bee7886f8b671285dc628d02e2d"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "bindings": [],
+              "semanticRevision": "dfbddeec8e2ca9d9c31914d350f262f36e5a2a687ac9c4607a5e5de1886b44c9"
+            },
+            "semanticRevision": "dfbddeec8e2ca9d9c31914d350f262f36e5a2a687ac9c4607a5e5de1886b44c9",
+            "viewRevision": {
+              "$unsealed": "lot4-view-revision"
+            },
+            "transactionId": "tx-1",
+            "changed": true
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "operation": "getDefinitions",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "dfbddeec8e2ca9d9c31914d350f262f36e5a2a687ac9c4607a5e5de1886b44c9",
+          "revision": "dfbddeec8e2ca9d9c31914d350f262f36e5a2a687ac9c4607a5e5de1886b44c9",
+          "report": {
+            "reportVersion": "2",
+            "operation": "getDefinitions",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "dfbddeec8e2ca9d9c31914d350f262f36e5a2a687ac9c4607a5e5de1886b44c9",
+            "outputRevision": "dfbddeec8e2ca9d9c31914d350f262f36e5a2a687ac9c4607a5e5de1886b44c9",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "ioSpecification": {
+                    "$type": "bpmn:InputOutputSpecification",
+                    "dataInputs": [
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "In_1",
+                        "name": "Order"
+                      },
+                      {
+                        "$type": "bpmn:DataInput",
+                        "id": "g_9e60a3fe7ffb796481f25c7e8d5530a4899d1bee7886f8b671285dc628d02e2d",
+                        "name": "Invoice"
+                      }
+                    ],
+                    "inputSets": [
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_1",
+                        "dataInputRefs": [
+                          "In_1"
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:InputSet",
+                        "id": "Set_2",
+                        "dataInputRefs": [
+                          "In_1",
+                          "g_9e60a3fe7ffb796481f25c7e8d5530a4899d1bee7886f8b671285dc628d02e2d"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "dfbddeec8e2ca9d9c31914d350f262f36e5a2a687ac9c4607a5e5de1886b44c9"
+          }
+        }
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "725d288344d7dcb46318d350208113d571b8a9b8ff1a1ecb9fe4cbc58a230d7f",
+    "ids": [
+      {
+        "ownerId": "Process_1",
+        "slot": "input",
+        "key": "in-2",
+        "id": "g_9e60a3fe7ffb796481f25c7e8d5530a4899d1bee7886f8b671285dc628d02e2d"
+      }
+    ]
+  }
+}

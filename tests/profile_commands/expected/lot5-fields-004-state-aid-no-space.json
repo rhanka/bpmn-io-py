@@ -1,0 +1,69 @@
+{
+  "case": "lot5-fields-004-state-aid-no-space",
+  "clause": "DESIGN R3.3 \u00a78.3 L653; \u00a78.3 L655; \u00a72.2 L115; \u00a79.3 L702; \u00a710.1 L737",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 0353affc89e60853fa6dac9e99bb1aea40fed7fc9670311dee15964ccb755813), case file cases/fields-004-state-aid-no-space.json SHA-256 d2e1ad12ca293825fcfde55bb1f0c5fb0d53898c48ecb0330dfc556e774842f6; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Strips a partial marker (\"[Aid]\" without the configured separator), returning \"calculator\"; stripPrefix must return the original value when the exact prefix does not match. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "listFields",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/fields-004-state-aid-no-space.json",
+      "sha256": "d2e1ad12ca293825fcfde55bb1f0c5fb0d53898c48ecb0330dfc556e774842f6"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/basic.snapshot.json",
+        "role": "snapshot",
+        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+      },
+      {
+        "json": [
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "targetId": "Note_2"
+          }
+        ],
+        "role": "queries"
+      }
+    ]
+  },
+  "expected": {
+    "result": [
+      {
+        "diagnostics": [],
+        "payload": {
+          "fields": [
+            {
+              "choices": [],
+              "display": "[Aid]calculator",
+              "field": "body",
+              "label": {
+                "key": "field.body",
+                "text": "Tools"
+              },
+              "message": {
+                "key": "field.invalid",
+                "text": "Invalid value."
+              },
+              "mutable": true,
+              "notion": "aid",
+              "path": "/text",
+              "present": true,
+              "targetTypes": [],
+              "value": "[Aid]calculator",
+              "widget": "multiline"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "targetId": "Note_2"
+        },
+        "status": "ok"
+      }
+    ]
+  }
+}

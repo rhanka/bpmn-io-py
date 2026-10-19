@@ -1,0 +1,56 @@
+{
+  "case": "compile-enum-duplicate-values",
+  "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 unique JSON values even when choice names differ",
+  "derivation": "Two choices with different names share the JSON value One; schema uniqueItems accepts the distinct records and the compiler refuses profile-ui-parameters (the code used by the executable design checker for the same negative). Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/notions/6/fields/0/choices",
+          "value": [
+            {
+              "name": "one",
+              "value": "One"
+            },
+            {
+              "name": "uno",
+              "value": "One"
+            }
+          ]
+        }
+      ],
+      "artifact": "artifacts/profiles/compile-enum-duplicate-values.json"
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-ui-parameters",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "d17b19e7db902fe97df858e024f89787e58c2dbe6fea78cd99bb8026e10fa08d",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "case": "lot5-fields-037-state-aid-link-anchor",
+  "clause": "DESIGN R3.3 \u00a78.3 L653; \u00a78.3 L655; \u00a710.1 L737",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 0353affc89e60853fa6dac9e99bb1aea40fed7fc9670311dee15964ccb755813), case file cases/fields-037-state-aid-link-anchor.json SHA-256 19b5de70861e0b0b16e7cf6610b21814dcc051011447a15d9e19b2196be959b4; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Shows the anchor's name as the stored value, or offers no field for an Association recognized by its direction. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "listFields",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/fields-037-state-aid-link-anchor.json",
+      "sha256": "19b5de70861e0b0b16e7cf6610b21814dcc051011447a15d9e19b2196be959b4"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/basic.snapshot.json",
+        "role": "snapshot",
+        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+      },
+      {
+        "json": [
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "targetId": "AidLink_1"
+          }
+        ],
+        "role": "queries"
+      }
+    ]
+  },
+  "expected": {
+    "result": [
+      {
+        "diagnostics": [],
+        "payload": {
+          "fields": [
+            {
+              "choices": [],
+              "display": "Task_B",
+              "field": "target",
+              "label": {
+                "key": "field.anchor",
+                "text": "Anchor activity"
+              },
+              "message": {
+                "key": "field.invalid",
+                "text": "Invalid value."
+              },
+              "mutable": true,
+              "notion": "aid-link",
+              "path": "/targetRef",
+              "present": true,
+              "targetTypes": [
+                "bpmn:Task",
+                "bpmn:UserTask",
+                "bpmn:CallActivity"
+              ],
+              "value": "Task_B",
+              "widget": "reference"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "targetId": "AidLink_1"
+        },
+        "status": "ok"
+      }
+    ]
+  }
+}

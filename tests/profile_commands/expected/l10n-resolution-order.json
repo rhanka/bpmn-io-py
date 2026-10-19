@@ -1,0 +1,163 @@
+{
+  "case": "l10n-resolution-order",
+  "clause": "DESIGN R3.3 \u00a78.3 L659 localization uses exact requested locale, then policies.localeFallback, then the stable message key",
+  "derivation": "label.store has en and fr texts: fr is exact; de, fr-CA (no BCP 47 truncation) and FR (case-sensitive) fall back to en; label.aid has only en; label.note de is exact; a key that is not a profile message (a library diagnostic key) resolves to the key itself. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
+    },
+    "steps": [
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.store",
+          "locale": "fr"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.store",
+          "locale": "de"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.store",
+          "locale": "fr-CA"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.store",
+          "locale": "FR"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.aid",
+          "locale": "fr"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.note",
+          "locale": "de"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "label.store",
+          "locale": "en"
+        }
+      },
+      {
+        "op": "localize",
+        "args": {
+          "key": "bpmnlint.no-disconnected",
+          "locale": "fr"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "steps": [
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.store",
+            "text": "D\u00e9p\u00f4t",
+            "source": "exact"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.store",
+            "text": "Store",
+            "source": "fallback"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.store",
+            "text": "Store",
+            "source": "fallback"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.store",
+            "text": "Store",
+            "source": "fallback"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.aid",
+            "text": "Aid",
+            "source": "fallback"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.note",
+            "text": "Notiz",
+            "source": "exact"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.store",
+            "text": "Store",
+            "source": "exact"
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "bpmnlint.no-disconnected",
+            "text": "bpmnlint.no-disconnected",
+            "source": "key"
+          },
+          "diagnostics": []
+        }
+      }
+    ]
+  }
+}
