@@ -392,8 +392,30 @@ def _coalesce_value_write(
         _refuse("operation-error")
 
 
+def _merge_single_assign_ref(first: dict[str, Any], second: dict[str, Any]) -> None:
+    """Merge one single-cardinality assignRef write into its survivor.
+
+    Same-mode ``appendUnique``/``remove`` writes union their ids (the sealed
+    no-invention witness stores both members as one list); anything else for
+    one single (target, property) refuses ``profile-write-conflict``.
+    """
+    first_mode = first["mode"]
+    if first_mode == "replace" or second["mode"] == "replace":
+        if first_mode != second["mode"] or first.get("ids") != second.get("ids"):
+            _refuse("profile-write-conflict")
+        return
+    if first_mode == second["mode"] and first_mode in ("appendUnique", "remove"):
+        united = sorted(set(first.get("ids", [])) | set(second.get("ids", [])), key=_utf16)
+        first["ids"] = united
+        return
+    _refuse("profile-write-conflict")
+
+
 def _merge_assign_ref(first: dict[str, Any], second: dict[str, Any]) -> None:
     """Merge one assignRef write into its location survivor (in place)."""
+    if first.get("cardinality") == "single" or second.get("cardinality") == "single":
+        _merge_single_assign_ref(first, second)
+        return
 
     def _parts(write: dict[str, Any]) -> tuple[set[str], set[str]]:
         mode = write["mode"]

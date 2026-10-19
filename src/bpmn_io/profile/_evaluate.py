@@ -483,12 +483,17 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
     if op == "boundRole":
         binding = bindings.get(str(node.get("binding")), _MISSING)
         owner = bindings.get(str(node.get("owner")), _MISSING)
-        if binding is _MISSING or owner is _MISSING:
+        if binding is _MISSING:
+            return False
+        role = node.get("role")
+        if owner is _MISSING and str(node.get("owner")) == "bindingOwner":
+            return _bound_by_role(context, binding, role)
+        if owner is _MISSING:
             return False
         for entry in context.bindings:
             if entry.get("ownerId") == _element_id(owner):
                 target = entry.get("targetId")
-                if target == _element_id(binding):
+                if target == _element_id(binding) and (role is None or entry.get("role") == role):
                     return True
         return False
     if op == "recognizes":
@@ -496,6 +501,20 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
     if op == "reachable":
         return _eval_reachable(node, context, bindings)
     raise ValueError("profile-symbol")  # noqa: EM101
+
+
+def _bound_by_role(context: ReadContext, binding: object, role: object) -> bool:
+    """Return whether one element is bound under one role by any owner.
+
+    The notion scope predeclares the ``bindingOwner`` binding but no
+    evaluation ever binds it: it reads as the owner recorded on the
+    binding itself, so only the (target, role) pair is constrained.
+    """
+    wanted = _element_id(binding)
+    for entry in context.bindings:
+        if entry.get("targetId") == wanted and (role is None or entry.get("role") == role):
+            return True
+    return False
 
 
 def _eval_recognizes(

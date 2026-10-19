@@ -27,6 +27,7 @@ from bpmn_io.profile import (
     create_read_context,
     jcs,
     load_profile,
+    normalize,
     plan_recipe,
     sort_placements,
 )
@@ -37,7 +38,6 @@ MECH = ROOT / "contracts" / "profile-mechanism" / "1"
 
 #: Operations with no implementation yet: value is the strict-xfail reason.
 PENDING = {
-    "normalize": "lot-3 pending: normalize",
     "propose_support_bindings": "lot-3 pending: propose_support_bindings",
     "bind_supports": "lot-3 pending: bind_supports (OPEN-MACHINE gated)",
     "remap_ids": "lot-3 pending: remap_ids (OPEN-ID gated)",
@@ -291,6 +291,39 @@ def _run_sort(case: dict[str, object], record: dict[str, object]) -> None:
     assert jcs(sort_placements(record["placements"])) == jcs(case["expected"]), case["case"]
 
 
+def _assert_normalize_fixed_point(
+    compiled: object,
+    first: dict[str, object],
+    intent: object,
+    activation: str,
+) -> None:
+    """Rerun normalize on its payload: empty delta, same revision and placements."""
+    rerun = normalize(
+        compiled, first["payload"]["envelope"], intent, activation=activation
+    ).to_json()
+    assert rerun["status"] == "ok"
+    assert jcs(rerun["payload"]["envelope"]) == jcs(first["payload"]["envelope"])
+    assert jcs(rerun["payload"]["placements"]) == jcs(first["payload"]["placements"])
+    assert rerun["report"]["entries"] == []
+    assert rerun["baseRevision"] == rerun["revision"] == first["revision"]
+
+
+def _run_normalize(case: dict[str, object], record: dict[str, object]) -> None:
+    """Run one normalize case with its fixed-point rerun."""
+    compiled = _compiled(case["profile"])
+    frozen = jcs(record)
+    activation = record.get("activation") or "edit"
+    assert isinstance(activation, str)
+    actual = normalize(
+        compiled, record["envelope"], record.get("placementIntent"), activation=activation
+    ).to_json()
+    assert jcs(record) == frozen
+    assert jcs(actual) == jcs(case["expected"]), case["case"]
+    if case.get("fixedPoint") and actual["status"] == "ok":
+        assert isinstance(actual, dict)
+        _assert_normalize_fixed_point(compiled, actual, record.get("placementIntent"), activation)
+
+
 def _run_gates(case: dict[str, object], _record: dict[str, object]) -> None:
     """Run the gate-table case against GATES."""
     assert jcs(_plain(GATES)) == jcs(case["expected"]), case["case"]
@@ -307,6 +340,7 @@ def _run_stable(case: dict[str, object], record: dict[str, object]) -> None:
 
 _RUNNERS = {
     "complete": _run_complete,
+    "normalize": _run_normalize,
     "plan_recipe+apply_plan": _run_plan,
     "apply_plan": _run_apply,
     "compile_profile": _run_compile,

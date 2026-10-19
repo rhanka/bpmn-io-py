@@ -70,7 +70,7 @@ def _refuse_step(code: str) -> NoReturn:
 class _Shared:
     """Mutable per-run planning state (ensure identities, planned ids)."""
 
-    ensure: dict[tuple[Any, ...], int] = field(default_factory=dict)
+    ensure: dict[tuple[Any, ...], object] = field(default_factory=dict)
     roles: dict[tuple[str, str], tuple[Any, ...]] = field(default_factory=dict)
     planned_ids: set[str] = field(default_factory=set)
     planned_sequence: int = 0
@@ -673,8 +673,7 @@ def _exec_ensure(  # noqa: C901, PLR0912, PLR0915 - one gate branch per ensure o
     if known is not None:
         if known != identity:
             _refuse("profile-write-conflict")
-        earlier = planner.shared.ensure[identity]
-        bindings[alias] = planner.planned[earlier].element
+        bindings[alias] = planner.shared.ensure[identity]
         return
     record = _snapshot_binding(planner, owner_id, role)
     if record is not None:
@@ -694,7 +693,7 @@ def _exec_ensure(  # noqa: C901, PLR0912, PLR0915 - one gate branch per ensure o
             "op": "ensure",
             "recipeId": planner.recipe_id,
             "decision": "reuse",
-            "ownerId": owner_arg,
+            "ownerId": owner_id,
             "role": role,
             "type": type_name,
             "parent": _element_ref(parent, planner.planned, planner.context),
@@ -705,7 +704,7 @@ def _exec_ensure(  # noqa: C901, PLR0912, PLR0915 - one gate branch per ensure o
         }
         planner.writes.append(write)
         planner.register_planned(target, target_id, len(planner.writes) - 1, role_key)
-        planner.shared.ensure[identity] = len(planner.planned) - 1
+        planner.shared.ensure[identity] = target
         planner.shared.roles[role_key] = identity
         bindings[alias] = target
         return
@@ -718,7 +717,7 @@ def _exec_ensure(  # noqa: C901, PLR0912, PLR0915 - one gate branch per ensure o
         "op": "ensure",
         "recipeId": planner.recipe_id,
         "decision": "create",
-        "ownerId": owner_arg,
+        "ownerId": owner_id,
         "role": role,
         "type": type_name,
         "parent": _element_ref(parent, planner.planned, planner.context),
@@ -729,7 +728,7 @@ def _exec_ensure(  # noqa: C901, PLR0912, PLR0915 - one gate branch per ensure o
     }
     planner.writes.append(write)
     planner.register_planned(element, planned_id, len(planner.writes) - 1, role_key)
-    planner.shared.ensure[identity] = len(planner.planned) - 1
+    planner.shared.ensure[identity] = element
     planner.shared.roles[role_key] = identity
     bindings[alias] = element
 
@@ -819,7 +818,7 @@ def _assignref_result(  # noqa: C901, PLR0911 - one branch per assign mode
             _refuse("profile-type")
         return list(ids)
     if mode == "appendUnique":
-        if cardinality == "single":
+        if cardinality == "single" and stored is not _MISSING:
             _refuse("profile-type")
         base = stored if isinstance(stored, list) else ([] if stored is _MISSING else [stored])
         known = set(base)
@@ -1304,7 +1303,7 @@ def _plan_recipe_impl(  # noqa: C901, PLR0912, PLR0913 - one branch per plan che
             recipe.get("select"), {"root": read_context.root, **bound}, planner.context
         )
         for candidate in candidates:
-            local: dict[str, object] = dict(bound)
+            local: dict[str, object] = {"root": read_context.root, **bound}
             local["self"] = candidate.element
             outcome = _eval_when(planner, recipe.get("when"), local)
             if not outcome:
