@@ -1,0 +1,51 @@
+{
+  "case": "render.template.param-boolean",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "template parameter or viewBox violation refuses",
+  "derivation": "hideSource must be a boolean: template parameter duplicates, wrong types, missing fields or extras (and non-positive viewBox) refuse profile-glyph-shape (\u00a79.3).",
+  "operation": "templateGeometry",
+  "input": {
+    "glyph": {
+      "id": "badge",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        100,
+        80
+      ],
+      "commands": [],
+      "template": "attached-badge",
+      "parameters": [
+        {
+          "name": "offsetX",
+          "value": 0
+        },
+        {
+          "name": "offsetY",
+          "value": 0
+        },
+        {
+          "name": "hideSource",
+          "value": "false"
+        },
+        {
+          "name": "markerShift",
+          "value": 0
+        }
+      ]
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 100000,
+      "height": 80000
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-glyph-shape",
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

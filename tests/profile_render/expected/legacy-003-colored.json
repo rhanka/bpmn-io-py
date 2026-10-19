@@ -1,0 +1,60 @@
+{
+  "case": "legacy-003-colored",
+  "clause": "DESIGN R3.3 \u00a79.5 L729",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 ec94cf07958ae2d18746105ca2ac6075456c5d8f49025284c12b34ba34c204de; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: colored maps to its declared theme; the sparse DI colours stay caller-supplied DiStyles (legacy-007). Fails against: Hard-coding DI colour application inside the library.",
+  "operation": "resolveLegacyTheme",
+  "profile": {
+    "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6",
+    "load": {
+      "base": {
+        "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-base.json",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": {
+        "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-descriptors.json",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      },
+      "registry": {
+        "vendored": "contracts/profile-mechanism/1/neutral-registry.json",
+        "sha256": "ac4a09989f3fafd9e7695ba18901fac04d08ca4fa869600d5f715a34cf16039f"
+      },
+      "schema": {
+        "vendored": "contracts/profile-mechanism/1/profile-mechanism-1.schema.json",
+        "sha256": "c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da"
+      },
+      "assets": [
+        {
+          "vendored": "contracts/profile-mechanism/1/neutral-metrics.json",
+          "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0"
+        },
+        {
+          "vendored": "tests/profile_render/expected/vendor/js/artifacts/z-metrics.json",
+          "sha256": "baf2ae3eff1522d8fdd4b7c24790cfa80cecb67392096c08008aa20a1babe8a4"
+        }
+      ]
+    }
+  },
+  "input": [
+    {
+      "role": "look",
+      "json": "colored"
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "themeId": "legacy-colored"
+    },
+    "diagnostics": []
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/legacy-003-colored.json",
+    "sha256": "ec94cf07958ae2d18746105ca2ac6075456c5d8f49025284c12b34ba34c204de"
+  },
+  "author": "spec-seal"
+}

@@ -1,0 +1,103 @@
+{
+  "case": "export.legacy.invalid-reference",
+  "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
+  "witness": "IoError invalid-reference: one integrity entry per ID, pointer only when indexed",
+  "derivation": "Listed code invalid-reference with ids [Task_Z, Task_A]; Task_A is indexed at /rootElements/0/flowElements/0 (exact), Task_Z is not (pointer null, provenance unavailable, no guessed path); code and messageKey reference-dangling; profile-report/2 order puts the absent pointer before the present one. Adapter-originated entries use ruleId adapter (DESIGN \u00a76.4 adapter convention; harmonization B24).",
+  "operation": "mapLegacyDiagnostics",
+  "input": {
+    "legacy": {
+      "producer": "io-error",
+      "code": "invalid-reference",
+      "ids": [
+        "Task_Z",
+        "Task_A"
+      ]
+    },
+    "manifest": {
+      "adapter": "legacy-export/1",
+      "entries": [
+        {
+          "producer": "io-error",
+          "legacyCode": "unknown-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "unsupported-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "invalid-reference"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "missing-endpoint"
+        },
+        {
+          "producer": "fidelity-notice",
+          "legacyCode": "style-dropped",
+          "lossClasses": [
+            "appearance"
+          ]
+        }
+      ]
+    },
+    "sourceIndex": {
+      "Task_A": "/rootElements/0/flowElements/0"
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      {
+        "code": "reference-dangling",
+        "severity": "error",
+        "classification": "integrity",
+        "stage": "export",
+        "ruleId": "adapter",
+        "messageKey": "reference-dangling",
+        "disposition": "refused",
+        "source": {
+          "domain": "tree",
+          "pointer": null,
+          "targetId": "Task_Z",
+          "provenance": "unavailable"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "legacyCode": "invalid-reference"
+      },
+      {
+        "code": "reference-dangling",
+        "severity": "error",
+        "classification": "integrity",
+        "stage": "export",
+        "ruleId": "adapter",
+        "messageKey": "reference-dangling",
+        "disposition": "refused",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/0/flowElements/0",
+          "targetId": "Task_A",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "legacyCode": "invalid-reference"
+      }
+    ],
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

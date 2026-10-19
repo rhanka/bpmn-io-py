@@ -1,0 +1,43 @@
+{
+  "caseId": "export-017-byte-claim-unqualified",
+  "operation": "mapExport",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-byte-claim.profile.json",
+    "sha256": "fcc858c1c50d41a3b0241e275ea8d3b2989e3f3028c80acd1cfd5867ccc7edad"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/empty@byte-claim.envelope.json",
+      "sha256": "7eee7dadf4e186c482e1334c818d46b5dd7c229fa77f8b527a7770a7fe1d35d9"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/empty.layout.json",
+      "sha256": "23fc7b828a0fe06edddc82a7a16925941c5249a81980df7f66bb247f5742ef62"
+    },
+    {
+      "role": "render",
+      "path": "lot4-layout-export/expectations/artifacts/empty@byte-claim-plain.render.json",
+      "sha256": "577cc9bcddb6f609b16922989cb347ebf083643c211a5b1725bfd69a80789987"
+    },
+    {
+      "role": "format",
+      "json": "drawio"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/export-017-byte-claim-unqualified.map-result.json",
+      "sha256": "0cddb3c5c29dfccdad96cc5b4e1e05e28bca145b9bdf36e1697a547195f93bff"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "case": "admission-008-variant-missing-field",
+  "clause": "DESIGN R3.3 \u00a72.4.1 L194\u2013L196; \u00a710.2 L770\u2013L774",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 5a0bb9e60b4a28c871043bf11e28e97397b7e59ddf7b0c26905d262cdb94cb68; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Variant missing-field (version 1.1.7) differs from the lot-4 package only as stated in the README variant table; its defect, if any, is a runtime condition and must not be refused at compile time. Fails against: Refusing at compile time a condition the DESIGN assigns to a runtime refusal code.",
+  "operation": "compileProfile",
+  "profile": {
+    "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-missing-field.profile.json",
+    "sha256": "8d8c6d5553fc50975b31c9fe2e5da5219c539efa32189832cbf37122333ee7ac",
+    "load": {
+      "base": {
+        "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-base.json",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": {
+        "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-descriptors.json",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      },
+      "registry": {
+        "vendored": "contracts/profile-mechanism/1/neutral-registry.json",
+        "sha256": "ac4a09989f3fafd9e7695ba18901fac04d08ca4fa869600d5f715a34cf16039f"
+      },
+      "schema": {
+        "vendored": "contracts/profile-mechanism/1/profile-mechanism-1.schema.json",
+        "sha256": "c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da"
+      },
+      "assets": [
+        {
+          "vendored": "contracts/profile-mechanism/1/neutral-metrics.json",
+          "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0"
+        },
+        {
+          "vendored": "tests/profile_render/expected/vendor/js/artifacts/z-metrics.json",
+          "sha256": "baf2ae3eff1522d8fdd4b7c24790cfa80cecb67392096c08008aa20a1babe8a4"
+        }
+      ]
+    }
+  },
+  "input": [
+    {
+      "role": "base",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-base.json",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    {
+      "role": "descriptors",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-descriptors.json",
+      "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+    },
+    {
+      "role": "registry",
+      "vendored": "contracts/profile-mechanism/1/neutral-registry.json",
+      "sha256": "ac4a09989f3fafd9e7695ba18901fac04d08ca4fa869600d5f715a34cf16039f"
+    },
+    {
+      "role": "schema",
+      "vendored": "contracts/profile-mechanism/1/profile-mechanism-1.schema.json",
+      "sha256": "c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da"
+    },
+    {
+      "role": "asset",
+      "vendored": "contracts/profile-mechanism/1/neutral-metrics.json",
+      "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0"
+    },
+    {
+      "role": "asset",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/z-metrics.json",
+      "sha256": "baf2ae3eff1522d8fdd4b7c24790cfa80cecb67392096c08008aa20a1babe8a4"
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "diagnostics": [],
+    "unsealed": [
+      "/payload"
+    ]
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/admission-008-variant-missing-field.json",
+    "sha256": "5a0bb9e60b4a28c871043bf11e28e97397b7e59ddf7b0c26905d262cdb94cb68"
+  },
+  "author": "spec-seal"
+}

@@ -1,0 +1,52 @@
+{
+  "caseId": "render-022-grid-successor",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/grid-successor.profile.json",
+    "sha256": "e39fbd775d1538c825cdefe9c7d3a5cd179c7553cd2b243a23ead5a3c122f8d8"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/grid-successor.envelope.json",
+      "sha256": "28ed484a6e23de6e4117e0f13aae43bb97df262698b9e6bcacd0f2ef0425cb50"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/grid-successor.layout.json",
+      "sha256": "4de61f9b09caaa14239969a68eeb394c46629b254671f6af913c9fb3448ac18a"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [],
+        "bioc": []
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/grid-successor-plain.resolve-result.json",
+      "sha256": "add6b4d9d0e4a0258f950e30e5ce8de875745ba7e2e3a90bee2aa82e36a61f40"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

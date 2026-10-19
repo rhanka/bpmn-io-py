@@ -1,0 +1,67 @@
+{
+  "caseId": "idplan-003-digest",
+  "operation": "exportIdPlan",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "plan-input",
+      "json": {
+        "policy": "digest",
+        "counterOrigin": 0,
+        "requests": [
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "",
+            "domain": "page"
+          },
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Task_Check_di",
+            "domain": "node"
+          },
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Flow_Yes_di",
+            "domain": "label"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": {
+          "ids": [
+            {
+              "pageId": "Page_Main",
+              "occurrenceKey": "",
+              "domain": "page",
+              "id": "e_23e8a8e60499a51ec1a337f37948b4916278f1140c8a3135a91978ddef220472"
+            },
+            {
+              "pageId": "Page_Main",
+              "occurrenceKey": "Task_Check_di",
+              "domain": "node",
+              "id": "e_47cc2b5bba43221f8212ad3f2e6c8a5fdd17007b1d63544ffefb215b06c44f36"
+            },
+            {
+              "pageId": "Page_Main",
+              "occurrenceKey": "Flow_Yes_di",
+              "domain": "label",
+              "id": "e_8c597a3825a3421aa777328c0157e6c1b8a20547e225ad98a4600dc05949fc89"
+            }
+          ]
+        },
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

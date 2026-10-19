@@ -1,0 +1,114 @@
+{
+  "caseId": "render-013-token-negative",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/main.layout.json",
+      "sha256": "377e069bbaf287e4addb152628c4a4537bca331059eaae7002106a0036d5b9d1"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [
+          {
+            "semanticId": "Task_Check",
+            "tokens": [
+              {
+                "name": "strokeWidth",
+                "value": -1
+              }
+            ]
+          }
+        ],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [],
+        "bioc": []
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "refused",
+        "operation": "resolveTheme",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-lot4/1",
+          "version": "1.1.0",
+          "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+          "base": {
+            "id": "neutral-lot4-base/1",
+            "version": "lot4-2",
+            "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-lot4-descriptors/1",
+              "version": "lot4-2",
+              "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+            }
+          ]
+        },
+        "baseRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+        "code": "render-token-invalid",
+        "diagnostics": [],
+        "report": {
+          "reportVersion": "2",
+          "operation": "resolveTheme",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-lot4/1",
+            "version": "1.1.0",
+            "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+            "base": {
+              "id": "neutral-lot4-base/1",
+              "version": "lot4-2",
+              "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-lot4-descriptors/1",
+                "version": "lot4-2",
+                "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+              }
+            ]
+          },
+          "inputRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        }
+      }
+    }
+  ],
+  "expectedStatus": "refused:render-token-invalid",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

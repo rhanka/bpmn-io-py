@@ -1,0 +1,102 @@
+{
+  "case": "region-015-repeated-view",
+  "clause": "DESIGN R3.3 \u00a79.4 L721\u2013L725",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 75672a3cb46a6076e9a5899ffd5f9e44adfbbd745aa041f9202b23cd5e2357e7, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutRegions output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: The same semantic Input_Order on page View_A resolves in that page's own lane body (30000, 0, 570000, 140000): content left 70000, anchor Task_Check centre 350000 gives left 332000 and label x 335000; row top 0, block top 10000, label y 60000 - distinct from its View_Z geometry (212000). Fails against: Sharing one rectangle across processes/pages or reusing the first page's geometry for every view.",
+  "operation": "layoutRegions",
+  "profile": null,
+  "input": [
+    {
+      "role": "region-input",
+      "json": {
+        "page": {
+          "x": 0,
+          "y": 0,
+          "width": 700000,
+          "height": 560000
+        },
+        "body": {
+          "x": 30000,
+          "y": 0,
+          "width": 570000,
+          "height": 140000
+        },
+        "tokens": {
+          "headerWidth": 30000,
+          "padding": 10000,
+          "gap": 20000,
+          "minHeight": 60000
+        },
+        "items": [
+          {
+            "elementId": "Input_Order",
+            "occurrenceKey": "d-Input_Order",
+            "object": {
+              "width": 36000,
+              "height": 50000
+            },
+            "label": {
+              "width": 30000,
+              "height": 14000
+            },
+            "anchor": {
+              "x": 300000,
+              "y": 220000,
+              "width": 100000,
+              "height": 80000
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "pageBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 700000,
+        "height": 560000
+      },
+      "body": {
+        "x": 30000,
+        "y": 0,
+        "width": 570000,
+        "height": 140000
+      },
+      "items": [
+        {
+          "elementId": "Input_Order",
+          "occurrenceKey": "d-Input_Order",
+          "bounds": {
+            "x": 332000,
+            "y": 10000,
+            "width": 36000,
+            "height": 50000
+          },
+          "labelBounds": {
+            "x": 335000,
+            "y": 60000,
+            "width": 30000,
+            "height": 14000
+          }
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/region-015-repeated-view.json",
+    "sha256": "75672a3cb46a6076e9a5899ffd5f9e44adfbbd745aa041f9202b23cd5e2357e7"
+  },
+  "paritySync": {
+    "decisions": [
+      "PS-33"
+    ]
+  },
+  "author": "spec-seal"
+}

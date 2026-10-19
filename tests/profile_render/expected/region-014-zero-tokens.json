@@ -1,0 +1,124 @@
+{
+  "case": "region-014-zero-tokens",
+  "clause": "DESIGN R3.3 \u00a79.4 L721\u2013L723",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 4db966526276de7af0539221d161e8fb5302404d0fbec1fdb54aff80ae43f05a, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutRegions output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Zero tokens are real values, not missing ones: items abut at the lane x (30000, 66000) and the row is exactly the tallest block, 64000. Fails against: Substituting hidden defaults for zero-valued tokens.",
+  "operation": "layoutRegions",
+  "profile": null,
+  "input": [
+    {
+      "role": "region-input",
+      "json": {
+        "page": {
+          "x": 0,
+          "y": 0,
+          "width": 1200000,
+          "height": 640000
+        },
+        "body": {
+          "x": 30000,
+          "y": 0,
+          "width": 1070000,
+          "height": 150000
+        },
+        "tokens": {
+          "headerWidth": 0,
+          "padding": 0,
+          "gap": 0,
+          "minHeight": 0
+        },
+        "items": [
+          {
+            "elementId": "Input_A",
+            "occurrenceKey": "Input_A_di",
+            "object": {
+              "width": 36000,
+              "height": 50000
+            },
+            "label": {
+              "width": 30000,
+              "height": 14000
+            }
+          },
+          {
+            "elementId": "Input_B",
+            "occurrenceKey": "Input_B_di",
+            "object": {
+              "width": 36000,
+              "height": 50000
+            },
+            "label": {
+              "width": 30000,
+              "height": 14000
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "pageBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1200000,
+        "height": 640000
+      },
+      "body": {
+        "x": 30000,
+        "y": 0,
+        "width": 1070000,
+        "height": 150000
+      },
+      "items": [
+        {
+          "elementId": "Input_A",
+          "occurrenceKey": "Input_A_di",
+          "bounds": {
+            "x": 30000,
+            "y": 0,
+            "width": 36000,
+            "height": 50000
+          },
+          "labelBounds": {
+            "x": 33000,
+            "y": 50000,
+            "width": 30000,
+            "height": 14000
+          }
+        },
+        {
+          "elementId": "Input_B",
+          "occurrenceKey": "Input_B_di",
+          "bounds": {
+            "x": 66000,
+            "y": 0,
+            "width": 36000,
+            "height": 50000
+          },
+          "labelBounds": {
+            "x": 69000,
+            "y": 50000,
+            "width": 30000,
+            "height": 14000
+          }
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/region-014-zero-tokens.json",
+    "sha256": "4db966526276de7af0539221d161e8fb5302404d0fbec1fdb54aff80ae43f05a"
+  },
+  "paritySync": {
+    "decisions": [
+      "PS-33"
+    ]
+  },
+  "author": "spec-seal"
+}

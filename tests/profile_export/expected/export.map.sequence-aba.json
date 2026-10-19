@@ -1,0 +1,2431 @@
+{
+  "case": "export.map.sequence-aba",
+  "clause": "DESIGN R3.3 \u00a710.2 Export recipe, capability and loss contract",
+  "witness": "the symbol table lasts one call, is discarded on refusal and never survives A->B->A",
+  "derivation": "Step 1 = export.map.neutral-fixture; step 2 = a different profile whose export refuses export-parent-order mid-emission; step 3 repeats step 1 and must equal it exactly (no counter, ID or alias state survives).",
+  "operation": "mapExportSequence",
+  "input": {
+    "steps": [
+      {
+        "profile": {
+          "base": "neutral-profile.json",
+          "patch": []
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_1",
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_B",
+                  "name": "Ready"
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A",
+                  "name": ""
+                }
+              ],
+              "artifacts": [],
+              "isExecutable": false
+            }
+          ]
+        },
+        "bindings": [],
+        "layout": {
+          "layoutVersion": "1",
+          "pages": [
+            {
+              "pageId": "Z-page",
+              "name": "First sheet",
+              "order": 0,
+              "semanticRootId": "Process_1",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            },
+            {
+              "pageId": "A-page",
+              "name": "Second sheet",
+              "order": 1,
+              "semanticRootId": "Process_1",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            }
+          ],
+          "geometry": [
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "a-first",
+              "semanticId": "Task_A",
+              "role": "content",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "First on first",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "First on first"
+                ]
+              }
+            },
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "z-last",
+              "semanticId": "Task_B",
+              "role": "content",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "Last on first",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Last on first"
+                ]
+              }
+            },
+            {
+              "pageId": "A-page",
+              "occurrenceKey": "a-last-page",
+              "semanticId": "Task_B",
+              "role": "content",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "Second view",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Second view"
+                ]
+              }
+            }
+          ]
+        },
+        "r": {
+          "renderVersion": "1",
+          "binding": {
+            "semanticRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+            "profileDigest": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+            "descriptorDigest": "f66cec713b5cf4361896f3183372486d6e29314299858d8098d4a5024f0a8f90",
+            "layoutDigest": "086d0553dd54e29390dcbc2e31c12ac5c0191137aa4e79d904d944c135e13c74",
+            "themeId": "plain",
+            "themeDigest": "74b97e29ea96d07df5c44eb917733c2c870b7d1eb39b1969e0d05c3ce7a0741f",
+            "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+            "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+            "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+            "payloadDigest": "b99680a96b5a5c9e5f40d76e5b3c1384b7e4d00460caeebd4cc0f6f56b552c8b"
+          },
+          "pages": [
+            {
+              "pageId": "Z-page",
+              "name": "First sheet",
+              "order": 0,
+              "semanticRootId": "Process_1",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            },
+            {
+              "pageId": "A-page",
+              "name": "Second sheet",
+              "order": 1,
+              "semanticRootId": "Process_1",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            }
+          ],
+          "occurrences": [
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "a-first",
+              "semanticId": "Task_A",
+              "role": "content",
+              "emittedType": "node",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "First on first",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "First on first"
+                ]
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "glyphId": "task"
+            },
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "z-last",
+              "semanticId": "Task_B",
+              "role": "content",
+              "emittedType": "node",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "Last on first",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Last on first"
+                ]
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "glyphId": "task"
+            },
+            {
+              "pageId": "A-page",
+              "occurrenceKey": "a-last-page",
+              "semanticId": "Task_B",
+              "role": "content",
+              "emittedType": "node",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "Second view",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Second view"
+                ]
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "glyphId": "task"
+            }
+          ],
+          "coverage": [
+            {
+              "semanticId": "Definitions_1",
+              "occurrences": [],
+              "disposition": "nonvisual"
+            },
+            {
+              "semanticId": "Process_1",
+              "occurrences": [],
+              "disposition": "nonvisual"
+            },
+            {
+              "semanticId": "Task_B",
+              "occurrences": [
+                {
+                  "pageId": "Z-page",
+                  "occurrenceKey": "z-last"
+                },
+                {
+                  "pageId": "A-page",
+                  "occurrenceKey": "a-last-page"
+                }
+              ],
+              "disposition": "rendered"
+            },
+            {
+              "semanticId": "Task_A",
+              "occurrences": [
+                {
+                  "pageId": "Z-page",
+                  "occurrenceKey": "a-first"
+                }
+              ],
+              "disposition": "rendered"
+            }
+          ],
+          "diagnostics": []
+        },
+        "format": "drawio"
+      },
+      {
+        "profile": {
+          "base": "neutral-profile.json",
+          "patch": [
+            {
+              "op": "add",
+              "path": "/themes/0/glyphs/-",
+              "value": {
+                "id": "flow",
+                "kind": "native",
+                "nativeType": "bpmn:SequenceFlow",
+                "viewBox": [
+                  0,
+                  0,
+                  100,
+                  80
+                ],
+                "commands": []
+              }
+            },
+            {
+              "op": "add",
+              "path": "/notions/-",
+              "value": {
+                "id": "flow",
+                "labels": [
+                  {
+                    "name": "en",
+                    "value": "flow"
+                  }
+                ],
+                "citations": [],
+                "nativeTypes": [
+                  "bpmn:SequenceFlow"
+                ],
+                "recognition": {
+                  "op": "typeIs",
+                  "binding": "self",
+                  "type": "bpmn:SequenceFlow",
+                  "mode": "exact"
+                },
+                "ai": {
+                  "description": "Synthetic profile example for schema review; no customer vocabulary.",
+                  "examples": [],
+                  "counterexamples": [],
+                  "producers": [
+                    "editor",
+                    "import"
+                  ],
+                  "evidenceRequired": false
+                },
+                "referenceRecipes": [],
+                "renderBindings": [
+                  {
+                    "theme": "plain",
+                    "glyph": "flow",
+                    "tokens": [
+                      {
+                        "name": "stroke",
+                        "value": "#333333"
+                      }
+                    ],
+                    "label": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/name"
+                    }
+                  }
+                ],
+                "fields": [],
+                "exclusiveGroup": "primary"
+              }
+            },
+            {
+              "op": "remove",
+              "path": "/recipes/7"
+            },
+            {
+              "op": "remove",
+              "path": "/recipes/6"
+            },
+            {
+              "op": "add",
+              "path": "/recipes/-",
+              "value": {
+                "id": "export-nodes",
+                "phase": "export",
+                "parameters": [],
+                "select": {
+                  "from": "render",
+                  "via": "occurrences",
+                  "where": {
+                    "op": "equal",
+                    "left": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/emittedType"
+                    },
+                    "right": {
+                      "op": "literal",
+                      "value": "node"
+                    }
+                  },
+                  "order": "page-occurrence"
+                },
+                "when": {
+                  "op": "true"
+                },
+                "writes": [
+                  {
+                    "binding": "self",
+                    "path": "",
+                    "mode": "artifact"
+                  }
+                ],
+                "steps": [
+                  {
+                    "op": "emit",
+                    "as": "node",
+                    "kind": "node",
+                    "fields": [
+                      {
+                        "name": "id",
+                        "value": {
+                          "op": "outputId",
+                          "binding": "self",
+                          "domain": "node"
+                        }
+                      },
+                      {
+                        "name": "name",
+                        "value": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/label/text"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "op": "add",
+              "path": "/recipes/-",
+              "value": {
+                "id": "export-pages",
+                "phase": "export",
+                "parameters": [],
+                "select": {
+                  "from": "render",
+                  "via": "pages",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "page-occurrence"
+                },
+                "when": {
+                  "op": "true"
+                },
+                "writes": [
+                  {
+                    "binding": "self",
+                    "path": "",
+                    "mode": "artifact"
+                  }
+                ],
+                "steps": [
+                  {
+                    "op": "emit",
+                    "as": "page",
+                    "kind": "page",
+                    "fields": [
+                      {
+                        "name": "id",
+                        "value": {
+                          "op": "outputId",
+                          "binding": "self",
+                          "domain": "page"
+                        }
+                      },
+                      {
+                        "name": "name",
+                        "value": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/name"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "op": "replace",
+              "path": "/exports/0/recipes",
+              "value": [
+                "export-nodes",
+                "export-pages"
+              ]
+            },
+            {
+              "op": "replace",
+              "path": "/exports/0/capabilities",
+              "value": [
+                {
+                  "when": {
+                    "op": "true"
+                  },
+                  "class": "structural",
+                  "losses": []
+                }
+              ]
+            },
+            {
+              "op": "replace",
+              "path": "/exports/0/idPolicy",
+              "value": "counter"
+            },
+            {
+              "op": "replace",
+              "path": "/exports/0/counterOrigin",
+              "value": 0
+            },
+            {
+              "op": "replace",
+              "path": "/exports/0/format",
+              "value": "drawio"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_x",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_x",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A",
+                  "name": "Draft"
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_B",
+                  "name": "Ready"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_1",
+                  "name": "go",
+                  "sourceRef": "Task_A",
+                  "targetRef": "Task_B"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "layout": {
+          "layoutVersion": "1",
+          "pages": [
+            {
+              "pageId": "P1",
+              "name": "Main",
+              "order": 0,
+              "semanticRootId": "Process_x",
+              "bounds": {
+                "x": 100000,
+                "y": 100000,
+                "width": 300000,
+                "height": 80000
+              }
+            }
+          ],
+          "geometry": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "e-flow",
+              "semanticId": "Flow_1",
+              "role": "edge",
+              "bounds": {
+                "x": 200000,
+                "y": 140000,
+                "width": 100000,
+                "height": 0
+              },
+              "label": {
+                "text": "go",
+                "bounds": {
+                  "x": 230000,
+                  "y": 120000,
+                  "width": 40000,
+                  "height": 14000
+                },
+                "lines": [
+                  "go"
+                ]
+              },
+              "sourceOccurrence": {
+                "pageId": "P1",
+                "occurrenceKey": "s-task-a"
+              },
+              "targetOccurrence": {
+                "pageId": "P1",
+                "occurrenceKey": "s-task-b"
+              },
+              "waypoints": [
+                {
+                  "x": 200000,
+                  "y": 140000
+                },
+                {
+                  "x": 300000,
+                  "y": 140000
+                }
+              ]
+            },
+            {
+              "pageId": "P1",
+              "occurrenceKey": "s-task-a",
+              "semanticId": "Task_A",
+              "role": "shape",
+              "bounds": {
+                "x": 100000,
+                "y": 100000,
+                "width": 100000,
+                "height": 80000
+              },
+              "label": {
+                "text": "Draft",
+                "bounds": {
+                  "x": 100000,
+                  "y": 100000,
+                  "width": 100000,
+                  "height": 80000
+                },
+                "lines": [
+                  "Draft"
+                ]
+              }
+            },
+            {
+              "pageId": "P1",
+              "occurrenceKey": "s-task-b",
+              "semanticId": "Task_B",
+              "role": "shape",
+              "bounds": {
+                "x": 300000,
+                "y": 100000,
+                "width": 100000,
+                "height": 80000
+              },
+              "label": {
+                "text": "Ready",
+                "bounds": {
+                  "x": 300000,
+                  "y": 100000,
+                  "width": 100000,
+                  "height": 80000
+                },
+                "lines": [
+                  "Ready"
+                ]
+              }
+            }
+          ]
+        },
+        "r": {
+          "renderVersion": "1",
+          "binding": {
+            "semanticRevision": "55b79a72b168323bec1a63b1a91c6e32d899b7dd82959818ee45f38e49115987",
+            "profileDigest": "051944ed9b50d0e1e0d61976c327afeac03155ab2bc659f1ad06863fd5eb0d0f",
+            "descriptorDigest": "f66cec713b5cf4361896f3183372486d6e29314299858d8098d4a5024f0a8f90",
+            "layoutDigest": "eba231ce79f3e34a94080281abce633df2441b78c8bf76faac055da817fe79d8",
+            "themeId": "plain",
+            "themeDigest": "f92028d0dfee919ce1a1b0264830872007d25c3702827a1cf640f6df1421e4bc",
+            "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+            "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+            "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+            "payloadDigest": "3b26f045180aa7e980cf3c77d97d5e18b1573d39490b9bd3722a3e93ffb3979c"
+          },
+          "pages": [
+            {
+              "pageId": "P1",
+              "name": "Main",
+              "order": 0,
+              "semanticRootId": "Process_x",
+              "bounds": {
+                "x": 100000,
+                "y": 100000,
+                "width": 300000,
+                "height": 80000
+              }
+            }
+          ],
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "e-flow",
+              "semanticId": "Flow_1",
+              "role": "edge",
+              "bounds": {
+                "x": 200000,
+                "y": 140000,
+                "width": 100000,
+                "height": 0
+              },
+              "label": {
+                "text": "go",
+                "bounds": {
+                  "x": 230000,
+                  "y": 120000,
+                  "width": 40000,
+                  "height": 14000
+                },
+                "lines": [
+                  "go"
+                ]
+              },
+              "sourceOccurrence": {
+                "pageId": "P1",
+                "occurrenceKey": "s-task-a"
+              },
+              "targetOccurrence": {
+                "pageId": "P1",
+                "occurrenceKey": "s-task-b"
+              },
+              "waypoints": [
+                {
+                  "x": 200000,
+                  "y": 140000
+                },
+                {
+                  "x": 300000,
+                  "y": 140000
+                }
+              ],
+              "emittedType": "edge",
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#333333"
+                }
+              ],
+              "glyphId": "flow"
+            },
+            {
+              "pageId": "P1",
+              "occurrenceKey": "s-task-a",
+              "semanticId": "Task_A",
+              "role": "shape",
+              "bounds": {
+                "x": 100000,
+                "y": 100000,
+                "width": 100000,
+                "height": 80000
+              },
+              "label": {
+                "text": "Draft",
+                "bounds": {
+                  "x": 100000,
+                  "y": 100000,
+                  "width": 100000,
+                  "height": 80000
+                },
+                "lines": [
+                  "Draft"
+                ]
+              },
+              "emittedType": "node",
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "glyphId": "task"
+            },
+            {
+              "pageId": "P1",
+              "occurrenceKey": "s-task-b",
+              "semanticId": "Task_B",
+              "role": "shape",
+              "bounds": {
+                "x": 300000,
+                "y": 100000,
+                "width": 100000,
+                "height": 80000
+              },
+              "label": {
+                "text": "Ready",
+                "bounds": {
+                  "x": 300000,
+                  "y": 100000,
+                  "width": 100000,
+                  "height": 80000
+                },
+                "lines": [
+                  "Ready"
+                ]
+              },
+              "emittedType": "node",
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "glyphId": "task"
+            }
+          ],
+          "coverage": [
+            {
+              "semanticId": "Definitions_x",
+              "occurrences": [],
+              "disposition": "nonvisual"
+            },
+            {
+              "semanticId": "Process_x",
+              "occurrences": [],
+              "disposition": "nonvisual"
+            },
+            {
+              "semanticId": "Task_A",
+              "occurrences": [
+                {
+                  "pageId": "P1",
+                  "occurrenceKey": "s-task-a"
+                }
+              ],
+              "disposition": "rendered"
+            },
+            {
+              "semanticId": "Task_B",
+              "occurrences": [
+                {
+                  "pageId": "P1",
+                  "occurrenceKey": "s-task-b"
+                }
+              ],
+              "disposition": "rendered"
+            },
+            {
+              "semanticId": "Flow_1",
+              "occurrences": [
+                {
+                  "pageId": "P1",
+                  "occurrenceKey": "e-flow"
+                }
+              ],
+              "disposition": "rendered"
+            }
+          ],
+          "diagnostics": []
+        },
+        "format": "drawio"
+      },
+      {
+        "profile": {
+          "base": "neutral-profile.json",
+          "patch": []
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_1",
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_B",
+                  "name": "Ready"
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A",
+                  "name": ""
+                }
+              ],
+              "artifacts": [],
+              "isExecutable": false
+            }
+          ]
+        },
+        "bindings": [],
+        "layout": {
+          "layoutVersion": "1",
+          "pages": [
+            {
+              "pageId": "Z-page",
+              "name": "First sheet",
+              "order": 0,
+              "semanticRootId": "Process_1",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            },
+            {
+              "pageId": "A-page",
+              "name": "Second sheet",
+              "order": 1,
+              "semanticRootId": "Process_1",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            }
+          ],
+          "geometry": [
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "a-first",
+              "semanticId": "Task_A",
+              "role": "content",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "First on first",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "First on first"
+                ]
+              }
+            },
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "z-last",
+              "semanticId": "Task_B",
+              "role": "content",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "Last on first",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Last on first"
+                ]
+              }
+            },
+            {
+              "pageId": "A-page",
+              "occurrenceKey": "a-last-page",
+              "semanticId": "Task_B",
+              "role": "content",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "Second view",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Second view"
+                ]
+              }
+            }
+          ]
+        },
+        "r": {
+          "renderVersion": "1",
+          "binding": {
+            "semanticRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+            "profileDigest": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+            "descriptorDigest": "f66cec713b5cf4361896f3183372486d6e29314299858d8098d4a5024f0a8f90",
+            "layoutDigest": "086d0553dd54e29390dcbc2e31c12ac5c0191137aa4e79d904d944c135e13c74",
+            "themeId": "plain",
+            "themeDigest": "74b97e29ea96d07df5c44eb917733c2c870b7d1eb39b1969e0d05c3ce7a0741f",
+            "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+            "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+            "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+            "payloadDigest": "b99680a96b5a5c9e5f40d76e5b3c1384b7e4d00460caeebd4cc0f6f56b552c8b"
+          },
+          "pages": [
+            {
+              "pageId": "Z-page",
+              "name": "First sheet",
+              "order": 0,
+              "semanticRootId": "Process_1",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            },
+            {
+              "pageId": "A-page",
+              "name": "Second sheet",
+              "order": 1,
+              "semanticRootId": "Process_1",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            }
+          ],
+          "occurrences": [
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "a-first",
+              "semanticId": "Task_A",
+              "role": "content",
+              "emittedType": "node",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "First on first",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "First on first"
+                ]
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "glyphId": "task"
+            },
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "z-last",
+              "semanticId": "Task_B",
+              "role": "content",
+              "emittedType": "node",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "Last on first",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Last on first"
+                ]
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "glyphId": "task"
+            },
+            {
+              "pageId": "A-page",
+              "occurrenceKey": "a-last-page",
+              "semanticId": "Task_B",
+              "role": "content",
+              "emittedType": "node",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "label": {
+                "text": "Second view",
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Second view"
+                ]
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "glyphId": "task"
+            }
+          ],
+          "coverage": [
+            {
+              "semanticId": "Definitions_1",
+              "occurrences": [],
+              "disposition": "nonvisual"
+            },
+            {
+              "semanticId": "Process_1",
+              "occurrences": [],
+              "disposition": "nonvisual"
+            },
+            {
+              "semanticId": "Task_B",
+              "occurrences": [
+                {
+                  "pageId": "Z-page",
+                  "occurrenceKey": "z-last"
+                },
+                {
+                  "pageId": "A-page",
+                  "occurrenceKey": "a-last-page"
+                }
+              ],
+              "disposition": "rendered"
+            },
+            {
+              "semanticId": "Task_A",
+              "occurrences": [
+                {
+                  "pageId": "Z-page",
+                  "occurrenceKey": "a-first"
+                }
+              ],
+              "disposition": "rendered"
+            }
+          ],
+          "diagnostics": []
+        },
+        "format": "drawio"
+      }
+    ]
+  },
+  "expected": {
+    "status": "sequence",
+    "steps": [
+      {
+        "status": "ok",
+        "operation": "mapExport",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "baseRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+        "revision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+        "report": {
+          "reportVersion": "2",
+          "operation": "mapExport",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.1.0",
+            "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "fixture-2",
+              "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "fixture-2",
+                "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.1.0",
+            "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "fixture-2",
+              "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "fixture-2",
+                "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+              }
+            ]
+          },
+          "inputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+          "outputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+          "entries": [
+            {
+              "code": "export-loss/semantic-type",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "export",
+              "ruleId": "drawing",
+              "messageKey": "export.loss.semantic-type",
+              "disposition": "mapped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0",
+                "targetId": "Task_B",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false,
+              "pageId": "A-page",
+              "occurrenceKey": "a-last-page",
+              "emittedType": "node",
+              "lossClass": "semantic-type"
+            },
+            {
+              "code": "export-loss/semantic-type",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "export",
+              "ruleId": "drawing",
+              "messageKey": "export.loss.semantic-type",
+              "disposition": "mapped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0",
+                "targetId": "Task_B",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false,
+              "pageId": "Z-page",
+              "occurrenceKey": "z-last",
+              "emittedType": "node",
+              "lossClass": "semantic-type"
+            },
+            {
+              "code": "export-loss/semantic-type",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "export",
+              "ruleId": "drawing",
+              "messageKey": "export.loss.semantic-type",
+              "disposition": "mapped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/1",
+                "targetId": "Task_A",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false,
+              "pageId": "Z-page",
+              "occurrenceKey": "a-first",
+              "emittedType": "node",
+              "lossClass": "semantic-type"
+            }
+          ],
+          "rawStandardFindings": [],
+          "idMap": [
+            {
+              "sourceId": "A-page",
+              "resultId": "e_1",
+              "domain": "export",
+              "pageId": "A-page"
+            },
+            {
+              "sourceId": "Task_B",
+              "resultId": "e_4",
+              "domain": "export",
+              "pageId": "A-page",
+              "occurrenceKey": "a-last-page"
+            },
+            {
+              "sourceId": "Z-page",
+              "resultId": "e_0",
+              "domain": "export",
+              "pageId": "Z-page"
+            },
+            {
+              "sourceId": "Task_A",
+              "resultId": "e_2",
+              "domain": "export",
+              "pageId": "Z-page",
+              "occurrenceKey": "a-first"
+            },
+            {
+              "sourceId": "Task_B",
+              "resultId": "e_3",
+              "domain": "export",
+              "pageId": "Z-page",
+              "occurrenceKey": "z-last"
+            }
+          ],
+          "artifacts": [
+            {
+              "format": "drawio",
+              "capability": "structural",
+              "digest": "e7384adbc9d1606742faee96046901a9d25748a93c4e0909e3fcfc74a1976f96",
+              "entryIndexes": [
+                0,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        "payload": {
+          "format": "drawio",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.1.0",
+            "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "fixture-2",
+              "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "fixture-2",
+                "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+              }
+            ]
+          },
+          "semanticRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+          "viewRevision": "6a5df0d945895292d812eda8fed69046f446134b87179098b99357e9a6ecf471",
+          "ir": [
+            {
+              "kind": "page",
+              "id": "e_0",
+              "name": "First sheet",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            },
+            {
+              "kind": "page",
+              "id": "e_1",
+              "name": "Second sheet",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            },
+            {
+              "kind": "node",
+              "id": "e_2",
+              "name": "First on first",
+              "parent": "e_0",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "label": {
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "First on first"
+                ]
+              }
+            },
+            {
+              "kind": "node",
+              "id": "e_3",
+              "name": "Last on first",
+              "parent": "e_0",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "label": {
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Last on first"
+                ]
+              }
+            },
+            {
+              "kind": "node",
+              "id": "e_4",
+              "name": "Second view",
+              "parent": "e_1",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "label": {
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Second view"
+                ]
+              }
+            }
+          ],
+          "renderBinding": {
+            "semanticRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+            "profileDigest": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+            "descriptorDigest": "f66cec713b5cf4361896f3183372486d6e29314299858d8098d4a5024f0a8f90",
+            "layoutDigest": "086d0553dd54e29390dcbc2e31c12ac5c0191137aa4e79d904d944c135e13c74",
+            "themeId": "plain",
+            "themeDigest": "74b97e29ea96d07df5c44eb917733c2c870b7d1eb39b1969e0d05c3ce7a0741f",
+            "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+            "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+            "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+            "payloadDigest": "b99680a96b5a5c9e5f40d76e5b3c1384b7e4d00460caeebd4cc0f6f56b552c8b"
+          },
+          "report": {
+            "reportVersion": "2",
+            "operation": "mapExport",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.1.0",
+              "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "fixture-2",
+                "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "fixture-2",
+                  "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.1.0",
+              "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "fixture-2",
+                "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "fixture-2",
+                  "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+                }
+              ]
+            },
+            "inputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+            "outputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+            "entries": [
+              {
+                "code": "export-loss/semantic-type",
+                "severity": "warn",
+                "classification": "loss",
+                "stage": "export",
+                "ruleId": "drawing",
+                "messageKey": "export.loss.semantic-type",
+                "disposition": "mapped",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/0",
+                  "targetId": "Task_B",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false,
+                "pageId": "A-page",
+                "occurrenceKey": "a-last-page",
+                "emittedType": "node",
+                "lossClass": "semantic-type"
+              },
+              {
+                "code": "export-loss/semantic-type",
+                "severity": "warn",
+                "classification": "loss",
+                "stage": "export",
+                "ruleId": "drawing",
+                "messageKey": "export.loss.semantic-type",
+                "disposition": "mapped",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/0",
+                  "targetId": "Task_B",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false,
+                "pageId": "Z-page",
+                "occurrenceKey": "z-last",
+                "emittedType": "node",
+                "lossClass": "semantic-type"
+              },
+              {
+                "code": "export-loss/semantic-type",
+                "severity": "warn",
+                "classification": "loss",
+                "stage": "export",
+                "ruleId": "drawing",
+                "messageKey": "export.loss.semantic-type",
+                "disposition": "mapped",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/1",
+                  "targetId": "Task_A",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false,
+                "pageId": "Z-page",
+                "occurrenceKey": "a-first",
+                "emittedType": "node",
+                "lossClass": "semantic-type"
+              }
+            ],
+            "rawStandardFindings": [],
+            "idMap": [
+              {
+                "sourceId": "A-page",
+                "resultId": "e_1",
+                "domain": "export",
+                "pageId": "A-page"
+              },
+              {
+                "sourceId": "Task_B",
+                "resultId": "e_4",
+                "domain": "export",
+                "pageId": "A-page",
+                "occurrenceKey": "a-last-page"
+              },
+              {
+                "sourceId": "Z-page",
+                "resultId": "e_0",
+                "domain": "export",
+                "pageId": "Z-page"
+              },
+              {
+                "sourceId": "Task_A",
+                "resultId": "e_2",
+                "domain": "export",
+                "pageId": "Z-page",
+                "occurrenceKey": "a-first"
+              },
+              {
+                "sourceId": "Task_B",
+                "resultId": "e_3",
+                "domain": "export",
+                "pageId": "Z-page",
+                "occurrenceKey": "z-last"
+              }
+            ],
+            "artifacts": [
+              {
+                "format": "drawio",
+                "capability": "structural",
+                "digest": "e7384adbc9d1606742faee96046901a9d25748a93c4e0909e3fcfc74a1976f96",
+                "entryIndexes": [
+                  0,
+                  1,
+                  2
+                ]
+              }
+            ]
+          },
+          "capability": "structural",
+          "idMap": [
+            {
+              "sourceId": "A-page",
+              "resultId": "e_1",
+              "domain": "export",
+              "pageId": "A-page"
+            },
+            {
+              "sourceId": "Task_B",
+              "resultId": "e_4",
+              "domain": "export",
+              "pageId": "A-page",
+              "occurrenceKey": "a-last-page"
+            },
+            {
+              "sourceId": "Z-page",
+              "resultId": "e_0",
+              "domain": "export",
+              "pageId": "Z-page"
+            },
+            {
+              "sourceId": "Task_A",
+              "resultId": "e_2",
+              "domain": "export",
+              "pageId": "Z-page",
+              "occurrenceKey": "a-first"
+            },
+            {
+              "sourceId": "Task_B",
+              "resultId": "e_3",
+              "domain": "export",
+              "pageId": "Z-page",
+              "occurrenceKey": "z-last"
+            }
+          ]
+        }
+      },
+      {
+        "status": "refused",
+        "operation": "mapExport",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "051944ed9b50d0e1e0d61976c327afeac03155ab2bc659f1ad06863fd5eb0d0f",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "baseRevision": "55b79a72b168323bec1a63b1a91c6e32d899b7dd82959818ee45f38e49115987",
+        "code": "export-parent-order",
+        "diagnostics": [],
+        "report": {
+          "reportVersion": "2",
+          "operation": "mapExport",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.1.0",
+            "sha256": "051944ed9b50d0e1e0d61976c327afeac03155ab2bc659f1ad06863fd5eb0d0f",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "fixture-2",
+              "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "fixture-2",
+                "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+              }
+            ]
+          },
+          "inputRevision": "55b79a72b168323bec1a63b1a91c6e32d899b7dd82959818ee45f38e49115987",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        }
+      },
+      {
+        "status": "ok",
+        "operation": "mapExport",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "baseRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+        "revision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+        "report": {
+          "reportVersion": "2",
+          "operation": "mapExport",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.1.0",
+            "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "fixture-2",
+              "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "fixture-2",
+                "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.1.0",
+            "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "fixture-2",
+              "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "fixture-2",
+                "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+              }
+            ]
+          },
+          "inputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+          "outputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+          "entries": [
+            {
+              "code": "export-loss/semantic-type",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "export",
+              "ruleId": "drawing",
+              "messageKey": "export.loss.semantic-type",
+              "disposition": "mapped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0",
+                "targetId": "Task_B",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false,
+              "pageId": "A-page",
+              "occurrenceKey": "a-last-page",
+              "emittedType": "node",
+              "lossClass": "semantic-type"
+            },
+            {
+              "code": "export-loss/semantic-type",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "export",
+              "ruleId": "drawing",
+              "messageKey": "export.loss.semantic-type",
+              "disposition": "mapped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0",
+                "targetId": "Task_B",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false,
+              "pageId": "Z-page",
+              "occurrenceKey": "z-last",
+              "emittedType": "node",
+              "lossClass": "semantic-type"
+            },
+            {
+              "code": "export-loss/semantic-type",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "export",
+              "ruleId": "drawing",
+              "messageKey": "export.loss.semantic-type",
+              "disposition": "mapped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/1",
+                "targetId": "Task_A",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false,
+              "pageId": "Z-page",
+              "occurrenceKey": "a-first",
+              "emittedType": "node",
+              "lossClass": "semantic-type"
+            }
+          ],
+          "rawStandardFindings": [],
+          "idMap": [
+            {
+              "sourceId": "A-page",
+              "resultId": "e_1",
+              "domain": "export",
+              "pageId": "A-page"
+            },
+            {
+              "sourceId": "Task_B",
+              "resultId": "e_4",
+              "domain": "export",
+              "pageId": "A-page",
+              "occurrenceKey": "a-last-page"
+            },
+            {
+              "sourceId": "Z-page",
+              "resultId": "e_0",
+              "domain": "export",
+              "pageId": "Z-page"
+            },
+            {
+              "sourceId": "Task_A",
+              "resultId": "e_2",
+              "domain": "export",
+              "pageId": "Z-page",
+              "occurrenceKey": "a-first"
+            },
+            {
+              "sourceId": "Task_B",
+              "resultId": "e_3",
+              "domain": "export",
+              "pageId": "Z-page",
+              "occurrenceKey": "z-last"
+            }
+          ],
+          "artifacts": [
+            {
+              "format": "drawio",
+              "capability": "structural",
+              "digest": "e7384adbc9d1606742faee96046901a9d25748a93c4e0909e3fcfc74a1976f96",
+              "entryIndexes": [
+                0,
+                1,
+                2
+              ]
+            }
+          ]
+        },
+        "payload": {
+          "format": "drawio",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.1.0",
+            "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "fixture-2",
+              "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "fixture-2",
+                "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+              }
+            ]
+          },
+          "semanticRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+          "viewRevision": "6a5df0d945895292d812eda8fed69046f446134b87179098b99357e9a6ecf471",
+          "ir": [
+            {
+              "kind": "page",
+              "id": "e_0",
+              "name": "First sheet",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            },
+            {
+              "kind": "page",
+              "id": "e_1",
+              "name": "Second sheet",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 800
+              }
+            },
+            {
+              "kind": "node",
+              "id": "e_2",
+              "name": "First on first",
+              "parent": "e_0",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "label": {
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "First on first"
+                ]
+              }
+            },
+            {
+              "kind": "node",
+              "id": "e_3",
+              "name": "Last on first",
+              "parent": "e_0",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "label": {
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Last on first"
+                ]
+              }
+            },
+            {
+              "kind": "node",
+              "id": "e_4",
+              "name": "Second view",
+              "parent": "e_1",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 100,
+                "height": 80
+              },
+              "style": [
+                {
+                  "name": "fill",
+                  "value": "#ffffff"
+                },
+                {
+                  "name": "stroke",
+                  "value": "#000000"
+                }
+              ],
+              "label": {
+                "bounds": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 100,
+                  "height": 20
+                },
+                "lines": [
+                  "Second view"
+                ]
+              }
+            }
+          ],
+          "renderBinding": {
+            "semanticRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+            "profileDigest": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+            "descriptorDigest": "f66cec713b5cf4361896f3183372486d6e29314299858d8098d4a5024f0a8f90",
+            "layoutDigest": "086d0553dd54e29390dcbc2e31c12ac5c0191137aa4e79d904d944c135e13c74",
+            "themeId": "plain",
+            "themeDigest": "74b97e29ea96d07df5c44eb917733c2c870b7d1eb39b1969e0d05c3ce7a0741f",
+            "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+            "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+            "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+            "payloadDigest": "b99680a96b5a5c9e5f40d76e5b3c1384b7e4d00460caeebd4cc0f6f56b552c8b"
+          },
+          "report": {
+            "reportVersion": "2",
+            "operation": "mapExport",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.1.0",
+              "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "fixture-2",
+                "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "fixture-2",
+                  "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.1.0",
+              "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "fixture-2",
+                "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "fixture-2",
+                  "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+                }
+              ]
+            },
+            "inputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+            "outputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+            "entries": [
+              {
+                "code": "export-loss/semantic-type",
+                "severity": "warn",
+                "classification": "loss",
+                "stage": "export",
+                "ruleId": "drawing",
+                "messageKey": "export.loss.semantic-type",
+                "disposition": "mapped",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/0",
+                  "targetId": "Task_B",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false,
+                "pageId": "A-page",
+                "occurrenceKey": "a-last-page",
+                "emittedType": "node",
+                "lossClass": "semantic-type"
+              },
+              {
+                "code": "export-loss/semantic-type",
+                "severity": "warn",
+                "classification": "loss",
+                "stage": "export",
+                "ruleId": "drawing",
+                "messageKey": "export.loss.semantic-type",
+                "disposition": "mapped",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/0",
+                  "targetId": "Task_B",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false,
+                "pageId": "Z-page",
+                "occurrenceKey": "z-last",
+                "emittedType": "node",
+                "lossClass": "semantic-type"
+              },
+              {
+                "code": "export-loss/semantic-type",
+                "severity": "warn",
+                "classification": "loss",
+                "stage": "export",
+                "ruleId": "drawing",
+                "messageKey": "export.loss.semantic-type",
+                "disposition": "mapped",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/1",
+                  "targetId": "Task_A",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false,
+                "pageId": "Z-page",
+                "occurrenceKey": "a-first",
+                "emittedType": "node",
+                "lossClass": "semantic-type"
+              }
+            ],
+            "rawStandardFindings": [],
+            "idMap": [
+              {
+                "sourceId": "A-page",
+                "resultId": "e_1",
+                "domain": "export",
+                "pageId": "A-page"
+              },
+              {
+                "sourceId": "Task_B",
+                "resultId": "e_4",
+                "domain": "export",
+                "pageId": "A-page",
+                "occurrenceKey": "a-last-page"
+              },
+              {
+                "sourceId": "Z-page",
+                "resultId": "e_0",
+                "domain": "export",
+                "pageId": "Z-page"
+              },
+              {
+                "sourceId": "Task_A",
+                "resultId": "e_2",
+                "domain": "export",
+                "pageId": "Z-page",
+                "occurrenceKey": "a-first"
+              },
+              {
+                "sourceId": "Task_B",
+                "resultId": "e_3",
+                "domain": "export",
+                "pageId": "Z-page",
+                "occurrenceKey": "z-last"
+              }
+            ],
+            "artifacts": [
+              {
+                "format": "drawio",
+                "capability": "structural",
+                "digest": "e7384adbc9d1606742faee96046901a9d25748a93c4e0909e3fcfc74a1976f96",
+                "entryIndexes": [
+                  0,
+                  1,
+                  2
+                ]
+              }
+            ]
+          },
+          "capability": "structural",
+          "idMap": [
+            {
+              "sourceId": "A-page",
+              "resultId": "e_1",
+              "domain": "export",
+              "pageId": "A-page"
+            },
+            {
+              "sourceId": "Task_B",
+              "resultId": "e_4",
+              "domain": "export",
+              "pageId": "A-page",
+              "occurrenceKey": "a-last-page"
+            },
+            {
+              "sourceId": "Z-page",
+              "resultId": "e_0",
+              "domain": "export",
+              "pageId": "Z-page"
+            },
+            {
+              "sourceId": "Task_A",
+              "resultId": "e_2",
+              "domain": "export",
+              "pageId": "Z-page",
+              "occurrenceKey": "a-first"
+            },
+            {
+              "sourceId": "Task_B",
+              "resultId": "e_3",
+              "domain": "export",
+              "pageId": "Z-page",
+              "occurrenceKey": "z-last"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "author": "spec-seal"
+}

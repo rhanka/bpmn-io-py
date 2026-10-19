@@ -1,0 +1,78 @@
+{
+  "case": "render.regions.token-missing",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
+  "witness": "region numeric inputs are injected tokens; a missing token refuses",
+  "derivation": "The tokens record lacks minHeight: no hidden default exists (DESIGN \u00a79.4), the seam refuses render-region-missing (the code compute_layout returns for a missing region token).",
+  "operation": "layoutRegions",
+  "input": {
+    "region": {
+      "page": {
+        "x": 0,
+        "y": 0,
+        "width": 600000,
+        "height": 300000
+      },
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 600000,
+        "height": 100000
+      },
+      "tokens": {
+        "headerWidth": 30000,
+        "padding": 10000,
+        "gap": 20000
+      },
+      "items": [
+        {
+          "elementId": "In_A",
+          "occurrenceKey": "In_A_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          },
+          "anchor": {
+            "x": 100000,
+            "y": 150000,
+            "width": 100000,
+            "height": 80000
+          }
+        },
+        {
+          "elementId": "In_B",
+          "occurrenceKey": "In_B_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          },
+          "anchor": {
+            "x": 300000,
+            "y": 150000,
+            "width": 100000,
+            "height": 80000
+          }
+        },
+        {
+          "elementId": "Out_C",
+          "occurrenceKey": "Out_C_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          },
+          "anchor": {
+            "x": 300000,
+            "y": 150000,
+            "width": 100000,
+            "height": 80000
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "render-region-missing",
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

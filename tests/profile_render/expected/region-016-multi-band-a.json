@@ -1,0 +1,102 @@
+{
+  "case": "region-016-multi-band-a",
+  "clause": "DESIGN R3.3 \u00a79.4 L721\u2013L725",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 bc310fa85125cf8416f7584eb94e11c9a699d9100f1a7029ce778133f2b76916, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutRegions output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Process_A resolves its own bound band Band_A on Page_A: label 76000 wide, centre 250000, left 212000, object x 225000. Fails against: Sharing one rectangle across processes/pages or reusing the first page's geometry for every view.",
+  "operation": "layoutRegions",
+  "profile": null,
+  "input": [
+    {
+      "role": "region-input",
+      "json": {
+        "page": {
+          "x": 0,
+          "y": 0,
+          "width": 800000,
+          "height": 400000
+        },
+        "body": {
+          "x": 0,
+          "y": 270000,
+          "width": 700000,
+          "height": 100000
+        },
+        "tokens": {
+          "headerWidth": 30000,
+          "padding": 10000,
+          "gap": 20000,
+          "minHeight": 60000
+        },
+        "items": [
+          {
+            "elementId": "StoreRef_A",
+            "occurrenceKey": "StoreRef_A_di",
+            "object": {
+              "width": 50000,
+              "height": 50000
+            },
+            "label": {
+              "width": 76000,
+              "height": 14000
+            },
+            "anchor": {
+              "x": 200000,
+              "y": 85000,
+              "width": 100000,
+              "height": 80000
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "pageBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 800000,
+        "height": 400000
+      },
+      "body": {
+        "x": 0,
+        "y": 270000,
+        "width": 700000,
+        "height": 100000
+      },
+      "items": [
+        {
+          "elementId": "StoreRef_A",
+          "occurrenceKey": "StoreRef_A_di",
+          "bounds": {
+            "x": 225000,
+            "y": 280000,
+            "width": 50000,
+            "height": 50000
+          },
+          "labelBounds": {
+            "x": 212000,
+            "y": 330000,
+            "width": 76000,
+            "height": 14000
+          }
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/region-016-multi-band-a.json",
+    "sha256": "bc310fa85125cf8416f7584eb94e11c9a699d9100f1a7029ce778133f2b76916"
+  },
+  "paritySync": {
+    "decisions": [
+      "PS-33"
+    ]
+  },
+  "author": "spec-seal"
+}

@@ -1,0 +1,43 @@
+{
+  "caseId": "layout-004-empty-process",
+  "operation": "layout",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/empty.envelope.json",
+      "sha256": "0a7e64513915c17d08eeba54176afdfd6fbbc2311abb044d48206d0b16f7c175"
+    },
+    {
+      "role": "placements",
+      "path": "lot4-layout-export/expectations/artifacts/empty.placements.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "role": "base-geometry",
+      "path": "lot4-layout-export/expectations/artifacts/empty.base-geometry.json",
+      "sha256": "23fc7b828a0fe06edddc82a7a16925941c5249a81980df7f66bb247f5742ef62"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/layout-004-empty-process.result.json",
+      "sha256": "3f1d116de4bd0c02d622fc2f54c5a5b7225dd8c5756f9a23b15a40e914a40dfb"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

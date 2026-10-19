@@ -1,0 +1,66 @@
+{
+  "case": "region-013-empty-region",
+  "clause": "DESIGN R3.3 \u00a79.4 L723\u2013L725",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 f54fa5ba303a3f65829d1ba441643c86b6af24e49945436ce853e9613955223c, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutRegions output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: An empty item list needs no IO row: the body and page stay unchanged even though minHeight would exceed nothing. Fails against: Applying minHeight or padding growth to a region with no items.",
+  "operation": "layoutRegions",
+  "profile": null,
+  "input": [
+    {
+      "role": "region-input",
+      "json": {
+        "page": {
+          "x": 0,
+          "y": 0,
+          "width": 1200000,
+          "height": 640000
+        },
+        "body": {
+          "x": 30000,
+          "y": 0,
+          "width": 1070000,
+          "height": 150000
+        },
+        "tokens": {
+          "headerWidth": 30000,
+          "padding": 10000,
+          "gap": 20000,
+          "minHeight": 60000
+        },
+        "items": []
+      }
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "pageBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1200000,
+        "height": 640000
+      },
+      "body": {
+        "x": 30000,
+        "y": 0,
+        "width": 1070000,
+        "height": 150000
+      },
+      "items": []
+    },
+    "diagnostics": []
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/region-013-empty-region.json",
+    "sha256": "f54fa5ba303a3f65829d1ba441643c86b6af24e49945436ce853e9613955223c"
+  },
+  "paritySync": {
+    "decisions": [
+      "PS-33"
+    ]
+  },
+  "author": "spec-seal"
+}

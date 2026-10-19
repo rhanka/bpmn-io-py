@@ -1,0 +1,3946 @@
+{
+  "case": "export.map.feature-table-witnesses",
+  "clause": "DESIGN R3.3 \u00a710.2 Export recipe, capability and loss contract",
+  "witness": "the DESIGN \u00a710.2 feature rows on one drawio artifact: DataStore + DataStoreReference, reference-band and main Participants, Process IO and data associations, Documentation markers, internal calledElement navigation, Terminate",
+  "derivation": "Extension profile with one native glyph and notion per feature type and drawio recipes: pages, every node occurrence, every edge occurrence (endpoints through sourceOccurrence/targetOccurrence), then one loss recipe per feature row. Each row is structural with an explicit typed loss through the loss action mapping: the store reference keeps its native dataStoreRef but discloses semantic-type (never remapped to a TextAnnotation); both participants (main and reference band, no processRef) map to page regions with semantic-type; Process IO objects carry semantic-type and the data association relation-kind; the Documentation text of Task_1 is not encoded, so metadata is reported with the exact ID-less source /rootElements/0/flowElements/0/documentation/0 and targetId Task_1 (nearest ID-bearing ancestor); the internal calledElement Process_sub has no drawio link, so navigation; the Terminate end is drawn as an end event with semantic-type on its TerminateEventDefinition (never advertised as a lossless Terminate). Counter IDs: page e_0, nodes in UTF-16 key order Band_w_di e_1 .. Task_1_di e_8, edges Assoc_in_di e_9 .. Flow_2_di e_13; unnamed edges have no name field; loss recipes emit nothing, so every loss result is unavailable; loss entries sort by ruleId then source pointer. Support bindings collaboration/main-participant/reference-band give the support roles of the participant records. R coverage in native pre-order (ID-less Documentation and InputOutputSpecification traversed, not listed). The profile is re-pinned to the lot-4 extension packages (they admit every type of the tree).",
+  "operation": "mapExport",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "call",
+            "kind": "native",
+            "nativeType": "bpmn:CallActivity",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "end",
+            "kind": "native",
+            "nativeType": "bpmn:EndEvent",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "store",
+            "kind": "native",
+            "nativeType": "bpmn:DataStoreReference",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "data-input",
+            "kind": "native",
+            "nativeType": "bpmn:DataInput",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "data-output",
+            "kind": "native",
+            "nativeType": "bpmn:DataOutput",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "pool",
+            "kind": "native",
+            "nativeType": "bpmn:Participant",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "flow",
+            "kind": "native",
+            "nativeType": "bpmn:SequenceFlow",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "link",
+            "kind": "native",
+            "nativeType": "bpmn:Association",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "data-link",
+            "kind": "native",
+            "nativeType": "bpmn:DataInputAssociation",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "call",
+            "labels": [
+              {
+                "name": "en",
+                "value": "call"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:CallActivity"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:CallActivity",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "call",
+                "tokens": [],
+                "label": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/name"
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "end",
+            "labels": [
+              {
+                "name": "en",
+                "value": "end"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:EndEvent"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:EndEvent",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "end",
+                "tokens": [],
+                "label": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/name"
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "store",
+            "labels": [
+              {
+                "name": "en",
+                "value": "store"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:DataStoreReference"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:DataStoreReference",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "store",
+                "tokens": [],
+                "label": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/name"
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "data-input",
+            "labels": [
+              {
+                "name": "en",
+                "value": "data-input"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:DataInput"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:DataInput",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "data-input",
+                "tokens": [],
+                "label": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/name"
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "data-output",
+            "labels": [
+              {
+                "name": "en",
+                "value": "data-output"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:DataOutput"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:DataOutput",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "data-output",
+                "tokens": [],
+                "label": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/name"
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "pool",
+            "labels": [
+              {
+                "name": "en",
+                "value": "pool"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:Participant"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:Participant",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "pool",
+                "tokens": [],
+                "label": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/name"
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "flow",
+            "labels": [
+              {
+                "name": "en",
+                "value": "flow"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:SequenceFlow"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:SequenceFlow",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "flow",
+                "tokens": [],
+                "label": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/name"
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "link",
+            "labels": [
+              {
+                "name": "en",
+                "value": "link"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:Association"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:Association",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "link",
+                "tokens": [],
+                "label": {
+                  "op": "literal",
+                  "value": ""
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "data-link",
+            "labels": [
+              {
+                "name": "en",
+                "value": "data-link"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:DataInputAssociation"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:DataInputAssociation",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "data-link",
+                "tokens": [],
+                "label": {
+                  "op": "literal",
+                  "value": ""
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "remove",
+          "path": "/recipes/7"
+        },
+        {
+          "op": "remove",
+          "path": "/recipes/6"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-pages",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "pages",
+              "where": {
+                "op": "true"
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "emit",
+                "as": "page",
+                "kind": "page",
+                "fields": [
+                  {
+                    "name": "id",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "self",
+                      "domain": "page"
+                    }
+                  },
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/name"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-nodes",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/emittedType"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "node"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "emit",
+                "as": "node",
+                "kind": "node",
+                "fields": [
+                  {
+                    "name": "id",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "self",
+                      "domain": "node"
+                    }
+                  },
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/label/text"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-edges",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/emittedType"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "edge"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "current",
+                "select": {
+                  "from": "self",
+                  "via": "self",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "page-occurrence"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "src",
+                "select": {
+                  "from": "render",
+                  "via": "occurrences",
+                  "where": {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "equal",
+                        "left": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/pageId"
+                        },
+                        "right": {
+                          "op": "read",
+                          "binding": "current",
+                          "path": "/pageId"
+                        }
+                      },
+                      {
+                        "op": "equal",
+                        "left": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/occurrenceKey"
+                        },
+                        "right": {
+                          "op": "read",
+                          "binding": "current",
+                          "path": "/sourceOccurrence/occurrenceKey"
+                        }
+                      }
+                    ]
+                  },
+                  "order": "page-occurrence"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "tgt",
+                "select": {
+                  "from": "render",
+                  "via": "occurrences",
+                  "where": {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "equal",
+                        "left": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/pageId"
+                        },
+                        "right": {
+                          "op": "read",
+                          "binding": "current",
+                          "path": "/pageId"
+                        }
+                      },
+                      {
+                        "op": "equal",
+                        "left": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/occurrenceKey"
+                        },
+                        "right": {
+                          "op": "read",
+                          "binding": "current",
+                          "path": "/targetOccurrence/occurrenceKey"
+                        }
+                      }
+                    ]
+                  },
+                  "order": "page-occurrence"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "emit",
+                "as": "link",
+                "kind": "edge",
+                "fields": [
+                  {
+                    "name": "id",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "self",
+                      "domain": "edge"
+                    }
+                  },
+                  {
+                    "name": "source",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "src",
+                      "domain": "node"
+                    }
+                  },
+                  {
+                    "name": "target",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "tgt",
+                      "domain": "node"
+                    }
+                  },
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/label/text"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "loss-call",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/occurrenceKey"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "Call_1_di"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "sem",
+                "path": "",
+                "mode": "report"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "sem",
+                "select": {
+                  "from": "self",
+                  "via": "semantic",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "loss",
+                "target": "sem",
+                "code": "navigation"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "loss-data-link",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/glyphId"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "data-link"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "report"
+              }
+            ],
+            "steps": [
+              {
+                "op": "loss",
+                "target": "self",
+                "code": "relation-kind"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "loss-doc",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/occurrenceKey"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "Task_1_di"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "doc",
+                "path": "",
+                "mode": "report"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "sem",
+                "select": {
+                  "from": "self",
+                  "via": "semantic",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "doc",
+                "select": {
+                  "from": "sem",
+                  "via": "children",
+                  "property": "documentation",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "first"
+              },
+              {
+                "op": "loss",
+                "target": "doc",
+                "code": "metadata"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "loss-io",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "any",
+                "args": [
+                  {
+                    "op": "equal",
+                    "left": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/glyphId"
+                    },
+                    "right": {
+                      "op": "literal",
+                      "value": "data-input"
+                    }
+                  },
+                  {
+                    "op": "equal",
+                    "left": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/glyphId"
+                    },
+                    "right": {
+                      "op": "literal",
+                      "value": "data-output"
+                    }
+                  }
+                ]
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "report"
+              }
+            ],
+            "steps": [
+              {
+                "op": "loss",
+                "target": "self",
+                "code": "semantic-type"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "loss-participants",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/glyphId"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "pool"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "report"
+              }
+            ],
+            "steps": [
+              {
+                "op": "loss",
+                "target": "self",
+                "code": "semantic-type"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "loss-store",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/glyphId"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "store"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "report"
+              }
+            ],
+            "steps": [
+              {
+                "op": "loss",
+                "target": "self",
+                "code": "semantic-type"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "loss-terminate",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/occurrenceKey"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "End_1_di"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "term",
+                "path": "",
+                "mode": "report"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "sem",
+                "select": {
+                  "from": "self",
+                  "via": "semantic",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "term",
+                "select": {
+                  "from": "sem",
+                  "via": "children",
+                  "property": "eventDefinitions",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "first"
+              },
+              {
+                "op": "loss",
+                "target": "term",
+                "code": "semantic-type"
+              }
+            ]
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/exports/0/recipes",
+          "value": [
+            "export-pages",
+            "export-nodes",
+            "export-edges",
+            "loss-call",
+            "loss-data-link",
+            "loss-doc",
+            "loss-io",
+            "loss-participants",
+            "loss-store",
+            "loss-terminate"
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/exports/0/capabilities",
+          "value": [
+            {
+              "when": {
+                "op": "true"
+              },
+              "class": "structural",
+              "losses": []
+            }
+          ]
+        }
+      ]
+    },
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_w",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_w",
+          "isExecutable": false,
+          "ioSpecification": {
+            "$type": "bpmn:InputOutputSpecification",
+            "dataInputs": [
+              {
+                "$type": "bpmn:DataInput",
+                "id": "In_1",
+                "name": "Order"
+              }
+            ],
+            "dataOutputs": [
+              {
+                "$type": "bpmn:DataOutput",
+                "id": "Out_1",
+                "name": "Receipt"
+              }
+            ]
+          },
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_1",
+              "name": "Check",
+              "documentation": [
+                {
+                  "$type": "bpmn:Documentation",
+                  "text": "Scanner note",
+                  "textFormat": "text/plain"
+                }
+              ],
+              "properties": [
+                {
+                  "$type": "bpmn:Property",
+                  "id": "Prop_1",
+                  "name": "archived"
+                }
+              ],
+              "dataInputAssociations": [
+                {
+                  "$type": "bpmn:DataInputAssociation",
+                  "id": "DIA_1",
+                  "sourceRef": [
+                    "StoreRef_1"
+                  ],
+                  "targetRef": "Prop_1"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:CallActivity",
+              "id": "Call_1",
+              "name": "Review",
+              "calledElement": "Process_sub"
+            },
+            {
+              "$type": "bpmn:EndEvent",
+              "id": "End_1",
+              "name": "Done",
+              "eventDefinitions": [
+                {
+                  "$type": "bpmn:TerminateEventDefinition",
+                  "id": "Term_1"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:DataStoreReference",
+              "id": "StoreRef_1",
+              "name": "Archive",
+              "dataStoreRef": "Store_1"
+            },
+            {
+              "$type": "bpmn:SequenceFlow",
+              "id": "Flow_1",
+              "sourceRef": "Task_1",
+              "targetRef": "Call_1"
+            },
+            {
+              "$type": "bpmn:SequenceFlow",
+              "id": "Flow_2",
+              "sourceRef": "Call_1",
+              "targetRef": "End_1"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_in",
+              "sourceRef": "In_1",
+              "targetRef": "Task_1",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_out",
+              "sourceRef": "Task_1",
+              "targetRef": "Out_1",
+              "associationDirection": "One"
+            }
+          ]
+        },
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_sub",
+          "isExecutable": false
+        },
+        {
+          "$type": "bpmn:DataStore",
+          "id": "Store_1",
+          "name": "Archive store"
+        },
+        {
+          "$type": "bpmn:Collaboration",
+          "id": "Collab_w",
+          "participants": [
+            {
+              "$type": "bpmn:Participant",
+              "id": "Part_main",
+              "name": "Main process",
+              "processRef": "Process_w"
+            },
+            {
+              "$type": "bpmn:Participant",
+              "id": "Band_w",
+              "name": "References"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [
+      {
+        "ownerId": "Process_w",
+        "role": "collaboration",
+        "targetId": "Collab_w"
+      },
+      {
+        "ownerId": "Process_w",
+        "role": "main-participant",
+        "targetId": "Part_main"
+      },
+      {
+        "ownerId": "Process_w",
+        "role": "reference-band",
+        "targetId": "Band_w"
+      }
+    ],
+    "layout": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "P1",
+          "name": "Main",
+          "order": 0,
+          "semanticRootId": "Collab_w",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 800000,
+            "height": 400000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Assoc_in_di",
+          "semanticId": "Assoc_in",
+          "role": "edge",
+          "bounds": {
+            "x": 56000,
+            "y": 45000,
+            "width": 44000,
+            "height": 95000
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "In_1_di"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Task_1_di"
+          },
+          "waypoints": [
+            {
+              "x": 56000,
+              "y": 45000
+            },
+            {
+              "x": 100000,
+              "y": 140000
+            }
+          ]
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Assoc_out_di",
+          "semanticId": "Assoc_out",
+          "role": "edge",
+          "bounds": {
+            "x": 200000,
+            "y": 45000,
+            "width": 500000,
+            "height": 55000
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Task_1_di"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Out_1_di"
+          },
+          "waypoints": [
+            {
+              "x": 200000,
+              "y": 100000
+            },
+            {
+              "x": 700000,
+              "y": 45000
+            }
+          ]
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Band_w_di",
+          "semanticId": "Band_w",
+          "role": "reference-band",
+          "bounds": {
+            "x": 0,
+            "y": 300000,
+            "width": 800000,
+            "height": 100000
+          },
+          "label": {
+            "text": "References",
+            "bounds": {
+              "x": 0,
+              "y": 300000,
+              "width": 800000,
+              "height": 100000
+            },
+            "lines": [
+              "References"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Call_1_di",
+          "semanticId": "Call_1",
+          "role": "shape",
+          "bounds": {
+            "x": 300000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Review",
+            "bounds": {
+              "x": 300000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Review"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "DIA_1_di",
+          "semanticId": "DIA_1",
+          "role": "edge",
+          "bounds": {
+            "x": 125000,
+            "y": 180000,
+            "width": 0,
+            "height": 140000
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "StoreRef_1_di"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Task_1_di"
+          },
+          "waypoints": [
+            {
+              "x": 125000,
+              "y": 320000
+            },
+            {
+              "x": 125000,
+              "y": 180000
+            }
+          ]
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "End_1_di",
+          "semanticId": "End_1",
+          "role": "shape",
+          "bounds": {
+            "x": 500000,
+            "y": 122000,
+            "width": 36000,
+            "height": 36000
+          },
+          "label": {
+            "text": "Done",
+            "bounds": {
+              "x": 500000,
+              "y": 122000,
+              "width": 36000,
+              "height": 36000
+            },
+            "lines": [
+              "Done"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Flow_1_di",
+          "semanticId": "Flow_1",
+          "role": "edge",
+          "bounds": {
+            "x": 200000,
+            "y": 140000,
+            "width": 100000,
+            "height": 0
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Task_1_di"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Call_1_di"
+          },
+          "waypoints": [
+            {
+              "x": 200000,
+              "y": 140000
+            },
+            {
+              "x": 300000,
+              "y": 140000
+            }
+          ]
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Flow_2_di",
+          "semanticId": "Flow_2",
+          "role": "edge",
+          "bounds": {
+            "x": 400000,
+            "y": 140000,
+            "width": 100000,
+            "height": 0
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Call_1_di"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "End_1_di"
+          },
+          "waypoints": [
+            {
+              "x": 400000,
+              "y": 140000
+            },
+            {
+              "x": 500000,
+              "y": 140000
+            }
+          ]
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "In_1_di",
+          "semanticId": "In_1",
+          "role": "shape",
+          "bounds": {
+            "x": 20000,
+            "y": 20000,
+            "width": 36000,
+            "height": 50000
+          },
+          "label": {
+            "text": "Order",
+            "bounds": {
+              "x": 20000,
+              "y": 20000,
+              "width": 36000,
+              "height": 50000
+            },
+            "lines": [
+              "Order"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Out_1_di",
+          "semanticId": "Out_1",
+          "role": "shape",
+          "bounds": {
+            "x": 700000,
+            "y": 20000,
+            "width": 36000,
+            "height": 50000
+          },
+          "label": {
+            "text": "Receipt",
+            "bounds": {
+              "x": 700000,
+              "y": 20000,
+              "width": 36000,
+              "height": 50000
+            },
+            "lines": [
+              "Receipt"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Part_main_di",
+          "semanticId": "Part_main",
+          "role": "main-participant",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 800000,
+            "height": 300000
+          },
+          "label": {
+            "text": "Main process",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 800000,
+              "height": 300000
+            },
+            "lines": [
+              "Main process"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "StoreRef_1_di",
+          "semanticId": "StoreRef_1",
+          "role": "reference-band",
+          "bounds": {
+            "x": 100000,
+            "y": 320000,
+            "width": 50000,
+            "height": 50000
+          },
+          "label": {
+            "text": "Archive",
+            "bounds": {
+              "x": 100000,
+              "y": 320000,
+              "width": 50000,
+              "height": 50000
+            },
+            "lines": [
+              "Archive"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Task_1_di",
+          "semanticId": "Task_1",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Check",
+            "bounds": {
+              "x": 100000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Check"
+            ]
+          }
+        }
+      ]
+    },
+    "r": {
+      "renderVersion": "1",
+      "binding": {
+        "semanticRevision": "cf7dec762c286a4410632df2a51da6cfea236e644119b2df3882a91655d01128",
+        "profileDigest": "9069849fc103e356fa3e3decac4f2ee2874c7de690644cf3b52b6a003b098703",
+        "descriptorDigest": "afaf30f001b2c94301db6ecf38f5fa4de82609420a416c6c3a46f83de6ac66f9",
+        "layoutDigest": "bbed2eabb6e4137ef680e753a4573963ca9a1c6ccf8d0191c0ef8b481cb206e5",
+        "themeId": "plain",
+        "themeDigest": "f59e6cb689de8f3a08b01f6648d5efa2107ce39b5b87600653f4736278798bf4",
+        "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+        "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+        "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+        "payloadDigest": "861ff389709e66d776a76c12ce88f36baacf342dcb47e0380a04903bcf6e8b05"
+      },
+      "pages": [
+        {
+          "pageId": "P1",
+          "name": "Main",
+          "order": 0,
+          "semanticRootId": "Collab_w",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 800000,
+            "height": 400000
+          }
+        }
+      ],
+      "occurrences": [
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Assoc_in_di",
+          "semanticId": "Assoc_in",
+          "role": "edge",
+          "bounds": {
+            "x": 56000,
+            "y": 45000,
+            "width": 44000,
+            "height": 95000
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "In_1_di"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Task_1_di"
+          },
+          "waypoints": [
+            {
+              "x": 56000,
+              "y": 45000
+            },
+            {
+              "x": 100000,
+              "y": 140000
+            }
+          ],
+          "emittedType": "edge",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "link"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Assoc_out_di",
+          "semanticId": "Assoc_out",
+          "role": "edge",
+          "bounds": {
+            "x": 200000,
+            "y": 45000,
+            "width": 500000,
+            "height": 55000
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Task_1_di"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Out_1_di"
+          },
+          "waypoints": [
+            {
+              "x": 200000,
+              "y": 100000
+            },
+            {
+              "x": 700000,
+              "y": 45000
+            }
+          ],
+          "emittedType": "edge",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "link"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Band_w_di",
+          "semanticId": "Band_w",
+          "role": "reference-band",
+          "bounds": {
+            "x": 0,
+            "y": 300000,
+            "width": 800000,
+            "height": 100000
+          },
+          "label": {
+            "text": "References",
+            "bounds": {
+              "x": 0,
+              "y": 300000,
+              "width": 800000,
+              "height": 100000
+            },
+            "lines": [
+              "References"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "pool"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Call_1_di",
+          "semanticId": "Call_1",
+          "role": "shape",
+          "bounds": {
+            "x": 300000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Review",
+            "bounds": {
+              "x": 300000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Review"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "call"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "DIA_1_di",
+          "semanticId": "DIA_1",
+          "role": "edge",
+          "bounds": {
+            "x": 125000,
+            "y": 180000,
+            "width": 0,
+            "height": 140000
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "StoreRef_1_di"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Task_1_di"
+          },
+          "waypoints": [
+            {
+              "x": 125000,
+              "y": 320000
+            },
+            {
+              "x": 125000,
+              "y": 180000
+            }
+          ],
+          "emittedType": "edge",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "data-link"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "End_1_di",
+          "semanticId": "End_1",
+          "role": "shape",
+          "bounds": {
+            "x": 500000,
+            "y": 122000,
+            "width": 36000,
+            "height": 36000
+          },
+          "label": {
+            "text": "Done",
+            "bounds": {
+              "x": 500000,
+              "y": 122000,
+              "width": 36000,
+              "height": 36000
+            },
+            "lines": [
+              "Done"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "end"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Flow_1_di",
+          "semanticId": "Flow_1",
+          "role": "edge",
+          "bounds": {
+            "x": 200000,
+            "y": 140000,
+            "width": 100000,
+            "height": 0
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Task_1_di"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Call_1_di"
+          },
+          "waypoints": [
+            {
+              "x": 200000,
+              "y": 140000
+            },
+            {
+              "x": 300000,
+              "y": 140000
+            }
+          ],
+          "emittedType": "edge",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "flow"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Flow_2_di",
+          "semanticId": "Flow_2",
+          "role": "edge",
+          "bounds": {
+            "x": 400000,
+            "y": 140000,
+            "width": 100000,
+            "height": 0
+          },
+          "sourceOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "Call_1_di"
+          },
+          "targetOccurrence": {
+            "pageId": "P1",
+            "occurrenceKey": "End_1_di"
+          },
+          "waypoints": [
+            {
+              "x": 400000,
+              "y": 140000
+            },
+            {
+              "x": 500000,
+              "y": 140000
+            }
+          ],
+          "emittedType": "edge",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "flow"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "In_1_di",
+          "semanticId": "In_1",
+          "role": "shape",
+          "bounds": {
+            "x": 20000,
+            "y": 20000,
+            "width": 36000,
+            "height": 50000
+          },
+          "label": {
+            "text": "Order",
+            "bounds": {
+              "x": 20000,
+              "y": 20000,
+              "width": 36000,
+              "height": 50000
+            },
+            "lines": [
+              "Order"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "data-input"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Out_1_di",
+          "semanticId": "Out_1",
+          "role": "shape",
+          "bounds": {
+            "x": 700000,
+            "y": 20000,
+            "width": 36000,
+            "height": 50000
+          },
+          "label": {
+            "text": "Receipt",
+            "bounds": {
+              "x": 700000,
+              "y": 20000,
+              "width": 36000,
+              "height": 50000
+            },
+            "lines": [
+              "Receipt"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "data-output"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Part_main_di",
+          "semanticId": "Part_main",
+          "role": "main-participant",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 800000,
+            "height": 300000
+          },
+          "label": {
+            "text": "Main process",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 800000,
+              "height": 300000
+            },
+            "lines": [
+              "Main process"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "pool"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "StoreRef_1_di",
+          "semanticId": "StoreRef_1",
+          "role": "reference-band",
+          "bounds": {
+            "x": 100000,
+            "y": 320000,
+            "width": 50000,
+            "height": 50000
+          },
+          "label": {
+            "text": "Archive",
+            "bounds": {
+              "x": 100000,
+              "y": 320000,
+              "width": 50000,
+              "height": 50000
+            },
+            "lines": [
+              "Archive"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "store"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "Task_1_di",
+          "semanticId": "Task_1",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Check",
+            "bounds": {
+              "x": 100000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Check"
+            ]
+          },
+          "emittedType": "node",
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "glyphId": "task"
+        }
+      ],
+      "coverage": [
+        {
+          "semanticId": "Definitions_w",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Process_w",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Assoc_in",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "Assoc_in_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Assoc_out",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "Assoc_out_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Task_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "Task_1_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "DIA_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "DIA_1_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Prop_1",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Call_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "Call_1_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "End_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "End_1_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Term_1",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "StoreRef_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "StoreRef_1_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Flow_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "Flow_1_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Flow_2",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "Flow_2_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "In_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "In_1_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Out_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "Out_1_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Process_sub",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Store_1",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Collab_w",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Part_main",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "Part_main_di"
+            }
+          ],
+          "disposition": "rendered"
+        },
+        {
+          "semanticId": "Band_w",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "Band_w_di"
+            }
+          ],
+          "disposition": "rendered"
+        }
+      ],
+      "diagnostics": []
+    },
+    "format": "drawio"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "mapExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "9069849fc103e356fa3e3decac4f2ee2874c7de690644cf3b52b6a003b098703",
+      "base": {
+        "id": "neutral-render-base/1",
+        "version": "fixture-1",
+        "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-render-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+        }
+      ]
+    },
+    "baseRevision": "cf7dec762c286a4410632df2a51da6cfea236e644119b2df3882a91655d01128",
+    "revision": "cf7dec762c286a4410632df2a51da6cfea236e644119b2df3882a91655d01128",
+    "report": {
+      "reportVersion": "2",
+      "operation": "mapExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "9069849fc103e356fa3e3decac4f2ee2874c7de690644cf3b52b6a003b098703",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "9069849fc103e356fa3e3decac4f2ee2874c7de690644cf3b52b6a003b098703",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "inputRevision": "cf7dec762c286a4410632df2a51da6cfea236e644119b2df3882a91655d01128",
+      "outputRevision": "cf7dec762c286a4410632df2a51da6cfea236e644119b2df3882a91655d01128",
+      "entries": [
+        {
+          "code": "export-loss/navigation",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "loss-call",
+          "messageKey": "export.loss.navigation",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1",
+            "targetId": "Call_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "Call_1_di",
+          "emittedType": "node",
+          "lossClass": "navigation"
+        },
+        {
+          "code": "export-loss/relation-kind",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "loss-data-link",
+          "messageKey": "export.loss.relation-kind",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/dataInputAssociations/0",
+            "targetId": "DIA_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "DIA_1_di",
+          "emittedType": "edge",
+          "lossClass": "relation-kind"
+        },
+        {
+          "code": "export-loss/metadata",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "loss-doc",
+          "messageKey": "export.loss.metadata",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/documentation/0",
+            "targetId": "Task_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "Task_1_di",
+          "emittedType": "node",
+          "lossClass": "metadata"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "loss-io",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/ioSpecification/dataInputs/0",
+            "targetId": "In_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "In_1_di",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "loss-io",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/ioSpecification/dataOutputs/0",
+            "targetId": "Out_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "Out_1_di",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "loss-participants",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/3/participants/0",
+            "targetId": "Part_main",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "Part_main_di",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "loss-participants",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/3/participants/1",
+            "targetId": "Band_w",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "Band_w_di",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "loss-store",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3",
+            "targetId": "StoreRef_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "StoreRef_1_di",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "loss-terminate",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/eventDefinitions/0",
+            "targetId": "Term_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "End_1_di",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [
+        {
+          "sourceId": "P1",
+          "resultId": "e_0",
+          "domain": "export",
+          "pageId": "P1"
+        },
+        {
+          "sourceId": "Assoc_in",
+          "resultId": "e_9",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Assoc_in_di"
+        },
+        {
+          "sourceId": "Assoc_out",
+          "resultId": "e_10",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Assoc_out_di"
+        },
+        {
+          "sourceId": "Band_w",
+          "resultId": "e_1",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Band_w_di"
+        },
+        {
+          "sourceId": "Call_1",
+          "resultId": "e_2",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Call_1_di"
+        },
+        {
+          "sourceId": "DIA_1",
+          "resultId": "e_11",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "DIA_1_di"
+        },
+        {
+          "sourceId": "End_1",
+          "resultId": "e_3",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "End_1_di"
+        },
+        {
+          "sourceId": "Flow_1",
+          "resultId": "e_12",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Flow_1_di"
+        },
+        {
+          "sourceId": "Flow_2",
+          "resultId": "e_13",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Flow_2_di"
+        },
+        {
+          "sourceId": "In_1",
+          "resultId": "e_4",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "In_1_di"
+        },
+        {
+          "sourceId": "Out_1",
+          "resultId": "e_5",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Out_1_di"
+        },
+        {
+          "sourceId": "Part_main",
+          "resultId": "e_6",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Part_main_di"
+        },
+        {
+          "sourceId": "StoreRef_1",
+          "resultId": "e_7",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "StoreRef_1_di"
+        },
+        {
+          "sourceId": "Task_1",
+          "resultId": "e_8",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Task_1_di"
+        }
+      ],
+      "artifacts": [
+        {
+          "format": "drawio",
+          "capability": "structural",
+          "digest": "daa0faac497f9ed25a219f59f9efb26256856f9b5a96696292697c9a088ee9ff",
+          "entryIndexes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        }
+      ]
+    },
+    "payload": {
+      "format": "drawio",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "9069849fc103e356fa3e3decac4f2ee2874c7de690644cf3b52b6a003b098703",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "semanticRevision": "cf7dec762c286a4410632df2a51da6cfea236e644119b2df3882a91655d01128",
+      "viewRevision": "f91384aa89de8b123384f7ddabc2c6d9c2bfb80b567e56d81ecb201972f52aed",
+      "ir": [
+        {
+          "kind": "page",
+          "id": "e_0",
+          "name": "Main",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 800000,
+            "height": 400000
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_1",
+          "name": "References",
+          "parent": "e_0",
+          "bounds": {
+            "x": 0,
+            "y": 300000,
+            "width": 800000,
+            "height": 100000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 0,
+              "y": 300000,
+              "width": 800000,
+              "height": 100000
+            },
+            "lines": [
+              "References"
+            ]
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_2",
+          "name": "Review",
+          "parent": "e_0",
+          "bounds": {
+            "x": 300000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 300000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Review"
+            ]
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_3",
+          "name": "Done",
+          "parent": "e_0",
+          "bounds": {
+            "x": 500000,
+            "y": 122000,
+            "width": 36000,
+            "height": 36000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 500000,
+              "y": 122000,
+              "width": 36000,
+              "height": 36000
+            },
+            "lines": [
+              "Done"
+            ]
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_4",
+          "name": "Order",
+          "parent": "e_0",
+          "bounds": {
+            "x": 20000,
+            "y": 20000,
+            "width": 36000,
+            "height": 50000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 20000,
+              "y": 20000,
+              "width": 36000,
+              "height": 50000
+            },
+            "lines": [
+              "Order"
+            ]
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_5",
+          "name": "Receipt",
+          "parent": "e_0",
+          "bounds": {
+            "x": 700000,
+            "y": 20000,
+            "width": 36000,
+            "height": 50000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 700000,
+              "y": 20000,
+              "width": 36000,
+              "height": 50000
+            },
+            "lines": [
+              "Receipt"
+            ]
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_6",
+          "name": "Main process",
+          "parent": "e_0",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 800000,
+            "height": 300000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 800000,
+              "height": 300000
+            },
+            "lines": [
+              "Main process"
+            ]
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_7",
+          "name": "Archive",
+          "parent": "e_0",
+          "bounds": {
+            "x": 100000,
+            "y": 320000,
+            "width": 50000,
+            "height": 50000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 100000,
+              "y": 320000,
+              "width": 50000,
+              "height": 50000
+            },
+            "lines": [
+              "Archive"
+            ]
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_8",
+          "name": "Check",
+          "parent": "e_0",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 100000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Check"
+            ]
+          }
+        },
+        {
+          "kind": "edge",
+          "id": "e_9",
+          "source": "e_4",
+          "target": "e_8",
+          "parent": "e_0",
+          "bounds": {
+            "x": 56000,
+            "y": 45000,
+            "width": 44000,
+            "height": 95000
+          },
+          "waypoints": [
+            {
+              "x": 56000,
+              "y": 45000
+            },
+            {
+              "x": 100000,
+              "y": 140000
+            }
+          ],
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ]
+        },
+        {
+          "kind": "edge",
+          "id": "e_10",
+          "source": "e_8",
+          "target": "e_5",
+          "parent": "e_0",
+          "bounds": {
+            "x": 200000,
+            "y": 45000,
+            "width": 500000,
+            "height": 55000
+          },
+          "waypoints": [
+            {
+              "x": 200000,
+              "y": 100000
+            },
+            {
+              "x": 700000,
+              "y": 45000
+            }
+          ],
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ]
+        },
+        {
+          "kind": "edge",
+          "id": "e_11",
+          "source": "e_7",
+          "target": "e_8",
+          "parent": "e_0",
+          "bounds": {
+            "x": 125000,
+            "y": 180000,
+            "width": 0,
+            "height": 140000
+          },
+          "waypoints": [
+            {
+              "x": 125000,
+              "y": 320000
+            },
+            {
+              "x": 125000,
+              "y": 180000
+            }
+          ],
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ]
+        },
+        {
+          "kind": "edge",
+          "id": "e_12",
+          "source": "e_8",
+          "target": "e_2",
+          "parent": "e_0",
+          "bounds": {
+            "x": 200000,
+            "y": 140000,
+            "width": 100000,
+            "height": 0
+          },
+          "waypoints": [
+            {
+              "x": 200000,
+              "y": 140000
+            },
+            {
+              "x": 300000,
+              "y": 140000
+            }
+          ],
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ]
+        },
+        {
+          "kind": "edge",
+          "id": "e_13",
+          "source": "e_2",
+          "target": "e_3",
+          "parent": "e_0",
+          "bounds": {
+            "x": 400000,
+            "y": 140000,
+            "width": 100000,
+            "height": 0
+          },
+          "waypoints": [
+            {
+              "x": 400000,
+              "y": 140000
+            },
+            {
+              "x": 500000,
+              "y": 140000
+            }
+          ],
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ]
+        }
+      ],
+      "renderBinding": {
+        "semanticRevision": "cf7dec762c286a4410632df2a51da6cfea236e644119b2df3882a91655d01128",
+        "profileDigest": "9069849fc103e356fa3e3decac4f2ee2874c7de690644cf3b52b6a003b098703",
+        "descriptorDigest": "afaf30f001b2c94301db6ecf38f5fa4de82609420a416c6c3a46f83de6ac66f9",
+        "layoutDigest": "bbed2eabb6e4137ef680e753a4573963ca9a1c6ccf8d0191c0ef8b481cb206e5",
+        "themeId": "plain",
+        "themeDigest": "f59e6cb689de8f3a08b01f6648d5efa2107ce39b5b87600653f4736278798bf4",
+        "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+        "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+        "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+        "payloadDigest": "861ff389709e66d776a76c12ce88f36baacf342dcb47e0380a04903bcf6e8b05"
+      },
+      "report": {
+        "reportVersion": "2",
+        "operation": "mapExport",
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "9069849fc103e356fa3e3decac4f2ee2874c7de690644cf3b52b6a003b098703",
+          "base": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "9069849fc103e356fa3e3decac4f2ee2874c7de690644cf3b52b6a003b098703",
+          "base": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
+        "inputRevision": "cf7dec762c286a4410632df2a51da6cfea236e644119b2df3882a91655d01128",
+        "outputRevision": "cf7dec762c286a4410632df2a51da6cfea236e644119b2df3882a91655d01128",
+        "entries": [
+          {
+            "code": "export-loss/navigation",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "loss-call",
+            "messageKey": "export.loss.navigation",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/flowElements/1",
+              "targetId": "Call_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "Call_1_di",
+            "emittedType": "node",
+            "lossClass": "navigation"
+          },
+          {
+            "code": "export-loss/relation-kind",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "loss-data-link",
+            "messageKey": "export.loss.relation-kind",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/flowElements/0/dataInputAssociations/0",
+              "targetId": "DIA_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "DIA_1_di",
+            "emittedType": "edge",
+            "lossClass": "relation-kind"
+          },
+          {
+            "code": "export-loss/metadata",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "loss-doc",
+            "messageKey": "export.loss.metadata",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/flowElements/0/documentation/0",
+              "targetId": "Task_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "Task_1_di",
+            "emittedType": "node",
+            "lossClass": "metadata"
+          },
+          {
+            "code": "export-loss/semantic-type",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "loss-io",
+            "messageKey": "export.loss.semantic-type",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/ioSpecification/dataInputs/0",
+              "targetId": "In_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "In_1_di",
+            "emittedType": "node",
+            "lossClass": "semantic-type"
+          },
+          {
+            "code": "export-loss/semantic-type",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "loss-io",
+            "messageKey": "export.loss.semantic-type",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/ioSpecification/dataOutputs/0",
+              "targetId": "Out_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "Out_1_di",
+            "emittedType": "node",
+            "lossClass": "semantic-type"
+          },
+          {
+            "code": "export-loss/semantic-type",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "loss-participants",
+            "messageKey": "export.loss.semantic-type",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/3/participants/0",
+              "targetId": "Part_main",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "Part_main_di",
+            "emittedType": "node",
+            "lossClass": "semantic-type"
+          },
+          {
+            "code": "export-loss/semantic-type",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "loss-participants",
+            "messageKey": "export.loss.semantic-type",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/3/participants/1",
+              "targetId": "Band_w",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "Band_w_di",
+            "emittedType": "node",
+            "lossClass": "semantic-type"
+          },
+          {
+            "code": "export-loss/semantic-type",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "loss-store",
+            "messageKey": "export.loss.semantic-type",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/flowElements/3",
+              "targetId": "StoreRef_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "StoreRef_1_di",
+            "emittedType": "node",
+            "lossClass": "semantic-type"
+          },
+          {
+            "code": "export-loss/semantic-type",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "loss-terminate",
+            "messageKey": "export.loss.semantic-type",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/flowElements/2/eventDefinitions/0",
+              "targetId": "Term_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "End_1_di",
+            "emittedType": "node",
+            "lossClass": "semantic-type"
+          }
+        ],
+        "rawStandardFindings": [],
+        "idMap": [
+          {
+            "sourceId": "P1",
+            "resultId": "e_0",
+            "domain": "export",
+            "pageId": "P1"
+          },
+          {
+            "sourceId": "Assoc_in",
+            "resultId": "e_9",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "Assoc_in_di"
+          },
+          {
+            "sourceId": "Assoc_out",
+            "resultId": "e_10",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "Assoc_out_di"
+          },
+          {
+            "sourceId": "Band_w",
+            "resultId": "e_1",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "Band_w_di"
+          },
+          {
+            "sourceId": "Call_1",
+            "resultId": "e_2",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "Call_1_di"
+          },
+          {
+            "sourceId": "DIA_1",
+            "resultId": "e_11",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "DIA_1_di"
+          },
+          {
+            "sourceId": "End_1",
+            "resultId": "e_3",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "End_1_di"
+          },
+          {
+            "sourceId": "Flow_1",
+            "resultId": "e_12",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "Flow_1_di"
+          },
+          {
+            "sourceId": "Flow_2",
+            "resultId": "e_13",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "Flow_2_di"
+          },
+          {
+            "sourceId": "In_1",
+            "resultId": "e_4",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "In_1_di"
+          },
+          {
+            "sourceId": "Out_1",
+            "resultId": "e_5",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "Out_1_di"
+          },
+          {
+            "sourceId": "Part_main",
+            "resultId": "e_6",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "Part_main_di"
+          },
+          {
+            "sourceId": "StoreRef_1",
+            "resultId": "e_7",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "StoreRef_1_di"
+          },
+          {
+            "sourceId": "Task_1",
+            "resultId": "e_8",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "Task_1_di"
+          }
+        ],
+        "artifacts": [
+          {
+            "format": "drawio",
+            "capability": "structural",
+            "digest": "daa0faac497f9ed25a219f59f9efb26256856f9b5a96696292697c9a088ee9ff",
+            "entryIndexes": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ]
+          }
+        ]
+      },
+      "capability": "structural",
+      "idMap": [
+        {
+          "sourceId": "P1",
+          "resultId": "e_0",
+          "domain": "export",
+          "pageId": "P1"
+        },
+        {
+          "sourceId": "Assoc_in",
+          "resultId": "e_9",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Assoc_in_di"
+        },
+        {
+          "sourceId": "Assoc_out",
+          "resultId": "e_10",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Assoc_out_di"
+        },
+        {
+          "sourceId": "Band_w",
+          "resultId": "e_1",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Band_w_di"
+        },
+        {
+          "sourceId": "Call_1",
+          "resultId": "e_2",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Call_1_di"
+        },
+        {
+          "sourceId": "DIA_1",
+          "resultId": "e_11",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "DIA_1_di"
+        },
+        {
+          "sourceId": "End_1",
+          "resultId": "e_3",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "End_1_di"
+        },
+        {
+          "sourceId": "Flow_1",
+          "resultId": "e_12",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Flow_1_di"
+        },
+        {
+          "sourceId": "Flow_2",
+          "resultId": "e_13",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Flow_2_di"
+        },
+        {
+          "sourceId": "In_1",
+          "resultId": "e_4",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "In_1_di"
+        },
+        {
+          "sourceId": "Out_1",
+          "resultId": "e_5",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Out_1_di"
+        },
+        {
+          "sourceId": "Part_main",
+          "resultId": "e_6",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Part_main_di"
+        },
+        {
+          "sourceId": "StoreRef_1",
+          "resultId": "e_7",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "StoreRef_1_di"
+        },
+        {
+          "sourceId": "Task_1",
+          "resultId": "e_8",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "Task_1_di"
+        }
+      ]
+    }
+  },
+  "author": "spec-seal"
+}

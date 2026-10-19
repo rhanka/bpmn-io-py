@@ -1,0 +1,59 @@
+{
+  "case": "render.template.corner-fold-decimal-ratio",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "corner-fold size roundEven(min(w,h)*foldRatio) and its three-point path",
+  "derivation": "foldRatio 0.1 is the rational 1/10 (shortest decimal form): 5 x 1/10 = 0.5, tie to even 0 (the exact binary64 value of 0.1 would round to 1); path (x+w-fold,y),(x+w-fold,y+fold),(x+w,y+fold) gives the listed points.",
+  "operation": "templateGeometry",
+  "input": {
+    "glyph": {
+      "id": "fold",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        100,
+        80
+      ],
+      "commands": [],
+      "template": "corner-fold",
+      "parameters": [
+        {
+          "name": "foldRatio",
+          "value": 0.1
+        },
+        {
+          "name": "headerRotation",
+          "value": 0
+        }
+      ]
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 5,
+      "height": 9
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "fold": 0,
+      "foldPath": [
+        {
+          "x": 5,
+          "y": 0
+        },
+        {
+          "x": 5,
+          "y": 0
+        },
+        {
+          "x": 5,
+          "y": 0
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

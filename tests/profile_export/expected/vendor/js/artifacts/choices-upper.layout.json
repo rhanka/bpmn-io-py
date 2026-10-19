@@ -1,0 +1,599 @@
+{
+  "layoutVersion": "1",
+  "pages": [
+    {
+      "pageId": "Page_Choices",
+      "name": "Routing sheet",
+      "order": 0,
+      "semanticRootId": "Process_Choices",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1000000,
+        "height": 900000
+      }
+    }
+  ],
+  "geometry": [
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Flow_C0_di",
+      "semanticId": "Flow_C0",
+      "role": "content",
+      "bounds": {
+        "x": 116000,
+        "y": 430000,
+        "width": 84000,
+        "height": 0
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Start_Choices_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di"
+      },
+      "waypoints": [
+        {
+          "x": 116000,
+          "y": 430000
+        },
+        {
+          "x": 200000,
+          "y": 430000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Flow_C1_di",
+      "semanticId": "Flow_C1",
+      "role": "content",
+      "bounds": {
+        "x": 250000,
+        "y": 80000,
+        "width": 350000,
+        "height": 350000
+      },
+      "label": {
+        "text": "ISTANBUL",
+        "bounds": {
+          "x": 420000,
+          "y": 62000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "ISTANBUL"
+        ]
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_East_di"
+      },
+      "waypoints": [
+        {
+          "x": 250000,
+          "y": 430000
+        },
+        {
+          "x": 400000,
+          "y": 80000
+        },
+        {
+          "x": 600000,
+          "y": 80000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Flow_C2_di",
+      "semanticId": "Flow_C2",
+      "role": "content",
+      "bounds": {
+        "x": 250000,
+        "y": 200000,
+        "width": 350000,
+        "height": 230000
+      },
+      "label": {
+        "text": "İZMIR",
+        "bounds": {
+          "x": 420000,
+          "y": 182000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "İZMIR"
+        ]
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_West_di"
+      },
+      "waypoints": [
+        {
+          "x": 250000,
+          "y": 430000
+        },
+        {
+          "x": 400000,
+          "y": 200000
+        },
+        {
+          "x": 600000,
+          "y": 200000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Flow_C3_di",
+      "semanticId": "Flow_C3",
+      "role": "content",
+      "bounds": {
+        "x": 250000,
+        "y": 320000,
+        "width": 350000,
+        "height": 110000
+      },
+      "label": {
+        "text": "STRASSE STOP",
+        "bounds": {
+          "x": 420000,
+          "y": 302000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "STRASSE STOP"
+        ]
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_North_di"
+      },
+      "waypoints": [
+        {
+          "x": 250000,
+          "y": 430000
+        },
+        {
+          "x": 400000,
+          "y": 320000
+        },
+        {
+          "x": 600000,
+          "y": 320000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Flow_C4_di",
+      "semanticId": "Flow_C4",
+      "role": "content",
+      "bounds": {
+        "x": 250000,
+        "y": 430000,
+        "width": 350000,
+        "height": 10000
+      },
+      "label": {
+        "text": "ΣΟΦΌΣ ΟΔΟΣ Σ",
+        "bounds": {
+          "x": 420000,
+          "y": 422000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "ΣΟΦΌΣ ΟΔΟΣ Σ"
+        ]
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_South_di"
+      },
+      "waypoints": [
+        {
+          "x": 250000,
+          "y": 430000
+        },
+        {
+          "x": 400000,
+          "y": 440000
+        },
+        {
+          "x": 600000,
+          "y": 440000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Flow_C5_di",
+      "semanticId": "Flow_C5",
+      "role": "content",
+      "bounds": {
+        "x": 250000,
+        "y": 430000,
+        "width": 350000,
+        "height": 130000
+      },
+      "label": {
+        "text": "ɤ-SHAPE",
+        "bounds": {
+          "x": 420000,
+          "y": 542000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "ɤ-SHAPE"
+        ]
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Up_di"
+      },
+      "waypoints": [
+        {
+          "x": 250000,
+          "y": 430000
+        },
+        {
+          "x": 400000,
+          "y": 560000
+        },
+        {
+          "x": 600000,
+          "y": 560000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Flow_C6_di",
+      "semanticId": "Flow_C6",
+      "role": "content",
+      "bounds": {
+        "x": 250000,
+        "y": 430000,
+        "width": 350000,
+        "height": 250000
+      },
+      "label": {
+        "text": "ʼN Ǆ",
+        "bounds": {
+          "x": 420000,
+          "y": 662000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "ʼN Ǆ"
+        ]
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Down_di"
+      },
+      "waypoints": [
+        {
+          "x": 250000,
+          "y": 430000
+        },
+        {
+          "x": 400000,
+          "y": 680000
+        },
+        {
+          "x": 600000,
+          "y": 680000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Flow_C7_di",
+      "semanticId": "Flow_C7",
+      "role": "content",
+      "bounds": {
+        "x": 250000,
+        "y": 430000,
+        "width": 350000,
+        "height": 370000
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Other_di"
+      },
+      "waypoints": [
+        {
+          "x": 250000,
+          "y": 430000
+        },
+        {
+          "x": 400000,
+          "y": 800000
+        },
+        {
+          "x": 600000,
+          "y": 800000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Gateway_Route_di",
+      "semanticId": "Gateway_Route",
+      "role": "content",
+      "bounds": {
+        "x": 200000,
+        "y": 405000,
+        "width": 50000,
+        "height": 50000
+      },
+      "label": {
+        "text": "Which route?",
+        "bounds": {
+          "x": 185000,
+          "y": 460000,
+          "width": 80000,
+          "height": 14000
+        },
+        "lines": [
+          "Which route?"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Pool_Choices_di",
+      "semanticId": "Pool_Choices",
+      "role": "support",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 900000,
+        "height": 860000
+      },
+      "label": {
+        "text": "Routing",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 30000,
+          "height": 860000
+        },
+        "lines": [
+          "Routing"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Start_Choices_di",
+      "semanticId": "Start_Choices",
+      "role": "content",
+      "bounds": {
+        "x": 80000,
+        "y": 412000,
+        "width": 36000,
+        "height": 36000
+      },
+      "label": {
+        "text": "Request",
+        "bounds": {
+          "x": 73000,
+          "y": 453000,
+          "width": 50000,
+          "height": 14000
+        },
+        "lines": [
+          "Request"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Task_Down_di",
+      "semanticId": "Task_Down",
+      "role": "content",
+      "bounds": {
+        "x": 600000,
+        "y": 640000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Down",
+        "bounds": {
+          "x": 600000,
+          "y": 640000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Down"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Task_East_di",
+      "semanticId": "Task_East",
+      "role": "content",
+      "bounds": {
+        "x": 600000,
+        "y": 40000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "East",
+        "bounds": {
+          "x": 600000,
+          "y": 40000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "East"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Task_North_di",
+      "semanticId": "Task_North",
+      "role": "content",
+      "bounds": {
+        "x": 600000,
+        "y": 280000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "North",
+        "bounds": {
+          "x": 600000,
+          "y": 280000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "North"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Task_Other_di",
+      "semanticId": "Task_Other",
+      "role": "content",
+      "bounds": {
+        "x": 600000,
+        "y": 760000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Other",
+        "bounds": {
+          "x": 600000,
+          "y": 760000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Other"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Task_South_di",
+      "semanticId": "Task_South",
+      "role": "content",
+      "bounds": {
+        "x": 600000,
+        "y": 400000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "South",
+        "bounds": {
+          "x": 600000,
+          "y": 400000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "South"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Task_Up_di",
+      "semanticId": "Task_Up",
+      "role": "content",
+      "bounds": {
+        "x": 600000,
+        "y": 520000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Up",
+        "bounds": {
+          "x": 600000,
+          "y": 520000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Up"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Choices",
+      "occurrenceKey": "Task_West_di",
+      "semanticId": "Task_West",
+      "role": "content",
+      "bounds": {
+        "x": 600000,
+        "y": 160000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "West",
+        "bounds": {
+          "x": 600000,
+          "y": 160000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "West"
+        ]
+      }
+    }
+  ]
+}

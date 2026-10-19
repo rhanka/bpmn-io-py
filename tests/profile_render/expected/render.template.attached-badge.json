@@ -1,0 +1,64 @@
+{
+  "case": "render.template.attached-badge",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "badge at (node.x+offsetX, node.y+node.height+offsetY) with the declared badge size; markerShift echoed",
+  "derivation": "Node (100000,100000,100000,80000), offsets 5000/-10000: x = 105000, y = 100000+80000-10000 = 170000; badge size input (40000,20000).",
+  "operation": "templateGeometry",
+  "input": {
+    "glyph": {
+      "id": "badge",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        40,
+        20
+      ],
+      "commands": [],
+      "template": "attached-badge",
+      "parameters": [
+        {
+          "name": "offsetX",
+          "value": 5000
+        },
+        {
+          "name": "offsetY",
+          "value": -10000
+        },
+        {
+          "name": "hideSource",
+          "value": false
+        },
+        {
+          "name": "markerShift",
+          "value": 3000
+        }
+      ]
+    },
+    "bounds": {
+      "x": 100000,
+      "y": 100000,
+      "width": 100000,
+      "height": 80000
+    },
+    "badgeSize": {
+      "width": 40000,
+      "height": 20000
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "badge": {
+        "x": 105000,
+        "y": 170000,
+        "width": 40000,
+        "height": 20000
+      },
+      "markerShift": 3000,
+      "hideSource": false
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

@@ -1,0 +1,79 @@
+{
+  "caseId": "bpmn-003-variety-native",
+  "operation": "serializeBpmn",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/variety.envelope.json",
+      "sha256": "7fe9f9ecd969547da2475e7dea1819539efe4c21e3dca68617e6ef4ee6ea581e"
+    },
+    {
+      "role": "writerOptions",
+      "json": {
+        "format": true,
+        "preamble": true
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "output",
+      "json": [
+        {
+          "element": "callActivity",
+          "id": "Call_V",
+          "parent": "process:Process_Variety",
+          "attributes": {
+            "calledElement": "Process_Review",
+            "name": "Call review"
+          }
+        },
+        {
+          "element": "serviceTask",
+          "id": "Service_V",
+          "parent": "process:Process_Variety",
+          "attributes": {
+            "name": "Run check"
+          }
+        },
+        {
+          "element": "endEvent",
+          "id": "End_V",
+          "parent": "process:Process_Variety",
+          "attributes": {
+            "name": "Stopped"
+          }
+        },
+        {
+          "element": "terminateEventDefinition",
+          "id": "Terminate_V",
+          "parent": "endEvent:End_V"
+        },
+        {
+          "element": "task",
+          "id": "Task_Review",
+          "parent": "process:Process_Review"
+        },
+        {
+          "element": "terminateEventDefinition",
+          "count": 1
+        },
+        {
+          "element": "callActivity",
+          "count": 1
+        },
+        {
+          "element": "serviceTask",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "bpmn-structure/1",
+    "source-immutability/1"
+  ]
+}

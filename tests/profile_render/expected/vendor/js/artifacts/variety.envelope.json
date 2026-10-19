@@ -1,0 +1,138 @@
+{
+  "documentVersion": "1",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "tree": {
+    "$type": "bpmn:Definitions",
+    "id": "Definitions_Variety",
+    "targetNamespace": "urn:neutral-lot4",
+    "rootElements": [
+      {
+        "$type": "bpmn:Process",
+        "id": "Process_Variety",
+        "name": "Variety process",
+        "isExecutable": false,
+        "flowElements": [
+          {
+            "$type": "bpmn:StartEvent",
+            "id": "Start_V",
+            "name": "Request",
+            "outgoing": [
+              "Flow_V1"
+            ]
+          },
+          {
+            "$type": "bpmn:ServiceTask",
+            "id": "Service_V",
+            "name": "Run check",
+            "incoming": [
+              "Flow_V1"
+            ],
+            "outgoing": [
+              "Flow_V2"
+            ]
+          },
+          {
+            "$type": "bpmn:CallActivity",
+            "id": "Call_V",
+            "name": "Call review",
+            "calledElement": "Process_Review",
+            "incoming": [
+              "Flow_V2"
+            ],
+            "outgoing": [
+              "Flow_V3"
+            ]
+          },
+          {
+            "$type": "bpmn:EndEvent",
+            "id": "End_V",
+            "name": "Stopped",
+            "incoming": [
+              "Flow_V3"
+            ],
+            "eventDefinitions": [
+              {
+                "$type": "bpmn:TerminateEventDefinition",
+                "id": "Terminate_V"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_V1",
+            "sourceRef": "Start_V",
+            "targetRef": "Service_V"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_V2",
+            "sourceRef": "Service_V",
+            "targetRef": "Call_V"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_V3",
+            "sourceRef": "Call_V",
+            "targetRef": "End_V"
+          }
+        ]
+      },
+      {
+        "$type": "bpmn:Process",
+        "id": "Process_Review",
+        "name": "Review process",
+        "isExecutable": false,
+        "flowElements": [
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_Review",
+            "name": "Review"
+          }
+        ]
+      },
+      {
+        "$type": "bpmn:Collaboration",
+        "id": "Collab_Variety",
+        "participants": [
+          {
+            "$type": "bpmn:Participant",
+            "id": "Pool_Variety",
+            "name": "Variety process",
+            "processRef": "Process_Variety"
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "ownerId": "Process_Variety",
+      "role": "collaboration",
+      "targetId": "Collab_Variety"
+    },
+    {
+      "ownerId": "Process_Variety",
+      "role": "main-participant",
+      "targetId": "Pool_Variety"
+    }
+  ],
+  "semanticRevision": "cf0e3cb1c524a6384779c929b9478c362983860e1bfa419422fa9c0c25c8add7"
+}

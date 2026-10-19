@@ -1,0 +1,1530 @@
+{
+  "status": "ok",
+  "operation": "resolveTheme",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "baseRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+  "revision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+  "report": {
+    "reportVersion": "2",
+    "operation": "resolveTheme",
+    "sourceIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "targetIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "inputRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+    "outputRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+    "entries": [],
+    "rawStandardFindings": [],
+    "idMap": [],
+    "artifacts": []
+  },
+  "payload": {
+    "renderVersion": "1",
+    "binding": {
+      "semanticRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+      "profileDigest": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "descriptorDigest": "8cb3013f19489ae7b9eee46d790186ef3c8c4b5df17a63f397de1e066ad74719",
+      "layoutDigest": "39dd1a430ceb5c6679e932edd7cc3017ef6359418bafa20fd58ceac07b1bd2a1",
+      "themeId": "lowered",
+      "themeDigest": "da3056f73e6ed6ca5e946f0b503b12811eb18d93ba3c17f2a1a6eb83bbaf5d22",
+      "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+      "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+      "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+      "payloadDigest": "bc27e56724c1f0b6b6cb44e18ee330cf5e7db92eda28ba2f6365ea903b71edd0"
+    },
+    "pages": [
+      {
+        "pageId": "Page_Choices",
+        "name": "Routing sheet",
+        "order": 0,
+        "semanticRootId": "Process_Choices",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1000000,
+          "height": 900000
+        }
+      }
+    ],
+    "occurrences": [
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C0_di",
+        "semanticId": "Flow_C0",
+        "role": "content",
+        "bounds": {
+          "x": 116000,
+          "y": 430000,
+          "width": 84000,
+          "height": 0
+        },
+        "emittedType": "edge",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "flow-line",
+        "sourceOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Start_Choices_di"
+        },
+        "targetOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Gateway_Route_di"
+        },
+        "waypoints": [
+          {
+            "x": 116000,
+            "y": 430000
+          },
+          {
+            "x": 200000,
+            "y": 430000
+          }
+        ]
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C1_di",
+        "semanticId": "Flow_C1",
+        "role": "content",
+        "bounds": {
+          "x": 250000,
+          "y": 80000,
+          "width": 350000,
+          "height": 350000
+        },
+        "label": {
+          "text": "istanbul",
+          "bounds": {
+            "x": 420000,
+            "y": 62000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "istanbul"
+          ]
+        },
+        "emittedType": "edge",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "glyphId": "flow-line",
+        "sourceOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Gateway_Route_di"
+        },
+        "targetOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_East_di"
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 80000
+          },
+          {
+            "x": 600000,
+            "y": 80000
+          }
+        ]
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C2_di",
+        "semanticId": "Flow_C2",
+        "role": "content",
+        "bounds": {
+          "x": 250000,
+          "y": 200000,
+          "width": 350000,
+          "height": 230000
+        },
+        "label": {
+          "text": "i̇zmir",
+          "bounds": {
+            "x": 420000,
+            "y": 182000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "i̇zmir"
+          ]
+        },
+        "emittedType": "edge",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "glyphId": "flow-line",
+        "sourceOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Gateway_Route_di"
+        },
+        "targetOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_West_di"
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 200000
+          },
+          {
+            "x": 600000,
+            "y": 200000
+          }
+        ]
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C3_di",
+        "semanticId": "Flow_C3",
+        "role": "content",
+        "bounds": {
+          "x": 250000,
+          "y": 320000,
+          "width": 350000,
+          "height": 110000
+        },
+        "label": {
+          "text": "straße ﬆop",
+          "bounds": {
+            "x": 420000,
+            "y": 302000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "straße ﬆop"
+          ]
+        },
+        "emittedType": "edge",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "glyphId": "flow-line",
+        "sourceOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Gateway_Route_di"
+        },
+        "targetOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_North_di"
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 320000
+          },
+          {
+            "x": 600000,
+            "y": 320000
+          }
+        ]
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C4_di",
+        "semanticId": "Flow_C4",
+        "role": "content",
+        "bounds": {
+          "x": 250000,
+          "y": 430000,
+          "width": 350000,
+          "height": 10000
+        },
+        "label": {
+          "text": "σοφός οδος σ",
+          "bounds": {
+            "x": 420000,
+            "y": 422000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "σοφός οδος σ"
+          ]
+        },
+        "emittedType": "edge",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "glyphId": "flow-line",
+        "sourceOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Gateway_Route_di"
+        },
+        "targetOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_South_di"
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 440000
+          },
+          {
+            "x": 600000,
+            "y": 440000
+          }
+        ]
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C5_di",
+        "semanticId": "Flow_C5",
+        "role": "content",
+        "bounds": {
+          "x": 250000,
+          "y": 430000,
+          "width": 350000,
+          "height": 130000
+        },
+        "label": {
+          "text": "ɤ-shape",
+          "bounds": {
+            "x": 420000,
+            "y": 542000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "ɤ-shape"
+          ]
+        },
+        "emittedType": "edge",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "glyphId": "flow-line",
+        "sourceOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Gateway_Route_di"
+        },
+        "targetOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_Up_di"
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 560000
+          },
+          {
+            "x": 600000,
+            "y": 560000
+          }
+        ]
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C6_di",
+        "semanticId": "Flow_C6",
+        "role": "content",
+        "bounds": {
+          "x": 250000,
+          "y": 430000,
+          "width": 350000,
+          "height": 250000
+        },
+        "label": {
+          "text": "ŉ ǆ",
+          "bounds": {
+            "x": 420000,
+            "y": 662000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "ŉ ǆ"
+          ]
+        },
+        "emittedType": "edge",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "glyphId": "flow-line",
+        "sourceOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Gateway_Route_di"
+        },
+        "targetOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_Down_di"
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 680000
+          },
+          {
+            "x": 600000,
+            "y": 680000
+          }
+        ]
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C7_di",
+        "semanticId": "Flow_C7",
+        "role": "content",
+        "bounds": {
+          "x": 250000,
+          "y": 430000,
+          "width": 350000,
+          "height": 370000
+        },
+        "emittedType": "edge",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "glyphId": "flow-line",
+        "sourceOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Gateway_Route_di"
+        },
+        "targetOccurrence": {
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_Other_di"
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 800000
+          },
+          {
+            "x": 600000,
+            "y": 800000
+          }
+        ]
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di",
+        "semanticId": "Gateway_Route",
+        "role": "content",
+        "bounds": {
+          "x": 200000,
+          "y": 405000,
+          "width": 50000,
+          "height": 50000
+        },
+        "label": {
+          "text": "Which route?",
+          "bounds": {
+            "x": 185000,
+            "y": 460000,
+            "width": 80000,
+            "height": 14000
+          },
+          "lines": [
+            "Which route?"
+          ]
+        },
+        "emittedType": "node",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "gateway"
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Pool_Choices_di",
+        "semanticId": "Pool_Choices",
+        "role": "support",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 900000,
+          "height": 860000
+        },
+        "label": {
+          "text": "Routing",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 30000,
+            "height": 860000
+          },
+          "lines": [
+            "Routing"
+          ]
+        },
+        "emittedType": "node",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "pool"
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Start_Choices_di",
+        "semanticId": "Start_Choices",
+        "role": "content",
+        "bounds": {
+          "x": 80000,
+          "y": 412000,
+          "width": 36000,
+          "height": 36000
+        },
+        "label": {
+          "text": "Request",
+          "bounds": {
+            "x": 73000,
+            "y": 453000,
+            "width": 50000,
+            "height": 14000
+          },
+          "lines": [
+            "Request"
+          ]
+        },
+        "emittedType": "node",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "start"
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Down_di",
+        "semanticId": "Task_Down",
+        "role": "content",
+        "bounds": {
+          "x": 600000,
+          "y": 640000,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "Down",
+          "bounds": {
+            "x": 600000,
+            "y": 640000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Down"
+          ]
+        },
+        "emittedType": "node",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "task"
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_East_di",
+        "semanticId": "Task_East",
+        "role": "content",
+        "bounds": {
+          "x": 600000,
+          "y": 40000,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "East",
+          "bounds": {
+            "x": 600000,
+            "y": 40000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "East"
+          ]
+        },
+        "emittedType": "node",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "task"
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_North_di",
+        "semanticId": "Task_North",
+        "role": "content",
+        "bounds": {
+          "x": 600000,
+          "y": 280000,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "North",
+          "bounds": {
+            "x": 600000,
+            "y": 280000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "North"
+          ]
+        },
+        "emittedType": "node",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "task"
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Other_di",
+        "semanticId": "Task_Other",
+        "role": "content",
+        "bounds": {
+          "x": 600000,
+          "y": 760000,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "Other",
+          "bounds": {
+            "x": 600000,
+            "y": 760000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Other"
+          ]
+        },
+        "emittedType": "node",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "task"
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_South_di",
+        "semanticId": "Task_South",
+        "role": "content",
+        "bounds": {
+          "x": 600000,
+          "y": 400000,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "South",
+          "bounds": {
+            "x": 600000,
+            "y": 400000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "South"
+          ]
+        },
+        "emittedType": "node",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "task"
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Up_di",
+        "semanticId": "Task_Up",
+        "role": "content",
+        "bounds": {
+          "x": 600000,
+          "y": 520000,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "Up",
+          "bounds": {
+            "x": 600000,
+            "y": 520000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Up"
+          ]
+        },
+        "emittedType": "node",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "task"
+      },
+      {
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_West_di",
+        "semanticId": "Task_West",
+        "role": "content",
+        "bounds": {
+          "x": 600000,
+          "y": 160000,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "West",
+          "bounds": {
+            "x": 600000,
+            "y": 160000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "West"
+          ]
+        },
+        "emittedType": "node",
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "glyphId": "task"
+      }
+    ],
+    "coverage": [
+      {
+        "semanticId": "Definitions_Choices",
+        "occurrences": [],
+        "disposition": "nonvisual"
+      },
+      {
+        "semanticId": "Process_Choices",
+        "occurrences": [],
+        "disposition": "nonvisual"
+      },
+      {
+        "semanticId": "Start_Choices",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Start_Choices_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Gateway_Route",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Gateway_Route_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Task_East",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Task_East_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Task_West",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Task_West_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Task_North",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Task_North_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Task_South",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Task_South_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Task_Up",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Task_Up_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Task_Down",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Task_Down_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Task_Other",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Task_Other_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Flow_C0",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Flow_C0_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Flow_C1",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Flow_C1_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Flow_C2",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Flow_C2_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Flow_C3",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Flow_C3_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Flow_C4",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Flow_C4_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Flow_C5",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Flow_C5_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Flow_C6",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Flow_C6_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Flow_C7",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Flow_C7_di"
+          }
+        ],
+        "disposition": "rendered"
+      },
+      {
+        "semanticId": "Collab_Choices",
+        "occurrences": [],
+        "disposition": "nonvisual"
+      },
+      {
+        "semanticId": "Pool_Choices",
+        "occurrences": [
+          {
+            "pageId": "Page_Choices",
+            "occurrenceKey": "Pool_Choices_di"
+          }
+        ],
+        "disposition": "rendered"
+      }
+    ],
+    "diagnostics": []
+  }
+}

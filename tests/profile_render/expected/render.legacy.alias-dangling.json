@@ -1,0 +1,33 @@
+{
+  "case": "render.legacy.alias-dangling",
+  "clause": "DESIGN R3.3 \u00a79.5 Legacy themes",
+  "witness": "a legacy alias must land on a declared theme",
+  "derivation": "Record standard -> custom with no theme custom in the profile: unresolved input, render-stale (\u00a79.2).",
+  "operation": "resolveLegacyTheme",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/compatibilityAliases",
+          "value": [
+            {
+              "kind": "theme",
+              "old": "standard",
+              "destination": "custom",
+              "mode": "explicit-adapter"
+            }
+          ]
+        }
+      ]
+    },
+    "legacyName": "standard"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "render-stale",
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

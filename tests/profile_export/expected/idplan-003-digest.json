@@ -1,0 +1,68 @@
+{
+  "case": "idplan-003-digest",
+  "clause": "DESIGN R3.3 \u00a710.2 L801",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 d0e33c7b6c6f622220f8062b101a727bbde8fe0d56b38d3732b1454080b32099; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: Digest IDs are e_ plus the full lowercase SHA-256 of JCS [pageId, occurrenceKey, domain]; a page uses the reserved empty key. Fails against: Truncated digests, hashing the semantic ID, or a different tuple order.",
+  "operation": "exportIdPlan",
+  "profile": null,
+  "input": [
+    {
+      "role": "plan-input",
+      "json": {
+        "policy": "digest",
+        "counterOrigin": 0,
+        "requests": [
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "",
+            "domain": "page"
+          },
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Task_Check_di",
+            "domain": "node"
+          },
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Flow_Yes_di",
+            "domain": "label"
+          }
+        ]
+      }
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "ids": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "",
+          "domain": "page",
+          "id": "e_23e8a8e60499a51ec1a337f37948b4916278f1140c8a3135a91978ddef220472"
+        },
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Task_Check_di",
+          "domain": "node",
+          "id": "e_47cc2b5bba43221f8212ad3f2e6c8a5fdd17007b1d63544ffefb215b06c44f36"
+        },
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Flow_Yes_di",
+          "domain": "label",
+          "id": "e_8c597a3825a3421aa777328c0157e6c1b8a20547e225ad98a4600dc05949fc89"
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_export/expected/vendor/js/cases/idplan-003-digest.json",
+    "sha256": "d0e33c7b6c6f622220f8062b101a727bbde8fe0d56b38d3732b1454080b32099"
+  },
+  "author": "spec-seal"
+}

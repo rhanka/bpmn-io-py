@@ -1,0 +1,43 @@
+{
+  "caseId": "idplan-005-native-duplicate",
+  "operation": "exportIdPlan",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "plan-input",
+      "json": {
+        "policy": "native",
+        "counterOrigin": 0,
+        "requests": [
+          {
+            "pageId": "View_Z",
+            "occurrenceKey": "Task_Check_di",
+            "domain": "node",
+            "semanticId": "Task_Check"
+          },
+          {
+            "pageId": "View_A",
+            "occurrenceKey": "d-Task_Check",
+            "domain": "node",
+            "semanticId": "Task_Check"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "refused",
+        "code": "export-id-ambiguous",
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "refused:export-id-ambiguous",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "case": "render.ticks.negative-zero-and-tiny",
+  "clause": "DESIGN R3.3 \u00a73.1 Canonicalization (rounding, ticks)",
+  "witness": "negative zero and sub-half values become integer 0",
+  "derivation": "-0.0, -0.0004, 0.0004 and 0.0005 are -0, -0.4, 0.4 and 0.5 ticks -> 0, 0, 0, 0 (integer zero, never a negative zero).",
+  "operation": "layoutTicks",
+  "input": {
+    "points": [
+      -0.0,
+      -0.0004,
+      0.0004,
+      0.0005
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

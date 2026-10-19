@@ -1,0 +1,5443 @@
+{
+  "$schema": "urn:profile-mechanism:1:profile",
+  "schemaVersion": "1.0.0",
+  "mechanismVersion": "1",
+  "profile": "neutral-lot4/1",
+  "version": "1.1.3",
+  "base": {
+    "id": "neutral-lot4-base/1",
+    "version": "lot4-2",
+    "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+  },
+  "descriptors": [
+    {
+      "id": "neutral-lot4-descriptors/1",
+      "version": "lot4-2",
+      "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+    }
+  ],
+  "capabilities": [
+    "predicates/1",
+    "selectors/1",
+    "recipes/1",
+    "profile-lint/1",
+    "render-data/1",
+    "export-ir/1"
+  ],
+  "policies": {
+    "canonical": "profile-c14n/2",
+    "allocator": "stable-id/1",
+    "whitespace": "ecma262-2024",
+    "textFit": "engine-scalar-A/1",
+    "unknownFields": "reject",
+    "compatibility": "exact-or-explicit-migration/1",
+    "localeFallback": "en"
+  },
+  "producerDelta": [],
+  "notions": [
+    {
+      "id": "task",
+      "labels": [
+        {
+          "name": "en",
+          "value": "task"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:Task"
+      ],
+      "recognition": {
+        "op": "typeIs",
+        "binding": "self",
+        "type": "bpmn:Task",
+        "mode": "exact"
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic profile example for schema review; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "createRecipe": "create-task",
+      "referenceRecipes": [
+        "link"
+      ],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "task",
+          "tokens": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            }
+          ],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": [
+        {
+          "id": "name",
+          "path": "/name",
+          "widget": "text",
+          "label": "label",
+          "visible": {
+            "op": "true"
+          },
+          "mutable": {
+            "op": "true"
+          },
+          "command": "rename",
+          "choices": [],
+          "targetTypes": [],
+          "message": "invalid",
+          "parameters": [
+            {
+              "name": "target",
+              "source": "target"
+            },
+            {
+              "name": "name",
+              "source": "value"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aid",
+      "labels": [
+        {
+          "name": "en",
+          "value": "aid"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:TextAnnotation"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:TextAnnotation",
+            "mode": "exact"
+          },
+          {
+            "op": "textPrefix",
+            "value": {
+              "op": "read",
+              "binding": "self",
+              "path": "/text"
+            },
+            "prefix": "[Aid]",
+            "trim": "none"
+          }
+        ]
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic profile example for schema review; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "createRecipe": "create-aid",
+      "referenceRecipes": [
+        "link"
+      ],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "aid",
+          "tokens": [
+            {
+              "name": "fill",
+              "value": "#eeeeff"
+            }
+          ],
+          "label": {
+            "op": "stripPrefix",
+            "value": {
+              "op": "read",
+              "binding": "self",
+              "path": "/text"
+            },
+            "prefix": "[Aid] ",
+            "trim": "none"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "start",
+      "labels": [
+        {
+          "name": "en",
+          "value": "start"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:StartEvent"
+      ],
+      "recognition": {
+        "op": "typeIs",
+        "binding": "self",
+        "type": "bpmn:StartEvent",
+        "mode": "exact"
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "start",
+          "tokens": [],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "end",
+      "labels": [
+        {
+          "name": "en",
+          "value": "end"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:EndEvent"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:EndEvent",
+            "mode": "exact"
+          },
+          {
+            "op": "count",
+            "min": 0,
+            "max": 0,
+            "select": {
+              "from": "self",
+              "via": "children",
+              "property": "eventDefinitions",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:TerminateEventDefinition",
+                "mode": "exact"
+              },
+              "order": "id"
+            }
+          }
+        ]
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "end",
+          "tokens": [],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "terminate-end",
+      "labels": [
+        {
+          "name": "en",
+          "value": "terminate-end"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:EndEvent"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:EndEvent",
+            "mode": "exact"
+          },
+          {
+            "op": "count",
+            "min": 1,
+            "select": {
+              "from": "self",
+              "via": "children",
+              "property": "eventDefinitions",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:TerminateEventDefinition",
+                "mode": "exact"
+              },
+              "order": "id"
+            }
+          }
+        ]
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "terminate-end",
+          "tokens": [
+            {
+              "name": "strokeWidth",
+              "value": 3
+            }
+          ],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "service",
+      "labels": [
+        {
+          "name": "en",
+          "value": "service"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:ServiceTask"
+      ],
+      "recognition": {
+        "op": "typeIs",
+        "binding": "self",
+        "type": "bpmn:ServiceTask",
+        "mode": "exact"
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "service-task",
+          "tokens": [],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "call",
+      "labels": [
+        {
+          "name": "en",
+          "value": "call"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:CallActivity"
+      ],
+      "recognition": {
+        "op": "typeIs",
+        "binding": "self",
+        "type": "bpmn:CallActivity",
+        "mode": "exact"
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "call",
+          "tokens": [
+            {
+              "name": "strokeWidth",
+              "value": 2
+            }
+          ],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "decision",
+      "labels": [
+        {
+          "name": "en",
+          "value": "decision"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:ExclusiveGateway"
+      ],
+      "recognition": {
+        "op": "typeIs",
+        "binding": "self",
+        "type": "bpmn:ExclusiveGateway",
+        "mode": "exact"
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "gateway",
+          "tokens": [
+            {
+              "name": "fontWeight",
+              "value": "bold"
+            },
+            {
+              "name": "textColor",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "choice",
+      "labels": [
+        {
+          "name": "en",
+          "value": "choice"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:SequenceFlow"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:SequenceFlow",
+            "mode": "exact"
+          },
+          {
+            "op": "count",
+            "min": 1,
+            "select": {
+              "from": "self",
+              "via": "reference",
+              "property": "sourceRef",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:ExclusiveGateway",
+                "mode": "exact"
+              },
+              "order": "id"
+            }
+          }
+        ]
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "flow-line",
+          "tokens": [
+            {
+              "name": "arrow",
+              "value": "filled"
+            },
+            {
+              "name": "fontWeight",
+              "value": "bold"
+            },
+            {
+              "name": "textColor",
+              "value": "#1f4fbf"
+            }
+          ],
+          "label": {
+            "op": "case",
+            "value": {
+              "op": "read",
+              "binding": "self",
+              "path": "/name"
+            },
+            "mode": "upper",
+            "unicode": "15.0.0"
+          }
+        },
+        {
+          "theme": "lowered",
+          "glyph": "flow-line",
+          "tokens": [
+            {
+              "name": "arrow",
+              "value": "filled"
+            },
+            {
+              "name": "fontWeight",
+              "value": "bold"
+            },
+            {
+              "name": "textColor",
+              "value": "#1f4fbf"
+            }
+          ],
+          "label": {
+            "op": "case",
+            "value": {
+              "op": "read",
+              "binding": "self",
+              "path": "/name"
+            },
+            "mode": "lower",
+            "unicode": "15.0.0"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "flow",
+      "labels": [
+        {
+          "name": "en",
+          "value": "flow"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:SequenceFlow"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:SequenceFlow",
+            "mode": "exact"
+          },
+          {
+            "op": "count",
+            "min": 0,
+            "max": 0,
+            "select": {
+              "from": "self",
+              "via": "reference",
+              "property": "sourceRef",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:ExclusiveGateway",
+                "mode": "exact"
+              },
+              "order": "id"
+            }
+          }
+        ]
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "flow-line",
+          "tokens": [
+            {
+              "name": "arrow",
+              "value": "filled"
+            }
+          ],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "pool",
+      "labels": [
+        {
+          "name": "en",
+          "value": "pool"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:Participant"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:Participant",
+            "mode": "exact"
+          },
+          {
+            "op": "boundRole",
+            "binding": "self",
+            "owner": "bindingOwner",
+            "role": "main-participant"
+          }
+        ]
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "pool",
+          "tokens": [],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "band",
+      "labels": [
+        {
+          "name": "en",
+          "value": "band"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:Participant"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:Participant",
+            "mode": "exact"
+          },
+          {
+            "op": "boundRole",
+            "binding": "self",
+            "owner": "bindingOwner",
+            "role": "reference-band"
+          }
+        ]
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "band",
+          "tokens": [
+            {
+              "name": "fill",
+              "value": "#f4f4f4"
+            }
+          ],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "lane-external",
+      "labels": [
+        {
+          "name": "en",
+          "value": "lane-external"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:Lane"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:Lane",
+            "mode": "exact"
+          },
+          {
+            "op": "boundRole",
+            "binding": "self",
+            "owner": "bindingOwner",
+            "role": "external-lane"
+          }
+        ]
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "lane",
+          "tokens": [
+            {
+              "name": "fill",
+              "value": "#fafafa"
+            }
+          ],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "lane-work",
+      "labels": [
+        {
+          "name": "en",
+          "value": "lane-work"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:Lane"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:Lane",
+            "mode": "exact"
+          },
+          {
+            "op": "not",
+            "arg": {
+              "op": "boundRole",
+              "binding": "self",
+              "owner": "bindingOwner",
+              "role": "external-lane"
+            }
+          }
+        ]
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "lane",
+          "tokens": [],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "process-input",
+      "labels": [
+        {
+          "name": "en",
+          "value": "process-input"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:DataInput"
+      ],
+      "recognition": {
+        "op": "typeIs",
+        "binding": "self",
+        "type": "bpmn:DataInput",
+        "mode": "exact"
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "data-input",
+          "tokens": [],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "process-output",
+      "labels": [
+        {
+          "name": "en",
+          "value": "process-output"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:DataOutput"
+      ],
+      "recognition": {
+        "op": "typeIs",
+        "binding": "self",
+        "type": "bpmn:DataOutput",
+        "mode": "exact"
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "data-output",
+          "tokens": [],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "reference",
+      "labels": [
+        {
+          "name": "en",
+          "value": "reference"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:DataStoreReference"
+      ],
+      "recognition": {
+        "op": "typeIs",
+        "binding": "self",
+        "type": "bpmn:DataStoreReference",
+        "mode": "exact"
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "store",
+          "tokens": [
+            {
+              "name": "fill",
+              "value": "#f0f0ff"
+            }
+          ],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "relation",
+      "labels": [
+        {
+          "name": "en",
+          "value": "relation"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:Association"
+      ],
+      "recognition": {
+        "op": "typeIs",
+        "binding": "self",
+        "type": "bpmn:Association",
+        "mode": "exact"
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "association-line",
+          "tokens": [
+            {
+              "name": "arrow",
+              "value": "open"
+            },
+            {
+              "name": "dash",
+              "value": "dashed"
+            }
+          ],
+          "label": {
+            "op": "literal",
+            "value": ""
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "data-link",
+      "labels": [
+        {
+          "name": "en",
+          "value": "data-link"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:DataInputAssociation",
+        "bpmn:DataOutputAssociation"
+      ],
+      "recognition": {
+        "op": "any",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:DataInputAssociation",
+            "mode": "exact"
+          },
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:DataOutputAssociation",
+            "mode": "exact"
+          }
+        ]
+      },
+      "exclusiveGroup": "primary",
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "data-line",
+          "tokens": [
+            {
+              "name": "arrow",
+              "value": "open"
+            },
+            {
+              "name": "dash",
+              "value": "dashed"
+            }
+          ],
+          "label": {
+            "op": "literal",
+            "value": ""
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "rework-stroke",
+      "labels": [
+        {
+          "name": "en",
+          "value": "rework-stroke"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:Task"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:Task",
+            "mode": "exact"
+          },
+          {
+            "op": "equal",
+            "left": {
+              "op": "read",
+              "binding": "self",
+              "path": "/name"
+            },
+            "right": {
+              "op": "literal",
+              "value": "Fix order"
+            }
+          }
+        ]
+      },
+      "facet": true,
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "task",
+          "tokens": [
+            {
+              "name": "stroke",
+              "value": "#aa0000"
+            }
+          ],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "rework-weight",
+      "labels": [
+        {
+          "name": "en",
+          "value": "rework-weight"
+        }
+      ],
+      "citations": [],
+      "nativeTypes": [
+        "bpmn:Task"
+      ],
+      "recognition": {
+        "op": "all",
+        "args": [
+          {
+            "op": "typeIs",
+            "binding": "self",
+            "type": "bpmn:Task",
+            "mode": "exact"
+          },
+          {
+            "op": "equal",
+            "left": {
+              "op": "read",
+              "binding": "self",
+              "path": "/name"
+            },
+            "right": {
+              "op": "literal",
+              "value": "Fix order"
+            }
+          }
+        ]
+      },
+      "facet": true,
+      "ai": {
+        "description": "Synthetic lot-4 profile example; no customer vocabulary.",
+        "examples": [],
+        "counterexamples": [],
+        "producers": [
+          "editor",
+          "import"
+        ],
+        "evidenceRequired": false
+      },
+      "referenceRecipes": [],
+      "renderBindings": [
+        {
+          "theme": "plain",
+          "glyph": "task",
+          "tokens": [
+            {
+              "name": "fontWeight",
+              "value": "bold"
+            }
+          ],
+          "label": {
+            "op": "read",
+            "binding": "self",
+            "path": "/name"
+          }
+        }
+      ],
+      "fields": []
+    }
+  ],
+  "rules": [
+    {
+      "id": "task-named",
+      "phase": "post-normalize",
+      "select": {
+        "from": "root",
+        "via": "all",
+        "where": {
+          "op": "typeIs",
+          "binding": "self",
+          "type": "bpmn:Task",
+          "mode": "exact"
+        },
+        "order": "id"
+      },
+      "assert": {
+        "op": "all",
+        "args": [
+          {
+            "op": "present",
+            "value": {
+              "op": "read",
+              "binding": "self",
+              "path": "/name"
+            }
+          },
+          {
+            "op": "not",
+            "arg": {
+              "op": "equal",
+              "left": {
+                "op": "read",
+                "binding": "self",
+                "path": "/name"
+              },
+              "right": {
+                "op": "literal",
+                "value": ""
+              }
+            }
+          }
+        ]
+      },
+      "code": "task-name-missing",
+      "message": "invalid",
+      "classification": "readiness"
+    },
+    {
+      "id": "task-named-import",
+      "phase": "import",
+      "select": {
+        "from": "root",
+        "via": "all",
+        "where": {
+          "op": "typeIs",
+          "binding": "self",
+          "type": "bpmn:Task",
+          "mode": "exact"
+        },
+        "order": "id"
+      },
+      "assert": {
+        "op": "all",
+        "args": [
+          {
+            "op": "present",
+            "value": {
+              "op": "read",
+              "binding": "self",
+              "path": "/name"
+            }
+          },
+          {
+            "op": "not",
+            "arg": {
+              "op": "equal",
+              "left": {
+                "op": "read",
+                "binding": "self",
+                "path": "/name"
+              },
+              "right": {
+                "op": "literal",
+                "value": ""
+              }
+            }
+          }
+        ]
+      },
+      "code": "task-name-missing-import",
+      "message": "invalid",
+      "classification": "readiness"
+    },
+    {
+      "id": "task-named-pre-normalize",
+      "phase": "pre-normalize",
+      "select": {
+        "from": "root",
+        "via": "all",
+        "where": {
+          "op": "typeIs",
+          "binding": "self",
+          "type": "bpmn:Task",
+          "mode": "exact"
+        },
+        "order": "id"
+      },
+      "assert": {
+        "op": "all",
+        "args": [
+          {
+            "op": "present",
+            "value": {
+              "op": "read",
+              "binding": "self",
+              "path": "/name"
+            }
+          },
+          {
+            "op": "not",
+            "arg": {
+              "op": "equal",
+              "left": {
+                "op": "read",
+                "binding": "self",
+                "path": "/name"
+              },
+              "right": {
+                "op": "literal",
+                "value": ""
+              }
+            }
+          }
+        ]
+      },
+      "code": "task-name-missing-pre-normalize",
+      "message": "invalid",
+      "classification": "readiness"
+    },
+    {
+      "id": "task-named-post-layout",
+      "phase": "post-layout",
+      "select": {
+        "from": "root",
+        "via": "all",
+        "where": {
+          "op": "typeIs",
+          "binding": "self",
+          "type": "bpmn:Task",
+          "mode": "exact"
+        },
+        "order": "id"
+      },
+      "assert": {
+        "op": "all",
+        "args": [
+          {
+            "op": "present",
+            "value": {
+              "op": "read",
+              "binding": "self",
+              "path": "/name"
+            }
+          },
+          {
+            "op": "not",
+            "arg": {
+              "op": "equal",
+              "left": {
+                "op": "read",
+                "binding": "self",
+                "path": "/name"
+              },
+              "right": {
+                "op": "literal",
+                "value": ""
+              }
+            }
+          }
+        ]
+      },
+      "code": "task-name-missing-post-layout",
+      "message": "invalid",
+      "classification": "readiness"
+    },
+    {
+      "id": "task-named-release",
+      "phase": "release",
+      "select": {
+        "from": "root",
+        "via": "all",
+        "where": {
+          "op": "typeIs",
+          "binding": "self",
+          "type": "bpmn:Task",
+          "mode": "exact"
+        },
+        "order": "id"
+      },
+      "assert": {
+        "op": "all",
+        "args": [
+          {
+            "op": "present",
+            "value": {
+              "op": "read",
+              "binding": "self",
+              "path": "/name"
+            }
+          },
+          {
+            "op": "not",
+            "arg": {
+              "op": "equal",
+              "left": {
+                "op": "read",
+                "binding": "self",
+                "path": "/name"
+              },
+              "right": {
+                "op": "literal",
+                "value": ""
+              }
+            }
+          }
+        ]
+      },
+      "code": "task-name-missing-release",
+      "message": "invalid",
+      "classification": "readiness"
+    }
+  ],
+  "recipes": [
+    {
+      "id": "create-task",
+      "phase": "create",
+      "parameters": [
+        {
+          "name": "owner",
+          "type": "element",
+          "required": true
+        },
+        {
+          "name": "key",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "select": {
+        "from": "owner",
+        "via": "self",
+        "where": {
+          "op": "true"
+        },
+        "order": "id"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "owner",
+          "path": "/flowElements",
+          "mode": "create"
+        }
+      ],
+      "steps": [
+        {
+          "op": "create",
+          "as": "created",
+          "type": "bpmn:Task",
+          "parent": "owner",
+          "property": "flowElements",
+          "slot": "task",
+          "key": {
+            "op": "param",
+            "name": "key"
+          },
+          "fields": [
+            {
+              "name": "name",
+              "value": {
+                "op": "param",
+                "name": "name"
+              }
+            }
+          ],
+          "identity": "allocated",
+          "ownerId": {
+            "op": "id",
+            "binding": "owner"
+          }
+        }
+      ]
+    },
+    {
+      "id": "create-aid",
+      "phase": "create",
+      "parameters": [
+        {
+          "name": "owner",
+          "type": "element",
+          "required": true
+        },
+        {
+          "name": "key",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "select": {
+        "from": "owner",
+        "via": "self",
+        "where": {
+          "op": "true"
+        },
+        "order": "id"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "owner",
+          "path": "/artifacts",
+          "mode": "create"
+        }
+      ],
+      "steps": [
+        {
+          "op": "create",
+          "as": "created",
+          "type": "bpmn:TextAnnotation",
+          "parent": "owner",
+          "property": "artifacts",
+          "slot": "aid",
+          "key": {
+            "op": "param",
+            "name": "key"
+          },
+          "fields": [
+            {
+              "name": "text",
+              "value": {
+                "op": "concat",
+                "values": [
+                  {
+                    "op": "literal",
+                    "value": "[Aid] "
+                  },
+                  {
+                    "op": "param",
+                    "name": "body"
+                  }
+                ]
+              }
+            }
+          ],
+          "identity": "allocated",
+          "ownerId": {
+            "op": "id",
+            "binding": "owner"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rename",
+      "phase": "edit",
+      "parameters": [
+        {
+          "name": "target",
+          "type": "element",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "select": {
+        "from": "target",
+        "via": "self",
+        "where": {
+          "op": "true"
+        },
+        "order": "id"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "self",
+          "path": "/name",
+          "mode": "set"
+        }
+      ],
+      "steps": [
+        {
+          "op": "set",
+          "target": "self",
+          "path": "/name",
+          "value": {
+            "op": "param",
+            "name": "name"
+          }
+        }
+      ]
+    },
+    {
+      "id": "complete-process",
+      "phase": "complete",
+      "parameters": [],
+      "select": {
+        "from": "root",
+        "via": "all",
+        "where": {
+          "op": "typeIs",
+          "binding": "self",
+          "type": "bpmn:Process",
+          "mode": "exact"
+        },
+        "order": "id"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "self",
+          "path": "/isExecutable",
+          "mode": "set"
+        }
+      ],
+      "steps": [
+        {
+          "op": "set",
+          "target": "self",
+          "path": "/isExecutable",
+          "value": {
+            "op": "literal",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "link",
+      "phase": "reference",
+      "parameters": [
+        {
+          "name": "owner",
+          "type": "element",
+          "required": true
+        },
+        {
+          "name": "source",
+          "type": "element",
+          "required": true
+        },
+        {
+          "name": "target",
+          "type": "element",
+          "required": true
+        },
+        {
+          "name": "key",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "select": {
+        "from": "owner",
+        "via": "self",
+        "where": {
+          "op": "true"
+        },
+        "order": "id"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "owner",
+          "path": "/artifacts",
+          "mode": "create"
+        },
+        {
+          "binding": "edge",
+          "path": "/sourceRef",
+          "mode": "reference"
+        },
+        {
+          "binding": "edge",
+          "path": "/targetRef",
+          "mode": "reference"
+        }
+      ],
+      "steps": [
+        {
+          "op": "create",
+          "as": "edge",
+          "type": "bpmn:Association",
+          "parent": "owner",
+          "property": "artifacts",
+          "slot": "link",
+          "key": {
+            "op": "param",
+            "name": "key"
+          },
+          "fields": [
+            {
+              "name": "associationDirection",
+              "value": {
+                "op": "literal",
+                "value": "None"
+              }
+            }
+          ],
+          "identity": "allocated",
+          "ownerId": {
+            "op": "id",
+            "binding": "owner"
+          }
+        },
+        {
+          "op": "assignRef",
+          "target": "edge",
+          "path": "/sourceRef",
+          "values": [
+            {
+              "op": "id",
+              "binding": "source"
+            }
+          ],
+          "mode": "replace"
+        },
+        {
+          "op": "assignRef",
+          "target": "edge",
+          "path": "/targetRef",
+          "values": [
+            {
+              "op": "id",
+              "binding": "target"
+            }
+          ],
+          "mode": "replace"
+        }
+      ]
+    },
+    {
+      "id": "export-pages",
+      "phase": "export",
+      "parameters": [],
+      "select": {
+        "from": "render",
+        "via": "pages",
+        "where": {
+          "op": "true"
+        },
+        "order": "page-occurrence"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "self",
+          "path": "",
+          "mode": "artifact"
+        }
+      ],
+      "steps": [
+        {
+          "op": "emit",
+          "as": "page",
+          "kind": "page",
+          "fields": [
+            {
+              "name": "id",
+              "value": {
+                "op": "outputId",
+                "binding": "self",
+                "domain": "page"
+              }
+            },
+            {
+              "name": "name",
+              "value": {
+                "op": "read",
+                "binding": "self",
+                "path": "/name"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "add-note",
+      "phase": "edit",
+      "parameters": [
+        {
+          "name": "target",
+          "type": "element",
+          "required": true
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "select": {
+        "from": "target",
+        "via": "self",
+        "where": {
+          "op": "true"
+        },
+        "order": "id"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "self",
+          "path": "/documentation",
+          "mode": "create"
+        }
+      ],
+      "steps": [
+        {
+          "op": "create",
+          "as": "note",
+          "type": "bpmn:Documentation",
+          "identity": "containment",
+          "parent": "self",
+          "property": "documentation",
+          "fields": [
+            {
+              "name": "text",
+              "value": {
+                "op": "param",
+                "name": "body"
+              }
+            },
+            {
+              "name": "textFormat",
+              "value": {
+                "op": "literal",
+                "value": "text/plain"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "migrate-process",
+      "phase": "migrate",
+      "parameters": [],
+      "select": {
+        "from": "root",
+        "via": "all",
+        "where": {
+          "op": "typeIs",
+          "binding": "self",
+          "type": "bpmn:Process",
+          "mode": "exact"
+        },
+        "order": "id"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "self",
+          "path": "/isExecutable",
+          "mode": "set"
+        }
+      ],
+      "steps": [
+        {
+          "op": "set",
+          "target": "self",
+          "path": "/isExecutable",
+          "value": {
+            "op": "literal",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "ensure-supports",
+      "phase": "normalize",
+      "parameters": [],
+      "select": {
+        "from": "root",
+        "via": "all",
+        "where": {
+          "op": "typeIs",
+          "binding": "self",
+          "type": "bpmn:Process",
+          "mode": "exact"
+        },
+        "order": "id"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "root",
+          "path": "/rootElements",
+          "mode": "create"
+        },
+        {
+          "binding": "envelope",
+          "path": "/bindings",
+          "mode": "binding"
+        },
+        {
+          "binding": "collaboration",
+          "path": "/participants",
+          "mode": "create"
+        },
+        {
+          "binding": "main",
+          "path": "/processRef",
+          "mode": "reference"
+        },
+        {
+          "binding": "self",
+          "path": "/laneSets",
+          "mode": "create"
+        },
+        {
+          "binding": "laneSet",
+          "path": "/lanes",
+          "mode": "create"
+        }
+      ],
+      "steps": [
+        {
+          "op": "ensure",
+          "as": "collaboration",
+          "type": "bpmn:Collaboration",
+          "parent": "root",
+          "property": "rootElements",
+          "owner": "self",
+          "role": "collaboration",
+          "ownerId": {
+            "op": "id",
+            "binding": "root"
+          },
+          "slot": "collaboration",
+          "key": {
+            "op": "id",
+            "binding": "self"
+          },
+          "fields": [
+            {
+              "name": "name",
+              "value": {
+                "op": "literal",
+                "value": "collaboration"
+              }
+            }
+          ]
+        },
+        {
+          "op": "ensure",
+          "as": "main",
+          "type": "bpmn:Participant",
+          "parent": "collaboration",
+          "property": "participants",
+          "owner": "self",
+          "role": "main-participant",
+          "ownerId": {
+            "op": "id",
+            "binding": "self"
+          },
+          "slot": "main-participant",
+          "key": {
+            "op": "literal",
+            "value": "main-participant"
+          },
+          "fields": [
+            {
+              "name": "name",
+              "value": {
+                "op": "literal",
+                "value": "main-participant"
+              }
+            }
+          ]
+        },
+        {
+          "op": "assignRef",
+          "target": "main",
+          "path": "/processRef",
+          "mode": "replace",
+          "values": [
+            {
+              "op": "id",
+              "binding": "self"
+            }
+          ]
+        },
+        {
+          "op": "ensure",
+          "as": "laneSet",
+          "type": "bpmn:LaneSet",
+          "parent": "self",
+          "property": "laneSets",
+          "owner": "self",
+          "role": "lane-set",
+          "ownerId": {
+            "op": "id",
+            "binding": "self"
+          },
+          "slot": "lane-set",
+          "key": {
+            "op": "literal",
+            "value": "lane-set"
+          },
+          "fields": [
+            {
+              "name": "name",
+              "value": {
+                "op": "literal",
+                "value": "lane-set"
+              }
+            }
+          ]
+        },
+        {
+          "op": "ensure",
+          "as": "lane",
+          "type": "bpmn:Lane",
+          "parent": "laneSet",
+          "property": "lanes",
+          "owner": "self",
+          "role": "external-lane",
+          "ownerId": {
+            "op": "id",
+            "binding": "self"
+          },
+          "slot": "external-lane",
+          "key": {
+            "op": "literal",
+            "value": "external-lane"
+          },
+          "fields": [
+            {
+              "name": "name",
+              "value": {
+                "op": "literal",
+                "value": "external-lane"
+              }
+            }
+          ]
+        },
+        {
+          "op": "ensure",
+          "as": "band",
+          "type": "bpmn:Participant",
+          "parent": "collaboration",
+          "property": "participants",
+          "owner": "self",
+          "role": "reference-band",
+          "ownerId": {
+            "op": "id",
+            "binding": "self"
+          },
+          "slot": "reference-band",
+          "key": {
+            "op": "literal",
+            "value": "reference-band"
+          },
+          "fields": [
+            {
+              "name": "name",
+              "value": {
+                "op": "literal",
+                "value": "reference-band"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "export-nodes",
+      "phase": "export",
+      "parameters": [],
+      "select": {
+        "from": "render",
+        "via": "occurrences",
+        "where": {
+          "op": "all",
+          "args": [
+            {
+              "op": "equal",
+              "left": {
+                "op": "read",
+                "binding": "self",
+                "path": "/emittedType"
+              },
+              "right": {
+                "op": "literal",
+                "value": "node"
+              }
+            },
+            {
+              "op": "not",
+              "arg": {
+                "op": "count",
+                "min": 1,
+                "select": {
+                  "from": "self",
+                  "via": "semantic",
+                  "where": {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:CallActivity",
+                    "mode": "exact"
+                  },
+                  "order": "id"
+                }
+              }
+            }
+          ]
+        },
+        "order": "page-occurrence"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "self",
+          "path": "",
+          "mode": "artifact"
+        }
+      ],
+      "steps": [
+        {
+          "op": "emit",
+          "as": "node",
+          "kind": "node",
+          "fields": [
+            {
+              "name": "id",
+              "value": {
+                "op": "outputId",
+                "binding": "self",
+                "domain": "node"
+              }
+            },
+            {
+              "name": "name",
+              "value": {
+                "op": "read",
+                "binding": "self",
+                "path": "/label/text"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "export-calls",
+      "phase": "export",
+      "parameters": [],
+      "select": {
+        "from": "render",
+        "via": "occurrences",
+        "where": {
+          "op": "all",
+          "args": [
+            {
+              "op": "equal",
+              "left": {
+                "op": "read",
+                "binding": "self",
+                "path": "/emittedType"
+              },
+              "right": {
+                "op": "literal",
+                "value": "node"
+              }
+            },
+            {
+              "op": "count",
+              "min": 1,
+              "select": {
+                "from": "self",
+                "via": "semantic",
+                "where": {
+                  "op": "typeIs",
+                  "binding": "self",
+                  "type": "bpmn:CallActivity",
+                  "mode": "exact"
+                },
+                "order": "id"
+              }
+            }
+          ]
+        },
+        "order": "page-occurrence"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "self",
+          "path": "",
+          "mode": "artifact"
+        },
+        {
+          "binding": "self",
+          "path": "",
+          "mode": "report"
+        }
+      ],
+      "steps": [
+        {
+          "op": "emit",
+          "as": "node",
+          "kind": "node",
+          "fields": [
+            {
+              "name": "id",
+              "value": {
+                "op": "outputId",
+                "binding": "self",
+                "domain": "node"
+              }
+            },
+            {
+              "name": "name",
+              "value": {
+                "op": "read",
+                "binding": "self",
+                "path": "/label/text"
+              }
+            }
+          ]
+        },
+        {
+          "op": "loss",
+          "target": "self",
+          "code": "navigation"
+        }
+      ]
+    },
+    {
+      "id": "export-edges",
+      "phase": "export",
+      "parameters": [],
+      "select": {
+        "from": "render",
+        "via": "occurrences",
+        "where": {
+          "op": "equal",
+          "left": {
+            "op": "read",
+            "binding": "self",
+            "path": "/emittedType"
+          },
+          "right": {
+            "op": "literal",
+            "value": "edge"
+          }
+        },
+        "order": "page-occurrence"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "self",
+          "path": "",
+          "mode": "artifact"
+        }
+      ],
+      "steps": [
+        {
+          "op": "bind",
+          "as": "fromNode",
+          "select": {
+            "from": "self",
+            "via": "reference",
+            "property": "sourceOccurrence",
+            "where": {
+              "op": "true"
+            },
+            "order": "page-occurrence"
+          },
+          "cardinality": "one"
+        },
+        {
+          "op": "bind",
+          "as": "toNode",
+          "select": {
+            "from": "self",
+            "via": "reference",
+            "property": "targetOccurrence",
+            "where": {
+              "op": "true"
+            },
+            "order": "page-occurrence"
+          },
+          "cardinality": "one"
+        },
+        {
+          "op": "emit",
+          "as": "edge",
+          "kind": "edge",
+          "fields": [
+            {
+              "name": "id",
+              "value": {
+                "op": "outputId",
+                "binding": "self",
+                "domain": "edge"
+              }
+            },
+            {
+              "name": "source",
+              "value": {
+                "op": "outputId",
+                "binding": "fromNode",
+                "domain": "node"
+              }
+            },
+            {
+              "name": "target",
+              "value": {
+                "op": "outputId",
+                "binding": "toNode",
+                "domain": "node"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "export-edge-labels",
+      "phase": "export",
+      "parameters": [],
+      "select": {
+        "from": "render",
+        "via": "occurrences",
+        "where": {
+          "op": "all",
+          "args": [
+            {
+              "op": "equal",
+              "left": {
+                "op": "read",
+                "binding": "self",
+                "path": "/emittedType"
+              },
+              "right": {
+                "op": "literal",
+                "value": "edge"
+              }
+            },
+            {
+              "op": "present",
+              "value": {
+                "op": "read",
+                "binding": "self",
+                "path": "/label/text"
+              }
+            }
+          ]
+        },
+        "order": "page-occurrence"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "self",
+          "path": "",
+          "mode": "artifact"
+        }
+      ],
+      "steps": [
+        {
+          "op": "emit",
+          "as": "label",
+          "kind": "label",
+          "fields": [
+            {
+              "name": "id",
+              "value": {
+                "op": "outputId",
+                "binding": "self",
+                "domain": "label"
+              }
+            },
+            {
+              "name": "text",
+              "value": {
+                "op": "read",
+                "binding": "self",
+                "path": "/label/text"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "export-aid-marker",
+      "phase": "export",
+      "parameters": [],
+      "select": {
+        "from": "render",
+        "via": "occurrences",
+        "where": {
+          "op": "count",
+          "min": 1,
+          "select": {
+            "from": "self",
+            "via": "semantic",
+            "where": {
+              "op": "recognizes",
+              "binding": "self",
+              "notion": "aid"
+            },
+            "order": "id"
+          }
+        },
+        "order": "page-occurrence"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "self",
+          "path": "",
+          "mode": "report"
+        }
+      ],
+      "steps": [
+        {
+          "op": "loss",
+          "target": "self",
+          "code": "metadata"
+        }
+      ]
+    }
+  ],
+  "placements": [],
+  "themes": [
+    {
+      "id": "plain",
+      "aliases": [
+        "default"
+      ],
+      "tokens": [
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "region.external-lane.headerWidth",
+          "value": 30000
+        },
+        {
+          "name": "region.external-lane.padding",
+          "value": 10000
+        },
+        {
+          "name": "region.external-lane.gap",
+          "value": 20000
+        },
+        {
+          "name": "region.external-lane.minHeight",
+          "value": 60000
+        },
+        {
+          "name": "region.reference-band.headerWidth",
+          "value": 30000
+        },
+        {
+          "name": "region.reference-band.padding",
+          "value": 10000
+        },
+        {
+          "name": "region.reference-band.gap",
+          "value": 20000
+        },
+        {
+          "name": "region.reference-band.minHeight",
+          "value": 60000
+        }
+      ],
+      "glyphs": [
+        {
+          "id": "task",
+          "kind": "native",
+          "nativeType": "bpmn:Task",
+          "viewBox": [
+            0,
+            0,
+            100,
+            80
+          ],
+          "commands": []
+        },
+        {
+          "id": "aid",
+          "kind": "native",
+          "nativeType": "bpmn:TextAnnotation",
+          "viewBox": [
+            0,
+            0,
+            100,
+            40
+          ],
+          "commands": []
+        },
+        {
+          "id": "start",
+          "kind": "native",
+          "nativeType": "bpmn:StartEvent",
+          "viewBox": [
+            0,
+            0,
+            36,
+            36
+          ],
+          "commands": []
+        },
+        {
+          "id": "end",
+          "kind": "native",
+          "nativeType": "bpmn:EndEvent",
+          "viewBox": [
+            0,
+            0,
+            36,
+            36
+          ],
+          "commands": []
+        },
+        {
+          "id": "terminate-end",
+          "kind": "native",
+          "nativeType": "bpmn:EndEvent",
+          "viewBox": [
+            0,
+            0,
+            36,
+            36
+          ],
+          "commands": []
+        },
+        {
+          "id": "service-task",
+          "kind": "native",
+          "nativeType": "bpmn:ServiceTask",
+          "viewBox": [
+            0,
+            0,
+            100,
+            80
+          ],
+          "commands": []
+        },
+        {
+          "id": "call",
+          "kind": "native",
+          "nativeType": "bpmn:CallActivity",
+          "viewBox": [
+            0,
+            0,
+            100,
+            80
+          ],
+          "commands": []
+        },
+        {
+          "id": "gateway",
+          "kind": "native",
+          "nativeType": "bpmn:ExclusiveGateway",
+          "viewBox": [
+            0,
+            0,
+            50,
+            50
+          ],
+          "commands": []
+        },
+        {
+          "id": "flow-line",
+          "kind": "native",
+          "nativeType": "bpmn:SequenceFlow",
+          "viewBox": [
+            0,
+            0,
+            100,
+            10
+          ],
+          "commands": []
+        },
+        {
+          "id": "association-line",
+          "kind": "native",
+          "nativeType": "bpmn:Association",
+          "viewBox": [
+            0,
+            0,
+            100,
+            10
+          ],
+          "commands": []
+        },
+        {
+          "id": "data-line",
+          "kind": "path",
+          "viewBox": [
+            0,
+            0,
+            100,
+            10
+          ],
+          "commands": [
+            {
+              "command": "M",
+              "values": [
+                0,
+                5
+              ]
+            },
+            {
+              "command": "L",
+              "values": [
+                100,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "pool",
+          "kind": "native",
+          "nativeType": "bpmn:Participant",
+          "viewBox": [
+            0,
+            0,
+            600,
+            250
+          ],
+          "commands": []
+        },
+        {
+          "id": "band",
+          "kind": "native",
+          "nativeType": "bpmn:Participant",
+          "viewBox": [
+            0,
+            0,
+            600,
+            120
+          ],
+          "commands": []
+        },
+        {
+          "id": "lane",
+          "kind": "native",
+          "nativeType": "bpmn:Lane",
+          "viewBox": [
+            0,
+            0,
+            570,
+            150
+          ],
+          "commands": []
+        },
+        {
+          "id": "data-input",
+          "kind": "native",
+          "nativeType": "bpmn:DataInput",
+          "viewBox": [
+            0,
+            0,
+            36,
+            50
+          ],
+          "commands": []
+        },
+        {
+          "id": "data-output",
+          "kind": "native",
+          "nativeType": "bpmn:DataOutput",
+          "viewBox": [
+            0,
+            0,
+            36,
+            50
+          ],
+          "commands": []
+        },
+        {
+          "id": "store",
+          "kind": "native",
+          "nativeType": "bpmn:DataStoreReference",
+          "viewBox": [
+            0,
+            0,
+            50,
+            50
+          ],
+          "commands": []
+        }
+      ],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": []
+    },
+    {
+      "id": "dim",
+      "aliases": [],
+      "tokens": [
+        {
+          "name": "fill",
+          "value": "#eeeeee"
+        },
+        {
+          "name": "arrow",
+          "value": "open"
+        }
+      ],
+      "glyphs": [],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [],
+      "fallback": "plain"
+    },
+    {
+      "id": "plain-striped",
+      "aliases": [],
+      "tokens": [],
+      "glyphs": [
+        {
+          "id": "stripe",
+          "kind": "template",
+          "viewBox": [
+            0,
+            0,
+            20,
+            100
+          ],
+          "commands": [],
+          "template": "band-stripe",
+          "parameters": [
+            {
+              "name": "stripeWidth",
+              "value": 20000
+            }
+          ]
+        }
+      ],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [
+        {
+          "id": "band-stripe",
+          "select": {
+            "from": "root",
+            "via": "all",
+            "where": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:Process",
+              "mode": "exact"
+            },
+            "order": "id"
+          },
+          "role": "band-stripe",
+          "label": {
+            "op": "literal",
+            "value": ""
+          },
+          "region": "reference-band",
+          "glyph": "stripe",
+          "tokens": [
+            {
+              "name": "fill",
+              "value": "#dddddd"
+            }
+          ]
+        }
+      ],
+      "fallback": "plain"
+    },
+    {
+      "id": "lowered",
+      "aliases": [],
+      "tokens": [],
+      "glyphs": [
+        {
+          "id": "flow-line",
+          "kind": "native",
+          "nativeType": "bpmn:SequenceFlow",
+          "viewBox": [
+            0,
+            0,
+            100,
+            10
+          ],
+          "commands": []
+        }
+      ],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [],
+      "fallback": "plain"
+    },
+    {
+      "id": "wide",
+      "aliases": [],
+      "tokens": [
+        {
+          "name": "region.external-lane.padding",
+          "value": 12000
+        }
+      ],
+      "glyphs": [],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [],
+      "fallback": "plain"
+    },
+    {
+      "id": "bold",
+      "aliases": [],
+      "tokens": [
+        {
+          "name": "fontWeight",
+          "value": "bold"
+        }
+      ],
+      "glyphs": [],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [],
+      "fallback": "plain"
+    },
+    {
+      "id": "wide-own",
+      "aliases": [],
+      "tokens": [
+        {
+          "name": "region.external-lane.padding",
+          "value": 12000
+        }
+      ],
+      "glyphs": [],
+      "metricsResource": "neutral-metrics",
+      "geometry": "theme",
+      "syntheticOccurrences": [],
+      "fallback": "plain"
+    },
+    {
+      "id": "bare",
+      "aliases": [],
+      "tokens": [
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "region.external-lane.headerWidth",
+          "value": 30000
+        },
+        {
+          "name": "region.external-lane.padding",
+          "value": 10000
+        },
+        {
+          "name": "region.external-lane.gap",
+          "value": 20000
+        },
+        {
+          "name": "region.external-lane.minHeight",
+          "value": 60000
+        }
+      ],
+      "glyphs": [
+        {
+          "id": "task",
+          "kind": "native",
+          "nativeType": "bpmn:Task",
+          "viewBox": [
+            0,
+            0,
+            100,
+            80
+          ],
+          "commands": []
+        },
+        {
+          "id": "aid",
+          "kind": "native",
+          "nativeType": "bpmn:TextAnnotation",
+          "viewBox": [
+            0,
+            0,
+            100,
+            40
+          ],
+          "commands": []
+        },
+        {
+          "id": "start",
+          "kind": "native",
+          "nativeType": "bpmn:StartEvent",
+          "viewBox": [
+            0,
+            0,
+            36,
+            36
+          ],
+          "commands": []
+        },
+        {
+          "id": "end",
+          "kind": "native",
+          "nativeType": "bpmn:EndEvent",
+          "viewBox": [
+            0,
+            0,
+            36,
+            36
+          ],
+          "commands": []
+        },
+        {
+          "id": "terminate-end",
+          "kind": "native",
+          "nativeType": "bpmn:EndEvent",
+          "viewBox": [
+            0,
+            0,
+            36,
+            36
+          ],
+          "commands": []
+        },
+        {
+          "id": "service-task",
+          "kind": "native",
+          "nativeType": "bpmn:ServiceTask",
+          "viewBox": [
+            0,
+            0,
+            100,
+            80
+          ],
+          "commands": []
+        },
+        {
+          "id": "call",
+          "kind": "native",
+          "nativeType": "bpmn:CallActivity",
+          "viewBox": [
+            0,
+            0,
+            100,
+            80
+          ],
+          "commands": []
+        },
+        {
+          "id": "gateway",
+          "kind": "native",
+          "nativeType": "bpmn:ExclusiveGateway",
+          "viewBox": [
+            0,
+            0,
+            50,
+            50
+          ],
+          "commands": []
+        },
+        {
+          "id": "flow-line",
+          "kind": "native",
+          "nativeType": "bpmn:SequenceFlow",
+          "viewBox": [
+            0,
+            0,
+            100,
+            10
+          ],
+          "commands": []
+        },
+        {
+          "id": "association-line",
+          "kind": "native",
+          "nativeType": "bpmn:Association",
+          "viewBox": [
+            0,
+            0,
+            100,
+            10
+          ],
+          "commands": []
+        },
+        {
+          "id": "data-line",
+          "kind": "path",
+          "viewBox": [
+            0,
+            0,
+            100,
+            10
+          ],
+          "commands": [
+            {
+              "command": "M",
+              "values": [
+                0,
+                5
+              ]
+            },
+            {
+              "command": "L",
+              "values": [
+                100,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "pool",
+          "kind": "native",
+          "nativeType": "bpmn:Participant",
+          "viewBox": [
+            0,
+            0,
+            600,
+            250
+          ],
+          "commands": []
+        },
+        {
+          "id": "band",
+          "kind": "native",
+          "nativeType": "bpmn:Participant",
+          "viewBox": [
+            0,
+            0,
+            600,
+            120
+          ],
+          "commands": []
+        },
+        {
+          "id": "lane",
+          "kind": "native",
+          "nativeType": "bpmn:Lane",
+          "viewBox": [
+            0,
+            0,
+            570,
+            150
+          ],
+          "commands": []
+        },
+        {
+          "id": "data-input",
+          "kind": "native",
+          "nativeType": "bpmn:DataInput",
+          "viewBox": [
+            0,
+            0,
+            36,
+            50
+          ],
+          "commands": []
+        },
+        {
+          "id": "data-output",
+          "kind": "native",
+          "nativeType": "bpmn:DataOutput",
+          "viewBox": [
+            0,
+            0,
+            36,
+            50
+          ],
+          "commands": []
+        },
+        {
+          "id": "store",
+          "kind": "native",
+          "nativeType": "bpmn:DataStoreReference",
+          "viewBox": [
+            0,
+            0,
+            50,
+            50
+          ],
+          "commands": []
+        }
+      ],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": []
+    },
+    {
+      "id": "templates",
+      "aliases": [],
+      "tokens": [],
+      "glyphs": [
+        {
+          "id": "hb",
+          "kind": "template",
+          "viewBox": [
+            0,
+            0,
+            100,
+            80
+          ],
+          "commands": [],
+          "template": "header-band",
+          "parameters": [
+            {
+              "name": "headerHeight",
+              "value": 12000
+            }
+          ]
+        },
+        {
+          "id": "cf",
+          "kind": "template",
+          "viewBox": [
+            0,
+            0,
+            100,
+            80
+          ],
+          "commands": [],
+          "template": "corner-fold",
+          "parameters": [
+            {
+              "name": "foldRatio",
+              "value": 0.25
+            },
+            {
+              "name": "headerRotation",
+              "value": 90
+            }
+          ]
+        },
+        {
+          "id": "ab",
+          "kind": "template",
+          "viewBox": [
+            0,
+            0,
+            30,
+            15
+          ],
+          "commands": [],
+          "template": "attached-badge",
+          "parameters": [
+            {
+              "name": "offsetX",
+              "value": 10000
+            },
+            {
+              "name": "offsetY",
+              "value": -20000
+            },
+            {
+              "name": "hideSource",
+              "value": false
+            },
+            {
+              "name": "markerShift",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "id": "bs",
+          "kind": "template",
+          "viewBox": [
+            0,
+            0,
+            20,
+            100
+          ],
+          "commands": [],
+          "template": "band-stripe",
+          "parameters": [
+            {
+              "name": "stripeWidth",
+              "value": 20000
+            }
+          ]
+        }
+      ],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [],
+      "fallback": "plain"
+    },
+    {
+      "id": "badged",
+      "aliases": [],
+      "tokens": [],
+      "glyphs": [
+        {
+          "id": "badge",
+          "kind": "template",
+          "viewBox": [
+            0,
+            0,
+            30,
+            15
+          ],
+          "commands": [],
+          "template": "attached-badge",
+          "parameters": [
+            {
+              "name": "offsetX",
+              "value": 10000
+            },
+            {
+              "name": "offsetY",
+              "value": -20000
+            },
+            {
+              "name": "hideSource",
+              "value": false
+            },
+            {
+              "name": "markerShift",
+              "value": 3000
+            }
+          ]
+        }
+      ],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [
+        {
+          "id": "aid-badge",
+          "select": {
+            "from": "root",
+            "via": "all",
+            "where": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:TextAnnotation",
+              "mode": "exact"
+            },
+            "order": "id"
+          },
+          "role": "attached-badge",
+          "label": {
+            "op": "literal",
+            "value": "tool"
+          },
+          "region": "aids",
+          "glyph": "badge",
+          "tokens": [
+            {
+              "name": "fill",
+              "value": "#ccccff"
+            }
+          ]
+        }
+      ],
+      "fallback": "plain"
+    },
+    {
+      "id": "badged-hidden",
+      "aliases": [],
+      "tokens": [],
+      "glyphs": [
+        {
+          "id": "badge",
+          "kind": "template",
+          "viewBox": [
+            0,
+            0,
+            30,
+            15
+          ],
+          "commands": [],
+          "template": "attached-badge",
+          "parameters": [
+            {
+              "name": "offsetX",
+              "value": 10000
+            },
+            {
+              "name": "offsetY",
+              "value": -20000
+            },
+            {
+              "name": "hideSource",
+              "value": true
+            },
+            {
+              "name": "markerShift",
+              "value": 3000
+            }
+          ]
+        }
+      ],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [
+        {
+          "id": "aid-badge",
+          "select": {
+            "from": "root",
+            "via": "all",
+            "where": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:TextAnnotation",
+              "mode": "exact"
+            },
+            "order": "id"
+          },
+          "role": "attached-badge",
+          "label": {
+            "op": "literal",
+            "value": "tool"
+          },
+          "region": "aids",
+          "glyph": "badge",
+          "tokens": [
+            {
+              "name": "fill",
+              "value": "#ccccff"
+            }
+          ]
+        }
+      ],
+      "fallback": "plain"
+    },
+    {
+      "id": "metric-z",
+      "aliases": [],
+      "tokens": [],
+      "glyphs": [],
+      "metricsResource": "z-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [],
+      "fallback": "plain"
+    },
+    {
+      "id": "legacy-standard",
+      "aliases": [],
+      "tokens": [
+        {
+          "name": "stroke",
+          "value": "#333333"
+        }
+      ],
+      "glyphs": [],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [],
+      "fallback": "plain"
+    },
+    {
+      "id": "legacy-custom",
+      "aliases": [],
+      "tokens": [
+        {
+          "name": "fill",
+          "value": "#fff8e0"
+        },
+        {
+          "name": "stroke",
+          "value": "#5a4a00"
+        }
+      ],
+      "glyphs": [],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [],
+      "fallback": "plain"
+    },
+    {
+      "id": "legacy-colored",
+      "aliases": [],
+      "tokens": [],
+      "glyphs": [],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": [],
+      "fallback": "legacy-standard"
+    }
+  ],
+  "ui": [
+    {
+      "id": "task-create",
+      "surface": "palette",
+      "group": "basic",
+      "order": 0,
+      "upstreamEntries": [
+        "create.task"
+      ],
+      "label": "label",
+      "when": {
+        "op": "true"
+      },
+      "recipe": "create-task",
+      "parameters": [
+        {
+          "name": "owner",
+          "source": "owner"
+        },
+        {
+          "name": "key",
+          "source": "key"
+        },
+        {
+          "name": "name",
+          "source": "value"
+        }
+      ],
+      "icon": {
+        "theme": "plain",
+        "glyph": "task"
+      }
+    }
+  ],
+  "validation": [
+    {
+      "id": "import",
+      "policy": "draft",
+      "extends": [
+        "bpmnlint:recommended"
+      ],
+      "settings": [
+        {
+          "rule": "ad-hoc-sub-process",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "conditional-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "end-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "event-based-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "event-sub-process-typed-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "fake-join",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "global",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "label-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "link-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-bpmndi",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-complex-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-disconnected",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-duplicate-sequence-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-gateway-join-fork",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-split",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-end",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-start",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-inclusive-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-overlapping-elements",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-event-definition",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "start-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "sub-process-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-label",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-termination",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "profile:task-named-import",
+          "severity": "warn",
+          "classification": "readiness"
+        }
+      ],
+      "profileRule": "profile-mechanism/profile"
+    },
+    {
+      "id": "import",
+      "policy": "accept",
+      "extends": [
+        "bpmnlint:recommended"
+      ],
+      "settings": [
+        {
+          "rule": "ad-hoc-sub-process",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "conditional-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "end-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "event-based-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "event-sub-process-typed-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "fake-join",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "global",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "label-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "link-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-bpmndi",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-complex-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-disconnected",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-duplicate-sequence-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-gateway-join-fork",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-split",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-end",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-start",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-inclusive-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-overlapping-elements",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-event-definition",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "start-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "sub-process-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-label",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-termination",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "profile:task-named-import",
+          "severity": "error",
+          "classification": "readiness"
+        }
+      ],
+      "profileRule": "profile-mechanism/profile"
+    },
+    {
+      "id": "pre-normalize",
+      "policy": "draft",
+      "extends": [
+        "bpmnlint:recommended"
+      ],
+      "settings": [
+        {
+          "rule": "ad-hoc-sub-process",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "conditional-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "end-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "event-based-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "event-sub-process-typed-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "fake-join",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "global",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "label-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "link-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-bpmndi",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-complex-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-disconnected",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-duplicate-sequence-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-gateway-join-fork",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-split",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-end",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-start",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-inclusive-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-overlapping-elements",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-event-definition",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "start-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "sub-process-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-label",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-termination",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "profile:task-named-pre-normalize",
+          "severity": "warn",
+          "classification": "readiness"
+        }
+      ],
+      "profileRule": "profile-mechanism/profile"
+    },
+    {
+      "id": "pre-normalize",
+      "policy": "accept",
+      "extends": [
+        "bpmnlint:recommended"
+      ],
+      "settings": [
+        {
+          "rule": "ad-hoc-sub-process",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "conditional-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "end-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "event-based-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "event-sub-process-typed-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "fake-join",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "global",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "label-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "link-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-bpmndi",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-complex-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-disconnected",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-duplicate-sequence-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-gateway-join-fork",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-split",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-end",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-start",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-inclusive-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-overlapping-elements",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-event-definition",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "start-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "sub-process-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-label",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-termination",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "profile:task-named-pre-normalize",
+          "severity": "error",
+          "classification": "readiness"
+        }
+      ],
+      "profileRule": "profile-mechanism/profile"
+    },
+    {
+      "id": "post-normalize",
+      "policy": "draft",
+      "extends": [
+        "bpmnlint:recommended"
+      ],
+      "settings": [
+        {
+          "rule": "ad-hoc-sub-process",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "conditional-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "end-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "event-based-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "event-sub-process-typed-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "fake-join",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "global",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "label-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "link-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-bpmndi",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-complex-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-disconnected",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-duplicate-sequence-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-gateway-join-fork",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-split",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-end",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-start",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-inclusive-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-overlapping-elements",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-event-definition",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "start-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "sub-process-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-label",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-termination",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "profile:task-named",
+          "severity": "warn",
+          "classification": "readiness"
+        }
+      ],
+      "profileRule": "profile-mechanism/profile"
+    },
+    {
+      "id": "post-normalize",
+      "policy": "accept",
+      "extends": [
+        "bpmnlint:recommended"
+      ],
+      "settings": [
+        {
+          "rule": "ad-hoc-sub-process",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "conditional-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "end-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "event-based-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "event-sub-process-typed-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "fake-join",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "global",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "label-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "link-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-bpmndi",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-complex-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-disconnected",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-duplicate-sequence-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-gateway-join-fork",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-split",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-end",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-start",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-inclusive-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-overlapping-elements",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-event-definition",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "start-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "sub-process-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-label",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-termination",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "profile:task-named",
+          "severity": "error",
+          "classification": "readiness"
+        }
+      ],
+      "profileRule": "profile-mechanism/profile"
+    },
+    {
+      "id": "post-layout",
+      "policy": "draft",
+      "extends": [
+        "bpmnlint:recommended"
+      ],
+      "settings": [
+        {
+          "rule": "ad-hoc-sub-process",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "conditional-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "end-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "event-based-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "event-sub-process-typed-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "fake-join",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "global",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "label-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "link-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-bpmndi",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-complex-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-disconnected",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-duplicate-sequence-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-gateway-join-fork",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-split",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-end",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-start",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-inclusive-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-overlapping-elements",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-event-definition",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "start-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "sub-process-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-label",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-termination",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "profile:task-named-post-layout",
+          "severity": "warn",
+          "classification": "readiness"
+        }
+      ],
+      "profileRule": "profile-mechanism/profile"
+    },
+    {
+      "id": "post-layout",
+      "policy": "accept",
+      "extends": [
+        "bpmnlint:recommended"
+      ],
+      "settings": [
+        {
+          "rule": "ad-hoc-sub-process",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "conditional-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "end-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "event-based-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "event-sub-process-typed-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "fake-join",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "global",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "label-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "link-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-bpmndi",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-complex-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-disconnected",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-duplicate-sequence-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-gateway-join-fork",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-split",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-end",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-start",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-inclusive-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-overlapping-elements",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-event-definition",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "start-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "sub-process-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-label",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-termination",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "profile:task-named-post-layout",
+          "severity": "error",
+          "classification": "readiness"
+        }
+      ],
+      "profileRule": "profile-mechanism/profile"
+    },
+    {
+      "id": "release",
+      "policy": "draft",
+      "extends": [
+        "bpmnlint:recommended"
+      ],
+      "settings": [
+        {
+          "rule": "ad-hoc-sub-process",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "conditional-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "end-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "event-based-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "event-sub-process-typed-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "fake-join",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "global",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "label-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "link-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-bpmndi",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-complex-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-disconnected",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-duplicate-sequence-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-gateway-join-fork",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-split",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-end",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-start",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-inclusive-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-overlapping-elements",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-event-definition",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "start-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "sub-process-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-label",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-termination",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "profile:task-named-release",
+          "severity": "warn",
+          "classification": "readiness"
+        }
+      ],
+      "profileRule": "profile-mechanism/profile"
+    },
+    {
+      "id": "release",
+      "policy": "accept",
+      "extends": [
+        "bpmnlint:recommended"
+      ],
+      "settings": [
+        {
+          "rule": "ad-hoc-sub-process",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "conditional-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "end-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "event-based-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "event-sub-process-typed-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "fake-join",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "global",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "label-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "link-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-bpmndi",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-complex-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-disconnected",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-duplicate-sequence-flows",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-gateway-join-fork",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-split",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-end",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-implicit-start",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-inclusive-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "no-overlapping-elements",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "single-event-definition",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "start-event-required",
+          "severity": "off",
+          "classification": "readiness"
+        },
+        {
+          "rule": "sub-process-blank-start-event",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-gateway",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-label",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "superfluous-termination",
+          "severity": "off",
+          "classification": "integrity"
+        },
+        {
+          "rule": "profile:task-named-release",
+          "severity": "error",
+          "classification": "readiness"
+        }
+      ],
+      "profileRule": "profile-mechanism/profile"
+    }
+  ],
+  "providerDialects": [
+    {
+      "id": "schema-example",
+      "adapter": "vertex-gemini-json-schema/1",
+      "apiVersion": "fixture-only",
+      "allowedKeywords": [
+        "type",
+        "properties",
+        "required",
+        "items"
+      ],
+      "optionalTransport": "omit",
+      "maxOutputTokens": 64,
+      "models": [
+        "fixture-only"
+      ],
+      "qualification": "unverified",
+      "argumentSchemaDigest": "1e42b387e05b9802efcf2ded2d9cdcf705f3dc4ac51b9610ea4290eafd928f08"
+    }
+  ],
+  "exports": [
+    {
+      "id": "drawing",
+      "format": "drawio",
+      "recipes": [
+        "export-pages",
+        "export-nodes",
+        "export-calls",
+        "export-edges",
+        "export-edge-labels",
+        "export-aid-marker"
+      ],
+      "capabilities": [
+        {
+          "when": {
+            "op": "true"
+          },
+          "class": "engine-byte-compatible",
+          "losses": []
+        }
+      ],
+      "idPolicy": "counter",
+      "counterOrigin": 1,
+      "metadata": [],
+      "serializer": {
+        "version": "lot4-2",
+        "encoding": "UTF-8",
+        "newline": "LF",
+        "indent": 0,
+        "compression": "none",
+        "attributeOrder": [
+          "id",
+          "value",
+          "style",
+          "parent",
+          "vertex",
+          "edge",
+          "source",
+          "target"
+        ],
+        "emptyElement": "short"
+      }
+    },
+    {
+      "id": "ea",
+      "format": "sparx",
+      "recipes": [
+        "export-pages",
+        "export-nodes",
+        "export-calls",
+        "export-edges",
+        "export-aid-marker"
+      ],
+      "capabilities": [
+        {
+          "when": {
+            "op": "true"
+          },
+          "class": "structural",
+          "losses": []
+        },
+        {
+          "when": {
+            "op": "count",
+            "min": 1,
+            "select": {
+              "from": "self",
+              "via": "semantic",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:DataStoreReference",
+                "mode": "exact"
+              },
+              "order": "id"
+            }
+          },
+          "class": "structural",
+          "losses": [
+            "semantic-type"
+          ]
+        },
+        {
+          "when": {
+            "op": "count",
+            "min": 1,
+            "select": {
+              "from": "self",
+              "via": "semantic",
+              "where": {
+                "op": "any",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:DataInput",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:DataOutput",
+                    "mode": "exact"
+                  }
+                ]
+              },
+              "order": "id"
+            }
+          },
+          "class": "structural",
+          "losses": [
+            "semantic-type"
+          ]
+        },
+        {
+          "when": {
+            "op": "count",
+            "min": 1,
+            "select": {
+              "from": "self",
+              "via": "semantic",
+              "where": {
+                "op": "any",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:DataInputAssociation",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:DataOutputAssociation",
+                    "mode": "exact"
+                  }
+                ]
+              },
+              "order": "id"
+            }
+          },
+          "class": "structural",
+          "losses": [
+            "relation-kind"
+          ]
+        },
+        {
+          "when": {
+            "op": "count",
+            "min": 1,
+            "select": {
+              "from": "self",
+              "via": "semantic",
+              "where": {
+                "op": "recognizes",
+                "binding": "self",
+                "notion": "band"
+              },
+              "order": "id"
+            }
+          },
+          "class": "structural",
+          "losses": [
+            "metadata"
+          ]
+        },
+        {
+          "when": {
+            "op": "count",
+            "min": 1,
+            "select": {
+              "from": "self",
+              "via": "semantic",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:EndEvent",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "count",
+                    "min": 1,
+                    "select": {
+                      "from": "self",
+                      "via": "children",
+                      "property": "eventDefinitions",
+                      "where": {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:TerminateEventDefinition",
+                        "mode": "exact"
+                      },
+                      "order": "id"
+                    }
+                  }
+                ]
+              },
+              "order": "id"
+            }
+          },
+          "class": "structural",
+          "losses": [
+            "semantic-type",
+            "appearance"
+          ]
+        },
+        {
+          "when": {
+            "op": "count",
+            "min": 1,
+            "select": {
+              "from": "self",
+              "via": "semantic",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:ServiceTask",
+                "mode": "exact"
+              },
+              "order": "id"
+            }
+          },
+          "class": "structural",
+          "losses": [
+            "semantic-type"
+          ]
+        }
+      ],
+      "idPolicy": "native",
+      "counterOrigin": 0,
+      "metadata": [],
+      "serializer": {
+        "version": "lot4-2",
+        "encoding": "UTF-8",
+        "newline": "LF",
+        "indent": 0,
+        "compression": "none",
+        "attributeOrder": [
+          "id",
+          "value",
+          "style",
+          "parent",
+          "vertex",
+          "edge",
+          "source",
+          "target"
+        ],
+        "emptyElement": "short"
+      }
+    }
+  ],
+  "migrations": [
+    {
+      "id": "from-neutral-1",
+      "from": {
+        "id": "neutral/1",
+        "version": "1.0.0",
+        "sha256": "1d7931bde1bf7a9c0899c99f92c85aaf145931e80252dbd6b2dc43dd5043a85a"
+      },
+      "to": "self",
+      "recipes": [
+        "migrate-process"
+      ],
+      "approval": "technical",
+      "lossPolicy": "refuse"
+    }
+  ],
+  "resources": [
+    {
+      "id": "neutral-metrics",
+      "kind": "metrics",
+      "mediaType": "application/json",
+      "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0",
+      "assetKey": "neutral-metrics.json",
+      "license": "CC0-1.0",
+      "attribution": "Synthetic CC0 metric fixture supplied with R3."
+    },
+    {
+      "id": "z-metrics",
+      "kind": "metrics",
+      "mediaType": "application/json",
+      "sha256": "baf2ae3eff1522d8fdd4b7c24790cfa80cecb67392096c08008aa20a1babe8a4",
+      "assetKey": "z-metrics.json",
+      "license": "CC0-1.0",
+      "attribution": "Synthetic one-byte variant of the neutral metric fixture (lot-4 seal)."
+    }
+  ],
+  "messages": [
+    {
+      "id": "label",
+      "texts": [
+        {
+          "name": "en",
+          "value": "Task"
+        }
+      ]
+    },
+    {
+      "id": "invalid",
+      "texts": [
+        {
+          "name": "en",
+          "value": "Name is required."
+        }
+      ]
+    }
+  ],
+  "compatibilityAliases": [
+    {
+      "kind": "theme",
+      "old": "standard",
+      "destination": "legacy-standard",
+      "mode": "explicit-adapter"
+    },
+    {
+      "kind": "theme",
+      "old": "legend",
+      "destination": "legacy-custom",
+      "mode": "explicit-adapter"
+    },
+    {
+      "kind": "theme",
+      "old": "colored",
+      "destination": "legacy-colored",
+      "mode": "explicit-adapter"
+    }
+  ]
+}

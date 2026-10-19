@@ -1,0 +1,52 @@
+{
+  "caseId": "render-023-metric-chain",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/main.layout.json",
+      "sha256": "377e069bbaf287e4addb152628c4a4537bca331059eaae7002106a0036d5b9d1"
+    },
+    {
+      "role": "themeId",
+      "json": "metric-z"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [],
+        "bioc": []
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/main-metric-z.resolve-result.json",
+      "sha256": "73abb6c81bfaeddeb5cbaaafecbaba643c9c497d11c8202823c3e898879c36fe"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "case": "render.template.header-band",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "header-band divides at y+min(headerHeight,h)",
+  "derivation": "headerHeight 12000 < h 80000: header (100000,200000,100000,12000), body starts at 200000+12000 with height 80000-12000 = 68000.",
+  "operation": "templateGeometry",
+  "input": {
+    "glyph": {
+      "id": "band",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        100,
+        80
+      ],
+      "commands": [],
+      "template": "header-band",
+      "parameters": [
+        {
+          "name": "headerHeight",
+          "value": 12000
+        }
+      ]
+    },
+    "bounds": {
+      "x": 100000,
+      "y": 200000,
+      "width": 100000,
+      "height": 80000
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "header": {
+        "x": 100000,
+        "y": 200000,
+        "width": 100000,
+        "height": 12000
+      },
+      "body": {
+        "x": 100000,
+        "y": 212000,
+        "width": 100000,
+        "height": 68000
+      }
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

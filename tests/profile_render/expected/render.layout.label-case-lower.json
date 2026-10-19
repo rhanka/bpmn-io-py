@@ -1,0 +1,361 @@
+{
+  "case": "render.layout.label-case-lower",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "Unicode 15.0.0 full lower mapping with the untagged Final_Sigma context",
+  "derivation": "case(lower): OMICRON SIGMA -> 'o final-sigma' (word-final), OMICRON SIGMA ALPHA keeps the medial sigma, 'ALPHA SIGMA space BETA' gives a final sigma before the space; U+0130 -> 'i' + U+0307 (full mapping), U+1E9E -> U+00DF; no locale tailoring.",
+  "operation": "computeLayout",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/notions/1/renderBindings/0/label",
+          "value": {
+            "op": "case",
+            "value": {
+              "op": "stripPrefix",
+              "value": {
+                "op": "read",
+                "binding": "self",
+                "path": "/text"
+              },
+              "prefix": "[Aid] ",
+              "trim": "none"
+            },
+            "mode": "lower",
+            "unicode": "15.0.0"
+          }
+        }
+      ]
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_t",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_t",
+          "isExecutable": false,
+          "artifacts": [
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_a",
+              "text": "[Aid] \u039f\u03a3"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_b",
+              "text": "[Aid] \u039f\u03a3\u0391"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_c",
+              "text": "[Aid] \u0391\u03a3 \u0392"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_d",
+              "text": "[Aid] \u0130"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_e",
+              "text": "[Aid] \u1e9e"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "placements": [],
+    "diagrams": [
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "P1",
+        "name": "Texts",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "P1-plane",
+          "bpmnElement": "Process_t",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "a-Note_a",
+              "bpmnElement": "Note_a",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 0,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "b-Note_b",
+              "bpmnElement": "Note_b",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 50,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "c-Note_c",
+              "bpmnElement": "Note_c",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 100,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "d-Note_d",
+              "bpmnElement": "Note_d",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 150,
+                "width": 200,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "e-Note_e",
+              "bpmnElement": "Note_e",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 200,
+                "width": 200,
+                "height": 40
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "4078ae6aff715e699aa92f89c86aad0e27e9132beb77fa4fa46a675f1ef221a4",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "47ce8d41bb55b288ab6fa1e3e46d010e135a34e99aef7638d8618f01ea041d94",
+    "revision": "47ce8d41bb55b288ab6fa1e3e46d010e135a34e99aef7638d8618f01ea041d94",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "4078ae6aff715e699aa92f89c86aad0e27e9132beb77fa4fa46a675f1ef221a4",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "4078ae6aff715e699aa92f89c86aad0e27e9132beb77fa4fa46a675f1ef221a4",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "47ce8d41bb55b288ab6fa1e3e46d010e135a34e99aef7638d8618f01ea041d94",
+      "outputRevision": "47ce8d41bb55b288ab6fa1e3e46d010e135a34e99aef7638d8618f01ea041d94",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "payload": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "P1",
+          "name": "Texts",
+          "order": 0,
+          "semanticRootId": "Process_t",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 200000,
+            "height": 240000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "P1",
+          "occurrenceKey": "a-Note_a",
+          "semanticId": "Note_a",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "\u03bf\u03c2",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "\u03bf\u03c2"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "b-Note_b",
+          "semanticId": "Note_b",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 50000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "\u03bf\u03c3\u03b1",
+            "bounds": {
+              "x": 0,
+              "y": 50000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "\u03bf\u03c3\u03b1"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "c-Note_c",
+          "semanticId": "Note_c",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 100000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "\u03b1\u03c2 \u03b2",
+            "bounds": {
+              "x": 0,
+              "y": 100000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "\u03b1\u03c2 \u03b2"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "d-Note_d",
+          "semanticId": "Note_d",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 150000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "i\u0307",
+            "bounds": {
+              "x": 0,
+              "y": 150000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "i\u0307"
+            ]
+          }
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "e-Note_e",
+          "semanticId": "Note_e",
+          "role": "shape",
+          "bounds": {
+            "x": 0,
+            "y": 200000,
+            "width": 200000,
+            "height": 40000
+          },
+          "label": {
+            "text": "\u00df",
+            "bounds": {
+              "x": 0,
+              "y": 200000,
+              "width": 200000,
+              "height": 40000
+            },
+            "lines": [
+              "\u00df"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "author": "spec-seal"
+}

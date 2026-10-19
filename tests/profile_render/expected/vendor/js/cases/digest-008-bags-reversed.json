@@ -1,0 +1,60 @@
+{
+  "caseId": "digest-008-bags-reversed",
+  "operation": "renderDigests",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "record",
+      "path": "lot4-layout-export/expectations/artifacts/digest-008-bags-reversed.record.json",
+      "sha256": "1022ecbf200e5e6c0604775f50298e7f6d9da96191488d9384e9224415a5fe71"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": {
+          "semanticRevision": "5a2e66696a9b950a3c6ba7e3892e0141bb0eb5bd58c2b5b03188a8a1ec545c9f",
+          "descriptorDigest": "be7ab95ecc2e92e7e6942ccb6fb58800564bf3480b3ba3a9ed7e3cd1c4494e38",
+          "layoutDigest": "3a1b1563aae91dfde9d7ed2066b2c601f265a80a46e1dd4e4491d248b6691cde",
+          "themeDigest": "aaab60a455be57e4a89a71db722fd6776a7f28eca2863e8a0c51c3a9b4e42cb6",
+          "overridesDigest": "8af3daba45475b1566bd43f4baf8e0c458b615963becf630e11dd73b11fec6ed",
+          "diStylesDigest": "edff2d8f3181b1c575e97685ebb740b4089ff549abe99581e05b40b23243da09",
+          "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+          "viewRevision": "ca45b2d0d1ef1670e48cf2490670b809acba10c9ee7f1f0c8d2688d50bb18bd1",
+          "payloadDigest": "50c73c23bb9f08152603f0d04acaa01d810fc7c2043617b0002987350344c690"
+        },
+        "diagnostics": []
+      }
+    },
+    {
+      "role": "relations",
+      "json": {
+        "sameAs": {
+          "case": "digest-007-bags-sorted",
+          "fields": [
+            "semanticRevision",
+            "descriptorDigest",
+            "layoutDigest",
+            "themeDigest",
+            "overridesDigest",
+            "diStylesDigest",
+            "metricsDigest",
+            "viewRevision",
+            "payloadDigest"
+          ]
+        },
+        "differsFrom": {
+          "case": "digest-007-bags-sorted",
+          "fields": []
+        }
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

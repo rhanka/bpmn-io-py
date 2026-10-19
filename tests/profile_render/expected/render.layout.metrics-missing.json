@@ -1,0 +1,437 @@
+{
+  "case": "render.layout.metrics-missing",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
+  "witness": "a label that must be measured needs the theme's metrics bytes: absent metrics refuse profile-resource-missing",
+  "derivation": "Same input as render.layout.io-wider-labels, but the profile is loaded without an asset bag (input assetBag 'absent': load_profile(asset_bag=None) skips the resource pin check and the validated profile carries no metrics bytes). In_B has no BPMNLabel, so its label size must be measured with the theme's metricsResource neutral-metrics, whose raw bytes are absent: profile-resource-missing (spec \u00a715; no platform font or default width is substituted, DESIGN \u00a79.3). The profile is re-pinned to the lot-4 extension packages neutral-render-descriptors/1 and neutral-render-base/1 (tests/profile_render/expected/artifacts/), which admit every native type of the tree.",
+  "operation": "computeLayout",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/themes/0/tokens",
+          "value": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            },
+            {
+              "name": "region.content.headerWidth",
+              "value": 30000
+            },
+            {
+              "name": "region.content.padding",
+              "value": 10000
+            },
+            {
+              "name": "region.content.gap",
+              "value": 20000
+            },
+            {
+              "name": "region.content.minHeight",
+              "value": 80000
+            }
+          ]
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "io",
+            "kind": "native",
+            "nativeType": "bpmn:DataInput",
+            "viewBox": [
+              0,
+              0,
+              36,
+              50
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "io",
+            "labels": [
+              {
+                "name": "en",
+                "value": "io"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:DataInput",
+              "bpmn:DataOutput"
+            ],
+            "recognition": {
+              "op": "any",
+              "args": [
+                {
+                  "op": "typeIs",
+                  "binding": "self",
+                  "type": "bpmn:DataInput",
+                  "mode": "exact"
+                },
+                {
+                  "op": "typeIs",
+                  "binding": "self",
+                  "type": "bpmn:DataOutput",
+                  "mode": "exact"
+                }
+              ]
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "io",
+                "tokens": [],
+                "label": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/name"
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        }
+      ]
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_io",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "isExecutable": false,
+          "ioSpecification": {
+            "$type": "bpmn:InputOutputSpecification",
+            "dataInputs": [
+              {
+                "$type": "bpmn:DataInput",
+                "id": "In_A",
+                "name": "Alpha"
+              },
+              {
+                "$type": "bpmn:DataInput",
+                "id": "In_B",
+                "name": "Beta"
+              }
+            ],
+            "dataOutputs": [
+              {
+                "$type": "bpmn:DataOutput",
+                "id": "Out_C",
+                "name": "Result"
+              }
+            ]
+          },
+          "laneSets": [
+            {
+              "$type": "bpmn:LaneSet",
+              "id": "LaneSet_1",
+              "lanes": [
+                {
+                  "$type": "bpmn:Lane",
+                  "id": "Lane_ext",
+                  "name": "outside"
+                },
+                {
+                  "$type": "bpmn:Lane",
+                  "id": "Lane_work",
+                  "name": "work"
+                }
+              ]
+            }
+          ],
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_1",
+              "name": "Check"
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_2",
+              "name": "Store"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_A1",
+              "sourceRef": "In_A",
+              "targetRef": "Task_1",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_B2",
+              "sourceRef": "In_B",
+              "targetRef": "Task_2",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_C2",
+              "sourceRef": "Task_2",
+              "targetRef": "Out_C",
+              "associationDirection": "One"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [
+      {
+        "ownerId": "Process_1",
+        "role": "content",
+        "targetId": "Lane_ext"
+      }
+    ],
+    "placements": [
+      {
+        "elementId": "In_A",
+        "ownerProcessId": "Process_1",
+        "regionKey": "content",
+        "relatedAssociationIds": [
+          "Assoc_A1"
+        ],
+        "anchorAssociationId": "Assoc_A1"
+      },
+      {
+        "elementId": "In_B",
+        "ownerProcessId": "Process_1",
+        "regionKey": "content",
+        "relatedAssociationIds": [
+          "Assoc_B2"
+        ],
+        "anchorAssociationId": "Assoc_B2"
+      },
+      {
+        "elementId": "Out_C",
+        "ownerProcessId": "Process_1",
+        "regionKey": "content",
+        "relatedAssociationIds": [
+          "Assoc_C2"
+        ],
+        "anchorAssociationId": "Assoc_C2"
+      }
+    ],
+    "diagrams": [
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "P1",
+        "name": "Main",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "P1-plane",
+          "bpmnElement": "Process_1",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Lane_ext_di",
+              "bpmnElement": "Lane_ext",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 0,
+                "width": 600,
+                "height": 100
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Lane_work_di",
+              "bpmnElement": "Lane_work",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 100,
+                "width": 600,
+                "height": 200
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Task_1_di",
+              "bpmnElement": "Task_1",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 100,
+                "y": 150,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Task_2_di",
+              "bpmnElement": "Task_2",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 300,
+                "y": 150,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "In_A_di",
+              "bpmnElement": "In_A",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 10,
+                "y": 10,
+                "width": 36,
+                "height": 50
+              },
+              "label": {
+                "$type": "bpmndi:BPMNLabel",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 0,
+                  "y": 0,
+                  "width": 80,
+                  "height": 14
+                }
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "In_B_di",
+              "bpmnElement": "In_B",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 60,
+                "y": 10,
+                "width": 36,
+                "height": 50
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Out_C_di",
+              "bpmnElement": "Out_C",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 110,
+                "y": 10,
+                "width": 36,
+                "height": 50
+              },
+              "label": {
+                "$type": "bpmndi:BPMNLabel",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 0,
+                  "y": 0,
+                  "width": 60,
+                  "height": 14
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "assetBag": "absent"
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "d3826c19cce1a9addf6cfce1f1fb477a559a8997c571231010afd2c131dcacce",
+      "base": {
+        "id": "neutral-render-base/1",
+        "version": "fixture-1",
+        "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-render-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+        }
+      ]
+    },
+    "baseRevision": "120d867ffc8e89057081bec5201f82cbae0220e6a54b96805cc72d60e0fefe7b",
+    "code": "profile-resource-missing",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "d3826c19cce1a9addf6cfce1f1fb477a559a8997c571231010afd2c131dcacce",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "inputRevision": "120d867ffc8e89057081bec5201f82cbae0220e6a54b96805cc72d60e0fefe7b",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
+  },
+  "author": "spec-seal"
+}

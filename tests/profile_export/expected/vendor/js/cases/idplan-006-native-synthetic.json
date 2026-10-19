@@ -1,0 +1,36 @@
+{
+  "caseId": "idplan-006-native-synthetic",
+  "operation": "exportIdPlan",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "plan-input",
+      "json": {
+        "policy": "native",
+        "counterOrigin": 0,
+        "requests": [
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "[\"band-stripe\",\"Process_Main\",\"Page_Main\"]",
+            "domain": "node"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "refused",
+        "code": "export-id-ambiguous",
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "refused:export-id-ambiguous",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

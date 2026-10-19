@@ -1,0 +1,642 @@
+{
+  "renderVersion": "1",
+  "binding": {
+    "semanticRevision": "cf0e3cb1c524a6384779c929b9478c362983860e1bfa419422fa9c0c25c8add7",
+    "profileDigest": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "descriptorDigest": "8cb3013f19489ae7b9eee46d790186ef3c8c4b5df17a63f397de1e066ad74719",
+    "layoutDigest": "d4e69abb364c376d147d680336a7bb29045041a4f127cf82a29ad4fff247c504",
+    "themeId": "plain",
+    "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+    "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+    "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+    "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+    "payloadDigest": "a49c8c50fd7ce21ffbddf6bb9be03566aff9a370a02ba750cd51f1296faaa5b2"
+  },
+  "pages": [
+    {
+      "pageId": "Page_Variety",
+      "name": "Variety sheet",
+      "order": 0,
+      "semanticRootId": "Process_Variety",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1000000,
+        "height": 400000
+      }
+    }
+  ],
+  "occurrences": [
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Call_V_di",
+      "semanticId": "Call_V",
+      "role": "content",
+      "bounds": {
+        "x": 340000,
+        "y": 110000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Call review",
+        "bounds": {
+          "x": 340000,
+          "y": 110000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Call review"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 2
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "call"
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "End_V_di",
+      "semanticId": "End_V",
+      "role": "content",
+      "bounds": {
+        "x": 500000,
+        "y": 132000,
+        "width": 36000,
+        "height": 36000
+      },
+      "label": {
+        "text": "Stopped",
+        "bounds": {
+          "x": 483000,
+          "y": 173000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Stopped"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 3
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "terminate-end"
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Flow_V1_di",
+      "semanticId": "Flow_V1",
+      "role": "content",
+      "bounds": {
+        "x": 116000,
+        "y": 150000,
+        "width": 64000,
+        "height": 0
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "flow-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Start_V_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Service_V_di"
+      },
+      "waypoints": [
+        {
+          "x": 116000,
+          "y": 150000
+        },
+        {
+          "x": 180000,
+          "y": 150000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Flow_V2_di",
+      "semanticId": "Flow_V2",
+      "role": "content",
+      "bounds": {
+        "x": 280000,
+        "y": 150000,
+        "width": 60000,
+        "height": 0
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "flow-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Service_V_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Call_V_di"
+      },
+      "waypoints": [
+        {
+          "x": 280000,
+          "y": 150000
+        },
+        {
+          "x": 340000,
+          "y": 150000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Flow_V3_di",
+      "semanticId": "Flow_V3",
+      "role": "content",
+      "bounds": {
+        "x": 440000,
+        "y": 150000,
+        "width": 60000,
+        "height": 0
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "flow-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Call_V_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "End_V_di"
+      },
+      "waypoints": [
+        {
+          "x": 440000,
+          "y": 150000
+        },
+        {
+          "x": 500000,
+          "y": 150000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Pool_Variety_di",
+      "semanticId": "Pool_Variety",
+      "role": "support",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 900000,
+        "height": 300000
+      },
+      "label": {
+        "text": "Variety process",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 30000,
+          "height": 300000
+        },
+        "lines": [
+          "Variety process"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "pool"
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Service_V_di",
+      "semanticId": "Service_V",
+      "role": "content",
+      "bounds": {
+        "x": 180000,
+        "y": 110000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Run check",
+        "bounds": {
+          "x": 180000,
+          "y": 110000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Run check"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "service-task"
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Start_V_di",
+      "semanticId": "Start_V",
+      "role": "content",
+      "bounds": {
+        "x": 80000,
+        "y": 132000,
+        "width": 36000,
+        "height": 36000
+      },
+      "label": {
+        "text": "Request",
+        "bounds": {
+          "x": 63000,
+          "y": 173000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Request"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "start"
+    }
+  ],
+  "coverage": [
+    {
+      "semanticId": "Definitions_Variety",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Process_Variety",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Start_V",
+      "occurrences": [
+        {
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Start_V_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Service_V",
+      "occurrences": [
+        {
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Service_V_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Call_V",
+      "occurrences": [
+        {
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Call_V_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "End_V",
+      "occurrences": [
+        {
+          "pageId": "Page_Variety",
+          "occurrenceKey": "End_V_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Terminate_V",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Flow_V1",
+      "occurrences": [
+        {
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Flow_V1_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Flow_V2",
+      "occurrences": [
+        {
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Flow_V2_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Flow_V3",
+      "occurrences": [
+        {
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Flow_V3_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Process_Review",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Task_Review",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Collab_Variety",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Pool_Variety",
+      "occurrences": [
+        {
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Pool_Variety_di"
+        }
+      ],
+      "disposition": "rendered"
+    }
+  ],
+  "diagnostics": []
+}

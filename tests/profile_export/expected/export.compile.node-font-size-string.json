@@ -1,0 +1,31 @@
+{
+  "case": "export.compile.node-font-size-string",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
+  "witness": "numeric fields need numbers",
+  "derivation": "export-nodes adds fontSize literal '12' (string): wrong type, profile-export-field. Parity sync PS-25: a compileProfile refusal is the PureResult record {status, code, diagnostics: []} (DESIGN \u00a710.1 L737); compile refusals carry no diagnostic.",
+  "operation": "compileProfile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/recipes/7/steps/0/fields/-",
+          "value": {
+            "name": "fontSize",
+            "value": {
+              "op": "literal",
+              "value": "12"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-export-field",
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

@@ -1,0 +1,222 @@
+{
+  "case": "render.digest.bags-sorted",
+  "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
+  "witness": "non-empty Overrides/1 and DiStyles/1 already in normalized order; overrides change viewRevision but not semanticRevision",
+  "derivation": "R3 input with the listed sorted bags; overridesDigest/diStylesDigest = H of the normalized records (semanticId; pageId, occurrenceKey; token name, UTF-16); semanticRevision keeps the R3 value (a view override never changes the acceptance-context revision).",
+  "operation": "renderDigests",
+  "input": {
+    "record": {
+      "semanticTree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "name": "Example"
+          }
+        ]
+      },
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+        },
+        "descriptors": [
+          {
+            "id": "a/1",
+            "version": "1",
+            "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+          },
+          {
+            "id": "z/1",
+            "version": "1",
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+          }
+        ]
+      },
+      "bindings": [],
+      "descriptorPins": [
+        {
+          "id": "z/1",
+          "version": "1",
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        {
+          "id": "a/1",
+          "version": "1",
+          "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+        }
+      ],
+      "layout": {
+        "layoutVersion": "1",
+        "pages": [
+          {
+            "pageId": "Z-page",
+            "name": "First sheet",
+            "order": 0,
+            "semanticRootId": "Process_1",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 1000,
+              "height": 800
+            }
+          }
+        ],
+        "geometry": []
+      },
+      "themeId": "plain",
+      "themes": [
+        {
+          "id": "plain",
+          "aliases": [],
+          "tokens": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            }
+          ],
+          "glyphs": [],
+          "metricsResource": "metrics",
+          "geometry": "shared",
+          "syntheticOccurrences": []
+        }
+      ],
+      "overrides": {
+        "semantic": [
+          {
+            "semanticId": "Process_1",
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#000001"
+              },
+              {
+                "name": "stroke",
+                "value": "#000002"
+              }
+            ]
+          },
+          {
+            "semanticId": "Task_A",
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#000003"
+              }
+            ]
+          }
+        ],
+        "occurrence": [
+          {
+            "pageId": "A-page",
+            "occurrenceKey": "k2",
+            "tokens": [
+              {
+                "name": "textColor",
+                "value": "#000004"
+              }
+            ]
+          },
+          {
+            "pageId": "Z-page",
+            "occurrenceKey": "k1",
+            "tokens": [
+              {
+                "name": "arrow",
+                "value": "open"
+              },
+              {
+                "name": "fill",
+                "value": "#000005"
+              }
+            ]
+          }
+        ]
+      },
+      "diStyles": {
+        "native": [
+          {
+            "pageId": "A-page",
+            "occurrenceKey": "k2",
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#000006"
+              }
+            ]
+          },
+          {
+            "pageId": "Z-page",
+            "occurrenceKey": "k1",
+            "tokens": [
+              {
+                "name": "stroke",
+                "value": "#000007"
+              }
+            ]
+          }
+        ],
+        "bioc": [
+          {
+            "pageId": "Z-page",
+            "occurrenceKey": "k1",
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#000008"
+              },
+              {
+                "name": "stroke",
+                "value": "#000009"
+              }
+            ]
+          }
+        ]
+      },
+      "metrics": [],
+      "payload": {
+        "pages": [
+          {
+            "pageId": "Z-page",
+            "name": "First sheet",
+            "order": 0,
+            "semanticRootId": "Process_1",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 1000,
+              "height": 800
+            }
+          }
+        ],
+        "occurrences": [],
+        "coverage": [],
+        "diagnostics": []
+      }
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "semanticRevision": "7e5013dd439e73c1a6aeaaac01f7747846088d4c2bd84dac0598f1c7a061f7e5",
+      "descriptorDigest": "cc856ac74dba29099fa2b1f00acfd794dddeda1e76431b34071c26b0621773a2",
+      "layoutDigest": "e29247e2e49a5f29d4c79054396763ec1a3e031e9565123aaad9d5d200f22d7a",
+      "themeDigest": "b7c0a6b1fecf1456eea64c879cae903c167c3577d87377dc1daa330e8a17b975",
+      "overridesDigest": "5a51182f0dd7e1d5eda6b7ac018ec43813458718d75cf2213dc9575f2793bf88",
+      "diStylesDigest": "eeae58739d3b09f78d01162ddd767a86fb9bd925247b70ee9ad2b672bbe8c13f",
+      "metricsDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "viewRevision": "6cfd9125ac3d36e454cf35b316f0c904f05e5684a29333b93c5a5445860f96d8",
+      "payloadDigest": "c6b466b92ba0016da6ea3511a662b3e6c43ecb93ac1eaa7aa8c614e3b2f3cced"
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

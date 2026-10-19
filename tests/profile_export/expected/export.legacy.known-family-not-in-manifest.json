@@ -1,0 +1,78 @@
+{
+  "case": "export.legacy.known-family-not-in-manifest",
+  "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
+  "witness": "no code is guessed: a table code missing from the adapter manifest is legacy-unmapped",
+  "derivation": "duplicate-id belongs to the DESIGN table but this adapter manifest does not list it (ids [Task_A]): legacy-unmapped with unavailable coordinates (pointer null) and legacyCode duplicate-id. Adapter-originated entries use ruleId adapter (DESIGN \u00a76.4 adapter convention; harmonization B24).",
+  "operation": "mapLegacyDiagnostics",
+  "input": {
+    "legacy": {
+      "producer": "io-error",
+      "code": "duplicate-id",
+      "ids": [
+        "Task_A"
+      ]
+    },
+    "manifest": {
+      "adapter": "legacy-export/1",
+      "entries": [
+        {
+          "producer": "io-error",
+          "legacyCode": "unknown-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "unsupported-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "invalid-reference"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "missing-endpoint"
+        },
+        {
+          "producer": "fidelity-notice",
+          "legacyCode": "style-dropped",
+          "lossClasses": [
+            "appearance"
+          ]
+        }
+      ]
+    },
+    "sourceIndex": {
+      "Task_A": "/rootElements/0/flowElements/0"
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      {
+        "code": "legacy-unmapped",
+        "severity": "error",
+        "classification": "integrity",
+        "stage": "export",
+        "ruleId": "adapter",
+        "messageKey": "legacy.unmapped",
+        "disposition": "refused",
+        "source": {
+          "domain": "tree",
+          "pointer": null,
+          "targetId": "Task_A",
+          "provenance": "unavailable"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "legacyCode": "duplicate-id"
+      }
+    ],
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

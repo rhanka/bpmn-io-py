@@ -1,0 +1,141 @@
+{
+  "case": "render.text.measure-fallback-widths",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "missing scalar widths use the declared fallback width; scalars not UTF-16 units; no NFC; case and width separate",
+  "derivation": "neutral-metrics.json declares defaultAdvance 600, spaceAdvance 300, ascent 800, descent 200 and no per-scalar table, so every scalar except U+0020 takes the fallback 600 (\u00a79.3); width = widest line, height = lines x (800+200) ticks (spec \u00a77). Each vector states its arithmetic.",
+  "operation": "measureText",
+  "input": {
+    "metrics": "neutral-metrics.json",
+    "vectors": [
+      {
+        "text": "Ready",
+        "note": "five scalars x defaultAdvance 600"
+      },
+      {
+        "text": "A B",
+        "note": "U+0020 uses spaceAdvance 300"
+      },
+      {
+        "text": "\u00e9",
+        "note": "precomposed U+00E9 is one scalar"
+      },
+      {
+        "text": "e\u0301",
+        "note": "decomposed e + U+0301 is two scalars (no NFC)"
+      },
+      {
+        "text": "\ud83d\ude00",
+        "note": "one astral scalar (two UTF-16 units) is one advance"
+      },
+      {
+        "text": "Ready\nGo",
+        "note": "line feed splits lines; width is the widest line"
+      },
+      {
+        "text": "",
+        "note": "empty text is one empty line"
+      },
+      {
+        "text": "stra\u00dfe",
+        "note": "six scalars before case mapping"
+      },
+      {
+        "text": "STRASSE",
+        "note": "seven scalars after the full upper mapping of U+00DF"
+      },
+      {
+        "text": "\u00a0",
+        "note": "U+00A0 is not U+0020: fallback advance"
+      },
+      {
+        "text": "a\tb",
+        "note": "U+0009 is an ordinary scalar"
+      }
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      {
+        "lines": [
+          "Ready"
+        ],
+        "width": 3000,
+        "height": 1000
+      },
+      {
+        "lines": [
+          "A B"
+        ],
+        "width": 1500,
+        "height": 1000
+      },
+      {
+        "lines": [
+          "\u00e9"
+        ],
+        "width": 600,
+        "height": 1000
+      },
+      {
+        "lines": [
+          "e\u0301"
+        ],
+        "width": 1200,
+        "height": 1000
+      },
+      {
+        "lines": [
+          "\ud83d\ude00"
+        ],
+        "width": 600,
+        "height": 1000
+      },
+      {
+        "lines": [
+          "Ready",
+          "Go"
+        ],
+        "width": 3000,
+        "height": 2000
+      },
+      {
+        "lines": [
+          ""
+        ],
+        "width": 0,
+        "height": 1000
+      },
+      {
+        "lines": [
+          "stra\u00dfe"
+        ],
+        "width": 3600,
+        "height": 1000
+      },
+      {
+        "lines": [
+          "STRASSE"
+        ],
+        "width": 4200,
+        "height": 1000
+      },
+      {
+        "lines": [
+          "\u00a0"
+        ],
+        "width": 600,
+        "height": 1000
+      },
+      {
+        "lines": [
+          "a\tb"
+        ],
+        "width": 1800,
+        "height": 1000
+      }
+    ],
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

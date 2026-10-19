@@ -1,0 +1,43 @@
+{
+  "caseId": "synthetic-010-unbound-region",
+  "operation": "layout",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "placements",
+      "path": "lot4-layout-export/expectations/artifacts/main-aid.placements.json",
+      "sha256": "bf011f7f55f1df9df2fb6e1f7724135f0b8ca365b59fc6864916224db3493244"
+    },
+    {
+      "role": "base-geometry",
+      "path": "lot4-layout-export/expectations/artifacts/main-aid-plain.base-geometry.json",
+      "sha256": "070b165f3bfe02f92255ef1bd260f00220818b1a3fafd5c1cf7e8f6b83b7fab6"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/synthetic-010-unbound-region.result.json",
+      "sha256": "460296ae3eae03dcc4b2b8af21fa3c650c37a2c21583790e38ae5f2fa7bc3ce7"
+    }
+  ],
+  "expectedStatus": "refused:render-region-missing",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

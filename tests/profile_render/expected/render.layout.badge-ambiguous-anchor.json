@@ -1,0 +1,270 @@
+{
+  "case": "render.layout.badge-ambiguous-anchor",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "ambiguous anchor refuses (no nearest-activity repair)",
+  "derivation": "Task_A has two shapes on Z-page (zz-task-a and zz-task-a-b), so the badge anchor is not unique: render-region-missing (DESIGN \u00a79.3 'Ambiguous anchor refuses', \u00a79.3 no matching region; harmonization C14).",
+  "operation": "computeLayout",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "badge",
+            "kind": "template",
+            "viewBox": [
+              0,
+              0,
+              40,
+              20
+            ],
+            "commands": [],
+            "template": "attached-badge",
+            "parameters": [
+              {
+                "name": "offsetX",
+                "value": 5000
+              },
+              {
+                "name": "offsetY",
+                "value": -10000
+              },
+              {
+                "name": "hideSource",
+                "value": false
+              },
+              {
+                "name": "markerShift",
+                "value": 0
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/syntheticOccurrences/-",
+          "value": {
+            "id": "aid-badge",
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:TextAnnotation",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "role": "attached-badge",
+            "label": {
+              "op": "literal",
+              "value": "tool"
+            },
+            "region": "aids",
+            "glyph": "badge",
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#ccccff"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_1",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "isExecutable": false,
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_B",
+              "name": "Ready"
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_A",
+              "name": "Draft"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_1",
+              "text": "[Aid] helper"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_N",
+              "sourceRef": "Note_1",
+              "targetRef": "Task_A",
+              "associationDirection": "None"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "placements": [
+      {
+        "elementId": "Note_1",
+        "ownerProcessId": "Process_1",
+        "regionKey": "aids",
+        "relatedAssociationIds": [
+          "Assoc_N"
+        ],
+        "anchorAssociationId": "Assoc_N"
+      }
+    ],
+    "diagrams": [
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "Z-page",
+        "name": "First sheet",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "Z-page-plane",
+          "bpmnElement": "Process_1",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "zz-task-a",
+              "bpmnElement": "Task_A",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 100,
+                "y": 100,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "aa-task-b",
+              "bpmnElement": "Task_B",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 250,
+                "y": 100,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "mm-note",
+              "bpmnElement": "Note_1",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 100,
+                "y": 240,
+                "width": 120,
+                "height": 40
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "zz-task-a-b",
+              "bpmnElement": "Task_A",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 400,
+                "y": 100,
+                "width": 100,
+                "height": 80
+              }
+            }
+          ]
+        }
+      },
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "A-page",
+        "name": "Second sheet",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "A-page-plane",
+          "bpmnElement": "Process_1",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "zz-task-a-2",
+              "bpmnElement": "Task_A",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 50,
+                "y": 60,
+                "width": 100,
+                "height": 80
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "d50f816aa85387eb1ae233c918f574e8e58505f6d366b1f42a56b98e6a9b890e",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+    "code": "render-region-missing",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "d50f816aa85387eb1ae233c918f574e8e58505f6d366b1f42a56b98e6a9b890e",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
+  },
+  "author": "spec-seal"
+}

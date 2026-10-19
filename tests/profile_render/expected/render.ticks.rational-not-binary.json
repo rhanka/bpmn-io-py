@@ -1,0 +1,26 @@
+{
+  "case": "render.ticks.rational-not-binary",
+  "clause": "DESIGN R3.3 \u00a73.1 Canonicalization (rounding, ticks)",
+  "witness": "the conversion uses the exact rational of the shortest decimal form, not the binary64 product",
+  "derivation": "0.5055 -> 505.5 -> 506, 2.0155 -> 2015.5 -> 2016, 4.0055 -> 4005.5 -> 4006, 8.0155 -> 8015.5 -> 8016 (ties to even on the exact decimal values); the binary64 products are 505.49999999999994, 2015.4999999999998, 4005.4999999999995 and 8015.499999999999, which would round to 505, 2015, 4005 and 8015.",
+  "operation": "layoutTicks",
+  "input": {
+    "points": [
+      0.5055,
+      2.0155,
+      4.0055,
+      8.0155
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      506,
+      2016,
+      4006,
+      8016
+    ],
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

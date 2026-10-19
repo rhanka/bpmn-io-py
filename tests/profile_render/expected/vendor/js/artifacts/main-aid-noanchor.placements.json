@@ -1,0 +1,37 @@
+[
+  {
+    "elementId": "Input_Order",
+    "ownerProcessId": "Process_Main",
+    "regionKey": "external-lane",
+    "anchorAssociationId": "Input_Link",
+    "relatedAssociationIds": [
+      "Input_Link"
+    ]
+  },
+  {
+    "elementId": "Output_Receipt",
+    "ownerProcessId": "Process_Main",
+    "regionKey": "external-lane",
+    "anchorAssociationId": "Output_Link",
+    "relatedAssociationIds": [
+      "Output_Link"
+    ]
+  },
+  {
+    "elementId": "StoreRef_Policy",
+    "ownerProcessId": "Process_Main",
+    "regionKey": "reference-band",
+    "anchorAssociationId": "Assoc_Policy",
+    "relatedAssociationIds": [
+      "Assoc_Policy"
+    ]
+  },
+  {
+    "elementId": "Aid_Scanner",
+    "ownerProcessId": "Process_Main",
+    "regionKey": "aids",
+    "relatedAssociationIds": [
+      "Assoc_Aid"
+    ]
+  }
+]
