@@ -71,6 +71,7 @@ class ReadContext:
     bindings: tuple[dict[str, object], ...] = ()
     stage: str = "post-normalize"
     notions: dict[str, object] = field(default_factory=dict)
+    parents: dict[int, object] = field(default_factory=dict)
 
 
 def _element_id(element: object) -> str | None:
@@ -169,10 +170,55 @@ def _children_of(  # noqa: C901
     return found
 
 
-def _index_tree(root: object) -> tuple[tuple[object, ...], dict[str, object]]:
-    """Build a bounded containment index with explicit stack traversal."""
+def _children_of_property(element: object, prop: str) -> list[object]:
+    """Collect containment children held under one property (bounded)."""
+    if isinstance(element, dict):
+        return _dict_children_of_property(element, prop)
+    return _native_children_of_property(element, prop)
+
+
+def _dict_children_of_property(element: dict[str, object], prop: str) -> list[object]:
+    """Collect dict children held under one property."""
+    found: list[object] = []
+    value = element.get(prop)
+    if isinstance(value, dict) and isinstance(value.get("$type"), str):
+        found.append(value)
+    elif isinstance(value, list):
+        for entry in value:
+            if isinstance(entry, dict) and isinstance(entry.get("$type"), str):
+                found.append(entry)  # noqa: PERF401
+    return found
+
+
+def _native_children_of_property(element: object, prop: str) -> list[object]:
+    """Collect native children held under one property."""
+    found: list[object] = []
+    get = getattr(element, "get", None)
+    if not callable(get):
+        return found
+    try:
+        value = get(prop)
+    except Exception:  # noqa: BLE001 - native getters stay total
+        return found
+    if value is UNDEFINED or value is None:
+        return found
+    if isinstance(value, list):
+        found.extend(value)
+    elif hasattr(value, "type_"):
+        found.append(value)
+    return found
+
+
+def _index_tree(root: object) -> tuple[tuple[object, ...], dict[str, object], dict[int, object]]:
+    """Build a bounded containment index with explicit stack traversal.
+
+    ``parents`` maps each visited containment child (by object identity) to
+    its immediate containing element, so ``owner`` also resolves over plain
+    JSON trees without a native ``parent_`` link.
+    """
     elements: list[object] = []
     by_id: dict[str, object] = {}
+    parents: dict[int, object] = {}
     stack: list[tuple[object, int]] = [(root, 0)]
     seen: set[int] = set()
     while stack and len(elements) < _MAX_ELEMENTS:
@@ -184,8 +230,11 @@ def _index_tree(root: object) -> tuple[tuple[object, ...], dict[str, object]]:
         element_id = _element_id(element)
         if element_id is not None and element_id not in by_id:
             by_id[element_id] = element
-        stack.extend((child, depth + 1) for child in reversed(_children_of(element)))
-    return tuple(elements), by_id
+        children = _children_of(element)
+        for child in children:
+            parents.setdefault(id(child), element)
+        stack.extend((child, depth + 1) for child in reversed(children))
+    return tuple(elements), by_id, parents
 
 
 def make_read_context(
@@ -199,9 +248,11 @@ def make_read_context(
     ``{"recognition": ...}`` records or raw recognition ASTs); the table is
     deep-copied so later caller mutations cannot change evaluation.
     """
-    elements, by_id = _index_tree(root)
+    elements, by_id, parents = _index_tree(root)
     owned = copy.deepcopy(notions) if notions is not None else {}
-    return ReadContext(root=root, elements=elements, by_id=by_id, stage=stage, notions=owned)
+    return ReadContext(
+        root=root, elements=elements, by_id=by_id, stage=stage, notions=owned, parents=parents
+    )
 
 
 def _read_property(element: object, prop: str) -> object:
@@ -417,7 +468,7 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
             text = text.lstrip("".join(sorted(_ECMA_START_WS)))
         return text.startswith(prefix)
     if op == "count":
-        selector = node.get("selector")
+        selector = node.get("select")
         handles = _eval_selector(selector, context, bindings)
         minimum = node.get("min", 0)
         maximum = node.get("max")
@@ -432,12 +483,17 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
     if op == "boundRole":
         binding = bindings.get(str(node.get("binding")), _MISSING)
         owner = bindings.get(str(node.get("owner")), _MISSING)
-        if binding is _MISSING or owner is _MISSING:
+        if binding is _MISSING:
+            return False
+        role = node.get("role")
+        if owner is _MISSING and str(node.get("owner")) == "bindingOwner":
+            return _bound_by_role(context, binding, role)
+        if owner is _MISSING:
             return False
         for entry in context.bindings:
             if entry.get("ownerId") == _element_id(owner):
                 target = entry.get("targetId")
-                if target == _element_id(binding):
+                if target == _element_id(binding) and (role is None or entry.get("role") == role):
                     return True
         return False
     if op == "recognizes":
@@ -445,6 +501,20 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
     if op == "reachable":
         return _eval_reachable(node, context, bindings)
     raise ValueError("profile-symbol")  # noqa: EM101
+
+
+def _bound_by_role(context: ReadContext, binding: object, role: object) -> bool:
+    """Return whether one element is bound under one role by any owner.
+
+    The notion scope predeclares the ``bindingOwner`` binding but no
+    evaluation ever binds it: it reads as the owner recorded on the
+    binding itself, so only the (target, role) pair is constrained.
+    """
+    wanted = _element_id(binding)
+    for entry in context.bindings:
+        if entry.get("targetId") == wanted and (role is None or entry.get("role") == role):
+            return True
+    return False
 
 
 def _eval_recognizes(
@@ -526,8 +596,8 @@ def _eval_reachable(
     node: dict[str, object], context: ReadContext, bindings: dict[str, object]
 ) -> bool:
     """Decide bounded directed reachability over resolved reference edges."""
-    source_ast = node.get("source")
-    target_ast = node.get("target")
+    source_ast = node.get("from")
+    target_ast = node.get("to")
     edge_types = node.get("edgeTypes")
     min_hops = node.get("minHops", 0)
     max_hops = node.get("maxHops")
@@ -578,9 +648,13 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
     elif via == "all":
         candidates = list(context.elements)
     elif via in ("children", "descendants", "owner"):
+        prop = node.get("property")
+        scoped = prop if isinstance(prop, str) and prop else None
         for entry in base:
             if via == "owner":
                 parent = getattr(entry, "parent_", None)
+                if parent is None and isinstance(entry, dict):
+                    parent = context.parents.get(id(entry))
                 if parent is not None:
                     candidates.append(parent)
             else:
@@ -590,7 +664,10 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
                     current, depth = stack.pop()
                     if depth > _MAX_DEPTH:
                         continue
-                    children = _children_of(current)
+                    if depth == 0 and scoped is not None:
+                        children = _children_of_property(current, scoped)
+                    else:
+                        children = _children_of(current)
                     if (via == "children" and depth == 0) or (via == "descendants" and depth >= 0):
                         candidates.extend(children)
                     for child in reversed(children):

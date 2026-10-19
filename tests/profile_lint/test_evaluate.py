@@ -223,7 +223,7 @@ def test_reference_traversal_resolves_targets() -> None:
         },
         "assert": {
             "op": "count",
-            "selector": {
+            "select": {
                 "from": "self",
                 "via": "reference",
                 "property": "targetRef",

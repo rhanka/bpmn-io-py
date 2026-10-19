@@ -218,11 +218,13 @@ def test_pointer_escaping_vectors() -> None:
     for report_path, coordinates in zip(paths, expected, strict=True):
         assert isinstance(report_path, dict)
         assert isinstance(coordinates, dict)
-        pointer, provenance = resolve_pointer(index, report_path["reportedId"], report_path["path"])
+        pointer, provenance = resolve_pointer(
+            index, report_path["reportedId"], report_path["path"], set()
+        )
         assert pointer == coordinates["pointer"]
         assert provenance == coordinates["provenance"]
         assert coordinates.get("targetId", report_path["reportedId"]) == report_path["reportedId"]
-    pointer, provenance = resolve_pointer(index, "Task_1", [{"bad": 1}])
+    pointer, provenance = resolve_pointer(index, "Task_1", [{"bad": 1}], set())
     assert pointer is None
     assert provenance == "unavailable"
 

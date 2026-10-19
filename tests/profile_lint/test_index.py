@@ -37,7 +37,7 @@ def test_property_segment_appends_to_indexed_base() -> None:
     """An upstream property path resolves against the reported ID's pointer."""
     index = _index()
     base = index["Task_A"]
-    pointer, provenance = resolve_pointer(index, "Task_A", "name")
+    pointer, provenance = resolve_pointer(index, "Task_A", "name", set())
     assert pointer == f"{base}/name"
     assert provenance == "exact"
 
@@ -45,7 +45,7 @@ def test_property_segment_appends_to_indexed_base() -> None:
 def test_unknown_id_absolute_pointer_refused() -> None:
     """A verbatim pointer for an unknown ID is refused, never exact."""
     index = _index()
-    pointer, provenance = resolve_pointer(index, "ghost", "/invented~2")
+    pointer, provenance = resolve_pointer(index, "ghost", "/invented~2", set())
     assert pointer is None
     assert provenance == "unavailable"
 
@@ -61,7 +61,7 @@ def test_absent_id_absolute_pointer_passes_through() -> None:
 def test_unknown_id_property_path_refused() -> None:
     """A property path for an unknown ID stays unavailable."""
     index = _index()
-    pointer, provenance = resolve_pointer(index, "ghost", "name")
+    pointer, provenance = resolve_pointer(index, "ghost", "name", set())
     assert pointer is None
     assert provenance == "unavailable"
 
@@ -69,7 +69,7 @@ def test_unknown_id_property_path_refused() -> None:
 def test_empty_segments_point_at_node() -> None:
     """An empty segment array points at the reported node itself."""
     index = _index()
-    pointer, provenance = resolve_pointer(index, "Task_A", [])
+    pointer, provenance = resolve_pointer(index, "Task_A", [], set())
     assert pointer == index["Task_A"]
     assert provenance == "exact"
 
@@ -78,7 +78,7 @@ def test_unsupported_forms_refused() -> None:
     """Non-string/non-list paths and bad segments stay unavailable."""
     index = _index()
     for bad in ({"path": "name"}, [-1], [True], ""):
-        pointer, provenance = resolve_pointer(index, "Task_A", bad)
+        pointer, provenance = resolve_pointer(index, "Task_A", bad, set())
         assert pointer is None
         assert provenance == "unavailable"
 
@@ -86,7 +86,7 @@ def test_unsupported_forms_refused() -> None:
 def test_slash_in_property_name_escapes() -> None:
     """A property name carrying a slash appends as one escaped segment."""
     index = _index()
-    pointer, provenance = resolve_pointer(index, "Task_A", "relative/pointer")
+    pointer, provenance = resolve_pointer(index, "Task_A", "relative/pointer", set())
     assert pointer == f"{index['Task_A']}/relative~1pointer"
     assert provenance == "exact"
 
@@ -147,12 +147,11 @@ def test_generic_idless_child_accepted() -> None:
         (None, "", True),
     ],
 )
-def test_generic_pointer_without_known_pointers_refused(
+def test_generic_pointer_without_known_pointers_raises(
     reported_id: str | None, path: str, *, exists: bool
 ) -> None:
-    """DESIGN R3.3 §6.4: no generic pointer is exact without the verified walk set."""
+    """DESIGN R3.3 §6.4: a missing walk set raises, never silently unavailable."""
     index, known = _child_index()
     assert (path in known) is exists
-    pointer, provenance = resolve_pointer(index, reported_id, path)
-    assert pointer is None
-    assert provenance == "unavailable"
+    with pytest.raises(TypeError):
+        resolve_pointer(index, reported_id, path)

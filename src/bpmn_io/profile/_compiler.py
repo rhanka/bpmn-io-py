@@ -161,7 +161,13 @@ class CompiledProfile:
 
     ``validation`` retains the raw profile validation records verbatim so the
     lint lane can derive its stage transport; record shape is validated there,
-    not here.
+    not here. ``identity`` is the §5.1 record, ``types`` the descriptor index
+    with facets, ``producers`` the effective producer matrix,
+    ``ref_fields`` the base-declared reference-kind fields (including
+    ID-valued scalars) and ``base_types`` the effective-base admitted type
+    names; the latter four stay ``None`` unless the profile was compiled
+    with its descriptor context and effective base (C/N refuse
+    ``descriptor-mismatch`` otherwise).
     """
 
     profile_digest: str
@@ -171,6 +177,12 @@ class CompiledProfile:
     descriptor_digest: str
     registry_digest: str
     validation: tuple[object, ...] = ()
+    identity: dict[str, object] = field(default_factory=dict)
+    types: dict[str, dict[str, object]] | None = None
+    producers: dict[tuple[str, str], frozenset[str]] | None = None
+    ref_fields: frozenset[tuple[str, str]] | None = None
+    base_types: frozenset[str] | None = None
+    capabilities: tuple[str, ...] = ()
 
 
 @dataclass
@@ -432,7 +444,9 @@ def _normalize_type_record(name: object, record: object) -> dict[str, object] | 
     """Normalize one descriptor type to its closed facets (None when malformed).
 
     Keeps ``scalars``, ``containment`` and ``references`` plus the ``id``
-    admission flag and optional ``producerFields``; every facet defaults to
+    admission flag, the optional ``many`` (multi-valued reference
+    properties) and ``single`` (single-valued containment properties)
+    facets, and optional ``producerFields``; every facet defaults to
     empty when absent (an absent ``id`` flag defaults to admitted). The
     normalized form is freshly built, so the context owns its index.
     """
@@ -442,8 +456,12 @@ def _normalize_type_record(name: object, record: object) -> dict[str, object] | 
     admitted = _normalize_string_map(record.get("containment", {}))
     linked = _normalize_string_map(record.get("references", {}))
     producers = _normalize_producer_fields(record.get("producerFields", []))
+    many = _normalize_string_list(record.get("many", []))
+    single = _normalize_string_list(record.get("single", []))
     id_flag = record.get("id", True)
     if scalars is None or admitted is None or linked is None or producers is None:
+        return None
+    if many is None or single is None:
         return None
     if not isinstance(id_flag, bool):
         return None
@@ -453,6 +471,8 @@ def _normalize_type_record(name: object, record: object) -> dict[str, object] | 
         "references": linked,
         "id": id_flag,
         "producerFields": producers,
+        "many": many,
+        "single": single,
     }
 
 
@@ -467,8 +487,16 @@ def _package_bytes(raw: object) -> bytes | None:
     return None
 
 
-def _index_package_types(descriptor: object, types: dict[str, dict[str, object]]) -> str | None:
-    """Merge one package's type document into the index (refusal or None)."""
+def _index_package_types(
+    descriptor: object,
+    types: dict[str, dict[str, object]],
+    extends: dict[str, list[str]],
+) -> str | None:
+    """Merge one package's type document into the index (refusal or None).
+
+    ``extends`` collects each type's raw supertype list for the post-pass
+    inheritance resolution.
+    """
     if not isinstance(descriptor, dict) or not isinstance(descriptor.get("types"), dict):
         return "descriptor-mismatch"
     for type_name, record in descriptor["types"].items():
@@ -478,10 +506,98 @@ def _index_package_types(descriptor: object, types: dict[str, dict[str, object]]
         if normalized is None:
             return "descriptor-mismatch"
         types[type_name] = normalized
+        if isinstance(record, dict):
+            bases = record.get("extends", [])
+            if bases:
+                if not isinstance(bases, list) or not all(isinstance(base, str) for base in bases):
+                    return "descriptor-mismatch"
+                extends[type_name] = list(bases)
     return None
 
 
-def create_descriptor_context(
+def _merge_supertype(merged: dict[str, object], parent: dict[str, object]) -> bool:
+    """Merge one supertype's facets under the subtype's (False when malformed).
+
+    List facets union with the subtype's items first; map facets keep the
+    subtype's entry on conflict.
+    """
+    for key in ("scalars", "many", "single"):
+        ours = merged.get(key)
+        theirs = parent.get(key)
+        if not isinstance(ours, list) or not isinstance(theirs, (list, tuple)):
+            return False
+        ours.extend(item for item in theirs if item not in ours)
+    for key in ("containment", "references", "producerFields"):
+        ours_map = merged.get(key)
+        theirs_map = parent.get(key)
+        if not isinstance(ours_map, dict) or not isinstance(theirs_map, dict):
+            return False
+        for prop, admitted in theirs_map.items():
+            ours_map.setdefault(prop, admitted)
+    return True
+
+
+def _fresh_facets(own: dict[str, object]) -> dict[str, object] | None:
+    """Copy one normalized type's facets (None when malformed)."""
+    merged: dict[str, object] = {}
+    for key in ("scalars", "many", "single"):
+        facet = own.get(key, ())
+        if not isinstance(facet, (list, tuple)):
+            return None
+        merged[key] = list(facet)
+    for key in ("containment", "references", "producerFields"):
+        facet = own.get(key, {})
+        if not isinstance(facet, dict):
+            return None
+        merged[key] = dict(facet)
+    merged["id"] = own.get("id", True)
+    return merged
+
+
+def _freeze_lists(merged: dict[str, object]) -> None:
+    """Freeze merged list facets back to the index tuple convention."""
+    for key in ("scalars", "many", "single"):
+        facet = merged.get(key)
+        if isinstance(facet, list):
+            merged[key] = tuple(facet)
+
+
+def _inherit_facets(
+    types: dict[str, dict[str, object]], extends: dict[str, list[str]]
+) -> str | None:
+    """Resolve descriptor ``extends`` inheritance (refusal or None).
+
+    Each subtype merges its supertypes' facets under its own declarations
+    (own containment/reference/producer entries win); unknown supertypes
+    and inheritance cycles refuse ``descriptor-mismatch``.
+    """
+    resolved: dict[str, dict[str, object]] = {}
+
+    def _resolve(name: str, stack: tuple[str, ...]) -> dict[str, object] | None:
+        cached = resolved.get(name)
+        if cached is not None:
+            return cached
+        if name in stack or name not in types:
+            return None
+        merged = _fresh_facets(types[name])
+        if merged is None:
+            return None
+        for base in extends.get(name, []):
+            parent = _resolve(base, (*stack, name))
+            if parent is None or not _merge_supertype(merged, parent):
+                return None
+        _freeze_lists(merged)
+        resolved[name] = merged
+        return merged
+
+    for type_name in extends:
+        if _resolve(type_name, ()) is None:
+            return "descriptor-mismatch"
+        types[type_name] = resolved[type_name]
+    return None
+
+
+def create_descriptor_context(  # noqa: PLR0911 - one return per pin failure
     packages: list[dict[str, object]],
 ) -> PureResult:
     """Build one descriptor context from pinned packages.
@@ -489,15 +605,22 @@ def create_descriptor_context(
     Each package carries ``id``, ``version``, ``sha256`` and immutable UTF-8
     ``descriptorBytes`` whose raw SHA-256 must match. IDs stay unique, and
     the ``types`` document inside the bytes builds the normalized
-    descriptor index (scalars, containment, references, id admission).
-    Duplicate package or type definitions refuse ``descriptor-mismatch``.
+    descriptor index (scalars, containment, references, id admission,
+    ``many``/``single`` facets). Duplicate package or type definitions
+    refuse ``descriptor-mismatch``. The context digest is the DESIGN §9.2
+    formula over the descriptor pins sorted by id.
     """
     seen: set[str] = set()
     types: dict[str, dict[str, object]] = {}
+    extends: dict[str, list[str]] = {}
+    pins: list[dict[str, object]] = []
     for entry in packages:
         package_id = entry.get("id")
         want = entry.get("sha256")
+        version = entry.get("version", "")
         if not isinstance(package_id, str) or not isinstance(want, str):
+            return PureRefused(code="descriptor-mismatch")
+        if not isinstance(version, str):
             return PureRefused(code="descriptor-mismatch")
         if package_id in seen:
             return PureRefused(code="descriptor-mismatch")
@@ -509,10 +632,15 @@ def create_descriptor_context(
             descriptor = json.loads(raw_bytes.decode("utf-8"))
         except (UnicodeDecodeError, ValueError):
             return PureRefused(code="descriptor-mismatch")
-        code = _index_package_types(descriptor, types)
+        code = _index_package_types(descriptor, types, extends)
         if code is not None:
             return PureRefused(code=code)
-    context_digest = digest(sorted(seen))
+        pins.append({"id": package_id, "version": version, "sha256": want})
+    code = _inherit_facets(types, extends)
+    if code is not None:
+        return PureRefused(code=code)
+    pins.sort(key=lambda pin: str(pin["id"]).encode("utf-16-be"))
+    context_digest = digest(pins)
     owned = tuple(copy.deepcopy(entry) for entry in packages)
     context = DescriptorContext(packages=owned, types=types, digest=context_digest)
     return PureSuccess(payload=context)
@@ -654,7 +782,7 @@ def _check_predicate(  # noqa: C901, PLR0911, PLR0912, PLR0915
             return "profile-type"
         return _check_value(node.get("value"), "predicate", scope, None)
     if op == "count":
-        selector = node.get("selector")
+        selector = node.get("select")
         code = _check_selector(selector, scope, context_phase)
         if code is not None:
             return code
@@ -686,7 +814,7 @@ def _check_predicate(  # noqa: C901, PLR0911, PLR0912, PLR0915
             return "profile-symbol"
         return None
     if op == "reachable":
-        for key in ("source", "target"):
+        for key in ("from", "to"):
             code = _check_selector(node.get(key), scope, context_phase)
             if code is not None:
                 return code
@@ -730,6 +858,25 @@ def _check_reference_property(scope: _Scope, from_name: str, prop: str) -> str |
     scalars = spec.get("scalars", ())
     is_scalar = isinstance(scalars, (list, tuple)) and prop in scalars
     if is_scalar and scope.ref_fields is not None and (from_type, prop) in scope.ref_fields:
+        return None
+    return "profile-type"
+
+
+def _check_inverse_property(scope: _Scope, prop: str) -> str | None:
+    """Validate an inverse-traversal property against every descriptor type.
+
+    The property belongs to the referring (candidate) type, not to the
+    ``from`` binding's type: it is admitted iff some descriptor type
+    declares it as a reference, or the base declares it as an ID-valued
+    scalar reference (DESIGN §2.2).
+    """
+    if scope.types is None:
+        return None
+    for spec in scope.types.values():
+        references = spec.get("references", {})
+        if isinstance(references, dict) and prop in references:
+            return None
+    if scope.ref_fields is not None and any(field == prop for (_, field) in scope.ref_fields):
         return None
     return "profile-type"
 
@@ -783,6 +930,7 @@ def _check_selector(  # noqa: C901, PLR0911, PLR0912
             from_type = scope.btypes.get(from_name, "native")
             if from_type in ("page", "occurrence"):
                 return "profile-selector-property"
+            return _check_inverse_property(scope, str(node.get("property")))
         code = _check_reference_property(scope, from_name, str(node.get("property")))
         if code is not None:
             return code
@@ -813,21 +961,23 @@ def _authorize(scope: _Scope, btype: str, field_name: str, phase: str) -> str | 
     The phase actor is ``code`` for complete/normalize and ``editor``
     otherwise; export has no native write authority. A known native type
     checks its own producers; an unknown binding checks every admitted
-    target type supporting the field (DESIGN §2.4.1 CR-06).
+    target type supporting the field (DESIGN §2.4.1 CR-06). A candidate
+    with no producer row is not an admitted write target for the field
+    and is skipped.
     """
     if scope.producers is None or scope.types is None or not field_name:
         return None
     actor = "code" if phase in ("complete", "normalize") else "editor"
     if btype in scope.types:
-        candidates = [btype]
-    else:
-        candidates = [
-            name for name, spec in scope.types.items() if _type_has_field(spec, field_name)
-        ]
-        if not candidates:
-            return "profile-type"
+        if actor not in scope.producers.get((btype, field_name), frozenset()):
+            return "profile-producer"
+        return None
+    candidates = [name for name, spec in scope.types.items() if _type_has_field(spec, field_name)]
+    if not candidates:
+        return "profile-type"
     for candidate in candidates:
-        if actor not in scope.producers.get((candidate, field_name), frozenset()):
+        rights = scope.producers.get((candidate, field_name))
+        if rights is not None and actor not in rights:
             return "profile-producer"
     return None
 
@@ -943,7 +1093,7 @@ def _check_action(  # noqa: C901, PLR0911, PLR0912, PLR0915
         demands.append({"binding": target, "path": "", "mode": "remove"})
         return None
     if op == "ensure":
-        return None
+        return _check_ensure(step, phase, scope, demands)
     if op == "refuse":
         if not isinstance(step.get("code"), str):
             return "profile-type"
@@ -955,6 +1105,62 @@ def _check_action(  # noqa: C901, PLR0911, PLR0912, PLR0915
                 return "profile-symbol"
         return None
     return "profile-type"
+
+
+#: Native types an ``ensure`` step may allocate (DESIGN §5.2 support objects).
+_SUPPORT_ENSURE_TYPES: frozenset[str] = frozenset(
+    {"bpmn:Collaboration", "bpmn:Participant", "bpmn:LaneSet", "bpmn:Lane"}
+)
+
+
+def _check_ensure_identity(
+    step: dict[str, object], native_type: str, phase: str, scope: _Scope
+) -> str | None:
+    """Validate one ensure's identity parts and creation fields (CR-06/07)."""
+    for key in ("ownerId", "key"):
+        if key not in step:
+            return "profile-type"
+        code = _check_value(step.get(key), "create-field", scope, phase)
+        if code is not None:
+            return code
+    if not isinstance(step.get("slot"), str) or not step.get("slot"):
+        return "profile-type"
+    code = _check_create_fields(step, native_type, phase, scope)
+    if code is not None:
+        return code
+    return _authorize(scope, native_type, "id", phase)
+
+
+def _check_ensure(  # noqa: PLR0911 - one return per ensure failure
+    step: dict[str, object], phase: str, scope: _Scope, demands: list[dict[str, object]]
+) -> str | None:
+    """Validate one ensure step with support restriction and demands (CR-05/06/07)."""
+    native_type = step.get("type")
+    if not isinstance(native_type, str) or not native_type:
+        return "profile-type"
+    if ":" in native_type and scope.types is not None and native_type not in scope.types:
+        return "profile-type"
+    if native_type not in _SUPPORT_ENSURE_TYPES:
+        return "profile-producer"
+    owner = step.get("owner")
+    parent = step.get("parent")
+    if not isinstance(owner, str) or not isinstance(parent, str):
+        return "profile-type"
+    if owner not in scope.bindings or parent not in scope.bindings:
+        return "profile-symbol"
+    code = _check_ensure_identity(step, native_type, phase, scope)
+    if code is not None:
+        return code
+    code = _check_create_parent(step, native_type, phase, scope, demands)
+    if code is not None:
+        return code
+    demands.append({"binding": "envelope", "path": "/bindings", "mode": "binding"})
+    alias = step.get("as")
+    if not isinstance(alias, str) or not alias:
+        return "profile-type"
+    scope.bindings.add(alias)
+    scope.btypes[alias] = native_type
+    return None
 
 
 def _check_bind(step: dict[str, object], scope: _Scope, context_phase: str) -> str | None:
@@ -1219,7 +1425,17 @@ def _recognition_cycle(notions_raw: list[object]) -> str | None:  # noqa: C901
     return None
 
 
-def _base_producers(
+def _base_type_names(base: dict[str, object] | None) -> frozenset[str] | None:
+    """Return the effective-base admitted type names (None without a base)."""
+    if base is None:
+        return None
+    declared = base.get("types")
+    if not isinstance(declared, list):
+        return frozenset()
+    return frozenset(item for item in declared if isinstance(item, str))
+
+
+def _base_producers(  # noqa: PLR0911 - one return per base failure
     base: dict[str, object],
     producers: dict[tuple[str, str], frozenset[str]],
     ref_fields: set[tuple[str, str]],
@@ -1244,6 +1460,16 @@ def _base_producers(
         producers[(type_name, field_name)] = frozenset(actors)
         if entry.get("kind") == "reference":
             ref_fields.add((type_name, field_name))
+    scalars = base.get("idRefScalars", [])
+    if not isinstance(scalars, list):
+        return "profile-producer"
+    for item in scalars:
+        if not isinstance(item, str) or "." not in item:
+            return "profile-producer"
+        owner, _, member = item.rpartition(".")
+        if not owner or not member:
+            return "profile-producer"
+        ref_fields.add((owner, member))
     return None
 
 
@@ -1762,7 +1988,7 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         if not isinstance(declared, list) or not isinstance(recipe_id, str):
             return PureRefused(code="profile-write-set")
         required = demands.get(recipe_id, [])
-        if sorted(jcs(entry) for entry in required) != sorted(jcs(entry) for entry in declared):
+        if {jcs(entry) for entry in required} != {jcs(entry) for entry in declared}:
             return PureRefused(code="profile-write-set")
 
     # CR-11/CR-12 recipe phase admission for exports and migrations.
@@ -1787,6 +2013,7 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
 
     validation_raw = profile.get("validation")
     validation_entries = tuple(validation_raw) if isinstance(validation_raw, list) else ()
+    identity = _profile_identity(profile, validated.digest)
     compiled = CompiledProfile(
         profile_digest=validated.digest,
         notions={
@@ -1804,5 +2031,38 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         ),
         registry_digest=digest(sorted(registry.capabilities)),
         validation=copy.deepcopy(validation_entries),
+        identity=identity,
+        types=copy.deepcopy(types) if descriptor_context is not None else None,
+        producers=dict(producers) if base is not None and producers is not None else None,
+        ref_fields=frozenset(ref_fields) if base is not None and ref_fields is not None else None,
+        base_types=_base_type_names(base),
+        capabilities=tuple(
+            sorted(str(name) for name in registry.capabilities if isinstance(name, str))
+        ),
     )
     return PureSuccess(payload=compiled)
+
+
+def _profile_identity(profile: dict[str, object], profile_digest: str) -> dict[str, object]:
+    """Build the §5.1 identity record of one schema-valid profile."""
+    base_pin = profile.get("base")
+    base_record: dict[str, object] = {}
+    if isinstance(base_pin, dict):
+        base_record = {key: base_pin.get(key) for key in ("id", "version", "sha256")}
+    descriptors_pin = profile.get("descriptors")
+    descriptor_records: list[dict[str, object]] = []
+    if isinstance(descriptors_pin, list):
+        descriptor_records.extend(
+            {key: entry.get(key) for key in ("id", "version", "sha256")}
+            for entry in descriptors_pin
+            if isinstance(entry, dict)
+        )
+    return {
+        "mechanismVersion": profile.get("mechanismVersion"),
+        "schemaVersion": profile.get("schemaVersion"),
+        "profile": profile.get("profile"),
+        "version": profile.get("version"),
+        "sha256": profile_digest,
+        "base": base_record,
+        "descriptors": descriptor_records,
+    }
