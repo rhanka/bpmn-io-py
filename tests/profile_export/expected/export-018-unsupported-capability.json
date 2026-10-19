@@ -1,7 +1,7 @@
 {
   "case": "export-018-unsupported-capability",
   "clause": "DESIGN R3.3 \u00a710.1 L753; \u00a710.2 L797",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 1f5512c6ba0e9a716c1d56241a8f3eb450074eec7a9493a2871f18004126835a; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The variant classes the aid occurrence unsupported: one unsupported necessary occurrence refuses the whole artifact with render-unsupported (harmonization C16); no partial download. Fails against: Dropping the occurrence with a mapped loss and returning the rest, or refusing export-format-unsupported.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 1f5512c6ba0e9a716c1d56241a8f3eb450074eec7a9493a2871f18004126835a; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The variant classes the aid occurrence unsupported: one unsupported necessary occurrence refuses the whole artifact with render-unsupported (harmonization C16); no partial download. Fails against: Dropping the occurrence with a mapped loss and returning the rest, or refusing export-format-unsupported.",
   "operation": "mapExport",
   "profile": {
     "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-unsupported.profile.json",

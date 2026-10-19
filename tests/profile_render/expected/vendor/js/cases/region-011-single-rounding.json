@@ -62,59 +62,63 @@
   ],
   "expectedArtifacts": [
     {
-      "role": "output",
+      "role": "result",
       "json": {
-        "pageBounds": {
-          "x": 0,
-          "y": 0,
-          "width": 1200000,
-          "height": 640000
-        },
-        "body": {
-          "x": 0,
-          "y": 0,
-          "width": 4000,
-          "height": 70000
-        },
-        "items": [
-          {
-            "elementId": "Input_A",
-            "occurrenceKey": "Input_A_di",
-            "bounds": {
-              "x": 1351,
-              "y": 0,
-              "width": 301,
-              "height": 64000
-            },
-            "labelBounds": {
-              "x": 1502,
-              "y": 64000,
-              "width": 0,
-              "height": 0
-            }
+        "status": "ok",
+        "payload": {
+          "pageBounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1200000,
+            "height": 640000
           },
-          {
-            "elementId": "Input_B",
-            "occurrenceKey": "Input_B_di",
-            "bounds": {
-              "x": 1652,
-              "y": 0,
-              "width": 10,
-              "height": 64001
+          "body": {
+            "x": 0,
+            "y": 0,
+            "width": 4000,
+            "height": 70000
+          },
+          "items": [
+            {
+              "elementId": "Input_A",
+              "occurrenceKey": "Input_A_di",
+              "bounds": {
+                "x": 1351,
+                "y": 0,
+                "width": 301,
+                "height": 64000
+              },
+              "labelBounds": {
+                "x": 1502,
+                "y": 64000,
+                "width": 0,
+                "height": 0
+              }
             },
-            "labelBounds": {
-              "x": 1657,
-              "y": 64001,
-              "width": 0,
-              "height": 0
+            {
+              "elementId": "Input_B",
+              "occurrenceKey": "Input_B_di",
+              "bounds": {
+                "x": 1652,
+                "y": 0,
+                "width": 10,
+                "height": 64001
+              },
+              "labelBounds": {
+                "x": 1657,
+                "y": 64001,
+                "width": 0,
+                "height": 0
+              }
             }
-          }
-        ]
+          ]
+        },
+        "diagnostics": []
       }
     }
   ],
   "expectedStatus": "ok",
   "comparatorIds": [
-    "seam-exact/1"
+    "result-exact/1"
   ]
 }

@@ -1,7 +1,7 @@
 {
   "case": "digest-007-bags-sorted",
   "clause": "DESIGN R3.3 \u00a79.2 L685\u2013L686; \u00a79.2 L692\u2013L694",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 d039fff63fa856a130c4b618dee18366abca4d33c066d38aa9fdc19303f69841; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Two-target semantic, occurrence, native and bioc bags in normalized order: overridesDigest and diStylesDigest hash the records as supplied (sorted), viewRevision changes, semanticRevision does not (a view override is not semantic). Fails against: Changing semanticRevision for a view override, or expanding sparse records before hashing.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 d039fff63fa856a130c4b618dee18366abca4d33c066d38aa9fdc19303f69841; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Two-target semantic, occurrence, native and bioc bags in normalized order: overridesDigest and diStylesDigest hash the records as supplied (sorted), viewRevision changes, semanticRevision does not (a view override is not semantic). Fails against: Changing semanticRevision for a view override, or expanding sparse records before hashing.",
   "operation": "renderDigests",
   "profile": null,
   "input": [

@@ -50,43 +50,47 @@
   ],
   "expectedArtifacts": [
     {
-      "role": "output",
+      "role": "result",
       "json": {
-        "pageBounds": {
-          "x": 0,
-          "y": 0,
-          "width": 1200000,
-          "height": 640000
-        },
-        "body": {
-          "x": 0,
-          "y": 470000,
-          "width": 1100000,
-          "height": 120000
-        },
-        "items": [
-          {
-            "elementId": "StoreRef_Policy",
-            "occurrenceKey": "StoreRef_Policy_di",
-            "bounds": {
-              "x": 205000,
-              "y": 480000,
-              "width": 50000,
-              "height": 50000
-            },
-            "labelBounds": {
-              "x": 195000,
-              "y": 530000,
-              "width": 70000,
-              "height": 14000
+        "status": "ok",
+        "payload": {
+          "pageBounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1200000,
+            "height": 640000
+          },
+          "body": {
+            "x": 0,
+            "y": 470000,
+            "width": 1100000,
+            "height": 120000
+          },
+          "items": [
+            {
+              "elementId": "StoreRef_Policy",
+              "occurrenceKey": "StoreRef_Policy_di",
+              "bounds": {
+                "x": 205000,
+                "y": 480000,
+                "width": 50000,
+                "height": 50000
+              },
+              "labelBounds": {
+                "x": 195000,
+                "y": 530000,
+                "width": 70000,
+                "height": 14000
+              }
             }
-          }
-        ]
+          ]
+        },
+        "diagnostics": []
       }
     }
   ],
   "expectedStatus": "ok",
   "comparatorIds": [
-    "seam-exact/1"
+    "result-exact/1"
   ]
 }

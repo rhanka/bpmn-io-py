@@ -1040,7 +1040,7 @@ The JS lot-4 seal owns the values of the 155 lot-4 cases the harmonization (§3)
 assigns to the Python parity run (block-B parity sync PS-H17, PS-H18, PS-H19). They
 are vendored, never re-authored, from the JS corpus
 `bpmn-canvas:tests/fixtures/lot4-layout-export/expectations` whose `seal.json`
-SHA-256 is `f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43`.
+SHA-256 is `5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0`.
 
 - Files: the JS case files, every artifact file they reference, the package inputs
   of their profiles, `seal.json` and `manifest.json` are committed raw, in the JS
@@ -1060,7 +1060,7 @@ SHA-256 is `f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43`.
   the vendored JS `seal.json`.
 - Harness record: one `expected/<JS caseId>.json` per vendored case, closed members
   `case, clause, derivation, operation, profile, input, expected, expectedStatus,
-  comparatorIds, artifacts?, source, paritySync?, author` (`author:"spec-seal"`).
+  comparatorIds, artifacts?, source, author` (`author:"spec-seal"`).
   Paths are repository-relative.
   - `clause`: the JS clause (DESIGN section and line range); `operation`: the
     shared A4 name of the JS case; `derivation`: the vendored statement (JS seal
@@ -1078,22 +1078,19 @@ SHA-256 is `f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43`.
     artifacts (`drawio-structure`, `byte-invariants`, `relations`, `invariants`)
     verbatim, read by those comparators.
   - `source`: the vendored JS case file `{vendored, sha256}`.
-- Section-1 decisions applied to imported values (a value a decision changes is
-  derived from the JS case and the decision, never copied); `paritySync` lists the
-  decision ids:
+- Section-1 decisions on imported values are carried by the JS seal itself (one
+  source of truth: the vendored bytes are those of the JS seal head, and every
+  record value equals the JS value, no overlay):
   - PS-33 (DESIGN §10.1 L737, PureResult always wraps output in payload): the 19
-    vendored `ticks-*` and `region-*` records seal `{status:"ok", payload: <JS
-    output>, diagnostics:[]}` and compare with `result-exact/1` (JS
-    `seam-exact/1`).
+    vendored `ticks-*` and `region-*` cases seal `{status:"ok", payload,
+    diagnostics:[]}` and compare with `result-exact/1`.
   - PS-06 (DESIGN §9.4 L723, IO object centres on one row line, §4.1):
-    `layout-008-neutral-successor` and `layout-009-grid-successor` move Task_A
-    (`a-first`, no label, beside the labelled Task_B) from y 7008 to y 8 on Z-page;
-    their consumers `render-021`, `render-022`, `export-025` and `export-026`
-    carry that layout, the R occurrence, `layoutDigest`, `payloadDigest`,
-    `renderBinding`, `viewRevision`, the Task_A IR node bounds and `H(ir)`.
-    `paritySync.changes` lists every changed value `{pointer, from, to}` with
-    `from` the sealed JS value; the seal test reverts them to the JS case and
-    recomputes every changed digest.
+    `layout-008-neutral-successor` and `layout-009-grid-successor` place Task_A
+    (`a-first`, no label, beside the labelled Task_B) at y 8 on Z-page; their
+    consumers `render-021`, `render-022`, `export-025` and `export-026` carry that
+    layout, the R occurrence, `layoutDigest`, `payloadDigest`, `renderBinding`,
+    `viewRevision`, the Task_A IR node bounds and `H(ir)`; the seal test
+    recomputes those digests.
 - Twins (PS-37): `ticks-001-half-even` ≡ `render.ticks.half-even` (after PS-33) and
   `region-010-mixed-heights` ≡ `render.regions.mixed-label-heights` (after PS-06 and
   PS-33): no file is copied and no record is written; `ALIASES` and the parity
@@ -1281,8 +1278,8 @@ the N→layout passage sealed (`render.layout.region-key-role-mismatch`,
 The JS/Python parity sync reconciles the two lot-4 seals after their fix rounds
 (row ids PS-nn; DESIGN R3.3 first, then the harmonization). It changes sealed
 values only through the hand-decided transformations below; no implementation was
-imported or run, and every vendored value is the JS seal's value or is derived from
-it by a listed decision.
+imported or run, and every vendored value is the JS seal head's value (PS-33 and
+PS-06 are applied by the JS seal).
 
 ### 22.1 Decisions applied
 
@@ -1310,8 +1307,8 @@ bind `content` and `side` without an ensure recipe).
 | PS-H18 | `admission-001…010`, `render-001…024`, `synthetic-001…013`, `decision-001…005`, `digest-001…008`, `legacy-001…008`, `history-001/002`, `switch-001…007` (77) | render |
 | PS-H19 | `export-001…028`, `idplan-001…007`, `serialize-001…008`, `bpmn-001…003` (46) | export |
 
-155 ids: 153 harness records (25 derived: 19 by PS-33, 6 by PS-06) and 2 twins,
-from the JS seal `f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43`.
+155 ids: 153 harness records (25 carry a JS-applied decision: 19 PS-33, 6 PS-06) and 2 twins,
+from the JS seal `5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0`.
 After the sync the render tree holds 194 Python cases and 107 vendored records, the
 export tree 83 and 46, and the parity corpus publishes 224 records and lists 153
 vendored cases and 2 aliases (Appendices C and D).

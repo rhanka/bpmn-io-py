@@ -1,7 +1,7 @@
 {
   "case": "export-014-missing-required",
   "clause": "DESIGN R3.3 \u00a710.2 L770",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 9ac6e2b717f03a5552d286f078d9610e5e73c492a60188fc6b84fa74f17a5168; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The variant emits an edge for every occurrence; for a node occurrence the zeroOrOne source binding is MISSING, so the required edge field source has no value. Full refusal record with echoed identity and revision. Fails against: Emitting source '' or skipping the record.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 9ac6e2b717f03a5552d286f078d9610e5e73c492a60188fc6b84fa74f17a5168; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The variant emits an edge for every occurrence; for a node occurrence the zeroOrOne source binding is MISSING, so the required edge field source has no value. Full refusal record with echoed identity and revision. Fails against: Emitting source '' or skipping the record.",
   "operation": "mapExport",
   "profile": {
     "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-missing-field.profile.json",

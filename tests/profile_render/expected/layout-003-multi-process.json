@@ -1,7 +1,7 @@
 {
   "case": "layout-003-multi-process",
   "clause": "DESIGN R3.3 \u00a79.4 L725",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 4c94d4689f4a5690e95660347330f404b92931bd6742debe1b1d42cb9b47a1a1; values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Each process resolves its own bound reference band on its own page; the shared DataStore is shown through one reference per process. Fails against: Resolving both references into the first process's band.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 4c94d4689f4a5690e95660347330f404b92931bd6742debe1b1d42cb9b47a1a1; values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Each process resolves its own bound reference band on its own page; the shared DataStore is shown through one reference per process. Fails against: Resolving both references into the first process's band.",
   "operation": "layout",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

@@ -16,17 +16,21 @@
   ],
   "expectedArtifacts": [
     {
-      "role": "output",
-      "json": [
-        2000,
-        2004,
-        4006,
-        8010
-      ]
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": [
+          2000,
+          2004,
+          4006,
+          8010
+        ],
+        "diagnostics": []
+      }
     }
   ],
   "expectedStatus": "ok",
   "comparatorIds": [
-    "seam-exact/1"
+    "result-exact/1"
   ]
 }

@@ -1,7 +1,7 @@
 {
   "case": "export-003-repeated-drawio",
   "clause": "DESIGN R3.3 \u00a72.2 L130; \u00a710.2 L801; \u00a710.1 L753",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 bab2af58b765cbb58014bc633205b9c7bf9f46f206a8cfd803bc519e00c37a75; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: Two pages: page keys first (View_Z e_1, View_A e_2), then View_Z nodes before View_A nodes by page order, edges likewise, then labels. idMap keeps every repeated-view record and sorts by UTF-16 pageId (View_A before View_Z) independently of page order. Losses appear once per occurrence on each page. Fails against: Collapsing repeated views to one idMap record, or sorting idMap by page order.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 bab2af58b765cbb58014bc633205b9c7bf9f46f206a8cfd803bc519e00c37a75; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: Two pages: page keys first (View_Z e_1, View_A e_2), then View_Z nodes before View_A nodes by page order, edges likewise, then labels. idMap keeps every repeated-view record and sorts by UTF-16 pageId (View_A before View_Z) independently of page order. Losses appear once per occurrence on each page. Fails against: Collapsing repeated views to one idMap record, or sorting idMap by page order.",
   "operation": "mapExport",
   "profile": {
     "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-profile.json",

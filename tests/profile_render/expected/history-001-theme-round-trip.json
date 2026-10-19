@@ -1,7 +1,7 @@
 {
   "case": "history-001-theme-round-trip",
   "clause": "DESIGN R3.3 \u00a78.2 L643; \u00a79.2 L694",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 eec3fa7c54e2d03604e6c367d35def50e32cb1f8a9f7bce8b51b191981923a47; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: A theme selection changes themeDigest, payloadDigest and viewRevision only; plain -> dim -> plain returns exactly the first view (no state carried from dim); semantic history and IDs are untouched because profileIdentity and the tree are unchanged. Fails against: Replaying history or N on a theme switch, carrying dim tokens into the second plain view, or changing semanticRevision.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 eec3fa7c54e2d03604e6c367d35def50e32cb1f8a9f7bce8b51b191981923a47; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: A theme selection changes themeDigest, payloadDigest and viewRevision only; plain -> dim -> plain returns exactly the first view (no state carried from dim); semantic history and IDs are untouched because profileIdentity and the tree are unchanged. Fails against: Replaying history or N on a theme switch, carrying dim tokens into the second plain view, or changing semanticRevision.",
   "operation": "theme-sequence",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

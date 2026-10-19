@@ -472,7 +472,7 @@ def synthetic_key(declaration_id: str, owner_id: str, page_id: str) -> str:
 
 # ------------------------------- vendored JS lot-4 cases (block-B parity sync, §17.6)
 
-JS_SEAL_SHA256 = "f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43"
+JS_SEAL_SHA256 = "5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0"
 TREES = {"render": "tests/profile_render/expected", "export": "tests/profile_export/expected"}
 VENDOR = "vendor/js"
 
@@ -546,7 +546,7 @@ VENDORED: dict[str, dict[str, str]] = {
             "19e28fd824dd11ec28b3f8a931f2b4e382a5088aebd5f5a43a0aa74ff7b63592"
         ),
         "artifacts/grid-successor-plain.resolve-result.json": (
-            "add6b4d9d0e4a0258f950e30e5ce8de875745ba7e2e3a90bee2aa82e36a61f40"
+            "e9d6c95fcec44d0faa57971d065f72698b7ae741947173248fa7dfcf0766a8f2"
         ),
         "artifacts/grid-successor.base-geometry.json": (
             "2a357d0d32ee3bb7ca3e2ba2eb550d77f324fffeaf0a53d699fb59151d64ee89"
@@ -555,7 +555,7 @@ VENDORED: dict[str, dict[str, str]] = {
             "28ed484a6e23de6e4117e0f13aae43bb97df262698b9e6bcacd0f2ef0425cb50"
         ),
         "artifacts/grid-successor.layout.json": (
-            "4de61f9b09caaa14239969a68eeb394c46629b254671f6af913c9fb3448ac18a"
+            "38e5487934bc7e951f9cc2e737d111d1931e2fa31c6d60d1cfcad5045f50573a"
         ),
         "artifacts/grid-successor.profile.json": (
             "e39fbd775d1538c825cdefe9c7d3a5cd179c7553cd2b243a23ead5a3c122f8d8"
@@ -582,10 +582,10 @@ VENDORED: dict[str, dict[str, str]] = {
             "265a2d70a1a3a8c5f7702c176a45e9b53b6406743e3fc2de6ad4f93a424a4dd2"
         ),
         "artifacts/layout-008-neutral-successor.result.json": (
-            "06f33283c3a290914429869613779ddfc565afd28b42bcbe1aa2262dac82ae81"
+            "ee1ea1ec3b7686fc6f6d7d459caf758b871e40ffbf793e4c19bf5accfc0077cb"
         ),
         "artifacts/layout-009-grid-successor.result.json": (
-            "2d9699fdfba9a97ee72c7e0281deacdf600e0f8b51f27097e58c8e57b62b98ca"
+            "086f6e09c6114748113113b82647b9fddbdac4d7c0d27b07b2ed9d8f4577fc10"
         ),
         "artifacts/layout-010-anchor-twice.result.json": (
             "2ed05950649849e3b2ac3b77ab106f2898649adff660128ee44b41569cb8eb8f"
@@ -759,7 +759,7 @@ VENDORED: dict[str, dict[str, str]] = {
             "b075f83bfbbf0009d17633746b69bbf5d6a45951a52c275f25afdb1aa982e92e"
         ),
         "artifacts/neutral-successor-plain.resolve-result.json": (
-            "6c3ee98f6de46608db7993311e6e28c13dc15965841fa44ef37d4c94a332a7c9"
+            "10c09ff30d09286e5577b9d2e9203a996b2121d4f56ebc39fb20245c6d7e5b6b"
         ),
         "artifacts/neutral-successor.base-geometry.json": (
             "ee11fbe1e3fb06cc157a799060d04e9f7b6279b0de8be3914e4c567af1218839"
@@ -768,7 +768,7 @@ VENDORED: dict[str, dict[str, str]] = {
             "399b75f2b82beea753d64661b504bcc7637d8ae45c85db6fee6c6c6829704ac9"
         ),
         "artifacts/neutral-successor.layout.json": (
-            "04876ab5acdf01a53e347b18feae49db959117e49e0a1115cbad22abe578f37a"
+            "ae975f82fa1e046ee0dd95af7904be58c7f0f2e714aedecdd83589d01dfb66ed"
         ),
         "artifacts/neutral-successor.profile.json": (
             "31387224e72609c153fc49e26c29e33de18fda7ab1fbabed55d25ba0bb21e658"
@@ -933,10 +933,10 @@ VENDORED: dict[str, dict[str, str]] = {
             "0ab82f778bb3228c246d3c3fd64f3c85b2249fe418c099a1ae42867a5bc36959"
         ),
         "cases/layout-008-neutral-successor.json": (
-            "b1c15efa0f0556cd0071538a6a2038739845aa323096faf102367f6b055a3128"
+            "48c4eebc28c12ed2b1c14e24404e7bc158837a956ef89ad3417ac54c53c5211e"
         ),
         "cases/layout-009-grid-successor.json": (
-            "2a28cddafbf071e929727274a782b32f4a661ba3ecc94672b9723c9113853378"
+            "3db848f14bac6f14df714012e682c7276ff2364ff5f1b8198699d48420fc2679"
         ),
         "cases/layout-010-anchor-twice.json": (
             "d5dfc0b0815ec0c67d3348ef462b19d8dbf1c21594a5e2ef26bac4dc2053fc70"
@@ -969,52 +969,52 @@ VENDORED: dict[str, dict[str, str]] = {
             "dfebc0f09098ce4b59c35aab42c987daef08f15e5d86476c8b7f0da29dd787ab"
         ),
         "cases/region-001-single-anchored.json": (
-            "4be630468b1b4b748a980c9412b595499ff41b4d8d7d461bbceff071eea74aaa"
+            "68194ca434c30b1a80953391190068d67037ddda36c2266a3aa6844e9a7e05b1"
         ),
         "cases/region-002-wider-label.json": (
-            "023a4aadd9553fb8f8404d7dcdf4d646572f7db30831884e5b5faea88c277bd9"
+            "793864a778928d554bd3264baf7bdf1a4729a85b2cc64d145ce6c892804a3090"
         ),
         "cases/region-003-collision-shift.json": (
-            "50101628f6b1ab863d290a349ebb196640cb81bb213e29e5ae945f4529913aeb"
+            "cc4cb76d982407b1adc4ada1d7e3e8b4ec648ea830941a8af1420c0b29852292"
         ),
         "cases/region-004-no-anchor-sequence.json": (
-            "6a05b8aa8ec16ea8bb06e0a4a04440ab7f02f491d08851ae18b6e1191ed78b41"
+            "9c0a3b1ad21142921b500b87cdf6020b1d09a92efaa584325f369b53d490053a"
         ),
         "cases/region-005-mixed-anchor.json": (
-            "5bb695e49e728cbb43c79b9deb38f3a34cd1180e58ff2b050844937739ab4aeb"
+            "9eab4443fb649f24ecb457101685b9ba5ebd764b0e90a5830a5b74b8e60c022f"
         ),
         "cases/region-006-clamp-left.json": (
-            "f228f3170272d5d16d422279110557ad17bed3178c4058ba5b34ea669e91cdda"
+            "98dfe904ae626a6089d52cbef5d3ca1b235c38ae47b0847a2ce036d9b9215576"
         ),
         "cases/region-007-grow-lane-width.json": (
-            "8001ed6255043793576c92abc44fc1384183152f2058fd9acd294a5e87babbeb"
+            "38143dc2ab79e78053f645283f2c4135ff14605fc056b576459ed40007a3efca"
         ),
         "cases/region-008-grow-page.json": (
-            "a52a4e9541172179813552bdd259d204b4f1b510028268912fce333261a99e97"
+            "379015f2c1ea5d75c1d90b0ec81a1fc339e00d4c708b3ede446019b77babf60a"
         ),
         "cases/region-009-grow-lane-height.json": (
-            "08360356b3ec9e98ed8158b6a6b334a5cc042b10dba31cc9358b86b5d03ff6f7"
+            "508028239862e1a7c98675cfc49984380aa2e84c54c827cff6ce01075e9b361e"
         ),
         "cases/region-011-single-rounding.json": (
-            "bc35869ed717ac687ed65107ac0c339f1f49b1a0db7f8ceb1ca9391f0d2d5c59"
+            "abdbc4e8c26d3c63952ec82b7fef2376880567ee4be1570afb0d6c6514d1c373"
         ),
         "cases/region-012-band-row.json": (
-            "c2237df62d0c6d2f4caac91e10a40ad92be397f353732e105ae12427e3e1a049"
+            "59855eeec54af0cdc2cf89c77a0b3c12744c453d868460f318124124e9ddb1f2"
         ),
         "cases/region-013-empty-region.json": (
-            "f54fa5ba303a3f65829d1ba441643c86b6af24e49945436ce853e9613955223c"
+            "f49d847e71a226ac554134ed99e5390869501e711f56a6cc9c376893d6b106ac"
         ),
         "cases/region-014-zero-tokens.json": (
-            "4db966526276de7af0539221d161e8fb5302404d0fbec1fdb54aff80ae43f05a"
+            "55b6c78eb7ea85d7b8b407ebad9fae949fc0667835aada3e0ce77a11f665e07f"
         ),
         "cases/region-015-repeated-view.json": (
-            "75672a3cb46a6076e9a5899ffd5f9e44adfbbd745aa041f9202b23cd5e2357e7"
+            "0f47b883fe1fec2822d4878dd13f5c13c706aaa69cc752e90e71a54c35b0f5b6"
         ),
         "cases/region-016-multi-band-a.json": (
-            "bc310fa85125cf8416f7584eb94e11c9a699d9100f1a7029ce778133f2b76916"
+            "87c87da1015e74609d34cedc93432439717c3df43bd54f9156e287b2e4c45c18"
         ),
         "cases/region-017-multi-band-b.json": (
-            "ac50e535d61435cc5f2238af4d24c73d5b7ddecd401e6ac615f23694ae4fedf3"
+            "327445905385dfc1fc1ea4ee8db26adc46efd9ecdbca773a7c2a40eeb3f7049a"
         ),
         "cases/render-001-main-plain.json": (
             "5184acadf1d81c5527a73435b5e04b8d38d2b12cbcce4e3b5e302db805376075"
@@ -1077,10 +1077,10 @@ VENDORED: dict[str, dict[str, str]] = {
             "57dcb6d7674366f43a4bd17d02102966eb59e65b05894ffd09fd0e4a27d1840c"
         ),
         "cases/render-021-neutral-successor.json": (
-            "60e5c89ee13226ef3f0dbf248abb4aa90ae6a366f812080252bb69aeac3c3da9"
+            "4adf4c7a37d47e596864a9d60400cc0b8f4e4a1ad98d7fa776b53fecd8fed805"
         ),
         "cases/render-022-grid-successor.json": (
-            "f9b32697379a059ee31408d5de2c033b2080ea9690e71e3f814525fecf11927b"
+            "e36dc310694a3093737681f688da608764a3a1c056fb8e7f0238926022301a6d"
         ),
         "cases/render-023-metric-chain.json": (
             "9c3d2941fa6e6300435986ae778642df2c3022504a800bc0f3310f7f5daa03f1"
@@ -1149,16 +1149,16 @@ VENDORED: dict[str, dict[str, str]] = {
             "d59236a9bc632ac85aec6fb966d924a807b79b18faf52a5a1cd4aca04bc5167b"
         ),
         "cases/ticks-002-rational-not-binary.json": (
-            "1752744035bf1b8842b7d48fa0805cbf54d47c2069c33a85216889ffbba70e78"
+            "0d5ca097ae2a89d6f0f6694885aa5b62869eae21098de9044093ccdbcd3493e8"
         ),
         "cases/ticks-003-negative-zero-and-tiny.json": (
-            "1ef9455d5fac5dec03df6cc4c3cc8facd1035f6ad4a3abe625c73513601d2931"
+            "fe64da45a74bd97f0e07b7ca6c2dee139ab42eb48473c7f06dd73205fb804240"
         ),
         "cases/ticks-004-large-and-integral.json": (
-            "85cba64f0c817e710c7ad3ac34feb42d71fac7c9f859f8733f7e9893f1e259e4"
+            "d88ac00acee6127a626114c8a7fc1141a3ec67e0d3fdf05c82629263c22869d0"
         ),
-        "manifest.json": "29348b375217707637b3c587335b504612135f791119b2c5dc39011c73392a51",
-        "seal.json": "f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43",
+        "manifest.json": "5648d7f2b9ab4ba1cc45487cf643d4545d55173f480ddde7f0f4cb520fbe4bf1",
+        "seal.json": "5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0",
     },
     "export": {
         "artifacts/choices-plain.render.json": (
@@ -1213,10 +1213,10 @@ VENDORED: dict[str, dict[str, str]] = {
             "0cddb3c5c29dfccdad96cc5b4e1e05e28bca145b9bdf36e1697a547195f93bff"
         ),
         "artifacts/export-025-neutral-successor.map-result.json": (
-            "7224ab172bfedf06c5bf911a08d2bf5c559316179b82c69f79703e1bef775869"
+            "80719a075829082f489dc3ef4fe2993582504be1287fa2fac7a7ac8704215fc4"
         ),
         "artifacts/export-026-grid-successor.map-result.json": (
-            "0f90b833b16dc5e9a692bdf4434a4e2fa24e29d7241aaf2a183e6f0d3b4b1591"
+            "f23bb6e80029d3ce50c2127dc8e876bed6dff59b33521bffa87528f158d2a093"
         ),
         "artifacts/export-027-variety-drawio.map-result.json": (
             "2079e42da47522f520edaed477c442069cfca241f3dbbb89991a2782492a38f7"
@@ -1225,13 +1225,13 @@ VENDORED: dict[str, dict[str, str]] = {
             "d730cc9e6cc6c92a351e1ccf3b04565e8e8d23024dcde87abbbf9f8dae8f886f"
         ),
         "artifacts/grid-successor-plain.render.json": (
-            "bac82bbb594619db81cc4ad3008769fd29c7eb26fc86d863128055723524f967"
+            "8bda5168f3071ef72f759e757303c2675711a2ac337050cd755e913be1b059ec"
         ),
         "artifacts/grid-successor.envelope.json": (
             "28ed484a6e23de6e4117e0f13aae43bb97df262698b9e6bcacd0f2ef0425cb50"
         ),
         "artifacts/grid-successor.layout.json": (
-            "4de61f9b09caaa14239969a68eeb394c46629b254671f6af913c9fb3448ac18a"
+            "38e5487934bc7e951f9cc2e737d111d1931e2fa31c6d60d1cfcad5045f50573a"
         ),
         "artifacts/grid-successor.profile.json": (
             "e39fbd775d1538c825cdefe9c7d3a5cd179c7553cd2b243a23ead5a3c122f8d8"
@@ -1354,13 +1354,13 @@ VENDORED: dict[str, dict[str, str]] = {
             "7bd96ba4bb9fca9d705d696d141f45881ddcba6dbd6f386500357f40106d0aad"
         ),
         "artifacts/neutral-successor-plain.render.json": (
-            "61c755a0d52b0a8c2b0b5317ab67186ea023a9533eda98cd0975e9da22eb05e9"
+            "83f3c488c149155b6fa8ae5c2f1d5d7f7b9e3badb866518396bf2bda1d47e591"
         ),
         "artifacts/neutral-successor.envelope.json": (
             "399b75f2b82beea753d64661b504bcc7637d8ae45c85db6fee6c6c6829704ac9"
         ),
         "artifacts/neutral-successor.layout.json": (
-            "04876ab5acdf01a53e347b18feae49db959117e49e0a1115cbad22abe578f37a"
+            "ae975f82fa1e046ee0dd95af7904be58c7f0f2e714aedecdd83589d01dfb66ed"
         ),
         "artifacts/neutral-successor.profile.json": (
             "31387224e72609c153fc49e26c29e33de18fda7ab1fbabed55d25ba0bb21e658"
@@ -1492,10 +1492,10 @@ VENDORED: dict[str, dict[str, str]] = {
             "41bca93cfe91f624c24c6f6df14fb59e87a667027f635c4f05d79cfe5ee63d13"
         ),
         "cases/export-025-neutral-successor.json": (
-            "8ef232f680c5c7bdd566f760d04b7c1dbd71e894af26da09e85f15f1b7f5fa86"
+            "8cc7301fddd9ffcfb3634de5ac434bce61dfe23bccf079b1bce330e9da9786cd"
         ),
         "cases/export-026-grid-successor.json": (
-            "cba2c458d94aa1e17ec508b9acc878e002b8aa804e7833139305f040bcd32c71"
+            "d1caf668397e28928cd052b93b89c97d7b3945e04b4ed2dcfaddffa7bf6db001"
         ),
         "cases/export-027-variety-drawio.json": (
             "c7555864475763d17ee948e5416686fb80b0586e59fdc19dba6c41663154de0f"
@@ -1548,8 +1548,8 @@ VENDORED: dict[str, dict[str, str]] = {
         "cases/serialize-008-stale-descriptor-digest.json": (
             "8ac04ab429c4235136dab1a714325909aee618dab95e05788fff170909f4289e"
         ),
-        "manifest.json": "29348b375217707637b3c587335b504612135f791119b2c5dc39011c73392a51",
-        "seal.json": "f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43",
+        "manifest.json": "5648d7f2b9ab4ba1cc45487cf643d4545d55173f480ddde7f0f4cb520fbe4bf1",
+        "seal.json": "5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0",
     },
 }
 
@@ -1582,11 +1582,11 @@ VENDORED_CONTRACTS: dict[str, str] = {
 ALIASES: dict[str, dict[str, str]] = {
     "region-010-mixed-heights": {
         "aliasOf": "render.regions.mixed-label-heights",
-        "sha256": "50dbae54a96ccc1cedb67a4bc50b8b99fe8cdf0aa2522c86f2913d9c1e132ea2",
+        "sha256": "71b1467b24883a5734e6666920ce4bbba5cd0c7e65db85c7a648b8c166d0fa6b",
     },
     "ticks-001-half-even": {
         "aliasOf": "render.ticks.half-even",
-        "sha256": "3724ce5420866dcb822ecaeae1ad3b1cb3217cf351df71fdf9e4d398545f9485",
+        "sha256": "e4a191ff2b477df763ca6dd990a7fd8f9fb041bd27b4353e1f00d4335ca600d8",
     },
 }
 

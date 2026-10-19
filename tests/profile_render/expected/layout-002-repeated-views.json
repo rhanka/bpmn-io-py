@@ -1,7 +1,7 @@
 {
   "case": "layout-002-repeated-views",
   "clause": "DESIGN R3.3 \u00a79.4 L725; \u00a79.1 L667",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 776e7bfaf8c30484bd9a7fcc71c92ac1ad3af2f49431449d335025ad49a1079f; values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Two pages show the same process; each page resolves its own lane/band rectangles; repeated Input_Order and StoreRef_Policy get separate occurrence geometry; page order 0 (View_Z) precedes 1 (View_A). Fails against: Computing region geometry once per semantic element and copying it to every page.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 776e7bfaf8c30484bd9a7fcc71c92ac1ad3af2f49431449d335025ad49a1079f; values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Two pages show the same process; each page resolves its own lane/band rectangles; repeated Input_Order and StoreRef_Policy get separate occurrence geometry; page order 0 (View_Z) precedes 1 (View_A). Fails against: Computing region geometry once per semantic element and copying it to every page.",
   "operation": "layout",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

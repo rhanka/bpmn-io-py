@@ -1,7 +1,7 @@
 {
   "case": "digest-001-page-rename",
   "clause": "DESIGN R3.3 \u00a79.1 L667; \u00a79.2 L683\u2013L690",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 4bddc0560586fa52dab56caf4d904a420ed965bac36a64debee8b1db1869cbea; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Only the page display name changes (pageId unchanged; the new name keeps leading spaces, & < > \" ', a tab and a trailing space exactly): layoutDigest, payloadDigest (pages are payload) and viewRevision change; semanticRevision, themeDigest, bag and metrics digests equal render-001. Fails against: Hashing pageId only, deriving the name from pageId, or trimming/normalizing the captured name.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 4bddc0560586fa52dab56caf4d904a420ed965bac36a64debee8b1db1869cbea; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Only the page display name changes (pageId unchanged; the new name keeps leading spaces, & < > \" ', a tab and a trailing space exactly): layoutDigest, payloadDigest (pages are payload) and viewRevision change; semanticRevision, themeDigest, bag and metrics digests equal render-001. Fails against: Hashing pageId only, deriving the name from pageId, or trimming/normalizing the captured name.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

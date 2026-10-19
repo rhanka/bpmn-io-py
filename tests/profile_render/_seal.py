@@ -9,7 +9,6 @@ source files and the vendored JS seal.
 from __future__ import annotations
 
 import ast
-import copy
 import hashlib
 import importlib.util
 import json
@@ -504,24 +503,10 @@ VENDORED_KEYS = frozenset(
         "comparatorIds",
         "artifacts",
         "source",
-        "paritySync",
         "author",
     }
 )
-VENDORED_OPTIONAL = frozenset({"artifacts", "paritySync"})
-SEAM_DECISION = "PS-33"  # helper seams return PureResult
-ROW_DECISION = "PS-06"  # IO object centres on one row line
-SEAM_OPERATIONS = frozenset({"layoutTicks", "layoutRegions"})
-ROW_CASES = frozenset(
-    {
-        "layout-008-neutral-successor",
-        "layout-009-grid-successor",
-        "render-021-neutral-successor",
-        "render-022-grid-successor",
-        "export-025-neutral-successor",
-        "export-026-grid-successor",
-    }
-)
+VENDORED_OPTIONAL = frozenset({"artifacts"})
 
 
 def check_vendored_files(helper: types.ModuleType, directory: Path, tree: str) -> int:
@@ -552,41 +537,6 @@ def _ref(helper: types.ModuleType, value: dict[str, Any]) -> Json:
 def _js_ref(helper: types.ModuleType, tree: str, artifact: dict[str, Any]) -> dict[str, str]:
     """Re-express one JS ``{path, sha256}`` artifact reference as a vendored reference."""
     return {"vendored": helper.js_path(tree, artifact["path"]), "sha256": artifact["sha256"]}
-
-
-def _set(document: Json, pointer: str, value: Json) -> None:
-    """Replace the value at one RFC 6901 pointer."""
-    *parents, last = [part.replace("~1", "/").replace("~0", "~") for part in pointer[1:].split("/")]
-    holder = document
-    for part in parents:
-        holder = holder[int(part)] if isinstance(holder, list) else holder[part]
-    if isinstance(holder, list):
-        holder[int(last)] = value
-    else:
-        holder[last] = value
-
-
-def revert_parity_changes(record: dict[str, Any]) -> dict[str, Any]:
-    """Copy a vendored record with every parity-sync change set back to its JS value."""
-    plain = copy.deepcopy(record)
-    for change in record.get("paritySync", {}).get("changes", []):
-        assert resolve(plain, change["pointer"]) == change["to"], change["pointer"]
-        _set(plain, change["pointer"], copy.deepcopy(change["from"]))
-    return plain
-
-
-def _check_decisions(record: dict[str, Any]) -> None:
-    """A section-1 decision is listed exactly where it changes an imported value."""
-    name = record["case"]
-    sync = record.get("paritySync", {})
-    decisions = sync.get("decisions", [])
-    assert set(sync) <= {"decisions", "changes"}, name
-    assert set(decisions) <= {SEAM_DECISION, ROW_DECISION}, name
-    assert (SEAM_DECISION in decisions) == (record["operation"] in SEAM_OPERATIONS), name
-    assert (ROW_DECISION in decisions) == (name in ROW_CASES), name
-    assert ("changes" in sync) == (ROW_DECISION in decisions), name
-    for decision in decisions:
-        assert f"parity-sync decision {decision}" in record["derivation"], name
 
 
 def _check_profile(
@@ -620,9 +570,6 @@ def _check_inputs(
     for item, artifact in zip(plain["input"], artifacts, strict=True):
         if "path" not in artifact:
             assert item == {"role": artifact["role"], "json": artifact["json"]}, name
-        elif "json" in item:
-            assert "paritySync" in plain, f"{name}: inline copy of a vendored input"
-            assert item["json"] == _ref(helper, _js_ref(helper, tree, artifact)), name
         else:
             assert item == {"role": artifact["role"], **_js_ref(helper, tree, artifact)}, name
             _ref(helper, item)
@@ -631,7 +578,7 @@ def _check_inputs(
 def _check_expected(
     helper: types.ModuleType, tree: str, plain: dict[str, Any], js_case: dict[str, Any]
 ) -> None:
-    """The expected record, comparators and other artifacts are the JS ones (PS-33 applied)."""
+    """The expected record, comparators and other artifacts are the JS ones."""
     values = {
         artifact["role"]: (
             _ref(helper, _js_ref(helper, tree, artifact))
@@ -643,9 +590,6 @@ def _check_expected(
     result = values.pop("result") if "result" in values else values.pop("output")
     unsealed = values.pop("unsealed", None)
     comparators = js_case["comparatorIds"]
-    if SEAM_DECISION in plain.get("paritySync", {}).get("decisions", []):
-        result = {"status": "ok", "payload": result, "diagnostics": []}
-        comparators = ["result-exact/1" if c == "seam-exact/1" else c for c in comparators]
     if unsealed is not None:
         result = {**result, "unsealed": [entry["pointer"] for entry in unsealed]}
     name = plain["case"]
@@ -659,7 +603,7 @@ def _check_expected(
 def check_vendored_record(
     helper: types.ModuleType, tree: str, path: Path, record: dict[str, Any]
 ) -> None:
-    """One vendored record is the JS case, re-expressed, with only its decisions applied."""
+    """One vendored record is the JS case, re-expressed, with no value changed."""
     name = path.name
     assert VENDORED_KEYS - VENDORED_OPTIONAL <= set(record) <= VENDORED_KEYS, name
     assert record["case"] == path.stem, name
@@ -672,11 +616,9 @@ def check_vendored_record(
     assert helper.JS_SEAL_SHA256 in record["derivation"], name
     assert source["sha256"] in record["derivation"], name
     assert record["operation"] == js_case["operation"], name
-    _check_decisions(record)
     _check_profile(helper, tree, record, js_case)
-    plain = revert_parity_changes(record)
-    _check_inputs(helper, tree, plain, js_case)
-    _check_expected(helper, tree, plain, js_case)
+    _check_inputs(helper, tree, record, js_case)
+    _check_expected(helper, tree, record, js_case)
 
 
 def check_vendored(helper: types.ModuleType, directory: Path, tree: str) -> int:

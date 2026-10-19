@@ -1,7 +1,7 @@
 {
   "case": "render-020-geometry-theme-gated",
   "clause": "DESIGN R3.3 \u00a79.4 L721; \u00a713 L928; \u00a716 L1150",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 57dcb6d7674366f43a4bd17d02102966eb59e65b05894ffd09fd0e4a27d1840c; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: wide-own declares geometry theme; the per-theme geometry policy is not approved (owner default: shared geometry), so resolveTheme refuses profile-open (harmonization H5). Fails against: Rendering with per-theme geometry as if approved.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 57dcb6d7674366f43a4bd17d02102966eb59e65b05894ffd09fd0e4a27d1840c; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: wide-own declares geometry theme; the per-theme geometry policy is not approved (owner default: shared geometry), so resolveTheme refuses profile-open (harmonization H5). Fails against: Rendering with per-theme geometry as if approved.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

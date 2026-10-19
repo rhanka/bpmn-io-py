@@ -1,7 +1,7 @@
 {
   "case": "render-021-neutral-successor",
   "clause": "DESIGN R3.3 \u00a714.3 L961; \u00a79.1 L669\u2013L673",
-  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 60e5c89ee13226ef3f0dbf248abb4aa90ae6a366f812080252bb69aeac3c3da9, by parity-sync decision PS-06 (DESIGN \u00a79.4 L723: IO object centres on one row line; RH = max(minHeight, max(object.h + label.h) + 2\u00b7padding), A = max(object.h/2), B = max(object.h/2 + label.h), cy = body.y + max(A, (RH + A \u2212 B)/2), object y = cy \u2212 h/2, one roundEven per coordinate): the input layout is the PS-06 layout of layout-008-neutral-successor (content row on Z-page (padding 8, minHeight 40): Task_A (a-first, 100000x80000, no label) and Task_B (z-last, 100000x80000, label height 14000); Task_A y 7008 \u2192 8); R copies the layout geometry, so the Task_A occurrence y becomes 8, binding.layoutDigest = H(layout) and binding.payloadDigest = H({pages, occurrences, coverage, diagnostics}) are recomputed; nothing else changes. paritySync.changes lists every changed value with its sealed JS value. Values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: R of the explicitly bound neutral successor on its resolved layout: Lane_content renders with the lane glyph and label content; Task_A has no label; Task_B is repeated on both pages; LaneSet_1 and Process_1 are nonvisual. Fails against: Reusing the lot-0 supplied render records, or treating the bound lane as unsupported.",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 4adf4c7a37d47e596864a9d60400cc0b8f4e4a1ad98d7fa776b53fecd8fed805, by parity-sync decision PS-06 (DESIGN \u00a79.4 L723: IO object centres on one row line; RH = max(minHeight, max(object.h + label.h) + 2\u00b7padding), A = max(object.h/2), B = max(object.h/2 + label.h), cy = body.y + max(A, (RH + A \u2212 B)/2), object y = cy \u2212 h/2, one roundEven per coordinate): the input layout is the PS-06 layout of layout-008-neutral-successor (content row on Z-page (padding 8, minHeight 40): Task_A (a-first, 100000x80000, no label) and Task_B (z-last, 100000x80000, label height 14000); Task_A y 7008 \u2192 8); R copies the layout geometry, so the Task_A occurrence y becomes 8, binding.layoutDigest = H(layout) and binding.payloadDigest = H({pages, occurrences, coverage, diagnostics}) are recomputed; nothing else changes. The JS seal carries the decided values. Values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: R of the explicitly bound neutral successor on its resolved layout: Lane_content renders with the lane glyph and label content; Task_A has no label; Task_B is repeated on both pages; LaneSet_1 and Process_1 are nonvisual. Fails against: Reusing the lot-0 supplied render records, or treating the bound lane as unsupported.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-successor.profile.json",
@@ -39,169 +39,8 @@
     },
     {
       "role": "layout",
-      "json": {
-        "layoutVersion": "1",
-        "pages": [
-          {
-            "pageId": "Z-page",
-            "name": "First sheet",
-            "order": 0,
-            "semanticRootId": "Process_1",
-            "bounds": {
-              "x": 0,
-              "y": 0,
-              "width": 1000000,
-              "height": 800000
-            }
-          },
-          {
-            "pageId": "A-page",
-            "name": "Second sheet",
-            "order": 1,
-            "semanticRootId": "Process_1",
-            "bounds": {
-              "x": 0,
-              "y": 0,
-              "width": 1000000,
-              "height": 800000
-            }
-          }
-        ],
-        "geometry": [
-          {
-            "pageId": "Z-page",
-            "occurrenceKey": "a-first",
-            "semanticId": "Task_A",
-            "role": "content",
-            "bounds": {
-              "x": 8,
-              "y": 8,
-              "width": 100000,
-              "height": 80000
-            }
-          },
-          {
-            "pageId": "Z-page",
-            "occurrenceKey": "a-note",
-            "semanticId": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
-            "role": "content",
-            "bounds": {
-              "x": 100000,
-              "y": 500000,
-              "width": 100000,
-              "height": 40000
-            },
-            "label": {
-              "text": "helper",
-              "bounds": {
-                "x": 100000,
-                "y": 500000,
-                "width": 100000,
-                "height": 40000
-              },
-              "lines": [
-                "helper"
-              ]
-            }
-          },
-          {
-            "pageId": "Z-page",
-            "occurrenceKey": "z-lane",
-            "semanticId": "Lane_content",
-            "role": "support",
-            "bounds": {
-              "x": 0,
-              "y": 0,
-              "width": 800000,
-              "height": 200000
-            },
-            "label": {
-              "text": "content",
-              "bounds": {
-                "x": 0,
-                "y": 0,
-                "width": 30000,
-                "height": 200000
-              },
-              "lines": [
-                "content"
-              ]
-            }
-          },
-          {
-            "pageId": "Z-page",
-            "occurrenceKey": "z-last",
-            "semanticId": "Task_B",
-            "role": "content",
-            "bounds": {
-              "x": 100016,
-              "y": 8,
-              "width": 100000,
-              "height": 80000
-            },
-            "label": {
-              "text": "Ready",
-              "bounds": {
-                "x": 130016,
-                "y": 80008,
-                "width": 40000,
-                "height": 14000
-              },
-              "lines": [
-                "Ready"
-              ]
-            }
-          },
-          {
-            "pageId": "A-page",
-            "occurrenceKey": "a-lane",
-            "semanticId": "Lane_content",
-            "role": "support",
-            "bounds": {
-              "x": 0,
-              "y": 0,
-              "width": 600000,
-              "height": 180000
-            },
-            "label": {
-              "text": "content",
-              "bounds": {
-                "x": 0,
-                "y": 0,
-                "width": 30000,
-                "height": 180000
-              },
-              "lines": [
-                "content"
-              ]
-            }
-          },
-          {
-            "pageId": "A-page",
-            "occurrenceKey": "a-last-page",
-            "semanticId": "Task_B",
-            "role": "content",
-            "bounds": {
-              "x": 8,
-              "y": 8,
-              "width": 100000,
-              "height": 80000
-            },
-            "label": {
-              "text": "Ready",
-              "bounds": {
-                "x": 30008,
-                "y": 80008,
-                "width": 40000,
-                "height": 14000
-              },
-              "lines": [
-                "Ready"
-              ]
-            }
-          }
-        ]
-      }
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-successor.layout.json",
+      "sha256": "ae975f82fa1e046ee0dd95af7904be58c7f0f2e714aedecdd83589d01dfb66ed"
     },
     {
       "role": "themeId",
@@ -616,34 +455,7 @@
   ],
   "source": {
     "vendored": "tests/profile_render/expected/vendor/js/cases/render-021-neutral-successor.json",
-    "sha256": "60e5c89ee13226ef3f0dbf248abb4aa90ae6a366f812080252bb69aeac3c3da9"
-  },
-  "paritySync": {
-    "decisions": [
-      "PS-06"
-    ],
-    "changes": [
-      {
-        "pointer": "/input/1/json/geometry/0/bounds/y",
-        "from": 7008,
-        "to": 8
-      },
-      {
-        "pointer": "/expected/payload/binding/layoutDigest",
-        "from": "04fb649d8d9feaea940c5253bdbb7fe990606a5c8eef8420bbf6e423cc659530",
-        "to": "8c4c13afa342fcb6529290c4b340d43ec22c49cf0002c40de79d8a98f5889a20"
-      },
-      {
-        "pointer": "/expected/payload/binding/payloadDigest",
-        "from": "26274070dccf790e0a4a373a40bf5143fa475d808d332193a7455cdfbd12fe41",
-        "to": "9f384ddd7f82235b23c0ed2c17989da5c7975ff60322af74db537bdc5db549e6"
-      },
-      {
-        "pointer": "/expected/payload/occurrences/0/bounds/y",
-        "from": 7008,
-        "to": 8
-      }
-    ]
+    "sha256": "4adf4c7a37d47e596864a9d60400cc0b8f4e4a1ad98d7fa776b53fecd8fed805"
   },
   "author": "spec-seal"
 }

@@ -18,19 +18,23 @@
   ],
   "expectedArtifacts": [
     {
-      "role": "output",
-      "json": [
-        152500,
-        1000000,
-        123456789,
-        123456789012345,
-        -1234568,
-        98765432
-      ]
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": [
+          152500,
+          1000000,
+          123456789,
+          123456789012345,
+          -1234568,
+          98765432
+        ],
+        "diagnostics": []
+      }
     }
   ],
   "expectedStatus": "ok",
   "comparatorIds": [
-    "seam-exact/1"
+    "result-exact/1"
   ]
 }

@@ -1,7 +1,7 @@
 {
   "case": "bpmn-003-variety-native",
   "clause": "DESIGN R3.3 \u00a710.2 L794\u2013L796",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 d6aedb63d65fd2c3e5e8e51e2f8669ee1c65e9fb6ecafb3a659c43ea8fec242c; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: BPMN XML keeps the internal calledElement target, the TerminateEventDefinition of the end event and the retained ServiceTask subtype natively. Fails against: Dropping calledElement, writing an ordinary end event, or downgrading the service task to a task.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 d6aedb63d65fd2c3e5e8e51e2f8669ee1c65e9fb6ecafb3a659c43ea8fec242c; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: BPMN XML keeps the internal calledElement target, the TerminateEventDefinition of the end event and the retained ServiceTask subtype natively. Fails against: Dropping calledElement, writing an ordinary end event, or downgrading the service task to a task.",
   "operation": "serializeBpmn",
   "profile": null,
   "input": [

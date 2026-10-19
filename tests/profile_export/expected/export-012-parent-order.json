@@ -1,7 +1,7 @@
 {
   "case": "export-012-parent-order",
   "clause": "DESIGN R3.3 \u00a710.2 L774",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 ed5cdeef5beb9f20b6e4303108180b23175523705d5f4cbd870f621b565294d1; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The variant emits a label whose parent is the pool node before export-nodes emitted it (forward parent). Full refusal record with echoed identity and revision. Fails against: Deferring or reordering emission to satisfy the parent.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 ed5cdeef5beb9f20b6e4303108180b23175523705d5f4cbd870f621b565294d1; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The variant emits a label whose parent is the pool node before export-nodes emitted it (forward parent). Full refusal record with echoed identity and revision. Fails against: Deferring or reordering emission to satisfy the parent.",
   "operation": "mapExport",
   "profile": {
     "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-parent-order.profile.json",

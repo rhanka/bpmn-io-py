@@ -1,7 +1,7 @@
 {
   "case": "idplan-007-utf16-key-order",
   "clause": "DESIGN R3.3 \u00a710.2 L801; \u00a72.2 L126",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 4a2b65b33bfbd3aeaa8174295d15b56721cc1abc3ee77c3875632126838b511d; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: Occurrence keys sort by UTF-16 code units: Z (0x5A), z (0x7A), U+10000 (surrogate 0xD800) and then U+E000; code-point order would place U+E000 before U+10000. Fails against: Code-point or locale collation of occurrence keys.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 4a2b65b33bfbd3aeaa8174295d15b56721cc1abc3ee77c3875632126838b511d; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: Occurrence keys sort by UTF-16 code units: Z (0x5A), z (0x7A), U+10000 (surrogate 0xD800) and then U+E000; code-point order would place U+E000 before U+10000. Fails against: Code-point or locale collation of occurrence keys.",
   "operation": "exportIdPlan",
   "profile": null,
   "input": [

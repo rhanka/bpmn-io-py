@@ -1,7 +1,7 @@
 {
   "case": "legacy-003-colored",
   "clause": "DESIGN R3.3 \u00a79.5 L729",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 ec94cf07958ae2d18746105ca2ac6075456c5d8f49025284c12b34ba34c204de; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: colored maps to its declared theme; the sparse DI colours stay caller-supplied DiStyles (legacy-007). Fails against: Hard-coding DI colour application inside the library.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 ec94cf07958ae2d18746105ca2ac6075456c5d8f49025284c12b34ba34c204de; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: colored maps to its declared theme; the sparse DI colours stay caller-supplied DiStyles (legacy-007). Fails against: Hard-coding DI colour application inside the library.",
   "operation": "resolveLegacyTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

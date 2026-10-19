@@ -1,7 +1,7 @@
 {
   "case": "ticks-004-large-and-integral",
   "clause": "DESIGN R3.3 \u00a73.1 L270",
-  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 85cba64f0c817e710c7ad3ac34feb42d71fac7c9f859f8733f7e9893f1e259e4, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutTicks output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Integral and fractional pt values convert exactly (123456789012.345 pt -> 123456789012345 ticks); -1234567.5 rounds to the even -1234568 and 98765432.5 to the even 98765432. Fails against: Half-up rounding gives -1234567 and 98765433.",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 d88ac00acee6127a626114c8a7fc1141a3ec67e0d3fdf05c82629263c22869d0, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutTicks output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Integral and fractional pt values convert exactly (123456789012.345 pt -> 123456789012345 ticks); -1234567.5 rounds to the even -1234568 and 98765432.5 to the even 98765432. Fails against: Half-up rounding gives -1234567 and 98765433.",
   "operation": "layoutTicks",
   "profile": null,
   "input": [
@@ -35,12 +35,7 @@
   ],
   "source": {
     "vendored": "tests/profile_render/expected/vendor/js/cases/ticks-004-large-and-integral.json",
-    "sha256": "85cba64f0c817e710c7ad3ac34feb42d71fac7c9f859f8733f7e9893f1e259e4"
-  },
-  "paritySync": {
-    "decisions": [
-      "PS-33"
-    ]
+    "sha256": "d88ac00acee6127a626114c8a7fc1141a3ec67e0d3fdf05c82629263c22869d0"
   },
   "author": "spec-seal"
 }

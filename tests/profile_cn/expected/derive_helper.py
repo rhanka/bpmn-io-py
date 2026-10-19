@@ -7558,8 +7558,8 @@ def corpus_files(
 
 #: The JS lot-3 seal every vendored file comes from: its seal.json SHA-256 and
 #: commit. The JS expectations root is mirrored under ``vendor/js/``.
-JS_SEAL_SHA256 = "6b807ee2c219f614d0f434cb8568c8d15acc0cc425a11bfdaa5cf027d86e8b06"
-JS_SEAL_COMMIT = "babf56df0b4ac1d766879f614de9c0838a09264c"
+JS_SEAL_SHA256 = "1adc160ccd3c2567c5f45b1a1b92322a21f0dcccaf9676f3a7901b0642259934"
+JS_SEAL_COMMIT = "09de002862658a228399e8d186c43d56c9f209ec"
 VENDOR_DIR = "vendor/js/"
 #: Raw SHA-256 of every vendored file, as pinned by that JS seal.
 VENDORED: dict[str, str] = {
@@ -7648,7 +7648,7 @@ VENDORED: dict[str, str] = {
         "52677741df37f24db1fc42da59d7b54ad021355d28d6c2f6ae715d02a64a9a47"
     ),
     "cases/l3-imp-projection-out-of-base.json": (
-        "d138cb0f3b4f81b157ec9449fd6be503df9cfedbabdc8cbf34919661129ff8a7"
+        "eab297a19174d83da4f736defe1b678ce57ba6a10c6c55be2340a40ed37edffa"
     ),
     "cases/l3-imp-remap-duplicate-result.json": (
         "9bcf1d408f6744ca8676e67a31aff207949f59691e6bca7e643893505c66c8e7"
@@ -7660,7 +7660,7 @@ VENDORED: dict[str, str] = {
         "85fe933ed3adda30b4a829f99de8d0f3ffa4705db2ef44dc699541a7430173bf"
     ),
     "cases/l3-imp-remap-qname.json": (
-        "00f97bfac9591aa081edc2a29e36568b56e9895f9352df92176a6f2173311c8c"
+        "db18d5b7c78c48c3110795d35367bd13e39a0a2aed9310dfd0d6862401cbc4f7"
     ),
     "cases/l3-imp-remap-swap.json": (
         "15fc221badc641aeac03c1d2650a0c4353c77c286fa7a204a7365068f05ff1c4"
@@ -7770,7 +7770,7 @@ VENDORED: dict[str, str] = {
     "cases/l3-trig-single-trigger-accept.json": (
         "bff4d4ee2b7c65d542148867e905c9394faf129f14574a1c09f251be0b1ae200"
     ),
-    "index.json": "cc3151ccba8bb49513fe4b059c8331364e7c5c5cda731e76cea9afcbd8945721",
+    "index.json": "54e42f1f08b223880c565e59d76fd70ada9a7649627b88c13a04e6ce267c0739",
     "profile/neutral-cn-base.json": (
         "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
     ),
@@ -7788,84 +7788,18 @@ VENDORED: dict[str, str] = {
     ),
     "profile/neutral-cn.json": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32",
 }
-QNAME_ENTRY = "/expectedArtifacts/0/json/report/entries/0"
-#: Vendored cases whose values a parity sync decision changes. The committed bytes
-#: are the sealed JS source plus the decision; reverting the decided values gives
-#: back the sealed JS source bytes exactly, so nothing else differs.
-RECONCILED: dict[str, dict[str, Json]] = {
-    "cases/l3-imp-projection-out-of-base.json": {
-        "decision": "PS-21",
-        "change": (
-            "the projection commits nothing (read-only), so revision and"
-            " report.outputRevision equal the baseRevision and the report inputRevision"
-        ),
-        "sha256": "eab297a19174d83da4f736defe1b678ce57ba6a10c6c55be2340a40ed37edffa",
-        "revert": [
-            {
-                "op": "replace",
-                "path": "/expectedArtifacts/0/json/revision",
-                "value": "4b25b86e731e277d55e62cc9a1d06163d5418633651846dd44f0cb7362e85761",
-            },
-            {
-                "op": "replace",
-                "path": "/expectedArtifacts/0/json/report/outputRevision",
-                "value": "4b25b86e731e277d55e62cc9a1d06163d5418633651846dd44f0cb7362e85761",
-            },
-        ],
-    },
-    "cases/l3-imp-remap-qname.json": {
-        "decision": "PS-32",
-        "change": (
-            "the observed unsupported-namespace entry addresses the written location: its"
-            " source and result pointers are the element pointer plus /calledElement"
-            " (property kept, result provenance exact, before = after = the value)"
-        ),
-        "sha256": "db18d5b7c78c48c3110795d35367bd13e39a0a2aed9310dfd0d6862401cbc4f7",
-        "revert": [
-            {
-                "op": "replace",
-                "path": QNAME_ENTRY + "/source/pointer",
-                "value": "/rootElements/0/flowElements/1",
-            },
-            {
-                "op": "replace",
-                "path": QNAME_ENTRY + "/result/pointer",
-                "value": "/rootElements/0/flowElements/1",
-            },
-        ],
-    },
-}
 
 
 def vendored_files() -> dict[str, bytes]:
-    """Return every vendored JS file unchanged, after checking its pinned digest.
-
-    A reconciled case must also give back the sealed JS bytes once its decided
-    values are reverted, so the decision is its only difference from the JS seal.
-    """
+    """Return every vendored JS file unchanged, after checking its pinned digest."""
     files: dict[str, bytes] = {}
     for rel, pinned in VENDORED.items():
         data = (OUT / VENDOR_DIR / rel).read_bytes()
-        fix = RECONCILED.get(rel)
-        if fix is None:
-            source_digest = raw_digest(data)
-        else:
-            if raw_digest(data) != fix["sha256"]:
-                message = f"reconciled vendored file differs from its pin: {rel}"
-                raise ValueError(message)
-            reverted = apply_patch(json.loads(data), fix["revert"])  # type: ignore[arg-type]
-            source_digest = raw_digest(pretty_bytes(reverted))
-        if source_digest != pinned:
+        if raw_digest(data) != pinned:
             message = f"vendored file differs from the JS seal pin: {rel}"
             raise ValueError(message)
         files[VENDOR_DIR + rel] = data
     return files
-
-
-def committed_digest(rel: str) -> str:
-    """Return the raw SHA-256 of one committed vendored file (reconciled or not)."""
-    fix = RECONCILED.get(rel)
-    return str(fix["sha256"]) if fix is not None else VENDORED[rel]
 
 
 def vendored_manifest(
@@ -7882,7 +7816,7 @@ def vendored_manifest(
         {
             "caseId": cid,
             "source": VENDOR_REL + f"cases/{cid}.json",
-            "sha256": committed_digest(f"cases/{cid}.json"),
+            "sha256": VENDORED[f"cases/{cid}.json"],
         }
         for cid in sorted(vendored_ids, key=utf16)
     ]
@@ -8104,19 +8038,10 @@ def _vendored_expected(cid: str, case: dict[str, Json], operation: str) -> Json:
 
 def _vendored_derivation(row: str, rel: str, meta: dict[str, Json], *, fixed: bool) -> str:
     owner = "(BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC)."
-    fix = RECONCILED.get(rel)
-    if fix is None:
-        text = (
-            f"Vendored unchanged from JS seal {JS_SEAL_SHA256}, case file SHA-256"
-            f" {VENDORED[rel]}; values owned by that seal {owner}"
-        )
-    else:
-        text = (
-            f"Vendored from JS seal {JS_SEAL_SHA256}, case file SHA-256 {VENDORED[rel]},"
-            f" with the parity sync decision {fix['decision']} applied: {fix['change']};"
-            f" committed file SHA-256 {fix['sha256']}; every other value is owned by that"
-            f" seal {owner}"
-        )
+    text = (
+        f"Vendored unchanged from JS seal {JS_SEAL_SHA256}, case file SHA-256"
+        f" {VENDORED[rel]}; values owned by that seal {owner}"
+    )
     text += f" Import row {row}: {ROW_NOTES[row]}."
     if fixed:
         text += " fixedPoint: DESIGN §7.3 C(C(x)) = C(x), N(N(x)) = N(x) for any accepted x."

@@ -1,7 +1,7 @@
 {
   "case": "serialize-003-xml-escaping",
   "clause": "DESIGN R3.3 \u00a710.2 L801; \u00a710.1 L737",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 9e8d414c317401e5c43bd7ab7dcf2fd81994469e6b762830889bf129810c2976; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The page name has two leading spaces, & < > \" ', a tab and a trailing space; after XML parsing the diagram name equals the original string exactly, so the tab must be written as a character reference (attribute-value normalization would turn a raw tab into a space) and no whitespace is trimmed. Fails against: Unescaped markup, entity double-escaping, a raw tab in the attribute, or trimming the name.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 9e8d414c317401e5c43bd7ab7dcf2fd81994469e6b762830889bf129810c2976; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The page name has two leading spaces, & < > \" ', a tab and a trailing space; after XML parsing the diagram name equals the original string exactly, so the tab must be written as a character reference (attribute-value normalization would turn a raw tab into a space) and no whitespace is trimmed. Fails against: Unescaped markup, entity double-escaping, a raw tab in the attribute, or trimming the name.",
   "operation": "serializePrepared",
   "profile": null,
   "input": [

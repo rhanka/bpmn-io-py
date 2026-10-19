@@ -1,7 +1,7 @@
 {
   "case": "decision-003-host-case-stale",
   "clause": "DESIGN R3.3 \u00a79.3 L702; \u00a79.2 L690",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 c3b1dd079b533bd1a1e7c0364afcccd5e9194c4265c7987dfd3f481328ffa87c; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: A layout fitted with a host Unicode-16 mapping (U+A7CB) does not match the pinned 15.0.0 evaluation (U+0264). Fails against: An implementation using the host case tables accepts this layout (and refuses the correct one in decision-001).",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 c3b1dd079b533bd1a1e7c0364afcccd5e9194c4265c7987dfd3f481328ffa87c; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: A layout fitted with a host Unicode-16 mapping (U+A7CB) does not match the pinned 15.0.0 evaluation (U+0264). Fails against: An implementation using the host case tables accepts this layout (and refuses the correct one in decision-001).",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

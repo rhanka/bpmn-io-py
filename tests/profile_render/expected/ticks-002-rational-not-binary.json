@@ -1,7 +1,7 @@
 {
   "case": "ticks-002-rational-not-binary",
   "clause": "DESIGN R3.3 \u00a73.1 L270",
-  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 1752744035bf1b8842b7d48fa0805cbf54d47c2069c33a85216889ffbba70e78, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutTicks output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Each binary64 input is read as the exact rational of its shortest decimal spelling, then multiplied by 1000: 2000.5, 2003.5, 4005.5 and 8009.5 round to the even 2000, 2004, 4006 and 8010. The binary64 products are 2000.5000000000002, 2003.4999999999998, 4005.4999999999995 and 8009.499999999999. Fails against: Rounding the binary64 product (even or half up) gives 2001, 2003, 4005 and 8009.",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 0d5ca097ae2a89d6f0f6694885aa5b62869eae21098de9044093ccdbcd3493e8, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutTicks output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Each binary64 input is read as the exact rational of its shortest decimal spelling, then multiplied by 1000: 2000.5, 2003.5, 4005.5 and 8009.5 round to the even 2000, 2004, 4006 and 8010. The binary64 products are 2000.5000000000002, 2003.4999999999998, 4005.4999999999995 and 8009.499999999999. Fails against: Rounding the binary64 product (even or half up) gives 2001, 2003, 4005 and 8009.",
   "operation": "layoutTicks",
   "profile": null,
   "input": [
@@ -31,12 +31,7 @@
   ],
   "source": {
     "vendored": "tests/profile_render/expected/vendor/js/cases/ticks-002-rational-not-binary.json",
-    "sha256": "1752744035bf1b8842b7d48fa0805cbf54d47c2069c33a85216889ffbba70e78"
-  },
-  "paritySync": {
-    "decisions": [
-      "PS-33"
-    ]
+    "sha256": "0d5ca097ae2a89d6f0f6694885aa5b62869eae21098de9044093ccdbcd3493e8"
   },
   "author": "spec-seal"
 }

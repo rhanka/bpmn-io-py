@@ -17,18 +17,22 @@
   ],
   "expectedArtifacts": [
     {
-      "role": "output",
-      "json": [
-        0,
-        0,
-        0,
-        0,
-        2
-      ]
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": [
+          0,
+          0,
+          0,
+          0,
+          2
+        ],
+        "diagnostics": []
+      }
     }
   ],
   "expectedStatus": "ok",
   "comparatorIds": [
-    "seam-exact/1"
+    "result-exact/1"
   ]
 }

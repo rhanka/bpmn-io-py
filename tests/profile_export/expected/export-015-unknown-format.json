@@ -1,7 +1,7 @@
 {
   "case": "export-015-unknown-format",
   "clause": "DESIGN R3.3 \u00a710.2 L770; \u00a710.2 L780",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 7e94fbcff1f9228a033a19e01802bd42d6a18e422acce8f0853966c0e80c29cb; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: No export spec of the profile targets pdf (the closed format enum has no pdf) and no adapter is registered for it. Fails against: Falling back to the first export spec.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 7e94fbcff1f9228a033a19e01802bd42d6a18e422acce8f0853966c0e80c29cb; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: No export spec of the profile targets pdf (the closed format enum has no pdf) and no adapter is registered for it. Fails against: Falling back to the first export spec.",
   "operation": "mapExport",
   "profile": {
     "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-profile.json",
