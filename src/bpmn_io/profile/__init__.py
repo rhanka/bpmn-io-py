@@ -9,6 +9,14 @@ from __future__ import annotations
 
 from bpmn_io.profile._bridge import HeadlessBridge, create_bridge
 from bpmn_io.profile._c14n import digest, digest_bytes, jcs, jcs_bytes
+
+# Lot 3 (recipes, C, supports, import adapters): one contiguous block.
+from bpmn_io.profile._cn_apply import apply_plan
+from bpmn_io.profile._cn_complete import complete
+from bpmn_io.profile._cn_context import Authority, create_read_context
+from bpmn_io.profile._cn_gates import GATES
+from bpmn_io.profile._cn_normalize import sort_placements
+from bpmn_io.profile._cn_plan import plan_recipe
 from bpmn_io.profile._compat import check_compatibility
 from bpmn_io.profile._compiler import (
     CompiledProfile,
@@ -77,7 +85,7 @@ from bpmn_io.profile._unicode_case import (
     upper_full,
 )
 
-__all__ = [
+__all__ = [  # noqa: RUF022 - lots append contiguous per-lot blocks
     "CLOSED_KEYWORDS",
     "INVENTORY_HASHES",
     "PATTERN_INVENTORY",
@@ -141,4 +149,12 @@ __all__ = [
     "validate_bindings",
     "validate_envelope",
     "worst_capability",
+    # Lot 3 (recipes, C, supports, import adapters): one contiguous block.
+    "Authority",
+    "GATES",
+    "apply_plan",
+    "complete",
+    "create_read_context",
+    "plan_recipe",
+    "sort_placements",
 ]
