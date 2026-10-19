@@ -15,7 +15,17 @@ shared with lot 3 that no harmonization row changes. Revision PS (block-B
 JS↔Python parity sync, 2026-10-19, cited as "parity sync PS-nn"): the compile
 success observable of PS-35 (§6), the Python rules adopted as shared contract by
 PS-12, PS-14 and PS-17 (§3.2, §4.3, §11), and the JS-owned cases vendored
-unchanged with their values (§9.1, §12.1).
+unchanged with their values (§9.1, §12.1). Revision UA (block-B Unicode-integrity
+audit, 2026-10-19): the seal fix-round write channel had normalized the
+decomposed `Store_9` name `Cafe` + U+0301 of the reference-picking document to
+the precomposed U+00E9 in the six `pick-*` cases that share it (§4.6, §12). The
+spec seal confirms by hand derivation the integration restoration of
+`pick-query-no-normalization` (UTF-8 `43 61 66 65 CC 81`, second query
+`65 CC 81`, revision
+`13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095`) and restores
+the first-seal bytes in `pick-field-states`, `pick-filter-sort`, `pick-paging`,
+`pick-paging-bounds` and `pick-query-case-sensitive`; their candidate sets are
+unchanged, the `Store_9` labels and the revisions follow.
 
 The sealed expectations live in `tests/profile_commands/expected/` (harness
 cases, committed byte artifacts under `artifacts/`, the
