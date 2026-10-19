@@ -6,21 +6,28 @@ DESIGN R3.3 (SHA-256
 `48139f5fd5bd789eacbf271081a95432c54d8361b1e52404e3443a25fa65782f`) §8.3, the
 headless lifecycle of §8.1 and the parts of the §8.2 transaction adapter that
 apply without a browser, together with the sections they rely on (§2.2, §2.4,
-§2.4.1, §3.1, §3.2, §5.1, §7.1, §7.2, §10.1, §13, §16). The sealed expectations
-live in `tests/profile_commands/expected/` (pinned by `MANIFEST.sha256`, checked by
-`tests/profile_commands/test_expected_seal.py`). A code job implements against
-them and never edits them; if a sealed value disagrees with the DESIGN, the code
-job keeps it, adds an `xfail(strict=True)` test naming the DESIGN line and the
-expectation file, and reports it.
+§2.4.1, §3.1, §3.2, §5.1, §6.2, §6.4, §7.1, §7.2, §10.1, §13, §14.3, §16).
+Revision SF (seal fix round, 2026-10-18): it applies the block-B JS↔Python
+harmonization decisions of 2026-10-18 (cited below as "harmonization <row>", for
+example harmonization J1) with the precedence DESIGN text > harmonization
+decision > review finding, and follows the lot-3 C/N freeze for every contract
+shared with lot 3 that no harmonization row changes.
+
+The sealed expectations live in `tests/profile_commands/expected/` (harness
+cases, committed byte artifacts under `artifacts/`, the
+`profile-parity-corpus/1` projection under `parity/`, all pinned by
+`MANIFEST.sha256` and checked by `tests/profile_commands/test_expected_seal.py`).
+A code job implements against them and never edits them; if a sealed value
+disagrees with the DESIGN, the code job keeps it, adds an `xfail(strict=True)`
+test naming the DESIGN line and the expectation file, and reports it.
 
 Signatures follow `spec/SPEC_PROFILE_MECHANISM_PY.md` (snake_case operations,
 DESIGN wire field names, closed `PureResult`/`Result` unions). Lot 3
-(`plan_recipe`, `apply_plan`, `complete`, `normalize`) is consumed by signature
-only; lot 4 (layout, R, `viewRevision` digests) is consumed through
-`get_snapshot` only. Every sealed outcome below is constructed so that it does
-not depend on a lot-3 or lot-4 sealed value: C and N of the fixture profiles
-only set `isExecutable`, place tasks and (gate cases only) ensure supports,
-which the vendored contract fixtures already pin.
+(`plan_recipe`, `apply_plan`, `complete`, `normalize`) is consumed through its
+frozen signatures and output shapes (§10); lot 4 (layout, R, `viewRevision`
+digests) is consumed through `get_snapshot` only and every lot-4 value is an
+explicitly unsealed member (§8.3). The lint stages run the block-A profile lint
+bridge (§10.3).
 
 ## 1. Module layout
 
@@ -30,15 +37,14 @@ ports pinned by `UPSTREAM.toml`, stdlib only):
 | Module | Content |
 | --- | --- |
 | `_ui.py` | compile-time UI and field rules (§6), compiled surface/field/message index attached to `CompiledProfile`, called by `compile_profile` between CR-09 and CR-11 |
-| `_commands.py` | command records, surface/upstream/field resolution, gesture parameter binding, value typing, paste fragment compilation, replacement map |
-| `_transaction.py` | guard states, detached stage, C/N pipeline, OPEN-RESERVED-N gate, no-op detection, history entries |
+| `_commands.py` | command records (§3.1), surface/upstream/field resolution, gesture parameter binding, value typing, paste fragment compilation, replacement map |
+| `_transaction.py` | guard states, detached stage, the C → pre-normalize lint → N → post-normalize lint pipeline (§4.8), report composition (§4.9), no-op detection, history entries |
 | `_queries.py` | `list_entries`, `list_fields`, `check_field`, `query_references`, `copy`, `localize` |
 | `_bridge.py` | `HeadlessBridge` extended with the methods of §2 |
 
 Public names: `bpmn_io.profile.localize` (new) and the new `HeadlessBridge`
-methods. `CompiledProfile` gains the compiled UI index and its §5.1 profile
-identity record (attribute names are private to the code job; if lot 3 already
-exposes the identity record, lot 5 reuses it).
+methods. `CompiledProfile` gains the compiled UI index; it reuses the lot-3
+`identity` field (lot-3 prerequisite B7).
 
 ## 2. Signatures and errata
 
@@ -48,10 +54,10 @@ never raise for an expected refusal: they return the closed union named below.
 | DESIGN ABI | Python | Inputs → payload |
 | --- | --- | --- |
 | `createBpmnCanvas` | `create_bridge(context=None)` | unchanged |
-| `setDefinitions` | `set_definitions(envelope, *, expected_revision=None, codec=None, imported_di=None) -> Result` | unchanged signature; **erratum E1**: a load starts a new history epoch (undo and redo stacks cleared, DESIGN §8.2 L643) instead of pushing the previous envelope |
+| `setDefinitions` | `set_definitions(envelope, *, expected_revision=None, codec=None, imported_di=None) -> Result` | unchanged signature; **erratum E1**: a load starts a new history epoch (undo and redo stacks cleared, DESIGN §8.2 L643) instead of pushing the previous envelope; payload `{envelope, semanticRevision, viewRevision}` |
 | `activateBusinessProfile` | `activate_business_profile(compiled, explicit_migration_plan=None) -> Result` (new) | payload `{envelope, semanticRevision, viewRevision, historyEpoch}` |
 | `applyCommands` | `apply_commands(*, base_revision, expected_view_revision, commands, transaction_id, signal=None, codec=None) -> Result` | **erratum E2**: `expected_view_revision: str` and `transaction_id: str` become required keywords (DESIGN L587); payload `{envelope, semanticRevision, viewRevision, transactionId, changed}` (DESIGN L588); `signal: Callable[[], bool] \| None` is the sync form of the DESIGN `signal?`; `codec` is kept and unused by lot 5 |
-| `getDefinitions` / `getSnapshot` | `get_definitions()` / `get_snapshot()` | unchanged |
+| `getDefinitions` / `getSnapshot` | `get_definitions()` / `get_snapshot()` | unchanged signatures; reports per §3.4 |
 | `undo` | `undo(*, expected_revision, expected_view_revision) -> Result` | **erratum E3**: guarded inputs (DESIGN L595); payload is the restored `Snapshot/1` |
 | `redo` | `redo(*, expected_revision, expected_view_revision) -> Result` (new) | payload is the restored `Snapshot/1` |
 | `onChange` | `on_change(listener) -> PureResult` (new) | payload `{subscriptionId}`; `listener(event: dict) -> None` |
@@ -64,40 +70,49 @@ never raise for an expected refusal: they return the closed union named below.
 | (§8.3 L657 copy) | `copy(*, base_revision, element_ids) -> PureResult` (new) | the fragment of §3.2 |
 | (§8.3 L659 localization) | `localize(compiled, message_key, locale) -> PureResult` (module function, new) | `{key, text, source}` |
 
+**Erratum E5** (undo/redo revisions): `baseRevision` is the revision committed
+before the restoration (the guarded `expectedRevision`) and `revision` the
+restored one (DESIGN §3.1 L268, §10.1 L735: the input envelope is the current
+one, the committed output is the restored one); block A used the restored
+revision for both.
+
 Operation names in `Result` and `Report/2`: `setDefinitions`,
 `activateBusinessProfile`, `applyCommands`, `getDefinitions`, `getSnapshot`,
 `undo`, `redo`. `PureResult` methods carry no operation name (DESIGN §10.1 L737:
 read-only reference query/copy, subscription management and disposal are
-`PureResult`).
+`PureResult`); every lot-5 `PureResult` has `diagnostics: []`.
 
 ## 3. Closed shapes
 
-### 3.1 Command records (`commands` items)
+### 3.1 Command records (`commands` items, harmonization I3, C8)
 
-Each command is one JSON object with exactly one discriminator and gesture
-sources:
+Each command is one closed JSON object of exactly one of these kinds:
 
 ~~~text
-{"entry": <UI entry id>    | "upstream": <upstream entry id> | "field": <field id>,
- "owner"?: <element id>, "target"?: <element id>, "source"?: <element id>,
- "value"?: <string|number|boolean>, "key"?: <string>, "fragment"?: <Fragment>}
+{"command": "surface",  "entry": <UI entry id>,       "context": <SurfaceContext>, "fragment"?: <Fragment>}
+{"command": "upstream", "upstream": <upstream id>,     "context": <SurfaceContext>, "fragment"?: <Fragment>}
+{"command": "field",    "notion": <notion id>, "field": <field id>, "context": {"target", "value"}}
+SurfaceContext = {"owner"?, "target"?, "source"?, "key"?, "value"?}
 ~~~
 
 - `entry` names a profile UI entry; `upstream` names an upstream editor entry ID
-  resolved through `upstreamEntries` (§8.3 L659); `field` names a field of a
-  notion recognized for `target`.
-- A record without exactly one discriminator (for example a bare
-  `{"recipe", "parameters"}` command) is an unadapted entry:
-  `transaction-entry-unsupported` (DESIGN §8.2 L635, L637). Every mutation of
-  the headless bridge therefore passes through a UI entry or a field.
-- Any other key is an ambient parameter: `profile-ui-parameters` (L655).
+  resolved through `upstreamEntries` (§8.3 L659); a field command names its
+  notion and one field declared by it (notion-qualified fields remove the
+  ambiguity of a field ID declared by two recognized notions).
+- A record without a `command` member, or whose `command` is not one of
+  `surface`, `upstream`, `field` (for example a bare `{"recipe", "parameters"}`
+  record), is an unadapted entry: `transaction-entry-unsupported` (DESIGN §8.2
+  L635, L637). Every mutation of the headless bridge passes through a UI entry or
+  a field.
+- Any other member, a missing required member, a non-object `context` and any
+  other `context` member are ambient parameters: `profile-ui-parameters` (L655).
 - The **subject** of a surface command is the handle its `ui.when` sees as
   `self`: `owner` for palette and paste, `target` for context, replace, delete
   and direct-edit, `source` for append and connect. The subject of a field
-  command is `target`.
-- A command must supply exactly the subject plus every source bound by the
-  entry or field parameter map, plus `fragment` iff the surface is `paste`;
-  a missing or an extra source refuses `profile-ui-parameters` (L655).
+  command is `context.target`.
+- A command must supply in `context` exactly the subject plus every source bound
+  by the entry or field parameter map, plus `fragment` iff the surface is
+  `paste`; a missing or an extra source refuses `profile-ui-parameters` (L655).
 - `value` is the typed submitted value (never `null`); `key` is the
   transaction-scoped insertion key; both are supplied by the caller.
 
@@ -110,24 +125,65 @@ sources:
 ~~~
 
 `elements` holds the requested ID-bearing elements, deduplicated, without
-elements contained in another requested element, ordered by UTF-16 ID.
+elements contained in another requested element, in **source document
+pre-order** (harmonization B20): a depth-first walk of the canonical
+(profile-c14n/2) document from Definitions, an element before its descendants,
+object members in UTF-16 key order (the canonical member order: for a Process,
+`artifacts` before `flowElements`) and array items by index.
 
 ### 3.3 Payloads
 
 | Operation | Payload (closed) |
 | --- | --- |
-| `list_entries` | `{revision, surface, groups: [{group, entries: [{id, label: {key, text}, icon: {theme, glyph}, order, upstreamEntries}]}]}` |
-| `list_fields` | `{revision, targetId, fields: [{notion, field, widget, path, label: {key, text}, message: {key, text}, present, display?, mutable, choices, targetTypes}]}` |
+| `list_entries` | `{revision, surface, groups: [{group, entries: [{id, label: {key, text}, icon: {theme, glyph}, order, upstreamEntries}]}]}` (harmonization B17) |
+| `list_fields` | `{revision, targetId, fields: [{notion, field, widget, path, label: {key, text}, message: {key, text}, present, display?, value?, mutable, choices, targetTypes}]}` (harmonization B18) |
 | `check_field` | `{revision, valid: true}` or `{revision, valid: false, code, messageKey}` |
-| `query_references` | `{candidates: [{id, type, label}], revision}` |
+| `query_references` | `{candidates: [{id, type, label}], revision}` (harmonization B19) |
 | `copy` | the fragment of §3.2 |
 | `localize` | `{key, text, source}` with `source` one of `exact`, `fallback`, `key` |
-| change event | `{envelope, semanticRevision, viewRevision, transactionId, origin, report}` (DESIGN L606), `origin` one of `load`, `command`, `undo`, `redo` in lot 5 |
+| `get_snapshot`, `undo`, `redo` | `Snapshot/1` `{snapshotVersion: "1", envelope, presentation, viewRevision}` (DESIGN §8.1.1) |
+| change event | `{envelope, semanticRevision, viewRevision, transactionId, origin, report}` (DESIGN L606), `origin` one of `load`, `command`, `undo`, `redo` in lot 5; `report` is the report of the result that produced it |
 
-`display` is present iff `present` is true. `mutable` is the evaluated
-`mutable` predicate, and false for a readonly widget or a field without
-command. `revision` is the current `semanticRevision` (equal to the supplied
-`base_revision`).
+`display` and `value` are present iff `present` is true; `value` is the raw
+stored value at `path` (scalar, reference ID or ID array). `mutable` is the
+evaluated `mutable` predicate, and false for a readonly widget or a field
+without command. Only visible fields are listed. `revision` is the current
+`semanticRevision` (equal to the supplied `base_revision`). The headless bridge
+has no selection API: `presentation.selection` is always `[]`.
+
+### 3.4 Result/1 and Report/2 of every bridge method (DESIGN §10.1, harmonization A8, B2, B3, B4)
+
+Every `Result` is the closed DESIGN union, sealed in full:
+
+- success `{status: "ok", operation, profileIdentity, baseRevision, revision,
+  report, payload}`; read-only operations (`getDefinitions`, `getSnapshot`),
+  `setDefinitions`, `activateBusinessProfile` and a no-op `applyCommands` have
+  `baseRevision == revision`;
+- refusal `{status: "refused", operation, profileIdentity?, baseRevision?, code,
+  diagnostics, report}` with `diagnostics == report.entries`.
+
+**Echo rule.** A refusal echoes `profileIdentity` and `baseRevision` = the
+identity and `semanticRevision` of the committed envelope whenever an envelope is
+loaded and the bridge is not disposed (stale revisions, command refusals, C/N
+and lint refusals, `transaction-reentrant`, nothing to undo/redo,
+`descriptor-mismatch` at activation); it echoes neither for `canvas-disposed`
+and `document-not-loaded` (DESIGN L735: missing identity is omitted, not
+fabricated). A `setDefinitions` refusal echoes the argument's identity and
+revision when it is a shape-valid `documentVersion: "1"` envelope (harmonization
+B3).
+
+**Report header (harmonization B4).** Success: `sourceIdentity` = the input
+identity, `targetIdentity` = the output identity, `inputRevision` =
+`baseRevision`, `outputRevision` = `revision`. Refusal: `sourceIdentity` and
+`inputRevision` iff the result echoes them, never `targetIdentity` or
+`outputRevision`. `reportVersion` is `"2"`, `operation` is the result operation,
+`entries`, `rawStandardFindings`, `idMap` and `artifacts` are always present
+arrays (`artifacts` is `[]` in lot 5).
+
+**Entries.** `setDefinitions`, `activateBusinessProfile`, the getters, `undo` and
+`redo` run no recipe, C, N or lint stage: their reports have no entry (undo/redo
+restore stored states, DESIGN L641). The `applyCommands` report is composed by
+§4.9. Every `PureResult` has `diagnostics: []`.
 
 ## 4. Semantics
 
@@ -140,25 +196,24 @@ The envelope `profileIdentity` must equal the compiled identity; a difference
 is decided by the §3.3 matrix (`check_compatibility`) and never migrates
 silently (L615). A non-null `explicit_migration_plan` is the migration lot's
 contract and is refused `operation-error` until that lot binds it. Success runs
-no C/N, clears history, increments the session-local `historyEpoch` (excluded
-from parity, DESIGN §3.1 L268) and emits no change event.
+no C/N and no lint, clears history, increments the session-local `historyEpoch`
+(excluded from parity, DESIGN §3.1 L268) and emits no change event.
 
 ### 4.2 Surfaces and authorization (DESIGN §8.3 L649, L659)
 
 - An entry is visible in `list_entries` and authorized in `apply_commands` iff
   its `when` predicate is true with bindings `root` and `self` = subject; the
   same evaluation serves both, and a programmatic call of an entry whose `when`
-  is false refuses `profile-producer` (the DESIGN names no code; L649 makes this
+  is false refuses `profile-producer` (harmonization C7; L649 makes this
   evaluation the security/producer boundary).
 - `list_entries` keeps the entries of one surface (one of the eight schema
   surfaces, otherwise `profile-type`) whose `when` holds, groups them in the
   order of first appearance of each group in the profile `ui` array, omits
-  empty groups and sorts entries by numeric `order`, then UTF-16 `id`. Sealed
-  listings never distinguish first appearance in the whole array from first
-  appearance among the entries of the listed surface.
+  empty groups and sorts entries by numeric `order`, then UTF-16 `id`
+  (harmonization G5). Sealed listings never distinguish first appearance in the
+  whole array from first appearance among the entries of the listed surface.
 - An `upstream` ID maps to the unique entry listing it; an unlisted upstream ID
-  refuses `transaction-entry-unsupported` (L659: unlisted create/append/connect/
-  replace entries are disabled; every headless upstream command is a mutation).
+  refuses `transaction-entry-unsupported` (L659; harmonization C8).
 - Keyboard gestures have no separate command form: they are the canonical
   surface command (L657). `copy` evaluates no `ui.when` and grants no paste
   authorization (L657).
@@ -166,10 +221,12 @@ from parity, DESIGN §3.1 L268) and emits no change event.
 ### 4.3 Parameter binding and typing (DESIGN §8.3 L655, L659)
 
 - Each `{name, source}` binding feeds recipe parameter `name` from the command
-  source: `owner`, `target`, `source` give element IDs (validated handles),
-  `value` the submitted value, `key` the insertion key.
+  `context` member `source`: `owner`, `target`, `source` give element IDs
+  (validated handles), `value` the submitted value, `key` the insertion key.
 - Handles must be IDs of ID-bearing elements present on the stage, otherwise
-  `reference-dangling`; a non-string handle refuses `profile-type`.
+  `reference-dangling`; a non-string handle refuses `profile-type`. A field
+  command whose `context.target` is not recognized as the named notion refuses
+  `profile-type`.
 - A bound value must match the recipe parameter type without coercion:
   `string` ↔ str, `number` ↔ finite int/float that is not a Boolean, `boolean` ↔
   bool; `null` is never accepted; otherwise `profile-type`.
@@ -178,32 +235,41 @@ from parity, DESIGN §3.1 L268) and emits no change event.
   (not a label): missing element `reference-dangling`, type outside
   `targetTypes` or outside the effective reference ownership of §4.6
   `profile-type`. These checks run on change (`check_field`) and again at commit.
+- Commands of the `delete` and `replace` surfaces (and upstream IDs mapped to
+  them) are planned with explicit deletion intent (lot-3 `Authority(actor="editor",
+  deletion_intent=True)`); every other command without it, so a `remove` action
+  reached from them refuses `profile-producer` (lot-3 freeze).
 
 ### 4.4 Fields (DESIGN §8.3 L653, L655, L659)
 
-- A field applies to `target` when a notion recognized for `target` (profile
-  notion order) declares it; an unknown field ID refuses `profile-symbol`, the
-  same field ID declared by two recognized notions refuses
-  `profile-ambiguous-notion`. `list_fields` returns the visible fields of the
-  recognized notions in profile notion order, then field declaration order; a
-  target without recognized notion or fields yields `fields: []`.
+- A field command resolves `notion` (unknown → `profile-symbol`) and `field`
+  among that notion's fields (undeclared → `profile-symbol`); `check_field` and
+  `query_references` take the DESIGN reference-query input
+  `{baseRevision, targetId, fieldId, ...}` (L657) and resolve `fieldId` among
+  the notions recognized for the target (unknown → `profile-symbol`, declared
+  by two recognized notions → `profile-ambiguous-notion`). `list_fields`
+  returns the visible fields of the recognized notions in profile notion order,
+  then field declaration order; a target without recognized notion or fields
+  yields `fields: []`.
 - A hidden field (`visible` false), an immutable field (`mutable` false), a
   readonly widget or a field without command refuses `profile-producer` on
-  edit; `check_field` reports the same code with `valid: false`.
+  edit (harmonization C7); `check_field` reports the same code with `valid:
+  false`.
 - `display` is the field `display` Value when declared (for example
-  `stripPrefix`, `case`), otherwise the raw stored value at `path` (scalar,
-  reference ID or ID array); it never writes storage. The edit recipe restores
-  the configured marker exactly once (`concat` of the literal marker and the
-  submitted body).
+  `stripPrefix`, `case`), otherwise the raw stored value; `value` is always the
+  raw stored value (harmonization B18). Neither writes storage. The edit recipe
+  restores the configured marker exactly once (`concat` of the literal marker
+  and the submitted body).
 - The empty string is stored as an explicit empty string; omitting `value`
-  refuses `profile-ui-parameters`. Clearing an optional reference is an explicit
-  remove-reference command (an entry whose recipe uses `assignRef` mode
-  `remove`); the property becomes absent, never `null`.
+  refuses `profile-ui-parameters`. Clearing an optional single-valued reference
+  is an explicit remove-reference command (an entry whose recipe uses `assignRef`
+  mode `remove`); the property becomes absent, never `null`.
 
 ### 4.5 Creation, reference link, IO sets, replace, delete (DESIGN §8.3 L651, L653)
 
 - `create` appends the new element to the end of its containment array (no
-  position field exists); removing elements keeps an emptied containment array.
+  position field exists, harmonization G6). A removal that empties a
+  containment or reference array keeps the empty array `[]` (harmonization F1).
 - The reference recipe creates the root `DataStore` (named by the value) and the
   unnamed `DataStoreReference` with `dataStoreRef` assigned natively (§4.4
   L408). The connect entry mapped by upstream `connect` creates an
@@ -216,15 +282,16 @@ from parity, DESIGN §3.1 L268) and emits no change event.
   keeps the ID and reports no idMap row. A convert execution that removes its
   selected element and creates exactly one ID-bearing element reports
   `{sourceId: removed, resultId: created, domain: "migration"}` in
-  `report.idMap` (the DESIGN replacement map, L651; `idMap.domain` is closed to
-  `migration|export`, DESIGN L753). Other convert shapes are not covered.
+  `report.idMap` (the DESIGN replacement map, L651; harmonization D7). Other
+  convert shapes are not covered.
 - The `remove` action computes the inbound closure first; a closure larger than
   the declared dependents with `refuseIfReferenced` refuses
-  `reference-dangling` (the DESIGN names no code; the refused result would leave
-  a dangling reference, DESIGN §2.2 L132). `includeDeclared` removes the target
-  and its declared dependents together.
+  `reference-dangling` (harmonization C12; DESIGN §2.2 L132). `includeDeclared`
+  removes the target and its declared dependents together. A support binding
+  whose target is removed is removed with it (lot-3 freeze); undo restores the
+  element, its ID and its binding (DESIGN §7.2 L565).
 
-### 4.6 Reference picking (DESIGN §8.3 L657)
+### 4.6 Reference picking (DESIGN §8.3 L657, harmonization B19)
 
 - Arguments: `query` is a string; `offset` and `limit` are safe nonnegative
   integers (not Booleans, not fractional), otherwise `profile-bounds`.
@@ -239,7 +306,7 @@ from parity, DESIGN §3.1 L268) and emits no change event.
   (code points, case-sensitive, no normalization; the empty query matches all).
 - Matches are sorted by UTF-16 ID, then `candidates = matches[offset:offset+limit]`.
 
-### 4.7 Paste (DESIGN §8.3 L653, L655; §3.2 L276-L288)
+### 4.7 Paste (DESIGN §8.3 L653, L655; §3.2 L276-L288; harmonization D6)
 
 - Every ID `X` inside the fragment is reallocated to
   `stable-id/1(owner.id, "paste", JCS([key, X]))`.
@@ -253,52 +320,104 @@ from parity, DESIGN §3.1 L268) and emits no change event.
 - The paste entry's recipe then runs with its bound parameters. Pasted elements
   are on the stage for the following commands of the batch.
 
-### 4.8 Transaction pipeline (DESIGN §8.2)
+### 4.8 Transaction pipeline (DESIGN §8.2, §6.2 L474, L481; harmonization J1, H1, I1–I5)
 
 States `idle → staging → applying → idle`, plus `restoring` for undo/redo. For
-`apply_commands`:
+`apply_commands`, first refusal wins and nothing is committed:
 
-1. Reject disposed, re-entrant (state not `idle`) and not-loaded calls; require
-   an active business profile; validate argument types.
+1. Disposed → `canvas-disposed`; state not `idle` → `transaction-reentrant`; no
+   envelope → `document-not-loaded`; no active business profile or wrong argument
+   types → `operation-error`.
 2. Acquire the guard (state `staging`); from here every caller callback runs
-   with the guard held. Poll `signal` (cancellation → `operation-cancelled`).
+   with the guard held. Poll `signal` (poll **P1**): true → `operation-cancelled`;
+   a disposal during the callback → `canvas-disposed`.
 3. Compare `base_revision` with the current `semanticRevision` and
-   `expected_view_revision` with the current `viewRevision`.
-4. An empty `commands` list is a no-op (`changed: false`, no C/N).
-5. Stage a deep copy of the envelope and presentation. Apply the commands in
-   order, each validated against the stage left by the previous ones
-   (`plan_recipe`/`apply_plan` under the editor actor); poll `signal` after each
-   command.
-6. Run C once (`complete`), then N once (`normalize`) on the stage; a refusal
-   from either passes through with its code unchanged.
-7. OPEN-RESERVED-N gate (§5): a support binding `(ownerId, role)` present after N
-   but absent before N refuses `profile-open`.
-8. Poll `signal`; disposal during the transaction refuses `canvas-disposed` and
-   commits nothing.
-9. If the staged tree, bindings and presentation equal the committed ones, return
-   `changed: false` with the current revisions and no history entry (DESIGN
-   L641).
-10. Commit (state `applying`): one history entry `{transactionId, before, after}`
-    and one change event with origin `command`, delivered after the guard is
-    released; a committed batch after an undo discards the redo entries.
+   `expected_view_revision` with the current `viewRevision` (stale →
+   `operation-error`, harmonization C10).
+4. An empty `commands` list is a no-op (`changed: false`) that runs no C, N or
+   lint stage.
+5. Stage a deep copy of the envelope and presentation. Validate and apply the
+   commands in order (§5 (a)–(i)), each against the stage left by the previous
+   ones (lot-3 `plan_recipe`/`apply_plan` under the editor actor); poll `signal`
+   after each command (poll **P2**).
+6. C once: `complete(compiled, stage, "retained", activation="edit")`
+   (harmonization B7, H1); a refusal passes through with its code unchanged.
+7. `pre-normalize` lint of the C output under the `draft` policy (block-A profile
+   lint bridge, DESIGN §6.2 edit row). An `error` entry whose classification is
+   not `repairable` blocks: refuse with the code of the first unresolved error
+   entry in `profile-report/2` order (harmonization C19). A draft policy never
+   downgrades integrity (L481).
+8. N once: `normalize(compiled, c_output, None, activation="edit")`; a refusal
+   passes through with its code unchanged (OPEN-RESERVED-N support creation
+   refuses `profile-open` inside N, harmonization H1/H2).
+9. `post-normalize` lint of the N output under `draft`: any unresolved `error`
+   entry blocks with the code of the first one in `profile-report/2` order.
+10. Poll `signal` (poll **P3**).
+11. If the staged tree, bindings and presentation equal the committed ones,
+    return `changed: false` with the current revisions, the full report of §4.9
+    (a correction notice) and no history entry and no event (DESIGN L641).
+12. Commit (state `applying`): one history entry `{transactionId, before, after}`
+    and one change event with origin `command` carrying the result report,
+    delivered after the guard is released; a committed batch after an undo
+    discards the redo entries.
 
 Getters and queries called during a transaction return the last committed state
 (the stage is detached). Any other entry (`apply_commands`, `undo`, `redo`,
 `set_definitions`, `activate_business_profile`) refuses `transaction-reentrant`.
-Lint stages of the §6.2 edit row are not run by `apply_commands` in lot 5
-(§9); their findings never decide a lot-5 outcome.
 
-### 4.9 History
+### 4.9 Report composition of `applyCommands` (DESIGN §10.1 L739-L755)
+
+- `entries` = C's report entries (stage `complete`, unchanged) ∪ the
+  `pre-normalize` lint entries ∪ N's report entries (stage `normalize`; N's
+  `payload.report` equals its `result.report`, lot-3 freeze E5) ∪ the
+  `post-normalize` lint entries, sorted in `profile-report/2` order and exact
+  duplicates coalesced. Command writes contribute **no** entry: explicit edits
+  are recorded by the history delta (lot-3 freeze: `apply_plan` reports entries
+  only for complete/normalize plans; DESIGN §10.1 L751 has no command stage).
+- `profile-report/2` order (harmonization G2): stage rank in the DESIGN L751
+  stage order, then UTF-16 `ruleId`, source `domain`, source `pointer` and
+  `targetId` (null first), `code`, `pageId`, `occurrenceKey` (absent first),
+  canonical `before` then `after` (absent first), then result `domain`,
+  `pointer`, `targetId`, then `property` (absent first).
+- C/N change entries use the lot-3 vocabulary (harmonization B8, B9, B10): for a
+  recipe `set`, `code` `<stage>/set`, `messageKey` `<stage>.set`, severity
+  `info`, classification `repairable`, disposition `corrected`, `ruleId` the
+  recipe id, `source` and `result` `{domain: "tree", pointer: <element pointer> +
+  "/" + <escaped property>, targetId: <element id>, provenance: "exact"}`,
+  `property`, `beforePresent`/`before`, `afterPresent`/`after`.
+- Lint entries (harmonization B12): disposition `observed`, `source` `{domain:
+  "tree", pointer: <RFC 6901 pointer of the reported element in that stage's
+  snapshot>, targetId: <reported id>, provenance: "exact"}` (plus escaped path
+  segments, DESIGN §6.4 L510), `result` `{domain: "none", pointer: null,
+  targetId: null, provenance: "unavailable"}`, `beforePresent` and
+  `afterPresent` false. Standard rule `r`: `ruleId` `r`, `code` `bpmnlint/r`,
+  `messageKey` `bpmnlint.r`; profile subrule `r`: `ruleId` `r` (the bare rule id,
+  DESIGN §6.4 L515), `code` and `messageKey` the rule's `code` and `message`;
+  severity and classification from the exact effective `(stage, draft)` policy
+  row.
+- `rawStandardFindings` = the raw upstream reports of the standard rules (the
+  transport rule `profile-mechanism/profile` excluded: its findings are the
+  unified profile entries) of the executed lint stages, stage by stage. With
+  every standard rule off it is `[]`; its record shape is not fixed by DESIGN
+  R3.3 (§6.4 L520) and is unsealed (`raw-lint-transport`) where standard rules
+  run.
+- `idMap` = the replacement-map rows of the batch (§4.5), sorted per DESIGN L753.
+- A refusal report carries exactly the lint entries of the stages executed
+  before the refusal (`[]` when none ran: command, C, stale, cancellation
+  refusals), never a change entry (harmonization B2).
+
+### 4.10 History
 
 `undo`/`redo` check disposal, re-entrancy, loading, then `expected_revision` and
 `expected_view_revision` (`operation-error` when stale), then the presence of an
 entry (`operation-error` when there is nothing to undo or redo). They restore
-the stored before/after state exactly (state `restoring`): no recipe, no C/N, no
-ID computation, no redo truncation. Each emits one change event whose
-`transactionId` is the entry's. A refused batch leaves history and snapshot
-byte-identical.
+the stored before/after state exactly (state `restoring`), presentation
+included: no recipe, no C/N, no lint, no ID computation, no redo truncation.
+Each emits one change event whose `transactionId` is the entry's and whose report
+is the undo/redo result report (entry-free). A refused batch leaves history and
+snapshot byte-identical.
 
-### 4.10 Localization (DESIGN §8.3 L659)
+### 4.11 Localization (DESIGN §8.3 L659)
 
 For a profile message: the text named exactly `locale` (`source: exact`), else
 the text named `policies.localeFallback` (`source: fallback`). For any other key
@@ -310,7 +429,7 @@ names compare exactly: no case folding, no BCP 47 truncation.
 | Operation | Order of checks → code |
 | --- | --- |
 | every bridge method | disposed → `canvas-disposed`; then (mutating entries) guard held → `transaction-reentrant`; then no envelope → `document-not-loaded` |
-| `apply_commands` | no active profile, bad argument types → `operation-error`; signal → `operation-cancelled`; stale `base_revision` or `expected_view_revision` → `operation-error`; then each command in order (a)–(i) below; then C, N → their codes; gate → `profile-open`; disposal during → `canvas-disposed` |
+| `apply_commands` | §4.8 steps 1–12; per command (a)–(i) below |
 | `activate_business_profile` | `descriptor-mismatch`; identity → §3.3 code; plan → `operation-error` |
 | `undo`, `redo` | stale → `operation-error`; nothing to restore → `operation-error` |
 | `list_entries` | stale → `operation-error`; surface → `profile-type`; subject → `reference-dangling` |
@@ -322,21 +441,22 @@ names compare exactly: no case folding, no BCP 47 truncation.
 
 Per command of `apply_commands`, first failure wins:
 
-- (a) not exactly one of `entry`/`upstream`/`field` → `transaction-entry-unsupported`;
-- (b) a key outside §3.1 → `profile-ui-parameters`;
+- (a) not an object, or `command` missing or not `surface`/`upstream`/`field` →
+  `transaction-entry-unsupported`;
+- (b) closed members (§3.1): missing or unknown member, `context` not an object
+  or carrying an unknown member → `profile-ui-parameters`;
 - (c) resolution: unknown entry → `profile-symbol`; unlisted upstream →
-  `transaction-entry-unsupported`; field command without `target` →
-  `profile-ui-parameters`, `target` absent from the stage → `reference-dangling`,
-  field not declared by a recognized notion → `profile-symbol`;
-- (d) gesture sources not exactly the subject plus the bound sources (and
+  `transaction-entry-unsupported`; unknown notion or field not declared by the
+  notion → `profile-symbol`;
+- (d) `context` sources not exactly the subject plus the bound sources (and
   `fragment` iff paste) → `profile-ui-parameters`;
 - (e) handles: non-string → `profile-type`, absent from the stage →
-  `reference-dangling`;
+  `reference-dangling`; field target not recognized as the notion → `profile-type`;
 - (f) authorization (`ui.when`, field visibility/mutability/readonly/command) →
   `profile-producer`;
 - (g) value typing and widget rules → `profile-type` or `reference-dangling`;
 - (h) paste fragment → `profile-type`, `reference-dangling` or `id-collision`;
-- (i) recipe execution on the stage (lot 3 `plan_recipe`/`apply_plan`) → its
+- (i) recipe execution on the stage (lot-3 `plan_recipe`/`apply_plan`) → its
   code, including a `refuse` action code and the `remove` code of §4.5.
 
 ## 6. Compile rules added to `compile_profile` (CR-10 and §8.3)
@@ -359,58 +479,69 @@ Per command of `apply_commands`, first failure wins:
    recipes exist → `profile-symbol` (CR-05).
 
 Writing an existing ID stays a CR-06 `profile-producer` refusal (DESIGN §2.4
-L165, §2.4.1 L206).
+L165, §2.4.1 L206). A compile success is compared as `{status: "ok", identity:
+compiled.identity, diagnostics: []}`; a load or compile refusal as the
+`PureResult` refusal `{status: "refused", code, diagnostics: []}`.
 
 ## 7. Gates
 
 | DESIGN item (§13) | State given §16 | Python lot-5 behaviour |
 | --- | --- | --- |
-| OPEN-HOOK (L923) | canvas pointer/keyboard receipt | N-A for Python: no browser gesture; headless commands use detached staging only |
-| OPEN-PANEL (L925, §16.5) | owner choice after canvas evidence | N-A for Python: no panel dependency; the field contract of §4.4 is panel-independent |
-| OPEN-EXTERNAL (L910, §16.2) | owner default ratified; encoding proof pending, external creation unavailable | the library has no external branch; a profile gates its external entry with a `refuse` step, which refuses `profile-open` atomically (`gate-external-creation`) |
-| OPEN-RESERVED-N (L917, §16.11) | owner default ratified; twin atomicity proof pending | an edit whose N would persist a new support binding refuses `profile-open`; reuse of bound supports commits (`gate-reserved-n-*`) |
-| OPEN-DRAFT (L911, §16.3) | ratified | edits commit in draft; lint postcheck not run by lot 5 (§9) |
+| OPEN-HOOK (L923) | canvas pointer/keyboard receipt | N-A for Python (harmonization H8): no browser gesture; headless commands use detached staging only |
+| OPEN-PANEL (L925, §16.5) | owner choice after canvas evidence | N-A for Python (harmonization H8): no panel dependency; the field contract of §4.4 is panel-independent |
+| OPEN-EXTERNAL (L910, §16.2) | owner default ratified; encoding proof pending, external creation unavailable | the library has no external branch; a profile gates its external entry with a `refuse` step, which refuses `profile-open` atomically (harmonization H4; `gate-external-creation`) |
+| OPEN-RESERVED-N (L917, §16.11) | owner default ratified; twin atomicity proof pending | `apply_commands` always runs C and N with activation `edit` (harmonization H1): an N ensure that would create a support refuses `profile-open` inside N; reuse of bound supports commits (`gate-reserved-n-*`) |
+| OPEN-DRAFT (L911, §16.3) | ratified | edits run both draft lint stages: warnings never block, integrity and post-normalize unresolved errors do (§4.8; `lint-*`) |
 
 ## 8. Case file format
 
-Every file in `tests/profile_commands/expected/` is one JSON object with `case`
-(= file stem), `clause` (starts with `DESIGN R3.3 §`), `derivation`, `author`
-(`spec-seal`), `input`, `expected`, and optionally `derived` (`loadRevision`,
-`ids`, `identity`, recomputed by `derive_helper.py check`).
+Every file `tests/profile_commands/expected/<case>.json` is one JSON object with
+`case` (= file stem), `clause` (starts with `DESIGN R3.3 §`), `derivation`,
+`author` (`spec-seal`), `input`, `expected`, and optionally `derived`
+(`loadRevision`, `ids`, `identity`, recomputed by `derive_helper.py check`).
 
-**Fixtures.** `fixture-descriptors.json` and `fixture-base.json` give
-`input.source = {file, delta}` (RFC 6902 against a vendored contract file) and
-`expected = {document, pin}`; the package/base bytes are the UTF-8
-profile-c14n/2 bytes of `document`, so `pin.sha256 = H(document)`.
-`fixture-profile-neutral.json` and `fixture-profile-grid.json` give the profile
-composition and `expected = {profileSha256, identity}`.
+### 8.1 Fixtures and committed bytes (harmonization A3, A6)
 
-**Setup.** `input.profile = {fixture, delta}`: the profile is the fixture
+`fixture-descriptors.json` and `fixture-base.json` give `input.source = {file,
+delta}` (RFC 6902 against a vendored contract file) and `expected = {document,
+pin, artifact}`; the committed file `artifact` holds exactly the UTF-8
+profile-c14n/2 bytes of `document` (no BOM, no trailing newline), so its raw
+SHA-256 equals `pin.sha256 = H(document)`. `fixture-profile-neutral.json`,
+`fixture-profile-neutral-lint.json` and `fixture-profile-grid.json` give the
+profile composition and `expected = {profileSha256, identity, artifact}`. Every
+case profile is `input.profile = {fixture, delta, artifact}`: the fixture
 composition followed by the case delta (RFC 6902 `add`, `replace`, `remove`,
-`test`). With `pin`/`document` the expected values of `fixture-descriptors.json`
-and `base` the `expected.document` of `fixture-base.json`:
+`test`), whose profile-c14n/2 bytes are committed at `artifact`
+(`artifacts/profiles/<variant>.json`; raw SHA-256 = `H(profile)` =
+`identity.sha256`).
 
-1. `context = create_descriptor_context([{**pin, "descriptorBytes": JCS(document)}])`,
-   unless `input.bridge.descriptorPackages` lists `{file, pin}` records, whose
-   `descriptorBytes` are the raw file bytes (the profile still compiles with the
-   fixture context);
-2. `load_profile(<UTF-8 JSON of the profile>, schema_bytes=<pinned
-   profile-mechanism-1.schema.json>, base_bytes=JCS(base), descriptor_pins=[pin])`
-   (the profile digest is `H(profile)`, independent of the serialization);
-3. `compile_profile(validated, descriptor_context=<fixture context>, base=base)`;
-4. the case identity is `{mechanismVersion, schemaVersion, profile, version,
-   sha256: H(profile), base, descriptors}` of the composed profile (the fixture
-   `identity`, or `derived.identity` when the case adds a delta);
-5. with `input.document = {tree, bindings}`: `bridge = create_bridge(context)`,
-   `bridge.set_definitions(complete_envelope(identity, tree, bindings))`, then
-   `bridge.activate_business_profile(compiled)` matched against
-   `expected.setup.activate`; without `input.document` only the bridge is created.
+### 8.2 Setup
 
-`expected.compile` (compile cases) is the first refusal of steps 2–3, or
-`{status: "ok"}`.
+1. `context = create_descriptor_context([{**pin, "descriptorBytes": <raw bytes of
+   artifacts/neutral-descriptors.lot5.json>}])`, unless `input.bridge.descriptorPackages`
+   lists `{file, pin}` records, whose `descriptorBytes` are the raw file bytes
+   (the profile still compiles with the fixture context);
+2. `load_profile(<raw bytes of input.profile.artifact>, schema_bytes=<pinned
+   profile-mechanism-1.schema.json>, base_bytes=<raw bytes of
+   artifacts/neutral-base.lot5.json>, descriptor_pins=[pin])`;
+3. `compile_profile(validated, descriptor_context=<fixture context>, base=<the base
+   document>)`;
+4. the case identity is the composed profile identity (the fixture `identity`,
+   or `derived.identity` when the case adds a delta);
+5. with `input.document = {tree, bindings, importedDi?}`: `bridge =
+   create_bridge(context)`; `bridge.set_definitions(complete_envelope(identity,
+   tree, bindings), imported_di=<importedDi or None>)` matched against
+   `expected.setup.load`; `bridge.activate_business_profile(compiled)` matched
+   against `expected.setup.activate`. Without `input.document` only the bridge
+   is created.
 
-**Steps.** `input.steps[i] = {op, args?, save?}` with ops `apply_commands`,
-`undo`, `redo`, `get_snapshot`, `get_definitions`, `dispose`, `activate`,
+`expected.compile` (compile cases) is the first refusal of steps 2–3, or the
+compile success record of §6.
+
+### 8.3 Steps and matching
+
+`input.steps[i] = {op, args?, save?}` with ops `apply_commands`, `undo`,
+`redo`, `get_snapshot`, `get_definitions`, `dispose`, `activate`,
 `set_definitions` (`{document}` with the case identity), `list_entries`,
 `list_fields`, `check_field`, `query_references`, `copy`, `localize` (module
 function), `on_change` (`{collect: name}`: the listener appends each event) and
@@ -418,55 +549,128 @@ function), `on_change` (`{collect: name}`: the listener appends each event) and
 DESIGN camelCase names of §2. Placeholders: `{"$current": "viewRevision"}` is
 `get_snapshot().payload.viewRevision` at that moment; `{"$saved": name,
 "pointer": p}` is the JSON at `p` of a saved actual result. `save: name` stores
-the step's actual result (`to_json()` form). Signals:
-`{kind: "constant", returns}`, `{kind: "reenter", calls: [steps], returns}`
-(each call is performed on the same bridge and its result recorded per op) and
-`{kind: "dispose", returns}`.
+the step's actual result (`to_json()` form). Signals (`args.signal`):
+`{kind: "constant", returns}`; `{kind: "sequence", values}` (call `i` returns
+`values[min(i, len - 1)]`); `{kind: "reenter", calls, returns}` (the calls are
+performed at the first poll on the same bridge, each result recorded per op);
+`{kind: "dispose", returns}` (disposes at the first poll).
 
-**Matching.** `expected.steps[i]` is a template for the actual result:
+`expected.steps[i] = {result, equal?, differ?, signal?}`:
 
-- keys other than `payload`, `report`, `payloadKeys`, `equal`, `differ`,
-  `signal`, `events` must equal the actual value;
-- `payload` and `report`: each listed key must equal the actual value below it;
-- `payloadKeys`: the sorted keys of the actual payload;
+- `result` is the **complete** actual result (`to_json()` of the closed union;
+  `{"events": [...]}` for `events`) compared by profile-c14n/2 byte equality after
+  each `{"$unsealed": <reason>}` marker is replaced by the actual member at the
+  same position (the member must exist). No other member is excluded;
 - `equal`/`differ`: `[{pointer, saved, savedPointer}]` profile-c14n/2 equality or
-  difference with a saved result;
+  difference of the actual result at `pointer` with a saved result at
+  `savedPointer` (relational checks of lot-4 values, for example whole
+  `Snapshot/1` payloads after undo/redo);
 - `signal`: `{minCalls, results}`: the signal ran at least `minCalls` times and
-  every recorded result of an op matches `results[op]`;
-- `events`: same length, each event matching its template key by key.
+  every recorded result of an op equals `results[op]` (same marker rule).
 
-Equality is profile-c14n/2 byte equality (key order irrelevant, `true` is not
-`1`). `viewRevision`, `historyEpoch`, `subscriptionId`, `diagnostics` and report
-entries are never sealed (lot 4 digests, session-local counters).
+Unsealed reasons (harmonization A8 explicit UNSEALED list):
 
-## 9. Design-default resolutions and cross-lot points
+| Reason | Members | Why |
+| --- | --- | --- |
+| `lot4-view-revision` | `viewRevision` of payloads, snapshots and events | §9.2 digest tuple over the lot-4 layout (DESIGN L268); lot 5 compares it relationally |
+| `lot4-presentation` | `presentation.layout`, `themeId`, `overrides`, `diStyles`, `activePageId`, and `importedDi` when no record was supplied at load | lot-4 layout adapter and theme selection; an explicitly loaded `importedDi` record is sealed exactly |
+| `session-history-epoch` | `historyEpoch` | session-local counter excluded from parity (DESIGN §3.1 L268) |
+| `session-subscription` | `subscriptionId` | session-local, excluded from parity (DESIGN §8.1 L606) |
+| `raw-lint-transport` | `report.rawStandardFindings` of the two vendored-validation witnesses | raw upstream report records are the frozen upstream comparator (DESIGN §3.1 L272, §6.4 L508, L520); their Report/2 record shape is not fixed |
 
-`design-default` lines (DESIGN names no value; the lot-5 binding chooses):
+## 9. Parity projection (`profile-parity-corpus/1`, harmonization A1–A5)
 
-1. `ui.when` false, hidden/immutable/readonly field edit → `profile-producer` (§8.3 L649).
-2. Stale `baseRevision`/`expectedViewRevision`/`expectedRevision` and nothing to undo/redo → `operation-error` (existing bridge binding; §8.2 L629 names no code).
-3. Unlisted upstream entry, bare recipe command → `transaction-entry-unsupported` (§8.2 L635, L637).
-4. Unknown UI entry or field, duplicate upstream mapping, missing fallback text → `profile-symbol` (CR-05).
-5. `remove` closure violation → `reference-dangling` (§2.4 L171, §2.2 L132); lot 3 seals `remove` too and the integrator reconciles the code.
-6. Paging violations → `profile-bounds` (CR-04).
-7. Paste allocation `stable-id/1(owner, "paste", JCS([key, X]))` (§3.2).
-8. Replacement map in `report.idMap` with domain `migration` (§10.1 L753).
+`expected/parity/lot5-py-<case>.json` is the corpus/1 record of each harness case
+(DESIGN §14.3 L959), a pure transcription derived by `derive_helper.py`
+(`parity_record`, compact JSON with sorted keys): `caseId` `lot5-py-<case>`;
+`operation` the camelCase DESIGN/helper name of the only action of the case,
+`compileProfile` for compile cases, otherwise `sequence`; `phase` null;
+`profileArtifact` `{path, sha256}` of the committed profile bytes;
+`inputArtifacts` the descriptors and base artifacts `{role, path, sha256}`, the
+bridge input, the initial envelope and the loaded importedDi (`{role, json}`);
+`commandArtifact` `{role: "sequence", json: {sequenceVersion: "1", steps: [{step,
+action, request?, save?}]}}`; `expectedArtifacts` the setup and step outcomes
+(or the compile outcome); `expectedStatus` `ok`/`refused:<code>` for a
+single-step or compile case and `ok` for a sequence (step refusals are step
+outcomes); `comparatorIds` from `parity/manifest.json`, whose `pathBase` is
+`tests/profile_commands/expected/` and whose `files` pin every parity record and
+referenced artifact by SHA-256. The JS↔Python joint run executes these records.
+
+## 10. Cross-lot contracts consumed
+
+### 10.1 Lot 3 (frozen C/N contract)
+
+- `complete(compiled, envelope, mode, *, activation)` with `mode` `retained` for
+  staged edits (harmonization B7) and `activation="edit"` (harmonization H1);
+  payload DocumentEnvelope/1.
+- `normalize(compiled, envelope, placement_intent=None, *, activation)`: payload
+  `{envelope, placements, report}` with `payload.report == result.report`
+  (harmonization B5); lot 5 passes no placement intent (headless commands move
+  no shape; DI moves are OPEN-HOOK, canvas).
+- `plan_recipe(recipe, read_context, params, authority)` →
+  `PureResult<WritePlan/1>` and `apply_plan(plan, staged_tree, staged_envelope)` →
+  `PureResult<ChangeReport/1>` `{reportVersion: "change/1", tree, bindings,
+  entries, placements, created, removed}`: lot 5 uses `created`/`removed` for the
+  replacement map and the stage, and expects no entry for command plans.
+- Codes pass through unchanged: `io-set-selection-required`,
+  `reference-dangling`, `profile-type`, `id-collision`, `profile-open`,
+  `profile-write-conflict`, `support-binding-conflict`, `normalization-not-fixed`
+  and any `refuse` code.
+- Change entries follow harmonization B8–B10; emptied arrays stay `[]`
+  (harmonization F1, which also changes the lot-3 seal).
+
+### 10.2 Lot 4
+
+`get_snapshot` presentation and `viewRevision` come from lot 4 (`compute_layout`
+over the archived `importedDi`, theme selection, §9.2 digests). Lot 5 seals only
+the loaded `importedDi` record, `selection: []` and the envelope, and compares
+the rest relationally. The archived `importedDi.descriptorDigest` is the lot-4
+`descriptorDigest(profileIdentity.descriptors)` (H of the pins sorted by UTF-16
+id).
+
+### 10.3 Block A prerequisites revealed by this binding (code job fixes first)
+
+1. The `count` predicate is read from key `selector` instead of the schema key
+   `select` (compiler and evaluator); `reachable` reads `source`/`target`
+   instead of `from`/`to` (not used here).
+2. `inverseReference` property admission is checked on the source type instead
+   of the referring type; CR-10 is not implemented; `ensure` (lot 3) registers
+   neither its alias nor its write demands.
+3. The profile lint bridge (`_lint/report.py`) emits profile subrule entries with
+   `ruleId` `profile:<id>` and copies the source coordinate into `result`; lot-5
+   reports use the bare rule id (DESIGN §6.4 L515) and the unavailable result
+   coordinate of harmonization B12, and their `rawStandardFindings` is an array
+   that excludes the transport rule.
+4. The bridge (`_bridge.py`) pushes history on load (E1), returns `None` from
+   `dispose` (E4), has no redo, no guarded undo (E3, E5), and archives a default
+   `importedDi` with an empty `descriptorDigest`.
+
+## 11. Design-default resolutions
+
+`design-default` lines (the DESIGN names no value; the lot-5 binding chooses; rows
+1, 3, 7 and 8 are now shared contract decisions, harmonization C7, C8, D6, D7):
+
+1. `ui.when` false, hidden/immutable/readonly field edit → `profile-producer` (§8.3 L649; harmonization C7).
+2. Stale `baseRevision`/`expectedViewRevision`/`expectedRevision` and nothing to undo/redo → `operation-error` (existing bridge binding; §8.2 L629 names no code; harmonization C10).
+3. Unlisted upstream entry, record without an accepted `command` kind → `transaction-entry-unsupported` (§8.2 L635, L637; harmonization C8).
+4. Unknown UI entry, notion or field, duplicate upstream mapping, missing fallback text → `profile-symbol` (CR-05; harmonization C9).
+5. `remove` closure violation → `reference-dangling` (§2.4 L171, §2.2 L132; harmonization C12).
+6. Paging violations → `profile-bounds` (CR-04; harmonization B19).
+7. Paste allocation `stable-id/1(owner, "paste", JCS([key, X]))` (§3.2; harmonization D6).
+8. Replacement map in `report.idMap` with domain `migration` (§10.1 L753; harmonization D7).
 9. Surface subjects per §3.1; effective reference ownership per §4.6; candidate label per §4.6.
-10. C and N run once after the whole batch, commands stage sequentially (§8.2 L631, §8.3 L653).
-11. Lint stages are not run inside `apply_commands` by lot 5 (§16.3 DRAFT; the §6.2 edit-row postcheck stays not covered).
-12. OPEN-RESERVED-N detected by new `(ownerId, role)` bindings after N.
+10. C and N run once after the whole batch, commands stage sequentially (§8.2 L631, §8.3 L653; harmonization I4).
+11. Lint: both draft stages run inside `apply_commands` and their entries are sealed; a pre-normalize error that is not `repairable` and any post-normalize error block with the code of the first unresolved error entry (§6.2 L474, L481; harmonization J1, C19). This reverses the former item 11.
+12. OPEN-RESERVED-N is enforced by N itself in activation `edit` (harmonization H1, H2); the former new-binding comparison is withdrawn.
+13. A field command whose target is not recognized as the named notion → `profile-type`.
+14. The lot-5 fixture profiles set the 26 standard bpmnlint settings to `off` in all ten validation records (the vendored descriptor slice cannot express FlowNode connectivity, so connectivity rules flag every Task); the vendored records are exercised by `fixture-profile-neutral-lint`.
+15. Report composition and lint entry coordinates of §4.9; undo/redo `baseRevision` of E5.
+16. Signal polls P1, P2 (after each command) and P3 (§4.8); `copy` pre-order over the canonical document (§3.2).
+17. Deletion intent exactly for `delete` and `replace` surface commands (§4.3).
 
-Observed block-A defects that the lot-5 code job must fix first (DESIGN
-conformance): the `count` predicate is read from key `selector` instead of the
-schema key `select` (compiler and evaluator); `inverseReference` property
-admission is checked on the source type instead of the referring type; CR-10 is
-not implemented; `ensure` (lot 3) registers neither its alias nor its write
-demands. `reachable` reads `source`/`target` instead of the schema keys
-`from`/`to` (not used by lot-5 cases).
+## 12. Case table
 
-## 10. Case table
-
-One row per sealed file (status summary: `ok xN` counts successful steps).
+One row per sealed harness file (status summary: `ok xN` counts successful steps).
 
 | Case | DESIGN clause | Witness | Expected |
 | --- | --- | --- | --- |
@@ -490,12 +694,13 @@ One row per sealed file (status summary: `ok xN` counts successful steps).
 | `compile-ui-parameter-unknown` | §2.4.1 L195; §8.3 L655 | UI map binds an undeclared parameter | compile refused `profile-ui-parameters` |
 | `compile-upstream-duplicate-across-entries` | §8.3 L659 | one upstream ID mapped by two entries | compile refused `profile-symbol` |
 | `compile-upstream-duplicate-within-entry` | §8.3 L659 | one upstream ID listed twice by one entry | compile refused `profile-symbol` |
-| `copy-fragment-read-only` | §8.3 L657; §10.1 L737 | copy returns an ordered fragment, no state change | ok x3; refused `operation-error` |
+| `copy-fragment-preorder` | §8.3 L657 | fragment in source document pre-order, not ID order; contained element dropped | ok x2 |
+| `copy-fragment-read-only` | §8.3 L657; §10.1 L737 | copy returns a deduplicated pre-order fragment, no state change | ok x3; refused `operation-error` |
 | `copy-unknown-id` | §8.3 L657; §2.2 L132 | copy of a missing ID; stale copy | refused `reference-dangling`, `operation-error` |
 | `create-append-task` | §8.3 L649; §2.4 L163 | append creates task and link | ok x2 |
 | `create-reference-then-connect` | §8.3 L651; §4.4 L408 | DataStore + DataStoreReference, then Association on connect (no DataInputAssociation) | ok x3 |
-| `create-task-palette-grid` | §8.3 L649; §7.1 L538; §3.2 L284 | grid create: ServiceTask, same ID, isExecutable true | ok x2 |
-| `create-task-palette-neutral` | §8.3 L649; §2.4 L163; §3.2 L276-L282 | palette create with stable-id/1, C keeps isExecutable false | ok x2 |
+| `create-task-palette-grid` | §8.3 L649; §7.1 L538; §3.2 L284 | grid create: ServiceTask, same ID; C sets isExecutable false to true | ok x2 |
+| `create-task-palette-neutral` | §8.3 L649; §2.4 L163; §3.2 L276-L282 | palette create with stable-id/1; C resets isExecutable true to false (complete/set entry) | ok x2 |
 | `delete-includes-dependents` | §8.3 L653; §2.4 L171 | delete includes all declared dependent edges | ok x2 |
 | `delete-refuses-dependents` | §8.3 L653; §2.4 L171 | delete refuses an unlisted dependent edge | ok x1; refused `reference-dangling` |
 | `delete-unreferenced` | §8.3 L653; §2.4 L171 | delete of an unreferenced task | ok x2 |
@@ -503,38 +708,45 @@ One row per sealed file (status summary: `ok xN` counts successful steps).
 | `field-display-edit-grid` | §8.3 L655; §2.2 L116 | display independent of storage, full Unicode upper case | ok x3 |
 | `field-display-prefix-exact` | §2.2 L115; §8.3 L655 | stripPrefix only removes an exact prefix | ok x1 |
 | `field-edit-restores-marker` | §8.3 L653 | edit restores the marker once | ok x2 |
-| `field-empty-string-explicit` | §8.3 L659 | empty string stored, not omitted | ok x2 |
+| `field-empty-string-explicit` | §8.3 L659 | empty string stored, not omitted; draft warnings observed | ok x2 |
 | `field-enum-validation` | §8.3 L659 | on-change validation equals submit validation (enum) | ok x5; refused `profile-type` |
-| `field-listing-widgets` | §8.3 L653 | field records for text, multiline, readonly, reference, enum widgets | ok x7 |
+| `field-listing-widgets` | §8.3 L653 | field records (value included) for text, multiline, readonly, reference, enum widgets | ok x7 |
 | `field-not-editable` | §8.3 L653; §8.3 L649 | immutable, hidden, readonly and predicate-locked fields | ok x3; refused `profile-producer` |
 | `field-reference-submits-ids` | §8.3 L659 | reference widget submits IDs; label and wrong type refused | ok x2; refused `reference-dangling`, `profile-type` |
-| `field-unknown` | §2.4.1 L190; §8.3 L655 | unknown field ID; dangling target | ok x1; refused `profile-symbol`, `reference-dangling` |
+| `field-unknown` | §2.4.1 L190; §8.3 L655 | unknown field or notion; unrecognized target notion; dangling target | ok x1; refused `profile-symbol`, `profile-type`, `reference-dangling` |
 | `field-value-omitted-or-coerced` | §8.3 L659 | omitted value refused; null, number, Boolean not coerced | ok x1; refused `profile-ui-parameters`, `profile-type` |
 | `field-visible-predicate` | §8.3 L653 | visible predicate exposes a field | ok x3 |
-| `fixture-base` | §2.4.1 L191; §1.1 L28 | lot-5 effective base and its pin | derived values |
-| `fixture-descriptors` | §8.1 L606; §2.1 L48 | lot-5 descriptor slice and its pin (union of vendored slices + IO/store types) | derived values |
-| `fixture-profile-grid` | §8.3 L649-L659; §7.1 L538 | grid lot-5 profile composition, digest and identity | derived values |
-| `fixture-profile-neutral` | §8.3 L649-L659; §2.1 L67-L77 | neutral lot-5 profile composition, digest and identity | derived values |
+| `fixture-base` | §2.4.1 L191; §1.1 L28 | lot-5 effective base, its pin and its committed JCS bytes | derived values |
+| `fixture-descriptors` | §8.1 L606; §2.1 L48 | lot-5 descriptor slice, its pin and its committed JCS bytes | derived values |
+| `fixture-profile-grid` | §8.3 L649-L659; §7.1 L538 | grid lot-5 profile (quiet validation), digest, identity, bytes | derived values |
+| `fixture-profile-neutral-lint` | §6.2 L474; §6.3 L493 | neutral lot-5 profile with the vendored validation records | derived values |
+| `fixture-profile-neutral` | §8.3 L649-L659; §6.2 L468 | neutral lot-5 profile (quiet validation), digest, identity, bytes | derived values |
 | `gate-external-creation` | §8.3 L651; §4.1 L364; §13 L910 | OPEN-EXTERNAL: external entry refused | ok x1; refused `profile-open` |
-| `gate-reserved-n-creation` | §7.2 L554; §13 L917; §16 L1160 | OPEN-RESERVED-N: edit needing new supports refused | ok x1; refused `profile-open` |
+| `gate-reserved-n-creation` | §7.2 L554; §13 L917; §16 L1160 | OPEN-RESERVED-N: edit needing new supports refused by N (edit activation) | ok x1; refused `profile-open` |
 | `gate-reserved-n-reuse` | §7.2 L552; §5.2 L440 | bound supports reused, edit commits | ok x2 |
 | `history-batch-one-step` | §8.2 L632 | multi-command batch is one history step | ok x5 |
-| `history-change-events` | §8.2 L633; §8.1 L606 | one event per commit/undo/redo; none for refusal or no-op | ok x5; refused `profile-symbol` |
+| `history-change-events` | §8.2 L633; §8.1 L606 | one event per commit/undo/redo with its report; none for refusal or no-op | ok x5; refused `profile-symbol` |
 | `history-load-epoch` | §8.2 L643; §8.1 L584 | load starts a new history epoch | ok x3; refused `operation-error` |
 | `history-noop-no-entry` | §8.2 L641 | no-op and empty batches add no history step | ok x6; refused `operation-error` |
-| `history-refusal-preserves-state` | §8.2 L633 | refusal leaves snapshot and history unchanged | ok x6; refused `profile-symbol` |
+| `history-refusal-preserves-state` | §8.2 L633 | refusal after a staged write leaves snapshot and history unchanged | ok x6; refused `profile-symbol` |
+| `history-restore-bindings-presentation` | §8.2 L632; §7.2 L565; §8.1.1 L610 | support deletion with bindings and archived importedDi undone/redone byte-identically | ok x6 |
 | `history-stale-revisions` | §8.2 L629; §3.1 L268 | stale baseRevision/expectedViewRevision refused before commands | ok x2; refused `operation-error` |
 | `history-undo-redo-guards` | §8.1 L595-L596; §8.2 L629 | stale undo/redo refused, cursor kept | ok x3; refused `operation-error` |
 | `history-undo-redo-roundtrip` | §8.2 L641; §8.1 L595-L596 | byte-identical undo/redo, redo not truncated | ok x10; refused `operation-error` |
 | `io-set-explicit-selection` | §8.3 L651; §7.1 L547; §8.3 L653 | explicit set selection in the same batch; C once per batch | ok x2 |
-| `io-set-selection-required` | §8.3 L651; §7.1 L547 | uncovered IO with two sets refused by C on the stage | ok x1; refused `io-set-selection-required`, `operation-error` |
+| `io-set-selection-required` | §8.3 L651; §7.1 L547 | uncovered IO with two sets refused by C on the stage after a staged write | ok x1; refused `io-set-selection-required`, `operation-error` |
 | `l10n-resolution-order` | §8.3 L659 | exact, fallback, stable key | ok x8 |
 | `lifecycle-activation-descriptor-mismatch` | §8.1 L617 | activation with a differing descriptor package | ok x1; refused activate `descriptor-mismatch` |
 | `lifecycle-dispose` | §8.1 L599 | dispose result and disposed-state refusals | ok x1; refused `canvas-disposed` |
-| `lifecycle-not-loaded` | §10.1 L737; §8.1 L589 | operations before load | refused `document-not-loaded` |
-| `paste-batch-one-step` | §8.3 L653; §8.2 L632 | paste then edit of the remapped ID in one undo step | ok x4 |
-| `paste-dangling-external-refused` | §8.3 L653; §2.2 L132 | paste with a dangling external ref refused | ok x3; refused `reference-dangling` |
+| `lifecycle-not-loaded` | §10.1 L737; §8.1 L589 | operations before load (no echoed identity) | refused `document-not-loaded` |
+| `lint-draft-integrity-refused` | §6.2 L474; §8.2 L631 | vendored validation: integrity error not downgraded in draft, atomic refusal | ok x1; refused `bpmnlint/no-disconnected`, `operation-error` |
+| `lint-draft-warnings-commit` | §6.2 L474; §16 L1144; §10.1 L739 | vendored validation: draft warnings observed, edit commits | ok x2 |
+| `lint-noop-correction-report` | §8.2 L641; §10.1 L739 | no-op with a correction notice, no history entry, no event | ok x2; refused `operation-error` |
+| `lint-post-normalize-error-blocks` | §6.2 L481; §10.1 L735 | post-normalize unresolved error blocks with the rule code | ok x1; refused `task-name-missing` |
+| `paste-batch-one-step` | §8.3 L653; §8.2 L631-L632 | intermediate state N would refuse, final state accepted: one normalization, one undo step | ok x4 |
+| `paste-dangling-external-refused` | §8.3 L653; §2.2 L132 | paste with a dangling external ref refused; emptied artifacts kept | ok x3; refused `reference-dangling` |
 | `paste-key-collision` | §8.3 L655; §3.2 L288 | same paste key collides; new key gets new IDs | ok x3; refused `id-collision` |
+| `paste-normalize-refused` | §8.2 L631; §10.1 L735 | N refuses the staged paste; report holds the executed lint stage entries | ok x3; refused `fixture-duplicate-aid` |
 | `paste-remap-preserves-external` | §8.3 L653; §3.2 L276 | paste remaps IDs and internal refs, keeps a valid external ref | ok x3 |
 | `pick-field-states` | §8.3 L657; §10.1 L737 | immutable field offers nothing; non-reference, unknown, dangling, stale | ok x1; refused `profile-type`, `profile-symbol`, `reference-dangling`, `operation-error` |
 | `pick-filter-sort` | §8.3 L657 | targetTypes filter, UTF-16 ID order | ok x1 |
@@ -545,52 +757,60 @@ One row per sealed file (status summary: `ok xN` counts successful steps).
 | `pick-reference-ownership` | §8.3 L657 | same-owner candidates only; revalidation at commit | ok x4; refused `profile-type` |
 | `replace-dependency-refused` | §8.3 L651; §2.4 L171 | conversion of a referenced element refused | ok x1; refused `reference-dangling` |
 | `replace-preserves-id` | §8.3 L651 | same-type conversion keeps the ID, empty idMap | ok x2 |
-| `replace-replacement-map` | §8.3 L651; §10.1 L753 | type change reports the replacement map | ok x2 |
+| `replace-replacement-map` | §8.3 L651; §10.1 L753 | type change reports the replacement map (domain migration) | ok x2 |
 | `surface-append-when` | §8.3 L649 | append: same predicate for listing and call | ok x3; refused `profile-producer` |
 | `surface-connect-when` | §8.3 L649 | connect: same predicate for listing and call | ok x3; refused `profile-producer` |
 | `surface-context-when` | §8.3 L649 | context: same predicate for listing and call | ok x3; refused `profile-producer` |
 | `surface-delete-when` | §8.3 L649 | delete: same predicate for listing and call | ok x4; refused `profile-producer` |
-| `surface-direct-edit-when` | §8.3 L649; §8.3 L657 | direct edit: refused then authorized call | ok x4; refused `profile-producer` |
-| `surface-gesture-parameters` | §8.3 L655 | missing/extra gesture sources, ambient field; explicit empty value accepted | ok x2; refused `profile-ui-parameters` |
+| `surface-direct-edit-when` | §8.3 L649; §8.3 L657 | direct edit: refused then authorized call, entry-free report | ok x4; refused `profile-producer` |
+| `surface-gesture-parameters` | §8.3 L655 | missing/extra sources, unknown members, missing context; explicit empty value with draft warnings | ok x2; refused `profile-ui-parameters` |
 | `surface-handles-and-values` | §8.3 L655; §2.2 L132 | dangling handle; no scalar coercion; null refused | ok x1; refused `reference-dangling`, `profile-type` |
 | `surface-palette-entries-grid` | §8.3 L659; §7.1 L538 | grid palette order | ok x1 |
 | `surface-palette-entries-localized` | §8.3 L659 | labels: exact locale, fallback, no BCP 47 truncation, case-sensitive locale | ok x3 |
 | `surface-palette-entries-order` | §8.3 L659; §8.3 L649 | groups by first appearance; order numeric then UTF-16 ID; hidden entry omitted | ok x1 |
 | `surface-palette-when` | §8.3 L649 | palette: hidden entry refused programmatically | ok x2; refused `profile-producer` |
 | `surface-paste-when` | §8.3 L649; §8.3 L657 | paste: copy grants no paste authority | ok x3; refused `profile-producer` |
-| `surface-raw-recipe-command` | §8.3 L649; §8.2 L635 | bare recipe command disabled | ok x1; refused `transaction-entry-unsupported` |
+| `surface-raw-recipe-command` | §8.3 L649; §8.2 L635 | bare recipe record and unknown command kind disabled | ok x1; refused `transaction-entry-unsupported` |
 | `surface-replace-when` | §8.3 L649 | replace: same predicate for listing and call | ok x4; refused `profile-producer` |
 | `surface-unknown-entry` | §2.4.1 L190 | unknown entry ID | ok x1; refused `profile-symbol` |
 | `surface-unlisted-upstream` | §8.3 L659; §8.2 L635 | unlisted upstream entry disabled | ok x1; refused `transaction-entry-unsupported` |
-| `surface-upstream-mapped` | §8.3 L659 | upstream ID resolves to its entry (same tree) | ok x2 |
-| `twin-grid-fixture-commands` | §14.2 L954; §7.1 L538 | vendored grid commands through UI entries reproduce expected.completed | ok x2 |
-| `twin-neutral-fixture-commands` | §14.2 L954; §8.3 L649; §7.1 L538 | vendored neutral commands through UI entries reproduce expected.completed | ok x2 |
-| `tx-cancelled` | §8.1 L604; §8.2 L629 | cancellation refused without change | ok x1; refused `operation-cancelled`, `operation-error` |
+| `surface-upstream-mapped` | §8.3 L659 | upstream command resolves to its entry (same result and report) | ok x2 |
+| `twin-grid-fixture-commands` | §14.2 L954; §7.1 L538 | vendored grid commands through UI entries reproduce expected.completed and lint | ok x2 |
+| `twin-neutral-fixture-commands` | §14.2 L954; §8.3 L649; §7.1 L538 | vendored neutral commands through UI entries reproduce expected.completed and lint | ok x2 |
+| `tx-cancelled` | §8.1 L604; §8.2 L629 | cancellation before staging and after a first staged write | ok x1; refused `operation-cancelled`, `operation-error` |
 | `tx-dispose-during-transaction` | §8.1 L619; §8.2 L635 | dispose during a batch commits nothing | refused `canvas-disposed` |
 | `tx-reentrant-refused` | §8.2 L635 | re-entrant command refused; reads see the committed state | ok x2 |
 
-## 11. Not covered
+## 13. Not covered
 
 - Browser gestures, pointer capture, drag coalescing, DI-only drag/resize/
   reconnect, placement intent and multi-page rollback (OPEN-HOOK, canvas, §8.2
   L637-L639); theme switching and snapshot restoration (`setTheme`,
   `restoreSnapshot`); navigation index (§8.1 L623); read-only mode (§8.1 L619).
-- Lint stages of the §6.2 edit row inside `apply_commands` and the report
-  entries of every operation (only `report.idMap` of replace is sealed).
-- Activation or load with a different profile identity (§3.3 corpus) and
-  explicit migration plans (migration lot).
+- Every layout/geometry effect of a command (lot 4): presentation members other
+  than an explicitly loaded `importedDi` are compared relationally only.
+- `rawStandardFindings` record shape where standard rules run (unsealed
+  `raw-lint-transport`); `repairable` pre-normalize errors continued by N with a
+  `corrected` disposition (no fixture rule is classified `repairable`).
+- Activation or load with a different profile identity (§3.3 corpus), the import
+  lint stage at load and explicit migration plans (migration lot).
 - Internal items with native data associations and ports, reference↔item
   conversion of DataObjectReference, multiple-reference sharing (§8.3 L651,
   §4.4); external-call encoding (OPEN-EXTERNAL).
-- Field IDs declared by two recognized notions (`profile-ambiguous-notion`),
-  UI entries naming recipes of phases other than create/edit/reference/convert,
-  unknown `unsubscribe` IDs, listener re-entrancy and load events.
+- `profile-ambiguous-notion` in `check_field`/`query_references`, UI entries naming
+  recipes of phases other than create/edit/reference/convert, unknown
+  `unsubscribe` IDs, listener re-entrancy and load events.
 - Global versus per-surface group first appearance (§4.2).
 - Visual placement in a reference-band region (§8.3 L651: never a native
-  parent change) and every layout/geometry effect of a command (lot 4).
+  parent change).
 - `unsubscribe`, load-origin events, linear-history redo discard after a new
-  batch (§4.8 step 10, normative but not sealed), selection preservation (no
+  batch (§4.8 step 12, normative but not sealed), selection preservation (no
   headless selection API) and unexpected internal exceptions mapped to
   `operation-error` after rollback (§8.1 L604, needs fault injection).
-- Cross-runtime witnesses: JS→Python→JS transport and the twin canvas command
-  artifacts of §14.3 need the conductor's joint run.
+- The JS-only lot-5 cases marked "add to py" by the harmonization (programmatic
+  surfaces, palette, context, connect, replace, delete, fields and paste cases,
+  history-001…005, the assignable-rule twin and the headless steps of the owner
+  demo script): their values belong to the JS seal and are vendored into the
+  parity run after the JS fix round (harness support only).
+- Cross-runtime execution: JS→Python→JS transport and the twin canvas command
+  artifacts of §14.3 need the conductor's joint run over `parity/`.
