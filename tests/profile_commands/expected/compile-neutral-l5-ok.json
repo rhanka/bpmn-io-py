@@ -1,17 +1,38 @@
 {
   "case": "compile-neutral-l5-ok",
   "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10; \u00a78.3 L655 and L659 widget and parameter rules",
-  "derivation": "The composed neutral fixture satisfies CR-10: every UI entry and field binds each required recipe parameter exactly once with a type-compatible source (owner/target/source->element, value->string, key->string), the enum field has three distinct values, reference fields have targetTypes, the readonly field omits command and the immutable reference field (mutable op false) may omit command.",
+  "derivation": "The composed neutral fixture satisfies CR-10: every UI entry and field binds each required recipe parameter exactly once with a type-compatible source (owner/target/source->element, value->string, key->string), the enum field has three distinct values, reference fields have targetTypes, the readonly field omits command and the immutable reference field (mutable op false) may omit command. The compiled identity equals the fixture identity.",
   "author": "spec-seal",
   "input": {
     "profile": {
       "fixture": "fixture-profile-neutral.json",
-      "delta": []
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
     }
   },
   "expected": {
     "compile": {
-      "status": "ok"
+      "status": "ok",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.6.0",
+        "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "lot5-1",
+          "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "lot5-1",
+            "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+          }
+        ]
+      },
+      "diagnostics": []
     }
   }
 }

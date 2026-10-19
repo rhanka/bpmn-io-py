@@ -20,13 +20,36 @@
             ]
           }
         }
-      ]
+      ],
+      "artifact": "artifacts/profiles/compile-message-missing-fallback.json"
     }
   },
   "expected": {
     "compile": {
       "status": "refused",
-      "code": "profile-symbol"
+      "code": "profile-symbol",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "4cc60c09f9b779334ee70d939bd034f93f96c24a45d3c20267e7ae53702179d6",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
     }
   }
 }

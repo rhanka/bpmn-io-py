@@ -12,13 +12,36 @@
           "path": "/notions/3/fields/0/targetTypes",
           "value": []
         }
-      ]
+      ],
+      "artifact": "artifacts/profiles/compile-reference-empty-target-types.json"
     }
   },
   "expected": {
     "compile": {
       "status": "refused",
-      "code": "profile-schema"
+      "code": "profile-schema",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "d9f81307974660bab421ff0ac6980a78de51086281874d9bfb8f5d0081f29344",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
     }
   }
 }

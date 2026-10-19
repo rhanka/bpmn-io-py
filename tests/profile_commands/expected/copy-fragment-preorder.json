@@ -1,0 +1,422 @@
+{
+  "case": "copy-fragment-preorder",
+  "clause": "DESIGN R3.3 \u00a78.3 L657 copy returns a validated native fragment; harmonization B20 source document pre-order",
+  "derivation": "Process_1 holds artifacts [Note_Z, Note_A] and flowElements [Task_1]. copy of [Note_A, Task_1, Note_Z] returns the elements in source document pre-order, not in UTF-16 ID order: the pre-order walks the canonical (profile-c14n/2) document, an element before its descendants, members in UTF-16 key order (artifacts before flowElements) and arrays by index, so the fragment is [Note_Z, Note_A, Task_1]. copy of [Task_1, Process_1] drops Task_1, which is contained in the requested Process_1, and returns the Process_1 subtree with property rootElements.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
+    },
+    "document": {
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "Review"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Note_Z",
+                "text": "zeta note"
+              },
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Note_A",
+                "text": "alpha note"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": []
+    },
+    "steps": [
+      {
+        "op": "copy",
+        "args": {
+          "baseRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+          "elementIds": [
+            "Note_A",
+            "Task_1",
+            "Note_Z"
+          ]
+        }
+      },
+      {
+        "op": "copy",
+        "args": {
+          "baseRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+          "elementIds": [
+            "Task_1",
+            "Process_1"
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "setup": {
+      "load": {
+        "status": "ok",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+        "revision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+          "outputRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_Z",
+                      "text": "zeta note"
+                    },
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_A",
+                      "text": "alpha note"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee"
+          },
+          "semanticRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+        "revision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+          "outputRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_Z",
+                      "text": "zeta note"
+                    },
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_A",
+                      "text": "alpha note"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee"
+          },
+          "semanticRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "fragmentVersion": "1",
+            "sourceRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+            "elements": [
+              {
+                "property": "artifacts",
+                "element": {
+                  "$type": "bpmn:TextAnnotation",
+                  "id": "Note_Z",
+                  "text": "zeta note"
+                }
+              },
+              {
+                "property": "artifacts",
+                "element": {
+                  "$type": "bpmn:TextAnnotation",
+                  "id": "Note_A",
+                  "text": "alpha note"
+                }
+              },
+              {
+                "property": "flowElements",
+                "element": {
+                  "$type": "bpmn:Task",
+                  "id": "Task_1",
+                  "name": "Review"
+                }
+              }
+            ]
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "fragmentVersion": "1",
+            "sourceRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee",
+            "elements": [
+              {
+                "property": "rootElements",
+                "element": {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_Z",
+                      "text": "zeta note"
+                    },
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_A",
+                      "text": "alpha note"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "diagnostics": []
+        }
+      }
+    ]
+  },
+  "derived": {
+    "loadRevision": "dc57c2b54d549a4fb290ac729c9f41983c8fcac06426e9c94335c74918d054ee"
+  }
+}

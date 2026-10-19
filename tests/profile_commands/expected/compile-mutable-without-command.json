@@ -11,13 +11,36 @@
           "op": "remove",
           "path": "/notions/0/fields/0/command"
         }
-      ]
+      ],
+      "artifact": "artifacts/profiles/compile-mutable-without-command.json"
     }
   },
   "expected": {
     "compile": {
       "status": "refused",
-      "code": "profile-schema"
+      "code": "profile-schema",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "b52445b0c434801ff2990372002636ef60091e56e8a10e0c85cc2d8e7a34df6d",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
     }
   }
 }

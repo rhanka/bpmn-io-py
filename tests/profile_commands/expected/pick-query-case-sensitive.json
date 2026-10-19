@@ -6,7 +6,8 @@
   "input": {
     "profile": {
       "fixture": "fixture-profile-neutral.json",
-      "delta": []
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
     },
     "document": {
       "tree": {
@@ -53,7 +54,7 @@
           {
             "$type": "bpmn:DataStore",
             "id": "Store_9",
-            "name": "Cafe\u0301"
+            "name": "Caf\u00e9"
           },
           {
             "$type": "bpmn:DataStore",
@@ -72,7 +73,7 @@
       {
         "op": "query_references",
         "args": {
-          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
           "targetId": "Ref_1",
           "fieldId": "store",
           "query": "rchive",
@@ -83,7 +84,7 @@
       {
         "op": "query_references",
         "args": {
-          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
           "targetId": "Ref_1",
           "fieldId": "store",
           "query": "A",
@@ -94,7 +95,7 @@
       {
         "op": "query_references",
         "args": {
-          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
           "targetId": "Ref_1",
           "fieldId": "store",
           "query": "archive",
@@ -105,7 +106,7 @@
       {
         "op": "query_references",
         "args": {
-          "baseRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142",
+          "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
           "targetId": "Ref_1",
           "fieldId": "store",
           "query": "ARCHIVE",
@@ -117,9 +118,78 @@
   },
   "expected": {
     "setup": {
-      "activate": {
+      "load": {
         "status": "ok",
-        "operation": "activateBusinessProfile",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+        "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "outputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
         "payload": {
           "envelope": {
             "documentVersion": "1",
@@ -127,8 +197,8 @@
               "mechanismVersion": "1",
               "schemaVersion": "1.0.0",
               "profile": "neutral/1",
-              "version": "1.5.0",
-              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
               "base": {
                 "id": "neutral-base/1",
                 "version": "lot5-1",
@@ -186,7 +256,7 @@
                 {
                   "$type": "bpmn:DataStore",
                   "id": "Store_9",
-                  "name": "Cafe\u0301"
+                  "name": "Caf\u00e9"
                 },
                 {
                   "$type": "bpmn:DataStore",
@@ -200,105 +270,261 @@
               ]
             },
             "bindings": [],
-            "semanticRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
+            "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
           },
-          "semanticRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
+          "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
         },
-        "payloadKeys": [
-          "envelope",
-          "historyEpoch",
-          "semanticRevision",
-          "viewRevision"
-        ]
+        "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+        "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "outputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Archive task"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "Ref_1",
+                      "dataStoreRef": "Store_b"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "store_a",
+                  "name": "Archive"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_b",
+                  "name": "archive box"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_B",
+                  "name": "ARCHIVE"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_10",
+                  "name": "Caf\u00e9"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_9",
+                  "name": "Caf\u00e9"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store-x",
+                  "name": "\ud835\udc9crchive"
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store.y"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
       }
     },
     "steps": [
       {
-        "status": "ok",
-        "payload": {
-          "candidates": [
-            {
-              "id": "Store-x",
-              "type": "bpmn:DataStore",
-              "label": "\ud835\udc9crchive"
-            },
-            {
-              "id": "Store_b",
-              "type": "bpmn:DataStore",
-              "label": "archive box"
-            },
-            {
-              "id": "store_a",
-              "type": "bpmn:DataStore",
-              "label": "Archive"
-            }
-          ],
-          "revision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
-        },
-        "payloadKeys": [
-          "candidates",
-          "revision"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "candidates": [
+              {
+                "id": "Store-x",
+                "type": "bpmn:DataStore",
+                "label": "\ud835\udc9crchive"
+              },
+              {
+                "id": "Store_b",
+                "type": "bpmn:DataStore",
+                "label": "archive box"
+              },
+              {
+                "id": "store_a",
+                "type": "bpmn:DataStore",
+                "label": "Archive"
+              }
+            ],
+            "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "candidates": [
-            {
-              "id": "Store_B",
-              "type": "bpmn:DataStore",
-              "label": "ARCHIVE"
-            },
-            {
-              "id": "store_a",
-              "type": "bpmn:DataStore",
-              "label": "Archive"
-            }
-          ],
-          "revision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
-        },
-        "payloadKeys": [
-          "candidates",
-          "revision"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "candidates": [
+              {
+                "id": "Store_B",
+                "type": "bpmn:DataStore",
+                "label": "ARCHIVE"
+              },
+              {
+                "id": "store_a",
+                "type": "bpmn:DataStore",
+                "label": "Archive"
+              }
+            ],
+            "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "candidates": [
-            {
-              "id": "Store_b",
-              "type": "bpmn:DataStore",
-              "label": "archive box"
-            }
-          ],
-          "revision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
-        },
-        "payloadKeys": [
-          "candidates",
-          "revision"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "candidates": [
+              {
+                "id": "Store_b",
+                "type": "bpmn:DataStore",
+                "label": "archive box"
+              }
+            ],
+            "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "candidates": [
-            {
-              "id": "Store_B",
-              "type": "bpmn:DataStore",
-              "label": "ARCHIVE"
-            }
-          ],
-          "revision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
-        },
-        "payloadKeys": [
-          "candidates",
-          "revision"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "candidates": [
+              {
+                "id": "Store_B",
+                "type": "bpmn:DataStore",
+                "label": "ARCHIVE"
+              }
+            ],
+            "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+          },
+          "diagnostics": []
+        }
       }
     ]
   },
   "derived": {
-    "loadRevision": "b81057c69fb25faa276c9e6b312058d7b4eade95ab92019862f116c9dba31142"
+    "loadRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
   }
 }

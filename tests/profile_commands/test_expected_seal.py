@@ -1,10 +1,12 @@
 """Seal integrity of the lot-5 command expectations (DESIGN R3.3 §8.1-§8.3).
 
-The expectation files under ``expected/`` are sealed: their bytes are pinned
-by ``expected/MANIFEST.sha256`` (sha256sum format, sorted by path), the
-standalone ``derive_helper.py`` imports nothing from the library under test,
-and every derived digest, stable identifier and revision recomputes from the
-helper. This test never imports ``bpmn_io``.
+The expectation tree under ``expected/`` is sealed: the bytes of every harness
+case, committed byte artifact (``artifacts/``) and parity projection
+(``parity/``) are pinned by ``expected/MANIFEST.sha256`` (sha256sum format,
+sorted by path), the standalone ``derive_helper.py`` imports nothing from the
+library under test, and every derived digest, stable identifier, revision,
+Result/Report bookkeeping value and parity record recomputes from the helper.
+This test never imports ``bpmn_io``.
 """
 
 from __future__ import annotations
@@ -17,6 +19,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
     from types import ModuleType
 
 HERE = Path(__file__).resolve().parent
@@ -25,6 +28,16 @@ MANIFEST = EXPECTED / "MANIFEST.sha256"
 HELPER = EXPECTED / "derive_helper.py"
 SPEC = HERE.parent.parent / "spec" / "SPEC_PROFILE_COMMANDS_PY.md"
 REQUIRED_KEYS = frozenset({"case", "clause", "derivation", "input", "expected", "author"})
+STEP_KEYS = frozenset({"result", "equal", "differ", "signal"})
+UNSEALED_REASONS = frozenset(
+    {
+        "lot4-view-revision",
+        "lot4-presentation",
+        "session-history-epoch",
+        "session-subscription",
+        "raw-lint-transport",
+    }
+)
 FORBIDDEN_MODULE = "bpmn_io"
 #: Prefix of an absolute local home path, assembled so this file carries none.
 LOCAL_PATH_PREFIX = chr(0x2F) + "home" + chr(0x2F)
@@ -39,8 +52,11 @@ def _manifest_entries() -> list[tuple[str, str]]:
 
 
 def _sealed_files() -> list[str]:
-    names = [path.name for path in EXPECTED.glob("*.json")]
-    names.append(HELPER.name)
+    names = [
+        path.relative_to(EXPECTED).as_posix()
+        for path in EXPECTED.rglob("*")
+        if path.is_file() and path.suffix in (".json", ".py") and "__pycache__" not in path.parts
+    ]
     return sorted(names)
 
 
@@ -60,6 +76,18 @@ def _expectations() -> list[tuple[str, dict[str, object]]]:
         assert isinstance(value, dict), path.name
         found.append((path.stem, value))
     return found
+
+
+def _markers(node: object) -> Iterator[object]:
+    stack = [node]
+    while stack:
+        current = stack.pop()
+        if isinstance(current, dict):
+            if set(current) == {"$unsealed"}:
+                yield current["$unsealed"]
+            stack.extend(current.values())
+        elif isinstance(current, list):
+            stack.extend(current)
 
 
 def test_manifest_pins_every_sealed_file() -> None:
@@ -102,7 +130,7 @@ def test_expectation_files_carry_the_required_keys() -> None:
 
 
 def test_case_shapes_are_closed() -> None:
-    """Fixtures carry a source; cases carry a profile and steps or a compile outcome."""
+    """Fixtures carry a source; cases carry a committed profile and steps or a compile outcome."""
     for stem, value in _expectations():
         case_input = value["input"]
         expected = value["expected"]
@@ -110,8 +138,11 @@ def test_case_shapes_are_closed() -> None:
         assert isinstance(expected, dict)
         if stem.startswith("fixture-"):
             assert set(case_input) == {"source"}, stem
+            assert "artifact" in expected, stem
             continue
-        assert "profile" in case_input, stem
+        profile = case_input["profile"]
+        assert isinstance(profile, dict)
+        assert set(profile) == {"fixture", "delta", "artifact"}, stem
         if "compile" in expected:
             assert set(expected) == {"compile"}, stem
             assert set(case_input) == {"profile"}, stem
@@ -123,10 +154,24 @@ def test_case_shapes_are_closed() -> None:
         assert steps, stem
         assert len(steps) == len(expected_steps), stem
         assert ("document" in case_input) == ("setup" in expected), stem
+        for item in expected_steps:
+            assert isinstance(item, dict)
+            assert "result" in item, stem
+            assert set(item) <= STEP_KEYS, stem
+
+
+def test_unsealed_markers_name_a_declared_reason() -> None:
+    """Every excluded member carries one of the reasons listed in the binding spec."""
+    text = SPEC.read_text(encoding="utf-8")
+    for reason in UNSEALED_REASONS:
+        assert f"`{reason}`" in text, reason
+    for stem, value in _expectations():
+        for reason in _markers(value["expected"]):
+            assert reason in UNSEALED_REASONS, stem
 
 
 def test_derived_values_recompute() -> None:
-    """Digests, stable IDs, compositions and revisions recompute from the helper."""
+    """Digests, IDs, compositions, revisions, results and parity records recompute."""
     helper = _load_helper()
     assert helper.check_all() == []
 
@@ -140,6 +185,6 @@ def test_spec_case_table_lists_every_file() -> None:
 
 def test_sealed_text_has_no_local_paths() -> None:
     """No sealed file or spec embeds an absolute local path."""
-    for path in [*EXPECTED.iterdir(), SPEC]:
-        if path.is_file():
+    for path in [*EXPECTED.rglob("*"), SPEC]:
+        if path.is_file() and "__pycache__" not in path.parts:
             assert LOCAL_PATH_PREFIX not in path.read_text(encoding="utf-8"), path.name

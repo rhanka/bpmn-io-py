@@ -56,13 +56,36 @@
             ]
           }
         }
-      ]
+      ],
+      "artifact": "artifacts/profiles/compile-id-not-ordinary-input.json"
     }
   },
   "expected": {
     "compile": {
       "status": "refused",
-      "code": "profile-producer"
+      "code": "profile-producer",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "c64ba27299c79a10bf83cd4d8f0718fdf52a0486c691f66afa5803a72f8ed6a6",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
     }
   }
 }

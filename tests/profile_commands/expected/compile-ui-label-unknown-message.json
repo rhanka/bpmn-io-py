@@ -12,13 +12,36 @@
           "path": "/ui/1/label",
           "value": "label.unknown"
         }
-      ]
+      ],
+      "artifact": "artifacts/profiles/compile-ui-label-unknown-message.json"
     }
   },
   "expected": {
     "compile": {
       "status": "refused",
-      "code": "profile-symbol"
+      "code": "profile-symbol",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "7c3c4bb492c89ce46f4259848dd47ae80f74cea4eab93e8bc9403f5cd5124cc1",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
     }
   }
 }

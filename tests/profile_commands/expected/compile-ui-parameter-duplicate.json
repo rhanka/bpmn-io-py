@@ -15,13 +15,36 @@
             "source": "key"
           }
         }
-      ]
+      ],
+      "artifact": "artifacts/profiles/compile-ui-parameter-duplicate.json"
     }
   },
   "expected": {
     "compile": {
       "status": "refused",
-      "code": "profile-ui-parameters"
+      "code": "profile-ui-parameters",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "c50f93d80a4478a925b0c07f4bb36a4737d59eaa3902fe8d084b4fbbcf37072c",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
     }
   }
 }

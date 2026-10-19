@@ -15,13 +15,36 @@
             "create.task"
           ]
         }
-      ]
+      ],
+      "artifact": "artifacts/profiles/compile-upstream-duplicate-within-entry.json"
     }
   },
   "expected": {
     "compile": {
       "status": "refused",
-      "code": "profile-symbol"
+      "code": "profile-symbol",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "af75fc5c8070b5e42aeb5d7d99fe8b32c9ca000cf34023b9f88fb38bed5ad447",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
     }
   }
 }

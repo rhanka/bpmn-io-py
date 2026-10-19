@@ -1,15 +1,23 @@
 """Standalone derivation helper for the lot-5 command expectations.
 
 Stdlib only. It imports nothing from the library under test and never runs a
-command, a recipe, C or N: it only recomputes the arithmetic that the sealed
-expectation files pin, so a reviewer can re-derive every value by hand:
+command, a recipe, C, N or a lint rule: it only recomputes the arithmetic and
+the bookkeeping that the sealed expectation files pin, so a reviewer can
+re-derive every value by hand:
 
 - ``profile-c14n/2`` canonical bytes and ``H(x)`` (DESIGN R3.3 §3.1);
 - ``stable-id/1`` identifiers (DESIGN R3.3 §3.2);
 - RFC 6902 compositions of the vendored contract files used by the fixture
-  files (``fixture-*.json``);
+  files (``fixture-*.json``) and the committed byte artifacts under
+  ``artifacts/`` (exactly the profile-c14n/2 bytes of each composition);
 - ``semanticRevision = H({tree, profileIdentity, bindings})`` of every
-  envelope-shaped record found in an expectation file (DESIGN R3.3 §3.1, §5.1).
+  envelope-shaped record found in an expectation file (DESIGN R3.3 §3.1, §5.1);
+- the closed Result/1 and Report/2 bookkeeping of every sealed result
+  (header members, ``diagnostics == report.entries`` on refusal, the
+  ``profile-report/2`` entry order of DESIGN R3.3 §10.1) and the archived
+  ``importedDi`` digests (DESIGN R3.3 §8.1.1);
+- the ``profile-parity-corpus/1`` projection of every case under ``parity/``
+  (a transcription of the harness values, DESIGN R3.3 §14.3).
 
 Usage (from the repository root)::
 
@@ -28,7 +36,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Callable, Iterator
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent.parent
@@ -355,6 +363,202 @@ def _check_load(case: dict[str, object], identity: dict[str, object] | None) -> 
     return [] if found == want else [f"loadRevision {want} != {found}"]
 
 
+def read_artifact(path: str) -> bytes:
+    """Return the raw bytes of one committed artifact (path relative to this directory)."""
+    return (HERE / path).read_bytes()
+
+
+def raw_digest(data: bytes) -> str:
+    """Return ``B(bytes)``: lowercase SHA-256 of raw bytes."""
+    return hashlib.sha256(data).hexdigest()
+
+
+def _check_profile_artifact(
+    case: dict[str, object], profile: dict[str, object] | None
+) -> list[str]:
+    profile_ref = _as_dict(case["input"]).get("profile")
+    if not isinstance(profile_ref, dict) or profile is None:
+        return []
+    artifact = profile_ref.get("artifact")
+    if not isinstance(artifact, str):
+        return ["input.profile.artifact is missing"]
+    if read_artifact(artifact) != jcs(profile).encode("utf-8"):
+        return [f"{artifact} is not the profile-c14n/2 bytes of the composed profile"]
+    return []
+
+
+_STAGES = (
+    "load",
+    "import",
+    "complete",
+    "pre-normalize",
+    "normalize",
+    "post-normalize",
+    "layout",
+    "post-layout",
+    "release",
+    "render",
+    "export",
+)
+
+
+def _u16(text: object) -> bytes:
+    return str(text).encode("utf-16-be")
+
+
+def _nullable(value: object) -> tuple[int, bytes]:
+    return (0, b"") if value is None else (1, _u16(value))
+
+
+def _optional(entry: dict[str, object], key: str) -> tuple[int, bytes]:
+    if key not in entry:
+        return (0, b"")
+    value = entry[key]
+    return (1, _u16(value if isinstance(value, str) else jcs(value)))
+
+
+def _present(entry: dict[str, object], flag: str, key: str) -> tuple[int, bytes]:
+    return (1, _u16(jcs(entry[key]))) if entry.get(flag) else (0, b"")
+
+
+def entry_order_key(entry: dict[str, object]) -> tuple[object, ...]:
+    """Return the profile-report/2 sort key (DESIGN R3.3 §10.1 L751 plus tie-breaks).
+
+    Stage rank, ruleId, source domain, source pointer and targetId (null
+    first), code, pageId and occurrenceKey (absent first), canonical before and
+    after (absent first), then result domain, pointer and targetId, then
+    property (absent first); UTF-16 code-unit order throughout.
+    """
+    source = _as_dict(entry["source"])
+    result = _as_dict(entry["result"])
+    return (
+        _STAGES.index(str(entry["stage"])),
+        _u16(entry["ruleId"]),
+        _u16(source["domain"]),
+        _nullable(source["pointer"]),
+        _nullable(source["targetId"]),
+        _u16(entry["code"]),
+        _optional(entry, "pageId"),
+        _optional(entry, "occurrenceKey"),
+        _present(entry, "beforePresent", "before"),
+        _present(entry, "afterPresent", "after"),
+        _u16(result["domain"]),
+        _nullable(result["pointer"]),
+        _nullable(result["targetId"]),
+        _optional(entry, "property"),
+    )
+
+
+_SUCCESS_KEYS = frozenset(
+    {"status", "operation", "profileIdentity", "baseRevision", "revision", "report", "payload"}
+)
+_REFUSAL_KEYS = frozenset(
+    {"status", "operation", "profileIdentity", "baseRevision", "code", "diagnostics", "report"}
+)
+_REPORT_KEYS = frozenset(
+    {
+        "reportVersion",
+        "operation",
+        "sourceIdentity",
+        "targetIdentity",
+        "inputRevision",
+        "outputRevision",
+        "entries",
+        "rawStandardFindings",
+        "idMap",
+        "artifacts",
+    }
+)
+
+
+def _check_report_entries(entries: object) -> list[str]:
+    if not isinstance(entries, list):
+        return ["report entries are not an array"]
+    keys = [entry_order_key(_as_dict(entry)) for entry in entries]
+    if keys != sorted(keys):
+        return ["report entries are not in profile-report/2 order"]
+    return []
+
+
+def _check_success(result: dict[str, object], report: dict[str, object]) -> list[str]:
+    problems: list[str] = []
+    if set(result) != _SUCCESS_KEYS:
+        problems.append("success result is not the closed Result/1 success record")
+    identity = result.get("profileIdentity")
+    if report.get("sourceIdentity") != identity or report.get("targetIdentity") != identity:
+        problems.append("success report identities differ from profileIdentity")
+    if report.get("inputRevision") != result.get("baseRevision"):
+        problems.append("report inputRevision differs from baseRevision")
+    if report.get("outputRevision") != result.get("revision"):
+        problems.append("report outputRevision differs from revision")
+    return problems
+
+
+def _check_refusal(result: dict[str, object], report: dict[str, object]) -> list[str]:
+    problems: list[str] = []
+    if not set(result) <= _REFUSAL_KEYS or not {"status", "operation", "code"} <= set(result):
+        problems.append("refusal is not the closed Result/1 refusal record")
+    if ("profileIdentity" in result) != ("baseRevision" in result):
+        problems.append("refusal echoes only one of profileIdentity and baseRevision")
+    if report.get("sourceIdentity") != result.get("profileIdentity"):
+        problems.append("refusal report sourceIdentity differs from the echo")
+    if report.get("inputRevision") != result.get("baseRevision"):
+        problems.append("refusal report inputRevision differs from the echo")
+    if "targetIdentity" in report or "outputRevision" in report:
+        problems.append("refusal report carries targetIdentity or outputRevision")
+    if jcs(result.get("diagnostics")) != jcs(report.get("entries")):
+        problems.append("refusal diagnostics differ from report.entries")
+    return problems
+
+
+def check_result(result: dict[str, object]) -> list[str]:
+    """Check the closed union bookkeeping of one sealed Result/1 template."""
+    report = result.get("report")
+    if not isinstance(report, dict):
+        return ["Result/1 template without report"]
+    problems: list[str] = []
+    if not set(report) <= _REPORT_KEYS or report.get("reportVersion") != "2":
+        problems.append("report is not a closed Report/2 record")
+    if report.get("operation") != result.get("operation"):
+        problems.append("report operation differs from the result operation")
+    problems.extend(_check_report_entries(report.get("entries")))
+    if result.get("status") == "ok":
+        problems.extend(_check_success(result, report))
+    else:
+        problems.extend(_check_refusal(result, report))
+    return problems
+
+
+def iter_results(node: object) -> Iterator[dict[str, object]]:
+    """Yield every Result/1-shaped template below ``node`` (explicit stack)."""
+    stack = [node]
+    while stack:
+        current = stack.pop()
+        if isinstance(current, dict):
+            if "operation" in current and current.get("status") in ("ok", "refused"):
+                yield current
+            stack.extend(current.values())
+        elif isinstance(current, list):
+            stack.extend(current)
+
+
+def check_imported_di(record: dict[str, object], descriptor_pins: object) -> list[str]:
+    """Check one archived importedDi record (DESIGN R3.3 §8.1.1, lot-4 descriptorDigest)."""
+    problems: list[str] = []
+    if not isinstance(descriptor_pins, list):
+        return ["descriptor pins are not an array"]
+    pins = sorted(descriptor_pins, key=lambda pin: _u16(_as_dict(pin)["id"]))
+    if record.get("descriptorDigest") != digest(pins):
+        problems.append("importedDi descriptorDigest differs from H(sorted descriptor pins)")
+    payload = {
+        "descriptorDigest": record.get("descriptorDigest"),
+        "diagrams": record.get("diagrams"),
+    }
+    if record.get("sha256") != digest(payload):
+        problems.append("importedDi sha256 differs from H({descriptorDigest, diagrams})")
+    return problems
+
+
 def check_case(case: dict[str, object]) -> list[str]:
     """Return the derivation problems of one non-fixture expectation file."""
     profile = case_profile(case)
@@ -371,10 +575,16 @@ def check_case(case: dict[str, object]) -> list[str]:
         ):
             problems.append("derived identity differs from the composed profile")
     problems.extend(_check_load(case, identity))
+    problems.extend(_check_profile_artifact(case, profile))
     for envelope in iter_envelopes(case.get("expected")):
         problems.extend(_check_envelope(envelope, identity))
     for envelope in iter_envelopes(case.get("input")):
         problems.extend(_check_envelope(envelope, identity))
+    for result in iter_results(case.get("expected")):
+        problems.extend(check_result(result))
+    document = _as_dict(case["input"]).get("document")
+    if isinstance(document, dict) and "importedDi" in document and profile is not None:
+        problems.extend(check_imported_di(_as_dict(document["importedDi"]), profile["descriptors"]))
     return problems
 
 
@@ -387,6 +597,9 @@ def _check_document_fixture(entry: dict[str, object]) -> list[str]:
     pin = _as_dict(expected["pin"])
     if pin["sha256"] != digest(expected["document"]):
         problems.append("pin sha256 differs from H(document)")
+    data = read_artifact(str(expected["artifact"]))
+    if data != jcs(expected["document"]).encode("utf-8") or raw_digest(data) != pin["sha256"]:
+        problems.append("committed package bytes differ from the pinned profile-c14n/2 bytes")
     return problems
 
 
@@ -404,6 +617,246 @@ def _check_profile_fixture(entry: dict[str, object]) -> list[str]:
         problems.append("profile base pin differs from fixture-base.json")
     if digest(profile["descriptors"]) != digest([descriptor_pin]):
         problems.append("profile descriptor pins differ from fixture-descriptors.json")
+    if read_artifact(str(expected["artifact"])) != jcs(profile).encode("utf-8"):
+        problems.append("committed profile bytes differ from the composed profile")
+    return problems
+
+
+# ----------------------------------------------------------- parity projection
+PARITY_PREFIX = "lot5-py-"
+PATH_BASE = "tests/profile_commands/expected/"
+DESCRIPTOR_ARTIFACT = "artifacts/neutral-descriptors.lot5.json"
+BASE_ARTIFACT = "artifacts/neutral-base.lot5.json"
+ACTIONS = {
+    "apply_commands": "applyCommands",
+    "undo": "undo",
+    "redo": "redo",
+    "get_snapshot": "getSnapshot",
+    "get_definitions": "getDefinitions",
+    "dispose": "dispose",
+    "activate": "activateBusinessProfile",
+    "set_definitions": "setDefinitions",
+    "list_entries": "listEntries",
+    "list_fields": "listFields",
+    "check_field": "checkField",
+    "query_references": "queryReferences",
+    "copy": "copy",
+    "localize": "localize",
+    "on_change": "onChange",
+    "events": "events",
+}
+COMPARATORS = [
+    {
+        "id": "lot5-py/step-outcomes",
+        "kind": "parity",
+        "note": (
+            "One headless bridge per case: create it with the descriptors artifact (or "
+            "the bridge input), load the envelope input (with importedDi when given) and "
+            "activate the compiled profileArtifact, each result matching the setup "
+            "outcomes; then run the sequence steps in order. Every actual result equals "
+            "its outcome template under profile-c14n/2 after each {$unsealed} marker is "
+            "replaced by the actual member it marks (the member must exist); equal/differ "
+            "compare a pointer with a saved result; signal results match per action. "
+            "Placeholders {$current} and {$saved} are resolved before the request runs "
+            "(SPEC_PROFILE_COMMANDS_PY.md section 8)."
+        ),
+    },
+    {
+        "id": "lot5-py/compile-outcome",
+        "kind": "parity",
+        "note": (
+            "loadProfile then compileProfile on the profileArtifact bytes with the base "
+            "and descriptors artifacts: the first refusal as {status, code, diagnostics}, "
+            "or {status: ok, identity, diagnostics} with identity the compiled profile "
+            "identity record."
+        ),
+    },
+    {
+        "id": "profile-c14n/2",
+        "kind": "mechanism",
+        "note": "RFC 8785 JCS bytes, UTF-16 key order (DESIGN R3.3 §3.1).",
+    },
+    {
+        "id": "stable-id/1",
+        "kind": "mechanism",
+        "note": "Allocated IDs recompute (DESIGN R3.3 §3.2).",
+    },
+]
+
+
+def _outcome_status(result: object) -> str:
+    record = _as_dict(result)
+    if record.get("status") == "refused":
+        return f"refused:{record['code']}"
+    return "ok"
+
+
+def _parity_operation(case_input: dict[str, object], expected: dict[str, object]) -> str:
+    if "compile" in expected:
+        return "compileProfile"
+    actions = sorted(
+        {ACTIONS[str(_as_dict(entry)["op"])] for entry in _as_list(case_input["steps"])}
+    )
+    return actions[0] if len(actions) == 1 else "sequence"
+
+
+def _parity_inputs(
+    case: dict[str, object], read: Callable[[str], bytes]
+) -> list[dict[str, object]]:
+    case_input = _as_dict(case["input"])
+    inputs: list[dict[str, object]] = [
+        {
+            "role": "descriptors",
+            "path": DESCRIPTOR_ARTIFACT,
+            "sha256": raw_digest(read(DESCRIPTOR_ARTIFACT)),
+        },
+        {"role": "base", "path": BASE_ARTIFACT, "sha256": raw_digest(read(BASE_ARTIFACT))},
+    ]
+    if "bridge" in case_input:
+        inputs.append({"role": "bridge", "json": case_input["bridge"]})
+    document = case_input.get("document")
+    if isinstance(document, dict):
+        identity = profile_identity(_as_dict(case_profile(case)))
+        bindings = sort_bindings(list(_as_list(document.get("bindings", []))))
+        envelope = {
+            "documentVersion": "1",
+            "profileIdentity": identity,
+            "tree": document["tree"],
+            "bindings": bindings,
+            "semanticRevision": semantic_revision(document["tree"], identity, bindings),
+        }
+        inputs.append({"role": "envelope", "json": envelope})
+        if "importedDi" in document:
+            inputs.append({"role": "importedDi", "json": document["importedDi"]})
+    return inputs
+
+
+def _parity_sequence(steps: object) -> dict[str, object]:
+    sequence = []
+    for index, entry in enumerate(_as_list(steps)):
+        item = _as_dict(entry)
+        step: dict[str, object] = {"step": index + 1, "action": ACTIONS[str(item["op"])]}
+        if "args" in item:
+            step["request"] = item["args"]
+        if "save" in item:
+            step["save"] = item["save"]
+        sequence.append(step)
+    return {"role": "sequence", "json": {"sequenceVersion": "1", "steps": sequence}}
+
+
+def _parity_expected(case: dict[str, object], record: dict[str, object]) -> None:
+    expected = _as_dict(case["expected"])
+    if "compile" in expected:
+        record["expectedArtifacts"] = [{"role": "compile-outcome", "json": expected["compile"]}]
+        record["expectedStatus"] = _outcome_status(expected["compile"])
+        record["comparatorIds"] = ["lot5-py/compile-outcome", "profile-c14n/2"]
+        return
+    outcomes: list[dict[str, object]] = []
+    if "setup" in expected:
+        outcomes.append({"role": "setup-outcomes", "json": expected["setup"]})
+    outcomes.append({"role": "step-outcomes", "json": expected["steps"]})
+    record["expectedArtifacts"] = outcomes
+    expected_steps = _as_list(expected["steps"])
+    single = _as_dict(_as_dict(expected_steps[0])["result"]) if len(expected_steps) == 1 else {}
+    record["expectedStatus"] = _outcome_status(single) if "status" in single else "ok"
+    comparators = ["lot5-py/step-outcomes", "profile-c14n/2"]
+    derived = case.get("derived")
+    if isinstance(derived, dict) and derived.get("ids"):
+        comparators.append("stable-id/1")
+    record["comparatorIds"] = comparators
+
+
+def parity_record(
+    case: dict[str, object], artifacts: dict[str, bytes] | None = None
+) -> dict[str, object]:
+    """Project one harness case to a profile-parity-corpus/1 record (pure transcription)."""
+
+    def read(path: str) -> bytes:
+        return artifacts[path] if artifacts is not None else read_artifact(path)
+
+    case_input = _as_dict(case["input"])
+    expected = _as_dict(case["expected"])
+    artifact = str(_as_dict(case_input["profile"])["artifact"])
+    record: dict[str, object] = {
+        "caseId": PARITY_PREFIX + str(case["case"]),
+        "operation": _parity_operation(case_input, expected),
+        "phase": None,
+        "profileArtifact": {"path": artifact, "sha256": raw_digest(read(artifact))},
+        "inputArtifacts": _parity_inputs(case, read),
+    }
+    if "compile" not in expected:
+        record["commandArtifact"] = _parity_sequence(case_input["steps"])
+    _parity_expected(case, record)
+    return record
+
+
+def parity_text(record: dict[str, object]) -> str:
+    """Return the committed text of one parity record (sorted keys, compact, ASCII, LF)."""
+    return json.dumps(record, ensure_ascii=True, sort_keys=True, separators=(",", ":")) + "\n"
+
+
+def parity_manifest(files: dict[str, str]) -> dict[str, object]:
+    """Return the parity manifest (sha256 of every parity file and referenced artifact)."""
+    return {
+        "comparators": COMPARATORS,
+        "corpusVersion": "lot5-py-1",
+        "files": dict(sorted(files.items(), key=lambda item: _u16(item[0]))),
+        "format": "profile-parity-corpus/1",
+        "notes": [
+            "pathBase is the directory every path below is relative to.",
+            (
+                "Each parity case is a transcription of the harness case of the same name "
+                "(lot5-py- prefix removed); derive_helper.py check re-derives it byte for byte."
+            ),
+            (
+                "Profile and package artifacts are the exact profile-c14n/2 bytes of their "
+                "compositions, so raw SHA-256 equals H(document)."
+            ),
+        ],
+        "pathBase": PATH_BASE,
+    }
+
+
+def _as_list(value: object) -> list[object]:
+    if not isinstance(value, list):
+        msg = "expected a JSON array"
+        raise DerivationError(msg)
+    return value
+
+
+def expected_parity() -> dict[str, str]:
+    """Return the expected text of every parity file, keyed by path."""
+    texts: dict[str, str] = {}
+    for path in sorted(HERE.glob("*.json")):
+        if path.name.startswith("fixture-"):
+            continue
+        record = parity_record(_as_dict(load_json(path)))
+        texts[f"parity/{record['caseId']}.json"] = parity_text(record)
+    return texts
+
+
+def check_parity() -> list[str]:
+    """Re-derive every parity file and the parity manifest."""
+    problems: list[str] = []
+    texts = expected_parity()
+    parity_dir = HERE / "parity"
+    found = {
+        f"parity/{path.name}" for path in parity_dir.glob("*.json") if path.name != "manifest.json"
+    }
+    if found != set(texts):
+        problems.append("parity directory does not hold exactly one record per harness case")
+    files: dict[str, str] = {}
+    for rel, text in texts.items():
+        target = HERE / rel
+        if not target.is_file() or target.read_text(encoding="utf-8") != text:
+            problems.append(f"{rel} differs from the projection of its harness case")
+        files[rel] = raw_digest(text.encode("utf-8"))
+    for path in sorted((HERE / "artifacts").rglob("*.json")):
+        files[path.relative_to(HERE).as_posix()] = raw_digest(path.read_bytes())
+    manifest = parity_dir / "manifest.json"
+    want = json.dumps(parity_manifest(files), indent=2, ensure_ascii=True) + "\n"
+    if not manifest.is_file() or manifest.read_text(encoding="utf-8") != want:
+        problems.append("parity/manifest.json differs from the derived manifest")
     return problems
 
 
@@ -419,10 +872,11 @@ def check_file(path: Path) -> list[str]:
 
 
 def check_all() -> list[str]:
-    """Recompute every derived value of every expectation file."""
+    """Recompute every derived value of every expectation file and the parity tree."""
     problems: list[str] = []
     for path in sorted(HERE.glob("*.json")):
         problems.extend(f"{path.name}: {problem}" for problem in check_file(path))
+    problems.extend(check_parity())
     return problems
 
 

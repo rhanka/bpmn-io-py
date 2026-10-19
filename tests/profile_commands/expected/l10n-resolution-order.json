@@ -6,7 +6,8 @@
   "input": {
     "profile": {
       "fixture": "fixture-profile-neutral.json",
-      "delta": []
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
     },
     "steps": [
       {
@@ -70,108 +71,92 @@
   "expected": {
     "steps": [
       {
-        "status": "ok",
-        "payload": {
-          "key": "label.store",
-          "text": "D\u00e9p\u00f4t",
-          "source": "exact"
-        },
-        "payloadKeys": [
-          "key",
-          "source",
-          "text"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.store",
+            "text": "D\u00e9p\u00f4t",
+            "source": "exact"
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "key": "label.store",
-          "text": "Store",
-          "source": "fallback"
-        },
-        "payloadKeys": [
-          "key",
-          "source",
-          "text"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.store",
+            "text": "Store",
+            "source": "fallback"
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "key": "label.store",
-          "text": "Store",
-          "source": "fallback"
-        },
-        "payloadKeys": [
-          "key",
-          "source",
-          "text"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.store",
+            "text": "Store",
+            "source": "fallback"
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "key": "label.store",
-          "text": "Store",
-          "source": "fallback"
-        },
-        "payloadKeys": [
-          "key",
-          "source",
-          "text"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.store",
+            "text": "Store",
+            "source": "fallback"
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "key": "label.aid",
-          "text": "Aid",
-          "source": "fallback"
-        },
-        "payloadKeys": [
-          "key",
-          "source",
-          "text"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.aid",
+            "text": "Aid",
+            "source": "fallback"
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "key": "label.note",
-          "text": "Notiz",
-          "source": "exact"
-        },
-        "payloadKeys": [
-          "key",
-          "source",
-          "text"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.note",
+            "text": "Notiz",
+            "source": "exact"
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "key": "label.store",
-          "text": "Store",
-          "source": "exact"
-        },
-        "payloadKeys": [
-          "key",
-          "source",
-          "text"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "label.store",
+            "text": "Store",
+            "source": "exact"
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "key": "bpmnlint.no-disconnected",
-          "text": "bpmnlint.no-disconnected",
-          "source": "key"
-        },
-        "payloadKeys": [
-          "key",
-          "source",
-          "text"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "key": "bpmnlint.no-disconnected",
+            "text": "bpmnlint.no-disconnected",
+            "source": "key"
+          },
+          "diagnostics": []
+        }
       }
     ]
   }

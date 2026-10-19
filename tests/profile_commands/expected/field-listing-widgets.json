@@ -1,12 +1,13 @@
 {
   "case": "field-listing-widgets",
   "clause": "DESIGN R3.3 \u00a78.3 L653 property descriptors (path, widget, labels, visibility/mutability, validation message, target types); L655 display; L659 readonly",
-  "derivation": "Fields of the recognized notion of each target: task name (text); aid body (multiline, display stripPrefix removes [Aid] plus space once); the plain note text (readonly, never mutable); reference store and store-view (reference widgets display the stored ID; store-view has mutable false) while store-hint is hidden because Ref_1 has no name; link direction (enum with its choices). Service_1 and Store_1 have no fields.",
+  "derivation": "Fields of the recognized notion of each target: task name (text); aid body (multiline, display stripPrefix removes [Aid] plus space once while value is the stored text); the plain note text (readonly, never mutable); reference store and store-view (reference widgets display the stored ID; store-view has mutable false) while store-hint is hidden because Ref_1 has no name; link direction (enum with its choices). Every listed field carries value, the raw stored value, iff present (harmonization B18). Service_1 and Store_1 have no fields.",
   "author": "spec-seal",
   "input": {
     "profile": {
       "fixture": "fixture-profile-neutral.json",
-      "delta": []
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
     },
     "document": {
       "tree": {
@@ -72,7 +73,7 @@
       {
         "op": "list_fields",
         "args": {
-          "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+          "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
           "targetId": "Task_1",
           "locale": "en"
         }
@@ -80,7 +81,7 @@
       {
         "op": "list_fields",
         "args": {
-          "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+          "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
           "targetId": "Aid_1",
           "locale": "en"
         }
@@ -88,7 +89,7 @@
       {
         "op": "list_fields",
         "args": {
-          "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+          "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
           "targetId": "Note_1",
           "locale": "en"
         }
@@ -96,7 +97,7 @@
       {
         "op": "list_fields",
         "args": {
-          "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+          "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
           "targetId": "Ref_1",
           "locale": "en"
         }
@@ -104,7 +105,7 @@
       {
         "op": "list_fields",
         "args": {
-          "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+          "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
           "targetId": "Link_1",
           "locale": "en"
         }
@@ -112,7 +113,7 @@
       {
         "op": "list_fields",
         "args": {
-          "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+          "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
           "targetId": "Service_1",
           "locale": "en"
         }
@@ -120,7 +121,7 @@
       {
         "op": "list_fields",
         "args": {
-          "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+          "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
           "targetId": "Store_1",
           "locale": "en"
         }
@@ -129,9 +130,78 @@
   },
   "expected": {
     "setup": {
-      "activate": {
+      "load": {
         "status": "ok",
-        "operation": "activateBusinessProfile",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+        "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "outputRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
         "payload": {
           "envelope": {
             "documentVersion": "1",
@@ -139,8 +209,8 @@
               "mechanismVersion": "1",
               "schemaVersion": "1.0.0",
               "profile": "neutral/1",
-              "version": "1.5.0",
-              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
               "base": {
                 "id": "neutral-base/1",
                 "version": "lot5-1",
@@ -212,249 +282,401 @@
               ]
             },
             "bindings": [],
-            "semanticRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c"
+            "semanticRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c"
           },
-          "semanticRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c"
+          "semanticRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
+        "status": "ok",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
         },
-        "payloadKeys": [
-          "envelope",
-          "historyEpoch",
-          "semanticRevision",
-          "viewRevision"
-        ]
+        "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+        "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "outputRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_1",
+                      "name": "Review"
+                    },
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_2",
+                      "name": "Fixed"
+                    },
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "Service_1",
+                      "name": "Notify"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "Ref_1",
+                      "dataStoreRef": "Store_1"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Aid_1",
+                      "text": "[Aid] helper"
+                    },
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_1",
+                      "text": "plain note"
+                    },
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "Link_1",
+                      "associationDirection": "None",
+                      "sourceRef": "Aid_1",
+                      "targetRef": "Task_1"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "Store_1",
+                  "name": "Archive"
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c"
+          },
+          "semanticRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
       }
     },
     "steps": [
       {
-        "status": "ok",
-        "payload": {
-          "revision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
-          "targetId": "Task_1",
-          "fields": [
-            {
-              "notion": "task",
-              "field": "name",
-              "widget": "text",
-              "path": "/name",
-              "label": {
-                "key": "label",
-                "text": "Task"
-              },
-              "message": {
-                "key": "invalid",
-                "text": "Name is required."
-              },
-              "present": true,
-              "display": "Review",
-              "mutable": true,
-              "choices": [],
-              "targetTypes": []
-            }
-          ]
-        },
-        "payloadKeys": [
-          "fields",
-          "revision",
-          "targetId"
-        ]
-      },
-      {
-        "status": "ok",
-        "payload": {
-          "revision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
-          "targetId": "Aid_1",
-          "fields": [
-            {
-              "notion": "aid",
-              "field": "body",
-              "widget": "multiline",
-              "path": "/text",
-              "label": {
-                "key": "label.aid",
-                "text": "Aid"
-              },
-              "message": {
-                "key": "invalid",
-                "text": "Name is required."
-              },
-              "present": true,
-              "display": "helper",
-              "mutable": true,
-              "choices": [],
-              "targetTypes": []
-            }
-          ]
-        },
-        "payloadKeys": [
-          "fields",
-          "revision",
-          "targetId"
-        ]
-      },
-      {
-        "status": "ok",
-        "payload": {
-          "revision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
-          "targetId": "Note_1",
-          "fields": [
-            {
-              "notion": "note",
-              "field": "text",
-              "widget": "readonly",
-              "path": "/text",
-              "label": {
-                "key": "label.note",
-                "text": "Note"
-              },
-              "message": {
-                "key": "invalid",
-                "text": "Name is required."
-              },
-              "present": true,
-              "display": "plain note",
-              "mutable": false,
-              "choices": [],
-              "targetTypes": []
-            }
-          ]
-        },
-        "payloadKeys": [
-          "fields",
-          "revision",
-          "targetId"
-        ]
-      },
-      {
-        "status": "ok",
-        "payload": {
-          "revision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
-          "targetId": "Ref_1",
-          "fields": [
-            {
-              "notion": "reference",
-              "field": "store",
-              "widget": "reference",
-              "path": "/dataStoreRef",
-              "label": {
-                "key": "label.store",
-                "text": "Store"
-              },
-              "message": {
-                "key": "invalid",
-                "text": "Name is required."
-              },
-              "present": true,
-              "display": "Store_1",
-              "mutable": true,
-              "choices": [],
-              "targetTypes": [
-                "bpmn:DataStore"
-              ]
-            },
-            {
-              "notion": "reference",
-              "field": "store-view",
-              "widget": "reference",
-              "path": "/dataStoreRef",
-              "label": {
-                "key": "label.store",
-                "text": "Store"
-              },
-              "message": {
-                "key": "invalid",
-                "text": "Name is required."
-              },
-              "present": true,
-              "display": "Store_1",
-              "mutable": false,
-              "choices": [],
-              "targetTypes": [
-                "bpmn:DataStore"
-              ]
-            }
-          ]
-        },
-        "payloadKeys": [
-          "fields",
-          "revision",
-          "targetId"
-        ]
-      },
-      {
-        "status": "ok",
-        "payload": {
-          "revision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
-          "targetId": "Link_1",
-          "fields": [
-            {
-              "notion": "link",
-              "field": "direction",
-              "widget": "enum",
-              "path": "/associationDirection",
-              "label": {
-                "key": "label.direction",
-                "text": "Direction"
-              },
-              "message": {
-                "key": "invalid",
-                "text": "Name is required."
-              },
-              "present": true,
-              "display": "None",
-              "mutable": true,
-              "choices": [
-                {
-                  "name": "none",
-                  "value": "None"
+        "result": {
+          "status": "ok",
+          "payload": {
+            "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+            "targetId": "Task_1",
+            "fields": [
+              {
+                "notion": "task",
+                "field": "name",
+                "widget": "text",
+                "path": "/name",
+                "label": {
+                  "key": "label",
+                  "text": "Task"
                 },
-                {
-                  "name": "one",
-                  "value": "One"
+                "message": {
+                  "key": "invalid",
+                  "text": "Name is required."
                 },
-                {
-                  "name": "both",
-                  "value": "Both"
-                }
-              ],
-              "targetTypes": []
-            }
-          ]
-        },
-        "payloadKeys": [
-          "fields",
-          "revision",
-          "targetId"
-        ]
+                "present": true,
+                "display": "Review",
+                "value": "Review",
+                "mutable": true,
+                "choices": [],
+                "targetTypes": []
+              }
+            ]
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "revision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
-          "targetId": "Service_1",
-          "fields": []
-        },
-        "payloadKeys": [
-          "fields",
-          "revision",
-          "targetId"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+            "targetId": "Aid_1",
+            "fields": [
+              {
+                "notion": "aid",
+                "field": "body",
+                "widget": "multiline",
+                "path": "/text",
+                "label": {
+                  "key": "label.aid",
+                  "text": "Aid"
+                },
+                "message": {
+                  "key": "invalid",
+                  "text": "Name is required."
+                },
+                "present": true,
+                "display": "helper",
+                "value": "[Aid] helper",
+                "mutable": true,
+                "choices": [],
+                "targetTypes": []
+              }
+            ]
+          },
+          "diagnostics": []
+        }
       },
       {
-        "status": "ok",
-        "payload": {
-          "revision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
-          "targetId": "Store_1",
-          "fields": []
-        },
-        "payloadKeys": [
-          "fields",
-          "revision",
-          "targetId"
-        ]
+        "result": {
+          "status": "ok",
+          "payload": {
+            "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+            "targetId": "Note_1",
+            "fields": [
+              {
+                "notion": "note",
+                "field": "text",
+                "widget": "readonly",
+                "path": "/text",
+                "label": {
+                  "key": "label.note",
+                  "text": "Note"
+                },
+                "message": {
+                  "key": "invalid",
+                  "text": "Name is required."
+                },
+                "present": true,
+                "display": "plain note",
+                "value": "plain note",
+                "mutable": false,
+                "choices": [],
+                "targetTypes": []
+              }
+            ]
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+            "targetId": "Ref_1",
+            "fields": [
+              {
+                "notion": "reference",
+                "field": "store",
+                "widget": "reference",
+                "path": "/dataStoreRef",
+                "label": {
+                  "key": "label.store",
+                  "text": "Store"
+                },
+                "message": {
+                  "key": "invalid",
+                  "text": "Name is required."
+                },
+                "present": true,
+                "display": "Store_1",
+                "value": "Store_1",
+                "mutable": true,
+                "choices": [],
+                "targetTypes": [
+                  "bpmn:DataStore"
+                ]
+              },
+              {
+                "notion": "reference",
+                "field": "store-view",
+                "widget": "reference",
+                "path": "/dataStoreRef",
+                "label": {
+                  "key": "label.store",
+                  "text": "Store"
+                },
+                "message": {
+                  "key": "invalid",
+                  "text": "Name is required."
+                },
+                "present": true,
+                "display": "Store_1",
+                "value": "Store_1",
+                "mutable": false,
+                "choices": [],
+                "targetTypes": [
+                  "bpmn:DataStore"
+                ]
+              }
+            ]
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+            "targetId": "Link_1",
+            "fields": [
+              {
+                "notion": "link",
+                "field": "direction",
+                "widget": "enum",
+                "path": "/associationDirection",
+                "label": {
+                  "key": "label.direction",
+                  "text": "Direction"
+                },
+                "message": {
+                  "key": "invalid",
+                  "text": "Name is required."
+                },
+                "present": true,
+                "display": "None",
+                "value": "None",
+                "mutable": true,
+                "choices": [
+                  {
+                    "name": "none",
+                    "value": "None"
+                  },
+                  {
+                    "name": "one",
+                    "value": "One"
+                  },
+                  {
+                    "name": "both",
+                    "value": "Both"
+                  }
+                ],
+                "targetTypes": []
+              }
+            ]
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+            "targetId": "Service_1",
+            "fields": []
+          },
+          "diagnostics": []
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+            "targetId": "Store_1",
+            "fields": []
+          },
+          "diagnostics": []
+        }
       }
     ]
   },
   "derived": {
-    "loadRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c"
+    "loadRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c"
   }
 }

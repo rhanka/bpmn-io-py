@@ -1,7 +1,7 @@
 {
   "case": "fixture-profile-grid",
   "clause": "DESIGN R3.3 \u00a78.3 L649-L659; \u00a77.1 L538 the two neutral profiles differ",
-  "derivation": "Vendored grid profile with version 2.5.0, the lot-5 pins, an upper-case display body field on its aid notion, the [Note] edit recipe and three UI entries. It keeps ServiceTask, the [Note] marker and isExecutable=true, unlike the neutral profile.",
+  "derivation": "Vendored grid profile with version 2.6.0, the lot-5 pins, an upper-case display body field on its aid notion, the [Note] edit recipe and three UI entries; the same quiet validation override as fixture-profile-neutral (26 standard settings off in the ten records, profile subrules unchanged). It keeps ServiceTask, the [Note] marker and isExecutable=true, unlike the neutral profile.",
   "author": "spec-seal",
   "input": {
     "source": {
@@ -10,7 +10,7 @@
         {
           "op": "replace",
           "path": "/version",
-          "value": "2.5.0"
+          "value": "2.6.0"
         },
         {
           "op": "replace",
@@ -302,18 +302,1428 @@
               }
             ]
           }
+        },
+        {
+          "op": "replace",
+          "path": "/validation/0/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-import",
+              "severity": "warn",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/1/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-import",
+              "severity": "error",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/2/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-pre-normalize",
+              "severity": "warn",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-pre-normalize",
+              "severity": "error",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/4/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named",
+              "severity": "warn",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named",
+              "severity": "error",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/6/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-post-layout",
+              "severity": "warn",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-post-layout",
+              "severity": "error",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/8/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-release",
+              "severity": "warn",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-release",
+              "severity": "error",
+              "classification": "readiness"
+            }
+          ]
         }
       ]
     }
   },
   "expected": {
-    "profileSha256": "028bdabec188e02b0291b92dfc3b12e2d0dfbbd6facac7baa18b9f33c092dfae",
+    "profileSha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
     "identity": {
       "mechanismVersion": "1",
       "schemaVersion": "1.0.0",
       "profile": "neutral-grid/1",
-      "version": "2.5.0",
-      "sha256": "028bdabec188e02b0291b92dfc3b12e2d0dfbbd6facac7baa18b9f33c092dfae",
+      "version": "2.6.0",
+      "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
       "base": {
         "id": "neutral-base/1",
         "version": "lot5-1",
@@ -326,6 +1736,7 @@
           "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
         }
       ]
-    }
+    },
+    "artifact": "artifacts/profiles/grid-lot5.json"
   }
 }

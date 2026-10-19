@@ -1,12 +1,13 @@
 {
   "case": "twin-grid-fixture-commands",
   "clause": "DESIGN R3.3 \u00a714.2 L954 twin semantic command expectations; \u00a77.1 L538 the neutral profiles differ",
-  "derivation": "The same two commands through the grid UI entries reproduce the vendored grid expected.completed tree: a ServiceTask target, the [Note] marker and isExecutable=true added by C.",
+  "derivation": "The same two commands through the grid UI entries reproduce the vendored grid expected.completed tree: a ServiceTask target, the [Note] marker and isExecutable=true added by C (complete/set, before absent, after true); the draft entries equal the vendored grid lint expectations on the unnamed ServiceTask Task_A.",
   "author": "spec-seal",
   "input": {
     "profile": {
       "fixture": "fixture-profile-grid.json",
-      "delta": []
+      "delta": [],
+      "artifact": "artifacts/profiles/grid-lot5.json"
     },
     "document": {
       "tree": {
@@ -60,22 +61,28 @@
       {
         "op": "apply_commands",
         "args": {
-          "baseRevision": "db28e8f674973c29fa154956a1bb8ca622be8f497d89bc745a581f2c94ae5d5f",
+          "baseRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
           "expectedViewRevision": {
             "$current": "viewRevision"
           },
           "transactionId": "tx-1",
           "commands": [
             {
+              "command": "surface",
               "entry": "task-note",
-              "target": "Task_B",
-              "value": "Preserved source"
+              "context": {
+                "target": "Task_B",
+                "value": "Preserved source"
+              }
             },
             {
+              "command": "surface",
               "entry": "aid-create",
-              "owner": "Process_1",
-              "key": "new-note",
-              "value": "helper"
+              "context": {
+                "owner": "Process_1",
+                "key": "new-note",
+                "value": "helper"
+              }
             }
           ]
         }
@@ -87,9 +94,78 @@
   },
   "expected": {
     "setup": {
-      "activate": {
+      "load": {
         "status": "ok",
-        "operation": "activateBusinessProfile",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-grid/1",
+          "version": "2.6.0",
+          "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+        "revision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+          "outputRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
         "payload": {
           "envelope": {
             "documentVersion": "1",
@@ -97,8 +173,8 @@
               "mechanismVersion": "1",
               "schemaVersion": "1.0.0",
               "profile": "neutral-grid/1",
-              "version": "2.5.0",
-              "sha256": "028bdabec188e02b0291b92dfc3b12e2d0dfbbd6facac7baa18b9f33c092dfae",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
               "base": {
                 "id": "neutral-base/1",
                 "version": "lot5-1",
@@ -158,24 +234,86 @@
               ]
             },
             "bindings": [],
-            "semanticRevision": "db28e8f674973c29fa154956a1bb8ca622be8f497d89bc745a581f2c94ae5d5f"
+            "semanticRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946"
           },
-          "semanticRevision": "db28e8f674973c29fa154956a1bb8ca622be8f497d89bc745a581f2c94ae5d5f"
-        },
-        "payloadKeys": [
-          "envelope",
-          "historyEpoch",
-          "semanticRevision",
-          "viewRevision"
-        ]
-      }
-    },
-    "steps": [
-      {
+          "semanticRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
         "status": "ok",
-        "operation": "applyCommands",
-        "baseRevision": "db28e8f674973c29fa154956a1bb8ca622be8f497d89bc745a581f2c94ae5d5f",
-        "revision": "168a8cc9b75ec5795c7fdfa17534349689f1d4168493debab074b467bffadc75",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-grid/1",
+          "version": "2.6.0",
+          "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+        "revision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+          "outputRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
         "payload": {
           "envelope": {
             "documentVersion": "1",
@@ -183,8 +321,398 @@
               "mechanismVersion": "1",
               "schemaVersion": "1.0.0",
               "profile": "neutral-grid/1",
-              "version": "2.5.0",
-              "sha256": "028bdabec188e02b0291b92dfc3b12e2d0dfbbd6facac7baa18b9f33c092dfae",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_1",
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "Task_B",
+                      "name": "Ready"
+                    },
+                    {
+                      "$type": "bpmn:ServiceTask",
+                      "id": "Task_A",
+                      "name": ""
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "Z-consumer",
+                      "sourceRef": "Task_A",
+                      "targetRef": "Task_B",
+                      "associationDirection": "One"
+                    },
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "Y-consumer",
+                      "sourceRef": "Task_A",
+                      "targetRef": "Task_B",
+                      "associationDirection": "One"
+                    },
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "A-producer",
+                      "sourceRef": "Task_B",
+                      "targetRef": "Task_A",
+                      "associationDirection": "One"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946"
+          },
+          "semanticRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "result": {
+          "status": "ok",
+          "operation": "applyCommands",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+          "revision": "792e511afbf654b5b81398763168e16d5bf00a419da91e2262c88b0fadd26016",
+          "report": {
+            "reportVersion": "2",
+            "operation": "applyCommands",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
+            "outputRevision": "792e511afbf654b5b81398763168e16d5bf00a419da91e2262c88b0fadd26016",
+            "entries": [
+              {
+                "code": "complete/set",
+                "severity": "info",
+                "classification": "repairable",
+                "stage": "complete",
+                "ruleId": "complete-process",
+                "messageKey": "complete.set",
+                "disposition": "corrected",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/isExecutable",
+                  "targetId": "Process_1",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/isExecutable",
+                  "targetId": "Process_1",
+                  "provenance": "exact"
+                },
+                "property": "isExecutable",
+                "beforePresent": false,
+                "afterPresent": true,
+                "after": true
+              },
+              {
+                "code": "task-name-missing-pre-normalize",
+                "severity": "warn",
+                "classification": "readiness",
+                "stage": "pre-normalize",
+                "ruleId": "task-named-pre-normalize",
+                "messageKey": "invalid",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/1",
+                  "targetId": "Task_A",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              },
+              {
+                "code": "task-name-missing",
+                "severity": "warn",
+                "classification": "readiness",
+                "stage": "post-normalize",
+                "ruleId": "task-named",
+                "messageKey": "invalid",
+                "disposition": "observed",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/1",
+                  "targetId": "Task_A",
+                  "provenance": "exact"
+                },
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "unavailable"
+                },
+                "beforePresent": false,
+                "afterPresent": false
+              }
+            ],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "envelope": {
+              "documentVersion": "1",
+              "profileIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-grid/1",
+                "version": "2.6.0",
+                "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+                "base": {
+                  "id": "neutral-base/1",
+                  "version": "lot5-1",
+                  "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-descriptors/1",
+                    "version": "lot5-1",
+                    "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                  }
+                ]
+              },
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "id": "Definitions_1",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "id": "Process_1",
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:ServiceTask",
+                        "id": "Task_B",
+                        "name": "Ready",
+                        "documentation": [
+                          {
+                            "$type": "bpmn:Documentation",
+                            "text": "Preserved source",
+                            "textFormat": "text/plain"
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:ServiceTask",
+                        "id": "Task_A",
+                        "name": ""
+                      }
+                    ],
+                    "artifacts": [
+                      {
+                        "$type": "bpmn:Association",
+                        "id": "Z-consumer",
+                        "sourceRef": "Task_A",
+                        "targetRef": "Task_B",
+                        "associationDirection": "One"
+                      },
+                      {
+                        "$type": "bpmn:Association",
+                        "id": "Y-consumer",
+                        "sourceRef": "Task_A",
+                        "targetRef": "Task_B",
+                        "associationDirection": "One"
+                      },
+                      {
+                        "$type": "bpmn:Association",
+                        "id": "A-producer",
+                        "sourceRef": "Task_B",
+                        "targetRef": "Task_A",
+                        "associationDirection": "One"
+                      },
+                      {
+                        "$type": "bpmn:TextAnnotation",
+                        "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+                        "text": "[Note] helper"
+                      }
+                    ],
+                    "isExecutable": true
+                  }
+                ]
+              },
+              "bindings": [],
+              "semanticRevision": "792e511afbf654b5b81398763168e16d5bf00a419da91e2262c88b0fadd26016"
+            },
+            "semanticRevision": "792e511afbf654b5b81398763168e16d5bf00a419da91e2262c88b0fadd26016",
+            "viewRevision": {
+              "$unsealed": "lot4-view-revision"
+            },
+            "transactionId": "tx-1",
+            "changed": true
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "operation": "getDefinitions",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-grid/1",
+            "version": "2.6.0",
+            "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "792e511afbf654b5b81398763168e16d5bf00a419da91e2262c88b0fadd26016",
+          "revision": "792e511afbf654b5b81398763168e16d5bf00a419da91e2262c88b0fadd26016",
+          "report": {
+            "reportVersion": "2",
+            "operation": "getDefinitions",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
+              ]
+            },
+            "inputRevision": "792e511afbf654b5b81398763168e16d5bf00a419da91e2262c88b0fadd26016",
+            "outputRevision": "792e511afbf654b5b81398763168e16d5bf00a419da91e2262c88b0fadd26016",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-grid/1",
+              "version": "2.6.0",
+              "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
               "base": {
                 "id": "neutral-base/1",
                 "version": "lot5-1",
@@ -257,117 +785,14 @@
               ]
             },
             "bindings": [],
-            "semanticRevision": "168a8cc9b75ec5795c7fdfa17534349689f1d4168493debab074b467bffadc75"
-          },
-          "semanticRevision": "168a8cc9b75ec5795c7fdfa17534349689f1d4168493debab074b467bffadc75",
-          "transactionId": "tx-1",
-          "changed": true
-        },
-        "payloadKeys": [
-          "changed",
-          "envelope",
-          "semanticRevision",
-          "transactionId",
-          "viewRevision"
-        ]
-      },
-      {
-        "status": "ok",
-        "operation": "getDefinitions",
-        "payload": {
-          "documentVersion": "1",
-          "profileIdentity": {
-            "mechanismVersion": "1",
-            "schemaVersion": "1.0.0",
-            "profile": "neutral-grid/1",
-            "version": "2.5.0",
-            "sha256": "028bdabec188e02b0291b92dfc3b12e2d0dfbbd6facac7baa18b9f33c092dfae",
-            "base": {
-              "id": "neutral-base/1",
-              "version": "lot5-1",
-              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
-            },
-            "descriptors": [
-              {
-                "id": "neutral-descriptors/1",
-                "version": "lot5-1",
-                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
-              }
-            ]
-          },
-          "tree": {
-            "$type": "bpmn:Definitions",
-            "id": "Definitions_1",
-            "rootElements": [
-              {
-                "$type": "bpmn:Process",
-                "id": "Process_1",
-                "flowElements": [
-                  {
-                    "$type": "bpmn:ServiceTask",
-                    "id": "Task_B",
-                    "name": "Ready",
-                    "documentation": [
-                      {
-                        "$type": "bpmn:Documentation",
-                        "text": "Preserved source",
-                        "textFormat": "text/plain"
-                      }
-                    ]
-                  },
-                  {
-                    "$type": "bpmn:ServiceTask",
-                    "id": "Task_A",
-                    "name": ""
-                  }
-                ],
-                "artifacts": [
-                  {
-                    "$type": "bpmn:Association",
-                    "id": "Z-consumer",
-                    "sourceRef": "Task_A",
-                    "targetRef": "Task_B",
-                    "associationDirection": "One"
-                  },
-                  {
-                    "$type": "bpmn:Association",
-                    "id": "Y-consumer",
-                    "sourceRef": "Task_A",
-                    "targetRef": "Task_B",
-                    "associationDirection": "One"
-                  },
-                  {
-                    "$type": "bpmn:Association",
-                    "id": "A-producer",
-                    "sourceRef": "Task_B",
-                    "targetRef": "Task_A",
-                    "associationDirection": "One"
-                  },
-                  {
-                    "$type": "bpmn:TextAnnotation",
-                    "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
-                    "text": "[Note] helper"
-                  }
-                ],
-                "isExecutable": true
-              }
-            ]
-          },
-          "bindings": [],
-          "semanticRevision": "168a8cc9b75ec5795c7fdfa17534349689f1d4168493debab074b467bffadc75"
-        },
-        "payloadKeys": [
-          "bindings",
-          "documentVersion",
-          "profileIdentity",
-          "semanticRevision",
-          "tree"
-        ]
+            "semanticRevision": "792e511afbf654b5b81398763168e16d5bf00a419da91e2262c88b0fadd26016"
+          }
+        }
       }
     ]
   },
   "derived": {
-    "loadRevision": "db28e8f674973c29fa154956a1bb8ca622be8f497d89bc745a581f2c94ae5d5f",
+    "loadRevision": "435c96ccf4f4a4db805885de42860d242decfc5404d081145c13ad6b5e425946",
     "ids": [
       {
         "ownerId": "Process_1",

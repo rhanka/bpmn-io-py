@@ -1,12 +1,13 @@
 {
   "case": "field-clear-optional-reference",
   "clause": "DESIGN R3.3 \u00a78.3 L659 clearing an optional reference is an explicit remove-reference command, never null; \u00a72.4 L166 explicit optional removal",
-  "derivation": "The context entry store-clear runs clear-store (assignRef mode remove of the current store) on Ref_1: the dataStoreRef property is absent afterwards (not null, not empty) and both reference fields read present false.",
+  "derivation": "The context entry store-clear runs clear-store (assignRef mode remove of the current store) on Ref_1: the single-valued dataStoreRef property is absent afterwards (not null, not empty) and both reference fields read present false, without display and value.",
   "author": "spec-seal",
   "input": {
     "profile": {
       "fixture": "fixture-profile-neutral.json",
-      "delta": []
+      "delta": [],
+      "artifact": "artifacts/profiles/neutral-lot5.json"
     },
     "document": {
       "tree": {
@@ -72,15 +73,18 @@
       {
         "op": "apply_commands",
         "args": {
-          "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
+          "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
           "expectedViewRevision": {
             "$current": "viewRevision"
           },
           "transactionId": "tx-1",
           "commands": [
             {
+              "command": "surface",
               "entry": "store-clear",
-              "target": "Ref_1"
+              "context": {
+                "target": "Ref_1"
+              }
             }
           ]
         }
@@ -88,7 +92,7 @@
       {
         "op": "list_fields",
         "args": {
-          "baseRevision": "4808f0305a91113d9589f1436df1f698a111d3ef81e9836eee444e6940293b74",
+          "baseRevision": "a462449d875f845fb9517f29d04f4339c0f03f64ddc9a2e3b89d84a5ba06f17b",
           "targetId": "Ref_1",
           "locale": "en"
         }
@@ -97,9 +101,78 @@
   },
   "expected": {
     "setup": {
-      "activate": {
+      "load": {
         "status": "ok",
-        "operation": "activateBusinessProfile",
+        "operation": "setDefinitions",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+        "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+        "report": {
+          "reportVersion": "2",
+          "operation": "setDefinitions",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "outputRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
         "payload": {
           "envelope": {
             "documentVersion": "1",
@@ -107,8 +180,8 @@
               "mechanismVersion": "1",
               "schemaVersion": "1.0.0",
               "profile": "neutral/1",
-              "version": "1.5.0",
-              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
               "base": {
                 "id": "neutral-base/1",
                 "version": "lot5-1",
@@ -180,24 +253,86 @@
               ]
             },
             "bindings": [],
-            "semanticRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c"
+            "semanticRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c"
           },
-          "semanticRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c"
-        },
-        "payloadKeys": [
-          "envelope",
-          "historyEpoch",
-          "semanticRevision",
-          "viewRevision"
-        ]
-      }
-    },
-    "steps": [
-      {
+          "semanticRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          }
+        }
+      },
+      "activate": {
         "status": "ok",
-        "operation": "applyCommands",
-        "baseRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c",
-        "revision": "4808f0305a91113d9589f1436df1f698a111d3ef81e9836eee444e6940293b74",
+        "operation": "activateBusinessProfile",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.6.0",
+          "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+        "revision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+        "report": {
+          "reportVersion": "2",
+          "operation": "activateBusinessProfile",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "inputRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "outputRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
         "payload": {
           "envelope": {
             "documentVersion": "1",
@@ -205,8 +340,8 @@
               "mechanismVersion": "1",
               "schemaVersion": "1.0.0",
               "profile": "neutral/1",
-              "version": "1.5.0",
-              "sha256": "171d1a02b52596ccc34f159cc7d255eb22a32b0851f133a3915edf2a779ad270",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
               "base": {
                 "id": "neutral-base/1",
                 "version": "lot5-1",
@@ -246,7 +381,8 @@
                     },
                     {
                       "$type": "bpmn:DataStoreReference",
-                      "id": "Ref_1"
+                      "id": "Ref_1",
+                      "dataStoreRef": "Store_1"
                     }
                   ],
                   "artifacts": [
@@ -277,77 +413,237 @@
               ]
             },
             "bindings": [],
-            "semanticRevision": "4808f0305a91113d9589f1436df1f698a111d3ef81e9836eee444e6940293b74"
+            "semanticRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c"
           },
-          "semanticRevision": "4808f0305a91113d9589f1436df1f698a111d3ef81e9836eee444e6940293b74",
-          "transactionId": "tx-1",
-          "changed": true
-        },
-        "payloadKeys": [
-          "changed",
-          "envelope",
-          "semanticRevision",
-          "transactionId",
-          "viewRevision"
-        ]
-      },
+          "semanticRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "viewRevision": {
+            "$unsealed": "lot4-view-revision"
+          },
+          "historyEpoch": {
+            "$unsealed": "session-history-epoch"
+          }
+        }
+      }
+    },
+    "steps": [
       {
-        "status": "ok",
-        "payload": {
-          "revision": "4808f0305a91113d9589f1436df1f698a111d3ef81e9836eee444e6940293b74",
-          "targetId": "Ref_1",
-          "fields": [
-            {
-              "notion": "reference",
-              "field": "store",
-              "widget": "reference",
-              "path": "/dataStoreRef",
-              "label": {
-                "key": "label.store",
-                "text": "Store"
+        "result": {
+          "status": "ok",
+          "operation": "applyCommands",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral/1",
+            "version": "1.6.0",
+            "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+            "base": {
+              "id": "neutral-base/1",
+              "version": "lot5-1",
+              "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-descriptors/1",
+                "version": "lot5-1",
+                "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+              }
+            ]
+          },
+          "baseRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+          "revision": "a462449d875f845fb9517f29d04f4339c0f03f64ddc9a2e3b89d84a5ba06f17b",
+          "report": {
+            "reportVersion": "2",
+            "operation": "applyCommands",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
               },
-              "message": {
-                "key": "invalid",
-                "text": "Name is required."
-              },
-              "present": false,
-              "mutable": true,
-              "choices": [],
-              "targetTypes": [
-                "bpmn:DataStore"
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
               ]
             },
-            {
-              "notion": "reference",
-              "field": "store-view",
-              "widget": "reference",
-              "path": "/dataStoreRef",
-              "label": {
-                "key": "label.store",
-                "text": "Store"
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral/1",
+              "version": "1.6.0",
+              "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+              "base": {
+                "id": "neutral-base/1",
+                "version": "lot5-1",
+                "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
               },
-              "message": {
-                "key": "invalid",
-                "text": "Name is required."
-              },
-              "present": false,
-              "mutable": false,
-              "choices": [],
-              "targetTypes": [
-                "bpmn:DataStore"
+              "descriptors": [
+                {
+                  "id": "neutral-descriptors/1",
+                  "version": "lot5-1",
+                  "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                }
               ]
-            }
-          ]
-        },
-        "payloadKeys": [
-          "fields",
-          "revision",
-          "targetId"
-        ]
+            },
+            "inputRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c",
+            "outputRevision": "a462449d875f845fb9517f29d04f4339c0f03f64ddc9a2e3b89d84a5ba06f17b",
+            "entries": [],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          },
+          "payload": {
+            "envelope": {
+              "documentVersion": "1",
+              "profileIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral/1",
+                "version": "1.6.0",
+                "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+                "base": {
+                  "id": "neutral-base/1",
+                  "version": "lot5-1",
+                  "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-descriptors/1",
+                    "version": "lot5-1",
+                    "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+                  }
+                ]
+              },
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "id": "Definitions_1",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "id": "Process_1",
+                    "isExecutable": false,
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:Task",
+                        "id": "Task_1",
+                        "name": "Review"
+                      },
+                      {
+                        "$type": "bpmn:Task",
+                        "id": "Task_2",
+                        "name": "Fixed"
+                      },
+                      {
+                        "$type": "bpmn:ServiceTask",
+                        "id": "Service_1",
+                        "name": "Notify"
+                      },
+                      {
+                        "$type": "bpmn:DataStoreReference",
+                        "id": "Ref_1"
+                      }
+                    ],
+                    "artifacts": [
+                      {
+                        "$type": "bpmn:TextAnnotation",
+                        "id": "Aid_1",
+                        "text": "[Aid] helper"
+                      },
+                      {
+                        "$type": "bpmn:TextAnnotation",
+                        "id": "Note_1",
+                        "text": "plain note"
+                      },
+                      {
+                        "$type": "bpmn:Association",
+                        "id": "Link_1",
+                        "associationDirection": "None",
+                        "sourceRef": "Aid_1",
+                        "targetRef": "Task_1"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:DataStore",
+                    "id": "Store_1",
+                    "name": "Archive"
+                  }
+                ]
+              },
+              "bindings": [],
+              "semanticRevision": "a462449d875f845fb9517f29d04f4339c0f03f64ddc9a2e3b89d84a5ba06f17b"
+            },
+            "semanticRevision": "a462449d875f845fb9517f29d04f4339c0f03f64ddc9a2e3b89d84a5ba06f17b",
+            "viewRevision": {
+              "$unsealed": "lot4-view-revision"
+            },
+            "transactionId": "tx-1",
+            "changed": true
+          }
+        }
+      },
+      {
+        "result": {
+          "status": "ok",
+          "payload": {
+            "revision": "a462449d875f845fb9517f29d04f4339c0f03f64ddc9a2e3b89d84a5ba06f17b",
+            "targetId": "Ref_1",
+            "fields": [
+              {
+                "notion": "reference",
+                "field": "store",
+                "widget": "reference",
+                "path": "/dataStoreRef",
+                "label": {
+                  "key": "label.store",
+                  "text": "Store"
+                },
+                "message": {
+                  "key": "invalid",
+                  "text": "Name is required."
+                },
+                "present": false,
+                "mutable": true,
+                "choices": [],
+                "targetTypes": [
+                  "bpmn:DataStore"
+                ]
+              },
+              {
+                "notion": "reference",
+                "field": "store-view",
+                "widget": "reference",
+                "path": "/dataStoreRef",
+                "label": {
+                  "key": "label.store",
+                  "text": "Store"
+                },
+                "message": {
+                  "key": "invalid",
+                  "text": "Name is required."
+                },
+                "present": false,
+                "mutable": false,
+                "choices": [],
+                "targetTypes": [
+                  "bpmn:DataStore"
+                ]
+              }
+            ]
+          },
+          "diagnostics": []
+        }
       }
     ]
   },
   "derived": {
-    "loadRevision": "962a907bfa1e6e87ef87cb2ac410118c86ec8f95993cfacbc31335a2c792ab5c"
+    "loadRevision": "23c6eec00221d07cec1841780966ad08060336a1db959bee32720e17a5c00a1c"
   }
 }

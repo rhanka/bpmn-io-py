@@ -1,7 +1,7 @@
 {
   "case": "fixture-base",
   "clause": "DESIGN R3.3 \u00a72.4.1 L191 CR-06 effective producers; \u00a71.1 L28 restriction base",
-  "derivation": "Vendored neutral base plus the support-fixture fields and the lot-5 fields, every new field produced by code, editor and import. Base bytes are the UTF-8 profile-c14n/2 bytes of expected.document, so pin.sha256 = H(document).",
+  "derivation": "Vendored neutral base plus the support-fixture fields and the lot-5 fields, every new field produced by code, editor and import. The committed base bytes (expected.artifact) are exactly the UTF-8 profile-c14n/2 bytes of expected.document, so their raw SHA-256 equals pin.sha256 = H(document).",
   "author": "spec-seal",
   "input": {
     "source": {
@@ -1089,6 +1089,7 @@
       "id": "neutral-base/1",
       "version": "lot5-1",
       "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
-    }
+    },
+    "artifact": "artifacts/neutral-base.lot5.json"
   }
 }

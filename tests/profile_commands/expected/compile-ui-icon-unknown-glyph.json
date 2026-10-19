@@ -12,13 +12,36 @@
           "path": "/ui/1/icon/glyph",
           "value": "missing-glyph"
         }
-      ]
+      ],
+      "artifact": "artifacts/profiles/compile-ui-icon-unknown-glyph.json"
     }
   },
   "expected": {
     "compile": {
       "status": "refused",
-      "code": "profile-symbol"
+      "code": "profile-symbol",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "326aa3721dfbdb11e281055cc61f4a6d09aeab861609305ca907bf7932fa36b5",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
     }
   }
 }

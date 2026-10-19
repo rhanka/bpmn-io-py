@@ -11,13 +11,36 @@
           "op": "remove",
           "path": "/notions/0/fields/0/parameters/1"
         }
-      ]
+      ],
+      "artifact": "artifacts/profiles/compile-field-parameter-missing.json"
     }
   },
   "expected": {
     "compile": {
       "status": "refused",
-      "code": "profile-ui-parameters"
+      "code": "profile-ui-parameters",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "02678f525a71ae4bc86324397313cef3b9cd551c78e998800e65bf8c990f2722",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
     }
   }
 }
