@@ -9,9 +9,15 @@ from __future__ import annotations
 import math
 from typing import Any
 
-__all__ = ["check_emit", "check_export_record"]
+from bpmn_io.profile._c14n import digest
+from bpmn_io.profile._results import PureRefused, PureResult, PureSuccess
+
+__all__ = ["check_emit", "check_export_record", "plan_ids"]
 
 Json = Any
+
+#: ID allocation domain order (DESIGN §10.2).
+_DOMAIN_ORDER = ("page", "node", "edge", "label")
 
 #: Optional string fields per record kind (DESIGN §10.2 field vocabulary).
 _STRING_FIELDS: dict[str, frozenset[str]] = {
@@ -130,3 +136,173 @@ def check_export_record(export: object) -> str | None:
     ):
         return "profile-type"
     return None
+
+
+def _check_plan_request(entry: object) -> dict[str, object] | None:
+    """Normalize one ID request (None when malformed)."""
+    if not isinstance(entry, dict):
+        return None
+    page_id = entry.get("pageId")
+    key = entry.get("occurrenceKey")
+    domain = entry.get("domain")
+    if (
+        not isinstance(page_id, str)
+        or not isinstance(key, str)
+        or not isinstance(domain, str)
+        or domain not in _DOMAIN_ORDER
+    ):
+        return None
+    semantic_id = entry.get("semanticId")
+    return {
+        "pageId": page_id,
+        "occurrenceKey": key,
+        "domain": domain,
+        "semanticId": semantic_id if isinstance(semantic_id, str) else None,
+    }
+
+
+def plan_ids(plan: object) -> PureResult:
+    """Allocate one call-local ID plan (DESIGN §10.1 step 7).
+
+    The explicit plan is ``{policy, counterOrigin, pages?, requests}``
+    with ``requests`` as ``{pageId, occurrenceKey, domain, semanticId?}``.
+    ``counter`` numbers the deduplicated keys in domain, page-order then
+    UTF-16 key order from ``counterOrigin``; ``digest`` hashes each key;
+    ``native`` reuses page and semantic ids, refusing
+    ``export-id-ambiguous`` on synthetic, anonymous or duplicate ids.
+    """
+    checked, code = _check_plan(plan)
+    if checked is None:
+        return PureRefused(code=code or "profile-type")
+    policy, origin, order_of, normalized = checked
+    if policy == "counter":
+        return _plan_counter(normalized, order_of, origin)
+    if policy == "digest":
+        return _plan_digest(normalized)
+    return _plan_native(normalized)
+
+
+def _check_plan(
+    plan: object,
+) -> tuple[tuple[str, int, dict[str, int], list[dict[str, object]]] | None, str | None]:
+    """Validate one explicit ID plan (checked tuple, code)."""
+    if not isinstance(plan, dict):
+        return None, "profile-type"
+    policy = plan.get("policy")
+    origin = plan.get("counterOrigin")
+    requests = plan.get("requests")
+    if (
+        policy not in ("counter", "digest", "native")
+        or type(origin) is not int
+        or origin < 0
+        or not isinstance(requests, list)
+    ):
+        return None, "profile-type"
+    order_of, code = _plan_order_of(plan.get("pages", []))
+    if code is not None or order_of is None:
+        return None, code or "profile-type"
+    normalized: list[dict[str, object]] = []
+    for entry in requests:
+        request = _check_plan_request(entry)
+        if request is None:
+            return None, "profile-type"
+        normalized.append(request)
+    if not isinstance(policy, str) or type(origin) is not int:
+        return None, "profile-type"
+    return (policy, origin, order_of, normalized), None
+
+
+def _plan_order_of(pages: object) -> tuple[dict[str, int] | None, str | None]:
+    """Index one plan page list by page id (order map, code)."""
+    if not isinstance(pages, list):
+        return None, "profile-type"
+    order_of: dict[str, int] = {}
+    for page in pages:
+        if (
+            not isinstance(page, dict)
+            or not isinstance(page.get("pageId"), str)
+            or type(page.get("order")) is not int
+        ):
+            return None, "profile-type"
+        order_of[str(page.get("pageId"))] = int(page.get("order"))  # type: ignore[arg-type]
+    return order_of, None
+
+
+def _plan_counter(
+    requests: list[dict[str, object]], order_of: dict[str, int], origin: int
+) -> PureResult:
+    """Allocate counter ids in domain, page-order then key order."""
+    keys: list[tuple[str, str, str]] = []
+    seen: set[tuple[str, str, str]] = set()
+    for request in requests:
+        key = (str(request["pageId"]), str(request["occurrenceKey"]), str(request["domain"]))
+        if key not in seen:
+            seen.add(key)
+            keys.append(key)
+    keys.sort(
+        key=lambda key: (
+            _DOMAIN_ORDER.index(key[2]),
+            str(order_of.get(key[0], 0)).encode("utf-16-be"),
+            key[1].encode("utf-16-be"),
+        )
+    )
+    return PureSuccess(
+        payload={
+            "ids": [
+                {
+                    "pageId": key[0],
+                    "occurrenceKey": key[1],
+                    "domain": key[2],
+                    "id": f"e_{origin + index}",
+                }
+                for index, key in enumerate(keys)
+            ]
+        }
+    )
+
+
+def _plan_digest(requests: list[dict[str, object]]) -> PureResult:
+    """Allocate digest ids in first-request order."""
+    payload: list[dict[str, object]] = []
+    seen: set[tuple[str, str, str]] = set()
+    for request in requests:
+        key = (str(request["pageId"]), str(request["occurrenceKey"]), str(request["domain"]))
+        if key in seen:
+            continue
+        seen.add(key)
+        payload.append(
+            {
+                "pageId": key[0],
+                "occurrenceKey": key[1],
+                "domain": key[2],
+                "id": f"e_{digest([key[0], key[1], key[2]])}",
+            }
+        )
+    return PureSuccess(payload={"ids": payload})
+
+
+def _plan_native(requests: list[dict[str, object]]) -> PureResult:
+    """Reuse page and semantic ids, refusing ambiguous ones."""
+    payload: list[dict[str, object]] = []
+    seen_keys: set[tuple[str, str, str]] = set()
+    seen_ids: dict[str, tuple[str, str, str]] = {}
+    for request in requests:
+        key = (str(request["pageId"]), str(request["occurrenceKey"]), str(request["domain"]))
+        if key in seen_keys:
+            continue
+        seen_keys.add(key)
+        if key[2] == "page":
+            allocated = key[0]
+        else:
+            semantic_id = request["semanticId"]
+            if not isinstance(semantic_id, str):
+                return PureRefused(code="export-id-ambiguous")
+            allocated = semantic_id
+        first = seen_ids.get(allocated)
+        if first is not None and first != key:
+            return PureRefused(code="export-id-ambiguous")
+        seen_ids[allocated] = key
+        payload.append(
+            {"pageId": key[0], "occurrenceKey": key[1], "domain": key[2], "id": allocated}
+        )
+    return PureSuccess(payload={"ids": payload})
