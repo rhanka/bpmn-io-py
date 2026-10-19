@@ -10,6 +10,7 @@ the implementation.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 from collections.abc import Mapping
 from pathlib import Path
@@ -35,6 +36,7 @@ from bpmn_io.profile import (
     remap_ids,
     sort_placements,
 )
+from bpmn_io.profile._c14n import jcs_bytes
 
 ROOT = Path(__file__).resolve().parents[2]
 EXPECTED = ROOT / "tests" / "profile_cn" / "expected"
@@ -42,7 +44,6 @@ MECH = ROOT / "contracts" / "profile-mechanism" / "1"
 
 #: Operations with no implementation yet: value is the strict-xfail reason.
 PENDING = {
-    "normalize_transport": "lot-3 pending: normalize plus the conductor joint run (binding §8)",
     "validate": (
         "no Block-A validate(compiled, wire-envelope, phase, readiness_policy) "
         "binding in this branch (binding §9 runner row, §6.9); sealed JS-owned values kept"
@@ -347,6 +348,34 @@ def _run_import(case: dict[str, object], record: dict[str, object]) -> None:
     assert jcs(actual) == jcs(case["expected"]), case["case"]
 
 
+def _run_transport(case: dict[str, object], record: dict[str, object]) -> None:
+    """Run the python hops of one cross-runtime transport case (§9 row)."""
+    compiled = _compiled(case["profile"])
+    frozen = jcs(record)
+    route = record["transportRoute"]["route"]
+    activations = record["transportRoute"]["activations"]
+    hop_results = case["expected"]["hopResults"]
+    assert len(route) == len(activations) == len(hop_results)
+    sealed_text = case["expected"]["transportBytes"]["text"]
+    assert isinstance(sealed_text, str)
+    sealed_envelope = json.loads(sealed_text)
+    assert isinstance(sealed_envelope, dict)
+    assert case["expected"]["transport"]["route"] == record["transportRoute"]["route"]
+    for number, (runtime, activation) in enumerate(zip(route, activations, strict=True)):
+        if runtime != "python":
+            continue
+        hop_input = record["envelope"] if number == 0 else sealed_envelope
+        assert isinstance(activation, str)
+        actual = normalize(compiled, hop_input, activation=activation).to_json()
+        assert jcs(actual) == jcs(hop_results[number]), (case["case"], number)
+        carried = actual["payload"]["envelope"] if actual["status"] == "ok" else actual
+        grown = jcs_bytes(carried)
+        assert grown.decode("utf-8") == sealed_text, (case["case"], number)
+        hop_sha = case["expected"]["transport"]["hops"][number]["outputSha256"]
+        assert hashlib.sha256(grown).hexdigest() == hop_sha, (case["case"], number)
+    assert jcs(record) == frozen
+
+
 def _run_remap(case: dict[str, object], record: dict[str, object]) -> None:
     """Run one remap_ids case through the bound §9 call."""
     compiled = _compiled(case["profile"])
@@ -397,6 +426,7 @@ _RUNNERS = {
     "bind_supports": _run_bind,
     "compile_profile": _run_compile,
     "import_projection": _run_import,
+    "normalize_transport": _run_transport,
     "propose_support_bindings": _run_propose,
     "remap_ids": _run_remap,
     "sort_placements": _run_sort,
