@@ -666,7 +666,7 @@ def _check_predicate(  # noqa: C901, PLR0911, PLR0912, PLR0915
             return "profile-type"
         return _check_value(node.get("value"), "predicate", scope, None)
     if op == "count":
-        selector = node.get("selector")
+        selector = node.get("select", node.get("selector"))
         code = _check_selector(selector, scope, context_phase)
         if code is not None:
             return code
@@ -964,6 +964,13 @@ def _check_action(  # noqa: C901, PLR0911, PLR0912, PLR0915
         demands.append({"binding": target, "path": "", "mode": "remove"})
         return None
     if op == "ensure":
+        alias = step.get("as")
+        if alias is not None:
+            if not isinstance(alias, str) or not alias:
+                return "profile-type"
+            scope.bindings.add(alias)
+            native_type = step.get("type")
+            scope.btypes[alias] = native_type if isinstance(native_type, str) else "native"
         return None
     if op == "refuse":
         if not isinstance(step.get("code"), str):

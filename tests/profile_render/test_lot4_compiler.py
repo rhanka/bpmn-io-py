@@ -61,6 +61,122 @@ def test_reference_from_occurrence_accepts_page_occurrence_order() -> None:
     assert result.status == "ok", result.to_json()
 
 
+def test_count_reads_select_like_schema_and_evaluator() -> None:
+    """A `count` predicate carries its selector under `select` (lot-3 B1).
+
+    The schema and the evaluator read `select`; the compiler must accept
+    it too, otherwise every neutral-lot4 `count` refuses `profile-type`.
+    """
+    from bpmn_io.profile._evaluate import evaluate_predicate, make_read_context
+
+    profile = profile_from_ref({"base": "neutral-profile.json", "patch": []})
+    count = {
+        "op": "count",
+        "min": 0,
+        "max": 0,
+        "select": {
+            "from": "self",
+            "via": "children",
+            "property": "flowElements",
+            "where": {"op": "true"},
+            "order": "id",
+        },
+    }
+    profile["exports"][0]["capabilities"].append(
+        {"when": count, "class": "structural", "losses": []}
+    )
+    result, _, _ = compile_profile_doc(copy.deepcopy(profile))
+    assert result.status == "ok", result.to_json()
+    tree = {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+            {
+                "$type": "bpmn:Process",
+                "id": "Process_1",
+                "flowElements": [{"$type": "bpmn:Task", "id": "Task_1"}],
+            }
+        ],
+    }
+    context = make_read_context(tree)
+    process = tree["rootElements"][0]
+    assert evaluate_predicate(count, context, {"root": tree, "self": process}).payload is False
+    assert (
+        evaluate_predicate(
+            count, context, {"root": tree, "self": {"$type": "bpmn:Process", "id": "Empty"}}
+        ).payload
+        is True
+    )
+
+
+def test_ensure_registers_its_alias_for_later_steps() -> None:
+    """An `ensure ... as:` alias scopes later steps (lot-3 B3/B4).
+
+    The neutral-lot4 `ensure-supports` recipe binds `main` in an
+    `ensure` step and writes it in a later `assignRef`; the compiler
+    must scope the alias instead of refusing `profile-symbol`. Full
+    `ensure` field checks stay with lot 3.
+    """
+    profile = profile_from_ref({"base": "neutral-profile.json", "patch": []})
+    recipe = {
+        "id": "export-ensure-alias",
+        "phase": "normalize",
+        "parameters": [],
+        "select": {
+            "from": "root",
+            "via": "all",
+            "where": {"op": "true"},
+            "order": "id",
+        },
+        "when": {"op": "true"},
+        "writes": [],
+        "steps": [
+            {
+                "op": "ensure",
+                "as": "collaboration",
+                "type": "bpmn:Collaboration",
+                "parent": "root",
+                "property": "rootElements",
+                "owner": "self",
+                "role": "collaboration",
+                "ownerId": {"op": "id", "binding": "root"},
+                "slot": "collaboration",
+                "key": {"op": "id", "binding": "self"},
+                "fields": [{"name": "name", "value": {"op": "literal", "value": "collaboration"}}],
+            },
+            {
+                "op": "ensure",
+                "as": "main",
+                "type": "bpmn:Participant",
+                "parent": "collaboration",
+                "property": "participants",
+                "owner": "self",
+                "role": "main-participant",
+                "ownerId": {"op": "id", "binding": "self"},
+                "slot": "main-participant",
+                "key": {"op": "literal", "value": "main-participant"},
+                "fields": [
+                    {"name": "name", "value": {"op": "literal", "value": "main-participant"}}
+                ],
+            },
+            {
+                "op": "bind",
+                "as": "head",
+                "select": {
+                    "from": "main",
+                    "via": "self",
+                    "where": {"op": "true"},
+                    "order": "id",
+                },
+                "cardinality": "one",
+            },
+        ],
+    }
+    profile["recipes"].append(recipe)
+    result, _, _ = compile_profile_doc(copy.deepcopy(profile))
+    assert result.status == "ok", result.to_json()
+
+
 def test_capability_when_sees_render_page_and_semantic() -> None:
     """A capability predicate may read the render, page and semantic bindings."""
     profile = profile_from_ref({"base": "neutral-profile.json", "patch": []})
