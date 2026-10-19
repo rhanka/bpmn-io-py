@@ -1,0 +1,233 @@
+{
+  "format": "lot5-ui-registry/1",
+  "capabilities": [
+    "predicates/1",
+    "selectors/1",
+    "recipes/1",
+    "export-ir/1",
+    "profile-lint/1",
+    "render-data/1"
+  ],
+  "signatures": {
+    "literal": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "read": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "id": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "ids": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "param": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "concat": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "stripPrefix": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "case": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "outputId": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "true": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "false": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "all": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "any": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "not": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "typeIs": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "present": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "equal": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "textPrefix": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "boundRole": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "recognizes": {
+      "capability": "predicates/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "count": {
+      "capability": "selectors/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "reachable": {
+      "capability": "selectors/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "bind": {
+      "capability": "recipes/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "create": {
+      "capability": "recipes/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "ensure": {
+      "capability": "recipes/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "set": {
+      "capability": "recipes/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "unset": {
+      "capability": "recipes/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "assignRef": {
+      "capability": "recipes/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "reparent": {
+      "capability": "recipes/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "place": {
+      "capability": "recipes/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "remove": {
+      "capability": "recipes/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "refuse": {
+      "capability": "recipes/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "emit": {
+      "capability": "export-ir/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "loss": {
+      "capability": "export-ir/1",
+      "version": "1",
+      "argumentSchemaDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "requiredStandardRules": [
+    "ad-hoc-sub-process",
+    "conditional-flows",
+    "end-event-required",
+    "event-based-gateway",
+    "event-sub-process-typed-start-event",
+    "fake-join",
+    "global",
+    "label-required",
+    "link-event",
+    "no-bpmndi",
+    "no-complex-gateway",
+    "no-disconnected",
+    "no-duplicate-sequence-flows",
+    "no-gateway-join-fork",
+    "no-implicit-end",
+    "no-implicit-split",
+    "no-implicit-start",
+    "no-inclusive-gateway",
+    "no-overlapping-elements",
+    "single-blank-start-event",
+    "single-event-definition",
+    "start-event-required",
+    "sub-process-blank-start-event",
+    "superfluous-gateway",
+    "superfluous-label",
+    "superfluous-termination"
+  ],
+  "lintAllowlist": [
+    "bpmnlint:recommended"
+  ],
+  "compilerRuleTable": {
+    "format": "profile-compiler-rule-table/1",
+    "revision": "R3.3",
+    "sha256": "a684ac82bbf6a94dedd53e97c72055b4fb2110b27fd75774bbe2fd1944ffd1e1"
+  },
+  "schema": {
+    "path": "schemas/profile/profile-mechanism-1.schema.json",
+    "sha256": "c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da"
+  },
+  "digestDomains": {
+    "base": "raw",
+    "descriptors": "raw"
+  },
+  "assets": [
+    {
+      "assetKey": "ui-neutral-metrics.json",
+      "path": "fixtures/ui-neutral-metrics.json"
+    }
+  ]
+}
