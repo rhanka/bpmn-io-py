@@ -153,6 +153,11 @@ class RegistrySet:
 
     capabilities: tuple[str, ...]
     signatures: dict[str, str]
+    # Lot 4: render-token signatures (token name to JSON Schema),
+    # the region-token pattern and the region-token schema.
+    render_tokens: dict[str, dict[str, object]] = field(default_factory=dict)
+    region_token_pattern: str | None = None
+    region_token_schema: dict[str, object] | list[str] | None = None
 
 
 @dataclass(frozen=True)
@@ -171,6 +176,13 @@ class CompiledProfile:
     descriptor_digest: str
     registry_digest: str
     validation: tuple[object, ...] = ()
+    # Lot 4 extension: the complete validated profile JSON, the closed
+    # §5.1 profileIdentity record, verified resource bytes by resource id
+    # and the render-token signatures active at compile time.
+    profile: dict[str, object] = field(default_factory=dict)
+    identity: dict[str, object] = field(default_factory=dict)
+    assets: dict[str, bytes] = field(default_factory=dict)
+    render_registry: dict[str, dict[str, object]] = field(default_factory=dict)
 
 
 @dataclass
@@ -770,7 +782,16 @@ def _check_selector(  # noqa: C901, PLR0911, PLR0912
     if via == "self" and order not in ("id", "page-occurrence"):
         return "profile-selector-order"
     if via in native_via and via != "self" and order != "id":
-        return "profile-selector-order"
+        # Lot 4 (DESIGN §2.2): a reference traversal from an occurrence
+        # binding takes page-occurrence order.
+        if (
+            via == "reference"
+            and order == "page-occurrence"
+            and scope.btypes.get(from_name) == "occurrence"
+        ):
+            pass
+        else:
+            return "profile-selector-order"
     if via in render_via and via != "semantic" and order != "page-occurrence":
         return "profile-selector-order"
     if via == "semantic" and order != "id":
@@ -1458,6 +1479,59 @@ def _check_closed_refs(
     return _check_rule_ui_refs(profile, recipe_ids, messages)
 
 
+def _check_lot4_records(  # noqa: C901, PLR0911, PLR0912
+    profile: dict[str, object],
+    notions_raw: object,
+    recipes_raw: object,
+    registry: RegistrySet,
+) -> str | None:
+    """Run the lot-4 glyph, token and export checks (CR-09/CR-11, spec §8.1)."""
+    from bpmn_io.profile._export_ir import check_emit, check_export_record  # noqa: PLC0415
+    from bpmn_io.profile._render_tokens import validate_token_list  # noqa: PLC0415
+    from bpmn_io.profile._templates import check_glyph  # noqa: PLC0415
+
+    for theme in _as_list(profile.get("themes")):
+        if not isinstance(theme, dict):
+            continue
+        for glyph in _as_list(theme.get("glyphs")):
+            if check_glyph(glyph) is not None:
+                return "profile-glyph-shape"
+        code = validate_token_list(theme.get("tokens", []), registry)
+        if code is not None:
+            return code
+        for occurrence in _as_list(theme.get("syntheticOccurrences")):
+            if not isinstance(occurrence, dict):
+                continue
+            code = validate_token_list(occurrence.get("tokens", []), registry)
+            if code is not None:
+                return code
+    for notion in _as_list(notions_raw):
+        if not isinstance(notion, dict):
+            continue
+        for binding in _as_list(notion.get("renderBindings")):
+            if not isinstance(binding, dict):
+                continue
+            code = validate_token_list(binding.get("tokens", []), registry)
+            if code is not None:
+                return code
+    for recipe in _as_list(recipes_raw):
+        if not isinstance(recipe, dict) or recipe.get("phase") != "export":
+            continue
+        for step in _as_list(recipe.get("steps")):
+            if not isinstance(step, dict) or step.get("op") != "emit":
+                continue
+            code = check_emit(step)
+            if code is not None:
+                return code
+    for export in _as_list(profile.get("exports")):
+        if not isinstance(export, dict):
+            continue
+        code = check_export_record(export)
+        if code is not None:
+            return code
+    return None
+
+
 def _check_export_migration_phases(
     profile: dict[str, object], recipes: dict[str, dict[str, object]]
 ) -> str | None:
@@ -1720,7 +1794,13 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
                 continue
             when = capability.get("when")
             if when is not None:
-                code = _check_predicate(when, plain_scope)
+                # Lot 4 (DESIGN §10.2): capability predicates evaluate per R
+                # occurrence with self, root, render, page and semantic.
+                capability_scope = _new_scope(
+                    {"root", "self", "render", "page", "semantic"},
+                    {"page": "page"},
+                )
+                code = _check_predicate(when, capability_scope, "export")
                 if code is not None:
                     return PureRefused(code=code)
     for theme in _as_list(profile.get("themes")):
@@ -1737,6 +1817,11 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
                 code = _check_value(label, "predicate", plain_scope, None)
                 if code is not None:
                     return PureRefused(code=code)
+
+    # Lot 4 glyph, token and export checks (CR-09/CR-11, spec §8.1).
+    code = _check_lot4_records(profile, notions_raw, recipes_raw, registry)
+    if code is not None:
+        return PureRefused(code=code)
 
     # CR-01 family capabilities for every used consumer.
     if rules_raw or profile.get("validation"):
@@ -1787,6 +1872,16 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
 
     validation_raw = profile.get("validation")
     validation_entries = tuple(validation_raw) if isinstance(validation_raw, list) else ()
+    owned_profile = copy.deepcopy(profile)
+    identity: dict[str, object] = {
+        "mechanismVersion": profile.get("mechanismVersion"),
+        "schemaVersion": profile.get("schemaVersion"),
+        "profile": profile.get("profile"),
+        "version": profile.get("version"),
+        "sha256": digest(profile),
+        "base": copy.deepcopy(profile.get("base")),
+        "descriptors": copy.deepcopy(profile.get("descriptors")),
+    }
     compiled = CompiledProfile(
         profile_digest=validated.digest,
         notions={
@@ -1804,5 +1899,9 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         ),
         registry_digest=digest(sorted(registry.capabilities)),
         validation=copy.deepcopy(validation_entries),
+        profile=owned_profile,
+        identity=identity,
+        assets=dict(validated.assets),
+        render_registry=copy.deepcopy(registry.render_tokens),
     )
     return PureSuccess(payload=compiled)
