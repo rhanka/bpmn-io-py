@@ -10,12 +10,20 @@ from __future__ import annotations
 import copy
 import math
 from dataclasses import dataclass, field
+from typing import TypeGuard
 
 from bpmn_io._js import UNDEFINED
 from bpmn_io.profile._results import PureRefused, PureResult, PureSuccess
 from bpmn_io.profile._unicode_case import apply_case
 
-__all__ = ["ElementHandle", "ReadContext", "evaluate_predicate", "select"]
+__all__ = [
+    "ElementHandle",
+    "ReadContext",
+    "evaluate_predicate",
+    "evaluate_value",
+    "is_missing",
+    "select",
+]
 
 _MAX_ELEMENTS = 100000
 _MAX_DEPTH = 256
@@ -255,6 +263,20 @@ def make_read_context(
     )
 
 
+def _children_of_property(element: object, prop: str) -> list[object]:
+    """Collect children held under one named containment property."""
+    value = _read_property(element, prop)
+    if isinstance(value, dict):
+        return [value] if isinstance(value.get("$type"), str) else []
+    if isinstance(value, list):
+        return [
+            entry
+            for entry in value
+            if isinstance(entry, dict) and isinstance(entry.get("$type"), str)
+        ]
+    return []
+
+
 def _read_property(element: object, prop: str) -> object:
     """Read one named property from a dict or native element (None when absent)."""
     if isinstance(element, dict):
@@ -468,6 +490,7 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
             text = text.lstrip("".join(sorted(_ECMA_START_WS)))
         return text.startswith(prefix)
     if op == "count":
+        # B1: the pinned schema key is `select`; no `selector` alias.
         selector = node.get("select")
         handles = _eval_selector(selector, context, bindings)
         minimum = node.get("min", 0)
@@ -649,6 +672,9 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
         candidates = list(context.elements)
     elif via in ("children", "descendants", "owner"):
         prop = node.get("property")
+        # Lot 3 (seal fix) + lot 4 union: `scoped` drives the depth-0
+        # property scoping in the generic walk below; the dedicated
+        # `children`-with-property branch above keeps lot-4 behavior.
         scoped = prop if isinstance(prop, str) and prop else None
         for entry in base:
             if via == "owner":
@@ -657,6 +683,11 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
                     parent = context.parents.get(id(entry))
                 if parent is not None:
                     candidates.append(parent)
+            elif via == "children" and isinstance(prop, str):
+                # Lot 4: a children traversal names its containment
+                # property; unfiltered collection stays for property-less
+                # (legacy) selectors only.
+                candidates.extend(_children_of_property(entry, prop))
             else:
                 stack: list[tuple[object, int]] = [(entry, 0)]
                 seen: set[int] = {id(entry)}
@@ -680,7 +711,12 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
             raise ValueError("profile-selector-property")  # noqa: EM101
         if via == "reference":
             for entry in base:
-                candidates.extend(_resolve_reference_value(_read_property(entry, prop), context))
+                value = _read_property(entry, prop)
+                target = _resolve_occurrence_reference(value, bindings)
+                if target is not None:
+                    candidates.append(target)
+                else:
+                    candidates.extend(_resolve_reference_value(value, context))
         else:
             for entry in base:
                 entry_id = _element_id(entry)
@@ -688,10 +724,10 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
                     if _references_target(_read_property(element, prop), entry, entry_id):
                         candidates.append(element)
     elif via in ("pages", "occurrences", "semantic"):
-        # Render traversals need export render bindings, which the native
-        # headless evaluator never carries: refuse explicitly instead of
-        # returning the source element (DESIGN §2.2 render contexts).
-        raise ValueError("profile-value-context")  # noqa: EM101
+        # Lot 4 (DESIGN §2.2 render contexts): `pages` and `occurrences`
+        # traverse the RenderData/1 carried by the `render` binding;
+        # `semantic` resolves one occurrence to its native element.
+        candidates = _render_candidates(via, base, context)
     else:
         candidates = list(base)
     where = node.get("where")
@@ -718,6 +754,100 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
 
         handles.sort(key=_sort_key)
     return handles
+
+
+def _is_occurrence_handle(value: object) -> TypeGuard[dict[str, object]]:
+    """Return whether one value is an R occurrence (pageId + occurrenceKey)."""
+    return (
+        isinstance(value, dict)
+        and isinstance(value.get("pageId"), str)
+        and isinstance(value.get("occurrenceKey"), str)
+    )
+
+
+def _render_candidates(  # noqa: C901 - three render branches share one via dispatch
+    via: str, base: list[object], context: ReadContext
+) -> list[object]:
+    """Traverse one render selector branch (lot 4, DESIGN §2.2)."""
+    if via in ("pages", "occurrences"):
+        render = base[0] if len(base) == 1 else None
+        if not isinstance(render, dict):
+            raise ValueError("profile-value-context")  # noqa: EM101
+        if via == "pages":
+            pages = render.get("pages")
+            if not isinstance(pages, list):
+                raise ValueError("profile-value-context")  # noqa: EM101
+            return [page for page in pages if isinstance(page, dict)]
+        records = render.get("occurrences")
+        if not isinstance(records, list):
+            raise ValueError("profile-value-context")  # noqa: EM101
+        order_of: dict[str, int] = {}
+        for page in render.get("pages", []):
+            if isinstance(page, dict) and isinstance(page.get("pageId"), str):
+                order_of[str(page.get("pageId"))] = (
+                    int(page["order"]) if type(page.get("order")) is int else 0
+                )
+        matched: list[dict[str, object]] = [
+            record for record in records if _is_occurrence_handle(record)
+        ]
+        matched.sort(
+            key=lambda record: (
+                str(order_of.get(str(record.get("pageId")), 0)).encode("utf-16-be"),
+                str(record.get("occurrenceKey")).encode("utf-16-be"),
+            )
+        )
+        return list(matched)
+    resolved: list[object] = []
+    for entry in base:
+        if not _is_occurrence_handle(entry):
+            raise ValueError("profile-value-context")  # noqa: EM101
+        semantic_id = entry.get("semanticId")
+        if not isinstance(semantic_id, str):
+            continue
+        element = context.by_id.get(semantic_id)
+        if element is not None:
+            resolved.append(element)
+    return resolved
+
+
+def _resolve_occurrence_reference(value: object, bindings: dict[str, object]) -> object | None:
+    """Resolve one ``{pageId, occurrenceKey}`` endpoint against the R.
+
+    Returns the occurrence record, or ``None`` when the value is not an
+    occurrence endpoint (the legacy native path then applies).
+    """
+    if not _is_occurrence_handle(value):
+        return None
+    render = bindings.get("render")
+    records = render.get("occurrences") if isinstance(render, dict) else None
+    if not isinstance(records, list):
+        return None
+    for record in records:
+        if (
+            _is_occurrence_handle(record)
+            and record.get("pageId") == value.get("pageId")
+            and record.get("occurrenceKey") == value.get("occurrenceKey")
+        ):
+            return record
+    return None
+
+
+def is_missing(value: object) -> bool:
+    """Return whether one evaluated value is the MISSING sentinel (lot 4)."""
+    return value is _MISSING
+
+
+def evaluate_value(
+    ast: object, read_context: ReadContext, bindings: dict[str, object]
+) -> PureResult:
+    """Evaluate one value AST, preserving MISSING (lot 4 export/render use)."""
+    try:
+        return PureSuccess(payload=_eval_value(ast, read_context, bindings))
+    except (ValueError, TypeError) as exc:
+        code = str(exc.args[0]) if exc.args else "profile-type"
+        return PureRefused(code=code)
+    except Exception:  # noqa: BLE001 - evaluation stays total
+        return PureRefused(code="profile-type")
 
 
 def evaluate_predicate(

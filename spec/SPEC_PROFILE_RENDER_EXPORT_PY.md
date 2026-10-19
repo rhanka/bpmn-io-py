@@ -622,8 +622,8 @@ harmonization C17).
 
 1. Compatibility (as §4.2.1).
 2. Format: the unique `exports[]` record whose `format == format` and a registered
-   Python adapter for that format; lot 4 registers `drawio/1` only. Otherwise
-   refuses `export-format-unsupported`.
+   Python adapter for that format; lot 4 registers `drawio/1` and `sparx/1`.
+   Otherwise refuses `export-format-unsupported`.
 3. Freshness (§6.2) → `render-stale`. `map_export` trusts a fresh R: it does not
    re-run `resolve_theme`.
 4. Coverage: any `unsupported` coverage entry refuses `render-unsupported` (an
@@ -1141,19 +1141,15 @@ are listed in Appendix C (render tree) and Appendix D (export tree).
 - `hideSource`, `markerShift`, badge rows and composites (OPEN-RENDER-PRIMITIVES).
 - Synthetic owners represented only through a collaboration participant; synthetic
   declarations inherited from fallback themes.
-- `bpmn`, `sparx` and `svg` export adapters (refused `export-format-unsupported` in
+- `bpmn` and `svg` export adapters (refused `export-format-unsupported` in
   lot 4), exact draw.io bytes and draw.io geometry/style attribute values,
   compression `deflate-raw`, engine byte-compatibility (OPEN-EXPORT-EVIDENCE,
   private goldens). BPMN XML column facts (harmonization L6) are covered by the
   vendored JS `bpmn-001…003` cases (§17.6, block-A writer).
-- Open, not decided by the parity sync: five vendored JS `mapExport` cases use the
-  profile's `ea` export (format `sparx`, native IDs): `export-002-main-sparx-native`
-  and `export-028-variety-sparx` (ok), `export-004-repeated-sparx-ambiguous`,
-  `export-008-synthetic-sparx-ambiguous` and `export-011-labels-native-ambiguous`
-  (`export-id-ambiguous`). The Python binding registers `drawio/1` only and refuses
-  an unregistered format at §10.1 step 2 (`export-format-unsupported`); the
-  vendored values stay those of the JS seal until a decision gives Python a
-  `sparx` mapping adapter or classifies these cases.
+- `sparx/1` is registered beside `drawio/1` (conductor decision after the parity
+  sync, DESIGN §10.2 and §12): declared `sparx` formats map with native IDs and
+  refuse `export-id-ambiguous`; serialization goes exactly as far as the JS lot-4
+  seal fixes it, anything beyond stays not covered.
 - The exact block-A lint bridge output for standard bpmnlint findings in a refused
   preparation (sealed through `includes`, entry lists UNSEALED); raw standard
   findings of a preparation where standard rules fire.
@@ -1315,7 +1311,6 @@ vendored cases and 2 aliases (Appendices C and D).
 
 ### 22.3 Open items
 
-- The `sparx` mapping of five vendored `mapExport` cases (§19).
 - R3.4 errata candidates recorded by the sync for these points: E-33
   (`serializePrepared` report), E-34 (helper PureResult, compile payload), E-35
   (`prepareExport` options), E-36 (IO row centre line), E-37 (adapter-declared
