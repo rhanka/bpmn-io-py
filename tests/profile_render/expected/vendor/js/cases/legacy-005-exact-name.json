@@ -1,0 +1,29 @@
+{
+  "caseId": "legacy-005-exact-name",
+  "operation": "resolveLegacyTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "look",
+      "json": "Standard"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "refused",
+        "code": "render-stale",
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "refused:render-stale",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

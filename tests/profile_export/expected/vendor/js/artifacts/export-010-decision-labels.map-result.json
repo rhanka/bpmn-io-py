@@ -1,0 +1,1921 @@
+{
+  "status": "ok",
+  "operation": "mapExport",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "baseRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+  "revision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+  "report": {
+    "reportVersion": "2",
+    "operation": "mapExport",
+    "sourceIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "targetIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "inputRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+    "outputRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+    "entries": [],
+    "rawStandardFindings": [],
+    "idMap": [
+      {
+        "sourceId": "Page_Choices",
+        "resultId": "e_1",
+        "domain": "export",
+        "pageId": "Page_Choices"
+      },
+      {
+        "sourceId": "Flow_C0",
+        "resultId": "e_12",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C0_di"
+      },
+      {
+        "sourceId": "Flow_C1",
+        "resultId": "e_13",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C1_di"
+      },
+      {
+        "sourceId": "Flow_C1",
+        "resultId": "e_20",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C1_di"
+      },
+      {
+        "sourceId": "Flow_C2",
+        "resultId": "e_14",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C2_di"
+      },
+      {
+        "sourceId": "Flow_C2",
+        "resultId": "e_21",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C2_di"
+      },
+      {
+        "sourceId": "Flow_C3",
+        "resultId": "e_15",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C3_di"
+      },
+      {
+        "sourceId": "Flow_C3",
+        "resultId": "e_22",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C3_di"
+      },
+      {
+        "sourceId": "Flow_C4",
+        "resultId": "e_16",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C4_di"
+      },
+      {
+        "sourceId": "Flow_C4",
+        "resultId": "e_23",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C4_di"
+      },
+      {
+        "sourceId": "Flow_C5",
+        "resultId": "e_17",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C5_di"
+      },
+      {
+        "sourceId": "Flow_C5",
+        "resultId": "e_24",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C5_di"
+      },
+      {
+        "sourceId": "Flow_C6",
+        "resultId": "e_18",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C6_di"
+      },
+      {
+        "sourceId": "Flow_C6",
+        "resultId": "e_25",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C6_di"
+      },
+      {
+        "sourceId": "Flow_C7",
+        "resultId": "e_19",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C7_di"
+      },
+      {
+        "sourceId": "Gateway_Route",
+        "resultId": "e_2",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di"
+      },
+      {
+        "sourceId": "Pool_Choices",
+        "resultId": "e_3",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Pool_Choices_di"
+      },
+      {
+        "sourceId": "Start_Choices",
+        "resultId": "e_4",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Start_Choices_di"
+      },
+      {
+        "sourceId": "Task_Down",
+        "resultId": "e_5",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Down_di"
+      },
+      {
+        "sourceId": "Task_East",
+        "resultId": "e_6",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_East_di"
+      },
+      {
+        "sourceId": "Task_North",
+        "resultId": "e_7",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_North_di"
+      },
+      {
+        "sourceId": "Task_Other",
+        "resultId": "e_8",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Other_di"
+      },
+      {
+        "sourceId": "Task_South",
+        "resultId": "e_9",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_South_di"
+      },
+      {
+        "sourceId": "Task_Up",
+        "resultId": "e_10",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Up_di"
+      },
+      {
+        "sourceId": "Task_West",
+        "resultId": "e_11",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_West_di"
+      }
+    ],
+    "artifacts": [
+      {
+        "format": "drawio",
+        "capability": "structural",
+        "digest": "dd3565ca114c44abf5f34aed6a1086b9b1f74597861b190ec9575c84574953f4",
+        "entryIndexes": []
+      }
+    ]
+  },
+  "payload": {
+    "format": "drawio",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "semanticRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+    "viewRevision": "dc48b07666b7a2389c7186e0a2f1a68a5f86bfa9649697248d54eb327a18c320",
+    "ir": [
+      {
+        "kind": "page",
+        "id": "e_1",
+        "name": "Routing sheet",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1000000,
+          "height": 900000
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_2",
+        "name": "Which route?",
+        "parent": "e_1",
+        "bounds": {
+          "x": 200000,
+          "y": 405000,
+          "width": 50000,
+          "height": 50000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 185000,
+            "y": 460000,
+            "width": 80000,
+            "height": 14000
+          },
+          "lines": [
+            "Which route?"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_3",
+        "name": "Routing",
+        "parent": "e_1",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 900000,
+          "height": 860000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 30000,
+            "height": 860000
+          },
+          "lines": [
+            "Routing"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_4",
+        "name": "Request",
+        "parent": "e_1",
+        "bounds": {
+          "x": 80000,
+          "y": 412000,
+          "width": 36000,
+          "height": 36000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 73000,
+            "y": 453000,
+            "width": 50000,
+            "height": 14000
+          },
+          "lines": [
+            "Request"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_5",
+        "name": "Down",
+        "parent": "e_1",
+        "bounds": {
+          "x": 600000,
+          "y": 640000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 600000,
+            "y": 640000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Down"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_6",
+        "name": "East",
+        "parent": "e_1",
+        "bounds": {
+          "x": 600000,
+          "y": 40000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 600000,
+            "y": 40000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "East"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_7",
+        "name": "North",
+        "parent": "e_1",
+        "bounds": {
+          "x": 600000,
+          "y": 280000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 600000,
+            "y": 280000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "North"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_8",
+        "name": "Other",
+        "parent": "e_1",
+        "bounds": {
+          "x": 600000,
+          "y": 760000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 600000,
+            "y": 760000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Other"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_9",
+        "name": "South",
+        "parent": "e_1",
+        "bounds": {
+          "x": 600000,
+          "y": 400000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 600000,
+            "y": 400000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "South"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_10",
+        "name": "Up",
+        "parent": "e_1",
+        "bounds": {
+          "x": 600000,
+          "y": 520000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 600000,
+            "y": 520000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Up"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_11",
+        "name": "West",
+        "parent": "e_1",
+        "bounds": {
+          "x": 600000,
+          "y": 160000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 600000,
+            "y": 160000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "West"
+          ]
+        }
+      },
+      {
+        "kind": "edge",
+        "id": "e_12",
+        "source": "e_4",
+        "target": "e_2",
+        "parent": "e_1",
+        "bounds": {
+          "x": 116000,
+          "y": 430000,
+          "width": 84000,
+          "height": 0
+        },
+        "waypoints": [
+          {
+            "x": 116000,
+            "y": 430000
+          },
+          {
+            "x": 200000,
+            "y": 430000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ]
+      },
+      {
+        "kind": "edge",
+        "id": "e_13",
+        "source": "e_2",
+        "target": "e_6",
+        "parent": "e_1",
+        "bounds": {
+          "x": 250000,
+          "y": 80000,
+          "width": 350000,
+          "height": 350000
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 80000
+          },
+          {
+            "x": 600000,
+            "y": 80000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 420000,
+            "y": 62000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "ISTANBUL"
+          ]
+        }
+      },
+      {
+        "kind": "edge",
+        "id": "e_14",
+        "source": "e_2",
+        "target": "e_11",
+        "parent": "e_1",
+        "bounds": {
+          "x": 250000,
+          "y": 200000,
+          "width": 350000,
+          "height": 230000
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 200000
+          },
+          {
+            "x": 600000,
+            "y": 200000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 420000,
+            "y": 182000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "İZMIR"
+          ]
+        }
+      },
+      {
+        "kind": "edge",
+        "id": "e_15",
+        "source": "e_2",
+        "target": "e_7",
+        "parent": "e_1",
+        "bounds": {
+          "x": 250000,
+          "y": 320000,
+          "width": 350000,
+          "height": 110000
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 320000
+          },
+          {
+            "x": 600000,
+            "y": 320000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 420000,
+            "y": 302000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "STRASSE STOP"
+          ]
+        }
+      },
+      {
+        "kind": "edge",
+        "id": "e_16",
+        "source": "e_2",
+        "target": "e_9",
+        "parent": "e_1",
+        "bounds": {
+          "x": 250000,
+          "y": 430000,
+          "width": 350000,
+          "height": 10000
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 440000
+          },
+          {
+            "x": 600000,
+            "y": 440000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 420000,
+            "y": 422000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "ΣΟΦΌΣ ΟΔΟΣ Σ"
+          ]
+        }
+      },
+      {
+        "kind": "edge",
+        "id": "e_17",
+        "source": "e_2",
+        "target": "e_10",
+        "parent": "e_1",
+        "bounds": {
+          "x": 250000,
+          "y": 430000,
+          "width": 350000,
+          "height": 130000
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 560000
+          },
+          {
+            "x": 600000,
+            "y": 560000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 420000,
+            "y": 542000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "ɤ-SHAPE"
+          ]
+        }
+      },
+      {
+        "kind": "edge",
+        "id": "e_18",
+        "source": "e_2",
+        "target": "e_5",
+        "parent": "e_1",
+        "bounds": {
+          "x": 250000,
+          "y": 430000,
+          "width": 350000,
+          "height": 250000
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 680000
+          },
+          {
+            "x": 600000,
+            "y": 680000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 420000,
+            "y": 662000,
+            "width": 120000,
+            "height": 14000
+          },
+          "lines": [
+            "ʼN Ǆ"
+          ]
+        }
+      },
+      {
+        "kind": "edge",
+        "id": "e_19",
+        "source": "e_2",
+        "target": "e_8",
+        "parent": "e_1",
+        "bounds": {
+          "x": 250000,
+          "y": 430000,
+          "width": 350000,
+          "height": 370000
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 430000
+          },
+          {
+            "x": 400000,
+            "y": 800000
+          },
+          {
+            "x": 600000,
+            "y": 800000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "bold"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#1f4fbf"
+          }
+        ]
+      },
+      {
+        "kind": "label",
+        "id": "e_20",
+        "text": "ISTANBUL",
+        "parent": "e_1",
+        "bounds": {
+          "x": 420000,
+          "y": 62000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "ISTANBUL"
+        ]
+      },
+      {
+        "kind": "label",
+        "id": "e_21",
+        "text": "İZMIR",
+        "parent": "e_1",
+        "bounds": {
+          "x": 420000,
+          "y": 182000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "İZMIR"
+        ]
+      },
+      {
+        "kind": "label",
+        "id": "e_22",
+        "text": "STRASSE STOP",
+        "parent": "e_1",
+        "bounds": {
+          "x": 420000,
+          "y": 302000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "STRASSE STOP"
+        ]
+      },
+      {
+        "kind": "label",
+        "id": "e_23",
+        "text": "ΣΟΦΌΣ ΟΔΟΣ Σ",
+        "parent": "e_1",
+        "bounds": {
+          "x": 420000,
+          "y": 422000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "ΣΟΦΌΣ ΟΔΟΣ Σ"
+        ]
+      },
+      {
+        "kind": "label",
+        "id": "e_24",
+        "text": "ɤ-SHAPE",
+        "parent": "e_1",
+        "bounds": {
+          "x": 420000,
+          "y": 542000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "ɤ-SHAPE"
+        ]
+      },
+      {
+        "kind": "label",
+        "id": "e_25",
+        "text": "ʼN Ǆ",
+        "parent": "e_1",
+        "bounds": {
+          "x": 420000,
+          "y": 662000,
+          "width": 120000,
+          "height": 14000
+        },
+        "lines": [
+          "ʼN Ǆ"
+        ]
+      }
+    ],
+    "renderBinding": {
+      "semanticRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+      "profileDigest": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "descriptorDigest": "8cb3013f19489ae7b9eee46d790186ef3c8c4b5df17a63f397de1e066ad74719",
+      "layoutDigest": "695c47bffdb98f05d2e5c159a068317b1a11c9916bfda1472f082fd0409e397d",
+      "themeId": "plain",
+      "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+      "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+      "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+      "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+      "payloadDigest": "41dd725173d7da2736e5538108acfd920f821115511c35fae65233c4ba4d69d3"
+    },
+    "report": {
+      "reportVersion": "2",
+      "operation": "mapExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-lot4/1",
+        "version": "1.1.0",
+        "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-lot4/1",
+        "version": "1.1.0",
+        "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "inputRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+      "outputRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [
+        {
+          "sourceId": "Page_Choices",
+          "resultId": "e_1",
+          "domain": "export",
+          "pageId": "Page_Choices"
+        },
+        {
+          "sourceId": "Flow_C0",
+          "resultId": "e_12",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C0_di"
+        },
+        {
+          "sourceId": "Flow_C1",
+          "resultId": "e_13",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C1_di"
+        },
+        {
+          "sourceId": "Flow_C1",
+          "resultId": "e_20",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C1_di"
+        },
+        {
+          "sourceId": "Flow_C2",
+          "resultId": "e_14",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C2_di"
+        },
+        {
+          "sourceId": "Flow_C2",
+          "resultId": "e_21",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C2_di"
+        },
+        {
+          "sourceId": "Flow_C3",
+          "resultId": "e_15",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C3_di"
+        },
+        {
+          "sourceId": "Flow_C3",
+          "resultId": "e_22",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C3_di"
+        },
+        {
+          "sourceId": "Flow_C4",
+          "resultId": "e_16",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C4_di"
+        },
+        {
+          "sourceId": "Flow_C4",
+          "resultId": "e_23",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C4_di"
+        },
+        {
+          "sourceId": "Flow_C5",
+          "resultId": "e_17",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C5_di"
+        },
+        {
+          "sourceId": "Flow_C5",
+          "resultId": "e_24",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C5_di"
+        },
+        {
+          "sourceId": "Flow_C6",
+          "resultId": "e_18",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C6_di"
+        },
+        {
+          "sourceId": "Flow_C6",
+          "resultId": "e_25",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C6_di"
+        },
+        {
+          "sourceId": "Flow_C7",
+          "resultId": "e_19",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Flow_C7_di"
+        },
+        {
+          "sourceId": "Gateway_Route",
+          "resultId": "e_2",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Gateway_Route_di"
+        },
+        {
+          "sourceId": "Pool_Choices",
+          "resultId": "e_3",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Pool_Choices_di"
+        },
+        {
+          "sourceId": "Start_Choices",
+          "resultId": "e_4",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Start_Choices_di"
+        },
+        {
+          "sourceId": "Task_Down",
+          "resultId": "e_5",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_Down_di"
+        },
+        {
+          "sourceId": "Task_East",
+          "resultId": "e_6",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_East_di"
+        },
+        {
+          "sourceId": "Task_North",
+          "resultId": "e_7",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_North_di"
+        },
+        {
+          "sourceId": "Task_Other",
+          "resultId": "e_8",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_Other_di"
+        },
+        {
+          "sourceId": "Task_South",
+          "resultId": "e_9",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_South_di"
+        },
+        {
+          "sourceId": "Task_Up",
+          "resultId": "e_10",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_Up_di"
+        },
+        {
+          "sourceId": "Task_West",
+          "resultId": "e_11",
+          "domain": "export",
+          "pageId": "Page_Choices",
+          "occurrenceKey": "Task_West_di"
+        }
+      ],
+      "artifacts": [
+        {
+          "format": "drawio",
+          "capability": "structural",
+          "digest": "dd3565ca114c44abf5f34aed6a1086b9b1f74597861b190ec9575c84574953f4",
+          "entryIndexes": []
+        }
+      ]
+    },
+    "capability": "structural",
+    "idMap": [
+      {
+        "sourceId": "Page_Choices",
+        "resultId": "e_1",
+        "domain": "export",
+        "pageId": "Page_Choices"
+      },
+      {
+        "sourceId": "Flow_C0",
+        "resultId": "e_12",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C0_di"
+      },
+      {
+        "sourceId": "Flow_C1",
+        "resultId": "e_13",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C1_di"
+      },
+      {
+        "sourceId": "Flow_C1",
+        "resultId": "e_20",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C1_di"
+      },
+      {
+        "sourceId": "Flow_C2",
+        "resultId": "e_14",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C2_di"
+      },
+      {
+        "sourceId": "Flow_C2",
+        "resultId": "e_21",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C2_di"
+      },
+      {
+        "sourceId": "Flow_C3",
+        "resultId": "e_15",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C3_di"
+      },
+      {
+        "sourceId": "Flow_C3",
+        "resultId": "e_22",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C3_di"
+      },
+      {
+        "sourceId": "Flow_C4",
+        "resultId": "e_16",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C4_di"
+      },
+      {
+        "sourceId": "Flow_C4",
+        "resultId": "e_23",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C4_di"
+      },
+      {
+        "sourceId": "Flow_C5",
+        "resultId": "e_17",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C5_di"
+      },
+      {
+        "sourceId": "Flow_C5",
+        "resultId": "e_24",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C5_di"
+      },
+      {
+        "sourceId": "Flow_C6",
+        "resultId": "e_18",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C6_di"
+      },
+      {
+        "sourceId": "Flow_C6",
+        "resultId": "e_25",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C6_di"
+      },
+      {
+        "sourceId": "Flow_C7",
+        "resultId": "e_19",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Flow_C7_di"
+      },
+      {
+        "sourceId": "Gateway_Route",
+        "resultId": "e_2",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Gateway_Route_di"
+      },
+      {
+        "sourceId": "Pool_Choices",
+        "resultId": "e_3",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Pool_Choices_di"
+      },
+      {
+        "sourceId": "Start_Choices",
+        "resultId": "e_4",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Start_Choices_di"
+      },
+      {
+        "sourceId": "Task_Down",
+        "resultId": "e_5",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Down_di"
+      },
+      {
+        "sourceId": "Task_East",
+        "resultId": "e_6",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_East_di"
+      },
+      {
+        "sourceId": "Task_North",
+        "resultId": "e_7",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_North_di"
+      },
+      {
+        "sourceId": "Task_Other",
+        "resultId": "e_8",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Other_di"
+      },
+      {
+        "sourceId": "Task_South",
+        "resultId": "e_9",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_South_di"
+      },
+      {
+        "sourceId": "Task_Up",
+        "resultId": "e_10",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_Up_di"
+      },
+      {
+        "sourceId": "Task_West",
+        "resultId": "e_11",
+        "domain": "export",
+        "pageId": "Page_Choices",
+        "occurrenceKey": "Task_West_di"
+      }
+    ]
+  }
+}

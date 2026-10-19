@@ -1,0 +1,43 @@
+{
+  "caseId": "layout-007-grid-fixture",
+  "operation": "layout",
+  "phase": null,
+  "profileArtifact": {
+    "path": "profile-parity-corpus/profile-mechanism/1/neutral-grid-profile.json",
+    "sha256": "7247b5cd90c13fea2d42048a8ea6a5f3a36f64db67a771533adf10968c92cccd"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/grid-fixture.envelope.json",
+      "sha256": "76720af1fa9f44f1518133c8509f03cbbd86b632208d3f4b5aa08f5342db3db0"
+    },
+    {
+      "role": "placements",
+      "path": "lot4-layout-export/expectations/artifacts/grid-fixture.placements.json",
+      "sha256": "19e28fd824dd11ec28b3f8a931f2b4e382a5088aebd5f5a43a0aa74ff7b63592"
+    },
+    {
+      "role": "base-geometry",
+      "path": "lot4-layout-export/expectations/artifacts/grid-fixture.layout.json",
+      "sha256": "1ab03574225a1fed29a4356ea4c24e71d3e3d0e2fd2aa53ecc28bef85f953cf1"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/layout-007-grid-fixture.result.json",
+      "sha256": "265a2d70a1a3a8c5f7702c176a45e9b53b6406743e3fc2de6ad4f93a424a4dd2"
+    }
+  ],
+  "expectedStatus": "refused:render-region-missing",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

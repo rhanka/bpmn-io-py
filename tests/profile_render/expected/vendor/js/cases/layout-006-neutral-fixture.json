@@ -1,0 +1,43 @@
+{
+  "caseId": "layout-006-neutral-fixture",
+  "operation": "layout",
+  "phase": null,
+  "profileArtifact": {
+    "path": "profile-parity-corpus/profile-mechanism/1/neutral-profile.json",
+    "sha256": "c1319045f538a9f4ef1f3f7500af4a3e0df059e04c7c42dd7e992477c9199650"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-fixture.envelope.json",
+      "sha256": "8248f93b1e73045e810089da5be0c056220085ccd0d355e8623ea1691f490cab"
+    },
+    {
+      "role": "placements",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-fixture.placements.json",
+      "sha256": "5c17530cc39f63084c06e97fb5462ffb1c00e5b413ffe423090ad2e0a2a2fc4d"
+    },
+    {
+      "role": "base-geometry",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-fixture.layout.json",
+      "sha256": "3258973f7068f9317ce8660d7eb1660dd8d149307b6be34d07023bc31387feb8"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/layout-006-neutral-fixture.result.json",
+      "sha256": "9e53dee29d505eef079840e824db2fb3f82573e84844f4ffc00da653c7089162"
+    }
+  ],
+  "expectedStatus": "refused:render-region-missing",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "caseId": "export-028-variety-sparx",
+  "operation": "mapExport",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/variety.envelope.json",
+      "sha256": "7fe9f9ecd969547da2475e7dea1819539efe4c21e3dca68617e6ef4ee6ea581e"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/variety.layout.json",
+      "sha256": "23f41da0a6c5f50c0ed5a413e515ecc61e3ad7b6ba18af11319bb50385c87736"
+    },
+    {
+      "role": "render",
+      "path": "lot4-layout-export/expectations/artifacts/variety-plain.render.json",
+      "sha256": "aaa8759f0990c507d3fe0657d10b035472634d38ed3eaa5b2f8adaf2044b33a7"
+    },
+    {
+      "role": "format",
+      "json": "sparx"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/export-028-variety-sparx.map-result.json",
+      "sha256": "d730cc9e6cc6c92a351e1ccf3b04565e8e8d23024dcde87abbbf9f8dae8f886f"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

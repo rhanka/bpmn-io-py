@@ -1,0 +1,196 @@
+{
+  "case": "decision-005-case-operator",
+  "clause": "DESIGN R3.3 \u00a72.2 L116; \u00a79.3 L702",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 4621c654ad321d122a9903bd5a5c412d28f79987b011323b24cb80cafa5855f7; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: One PureResult per case value expression with the pinned unicode-case/1 15.0.0 tables, full mappings and Final_Sigma context only for lower; vectors include U+0130 both ways, Final_Sigma, U+0264, expansions and a titlecase digraph. Fails against: toUpperCase/toLowerCase of the host, simple mappings, or sigma without context.",
+  "operation": "evaluateValue",
+  "profile": {
+    "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6",
+    "load": {
+      "base": {
+        "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-base.json",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": {
+        "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-descriptors.json",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      },
+      "registry": {
+        "vendored": "contracts/profile-mechanism/1/neutral-registry.json",
+        "sha256": "ac4a09989f3fafd9e7695ba18901fac04d08ca4fa869600d5f715a34cf16039f"
+      },
+      "schema": {
+        "vendored": "contracts/profile-mechanism/1/profile-mechanism-1.schema.json",
+        "sha256": "c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da"
+      },
+      "assets": [
+        {
+          "vendored": "contracts/profile-mechanism/1/neutral-metrics.json",
+          "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0"
+        },
+        {
+          "vendored": "tests/profile_render/expected/vendor/js/artifacts/z-metrics.json",
+          "sha256": "baf2ae3eff1522d8fdd4b7c24790cfa80cecb67392096c08008aa20a1babe8a4"
+        }
+      ]
+    }
+  },
+  "input": [
+    {
+      "role": "values",
+      "json": [
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "istanbul"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "\u0130zmir"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "\u0130zmir"
+          },
+          "mode": "lower",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "\u039f\u0394\u039f\u03a3 \u03a3"
+          },
+          "mode": "lower",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "\u039f\u03a3\u0391"
+          },
+          "mode": "lower",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "\u03c3\u03bf\u03c6\u03cc\u03c2"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "\u0264-shape"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "stra\u00dfe \ufb06op"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "\u0149 \u01c5"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "\u0149 \u01c5"
+          },
+          "mode": "lower",
+          "unicode": "15.0.0"
+        }
+      ]
+    }
+  ],
+  "expected": [
+    {
+      "status": "ok",
+      "payload": "ISTANBUL",
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": "\u0130ZMIR",
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": "i\u0307zmir",
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": "\u03bf\u03b4\u03bf\u03c2 \u03c3",
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": "\u03bf\u03c3\u03b1",
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": "\u03a3\u039f\u03a6\u038c\u03a3",
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": "\u0264-SHAPE",
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": "STRASSE STOP",
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": "\u02bcN \u01c4",
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": "\u0149 \u01c6",
+      "diagnostics": []
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "seam-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/decision-005-case-operator.json",
+    "sha256": "4621c654ad321d122a9903bd5a5c412d28f79987b011323b24cb80cafa5855f7"
+  },
+  "author": "spec-seal"
+}

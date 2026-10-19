@@ -1,0 +1,360 @@
+{
+  "case": "layout-009-grid-successor",
+  "clause": "DESIGN R3.3 \u00a714.3 L961; \u00a79.4 L721\u2013L723; \u00a79.3 L713\u2013L715",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 2a28cddafbf071e929727274a782b32f4a661ba3ecc94672b9723c9113853378, by parity-sync decision PS-06 (DESIGN \u00a79.4 L723: IO object centres on one row line; RH = max(minHeight, max(object.h + label.h) + 2\u00b7padding), A = max(object.h/2), B = max(object.h/2 + label.h), cy = body.y + max(A, (RH + A \u2212 B)/2), object y = cy \u2212 h/2, one roundEven per coordinate): side row on Z-page (padding 8, minHeight 40): Task_A (a-first, 100000x80000, no label) and Task_B (z-last, 100000x80000, label height 14000); RH = max(40, 94000 + 2\u00b78) = 94016, A = 40000, B = 54000, cy = 0 + max(40000, (94016 + 40000 \u2212 54000)/2) = 40008; Task_A y = 40008 \u2212 40000 = 8 (per-block centring gave 7008); Task_B y 8 and label y 80008 unchanged; body height max(100000, 94016, 94008) = 100000 unchanged; the A-page row holds Task_B only (unchanged); Task_A has no incident edge and the page bounds do not change. paritySync.changes lists every changed value with its sealed JS value. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Explicitly bound grid successor: Task_A anchors on Y-consumer (opposite end Task_B, centre 350000) at left 300000; Task_B anchors on A-producer (Task_A centre 150000) but collides and moves to 400008; Lane_side grows to 500016. Row height 94016: Task_A y 7008, Task_B y 8, label (430008, 80008). On A-page Task_A is absent, so Task_B has no anchor and starts at 8. The theme's side-stripe declaration emits one record per represented page; its glyph is a header-band template without stripeWidth, so the stripe spans the whole grown region (harmonization K8): Z-page (0, 0, 500016, 100000), A-page (0, 0, 400000, 100000), label Auxiliary. Fails against: Using the base lane width for the stripe, a default stripe width, a stripe on one page only, or anchoring on an activity absent from the page.",
+  "operation": "layout",
+  "profile": {
+    "vendored": "tests/profile_render/expected/vendor/js/artifacts/grid-successor.profile.json",
+    "sha256": "e39fbd775d1538c825cdefe9c7d3a5cd179c7553cd2b243a23ead5a3c122f8d8",
+    "load": {
+      "base": {
+        "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-base.json",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": {
+        "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-descriptors.json",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      },
+      "registry": {
+        "vendored": "contracts/profile-mechanism/1/neutral-registry.json",
+        "sha256": "ac4a09989f3fafd9e7695ba18901fac04d08ca4fa869600d5f715a34cf16039f"
+      },
+      "schema": {
+        "vendored": "contracts/profile-mechanism/1/profile-mechanism-1.schema.json",
+        "sha256": "c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da"
+      },
+      "assets": [
+        {
+          "vendored": "contracts/profile-mechanism/1/neutral-metrics.json",
+          "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0"
+        }
+      ]
+    }
+  },
+  "input": [
+    {
+      "role": "envelope",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/grid-successor.envelope.json",
+      "sha256": "28ed484a6e23de6e4117e0f13aae43bb97df262698b9e6bcacd0f2ef0425cb50"
+    },
+    {
+      "role": "placements",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/grid-fixture.placements.json",
+      "sha256": "19e28fd824dd11ec28b3f8a931f2b4e382a5088aebd5f5a43a0aa74ff7b63592"
+    },
+    {
+      "role": "base-geometry",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/grid-successor.base-geometry.json",
+      "sha256": "2a357d0d32ee3bb7ca3e2ba2eb550d77f324fffeaf0a53d699fb59151d64ee89"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "operation": "layout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-grid/1",
+      "version": "2.1.0",
+      "sha256": "411bee8e6d308230f369b74effedb9f0815b682830f34b7107bf6a3cb9e445dc",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "baseRevision": "20a2a2bf57e5af9ad2304ac7fbcb5995bd7b129d6ab0e7ed483a8a11ac008527",
+    "revision": "20a2a2bf57e5af9ad2304ac7fbcb5995bd7b129d6ab0e7ed483a8a11ac008527",
+    "report": {
+      "reportVersion": "2",
+      "operation": "layout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.1.0",
+        "sha256": "411bee8e6d308230f369b74effedb9f0815b682830f34b7107bf6a3cb9e445dc",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.1.0",
+        "sha256": "411bee8e6d308230f369b74effedb9f0815b682830f34b7107bf6a3cb9e445dc",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "inputRevision": "20a2a2bf57e5af9ad2304ac7fbcb5995bd7b129d6ab0e7ed483a8a11ac008527",
+      "outputRevision": "20a2a2bf57e5af9ad2304ac7fbcb5995bd7b129d6ab0e7ed483a8a11ac008527",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "payload": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "Z-page",
+          "name": "First sheet",
+          "order": 0,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1000000,
+            "height": 800000
+          }
+        },
+        {
+          "pageId": "A-page",
+          "name": "Second sheet",
+          "order": 1,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1000000,
+            "height": 800000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "[\"side-stripe\",\"Process_1\",\"Z-page\"]",
+          "role": "band-stripe",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 500016,
+            "height": 100000
+          },
+          "label": {
+            "text": "Auxiliary",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 500016,
+              "height": 100000
+            },
+            "lines": [
+              "Auxiliary"
+            ]
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "a-first",
+          "semanticId": "Task_A",
+          "role": "side",
+          "bounds": {
+            "x": 300000,
+            "y": 8,
+            "width": 100000,
+            "height": 80000
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "a-note",
+          "semanticId": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+          "role": "content",
+          "bounds": {
+            "x": 100000,
+            "y": 350000,
+            "width": 150000,
+            "height": 40000
+          },
+          "label": {
+            "text": "HELPER",
+            "bounds": {
+              "x": 100000,
+              "y": 350000,
+              "width": 150000,
+              "height": 40000
+            },
+            "lines": [
+              "HELPER"
+            ]
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "z-lane",
+          "semanticId": "Lane_side",
+          "role": "support",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 500016,
+            "height": 100000
+          },
+          "label": {
+            "text": "side",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 30000,
+              "height": 100000
+            },
+            "lines": [
+              "side"
+            ]
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "z-last",
+          "semanticId": "Task_B",
+          "role": "side",
+          "bounds": {
+            "x": 400008,
+            "y": 8,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Ready",
+            "bounds": {
+              "x": 430008,
+              "y": 80008,
+              "width": 40000,
+              "height": 14000
+            },
+            "lines": [
+              "Ready"
+            ]
+          }
+        },
+        {
+          "pageId": "A-page",
+          "occurrenceKey": "[\"side-stripe\",\"Process_1\",\"A-page\"]",
+          "role": "band-stripe",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 400000,
+            "height": 100000
+          },
+          "label": {
+            "text": "Auxiliary",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 400000,
+              "height": 100000
+            },
+            "lines": [
+              "Auxiliary"
+            ]
+          }
+        },
+        {
+          "pageId": "A-page",
+          "occurrenceKey": "a-lane",
+          "semanticId": "Lane_side",
+          "role": "support",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 400000,
+            "height": 100000
+          },
+          "label": {
+            "text": "side",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 30000,
+              "height": 100000
+            },
+            "lines": [
+              "side"
+            ]
+          }
+        },
+        {
+          "pageId": "A-page",
+          "occurrenceKey": "a-last-page",
+          "semanticId": "Task_B",
+          "role": "side",
+          "bounds": {
+            "x": 8,
+            "y": 8,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Ready",
+            "bounds": {
+              "x": 30008,
+              "y": 80008,
+              "width": 40000,
+              "height": 14000
+            },
+            "lines": [
+              "Ready"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/layout-009-grid-successor.json",
+    "sha256": "2a28cddafbf071e929727274a782b32f4a661ba3ecc94672b9723c9113853378"
+  },
+  "paritySync": {
+    "decisions": [
+      "PS-06"
+    ],
+    "changes": [
+      {
+        "pointer": "/expected/payload/geometry/1/bounds/y",
+        "from": 7008,
+        "to": 8
+      }
+    ]
+  },
+  "author": "spec-seal"
+}

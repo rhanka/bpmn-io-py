@@ -1,0 +1,107 @@
+{
+  "documentVersion": "1",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-grid/1",
+    "version": "2.1.0",
+    "sha256": "411bee8e6d308230f369b74effedb9f0815b682830f34b7107bf6a3cb9e445dc",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "tree": {
+    "$type": "bpmn:Definitions",
+    "id": "Definitions_1",
+    "rootElements": [
+      {
+        "$type": "bpmn:Process",
+        "id": "Process_1",
+        "flowElements": [
+          {
+            "$type": "bpmn:ServiceTask",
+            "id": "Task_B",
+            "name": "Ready",
+            "documentation": [
+              {
+                "$type": "bpmn:Documentation",
+                "text": "Preserved source",
+                "textFormat": "text/plain"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:ServiceTask",
+            "id": "Task_A",
+            "name": ""
+          }
+        ],
+        "artifacts": [
+          {
+            "$type": "bpmn:Association",
+            "id": "Z-consumer",
+            "sourceRef": "Task_A",
+            "targetRef": "Task_B",
+            "associationDirection": "One"
+          },
+          {
+            "$type": "bpmn:Association",
+            "id": "Y-consumer",
+            "sourceRef": "Task_A",
+            "targetRef": "Task_B",
+            "associationDirection": "One"
+          },
+          {
+            "$type": "bpmn:Association",
+            "id": "A-producer",
+            "sourceRef": "Task_B",
+            "targetRef": "Task_A",
+            "associationDirection": "One"
+          },
+          {
+            "$type": "bpmn:TextAnnotation",
+            "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+            "text": "[Note] helper"
+          }
+        ],
+        "isExecutable": true,
+        "laneSets": [
+          {
+            "$type": "bpmn:LaneSet",
+            "id": "LaneSet_1",
+            "name": "lane-set",
+            "lanes": [
+              {
+                "$type": "bpmn:Lane",
+                "id": "Lane_side",
+                "name": "side"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "ownerId": "Process_1",
+      "role": "lane-set",
+      "targetId": "LaneSet_1"
+    },
+    {
+      "ownerId": "Process_1",
+      "role": "side",
+      "targetId": "Lane_side"
+    }
+  ],
+  "semanticRevision": "20a2a2bf57e5af9ad2304ac7fbcb5995bd7b129d6ab0e7ed483a8a11ac008527"
+}

@@ -1,0 +1,96 @@
+{
+  "caseId": "history-002-override-round-trip",
+  "operation": "theme-sequence",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/repeated.layout.json",
+      "sha256": "1eb7c1be5ac25ec87328fe8c95ac5f9bb5ea50920429801d108961a0bafc21a4"
+    },
+    {
+      "role": "steps",
+      "json": [
+        {
+          "themeId": "plain"
+        },
+        {
+          "themeId": "plain",
+          "overrides": {
+            "semantic": [],
+            "occurrence": [
+              {
+                "pageId": "View_A",
+                "occurrenceKey": "d-Task_Check",
+                "tokens": [
+                  {
+                    "name": "stroke",
+                    "value": "#ff0000"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "themeId": "plain"
+        }
+      ]
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "output",
+      "json": [
+        {
+          "themeId": "plain",
+          "semanticRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+          "layoutDigest": "13255690a7db41d1401d7e691820e66509a64d3dd969f90df8673f423aff33fe",
+          "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+          "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+          "payloadDigest": "fe24f9f18a6f9850f8a07456fc4f78c753950fbc29f59318c6946bdc25c2829a",
+          "viewRevision": "df2e75aeec32b714dd93e9efd73a1a13e357f58730725bccd6ad479c4dc1821e"
+        },
+        {
+          "themeId": "plain",
+          "semanticRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+          "layoutDigest": "13255690a7db41d1401d7e691820e66509a64d3dd969f90df8673f423aff33fe",
+          "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+          "overridesDigest": "252f6311792c4e439476270fed725bcfd180ccb023b8645c0e92a997e780eb5b",
+          "payloadDigest": "7369263a9218c639eb43d1b98465f86075fd2a3f0432a6c49bbda7fa62e21a67",
+          "viewRevision": "286818e6907cd85bee8f9219fc0ed944955b270430a205456f72349b4594b85a"
+        },
+        {
+          "themeId": "plain",
+          "semanticRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+          "layoutDigest": "13255690a7db41d1401d7e691820e66509a64d3dd969f90df8673f423aff33fe",
+          "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+          "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+          "payloadDigest": "fe24f9f18a6f9850f8a07456fc4f78c753950fbc29f59318c6946bdc25c2829a",
+          "viewRevision": "df2e75aeec32b714dd93e9efd73a1a13e357f58730725bccd6ad479c4dc1821e"
+        }
+      ]
+    },
+    {
+      "role": "invariants",
+      "json": {
+        "semanticRevisionConstant": true,
+        "layoutDigestConstant": true,
+        "firstEqualsLast": true
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "seam-exact/1"
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "caseId": "render-010-style-conflict",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-conflict.profile.json",
+    "sha256": "2be44d8e2987a0af70105408ff360b0bbbbca4d93d474745f2d43086b3b1b88b"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main@conflict.envelope.json",
+      "sha256": "9930889c3a7667e8e09428484067ab2777c2f1f2c0d5050fb9e23b85cfca62df"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/main.layout.json",
+      "sha256": "377e069bbaf287e4addb152628c4a4537bca331059eaae7002106a0036d5b9d1"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [],
+        "bioc": []
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "refused",
+        "operation": "resolveTheme",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-lot4/1",
+          "version": "1.1.1",
+          "sha256": "0a5b24a99158a11bedccd74d2b1b987710d9c99fa9bf31c7f09fdb125d012b45",
+          "base": {
+            "id": "neutral-lot4-base/1",
+            "version": "lot4-2",
+            "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-lot4-descriptors/1",
+              "version": "lot4-2",
+              "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+            }
+          ]
+        },
+        "baseRevision": "7a170f3e052091f778da85b0aab79d1c59fac3676136603614d0ed0392e6131b",
+        "code": "render-style-conflict",
+        "diagnostics": [],
+        "report": {
+          "reportVersion": "2",
+          "operation": "resolveTheme",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-lot4/1",
+            "version": "1.1.1",
+            "sha256": "0a5b24a99158a11bedccd74d2b1b987710d9c99fa9bf31c7f09fdb125d012b45",
+            "base": {
+              "id": "neutral-lot4-base/1",
+              "version": "lot4-2",
+              "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-lot4-descriptors/1",
+                "version": "lot4-2",
+                "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+              }
+            ]
+          },
+          "inputRevision": "7a170f3e052091f778da85b0aab79d1c59fac3676136603614d0ed0392e6131b",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        }
+      }
+    }
+  ],
+  "expectedStatus": "refused:render-style-conflict",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

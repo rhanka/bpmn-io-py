@@ -1,0 +1,120 @@
+{
+  "case": "synthetic-005-grid-fixture",
+  "clause": "DESIGN R3.3 \u00a79.3 L715",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 a07cd2c8d5fa36f103ad3734e517a863b7101ffe6556d00c696a1509b02769d4; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The unchanged lot-0 grid fixture without placements: only the side-stripe declaration of plain is involved; its owner Process_1 is the page root of both pages and its region side has no support binding: render-region-missing (layout-009 is the bound successor). Fails against: Inventing a side column for the stripe, or skipping the declaration because no placement uses the region.",
+  "operation": "layout",
+  "profile": {
+    "vendored": "contracts/profile-mechanism/1/neutral-grid-profile.json",
+    "sha256": "7247b5cd90c13fea2d42048a8ea6a5f3a36f64db67a771533adf10968c92cccd",
+    "load": {
+      "base": {
+        "vendored": "contracts/profile-mechanism/1/neutral-base.json",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": {
+        "vendored": "contracts/profile-mechanism/1/neutral-descriptors.json",
+        "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+      },
+      "registry": {
+        "vendored": "contracts/profile-mechanism/1/neutral-registry.json",
+        "sha256": "ac4a09989f3fafd9e7695ba18901fac04d08ca4fa869600d5f715a34cf16039f"
+      },
+      "schema": {
+        "vendored": "contracts/profile-mechanism/1/profile-mechanism-1.schema.json",
+        "sha256": "c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da"
+      },
+      "assets": [
+        {
+          "vendored": "contracts/profile-mechanism/1/neutral-metrics.json",
+          "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0"
+        }
+      ]
+    }
+  },
+  "input": [
+    {
+      "role": "envelope",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/grid-fixture.envelope.json",
+      "sha256": "76720af1fa9f44f1518133c8509f03cbbd86b632208d3f4b5aa08f5342db3db0"
+    },
+    {
+      "role": "placements",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/empty.placements.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "role": "base-geometry",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/grid-fixture.layout.json",
+      "sha256": "1ab03574225a1fed29a4356ea4c24e71d3e3d0e2fd2aa53ecc28bef85f953cf1"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expected": {
+    "status": "refused",
+    "operation": "layout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-grid/1",
+      "version": "2.0.0",
+      "sha256": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "bef0449fda384dca248a02ecbf04fc4f5ac078f80edaabb813eec69c428b0ce4",
+    "code": "render-region-missing",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "layout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "bef0449fda384dca248a02ecbf04fc4f5ac078f80edaabb813eec69c428b0ce4",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
+  },
+  "expectedStatus": "refused:render-region-missing",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/synthetic-005-grid-fixture.json",
+    "sha256": "a07cd2c8d5fa36f103ad3734e517a863b7101ffe6556d00c696a1509b02769d4"
+  },
+  "author": "spec-seal"
+}

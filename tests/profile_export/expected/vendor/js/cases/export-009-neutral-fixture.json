@@ -1,0 +1,43 @@
+{
+  "caseId": "export-009-neutral-fixture",
+  "operation": "mapExport",
+  "phase": null,
+  "profileArtifact": {
+    "path": "profile-parity-corpus/profile-mechanism/1/neutral-profile.json",
+    "sha256": "c1319045f538a9f4ef1f3f7500af4a3e0df059e04c7c42dd7e992477c9199650"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-fixture.envelope.json",
+      "sha256": "8248f93b1e73045e810089da5be0c056220085ccd0d355e8623ea1691f490cab"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-fixture.layout.json",
+      "sha256": "3258973f7068f9317ce8660d7eb1660dd8d149307b6be34d07023bc31387feb8"
+    },
+    {
+      "role": "render",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-plain.render.json",
+      "sha256": "7bd96ba4bb9fca9d705d696d141f45881ddcba6dbd6f386500357f40106d0aad"
+    },
+    {
+      "role": "format",
+      "json": "drawio"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/export-009-neutral-fixture.map-result.json",
+      "sha256": "4f4289e9aaf62378139686c58dfa399ab666cf03af5b92d31adc17ad59d0195e"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

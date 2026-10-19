@@ -1,0 +1,68 @@
+{
+  "caseId": "export-016-page-shape",
+  "operation": "compileProfile",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "mutation",
+      "json": {
+        "pointer": "/recipes/5/steps/0/fields/2",
+        "value": {
+          "name": "shape",
+          "value": {
+            "op": "literal",
+            "value": "pool"
+          }
+        }
+      }
+    },
+    {
+      "role": "base",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-base.json",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    {
+      "role": "descriptors",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-descriptors.json",
+      "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+    },
+    {
+      "role": "registry",
+      "path": "profile-parity-corpus/profile-mechanism/1/neutral-registry.json",
+      "sha256": "ac4a09989f3fafd9e7695ba18901fac04d08ca4fa869600d5f715a34cf16039f"
+    },
+    {
+      "role": "schema",
+      "path": "profile-parity-corpus/profile-mechanism/1/profile-mechanism-1.schema.json",
+      "sha256": "c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da"
+    },
+    {
+      "role": "asset",
+      "path": "profile-parity-corpus/profile-mechanism/1/neutral-metrics.json",
+      "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0"
+    },
+    {
+      "role": "asset",
+      "path": "lot4-layout-export/expectations/artifacts/z-metrics.json",
+      "sha256": "baf2ae3eff1522d8fdd4b7c24790cfa80cecb67392096c08008aa20a1babe8a4"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "refused",
+        "code": "profile-export-field",
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "refused:profile-export-field",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

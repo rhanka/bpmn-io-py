@@ -1,0 +1,24 @@
+[
+  {
+    "elementId": "Task_A",
+    "ownerProcessId": "Process_1",
+    "regionKey": "side",
+    "relatedAssociationIds": [
+      "A-producer",
+      "Y-consumer",
+      "Z-consumer"
+    ],
+    "anchorAssociationId": "Y-consumer"
+  },
+  {
+    "elementId": "Task_B",
+    "ownerProcessId": "Process_1",
+    "regionKey": "side",
+    "relatedAssociationIds": [
+      "A-producer",
+      "Y-consumer",
+      "Z-consumer"
+    ],
+    "anchorAssociationId": "A-producer"
+  }
+]

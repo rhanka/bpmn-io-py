@@ -900,6 +900,8 @@ Every expectation file is one JSON object with `case`, `clause`, `derivation`,
 `operation` (shared camelCase name, harmonization A4), `input`, `expected`,
 `author:"spec-seal"`, optional `witness` and `inputFrom` (another case whose value
 is reused verbatim at a stated input pointer; the seal test checks the equality).
+Python-authored cases are named `render.*` and `export.*`; the vendored JS cases
+keep their JS case ids and have the record form of §17.6.
 
 ### 17.2 Profiles and packages
 
@@ -1027,7 +1029,98 @@ file). Inputs are the DocumentEnvelope/1 wire value (`envelope`), the Snapshot/1
 the wire record (`result`, or `results` for the sequence case) and the harness
 members (`unsealed`, `includes`, `trace`, `linkRoute`, `drawio-structure`). The
 values are a transcription of the harness files; the render seal test checks their
-identity.
+identity. Vendored JS cases (§17.6) are not re-published there: the manifest lists
+them in `vendored` (`{caseId, source, sha256}`) and the twin pairs in `aliases`
+(`{caseId, aliasOf, sha256}`).
+
+### 17.6 Vendored JS cases (block-B parity sync)
+
+The JS lot-4 seal owns the values of the 155 lot-4 cases the harmonization (§3)
+assigns to the Python parity run (block-B parity sync PS-H17, PS-H18, PS-H19). They
+are vendored, never re-authored, from the JS corpus
+`bpmn-canvas:tests/fixtures/lot4-layout-export/expectations` whose `seal.json`
+SHA-256 is `f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43`.
+
+- Files: the JS case files, every artifact file they reference, the package inputs
+  of their profiles, `seal.json` and `manifest.json` are committed raw, in the JS
+  layout (`cases/`, `artifacts/`), under `tests/profile_render/expected/vendor/js/`
+  (PS-H17 `ticks-*`, `region-*`, `layout-*`; PS-H18 `admission-*`, `render-*`,
+  `synthetic-*`, `decision-*`, `digest-*`, `legacy-001…008`, `history-001/002`,
+  `switch-*`) and `tests/profile_export/expected/vendor/js/` (PS-H19 `export-*`,
+  `idplan-*`, `serialize-*`, `bpmn-*`). A JS reference into the lot-0 corpus
+  (`profile-parity-corpus/profile-mechanism/1/<file>`) resolves to the identical
+  vendored lot-0 contract bytes `contracts/profile-mechanism/1/<file>` (same raw
+  SHA-256).
+- Pins: `derive_helper.py` carries `JS_SEAL_SHA256`, the `VENDORED` tables of both
+  trees (path relative to `vendor/js/` → raw SHA-256, equal to the digest the JS
+  `seal.json` lists for that file), `VENDORED_CONTRACTS` and `ALIASES`;
+  `vendored_bytes(path)` returns the bytes of a vendored file only after checking
+  its pin. The seal tests check every vendored file against its pin and against
+  the vendored JS `seal.json`.
+- Harness record: one `expected/<JS caseId>.json` per vendored case, closed members
+  `case, clause, derivation, operation, profile, input, expected, expectedStatus,
+  comparatorIds, artifacts?, source, paritySync?, author` (`author:"spec-seal"`).
+  Paths are repository-relative.
+  - `clause`: the JS clause (DESIGN section and line range); `operation`: the
+    shared A4 name of the JS case; `derivation`: the vendored statement (JS seal
+    digest, case file SHA-256, owning seal, parity-sync row), the JS derivation and
+    the wrong implementation it fails against.
+  - `profile`: `null`, or `{vendored, sha256, load}` with `load = {base,
+    descriptors, registry, schema, assets}` (the JS manifest package record of
+    that profile, each a `{vendored, sha256}` reference).
+  - `input`: the JS input artifacts in order, each `{role, vendored, sha256}` or
+    `{role, json}`.
+  - `expected`: the JS `result` artifact (`output` for a seam without one), plus
+    `unsealed` (the pointers of the JS `unsealed` artifact, removed as in §17.4).
+  - `expectedStatus`, `comparatorIds`: the JS values; the comparators are those
+    of the vendored JS `manifest.json`. `artifacts`: the other JS expected
+    artifacts (`drawio-structure`, `byte-invariants`, `relations`, `invariants`)
+    verbatim, read by those comparators.
+  - `source`: the vendored JS case file `{vendored, sha256}`.
+- Section-1 decisions applied to imported values (a value a decision changes is
+  derived from the JS case and the decision, never copied); `paritySync` lists the
+  decision ids:
+  - PS-33 (DESIGN §10.1 L737, PureResult always wraps output in payload): the 19
+    vendored `ticks-*` and `region-*` records seal `{status:"ok", payload: <JS
+    output>, diagnostics:[]}` and compare with `result-exact/1` (JS
+    `seam-exact/1`).
+  - PS-06 (DESIGN §9.4 L723, IO object centres on one row line, §4.1):
+    `layout-008-neutral-successor` and `layout-009-grid-successor` move Task_A
+    (`a-first`, no label, beside the labelled Task_B) from y 7008 to y 8 on Z-page;
+    their consumers `render-021`, `render-022`, `export-025` and `export-026`
+    carry that layout, the R occurrence, `layoutDigest`, `payloadDigest`,
+    `renderBinding`, `viewRevision`, the Task_A IR node bounds and `H(ir)`.
+    `paritySync.changes` lists every changed value `{pointer, from, to}` with
+    `from` the sealed JS value; the seal test reverts them to the JS case and
+    recomputes every changed digest.
+- Twins (PS-37): `ticks-001-half-even` ≡ `render.ticks.half-even` (after PS-33) and
+  `region-010-mixed-heights` ≡ `render.regions.mixed-label-heights` (after PS-06 and
+  PS-33): no file is copied and no record is written; `ALIASES` and the parity
+  manifest list `{caseId, aliasOf, sha256}` (`sha256` of the JS case file).
+- Runner binding (JS role → Python argument; `compiled` built as §17.2 from
+  `profile` and `profile.load`):
+
+| Operation | Python | Roles |
+| --- | --- | --- |
+| `layoutTicks` | `layout_ticks(points)` | `points` |
+| `layoutRegions` | `layout_regions(region_input)` | `region-input` |
+| `layout` | `layout(compiled, envelope, placements, base_geometry, theme_id=…)` | `envelope`, `placements`, `base-geometry`, `themeId` |
+| `compileProfile` | `load_profile` then `compile_profile` (§17.2) | `base`, `descriptors`, `registry`, `schema`, `asset` (one per asset); `mutation` `{pointer, value}` is added to the profile JSON at `pointer` (RFC 6902 `add`) before loading |
+| `resolveTheme` | `resolve_theme(compiled, envelope, layout, theme_id, overrides, di_styles)` | `envelope`, `layout`, `themeId`, `overrides`, `diStyles` |
+| `evaluateValue` | the block-A Value evaluator, one PureResult per expression, without bindings | `values` |
+| `renderDigests` | `render_digests(record)` | `record` |
+| `theme-sequence` | one `resolve_theme` per step on the same envelope and layout (absent step bags are empty); per step `{themeId, semanticRevision, layoutDigest, themeDigest, overridesDigest, payloadDigest, viewRevision}` | `envelope`, `layout`, `steps` |
+| `checkThemeSwitch` | `check_theme_switch(compiled, from_theme, to_theme)` | `from`, `to` |
+| `resolveLegacyTheme` | `resolve_legacy_theme(compiled, legacy_name)` | `look` |
+| `mapExport` | `map_export(compiled, envelope, layout, r, format)` | `envelope`, `layout`, `render`, `format` |
+| `exportIdPlan` | the §10.1 step-7 ID allocation of `_export_ir.py` on the explicit plan (private seam), PureResult `{ids}` | `plan-input` |
+| `serializePrepared` | `serialize_prepared(prepared, pinned_writer_options)` | `prepared`, `writerOptions` |
+| `serializePrepared-sequence` | `serialize_prepared` in the listed call order | `prepared-a`, `prepared-b`, `writerOptions`, `order` |
+| `serializeBpmn` | block-A `hydrate` of `envelope.tree`, then `serialize_xml` with the writer options (BPMN column, harmonization L6) | `envelope`, `writerOptions` |
+
+The runner compares `expected` as §17.4 and applies the other listed comparators
+with the record's `artifacts`; `source-immutability/1` is the input check every
+runner performs (§17.4).
 
 ## 18. Case tables
 

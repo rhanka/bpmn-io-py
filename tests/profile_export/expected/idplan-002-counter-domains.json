@@ -1,0 +1,127 @@
+{
+  "case": "idplan-002-counter-domains",
+  "clause": "DESIGN R3.3 \u00a710.2 L801",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 6245e83ba28814248978915b26aaf793e40f9c696d18747de5670807ef8007ef; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: Domain order page, node, edge, label dominates; inside a domain page order (P2 order 2 before P1 order 5), then UTF-16 key ('B' before 'z'); only requested keys are allocated and the repeated P1/z request reuses its ID. Fails against: Sorting by pageId text, by request order, or case-insensitively.",
+  "operation": "exportIdPlan",
+  "profile": null,
+  "input": [
+    {
+      "role": "plan-input",
+      "json": {
+        "policy": "counter",
+        "counterOrigin": 0,
+        "pages": [
+          {
+            "pageId": "P1",
+            "order": 5
+          },
+          {
+            "pageId": "P2",
+            "order": 2
+          }
+        ],
+        "requests": [
+          {
+            "pageId": "P2",
+            "occurrenceKey": "b",
+            "domain": "label"
+          },
+          {
+            "pageId": "P2",
+            "occurrenceKey": "b",
+            "domain": "edge"
+          },
+          {
+            "pageId": "P1",
+            "occurrenceKey": "z",
+            "domain": "node"
+          },
+          {
+            "pageId": "P2",
+            "occurrenceKey": "a",
+            "domain": "node"
+          },
+          {
+            "pageId": "P1",
+            "occurrenceKey": "",
+            "domain": "page"
+          },
+          {
+            "pageId": "P1",
+            "occurrenceKey": "B",
+            "domain": "node"
+          },
+          {
+            "pageId": "P2",
+            "occurrenceKey": "",
+            "domain": "page"
+          },
+          {
+            "pageId": "P1",
+            "occurrenceKey": "z",
+            "domain": "node"
+          }
+        ]
+      }
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "ids": [
+        {
+          "pageId": "P2",
+          "occurrenceKey": "",
+          "domain": "page",
+          "id": "e_0"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "",
+          "domain": "page",
+          "id": "e_1"
+        },
+        {
+          "pageId": "P2",
+          "occurrenceKey": "a",
+          "domain": "node",
+          "id": "e_2"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "B",
+          "domain": "node",
+          "id": "e_3"
+        },
+        {
+          "pageId": "P1",
+          "occurrenceKey": "z",
+          "domain": "node",
+          "id": "e_4"
+        },
+        {
+          "pageId": "P2",
+          "occurrenceKey": "b",
+          "domain": "edge",
+          "id": "e_5"
+        },
+        {
+          "pageId": "P2",
+          "occurrenceKey": "b",
+          "domain": "label",
+          "id": "e_6"
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_export/expected/vendor/js/cases/idplan-002-counter-domains.json",
+    "sha256": "6245e83ba28814248978915b26aaf793e40f9c696d18747de5670807ef8007ef"
+  },
+  "author": "spec-seal"
+}

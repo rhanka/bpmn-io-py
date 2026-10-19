@@ -1,0 +1,124 @@
+{
+  "case": "export-008-synthetic-sparx-ambiguous",
+  "clause": "DESIGN R3.3 \u00a72.2 L130",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 bc1aa44c416c29269220606c537c9ed965547343da67061b397b3666aec61fe5; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: A synthetic occurrence has no semantic ID, so the native policy cannot name it. Fails against: Using the synthetic key as a native ID.",
+  "operation": "mapExport",
+  "profile": {
+    "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6",
+    "load": {
+      "base": {
+        "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-base.json",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": {
+        "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-descriptors.json",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      },
+      "registry": {
+        "vendored": "contracts/profile-mechanism/1/neutral-registry.json",
+        "sha256": "ac4a09989f3fafd9e7695ba18901fac04d08ca4fa869600d5f715a34cf16039f"
+      },
+      "schema": {
+        "vendored": "contracts/profile-mechanism/1/profile-mechanism-1.schema.json",
+        "sha256": "c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da"
+      },
+      "assets": [
+        {
+          "vendored": "contracts/profile-mechanism/1/neutral-metrics.json",
+          "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0"
+        },
+        {
+          "vendored": "tests/profile_export/expected/vendor/js/artifacts/z-metrics.json",
+          "sha256": "baf2ae3eff1522d8fdd4b7c24790cfa80cecb67392096c08008aa20a1babe8a4"
+        }
+      ]
+    }
+  },
+  "input": [
+    {
+      "role": "envelope",
+      "vendored": "tests/profile_export/expected/vendor/js/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "layout",
+      "vendored": "tests/profile_export/expected/vendor/js/artifacts/main-striped.layout.json",
+      "sha256": "0c01c961f1f84f4ae19b58e7654be110947cf7ced83726aef0e81cb60d92517a"
+    },
+    {
+      "role": "render",
+      "vendored": "tests/profile_export/expected/vendor/js/artifacts/main-striped.render.json",
+      "sha256": "d2b8691907afe0f1d6139245a341cf9c15aec4346ad3d187530f18bd1c96eb21"
+    },
+    {
+      "role": "format",
+      "json": "sparx"
+    }
+  ],
+  "expected": {
+    "status": "refused",
+    "operation": "mapExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "baseRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+    "code": "export-id-ambiguous",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "mapExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-lot4/1",
+        "version": "1.1.0",
+        "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "inputRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
+  },
+  "expectedStatus": "refused:export-id-ambiguous",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_export/expected/vendor/js/cases/export-008-synthetic-sparx-ambiguous.json",
+    "sha256": "bc1aa44c416c29269220606c537c9ed965547343da67061b397b3666aec61fe5"
+  },
+  "author": "spec-seal"
+}

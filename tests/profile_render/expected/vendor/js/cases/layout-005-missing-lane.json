@@ -1,0 +1,43 @@
+{
+  "caseId": "layout-005-missing-lane",
+  "operation": "layout",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main-nolane.envelope.json",
+      "sha256": "d796d102d076152a165d98caa2dfc113f0826f84274164ab4bcfe9ffc1bcc825"
+    },
+    {
+      "role": "placements",
+      "path": "lot4-layout-export/expectations/artifacts/main.placements.json",
+      "sha256": "4cf87df1d2bd304b8a014c3c3fc4370325b49496ee8f39ee1eb388958d88a4a4"
+    },
+    {
+      "role": "base-geometry",
+      "path": "lot4-layout-export/expectations/artifacts/main-nolane.base-geometry.json",
+      "sha256": "070b165f3bfe02f92255ef1bd260f00220818b1a3fafd5c1cf7e8f6b83b7fab6"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/layout-005-missing-lane.result.json",
+      "sha256": "29ca2f499919a374f3c9a4d22fb17ea975303d451a91be9b237ef6e718bbf9f4"
+    }
+  ],
+  "expectedStatus": "refused:render-region-missing",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

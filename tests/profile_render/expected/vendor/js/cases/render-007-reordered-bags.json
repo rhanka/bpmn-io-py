@@ -1,0 +1,154 @@
+{
+  "caseId": "render-007-reordered-bags",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/main.layout.json",
+      "sha256": "377e069bbaf287e4addb152628c4a4537bca331059eaae7002106a0036d5b9d1"
+    },
+    {
+      "role": "themeId",
+      "json": "dim"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [
+          {
+            "semanticId": "Task_Fix",
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#fff0f0"
+              }
+            ]
+          },
+          {
+            "semanticId": "Task_Check",
+            "tokens": [
+              {
+                "name": "strokeWidth",
+                "value": 2
+              },
+              {
+                "name": "dash",
+                "value": "dashed"
+              }
+            ]
+          }
+        ],
+        "occurrence": [
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Task_Ship_di",
+            "tokens": [
+              {
+                "name": "textColor",
+                "value": "#003300"
+              }
+            ]
+          },
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Task_Check_di",
+            "tokens": [
+              {
+                "name": "strokeWidth",
+                "value": 3
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Task_Fix_di",
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#ffeedd"
+              }
+            ]
+          },
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Task_Check_di",
+            "tokens": [
+              {
+                "name": "stroke",
+                "value": "#112233"
+              },
+              {
+                "name": "dash",
+                "value": "solid"
+              }
+            ]
+          }
+        ],
+        "bioc": [
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Task_Ship_di",
+            "tokens": [
+              {
+                "name": "stroke",
+                "value": "#556677"
+              }
+            ]
+          },
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Task_Check_di",
+            "tokens": [
+              {
+                "name": "textColor",
+                "value": "#445566"
+              },
+              {
+                "name": "stroke",
+                "value": "#998877"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/main-dim-precedence.resolve-result.json",
+      "sha256": "6e2478a18c9c785aa52379c1c2defef5a688c7c1645f305391b6938a4cdb0181"
+    },
+    {
+      "role": "relations",
+      "json": {
+        "sameResultAs": "render-006-token-precedence",
+        "overridesDigest": "49e6f52ca1eabeaf998ff1db0a44879c67697bc4ec4bf753c0a8de8e4e3b160f",
+        "diStylesDigest": "35a011abbd1836b4104ae89cc4657aaa0ebabe7334700806099f0ed956c41dc9"
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

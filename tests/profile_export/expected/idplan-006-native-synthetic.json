@@ -1,0 +1,37 @@
+{
+  "case": "idplan-006-native-synthetic",
+  "clause": "DESIGN R3.3 \u00a72.2 L130",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 0d5835c210f1669c97c8d3eadda4ca6a62be58d0f6f5d1556b61b8260abf9afc; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: A synthetic occurrence has no semantic ID, so the native policy cannot name it and requires a digest or counter policy. Fails against: Using the synthetic key or the owner ID as the native ID.",
+  "operation": "exportIdPlan",
+  "profile": null,
+  "input": [
+    {
+      "role": "plan-input",
+      "json": {
+        "policy": "native",
+        "counterOrigin": 0,
+        "requests": [
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "[\"band-stripe\",\"Process_Main\",\"Page_Main\"]",
+            "domain": "node"
+          }
+        ]
+      }
+    }
+  ],
+  "expected": {
+    "status": "refused",
+    "code": "export-id-ambiguous",
+    "diagnostics": []
+  },
+  "expectedStatus": "refused:export-id-ambiguous",
+  "comparatorIds": [
+    "result-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_export/expected/vendor/js/cases/idplan-006-native-synthetic.json",
+    "sha256": "0d5835c210f1669c97c8d3eadda4ca6a62be58d0f6f5d1556b61b8260abf9afc"
+  },
+  "author": "spec-seal"
+}

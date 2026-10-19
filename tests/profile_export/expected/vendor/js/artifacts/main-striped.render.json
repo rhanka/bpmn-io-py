@@ -1,0 +1,1914 @@
+{
+  "renderVersion": "1",
+  "binding": {
+    "semanticRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+    "profileDigest": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "descriptorDigest": "8cb3013f19489ae7b9eee46d790186ef3c8c4b5df17a63f397de1e066ad74719",
+    "layoutDigest": "17d1eeb6107552d720413e991ec2763b91fd6ee4adc454107ba72432760264c4",
+    "themeId": "plain-striped",
+    "themeDigest": "7c3b8901999bf0d7cbf255a2edb5fbab85d03add1ba90bbc94a660203faf6a79",
+    "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+    "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+    "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+    "payloadDigest": "dbfe06750f0601e0f319c05a115cd67a4e2ea42c97edaad545091010fd513656"
+  },
+  "pages": [
+    {
+      "pageId": "Page_Main",
+      "name": "Main sheet",
+      "order": 0,
+      "semanticRootId": "Process_Main",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1200000,
+        "height": 640000
+      }
+    }
+  ],
+  "occurrences": [
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Aid_Scanner_di",
+      "semanticId": "Aid_Scanner",
+      "role": "content",
+      "bounds": {
+        "x": 180000,
+        "y": 170000,
+        "width": 100000,
+        "height": 40000
+      },
+      "label": {
+        "text": "Scanner",
+        "bounds": {
+          "x": 180000,
+          "y": 170000,
+          "width": 100000,
+          "height": 40000
+        },
+        "lines": [
+          "Scanner"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#eeeeff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "aid"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Assoc_Aid_di",
+      "semanticId": "Assoc_Aid",
+      "role": "content",
+      "bounds": {
+        "x": 230000,
+        "y": 210000,
+        "width": 0,
+        "height": 50000
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "open"
+        },
+        {
+          "name": "dash",
+          "value": "dashed"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "association-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Aid_Scanner_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Check_di"
+      },
+      "waypoints": [
+        {
+          "x": 230000,
+          "y": 210000
+        },
+        {
+          "x": 230000,
+          "y": 260000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Assoc_Policy_di",
+      "semanticId": "Assoc_Policy",
+      "role": "content",
+      "bounds": {
+        "x": 230000,
+        "y": 340000,
+        "width": 0,
+        "height": 140000
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "open"
+        },
+        {
+          "name": "dash",
+          "value": "dashed"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "association-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "StoreRef_Policy_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Check_di"
+      },
+      "waypoints": [
+        {
+          "x": 230000,
+          "y": 480000
+        },
+        {
+          "x": 230000,
+          "y": 340000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Band_Main_di",
+      "semanticId": "Band_Main",
+      "role": "support",
+      "bounds": {
+        "x": 0,
+        "y": 470000,
+        "width": 1100000,
+        "height": 120000
+      },
+      "label": {
+        "text": "References",
+        "bounds": {
+          "x": 0,
+          "y": 470000,
+          "width": 30000,
+          "height": 120000
+        },
+        "lines": [
+          "References"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#f4f4f4"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "band"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "End_Done_di",
+      "semanticId": "End_Done",
+      "role": "content",
+      "bounds": {
+        "x": 600000,
+        "y": 282000,
+        "width": 36000,
+        "height": 36000
+      },
+      "label": {
+        "text": "Order shipped",
+        "bounds": {
+          "x": 583000,
+          "y": 323000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Order shipped"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "end"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Back_di",
+      "semanticId": "Flow_Back",
+      "role": "content",
+      "bounds": {
+        "x": 230000,
+        "y": 340000,
+        "width": 210000,
+        "height": 80000
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "flow-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Fix_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Check_di"
+      },
+      "waypoints": [
+        {
+          "x": 440000,
+          "y": 420000
+        },
+        {
+          "x": 230000,
+          "y": 420000
+        },
+        {
+          "x": 230000,
+          "y": 340000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Check_di",
+      "semanticId": "Flow_Check",
+      "role": "content",
+      "bounds": {
+        "x": 280000,
+        "y": 300000,
+        "width": 50000,
+        "height": 0
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "flow-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Check_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Gateway_Ok_di"
+      },
+      "waypoints": [
+        {
+          "x": 280000,
+          "y": 300000
+        },
+        {
+          "x": 330000,
+          "y": 300000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_No_di",
+      "semanticId": "Flow_No",
+      "role": "content",
+      "bounds": {
+        "x": 355000,
+        "y": 325000,
+        "width": 85000,
+        "height": 75000
+      },
+      "label": {
+        "text": "NO",
+        "bounds": {
+          "x": 360000,
+          "y": 380000,
+          "width": 20000,
+          "height": 14000
+        },
+        "lines": [
+          "NO"
+        ]
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "bold"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#1f4fbf"
+        }
+      ],
+      "glyphId": "flow-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Gateway_Ok_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Fix_di"
+      },
+      "waypoints": [
+        {
+          "x": 355000,
+          "y": 325000
+        },
+        {
+          "x": 355000,
+          "y": 400000
+        },
+        {
+          "x": 440000,
+          "y": 400000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Ship_di",
+      "semanticId": "Flow_Ship",
+      "role": "content",
+      "bounds": {
+        "x": 540000,
+        "y": 300000,
+        "width": 60000,
+        "height": 0
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "flow-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Ship_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "End_Done_di"
+      },
+      "waypoints": [
+        {
+          "x": 540000,
+          "y": 300000
+        },
+        {
+          "x": 600000,
+          "y": 300000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Start_di",
+      "semanticId": "Flow_Start",
+      "role": "content",
+      "bounds": {
+        "x": 136000,
+        "y": 300000,
+        "width": 44000,
+        "height": 0
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "flow-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Start_Main_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Check_di"
+      },
+      "waypoints": [
+        {
+          "x": 136000,
+          "y": 300000
+        },
+        {
+          "x": 180000,
+          "y": 300000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Yes_di",
+      "semanticId": "Flow_Yes",
+      "role": "content",
+      "bounds": {
+        "x": 380000,
+        "y": 300000,
+        "width": 60000,
+        "height": 0
+      },
+      "label": {
+        "text": "YES",
+        "bounds": {
+          "x": 395000,
+          "y": 285000,
+          "width": 30000,
+          "height": 14000
+        },
+        "lines": [
+          "YES"
+        ]
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "bold"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#1f4fbf"
+        }
+      ],
+      "glyphId": "flow-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Gateway_Ok_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Ship_di"
+      },
+      "waypoints": [
+        {
+          "x": 380000,
+          "y": 300000
+        },
+        {
+          "x": 440000,
+          "y": 300000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Gateway_Ok_di",
+      "semanticId": "Gateway_Ok",
+      "role": "content",
+      "bounds": {
+        "x": 330000,
+        "y": 275000,
+        "width": 50000,
+        "height": 50000
+      },
+      "label": {
+        "text": "Approved?",
+        "bounds": {
+          "x": 320000,
+          "y": 330000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Approved?"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "bold"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "gateway"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Input_Link_di",
+      "semanticId": "Input_Link",
+      "role": "content",
+      "bounds": {
+        "x": 230000,
+        "y": 60000,
+        "width": 0,
+        "height": 200000
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "open"
+        },
+        {
+          "name": "dash",
+          "value": "dashed"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "data-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Input_Order_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Check_di"
+      },
+      "waypoints": [
+        {
+          "x": 230000,
+          "y": 60000
+        },
+        {
+          "x": 230000,
+          "y": 260000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Input_Order_di",
+      "semanticId": "Input_Order",
+      "role": "external-lane",
+      "bounds": {
+        "x": 212000,
+        "y": 10000,
+        "width": 36000,
+        "height": 50000
+      },
+      "label": {
+        "text": "Order",
+        "bounds": {
+          "x": 215000,
+          "y": 60000,
+          "width": 30000,
+          "height": 14000
+        },
+        "lines": [
+          "Order"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "data-input"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Lane_External_di",
+      "semanticId": "Lane_External",
+      "role": "support",
+      "bounds": {
+        "x": 30000,
+        "y": 0,
+        "width": 1070000,
+        "height": 150000
+      },
+      "label": {
+        "text": "External",
+        "bounds": {
+          "x": 30000,
+          "y": 0,
+          "width": 30000,
+          "height": 150000
+        },
+        "lines": [
+          "External"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#fafafa"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "lane"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Lane_Work_di",
+      "semanticId": "Lane_Work",
+      "role": "support",
+      "bounds": {
+        "x": 30000,
+        "y": 150000,
+        "width": 1070000,
+        "height": 300000
+      },
+      "label": {
+        "text": "Work",
+        "bounds": {
+          "x": 30000,
+          "y": 150000,
+          "width": 30000,
+          "height": 300000
+        },
+        "lines": [
+          "Work"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "lane"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Output_Link_di",
+      "semanticId": "Output_Link",
+      "role": "content",
+      "bounds": {
+        "x": 490000,
+        "y": 60000,
+        "width": 0,
+        "height": 200000
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "open"
+        },
+        {
+          "name": "dash",
+          "value": "dashed"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "data-line",
+      "sourceOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Ship_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Main",
+        "occurrenceKey": "Output_Receipt_di"
+      },
+      "waypoints": [
+        {
+          "x": 490000,
+          "y": 260000
+        },
+        {
+          "x": 490000,
+          "y": 60000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Output_Receipt_di",
+      "semanticId": "Output_Receipt",
+      "role": "external-lane",
+      "bounds": {
+        "x": 472000,
+        "y": 10000,
+        "width": 36000,
+        "height": 50000
+      },
+      "label": {
+        "text": "Receipt",
+        "bounds": {
+          "x": 469000,
+          "y": 60000,
+          "width": 42000,
+          "height": 14000
+        },
+        "lines": [
+          "Receipt"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "data-output"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Pool_Main_di",
+      "semanticId": "Pool_Main",
+      "role": "support",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1100000,
+        "height": 450000
+      },
+      "label": {
+        "text": "Main process",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 30000,
+          "height": 450000
+        },
+        "lines": [
+          "Main process"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "pool"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Start_Main_di",
+      "semanticId": "Start_Main",
+      "role": "content",
+      "bounds": {
+        "x": 100000,
+        "y": 282000,
+        "width": 36000,
+        "height": 36000
+      },
+      "label": {
+        "text": "Order received",
+        "bounds": {
+          "x": 83000,
+          "y": 323000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Order received"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "start"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "StoreRef_Policy_di",
+      "semanticId": "StoreRef_Policy",
+      "role": "reference-band",
+      "bounds": {
+        "x": 205000,
+        "y": 480000,
+        "width": 50000,
+        "height": 50000
+      },
+      "label": {
+        "text": "Policy archive",
+        "bounds": {
+          "x": 195000,
+          "y": 530000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Policy archive"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#f0f0ff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "store"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Task_Check_di",
+      "semanticId": "Task_Check",
+      "role": "content",
+      "bounds": {
+        "x": 180000,
+        "y": 260000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Check order",
+        "bounds": {
+          "x": 180000,
+          "y": 260000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Check order"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "task"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Task_Fix_di",
+      "semanticId": "Task_Fix",
+      "role": "content",
+      "bounds": {
+        "x": 440000,
+        "y": 360000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Fix order",
+        "bounds": {
+          "x": 440000,
+          "y": 360000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Fix order"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "bold"
+        },
+        {
+          "name": "stroke",
+          "value": "#aa0000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "task"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "Task_Ship_di",
+      "semanticId": "Task_Ship",
+      "role": "content",
+      "bounds": {
+        "x": 440000,
+        "y": 260000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Ship order",
+        "bounds": {
+          "x": 440000,
+          "y": 260000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Ship order"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "task"
+    },
+    {
+      "pageId": "Page_Main",
+      "occurrenceKey": "[\"band-stripe\",\"Process_Main\",\"Page_Main\"]",
+      "role": "band-stripe",
+      "bounds": {
+        "x": 0,
+        "y": 470000,
+        "width": 20000,
+        "height": 120000
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#dddddd"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "stripe"
+    }
+  ],
+  "coverage": [
+    {
+      "semanticId": "Definitions_Main",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Store_Policy",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Process_Main",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Assoc_Policy",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Assoc_Policy_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Aid_Scanner",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Aid_Scanner_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Assoc_Aid",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Assoc_Aid_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Start_Main",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Start_Main_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Task_Check",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Task_Check_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Input_Link",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Input_Link_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Port_Check_In",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Gateway_Ok",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Gateway_Ok_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Task_Ship",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Task_Ship_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Output_Link",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Output_Link_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Port_Ship_Out",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Task_Fix",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Task_Fix_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "End_Done",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "End_Done_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Flow_Start",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Flow_Start_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Flow_Check",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Flow_Check_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Flow_Yes",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Flow_Yes_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Flow_No",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Flow_No_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Flow_Ship",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Flow_Ship_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Flow_Back",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Flow_Back_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "StoreRef_Policy",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "StoreRef_Policy_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Input_Order",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Input_Order_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Output_Receipt",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Output_Receipt_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "InputSet_Main",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "OutputSet_Main",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "LaneSet_Main",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Lane_External",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Lane_External_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Lane_Work",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Lane_Work_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Collab_Main",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Pool_Main",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Pool_Main_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Band_Main",
+      "occurrences": [
+        {
+          "pageId": "Page_Main",
+          "occurrenceKey": "Band_Main_di"
+        }
+      ],
+      "disposition": "rendered"
+    }
+  ],
+  "diagnostics": []
+}

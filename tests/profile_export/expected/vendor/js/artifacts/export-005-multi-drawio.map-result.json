@@ -1,0 +1,1252 @@
+{
+  "status": "ok",
+  "operation": "mapExport",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "baseRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+  "revision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+  "report": {
+    "reportVersion": "2",
+    "operation": "mapExport",
+    "sourceIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "targetIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "inputRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+    "outputRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+    "entries": [
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/flowElements/1",
+          "targetId": "StoreRef_A",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_A",
+        "occurrenceKey": "StoreRef_A_di",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/2/flowElements/1",
+          "targetId": "StoreRef_B",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_B",
+        "occurrenceKey": "StoreRef_B_di",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/metadata",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.metadata",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/3/participants/1",
+          "targetId": "Band_A",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_A",
+        "occurrenceKey": "Band_A_di",
+        "emittedType": "node",
+        "lossClass": "metadata"
+      },
+      {
+        "code": "export-loss/metadata",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.metadata",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/4/participants/1",
+          "targetId": "Band_B",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_B",
+        "occurrenceKey": "Band_B_di",
+        "emittedType": "node",
+        "lossClass": "metadata"
+      }
+    ],
+    "rawStandardFindings": [],
+    "idMap": [
+      {
+        "sourceId": "Page_A",
+        "resultId": "e_1",
+        "domain": "export",
+        "pageId": "Page_A"
+      },
+      {
+        "sourceId": "Assoc_A",
+        "resultId": "e_11",
+        "domain": "export",
+        "pageId": "Page_A",
+        "occurrenceKey": "Assoc_A_di"
+      },
+      {
+        "sourceId": "Band_A",
+        "resultId": "e_3",
+        "domain": "export",
+        "pageId": "Page_A",
+        "occurrenceKey": "Band_A_di"
+      },
+      {
+        "sourceId": "Pool_A",
+        "resultId": "e_4",
+        "domain": "export",
+        "pageId": "Page_A",
+        "occurrenceKey": "Pool_A_di"
+      },
+      {
+        "sourceId": "StoreRef_A",
+        "resultId": "e_5",
+        "domain": "export",
+        "pageId": "Page_A",
+        "occurrenceKey": "StoreRef_A_di"
+      },
+      {
+        "sourceId": "Task_A1",
+        "resultId": "e_6",
+        "domain": "export",
+        "pageId": "Page_A",
+        "occurrenceKey": "Task_A1_di"
+      },
+      {
+        "sourceId": "Page_B",
+        "resultId": "e_2",
+        "domain": "export",
+        "pageId": "Page_B"
+      },
+      {
+        "sourceId": "Assoc_B",
+        "resultId": "e_12",
+        "domain": "export",
+        "pageId": "Page_B",
+        "occurrenceKey": "Assoc_B_di"
+      },
+      {
+        "sourceId": "Band_B",
+        "resultId": "e_7",
+        "domain": "export",
+        "pageId": "Page_B",
+        "occurrenceKey": "Band_B_di"
+      },
+      {
+        "sourceId": "Pool_B",
+        "resultId": "e_8",
+        "domain": "export",
+        "pageId": "Page_B",
+        "occurrenceKey": "Pool_B_di"
+      },
+      {
+        "sourceId": "StoreRef_B",
+        "resultId": "e_9",
+        "domain": "export",
+        "pageId": "Page_B",
+        "occurrenceKey": "StoreRef_B_di"
+      },
+      {
+        "sourceId": "Task_B1",
+        "resultId": "e_10",
+        "domain": "export",
+        "pageId": "Page_B",
+        "occurrenceKey": "Task_B1_di"
+      }
+    ],
+    "artifacts": [
+      {
+        "format": "drawio",
+        "capability": "structural",
+        "digest": "5857cbfd56efb484b49adf56e1c090cd9f16b79e17faa73d0005526a27204369",
+        "entryIndexes": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    ]
+  },
+  "payload": {
+    "format": "drawio",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "semanticRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+    "viewRevision": "9b2b461aaf75a7347eeacd2277a6ebcfb46b80950d4cd1579f53367d8093d555",
+    "ir": [
+      {
+        "kind": "page",
+        "id": "e_1",
+        "name": "Sheet A",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 800000,
+          "height": 400000
+        }
+      },
+      {
+        "kind": "page",
+        "id": "e_2",
+        "name": "Sheet B",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 800000,
+          "height": 400000
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_3",
+        "name": "References A",
+        "parent": "e_1",
+        "bounds": {
+          "x": 0,
+          "y": 270000,
+          "width": 700000,
+          "height": 100000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#f4f4f4"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 0,
+            "y": 270000,
+            "width": 30000,
+            "height": 100000
+          },
+          "lines": [
+            "References A"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_4",
+        "name": "Process A",
+        "parent": "e_1",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 700000,
+          "height": 250000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 30000,
+            "height": 250000
+          },
+          "lines": [
+            "Process A"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_5",
+        "name": "Shared register",
+        "parent": "e_1",
+        "bounds": {
+          "x": 225000,
+          "y": 280000,
+          "width": 50000,
+          "height": 50000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#f0f0ff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 212000,
+            "y": 330000,
+            "width": 76000,
+            "height": 14000
+          },
+          "lines": [
+            "Shared register"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_6",
+        "name": "Prepare",
+        "parent": "e_1",
+        "bounds": {
+          "x": 200000,
+          "y": 85000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 200000,
+            "y": 85000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Prepare"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_7",
+        "name": "References B",
+        "parent": "e_2",
+        "bounds": {
+          "x": 0,
+          "y": 270000,
+          "width": 700000,
+          "height": 100000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#f4f4f4"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 0,
+            "y": 270000,
+            "width": 30000,
+            "height": 100000
+          },
+          "lines": [
+            "References B"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_8",
+        "name": "Process B",
+        "parent": "e_2",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 700000,
+          "height": 250000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 30000,
+            "height": 250000
+          },
+          "lines": [
+            "Process B"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_9",
+        "name": "Register copy",
+        "parent": "e_2",
+        "bounds": {
+          "x": 425000,
+          "y": 280000,
+          "width": 50000,
+          "height": 50000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#f0f0ff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 418000,
+            "y": 330000,
+            "width": 64000,
+            "height": 14000
+          },
+          "lines": [
+            "Register copy"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_10",
+        "name": "Review",
+        "parent": "e_2",
+        "bounds": {
+          "x": 400000,
+          "y": 85000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 400000,
+            "y": 85000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Review"
+          ]
+        }
+      },
+      {
+        "kind": "edge",
+        "id": "e_11",
+        "source": "e_5",
+        "target": "e_6",
+        "parent": "e_1",
+        "bounds": {
+          "x": 250000,
+          "y": 165000,
+          "width": 0,
+          "height": 115000
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 280000
+          },
+          {
+            "x": 250000,
+            "y": 165000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "open"
+          },
+          {
+            "name": "dash",
+            "value": "dashed"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ]
+      },
+      {
+        "kind": "edge",
+        "id": "e_12",
+        "source": "e_9",
+        "target": "e_10",
+        "parent": "e_2",
+        "bounds": {
+          "x": 450000,
+          "y": 165000,
+          "width": 0,
+          "height": 115000
+        },
+        "waypoints": [
+          {
+            "x": 450000,
+            "y": 280000
+          },
+          {
+            "x": 450000,
+            "y": 165000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "open"
+          },
+          {
+            "name": "dash",
+            "value": "dashed"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ]
+      }
+    ],
+    "renderBinding": {
+      "semanticRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+      "profileDigest": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "descriptorDigest": "8cb3013f19489ae7b9eee46d790186ef3c8c4b5df17a63f397de1e066ad74719",
+      "layoutDigest": "256605fa7960332a6c9398016fd4200ba3f33bdfc168a69886c93b79b22b4a89",
+      "themeId": "plain",
+      "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+      "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+      "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+      "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+      "payloadDigest": "13742b3bf0a3c943b5bcfec62e51a3cf04f03893dceb0258a9baedabe3701013"
+    },
+    "report": {
+      "reportVersion": "2",
+      "operation": "mapExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-lot4/1",
+        "version": "1.1.0",
+        "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-lot4/1",
+        "version": "1.1.0",
+        "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "inputRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+      "outputRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+      "entries": [
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/flowElements/1",
+            "targetId": "StoreRef_A",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Page_A",
+          "occurrenceKey": "StoreRef_A_di",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/2/flowElements/1",
+            "targetId": "StoreRef_B",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Page_B",
+          "occurrenceKey": "StoreRef_B_di",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/metadata",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.metadata",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/3/participants/1",
+            "targetId": "Band_A",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Page_A",
+          "occurrenceKey": "Band_A_di",
+          "emittedType": "node",
+          "lossClass": "metadata"
+        },
+        {
+          "code": "export-loss/metadata",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.metadata",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/4/participants/1",
+            "targetId": "Band_B",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Page_B",
+          "occurrenceKey": "Band_B_di",
+          "emittedType": "node",
+          "lossClass": "metadata"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [
+        {
+          "sourceId": "Page_A",
+          "resultId": "e_1",
+          "domain": "export",
+          "pageId": "Page_A"
+        },
+        {
+          "sourceId": "Assoc_A",
+          "resultId": "e_11",
+          "domain": "export",
+          "pageId": "Page_A",
+          "occurrenceKey": "Assoc_A_di"
+        },
+        {
+          "sourceId": "Band_A",
+          "resultId": "e_3",
+          "domain": "export",
+          "pageId": "Page_A",
+          "occurrenceKey": "Band_A_di"
+        },
+        {
+          "sourceId": "Pool_A",
+          "resultId": "e_4",
+          "domain": "export",
+          "pageId": "Page_A",
+          "occurrenceKey": "Pool_A_di"
+        },
+        {
+          "sourceId": "StoreRef_A",
+          "resultId": "e_5",
+          "domain": "export",
+          "pageId": "Page_A",
+          "occurrenceKey": "StoreRef_A_di"
+        },
+        {
+          "sourceId": "Task_A1",
+          "resultId": "e_6",
+          "domain": "export",
+          "pageId": "Page_A",
+          "occurrenceKey": "Task_A1_di"
+        },
+        {
+          "sourceId": "Page_B",
+          "resultId": "e_2",
+          "domain": "export",
+          "pageId": "Page_B"
+        },
+        {
+          "sourceId": "Assoc_B",
+          "resultId": "e_12",
+          "domain": "export",
+          "pageId": "Page_B",
+          "occurrenceKey": "Assoc_B_di"
+        },
+        {
+          "sourceId": "Band_B",
+          "resultId": "e_7",
+          "domain": "export",
+          "pageId": "Page_B",
+          "occurrenceKey": "Band_B_di"
+        },
+        {
+          "sourceId": "Pool_B",
+          "resultId": "e_8",
+          "domain": "export",
+          "pageId": "Page_B",
+          "occurrenceKey": "Pool_B_di"
+        },
+        {
+          "sourceId": "StoreRef_B",
+          "resultId": "e_9",
+          "domain": "export",
+          "pageId": "Page_B",
+          "occurrenceKey": "StoreRef_B_di"
+        },
+        {
+          "sourceId": "Task_B1",
+          "resultId": "e_10",
+          "domain": "export",
+          "pageId": "Page_B",
+          "occurrenceKey": "Task_B1_di"
+        }
+      ],
+      "artifacts": [
+        {
+          "format": "drawio",
+          "capability": "structural",
+          "digest": "5857cbfd56efb484b49adf56e1c090cd9f16b79e17faa73d0005526a27204369",
+          "entryIndexes": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    "capability": "structural",
+    "idMap": [
+      {
+        "sourceId": "Page_A",
+        "resultId": "e_1",
+        "domain": "export",
+        "pageId": "Page_A"
+      },
+      {
+        "sourceId": "Assoc_A",
+        "resultId": "e_11",
+        "domain": "export",
+        "pageId": "Page_A",
+        "occurrenceKey": "Assoc_A_di"
+      },
+      {
+        "sourceId": "Band_A",
+        "resultId": "e_3",
+        "domain": "export",
+        "pageId": "Page_A",
+        "occurrenceKey": "Band_A_di"
+      },
+      {
+        "sourceId": "Pool_A",
+        "resultId": "e_4",
+        "domain": "export",
+        "pageId": "Page_A",
+        "occurrenceKey": "Pool_A_di"
+      },
+      {
+        "sourceId": "StoreRef_A",
+        "resultId": "e_5",
+        "domain": "export",
+        "pageId": "Page_A",
+        "occurrenceKey": "StoreRef_A_di"
+      },
+      {
+        "sourceId": "Task_A1",
+        "resultId": "e_6",
+        "domain": "export",
+        "pageId": "Page_A",
+        "occurrenceKey": "Task_A1_di"
+      },
+      {
+        "sourceId": "Page_B",
+        "resultId": "e_2",
+        "domain": "export",
+        "pageId": "Page_B"
+      },
+      {
+        "sourceId": "Assoc_B",
+        "resultId": "e_12",
+        "domain": "export",
+        "pageId": "Page_B",
+        "occurrenceKey": "Assoc_B_di"
+      },
+      {
+        "sourceId": "Band_B",
+        "resultId": "e_7",
+        "domain": "export",
+        "pageId": "Page_B",
+        "occurrenceKey": "Band_B_di"
+      },
+      {
+        "sourceId": "Pool_B",
+        "resultId": "e_8",
+        "domain": "export",
+        "pageId": "Page_B",
+        "occurrenceKey": "Pool_B_di"
+      },
+      {
+        "sourceId": "StoreRef_B",
+        "resultId": "e_9",
+        "domain": "export",
+        "pageId": "Page_B",
+        "occurrenceKey": "StoreRef_B_di"
+      },
+      {
+        "sourceId": "Task_B1",
+        "resultId": "e_10",
+        "domain": "export",
+        "pageId": "Page_B",
+        "occurrenceKey": "Task_B1_di"
+      }
+    ]
+  }
+}

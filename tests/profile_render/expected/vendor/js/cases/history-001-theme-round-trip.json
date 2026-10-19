@@ -1,0 +1,81 @@
+{
+  "caseId": "history-001-theme-round-trip",
+  "operation": "theme-sequence",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/main.layout.json",
+      "sha256": "377e069bbaf287e4addb152628c4a4537bca331059eaae7002106a0036d5b9d1"
+    },
+    {
+      "role": "steps",
+      "json": [
+        {
+          "themeId": "plain"
+        },
+        {
+          "themeId": "dim"
+        },
+        {
+          "themeId": "plain"
+        }
+      ]
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "output",
+      "json": [
+        {
+          "themeId": "plain",
+          "semanticRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+          "layoutDigest": "30b7c39179878f3ece832c64ce2a9745955563b70425f53776d3c54c2ffb6211",
+          "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+          "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+          "payloadDigest": "38ccdc15b23cc9ec4a5aece7e1f105244816035615c5b7ff8443303864da93ed",
+          "viewRevision": "66e6f580e7c7a7d1ebc1913524ea5da5ad58a37118c61183d3f22b8fd06c2dc8"
+        },
+        {
+          "themeId": "dim",
+          "semanticRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+          "layoutDigest": "30b7c39179878f3ece832c64ce2a9745955563b70425f53776d3c54c2ffb6211",
+          "themeDigest": "2f92703e5ddfef4f9f257c863a159725fa9d5fcbb669986efe641c8396d5dba6",
+          "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+          "payloadDigest": "42c968c86bc1c8dc4fcc53cb08085c8718f64770e7b5ad0f29e420d9b8436ea3",
+          "viewRevision": "adefc537fea609be7edfb21066c860a82d9405f3f65362ac88e3d83fd3769bbd"
+        },
+        {
+          "themeId": "plain",
+          "semanticRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+          "layoutDigest": "30b7c39179878f3ece832c64ce2a9745955563b70425f53776d3c54c2ffb6211",
+          "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+          "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+          "payloadDigest": "38ccdc15b23cc9ec4a5aece7e1f105244816035615c5b7ff8443303864da93ed",
+          "viewRevision": "66e6f580e7c7a7d1ebc1913524ea5da5ad58a37118c61183d3f22b8fd06c2dc8"
+        }
+      ]
+    },
+    {
+      "role": "invariants",
+      "json": {
+        "semanticRevisionConstant": true,
+        "layoutDigestConstant": true,
+        "firstEqualsLast": true
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "seam-exact/1"
+  ]
+}

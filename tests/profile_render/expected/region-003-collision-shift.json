@@ -1,0 +1,170 @@
+{
+  "case": "region-003-collision-shift",
+  "clause": "DESIGN R3.3 \u00a79.4 L721\u2013L723",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 50101628f6b1ab863d290a349ebb196640cb81bb213e29e5ae945f4529913aeb, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutRegions output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: All three anchors want centre 230000/235000. Items follow placement order; each later item colliding with previous right + gap is shifted right to exactly previous right + gap: lefts 212000, 268000, 324000. Fails against: Overlapping items, shifting the earlier item left, or using zero spacing instead of the gap token.",
+  "operation": "layoutRegions",
+  "profile": null,
+  "input": [
+    {
+      "role": "region-input",
+      "json": {
+        "page": {
+          "x": 0,
+          "y": 0,
+          "width": 1200000,
+          "height": 640000
+        },
+        "body": {
+          "x": 30000,
+          "y": 0,
+          "width": 1070000,
+          "height": 150000
+        },
+        "tokens": {
+          "headerWidth": 30000,
+          "padding": 10000,
+          "gap": 20000,
+          "minHeight": 60000
+        },
+        "items": [
+          {
+            "elementId": "Input_A",
+            "occurrenceKey": "Input_A_di",
+            "object": {
+              "width": 36000,
+              "height": 50000
+            },
+            "label": {
+              "width": 30000,
+              "height": 14000
+            },
+            "anchor": {
+              "x": 180000,
+              "y": 260000,
+              "width": 100000,
+              "height": 80000
+            }
+          },
+          {
+            "elementId": "Input_B",
+            "occurrenceKey": "Input_B_di",
+            "object": {
+              "width": 36000,
+              "height": 50000
+            },
+            "label": {
+              "width": 30000,
+              "height": 14000
+            },
+            "anchor": {
+              "x": 180000,
+              "y": 260000,
+              "width": 100000,
+              "height": 80000
+            }
+          },
+          {
+            "elementId": "Input_C",
+            "occurrenceKey": "Input_C_di",
+            "object": {
+              "width": 36000,
+              "height": 50000
+            },
+            "label": {
+              "width": 30000,
+              "height": 14000
+            },
+            "anchor": {
+              "x": 185000,
+              "y": 260000,
+              "width": 100000,
+              "height": 80000
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "pageBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1200000,
+        "height": 640000
+      },
+      "body": {
+        "x": 30000,
+        "y": 0,
+        "width": 1070000,
+        "height": 150000
+      },
+      "items": [
+        {
+          "elementId": "Input_A",
+          "occurrenceKey": "Input_A_di",
+          "bounds": {
+            "x": 212000,
+            "y": 10000,
+            "width": 36000,
+            "height": 50000
+          },
+          "labelBounds": {
+            "x": 215000,
+            "y": 60000,
+            "width": 30000,
+            "height": 14000
+          }
+        },
+        {
+          "elementId": "Input_B",
+          "occurrenceKey": "Input_B_di",
+          "bounds": {
+            "x": 268000,
+            "y": 10000,
+            "width": 36000,
+            "height": 50000
+          },
+          "labelBounds": {
+            "x": 271000,
+            "y": 60000,
+            "width": 30000,
+            "height": 14000
+          }
+        },
+        {
+          "elementId": "Input_C",
+          "occurrenceKey": "Input_C_di",
+          "bounds": {
+            "x": 324000,
+            "y": 10000,
+            "width": 36000,
+            "height": 50000
+          },
+          "labelBounds": {
+            "x": 327000,
+            "y": 60000,
+            "width": 30000,
+            "height": 14000
+          }
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/region-003-collision-shift.json",
+    "sha256": "50101628f6b1ab863d290a349ebb196640cb81bb213e29e5ae945f4529913aeb"
+  },
+  "paritySync": {
+    "decisions": [
+      "PS-33"
+    ]
+  },
+  "author": "spec-seal"
+}

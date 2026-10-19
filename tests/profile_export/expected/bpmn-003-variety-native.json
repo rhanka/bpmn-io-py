@@ -1,0 +1,80 @@
+{
+  "case": "bpmn-003-variety-native",
+  "clause": "DESIGN R3.3 \u00a710.2 L794\u2013L796",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 d6aedb63d65fd2c3e5e8e51e2f8669ee1c65e9fb6ecafb3a659c43ea8fec242c; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: BPMN XML keeps the internal calledElement target, the TerminateEventDefinition of the end event and the retained ServiceTask subtype natively. Fails against: Dropping calledElement, writing an ordinary end event, or downgrading the service task to a task.",
+  "operation": "serializeBpmn",
+  "profile": null,
+  "input": [
+    {
+      "role": "envelope",
+      "vendored": "tests/profile_export/expected/vendor/js/artifacts/variety.envelope.json",
+      "sha256": "7fe9f9ecd969547da2475e7dea1819539efe4c21e3dca68617e6ef4ee6ea581e"
+    },
+    {
+      "role": "writerOptions",
+      "json": {
+        "format": true,
+        "preamble": true
+      }
+    }
+  ],
+  "expected": [
+    {
+      "element": "callActivity",
+      "id": "Call_V",
+      "parent": "process:Process_Variety",
+      "attributes": {
+        "calledElement": "Process_Review",
+        "name": "Call review"
+      }
+    },
+    {
+      "element": "serviceTask",
+      "id": "Service_V",
+      "parent": "process:Process_Variety",
+      "attributes": {
+        "name": "Run check"
+      }
+    },
+    {
+      "element": "endEvent",
+      "id": "End_V",
+      "parent": "process:Process_Variety",
+      "attributes": {
+        "name": "Stopped"
+      }
+    },
+    {
+      "element": "terminateEventDefinition",
+      "id": "Terminate_V",
+      "parent": "endEvent:End_V"
+    },
+    {
+      "element": "task",
+      "id": "Task_Review",
+      "parent": "process:Process_Review"
+    },
+    {
+      "element": "terminateEventDefinition",
+      "count": 1
+    },
+    {
+      "element": "callActivity",
+      "count": 1
+    },
+    {
+      "element": "serviceTask",
+      "count": 1
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "bpmn-structure/1",
+    "source-immutability/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_export/expected/vendor/js/cases/bpmn-003-variety-native.json",
+    "sha256": "d6aedb63d65fd2c3e5e8e51e2f8669ee1c65e9fb6ecafb3a659c43ea8fec242c"
+  },
+  "author": "spec-seal"
+}

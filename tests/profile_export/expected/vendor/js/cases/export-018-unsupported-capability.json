@@ -1,0 +1,95 @@
+{
+  "caseId": "export-018-unsupported-capability",
+  "operation": "mapExport",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-unsupported.profile.json",
+    "sha256": "9c13886579df461b5f6ce7891407851d955170ebe7a53e0f52ddac8ab4ce4883"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main@unsupported.envelope.json",
+      "sha256": "3aa654d9c53a0d60a8d80ca39b90eb4194b4ebd34e2d335f100a87704afdd06b"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/main.layout.json",
+      "sha256": "377e069bbaf287e4addb152628c4a4537bca331059eaae7002106a0036d5b9d1"
+    },
+    {
+      "role": "render",
+      "path": "lot4-layout-export/expectations/artifacts/main@unsupported-plain.render.json",
+      "sha256": "6bf7993eadbd15025192d5654ba1af6fc20d8eb3e0cb0368fd9d36df693bef33"
+    },
+    {
+      "role": "format",
+      "json": "drawio"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "refused",
+        "operation": "mapExport",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-lot4/1",
+          "version": "1.1.4",
+          "sha256": "eb0b201e170cda5dd721cf8b786882a581e1acecce1d2979c43f946e49f0dabf",
+          "base": {
+            "id": "neutral-lot4-base/1",
+            "version": "lot4-2",
+            "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-lot4-descriptors/1",
+              "version": "lot4-2",
+              "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+            }
+          ]
+        },
+        "baseRevision": "2b842720d2bc34628d2ca0ad49990db5a95fa2931b3176af59c3f173a2577777",
+        "code": "render-unsupported",
+        "diagnostics": [],
+        "report": {
+          "reportVersion": "2",
+          "operation": "mapExport",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-lot4/1",
+            "version": "1.1.4",
+            "sha256": "eb0b201e170cda5dd721cf8b786882a581e1acecce1d2979c43f946e49f0dabf",
+            "base": {
+              "id": "neutral-lot4-base/1",
+              "version": "lot4-2",
+              "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-lot4-descriptors/1",
+                "version": "lot4-2",
+                "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+              }
+            ]
+          },
+          "inputRevision": "2b842720d2bc34628d2ca0ad49990db5a95fa2931b3176af59c3f173a2577777",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        }
+      }
+    }
+  ],
+  "expectedStatus": "refused:render-unsupported",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

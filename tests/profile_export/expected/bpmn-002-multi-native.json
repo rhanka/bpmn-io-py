@@ -1,0 +1,80 @@
+{
+  "case": "bpmn-002-multi-native",
+  "clause": "DESIGN R3.3 \u00a710.2 L790\u2013L791",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 e0f0996846feb3777d0b1e769bafdf49aafb14af17b3f6c45f8855359a759204; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: One shared root DataStore, one reference per process with its local name, one band per process in its own collaboration. Fails against: Deduplicating references by store, or overwriting the local reference name with the store name.",
+  "operation": "serializeBpmn",
+  "profile": null,
+  "input": [
+    {
+      "role": "envelope",
+      "vendored": "tests/profile_export/expected/vendor/js/artifacts/multi.envelope.json",
+      "sha256": "d2a0ebf7ec84fd68fc39e362b41c5895cba75d40701026aa029d868b7c2c8940"
+    },
+    {
+      "role": "writerOptions",
+      "json": {
+        "format": true,
+        "preamble": true
+      }
+    }
+  ],
+  "expected": [
+    {
+      "element": "dataStore",
+      "id": "Store_Shared",
+      "parent": "definitions"
+    },
+    {
+      "element": "dataStoreReference",
+      "id": "StoreRef_A",
+      "parent": "process:Process_A",
+      "attributes": {
+        "dataStoreRef": "Store_Shared",
+        "name": "Shared register"
+      }
+    },
+    {
+      "element": "dataStoreReference",
+      "id": "StoreRef_B",
+      "parent": "process:Process_B",
+      "attributes": {
+        "dataStoreRef": "Store_Shared",
+        "name": "Register copy"
+      }
+    },
+    {
+      "element": "participant",
+      "id": "Band_A",
+      "parent": "collaboration:Collab_A",
+      "absent": [
+        "processRef"
+      ]
+    },
+    {
+      "element": "participant",
+      "id": "Band_B",
+      "parent": "collaboration:Collab_B",
+      "absent": [
+        "processRef"
+      ]
+    },
+    {
+      "element": "collaboration",
+      "count": 2
+    },
+    {
+      "element": "dataStore",
+      "count": 1
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "bpmn-structure/1",
+    "source-immutability/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_export/expected/vendor/js/cases/bpmn-002-multi-native.json",
+    "sha256": "e0f0996846feb3777d0b1e769bafdf49aafb14af17b3f6c45f8855359a759204"
+  },
+  "author": "spec-seal"
+}

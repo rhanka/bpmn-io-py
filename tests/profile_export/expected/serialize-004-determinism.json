@@ -1,0 +1,62 @@
+{
+  "case": "serialize-004-determinism",
+  "clause": "DESIGN R3.3 \u00a710.2 L801; \u00a714.3 L963",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 51ed5aaacddf8b24a4c8e0a0c55795dda8403f2a8793583c69142dd5aa96f4b0; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: A pure terminal serializer returns identical bytes for identical input, including after serializing another artifact (A->A->B->A); no clock, counter or cache leaks between calls. Fails against: Timestamps, call counters or a shared ID table across calls.",
+  "operation": "serializePrepared-sequence",
+  "profile": null,
+  "input": [
+    {
+      "role": "prepared-a",
+      "vendored": "tests/profile_export/expected/vendor/js/artifacts/main.prepared.json",
+      "sha256": "08662cbd3cdc832b5e1b6b013cb83fd1249c9cd37e79df504691da16a24d132c"
+    },
+    {
+      "role": "prepared-b",
+      "vendored": "tests/profile_export/expected/vendor/js/artifacts/multi.prepared.json",
+      "sha256": "11fdc9605955cec0a7763da8eb43e0211bd793523e0cf1a9875dd5f0e47b98a1"
+    },
+    {
+      "role": "writerOptions",
+      "json": {
+        "version": "lot4-2",
+        "encoding": "UTF-8",
+        "newline": "LF",
+        "indent": 0,
+        "compression": "none",
+        "attributeOrder": [
+          "id",
+          "value",
+          "style",
+          "parent",
+          "vertex",
+          "edge",
+          "source",
+          "target"
+        ],
+        "emptyElement": "short"
+      }
+    },
+    {
+      "role": "order",
+      "json": [
+        "a",
+        "a",
+        "b",
+        "a"
+      ]
+    }
+  ],
+  "expected": {
+    "sameBytesForSameInput": true,
+    "abaUnchanged": true
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "determinism/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_export/expected/vendor/js/cases/serialize-004-determinism.json",
+    "sha256": "51ed5aaacddf8b24a4c8e0a0c55795dda8403f2a8793583c69142dd5aa96f4b0"
+  },
+  "author": "spec-seal"
+}

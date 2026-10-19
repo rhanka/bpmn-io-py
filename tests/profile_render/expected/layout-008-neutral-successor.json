@@ -1,0 +1,314 @@
+{
+  "case": "layout-008-neutral-successor",
+  "clause": "DESIGN R3.3 \u00a714.3 L961; \u00a79.4 L721\u2013L723",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43), case file SHA-256 b1c15efa0f0556cd0071538a6a2038739845aa323096faf102367f6b055a3128, by parity-sync decision PS-06 (DESIGN \u00a79.4 L723: IO object centres on one row line; RH = max(minHeight, max(object.h + label.h) + 2\u00b7padding), A = max(object.h/2), B = max(object.h/2 + label.h), cy = body.y + max(A, (RH + A \u2212 B)/2), object y = cy \u2212 h/2, one roundEven per coordinate): content row on Z-page (padding 8, minHeight 40): Task_A (a-first, 100000x80000, no label) and Task_B (z-last, 100000x80000, label height 14000); RH = max(40, 94000 + 2\u00b78) = 94016, A = 40000, B = 54000, cy = 0 + max(40000, (94016 + 40000 \u2212 54000)/2) = 40008; Task_A y = 40008 \u2212 40000 = 8 (per-block centring gave 7008); Task_B y 8 and label y 80008 unchanged; body height max(200000, 94016, 94008) = 200000 unchanged; the A-page row holds Task_B only (unchanged); Task_A has no incident edge and the page bounds do not change. paritySync.changes lists every changed value with its sealed JS value. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Explicitly bound neutral successor (lot-0 completed tree plus a Lane bound to role content): region content resolves to Lane_content on each page. Z-page tokens headerWidth 0, padding 8, gap 8, minHeight 40: Task_A (no label) at left 8, Task_B (label 40000 wide) after it at 100016; row height max(40, 94000+16)=94016 at the body top: Task_A y 7008, Task_B y 8 with label (130016, 80008). A-page: Task_B alone at (8, 8), label (30008, 80008). Fails against: Keeping the lot-0 refusal for a bound successor, centring the row on the lane, or ignoring the 8-tick padding.",
+  "operation": "layout",
+  "profile": {
+    "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-successor.profile.json",
+    "sha256": "31387224e72609c153fc49e26c29e33de18fda7ab1fbabed55d25ba0bb21e658",
+    "load": {
+      "base": {
+        "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-base.json",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": {
+        "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-descriptors.json",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      },
+      "registry": {
+        "vendored": "contracts/profile-mechanism/1/neutral-registry.json",
+        "sha256": "ac4a09989f3fafd9e7695ba18901fac04d08ca4fa869600d5f715a34cf16039f"
+      },
+      "schema": {
+        "vendored": "contracts/profile-mechanism/1/profile-mechanism-1.schema.json",
+        "sha256": "c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da"
+      },
+      "assets": [
+        {
+          "vendored": "contracts/profile-mechanism/1/neutral-metrics.json",
+          "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0"
+        }
+      ]
+    }
+  },
+  "input": [
+    {
+      "role": "envelope",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-successor.envelope.json",
+      "sha256": "399b75f2b82beea753d64661b504bcc7637d8ae45c85db6fee6c6c6829704ac9"
+    },
+    {
+      "role": "placements",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-fixture.placements.json",
+      "sha256": "5c17530cc39f63084c06e97fb5462ffb1c00e5b413ffe423090ad2e0a2a2fc4d"
+    },
+    {
+      "role": "base-geometry",
+      "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-successor.base-geometry.json",
+      "sha256": "ee11fbe1e3fb06cc157a799060d04e9f7b6279b0de8be3914e4c567af1218839"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expected": {
+    "status": "ok",
+    "operation": "layout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.2.0",
+      "sha256": "721234408bbf9ad62eb050836407f076b54bd35043db613da1119591cdedfc9f",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "baseRevision": "be9b5ed1ce9e742a1651efe820e65f2807a3878b49fc01d35a0777f2643ad285",
+    "revision": "be9b5ed1ce9e742a1651efe820e65f2807a3878b49fc01d35a0777f2643ad285",
+    "report": {
+      "reportVersion": "2",
+      "operation": "layout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.2.0",
+        "sha256": "721234408bbf9ad62eb050836407f076b54bd35043db613da1119591cdedfc9f",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.2.0",
+        "sha256": "721234408bbf9ad62eb050836407f076b54bd35043db613da1119591cdedfc9f",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "inputRevision": "be9b5ed1ce9e742a1651efe820e65f2807a3878b49fc01d35a0777f2643ad285",
+      "outputRevision": "be9b5ed1ce9e742a1651efe820e65f2807a3878b49fc01d35a0777f2643ad285",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "payload": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "Z-page",
+          "name": "First sheet",
+          "order": 0,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1000000,
+            "height": 800000
+          }
+        },
+        {
+          "pageId": "A-page",
+          "name": "Second sheet",
+          "order": 1,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1000000,
+            "height": 800000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "a-first",
+          "semanticId": "Task_A",
+          "role": "content",
+          "bounds": {
+            "x": 8,
+            "y": 8,
+            "width": 100000,
+            "height": 80000
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "a-note",
+          "semanticId": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+          "role": "content",
+          "bounds": {
+            "x": 100000,
+            "y": 500000,
+            "width": 100000,
+            "height": 40000
+          },
+          "label": {
+            "text": "helper",
+            "bounds": {
+              "x": 100000,
+              "y": 500000,
+              "width": 100000,
+              "height": 40000
+            },
+            "lines": [
+              "helper"
+            ]
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "z-lane",
+          "semanticId": "Lane_content",
+          "role": "support",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 800000,
+            "height": 200000
+          },
+          "label": {
+            "text": "content",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 30000,
+              "height": 200000
+            },
+            "lines": [
+              "content"
+            ]
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "z-last",
+          "semanticId": "Task_B",
+          "role": "content",
+          "bounds": {
+            "x": 100016,
+            "y": 8,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Ready",
+            "bounds": {
+              "x": 130016,
+              "y": 80008,
+              "width": 40000,
+              "height": 14000
+            },
+            "lines": [
+              "Ready"
+            ]
+          }
+        },
+        {
+          "pageId": "A-page",
+          "occurrenceKey": "a-lane",
+          "semanticId": "Lane_content",
+          "role": "support",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 600000,
+            "height": 180000
+          },
+          "label": {
+            "text": "content",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 30000,
+              "height": 180000
+            },
+            "lines": [
+              "content"
+            ]
+          }
+        },
+        {
+          "pageId": "A-page",
+          "occurrenceKey": "a-last-page",
+          "semanticId": "Task_B",
+          "role": "content",
+          "bounds": {
+            "x": 8,
+            "y": 8,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Ready",
+            "bounds": {
+              "x": 30008,
+              "y": 80008,
+              "width": 40000,
+              "height": 14000
+            },
+            "lines": [
+              "Ready"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ],
+  "source": {
+    "vendored": "tests/profile_render/expected/vendor/js/cases/layout-008-neutral-successor.json",
+    "sha256": "b1c15efa0f0556cd0071538a6a2038739845aa323096faf102367f6b055a3128"
+  },
+  "paritySync": {
+    "decisions": [
+      "PS-06"
+    ],
+    "changes": [
+      {
+        "pointer": "/expected/payload/geometry/0/bounds/y",
+        "from": 7008,
+        "to": 8
+      }
+    ]
+  },
+  "author": "spec-seal"
+}

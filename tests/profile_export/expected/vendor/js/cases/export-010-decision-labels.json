@@ -1,0 +1,43 @@
+{
+  "caseId": "export-010-decision-labels",
+  "operation": "mapExport",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/choices.envelope.json",
+      "sha256": "38d28f627fb5e0b6f739ef218db7ac74a249fe3f7ec34640bb436dc2f390432d"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/choices-upper.layout.json",
+      "sha256": "7bd3025f8326ed634ab5bf8db830860543ee8f15d756bfae5f9d359074a2b3b5"
+    },
+    {
+      "role": "render",
+      "path": "lot4-layout-export/expectations/artifacts/choices-plain.render.json",
+      "sha256": "e5e007cbc2d871e238db9a043bfe2b4f277c71a9088755d673d6535406de0a49"
+    },
+    {
+      "role": "format",
+      "json": "drawio"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/export-010-decision-labels.map-result.json",
+      "sha256": "540c26a7da675ac0156790b82d306ab6ff864e4a456882403fcf7877af6ffeea"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

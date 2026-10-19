@@ -1,0 +1,52 @@
+{
+  "caseId": "render-004-empty-process",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/empty.envelope.json",
+      "sha256": "0a7e64513915c17d08eeba54176afdfd6fbbc2311abb044d48206d0b16f7c175"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/empty.layout.json",
+      "sha256": "23fc7b828a0fe06edddc82a7a16925941c5249a81980df7f66bb247f5742ef62"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [],
+        "bioc": []
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/empty-plain.resolve-result.json",
+      "sha256": "7d222cb609ecc5827c8194811fd80f6a1a271e0b8c3a3beeb22bf4aefc84a2a2"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}
