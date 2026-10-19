@@ -7532,6 +7532,316 @@ def corpus_files(records: list[dict[str, Json]]) -> dict[str, bytes]:
 
 
 # ---------------------------------------------------------------------------
+# Vendored JS lot-3 cases (block-B parity sync; spec §9.2)
+# ---------------------------------------------------------------------------
+
+#: The JS lot-3 seal every vendored file comes from: its seal.json SHA-256 and
+#: commit. The JS expectations root is mirrored under ``vendor/js/``.
+JS_SEAL_SHA256 = "6b807ee2c219f614d0f434cb8568c8d15acc0cc425a11bfdaa5cf027d86e8b06"
+JS_SEAL_COMMIT = "babf56df0b4ac1d766879f614de9c0838a09264c"
+VENDOR_DIR = "vendor/js/"
+#: Raw SHA-256 of every vendored file, as pinned by that JS seal.
+VENDORED: dict[str, str] = {
+    "cases/l3-c-dangling-call.json": (
+        "4bb9d5b9aa140fd7ddfceecbd76f254572c7c4721e677d6ddd054a7d2963b6c5"
+    ),
+    "cases/l3-c-gateway-phase-start.json": (
+        "5f4c6a4a079287851230be197aab86f84c8c24d0e4d2edd571137d9ff275e0bd"
+    ),
+    "cases/l3-c-gateway-stale-topology.json": (
+        "761d7f0e0b9f9015e1a88c29cce83bd6ce9ccc7175f980a60fede9ef733f6e45"
+    ),
+    "cases/l3-c-namespace-defaults.json": (
+        "1503f013c330eb5d3fc267ed098fa4e1403d39f3758d5d0f5f71672cd2976e13"
+    ),
+    "cases/l3-c-preserve.json": (
+        "7b0381e47cf676c89c3163c718200032f4c7117dfe71628aadea9f178e416f40"
+    ),
+    "cases/l3-c-sets-single-uncovered.json": (
+        "e60386a6a9f6caa417014607b4bdfb7254d14382307b4a35d01f246170839200"
+    ),
+    "cases/l3-c-write-coalesce.json": (
+        "14420c31cb9a656a4a4fa2f774efe658e4ea40bbfaa456e226615c7b2639ab54"
+    ),
+    "cases/l3-c-write-conflict.json": (
+        "89b246d0f6baa9d7cb8bcfcbda7e38c118afd3a4f8adbf477fd74739e29495da"
+    ),
+    "cases/l3-call-ambiguous.json": (
+        "49f1630c2cae67b81a1bd66f73ef780b7e2bb7ac80e6ffd2531427f954ee4bc7"
+    ),
+    "cases/l3-call-conflict-empty.json": (
+        "7e074387926f238c3e3ba3a8eeb229952ada61e2da3412f44b381e38abbde6f1"
+    ),
+    "cases/l3-call-conflict.json": (
+        "1fafa30b9089484f1dc53e141f646b074e9469045461e324e4f5bbbcdf059f21"
+    ),
+    "cases/l3-call-duplicate.json": (
+        "1493db4399aa45f18aa61bc689c35787727a0005bbb2da0cc9011070cdd1fa64"
+    ),
+    "cases/l3-call-external-valid.json": (
+        "9f63dbe04818c5ef3a83109f1c3beae6938258bd3cd68d338dd8582c59d67489"
+    ),
+    "cases/l3-call-internal.json": (
+        "c3e63e6cd35537f06d11b8a3673d9af018d2c6a631407c10e9ff421b72390e20"
+    ),
+    "cases/l3-call-marker-invalid.json": (
+        "f1c6f1f21b453098d52b406945e010a4cc78ab3ce752f9e9cfeec452588b6447"
+    ),
+    "cases/l3-call-source-doc-not-marker.json": (
+        "32f51ac2c2d903d2df7996514e17bec5819bd1e800f297d1f949969c9e55b345"
+    ),
+    "cases/l3-call-target-dangling-accept.json": (
+        "15d06957eace1701b0e79a61cc1d9ac767c9dce73005762ac0283cc7af5148b7"
+    ),
+    "cases/l3-call-target-empty-accept.json": (
+        "f97e07764ee2364a01af9043f60e427158dc852fa18068b5709704e04d89291e"
+    ),
+    "cases/l3-call-target-empty-draft.json": (
+        "ceacd762fd66ccdaff519d0d14bf8a2d867d37e3e1421f4cd56f7d19c25ec4c9"
+    ),
+    "cases/l3-call-target-required-accept.json": (
+        "a7c441d9c6958c949eeb06be4556945bca5840508cf63b1e06e5501d49709222"
+    ),
+    "cases/l3-call-target-required-draft.json": (
+        "38d3952e28077f9c03a90d875bc4069d87e71b5f8e9501ff52ab56141503307d"
+    ),
+    "cases/l3-call-target-type.json": (
+        "6e29f756faf4ab6f8d014d65e9ab67c68a573b9afd94659e6ab3365c02eb112a"
+    ),
+    "cases/l3-fp-c-after-n.json": (
+        "a23db4fc8b7ca8b14fe01522905399bc5a8eef217fe69b704281f8c59e6fd494"
+    ),
+    "cases/l3-fp-c-on-n-input.json": (
+        "ca484579a84c7b9effe5cd061644a6797086763a2324c80393e2eac215013b18"
+    ),
+    "cases/l3-id-ordinal-missing-only.json": (
+        "0b5b2395b9a801128aba5511c4f0645c6f5ef7d51b588ff9e6dec8d0e0af4348"
+    ),
+    "cases/l3-id-rename-stable.json": (
+        "50316254bd7d3572775ae93199a0c88f3459beadbdb7d683a1fb1e5471c5ba22"
+    ),
+    "cases/l3-id-stable-vectors.json": (
+        "844f698327b3954d667fd9d3598297320686b80f4320c02f2a8fc973906db7e1"
+    ),
+    "cases/l3-id-two-owners.json": (
+        "52677741df37f24db1fc42da59d7b54ad021355d28d6c2f6ae715d02a64a9a47"
+    ),
+    "cases/l3-imp-projection-out-of-base.json": (
+        "d138cb0f3b4f81b157ec9449fd6be503df9cfedbabdc8cbf34919661129ff8a7"
+    ),
+    "cases/l3-imp-remap-duplicate-result.json": (
+        "9bcf1d408f6744ca8676e67a31aff207949f59691e6bca7e643893505c66c8e7"
+    ),
+    "cases/l3-imp-remap-nonsubset-id.json": (
+        "46a18f1e0ecbbd757dc85ccccf32a4801c5e74aa545804ac3cd3fe8205f6cd39"
+    ),
+    "cases/l3-imp-remap-opaque-attested.json": (
+        "85fe933ed3adda30b4a829f99de8d0f3ffa4705db2ef44dc699541a7430173bf"
+    ),
+    "cases/l3-imp-remap-qname.json": (
+        "00f97bfac9591aa081edc2a29e36568b56e9895f9352df92176a6f2173311c8c"
+    ),
+    "cases/l3-imp-remap-swap.json": (
+        "15fc221badc641aeac03c1d2650a0c4353c77c286fa7a204a7365068f05ff1c4"
+    ),
+    "cases/l3-io-complete-links-accept.json": (
+        "3fe52100231f901f7a2514cd66dda8d16e1beb8c5139c713d02d1d287a30eed9"
+    ),
+    "cases/l3-io-endpoint-type-accept.json": (
+        "1a2b55675d315a0ec3656211dea3e283758b6af13f96b5368714bced5182b119"
+    ),
+    "cases/l3-io-link-owner-accept.json": (
+        "15ea0281671a902d32b7287c704346f9dfd8dc3b897c2bcf3e14c99ec31ad292"
+    ),
+    "cases/l3-io-link-owner-draft.json": (
+        "4257dced46bbf8e140a76611e016900c32aadf7828b28d7338becaf84e58f0c6"
+    ),
+    "cases/l3-io-missing-links-accept.json": (
+        "fd93b9228d976b3c0f07fc28254de7b5d057d5198b3065486b405dc6db2b863a"
+    ),
+    "cases/l3-io-missing-links-draft.json": (
+        "04561d62526da0dfe107f113ae68536632dd04d14c36efd68430c1f09e8a352a"
+    ),
+    "cases/l3-io-wrong-direction-accept.json": (
+        "7b11d51d3632423c4dcf60cec0f96f62625f4813a7cfa038409ff20dc28c581a"
+    ),
+    "cases/l3-io-wrong-direction-draft.json": (
+        "7a7a812c4152669594586a723b7f41b3cc45c2950b2cf85053f6b5103a98e17a"
+    ),
+    "cases/l3-mix-n-full-js-py-js.json": (
+        "f8f3a2d5a207ad882401a6829099c16882ce12d17366d9324144f5cc67f58bdc"
+    ),
+    "cases/l3-mix-n-full-py-js-py.json": (
+        "95ba923a5542a766fb96b8b687b87c4689c6229336d0f66ade9de740115bd7d1"
+    ),
+    "cases/l3-mix-n-two-processes-js-py-js.json": (
+        "15be6eb0c7b8ce72c128c9fca0261aee33ace713b22ec210b5a11aa145571127"
+    ),
+    "cases/l3-mix-n-two-processes-py-js-py.json": (
+        "399a1b3c13d8502289c897ef70529377737ce1a80ac9cc9f43143f4edd6255fe"
+    ),
+    "cases/l3-mix-n-unicode-names-js-py-js.json": (
+        "f80e79a4a5c83db63d46accdc70531d5ef8763261bee9ffe8780522cab1b52b7"
+    ),
+    "cases/l3-mix-n-unicode-names-py-js-py.json": (
+        "5255fb2d7a50cf47d8af73cd3e3b715361054cfc25997a0d4008490ff91b6ad5"
+    ),
+    "cases/l3-n-after-owner-remap.json": (
+        "00b0a8a707f20a156ac1bd48403fe608eed85807a5b26220ab5788ed98fcbec7"
+    ),
+    "cases/l3-n-anchor-after-link-removal.json": (
+        "15198abeb152f572bf1d0034aa1dace1346877a865352d0e6f5d0d2bfa3d640b"
+    ),
+    "cases/l3-n-binding-wrong-type.json": (
+        "c3356edafa90b81add28dbc4f914392341c0acc496e7316ce2f0239893b742e9"
+    ),
+    "cases/l3-n-business-lane-refusal-edit.json": (
+        "2bac4b68a2bab89eb1703c2ffe5d4b68c0cf6c5e43bd3e4ff82a14251ed6090d"
+    ),
+    "cases/l3-n-empty-process.json": (
+        "fa510a6252ba09adacb9fe0a3bcde51c047051068c2720d4117fc3d8edda8e1d"
+    ),
+    "cases/l3-n-legacy-marker-ignored.json": (
+        "8bbbb81cd81986d3b520af0707a43675c1fa577a3c54e3935e9a2ed0694fd580"
+    ),
+    "cases/l3-n-unicode-names.json": (
+        "ee4fd2776d3637c96ffb2c362917beac9db9093b56fb7d046df3ae5e3c0bcaf9"
+    ),
+    "cases/l3-path-cannot-reach-end-accept.json": (
+        "fa5056a8c852ec0b43130f495a976f0bf60078f6461766b5be8d98d013a139d5"
+    ),
+    "cases/l3-path-cross-container-flow-accept.json": (
+        "0341b9964ef0c423b1544eaac1d303d48b04cbf14ec8ce0d6e23b4ed552068da"
+    ),
+    "cases/l3-path-disconnected-task-accept.json": (
+        "22c65431111213ebe60898b2d4038d938ac8a0eb3dada6bac025d4eb7e59e526"
+    ),
+    "cases/l3-path-disconnected-task-draft.json": (
+        "20ce89edd91d0e97a122739a47ff75ecbf6cb70f43777fc3d54be68c958783c5"
+    ),
+    "cases/l3-path-gateway-without-incoming-accept.json": (
+        "08bff01ff57577855dced7031ae5b0cc37931c193b2e61a40551718bfca8e1df"
+    ),
+    "cases/l3-path-incomplete-call-not-exempt-accept.json": (
+        "75fb1603f4ed093ea1521b58d07496d12f9a2dede62c60c49144f5f0bc809214"
+    ),
+    "cases/l3-path-unlinked-external-not-exempt-accept.json": (
+        "a1fd5e2696e39763e353ccbc83c8b7054c5fc82d3b5dffd313fc88adbd8c9758"
+    ),
+    "cases/l3-path-unreachable-component-accept.json": (
+        "c37dece95cb0c0f15c7c3b1bd8b6e33297ed687436d05afb1f76995950795c46"
+    ),
+    "cases/l3-trig-downstream-branch-accept.json": (
+        "3b2cdb7bb61aceaa39611b6c649cb1c3fe258afcab75a4e464eff2be74eb0f83"
+    ),
+    "cases/l3-trig-no-branch-accept.json": (
+        "85052fedeab485c93e22830c5263eb835a3f7a2879a22a28c1834d499519ff1f"
+    ),
+    "cases/l3-trig-no-branch-draft.json": (
+        "692292480594d7cd0453dea1c1c567a6d3fa026f3f1d129abe072d4fcc7deec1"
+    ),
+    "cases/l3-trig-normalize-no-invention.json": (
+        "0c19f395a65011e0e3c9af74ba05a5fdfe94a84c67103526aa6bfe10d7fd0faa"
+    ),
+    "cases/l3-trig-parallel-only-accept.json": (
+        "5cf1101647d1bbd6fd283138305ee66a44e4cf791de4d156d888bf2bad8642c9"
+    ),
+    "cases/l3-trig-single-trigger-accept.json": (
+        "bff4d4ee2b7c65d542148867e905c9394faf129f14574a1c09f251be0b1ae200"
+    ),
+    "index.json": "cc3151ccba8bb49513fe4b059c8331364e7c5c5cda731e76cea9afcbd8945721",
+    "profile/neutral-cn-base.json": (
+        "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+    ),
+    "profile/neutral-cn-coalesce.json": (
+        "f0c6ffa74d57724d6ac5b68acb1708dbcd01abfd7f6ba5e5cbb105e7c32a295e"
+    ),
+    "profile/neutral-cn-conflict.json": (
+        "5efc67b14eea6ea6314121b6d07de627363407be4dd9c05c3e01ee0c33548c8f"
+    ),
+    "profile/neutral-cn-descriptors.json": (
+        "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+    ),
+    "profile/neutral-cn-stale.json": (
+        "837b77de3298ff088262866cb35b3b2186da8b003ed7851a80d7554a25811aa0"
+    ),
+    "profile/neutral-cn.json": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32",
+}
+QNAME_ENTRY = "/expectedArtifacts/0/json/report/entries/0"
+#: Vendored cases whose values a parity sync decision changes. The committed bytes
+#: are the sealed JS source plus the decision; reverting the decided values gives
+#: back the sealed JS source bytes exactly, so nothing else differs.
+RECONCILED: dict[str, dict[str, Json]] = {
+    "cases/l3-imp-projection-out-of-base.json": {
+        "decision": "PS-21",
+        "change": (
+            "the projection commits nothing (read-only), so revision and"
+            " report.outputRevision equal the baseRevision and the report inputRevision"
+        ),
+        "sha256": "eab297a19174d83da4f736defe1b678ce57ba6a10c6c55be2340a40ed37edffa",
+        "revert": [
+            {
+                "op": "replace",
+                "path": "/expectedArtifacts/0/json/revision",
+                "value": "4b25b86e731e277d55e62cc9a1d06163d5418633651846dd44f0cb7362e85761",
+            },
+            {
+                "op": "replace",
+                "path": "/expectedArtifacts/0/json/report/outputRevision",
+                "value": "4b25b86e731e277d55e62cc9a1d06163d5418633651846dd44f0cb7362e85761",
+            },
+        ],
+    },
+    "cases/l3-imp-remap-qname.json": {
+        "decision": "PS-32",
+        "change": (
+            "the observed unsupported-namespace entry addresses the written location: its"
+            " source and result pointers are the element pointer plus /calledElement"
+            " (property kept, result provenance exact, before = after = the value)"
+        ),
+        "sha256": "db18d5b7c78c48c3110795d35367bd13e39a0a2aed9310dfd0d6862401cbc4f7",
+        "revert": [
+            {
+                "op": "replace",
+                "path": QNAME_ENTRY + "/source/pointer",
+                "value": "/rootElements/0/flowElements/1",
+            },
+            {
+                "op": "replace",
+                "path": QNAME_ENTRY + "/result/pointer",
+                "value": "/rootElements/0/flowElements/1",
+            },
+        ],
+    },
+}
+
+
+def vendored_files() -> dict[str, bytes]:
+    """Return every vendored JS file unchanged, after checking its pinned digest.
+
+    A reconciled case must also give back the sealed JS bytes once its decided
+    values are reverted, so the decision is its only difference from the JS seal.
+    """
+    files: dict[str, bytes] = {}
+    for rel, pinned in VENDORED.items():
+        data = (OUT / VENDOR_DIR / rel).read_bytes()
+        fix = RECONCILED.get(rel)
+        if fix is None:
+            source_digest = raw_digest(data)
+        else:
+            if raw_digest(data) != fix["sha256"]:
+                message = f"reconciled vendored file differs from its pin: {rel}"
+                raise ValueError(message)
+            reverted = apply_patch(json.loads(data), fix["revert"])  # type: ignore[arg-type]
+            source_digest = raw_digest(pretty_bytes(reverted))
+        if source_digest != pinned:
+            message = f"vendored file differs from the JS seal pin: {rel}"
+            raise ValueError(message)
+        files[VENDOR_DIR + rel] = data
+    return files
+
+
+# ---------------------------------------------------------------------------
 # Writer
 # ---------------------------------------------------------------------------
 
@@ -7559,6 +7869,7 @@ def build() -> dict[str, bytes]:
         records.append(record)
         files[cid + ".json"] = pretty_bytes(record)
     files.update(corpus_files(records))
+    files.update(vendored_files())
     files["derive_helper.py"] = Path(__file__).read_bytes()
     return files
 

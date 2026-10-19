@@ -1,0 +1,68 @@
+{
+  "caseId": "l3-id-stable-vectors",
+  "operation": "stable-id/1",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "allocations",
+      "json": [
+        {
+          "key": "clé-",
+          "owner": "Process_A",
+          "slot": "task"
+        },
+        {
+          "key": "clé-𐀀",
+          "owner": "Process_A",
+          "slot": "task"
+        },
+        {
+          "key": " padded ",
+          "owner": "Process_A",
+          "slot": "task"
+        },
+        {
+          "key": "padded",
+          "owner": "Process_A",
+          "slot": "task"
+        },
+        {
+          "key": "a b",
+          "owner": "Process_A",
+          "slot": "task"
+        },
+        {
+          "key": "a b",
+          "owner": "Process_A",
+          "slot": "task"
+        },
+        {
+          "key": "root",
+          "owner": "document-root/1",
+          "slot": "definitions"
+        }
+      ]
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "ids",
+      "json": [
+        "g_ce2ab3c4df534f59d41c1993b3eb1580088cb28e7b2e228dc6cc1f147096ee07",
+        "g_344bf647bb3ae35f1f2e8db3ef5fe16035887d0d70c3e874da7a4036611d67bd",
+        "g_9531b9aa6fa3c4f9b62fe04a922a3b7cb14805318aec768350d82d1c6eb576c6",
+        "g_f773537ad4f07c732b0a5281da100d755df92e10646388c19995b1df30419e7b",
+        "g_d49381818aa39bcfb7b993eaabd91aebe5926d19b9b0778648bcf38872123b5d",
+        "g_d49381818aa39bcfb7b993eaabd91aebe5926d19b9b0778648bcf38872123b5d",
+        "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21"
+      ]
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "stable-id/1",
+    "node-crypto",
+    "python-hashlib"
+  ]
+}

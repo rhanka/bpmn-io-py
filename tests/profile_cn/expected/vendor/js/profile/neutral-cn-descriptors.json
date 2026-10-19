@@ -1,0 +1,696 @@
+{
+  "id": "neutral-cn-descriptors/1",
+  "scope": "Synthetic lot-3 descriptor slice; not the complete BPMN descriptor set.",
+  "types": {
+    "bpmn:Definitions": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name",
+        "targetNamespace",
+        "exporterVersion"
+      ],
+      "containment": {
+        "rootElements": [
+          "bpmn:Process",
+          "bpmn:Collaboration",
+          "bpmn:DataStore",
+          "bpmn:GlobalTask"
+        ],
+        "diagrams": [
+          "bpmndi:BPMNDiagram"
+        ]
+      },
+      "references": {}
+    },
+    "bpmn:Process": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name",
+        "isExecutable"
+      ],
+      "containment": {
+        "flowElements": [
+          "bpmn:Task",
+          "bpmn:UserTask",
+          "bpmn:CallActivity",
+          "bpmn:StartEvent",
+          "bpmn:EndEvent",
+          "bpmn:IntermediateCatchEvent",
+          "bpmn:ExclusiveGateway",
+          "bpmn:ParallelGateway",
+          "bpmn:ComplexGateway",
+          "bpmn:SequenceFlow",
+          "bpmn:DataObject",
+          "bpmn:DataObjectReference",
+          "bpmn:DataStoreReference",
+          "neutral:LegacyItem"
+        ],
+        "artifacts": [
+          "bpmn:TextAnnotation",
+          "bpmn:Association"
+        ],
+        "documentation": [
+          "bpmn:Documentation"
+        ],
+        "laneSets": [
+          "bpmn:LaneSet"
+        ],
+        "ioSpecification": [
+          "bpmn:InputOutputSpecification"
+        ]
+      },
+      "references": {}
+    },
+    "bpmn:GlobalTask": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "bpmn:Collaboration": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {
+        "participants": [
+          "bpmn:Participant"
+        ]
+      },
+      "references": {}
+    },
+    "bpmn:Participant": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {
+        "processRef": [
+          "bpmn:Process"
+        ]
+      }
+    },
+    "bpmn:LaneSet": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {
+        "lanes": [
+          "bpmn:Lane"
+        ]
+      },
+      "references": {}
+    },
+    "bpmn:Lane": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {
+        "flowNodeRef": [
+          "bpmn:Task",
+          "bpmn:UserTask",
+          "bpmn:CallActivity",
+          "bpmn:StartEvent",
+          "bpmn:EndEvent",
+          "bpmn:IntermediateCatchEvent",
+          "bpmn:ExclusiveGateway",
+          "bpmn:ParallelGateway"
+        ]
+      }
+    },
+    "bpmn:Task": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {
+        "documentation": [
+          "bpmn:Documentation"
+        ],
+        "properties": [
+          "bpmn:Property"
+        ],
+        "dataInputAssociations": [
+          "bpmn:DataInputAssociation"
+        ],
+        "dataOutputAssociations": [
+          "bpmn:DataOutputAssociation"
+        ],
+        "extensionElements": [
+          "bpmn:ExtensionElements"
+        ]
+      },
+      "references": {
+        "incoming": [
+          "bpmn:SequenceFlow"
+        ],
+        "outgoing": [
+          "bpmn:SequenceFlow"
+        ]
+      }
+    },
+    "bpmn:UserTask": {
+      "id": true,
+      "scalars": [],
+      "containment": {},
+      "references": {},
+      "extends": [
+        "bpmn:Task"
+      ]
+    },
+    "bpmn:CallActivity": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name",
+        "calledElement"
+      ],
+      "containment": {
+        "documentation": [
+          "bpmn:Documentation"
+        ]
+      },
+      "references": {
+        "incoming": [
+          "bpmn:SequenceFlow"
+        ],
+        "outgoing": [
+          "bpmn:SequenceFlow"
+        ]
+      }
+    },
+    "bpmn:StartEvent": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {
+        "documentation": [
+          "bpmn:Documentation"
+        ],
+        "eventDefinitions": [
+          "bpmn:TimerEventDefinition"
+        ]
+      },
+      "references": {
+        "outgoing": [
+          "bpmn:SequenceFlow"
+        ]
+      }
+    },
+    "bpmn:EndEvent": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {
+        "documentation": [
+          "bpmn:Documentation"
+        ]
+      },
+      "references": {
+        "incoming": [
+          "bpmn:SequenceFlow"
+        ]
+      }
+    },
+    "bpmn:IntermediateCatchEvent": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {
+        "eventDefinitions": [
+          "bpmn:TimerEventDefinition"
+        ]
+      },
+      "references": {
+        "incoming": [
+          "bpmn:SequenceFlow"
+        ],
+        "outgoing": [
+          "bpmn:SequenceFlow"
+        ]
+      }
+    },
+    "bpmn:TimerEventDefinition": {
+      "id": true,
+      "scalars": [
+        "id"
+      ],
+      "containment": {
+        "timeDuration": [
+          "bpmn:FormalExpression"
+        ],
+        "timeDate": [
+          "bpmn:FormalExpression"
+        ],
+        "timeCycle": [
+          "bpmn:FormalExpression"
+        ]
+      },
+      "references": {}
+    },
+    "bpmn:ExclusiveGateway": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name",
+        "gatewayDirection"
+      ],
+      "containment": {},
+      "references": {
+        "incoming": [
+          "bpmn:SequenceFlow"
+        ],
+        "outgoing": [
+          "bpmn:SequenceFlow"
+        ]
+      }
+    },
+    "bpmn:ParallelGateway": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name",
+        "gatewayDirection"
+      ],
+      "containment": {},
+      "references": {
+        "incoming": [
+          "bpmn:SequenceFlow"
+        ],
+        "outgoing": [
+          "bpmn:SequenceFlow"
+        ]
+      }
+    },
+    "bpmn:ComplexGateway": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name",
+        "gatewayDirection"
+      ],
+      "containment": {},
+      "references": {
+        "incoming": [
+          "bpmn:SequenceFlow"
+        ],
+        "outgoing": [
+          "bpmn:SequenceFlow"
+        ]
+      }
+    },
+    "bpmn:SequenceFlow": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {
+        "conditionExpression": [
+          "bpmn:FormalExpression"
+        ]
+      },
+      "references": {
+        "sourceRef": [
+          "bpmn:Task",
+          "bpmn:UserTask",
+          "bpmn:CallActivity",
+          "bpmn:StartEvent",
+          "bpmn:IntermediateCatchEvent",
+          "bpmn:ExclusiveGateway",
+          "bpmn:ParallelGateway",
+          "bpmn:ComplexGateway"
+        ],
+        "targetRef": [
+          "bpmn:Task",
+          "bpmn:UserTask",
+          "bpmn:CallActivity",
+          "bpmn:EndEvent",
+          "bpmn:IntermediateCatchEvent",
+          "bpmn:ExclusiveGateway",
+          "bpmn:ParallelGateway",
+          "bpmn:ComplexGateway"
+        ]
+      }
+    },
+    "bpmn:TextAnnotation": {
+      "id": true,
+      "scalars": [
+        "id",
+        "text"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "bpmn:Association": {
+      "id": true,
+      "scalars": [
+        "id",
+        "associationDirection"
+      ],
+      "containment": {},
+      "references": {
+        "sourceRef": [
+          "bpmn:Task",
+          "bpmn:UserTask",
+          "bpmn:CallActivity",
+          "bpmn:StartEvent",
+          "bpmn:EndEvent",
+          "bpmn:TextAnnotation",
+          "bpmn:DataStoreReference",
+          "bpmn:DataObjectReference",
+          "bpmn:DataInput",
+          "bpmn:DataOutput",
+          "bpmn:ComplexGateway"
+        ],
+        "targetRef": [
+          "bpmn:Task",
+          "bpmn:UserTask",
+          "bpmn:CallActivity",
+          "bpmn:StartEvent",
+          "bpmn:EndEvent",
+          "bpmn:TextAnnotation",
+          "bpmn:DataStoreReference",
+          "bpmn:DataObjectReference",
+          "bpmn:DataInput",
+          "bpmn:DataOutput",
+          "bpmn:ComplexGateway"
+        ]
+      }
+    },
+    "bpmn:Documentation": {
+      "id": false,
+      "scalars": [
+        "text",
+        "textFormat"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "bpmn:FormalExpression": {
+      "id": false,
+      "scalars": [
+        "body",
+        "language"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "bpmn:DataObject": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "bpmn:DataObjectReference": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {
+        "dataObjectRef": [
+          "bpmn:DataObject"
+        ]
+      }
+    },
+    "bpmn:DataStore": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "bpmn:DataStoreReference": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {
+        "dataStoreRef": [
+          "bpmn:DataStore"
+        ]
+      }
+    },
+    "bpmn:DataInputAssociation": {
+      "id": true,
+      "scalars": [
+        "id"
+      ],
+      "containment": {},
+      "references": {
+        "sourceRef": [
+          "bpmn:DataObjectReference",
+          "bpmn:DataStoreReference",
+          "bpmn:DataInput",
+          "neutral:LegacyItem"
+        ],
+        "targetRef": [
+          "bpmn:Property"
+        ]
+      }
+    },
+    "bpmn:DataOutputAssociation": {
+      "id": true,
+      "scalars": [
+        "id"
+      ],
+      "containment": {},
+      "references": {
+        "sourceRef": [
+          "bpmn:Property"
+        ],
+        "targetRef": [
+          "bpmn:DataObjectReference",
+          "bpmn:DataOutput",
+          "neutral:LegacyItem"
+        ]
+      }
+    },
+    "bpmn:Property": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "bpmn:InputOutputSpecification": {
+      "id": false,
+      "scalars": [],
+      "containment": {
+        "dataInputs": [
+          "bpmn:DataInput"
+        ],
+        "dataOutputs": [
+          "bpmn:DataOutput"
+        ],
+        "inputSets": [
+          "bpmn:InputSet"
+        ],
+        "outputSets": [
+          "bpmn:OutputSet"
+        ]
+      },
+      "references": {}
+    },
+    "bpmn:DataInput": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "bpmn:DataOutput": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "bpmn:InputSet": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {
+        "dataInputRefs": [
+          "bpmn:DataInput"
+        ]
+      }
+    },
+    "bpmn:OutputSet": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {
+        "dataOutputRefs": [
+          "bpmn:DataOutput"
+        ]
+      }
+    },
+    "bpmn:ExtensionElements": {
+      "id": false,
+      "scalars": [],
+      "containment": {
+        "values": [
+          "neutral:Opaque"
+        ]
+      },
+      "references": {}
+    },
+    "neutral:Opaque": {
+      "id": false,
+      "scalars": [
+        "payload"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "neutral:LegacyItem": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "bpmndi:BPMNDiagram": {
+      "id": true,
+      "scalars": [
+        "id",
+        "name"
+      ],
+      "containment": {
+        "plane": [
+          "bpmndi:BPMNPlane"
+        ]
+      },
+      "references": {}
+    },
+    "bpmndi:BPMNPlane": {
+      "id": true,
+      "scalars": [
+        "id"
+      ],
+      "containment": {
+        "planeElement": [
+          "bpmndi:BPMNShape",
+          "bpmndi:BPMNEdge"
+        ]
+      },
+      "references": {
+        "bpmnElement": [
+          "bpmn:Process",
+          "bpmn:Collaboration"
+        ]
+      }
+    },
+    "bpmndi:BPMNShape": {
+      "id": true,
+      "scalars": [
+        "id"
+      ],
+      "containment": {
+        "bounds": [
+          "dc:Bounds"
+        ]
+      },
+      "references": {
+        "bpmnElement": [
+          "bpmn:Task",
+          "bpmn:UserTask",
+          "bpmn:CallActivity",
+          "bpmn:StartEvent",
+          "bpmn:EndEvent",
+          "bpmn:IntermediateCatchEvent",
+          "bpmn:ExclusiveGateway",
+          "bpmn:ParallelGateway",
+          "bpmn:Participant",
+          "bpmn:Lane",
+          "bpmn:DataStoreReference",
+          "bpmn:DataObjectReference",
+          "bpmn:TextAnnotation"
+        ]
+      }
+    },
+    "bpmndi:BPMNEdge": {
+      "id": true,
+      "scalars": [
+        "id"
+      ],
+      "containment": {
+        "waypoint": [
+          "dc:Point"
+        ]
+      },
+      "references": {
+        "bpmnElement": [
+          "bpmn:SequenceFlow",
+          "bpmn:Association",
+          "bpmn:DataInputAssociation",
+          "bpmn:DataOutputAssociation"
+        ]
+      }
+    },
+    "dc:Bounds": {
+      "id": false,
+      "scalars": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "containment": {},
+      "references": {}
+    },
+    "dc:Point": {
+      "id": false,
+      "scalars": [
+        "x",
+        "y"
+      ],
+      "containment": {},
+      "references": {}
+    }
+  }
+}

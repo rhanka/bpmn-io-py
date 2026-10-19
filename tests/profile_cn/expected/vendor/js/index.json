@@ -1,0 +1,6374 @@
+{
+  "format": "lot3-case-index/2",
+  "designRevision": "R3.3",
+  "designSha256": "48139f5fd5bd789eacbf271081a95432c54d8361b1e52404e3443a25fa65782f",
+  "designLines": 1162,
+  "sections": {
+    "§2.1": [
+      44,
+      81
+    ],
+    "§2.2": [
+      103,
+      134
+    ],
+    "§2.3": [
+      136,
+      154
+    ],
+    "§2.4": [
+      156,
+      178
+    ],
+    "§2.4.1": [
+      180,
+      218
+    ],
+    "§2.5": [
+      220,
+      254
+    ],
+    "§3.1": [
+      258,
+      272
+    ],
+    "§3.2": [
+      274,
+      292
+    ],
+    "§3.3": [
+      294,
+      326
+    ],
+    "§4": [
+      332,
+      358
+    ],
+    "§4.1": [
+      360,
+      383
+    ],
+    "§4.2": [
+      385,
+      391
+    ],
+    "§4.3": [
+      393,
+      404
+    ],
+    "§4.4": [
+      406,
+      424
+    ],
+    "§5.1": [
+      428,
+      434
+    ],
+    "§5.2": [
+      436,
+      446
+    ],
+    "§5.3": [
+      448,
+      452
+    ],
+    "§6.2": [
+      466,
+      481
+    ],
+    "§6.3": [
+      483,
+      504
+    ],
+    "§6.4": [
+      506,
+      524
+    ],
+    "§6.5": [
+      526,
+      530
+    ],
+    "§7.1": [
+      534,
+      548
+    ],
+    "§7.2": [
+      550,
+      565
+    ],
+    "§7.3": [
+      567,
+      573
+    ],
+    "§8.1": [
+      577,
+      623
+    ],
+    "§8.1.1": [
+      608,
+      623
+    ],
+    "§8.2": [
+      625,
+      645
+    ],
+    "§8.3": [
+      647,
+      661
+    ],
+    "§9.1": [
+      665,
+      673
+    ],
+    "§9.2": [
+      675,
+      694
+    ],
+    "§9.4": [
+      719,
+      725
+    ],
+    "§10.1": [
+      733,
+      766
+    ],
+    "§10.2": [
+      768,
+      803
+    ],
+    "§13": [
+      903,
+      937
+    ],
+    "§14.2": [
+      945,
+      955
+    ],
+    "§14.3": [
+      957,
+      973
+    ],
+    "§16": [
+      1134,
+      1162
+    ]
+  },
+  "groups": {
+    "identity": 12,
+    "completion": 28,
+    "normalization": 40,
+    "support-binding": 8,
+    "fixed-point": 13,
+    "mixed-runtime": 6,
+    "call-kind": 14,
+    "ordinary-path": 8,
+    "trigger-branch": 6,
+    "io-links": 8,
+    "import": 15,
+    "transaction": 18
+  },
+  "unsealed": [
+    {
+      "id": "U1",
+      "openIds": [
+        "OPEN-HOOK"
+      ],
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          637,
+          639
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            923,
+            923
+          ]
+        },
+        {
+          "section": "§14.2",
+          "lines": [
+            952,
+            952
+          ]
+        }
+      ],
+      "point": "Live pointer and keyboard gesture interception (capture at pointer-down or direct-edit start, preview geometry, interception before the upstream commit or the measured restore fallback) and the browser witnesses DI-only drag, resize, reconnect, palette drop, direct edit, keyboard delete/paste, cancellation during async layout, multi-page rollback, one undo/redo and no callback leak.",
+      "default": "Detached staging, one root profile.transaction command, final-only callbacks; an entry that cannot preserve pointer capture, selection, undo cursor and DI is disabled with transaction-entry-unsupported. No accepted lot-0 prototype or receipt exists at the seal base: only the programmatic contract (l3-tx-*) is sealed, and a gesture's final intent enters through the stageGesture adapter seam."
+    },
+    {
+      "id": "U2",
+      "openIds": [
+        "OPEN-RESERVED-N"
+      ],
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          554,
+          554
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            917,
+            917
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1160,
+            1160
+          ]
+        }
+      ],
+      "point": "Activated N support creation in business-profile editing once both gates pass (owner ratified, conductor plus twin atomicity proof pending).",
+      "default": "Until both gates pass, an N ensure that would create a support refuses profile-open in edit activation (sealed: l3-n-full-edit, l3-n-hash-shaped-occupant-edit, l3-n-recreate-after-remap-edit); neutral qualification proceeds (sealed qualification vectors). The activated editing behavior is not sealed."
+    },
+    {
+      "id": "U3",
+      "openIds": [
+        "OPEN-EXTERNAL",
+        "OPEN-BASE"
+      ],
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          362,
+          364
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            909,
+            910
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1140,
+            1142
+          ]
+        },
+        {
+          "section": "§8.3",
+          "lines": [
+            651,
+            651
+          ]
+        }
+      ],
+      "point": "Creation of an external call (palette or AI), migration of legacy external markers to the discriminator, and the activated external branch of N in editing.",
+      "default": "One dedicated native Documentation marker, absence means incomplete; external creation and migration stay unavailable until both libraries prove the encoding and the effective base admits CallActivity.documentation with a conditional calledElement. Sealed: recognition and the N external branch as qualification vectors with the neutral marker, and the edit refusal l3-n-imported-supports-edit (profile-open). The profile has no external creation entry."
+    },
+    {
+      "id": "U4",
+      "openIds": [
+        "OPEN-SHARING"
+      ],
+      "clause": {
+        "section": "§4.4",
+        "lines": [
+          410,
+          410
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.2",
+          "lines": [
+            559,
+            559
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1146,
+            1146
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            914,
+            914
+          ]
+        }
+      ],
+      "point": "Removal of a conflicting business-lane membership once an accepted persisted representation of the original responsibility or an approved concrete loss exists, and the explicit bulk name synchronization command.",
+      "default": "Preserve original memberships: qualification refuses responsibility-preservation-required (l3-n-business-lane-refusal), edit refuses profile-open (l3-n-business-lane-refusal-edit); never synchronize divergent reference names during N (l3-n-two-processes). The permitted removal and the bulk command are not sealed."
+    },
+    {
+      "id": "U5",
+      "openIds": [
+        "OPEN-IO"
+      ],
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          546,
+          546
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            920,
+            920
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1154,
+            1154
+          ]
+        }
+      ],
+      "point": "Production activation of the missing-output-source producer exception and any completion that would remove or weaken a producer restriction.",
+      "default": "Preserve every valid port and set; the main profile has no output-port authority (l3-c-input-ports leaves DOA_1 unported); the variant expressing the authority refuses profile-open in edit (l3-c-output-port-gated) and creates the keyed port only in qualification (l3-c-output-port-qualification). Activation needs the owner's approval of the precise change."
+    },
+    {
+      "id": "U6",
+      "openIds": [
+        "OPEN-RELATIONS"
+      ],
+      "clause": {
+        "section": "§4.3",
+        "lines": [
+          404,
+          404
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            918,
+            918
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1156,
+            1156
+          ]
+        },
+        {
+          "section": "§7.2",
+          "lines": [
+            562,
+            562
+          ]
+        }
+      ],
+      "point": "External-producer substitution (an Association from an external call to a Process DataOutput), the activity-only producer restriction, the acceptance status of documents depending on them, and N's or validate's handling of that candidate link.",
+      "default": "Retain every evidenced supplier/consumer link with its direction, invent no endpoint, keep the substitution and the activity-only rule gated, refuse affected final acceptance with profile-open while unresolved. The link-endpoint rule never reports the candidate pair, no sealed vector contains it, and N has no reversal recipe for it."
+    },
+    {
+      "id": "U7",
+      "openIds": [
+        "OPEN-RELATIONS"
+      ],
+      "variant": "situation/trigger branch variant, DESIGN §13 L919",
+      "clause": {
+        "section": "§4.2",
+        "lines": [
+          389,
+          391
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            919,
+            919
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1158,
+            1158
+          ]
+        }
+      ],
+      "point": "The stricter immediate named-branch convention (start event followed directly by an exclusive gateway with named outgoing flows) and any acceptance status that depends on adopting it.",
+      "default": "Ratified default: a source-backed downstream exclusive branch, no invented adjacency or choice text, no gateway created by N; the strict candidate stays disabled until expressly adopted (sealed: l3-trig-downstream-branch-accept accepts a non-adjacent branch)."
+    },
+    {
+      "id": "U8",
+      "openIds": [
+        "OPEN-MIGRATION"
+      ],
+      "clause": {
+        "section": "§5.3",
+        "lines": [
+          452,
+          452
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            916,
+            916
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1138,
+            1138
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1150,
+            1150
+          ]
+        }
+      ],
+      "point": "Every concrete behavior-changing or lossy migration: legacy evidence adapters (process-reference metadata, text markers, placement metadata, support labels) and the approval of a specific ID remap of accepted data.",
+      "default": "Evidence-based classification, complete loss and remap report, retained ambiguous source snapshot, activation refuses rather than discarding. Sealed: remap mechanics with an explicit approval record and the OPEN-ID gate (l3-imp-remap-*), legacy markers never classifying (l3-n-legacy-marker-ignored); no legacy adapter is sealed."
+    },
+    {
+      "id": "U9",
+      "openIds": [
+        "OPEN-ID",
+        "OPEN-MACHINE"
+      ],
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          290,
+          290
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            440,
+            442
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            915,
+            915
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            921,
+            921
+          ]
+        }
+      ],
+      "point": "Owner restrictions on already accepted persisted data, the activated binding transaction in editing once the gates pass, and the persisted-loss policy for retained black-box participants the base does not permit.",
+      "default": "Explicit migration only, never edit-time normalization; recovery stays a proposal (sealed: l3-propose-*) until an explicit binding transaction, gated by OPEN-MACHINE (sealed: l3-bind-supports-gated refuses profile-open in edit, the qualification vectors bind); unrelated black-box participants are retained where the base permits them (l3-n-black-box-pool-retained), otherwise reported as normal import loss."
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "l3-id-stable-vectors",
+      "file": "cases/l3-id-stable-vectors.json",
+      "group": "identity",
+      "operation": "stable-id/1",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          276,
+          282
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.1",
+          "lines": [
+            260,
+            264
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an allocator that trims or NFC-normalizes keys (merging ' padded '/'padded' or NBSP/space), escapes non-ASCII as \\u sequences before hashing, or hashes a tuple other than [\"profile-mechanism/1\",owner,slot,key]."
+    },
+    {
+      "caseId": "l3-id-root-first",
+      "file": "cases/l3-id-root-first.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          284,
+          292
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.1",
+          "lines": [
+            542,
+            542
+          ]
+        },
+        {
+          "section": "§2.5",
+          "lines": [
+            252,
+            252
+          ]
+        },
+        {
+          "section": "§10.1",
+          "lines": [
+            764,
+            764
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that allocates children before the Definitions root (wrong owner domain), hashes content after stamping isExecutable or empty topology arrays, uses an undecorated containment name instead of the descriptor-qualified slot, gives the DataStore and Process one shared ordinal, or reports allocated IDs with exact instead of generated result provenance."
+    },
+    {
+      "caseId": "l3-id-identical-siblings",
+      "file": "cases/l3-id-identical-siblings.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          292,
+          292
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            288,
+            288
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an allocator that omits the duplicate ordinal (both siblings collide or receive one ID), counts ordinals across the whole document, or orders ordinals by anything other than the original containment array; the IDs equal the lot-0 sealed sibling vectors."
+    },
+    {
+      "caseId": "l3-id-reorder-stable",
+      "file": "cases/l3-id-reorder-stable.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          292,
+          292
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.1",
+          "lines": [
+            536,
+            536
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            569,
+            569
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that recomputes duplicate ordinals from current array positions (swapping the two surviving IDs) or reports any change for an already completed, reordered tree."
+    },
+    {
+      "caseId": "l3-id-rename-stable",
+      "file": "cases/l3-id-rename-stable.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          284,
+          284
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            292,
+            292
+          ]
+        },
+        {
+          "section": "§7.1",
+          "lines": [
+            536,
+            536
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that re-derives content-signature IDs for surviving nodes after a label edit; the birth signature is used once only."
+    },
+    {
+      "caseId": "l3-id-ordinal-missing-only",
+      "file": "cases/l3-id-ordinal-missing-only.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          292,
+          292
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            288,
+            288
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an allocator that counts the ID-bearing sibling with the same content in the duplicate ordinal (the two missing IDs would use ordinals 1 and 2), or that rewrites the existing Task_Same ID."
+    },
+    {
+      "caseId": "l3-id-two-owners",
+      "file": "cases/l3-id-two-owners.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          292,
+          292
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            284,
+            284
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an allocator that scopes duplicate ordinals per document instead of per ownerId and containment property (the second task would get ordinal 1)."
+    },
+    {
+      "caseId": "l3-id-unicode-names",
+      "file": "cases/l3-id-unicode-names.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          292,
+          292
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.1",
+          "lines": [
+            260,
+            262
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            967,
+            967
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that NFC-normalizes, trims (NBSP, trailing space, U+0085) or line-splits names before hashing, escapes U+E000/U+10000 in JCS, or rewrites the stored names."
+    },
+    {
+      "caseId": "l3-id-timer-siblings",
+      "file": "cases/l3-id-timer-siblings.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          288,
+          292
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.5",
+          "lines": [
+            528,
+            528
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that assigns an ID to the ID-less FormalExpression, derives the timer definition owner from the Process instead of its own event, or uses one ordinal sequence for both timer definitions."
+    },
+    {
+      "caseId": "l3-id-timer-reorder",
+      "file": "cases/l3-id-timer-reorder.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          292,
+          292
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.3",
+          "lines": [
+            569,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that reallocates timer siblings or their definitions after a reorder, or reports changes on a completed tree."
+    },
+    {
+      "caseId": "l3-id-collision-computed",
+      "file": "cases/l3-id-collision-computed.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "refused:id-collision",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          288,
+          288
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.3",
+          "lines": [
+            569,
+            569
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that suffixes, overwrites or reidentifies when a computed stable-id/1 value is already used by a different object, commits a partial completion, or reports a refusal without the echoed identity and the empty diagnostics/report."
+    },
+    {
+      "caseId": "l3-id-duplicate-source",
+      "file": "cases/l3-id-duplicate-source.json",
+      "group": "identity",
+      "operation": "complete",
+      "expectedStatus": "refused:id-collision",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          290,
+          290
+        ]
+      },
+      "cites": [
+        {
+          "section": "§10.2",
+          "lines": [
+            781,
+            781
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that keeps the last duplicate, renames one of them or completes the document instead of refusing duplicate source IDs structurally."
+    },
+    {
+      "caseId": "l3-c-isexecutable-neutral",
+      "file": "cases/l3-c-isexecutable-neutral.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          538,
+          538
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.1",
+          "lines": [
+            543,
+            543
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Paired with the other neutral profile: fails a library that hard-codes the private completion default instead of executing the injected complete recipe (this profile writes isExecutable=false)."
+    },
+    {
+      "caseId": "l3-c-isexecutable-grid",
+      "file": "cases/l3-c-isexecutable-grid.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          538,
+          538
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.1",
+          "lines": [
+            543,
+            543
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Paired with the other neutral profile: fails a library that hard-codes the private completion default instead of executing the injected complete recipe (this profile writes isExecutable=true)."
+    },
+    {
+      "caseId": "l3-c-gateway-direction-control",
+      "file": "cases/l3-c-gateway-direction-control.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          538,
+          538
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.1",
+          "lines": [
+            544,
+            544
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "With the lot-0 neutral profile, which declares no topology or gateway recipe, fails a library that hard-codes topology repair (Gateway_G.incoming would become [Flow_1]) or stamps a gateway direction instead of executing only the injected recipes."
+    },
+    {
+      "caseId": "l3-c-empty-process",
+      "file": "cases/l3-c-empty-process.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          543,
+          543
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.2",
+          "lines": [
+            552,
+            552
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that skips empty processes, invents boundary events or activities, or lets C create structural supports (supports belong to N)."
+    },
+    {
+      "caseId": "l3-c-topology",
+      "file": "cases/l3-c-topology.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          544,
+          544
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.2",
+          "lines": [
+            112,
+            112
+          ]
+        },
+        {
+          "section": "§2.4",
+          "lines": [
+            166,
+            166
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that keeps stale or document-ordered incoming/outgoing arrays, merges the cross-container Flow_X into Task_1.incoming, retargets the invalid SequenceFlow instead of leaving it unchanged, or omits the absent-to-present End_A.incoming write."
+    },
+    {
+      "caseId": "l3-c-gateway-direction",
+      "file": "cases/l3-c-gateway-direction.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          544,
+          544
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.1",
+          "lines": [
+            79,
+            79
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that treats the moddle default of an absent gatewayDirection as present, keeps an existing wrong direction, uses a threshold of one instead of more than one, or rewrites the already correct Converging join."
+    },
+    {
+      "caseId": "l3-c-gateway-stale-topology",
+      "file": "cases/l3-c-gateway-stale-topology.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§2.5",
+        "lines": [
+          252,
+          252
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.1",
+          "lines": [
+            544,
+            544
+          ]
+        },
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "With direction counted from sequence flows, a stale incoming array is repaired and the direction is Mixed in one bounded run; fails an implementation that derives the direction from the stale stored array or needs a second pass."
+    },
+    {
+      "caseId": "l3-c-gateway-phase-start",
+      "file": "cases/l3-c-gateway-phase-start.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:normalization-not-fixed",
+      "clause": {
+        "section": "§2.4",
+        "lines": [
+          176,
+          176
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.5",
+          "lines": [
+            252,
+            252
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            569,
+            569
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The variant profile counts stored incoming references, so its first run sets Diverging from the phase-start snapshot and the bounded second evaluation sees Mixed; fails an implementation that lets one sibling read another sibling's writes (would return Mixed), retries without bound, or commits the non-fixed point."
+    },
+    {
+      "caseId": "l3-c-item-backing",
+      "file": "cases/l3-c-item-backing.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          545,
+          545
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            163,
+            163
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that replaces or re-creates the valid backing of DataObjectReference_Old, reuses the first DataObject, keys the new backing by name or position, infers dataStoreRef for the orphan reference from the equal DataStore name, or reports the created backing with an input source pointer."
+    },
+    {
+      "caseId": "l3-c-input-ports",
+      "file": "cases/l3-c-input-ports.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          546,
+          546
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.1",
+          "lines": [
+            536,
+            536
+          ]
+        },
+        {
+          "section": "§2.4",
+          "lines": [
+            158,
+            158
+          ]
+        },
+        {
+          "section": "§10.1",
+          "lines": [
+            766,
+            766
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a first-port shortcut (both associations share one port), ports keyed by array position or created in array order (DIA_2 first), replacement of the valid Property_Existing target, creation of the missing DOA_1 output source port without an accepted code-creation authority, or generated ports reported without generated coordinates."
+    },
+    {
+      "caseId": "l3-c-sets-default",
+      "file": "cases/l3-c-sets-default.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          547,
+          547
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            284,
+            284
+          ]
+        },
+        {
+          "section": "§2.2",
+          "lines": [
+            123,
+            123
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that copies document order [b,a] instead of the selector ID order, allocates the sets under the nearest containing Process instead of the explicit Definitions ownerId (forbidden owner inference), or omits the default sets."
+    },
+    {
+      "caseId": "l3-c-sets-single-uncovered",
+      "file": "cases/l3-c-sets-single-uncovered.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          547,
+          547
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            166,
+            166
+          ]
+        },
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that rebuilds the set in ID order (moving DataInput_b), appends the uncovered inputs in document order [c, a] instead of canonical ID order [a, c], or creates a second default set beside the existing one."
+    },
+    {
+      "caseId": "l3-c-sets-several-uncovered",
+      "file": "cases/l3-c-sets-several-uncovered.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:io-set-selection-required",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          547,
+          547
+        ]
+      },
+      "cites": [
+        {
+          "section": "§16",
+          "lines": [
+            1154,
+            1154
+          ]
+        },
+        {
+          "section": "§2.4",
+          "lines": [
+            172,
+            172
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that silently updates the first input set (or any set) when several sets exist and DataInput_c is uncovered; the whole completion refuses atomically."
+    },
+    {
+      "caseId": "l3-c-sets-several-covered",
+      "file": "cases/l3-c-sets-several-covered.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          547,
+          547
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.1",
+          "lines": [
+            536,
+            536
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that merges, reorders or re-creates sets once every input is covered by an explicit selection; the second set membership must be preserved untouched."
+    },
+    {
+      "caseId": "l3-c-preserve",
+      "file": "cases/l3-c-preserve.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          536,
+          536
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.1",
+          "lines": [
+            548,
+            548
+          ]
+        },
+        {
+          "section": "§4",
+          "lines": [
+            341,
+            341
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that downgrades UserTask to Task, drops or rewrites the condition expression, normalizes the Documentation whitespace/NBSP/CRLF, parses JSON-looking text without a declared textFormat, rebuilds the two overlapping input sets, or replaces the valid port."
+    },
+    {
+      "caseId": "l3-c-write-conflict",
+      "file": "cases/l3-c-write-conflict.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:profile-write-conflict",
+      "clause": {
+        "section": "§2.4",
+        "lines": [
+          176,
+          176
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.5",
+          "lines": [
+            252,
+            252
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The variant profile adds a sibling complete recipe writing isExecutable=true; fails a last-writer-wins or declaration-order winner implementation instead of refusing profile-write-conflict atomically."
+    },
+    {
+      "caseId": "l3-c-write-coalesce",
+      "file": "cases/l3-c-write-coalesce.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§2.4",
+        "lines": [
+          176,
+          176
+        ]
+      },
+      "cites": [
+        {
+          "section": "§10.1",
+          "lines": [
+            751,
+            751
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The variant profile adds an identical sibling write; fails an implementation that refuses identical writes as a conflict, reports two change entries for one coalesced write, or attributes it to the second recipe instead of the first planning recipe."
+    },
+    {
+      "caseId": "l3-c-namespace-defaults",
+      "file": "cases/l3-c-namespace-defaults.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.1",
+        "lines": [
+          434,
+          434
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.1",
+          "lines": [
+            542,
+            542
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that leaves required generated Definitions defaults absent or stamps values other than the profile's declared namespace and base-contract version."
+    },
+    {
+      "caseId": "l3-c-dangling-call",
+      "file": "cases/l3-c-dangling-call.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:reference-dangling",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          378,
+          378
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.2",
+          "lines": [
+            132,
+            132
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that treats an unresolved nonempty calledElement as absent (incomplete call) or as an external call, or completes the document instead of refusing the dangling reference at the graph index."
+    },
+    {
+      "caseId": "l3-c-version-mismatch-first",
+      "file": "cases/l3-c-version-mismatch-first.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:profile-source-unavailable",
+      "clause": {
+        "section": "§3.3",
+        "lines": [
+          317,
+          319
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.3",
+          "lines": [
+            298,
+            298
+          ]
+        },
+        {
+          "section": "§7.1",
+          "lines": [
+            542,
+            542
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "A document stored under the older minor 1.0.0 of the same profile, whose source package is not available to C: fails an implementation that allocates the missing Task ID or stamps defaults before the compatibility row, or that accepts a minor difference as compatible."
+    },
+    {
+      "caseId": "l3-c-digest-mismatch-first",
+      "file": "cases/l3-c-digest-mismatch-first.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:profile-digest-mismatch",
+      "clause": {
+        "section": "§3.3",
+        "lines": [
+          314,
+          314
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.3",
+          "lines": [
+            298,
+            298
+          ]
+        },
+        {
+          "section": "§7.1",
+          "lines": [
+            542,
+            542
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Same profile ID and version with a known unequal digest: fails an implementation that completes the document, waives the conflict, or reports profile-source-unavailable instead of the identity conflict."
+    },
+    {
+      "caseId": "l3-c-document-version",
+      "file": "cases/l3-c-document-version.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:document-version-unsupported",
+      "clause": {
+        "section": "§3.3",
+        "lines": [
+          302,
+          302
+        ]
+      },
+      "cites": [
+        {
+          "section": "§10.1",
+          "lines": [
+            735,
+            735
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that reads an unknown envelope documentVersion as version 1, completes it, or fabricates profileIdentity/baseRevision in the refusal (an unknown documentVersion echoes neither)."
+    },
+    {
+      "caseId": "l3-c-descriptor-role-unknown",
+      "file": "cases/l3-c-descriptor-role-unknown.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:descriptor-role-unknown",
+      "clause": {
+        "section": "§3.1",
+        "lines": [
+          266,
+          266
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.5",
+          "lines": [
+            252,
+            252
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that drops, keeps or completes around a member the descriptors do not classify, instead of refusing descriptor-role-unknown at the graph index before C."
+    },
+    {
+      "caseId": "l3-c-invalid-mode",
+      "file": "cases/l3-c-invalid-mode.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:operation-error",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          536,
+          536
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.5",
+          "lines": [
+            232,
+            232
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The mode vocabulary is closed (extraction, retained); fails an implementation that accepts draft as a third mode or treats it as retained instead of refusing operation-error."
+    },
+    {
+      "caseId": "l3-c-extraction-authorized",
+      "file": "cases/l3-c-extraction-authorized.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          536,
+          536
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4.1",
+          "lines": [
+            214,
+            214
+          ]
+        },
+        {
+          "section": "§2.4.1",
+          "lines": [
+            216,
+            216
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The variant grants the ai actor exactly the four authored fields; fails an implementation that refuses authorized extraction content, checks C's own code writes against the ai actor, or skips identity allocation for extracted content."
+    },
+    {
+      "caseId": "l3-c-extraction-unauthorized",
+      "file": "cases/l3-c-extraction-unauthorized.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:profile-producer",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          536,
+          536
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4.1",
+          "lines": [
+            214,
+            214
+          ]
+        },
+        {
+          "section": "§2.4.1",
+          "lines": [
+            191,
+            191
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Under the main profile no field admits the ai actor; fails an implementation that ignores the extraction mode, treats it as retained content, or completes before refusing profile-producer."
+    },
+    {
+      "caseId": "l3-c-output-port-gated",
+      "file": "cases/l3-c-output-port-gated.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "refused:profile-open",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          546,
+          546
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            920,
+            920
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1154,
+            1154
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "In edit activation the missing-output-source producer exception is gated; fails an implementation that creates the port, commits the DataOutputAssociation.sourceRef fill, or refuses with another code than profile-open."
+    },
+    {
+      "caseId": "l3-c-output-port-qualification",
+      "file": "cases/l3-c-output-port-qualification.json",
+      "group": "completion",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          546,
+          546
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            920,
+            920
+          ]
+        },
+        {
+          "section": "§7.2",
+          "lines": [
+            554,
+            554
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Neutral qualification exercises the gated exception: fails an implementation that keys the output port by position or by the activity alone, reuses an input port, or refuses in qualification."
+    },
+    {
+      "caseId": "l3-n-full",
+      "file": "cases/l3-n-full.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          558,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            284,
+            286
+          ]
+        },
+        {
+          "section": "§5.2",
+          "lines": [
+            438,
+            438
+          ]
+        },
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        },
+        {
+          "section": "§2.4.1",
+          "lines": [
+            218,
+            218
+          ]
+        },
+        {
+          "section": "§10.1",
+          "lines": [
+            764,
+            764
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that creates supports unconditionally or by label, allocates them outside stable-id/1, coalesces nothing (two Collaborations), places the DataStoreReference outside the bound band, writes Process IO into Lane.flowNodeRef, picks a non-minimal anchor, reorders the call's Documentation, emits unsorted placements, or reports the coalesced Collaboration ensure twice or under n-reference-band."
+    },
+    {
+      "caseId": "l3-n-full-edit",
+      "file": "cases/l3-n-full-edit.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:profile-open",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          554,
+          554
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            917,
+            917
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1160,
+            1160
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Edit activation of the same input: the first effective change is the Collaboration creation, gated by OPEN-RESERVED-N; fails an implementation that creates supports in edit, refuses with another code, or commits part of the run."
+    },
+    {
+      "caseId": "l3-n-inserted-link",
+      "file": "cases/l3-n-inserted-link.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.4",
+        "lines": [
+          410,
+          410
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.2",
+          "lines": [
+            563,
+            563
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "An inserted reference link with a lower ID becomes the anchor and joins the related set while every support keeps the l3-n-full identity; fails an implementation that caches the previous anchor, drops the extra use link, or reallocates supports after an association insertion."
+    },
+    {
+      "caseId": "l3-n-two-processes",
+      "file": "cases/l3-n-two-processes.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          286,
+          286
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.4",
+          "lines": [
+            408,
+            408
+          ]
+        },
+        {
+          "section": "§5.2",
+          "lines": [
+            438,
+            438
+          ]
+        },
+        {
+          "section": "§7.2",
+          "lines": [
+            558,
+            558
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that shares one Collaboration between processes, allocates both under one ownerId domain, deduplicates the shared store's references by title, synchronizes the local reference name with the store name, or attaches a band to the wrong owner."
+    },
+    {
+      "caseId": "l3-n-imported-supports",
+      "file": "cases/l3-n-imported-supports.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          440,
+          440
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.2",
+          "lines": [
+            559,
+            559
+          ]
+        },
+        {
+          "section": "§4",
+          "lines": [
+            338,
+            338
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that re-creates generated supports beside correctly bound imported ones, renames reused supports to the ensure field literals, reorders the business lanes, removes the clerk membership, or reports the membership write with generated instead of exact coordinates."
+    },
+    {
+      "caseId": "l3-n-imported-supports-edit",
+      "file": "cases/l3-n-imported-supports-edit.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:profile-open",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          559,
+          559
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            364,
+            364
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            910,
+            910
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Edit activation: reuse of every bound support is never gated, but the external-lane membership append is the external branch of N (OPEN-EXTERNAL); fails an implementation that appends in edit or reports a support conflict instead of profile-open."
+    },
+    {
+      "caseId": "l3-n-business-lane-refusal",
+      "file": "cases/l3-n-business-lane-refusal.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:responsibility-preservation-required",
+      "clause": {
+        "section": "§4.4",
+        "lines": [
+          410,
+          410
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.2",
+          "lines": [
+            559,
+            559
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1146,
+            1146
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The external call sits in the unbound business lane and no accepted persisted responsibility representation exists: in qualification the library responsibility check refuses the removal; fails an implementation that removes that membership (moving the call), leaves the call in two lanes, or commits any support change."
+    },
+    {
+      "caseId": "l3-n-business-lane-refusal-edit",
+      "file": "cases/l3-n-business-lane-refusal-edit.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:profile-open",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          559,
+          559
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            914,
+            914
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1146,
+            1146
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Edit activation: the removal of an existing Lane.flowNodeRef member is gated by OPEN-SHARING before the responsibility check; fails an implementation that answers responsibility-preservation-required or relocates the call in edit."
+    },
+    {
+      "caseId": "l3-n-binding-duplicate-role",
+      "file": "cases/l3-n-binding-duplicate-role.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:support-binding-conflict",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          438,
+          440
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.1",
+          "lines": [
+            430,
+            430
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            573,
+            573
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that accepts two bindings for one owner and role (first or last wins) instead of refusing support-binding-conflict at envelope integrity, before any plan or gate."
+    },
+    {
+      "caseId": "l3-n-binding-wrong-parent",
+      "file": "cases/l3-n-binding-wrong-parent.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:support-binding-conflict",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          438,
+          440
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.1",
+          "lines": [
+            430,
+            430
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            573,
+            573
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that accepts a bound band whose parent is not the bound collaboration, or silently moves it into the bound collaboration."
+    },
+    {
+      "caseId": "l3-n-binding-band-process-ref",
+      "file": "cases/l3-n-binding-band-process-ref.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:support-binding-conflict",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          438,
+          440
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.1",
+          "lines": [
+            430,
+            430
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            573,
+            573
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that accepts a bound reference band carrying processRef (a band is a black-box Participant) or strips the reference silently."
+    },
+    {
+      "caseId": "l3-n-binding-wrong-type",
+      "file": "cases/l3-n-binding-wrong-type.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:support-binding-conflict",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          438,
+          440
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.1",
+          "lines": [
+            430,
+            430
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            573,
+            573
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that accepts an external-lane binding targeting a Task, or replaces the target by creating a new lane."
+    },
+    {
+      "caseId": "l3-n-black-box-pool-retained",
+      "file": "cases/l3-n-black-box-pool-retained.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          440,
+          442
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            915,
+            915
+          ]
+        },
+        {
+          "section": "§7.2",
+          "lines": [
+            558,
+            558
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Without trusted bindings, fails an implementation that adopts the unbound collaboration, its main-named participant or the reference-band-named black-box pool by label or structure; N creates its own bound supports and retains the ordinary pool unchanged."
+    },
+    {
+      "caseId": "l3-n-hash-shaped-occupant",
+      "file": "cases/l3-n-hash-shaped-occupant.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:id-collision",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          440,
+          440
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            288,
+            288
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            573,
+            573
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "An unbound participant already holds the exact band allocator ID; fails an implementation that reuses it because the ID is hash-shaped, suffixes the band ID, or commits the collaboration and main participant planned before the late collision."
+    },
+    {
+      "caseId": "l3-n-hash-shaped-occupant-edit",
+      "file": "cases/l3-n-hash-shaped-occupant-edit.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:profile-open",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          554,
+          554
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            917,
+            917
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Edit activation of the same input: the gated Collaboration creation precedes the late band collision in recipe order; fails an implementation that reports id-collision first or evaluates every recipe before applying the first gate."
+    },
+    {
+      "caseId": "l3-n-incomplete-call-untouched",
+      "file": "cases/l3-n-incomplete-call-untouched.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          381,
+          383
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4",
+          "lines": [
+            344,
+            344
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1140,
+            1140
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that gives a targetless unmarked call an external lane, membership, placement or reversal even though a descriptive Association links it to the start event."
+    },
+    {
+      "caseId": "l3-n-internal-call-untouched",
+      "file": "cases/l3-n-internal-call-untouched.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          381,
+          383
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4",
+          "lines": [
+            342,
+            342
+          ]
+        },
+        {
+          "section": "§4.1",
+          "lines": [
+            376,
+            376
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that moves an internal call (calledElement resolving to an in-document Process) to the external lane or skips the collaboration of the called empty process."
+    },
+    {
+      "caseId": "l3-n-legacy-marker-ignored",
+      "file": "cases/l3-n-legacy-marker-ignored.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          381,
+          383
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            366,
+            366
+          ]
+        },
+        {
+          "section": "§5.3",
+          "lines": [
+            452,
+            452
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that classifies a call as external from Documentation text without the configured textFormat, from an annotation prefix, or from any other legacy marker."
+    },
+    {
+      "caseId": "l3-n-empty-process",
+      "file": "cases/l3-n-empty-process.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          558,
+          558
+        ]
+      },
+      "cites": [
+        {
+          "section": "§9.4",
+          "lines": [
+            725,
+            725
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            967,
+            967
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that skips an empty process or creates an external lane, lane set or reference band without a recognized need."
+    },
+    {
+      "caseId": "l3-n-roles-and-empty-support",
+      "file": "cases/l3-n-roles-and-empty-support.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          565,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4",
+          "lines": [
+            338,
+            338
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Edit activation with only bound supports to reuse (never gated): business lanes were reordered and renamed and the bound external lane is empty; fails an implementation that sorts or re-labels lanes, garbage-collects the empty bound support, gates a reuse, or reports any change."
+    },
+    {
+      "caseId": "l3-n-reserved-lane-renamed",
+      "file": "cases/l3-n-reserved-lane-renamed.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          438,
+          438
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            164,
+            164
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The generated reserved lane was renamed by the user: reuse validates type, parent, owner relationship and single binding only (harmonization C5); fails an implementation that compares the declared ensure field and refuses support-binding-conflict, renames the lane back, or creates a second lane."
+    },
+    {
+      "caseId": "l3-n-shared-item-anchor",
+      "file": "cases/l3-n-shared-item-anchor.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.4",
+        "lines": [
+          410,
+          410
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4.1",
+          "lines": [
+            218,
+            218
+          ]
+        },
+        {
+          "section": "§7.2",
+          "lines": [
+            563,
+            565
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that anchors to the first association in document order (DIA_b), to the producer DOA_z, or omits one of the three related associations; the tree itself is unchanged."
+    },
+    {
+      "caseId": "l3-n-anchor-after-link-removal",
+      "file": "cases/l3-n-anchor-after-link-removal.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.4",
+        "lines": [
+          410,
+          410
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4.1",
+          "lines": [
+            218,
+            218
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "After both consuming associations of the shared item were deleted, fails an implementation that keeps a cached consuming anchor, keeps deleted associations in the related set, or leaves the item unanchored instead of falling back to the producing DOA_z."
+    },
+    {
+      "caseId": "l3-n-direction-reversal",
+      "file": "cases/l3-n-direction-reversal.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          562,
+          562
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4",
+          "lines": [
+            348,
+            353
+          ]
+        },
+        {
+          "section": "§10.1",
+          "lines": [
+            766,
+            766
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            569,
+            569
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that leaves wrong-direction descriptive links unchanged, reverses without setting associationDirection One, reallocates the association IDs, converts an Association into a data or sequence flow, computes the reference anchor from link direction (non-fixed second run), or reports the reversal without exact before/after coordinates."
+    },
+    {
+      "caseId": "l3-n-unicode-names",
+      "file": "cases/l3-n-unicode-names.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.2",
+        "lines": [
+          387,
+          387
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.1",
+          "lines": [
+            260,
+            262
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            967,
+            967
+          ]
+        },
+        {
+          "section": "§7.1",
+          "lines": [
+            548,
+            548
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that NFC-normalizes, trims (NBSP, U+0085, BOM, trailing space) or re-splits the LF/CRLF/U+2028 start situations, rewrites astral or private-use characters, or escapes non-ASCII differently in canonical bytes."
+    },
+    {
+      "caseId": "l3-n-deleted-support-stays-absent",
+      "file": "cases/l3-n-deleted-support-stays-absent.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          565,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The reserved lane and its binding were deleted explicitly and nothing needs the role: fails an implementation that resurrects the lane because its lane set is still bound, recreates every declared support role, or garbage-collects the empty bound lane set."
+    },
+    {
+      "caseId": "l3-n-after-owner-remap",
+      "file": "cases/l3-n-after-owner-remap.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          565,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            444,
+            444
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Edit activation on the remapped document: fails an implementation that re-derives surviving support IDs from the current owner Process_R, refuses because a support ID no longer matches its allocator tuple, or re-creates any support."
+    },
+    {
+      "caseId": "l3-n-recreate-after-remap",
+      "file": "cases/l3-n-recreate-after-remap.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          565,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            284,
+            284
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "A later need recreates the deleted reserved lane: fails an implementation that resurrects the old Process_A-derived lane ID, allocates under the old owner, reallocates the surviving lane set or collaboration, or creates a second lane set."
+    },
+    {
+      "caseId": "l3-n-recreate-after-remap-edit",
+      "file": "cases/l3-n-recreate-after-remap-edit.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:profile-open",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          554,
+          554
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.2",
+          "lines": [
+            565,
+            565
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            917,
+            917
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Recreation is a support creation: fails an implementation that treats the re-creation of a previously bound role as a reuse and proceeds in edit activation."
+    },
+    {
+      "caseId": "l3-n-placement-intent-di-only",
+      "file": "cases/l3-n-placement-intent-di-only.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          631,
+          631
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.5",
+          "lines": [
+            233,
+            233
+          ]
+        },
+        {
+          "section": "§3.1",
+          "lines": [
+            268,
+            268
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "A DI-only move of the reference: fails an implementation whose N changes the semantic tree, bindings or placements because of a placement intent, or ignores the intent record shape."
+    },
+    {
+      "caseId": "l3-n-placement-intent-unknown",
+      "file": "cases/l3-n-placement-intent-unknown.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:reference-dangling",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          631,
+          631
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.2",
+          "lines": [
+            132,
+            132
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "A placement intent naming no element: fails an implementation that ignores the stale intent or invents an element instead of refusing reference-dangling."
+    },
+    {
+      "caseId": "l3-n-not-fixed",
+      "file": "cases/l3-n-not-fixed.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:normalization-not-fixed",
+      "clause": {
+        "section": "§2.4",
+        "lines": [
+          176,
+          176
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.3",
+          "lines": [
+            569,
+            569
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The variant adds a recipe reversing the permitted reference pair back: the first run reverses, the bounded second evaluation reverses again; fails an implementation that retries without bound, commits the first-run result, or skips the second evaluation."
+    },
+    {
+      "caseId": "l3-n-relation-direction-conflict",
+      "file": "cases/l3-n-relation-direction-conflict.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:profile-write-conflict",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          562,
+          562
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Two recipes plan different associationDirection values on one wrong-direction association; fails a last-writer-wins or declaration-order implementation instead of refusing profile-write-conflict atomically."
+    },
+    {
+      "caseId": "l3-n-ensure-conflicting-definition",
+      "file": "cases/l3-n-ensure-conflicting-definition.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:profile-write-conflict",
+      "clause": {
+        "section": "§2.4",
+        "lines": [
+          176,
+          176
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            164,
+            164
+          ]
+        },
+        {
+          "section": "§7.2",
+          "lines": [
+            558,
+            558
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Two ensure plans for the same owner and reference-band role differ in their declared name; fails an implementation that coalesces them, keeps the first or last definition, or creates two bands instead of refusing profile-write-conflict."
+    },
+    {
+      "caseId": "l3-sort-placements",
+      "file": "cases/l3-sort-placements.json",
+      "group": "normalization",
+      "operation": "sortPlacements",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          565,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.1",
+          "lines": [
+            262,
+            262
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a sort that uses code points instead of UTF-16 units (the U+E000 region before U+10000), places a present anchor before an absent one, or compares relatedAssociationIds by length or by their last element."
+    },
+    {
+      "caseId": "l3-n-refusal-after-ensures",
+      "file": "cases/l3-n-refusal-after-ensures.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "refused:fixture-abort",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          573,
+          573
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            172,
+            172
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            569,
+            569
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The variant appends a refuse step planned after every support ensure of l3-n-full: fails an implementation that commits the supports or bindings created before the refusal, reports a gate or another code, or mutates the caller envelope."
+    },
+    {
+      "caseId": "l3-n-place-neutral",
+      "file": "cases/l3-n-place-neutral.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          565,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            168,
+            168
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            959,
+            959
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "On the lot-0 neutral completed tree, fails an implementation whose placements differ from the lot-0 sealed ones (content region, no anchor, empty related set) or that writes the tree during placement."
+    },
+    {
+      "caseId": "l3-n-place-grid-shared-anchor",
+      "file": "cases/l3-n-place-grid-shared-anchor.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          563,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4.1",
+          "lines": [
+            218,
+            218
+          ]
+        },
+        {
+          "section": "§4.4",
+          "lines": [
+            410,
+            410
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "On the lot-0 grid completed tree, fails an implementation whose anchors or related sets differ from the lot-0 sealed placements (first consuming association by ID, every touching association related)."
+    },
+    {
+      "caseId": "l3-n-place-grid-inserted-association",
+      "file": "cases/l3-n-place-grid-inserted-association.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          563,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4.1",
+          "lines": [
+            218,
+            218
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "An inserted consuming association with a lower ID becomes Task_A's anchor and joins both related sets; fails an implementation that keeps the previous anchor or omits the inserted link from Task_B's related set."
+    },
+    {
+      "caseId": "l3-n-place-grid-deleted-association",
+      "file": "cases/l3-n-place-grid-deleted-association.json",
+      "group": "normalization",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          563,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4.1",
+          "lines": [
+            218,
+            218
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Both consuming associations of Task_A deleted: fails an implementation that keeps a deleted anchor, leaves Task_A unanchored instead of falling back to the producing association, or keeps deleted IDs in the related sets."
+    },
+    {
+      "caseId": "l3-propose-recovery-with-provenance",
+      "file": "cases/l3-propose-recovery-with-provenance.json",
+      "group": "support-binding",
+      "operation": "proposeSupportBindings",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          440,
+          440
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            442,
+            442
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            915,
+            915
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Exact allocator ID, expected type, parent and owner relationship, and creation provenance for each support: fails an implementation that proposes nothing, applies the bindings itself, proposes by name, or returns unsorted proposals."
+    },
+    {
+      "caseId": "l3-propose-recovery-without-provenance",
+      "file": "cases/l3-propose-recovery-without-provenance.json",
+      "group": "support-binding",
+      "operation": "proposeSupportBindings",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          440,
+          440
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            442,
+            442
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            915,
+            915
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Without creation provenance a hash-shaped ID alone never authorizes reuse: fails an implementation that proposes the generated-looking supports or refuses instead of returning no proposal."
+    },
+    {
+      "caseId": "l3-propose-recovery-partial-provenance",
+      "file": "cases/l3-propose-recovery-partial-provenance.json",
+      "group": "support-binding",
+      "operation": "proposeSupportBindings",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          440,
+          440
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            442,
+            442
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            915,
+            915
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Only the provenance-listed Collaboration qualifies: fails an implementation that also proposes the main Participant, lane set, lane or band whose IDs match but whose provenance is absent."
+    },
+    {
+      "caseId": "l3-propose-black-box-pool",
+      "file": "cases/l3-propose-black-box-pool.json",
+      "group": "support-binding",
+      "operation": "proposeSupportBindings",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          440,
+          440
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            442,
+            442
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            915,
+            915
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "An imported collaboration and a black-box pool labelled like supports: fails an implementation that proposes them by label or structure (their IDs are not allocator IDs)."
+    },
+    {
+      "caseId": "l3-bind-supports-explicit-selection",
+      "file": "cases/l3-bind-supports-explicit-selection.json",
+      "group": "support-binding",
+      "operation": "bindSupports",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          442,
+          442
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            440,
+            440
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            915,
+            915
+          ]
+        },
+        {
+          "section": "§5.1",
+          "lines": [
+            430,
+            430
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "An explicit support selection binds the imported Collaboration: fails an implementation that also binds the pool, edits the tree, reports change entries, or requires N to adopt the collaboration by label."
+    },
+    {
+      "caseId": "l3-bind-supports-gated",
+      "file": "cases/l3-bind-supports-gated.json",
+      "group": "support-binding",
+      "operation": "bindSupports",
+      "expectedStatus": "refused:profile-open",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          442,
+          442
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            440,
+            440
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            915,
+            915
+          ]
+        },
+        {
+          "section": "§5.1",
+          "lines": [
+            430,
+            430
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Edit activation: the explicit binding transaction is gated by OPEN-MACHINE; fails an implementation that commits the binding in edit or reports another code."
+    },
+    {
+      "caseId": "l3-bind-supports-conflict",
+      "file": "cases/l3-bind-supports-conflict.json",
+      "group": "support-binding",
+      "operation": "bindSupports",
+      "expectedStatus": "refused:support-binding-conflict",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          442,
+          442
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            440,
+            440
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            915,
+            915
+          ]
+        },
+        {
+          "section": "§5.1",
+          "lines": [
+            430,
+            430
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The owner and role are already bound: fails an implementation that replaces or duplicates the binding instead of refusing support-binding-conflict."
+    },
+    {
+      "caseId": "l3-n-after-explicit-selection",
+      "file": "cases/l3-n-after-explicit-selection.json",
+      "group": "support-binding",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          442,
+          442
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.2",
+          "lines": [
+            558,
+            558
+          ]
+        },
+        {
+          "section": "§5.2",
+          "lines": [
+            440,
+            440
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "N after the explicit selection reuses the bound Collaboration and creates its own main Participant and band inside it: fails an implementation that adopts the ordinary pool labelled reference-band, creates a second Collaboration, or reallocates the selected one."
+    },
+    {
+      "caseId": "l3-fp-n-full",
+      "file": "cases/l3-fp-n-full.json",
+      "group": "fixed-point",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation whose second N run re-creates, re-binds or re-appends supports, re-adds the call membership, gates a no-op in edit, or returns a non-empty report."
+    },
+    {
+      "caseId": "l3-fp-n-two-processes",
+      "file": "cases/l3-fp-n-two-processes.json",
+      "group": "fixed-point",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a second N run that merges or re-creates the per-process collaborations or reorders the shared-store placements."
+    },
+    {
+      "caseId": "l3-fp-n-imported-supports",
+      "file": "cases/l3-fp-n-imported-supports.json",
+      "group": "fixed-point",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a second N run that appends the already present call membership again, gates the no-op append in edit, or rewrites imported support IDs."
+    },
+    {
+      "caseId": "l3-fp-n-direction-reversal",
+      "file": "cases/l3-fp-n-direction-reversal.json",
+      "group": "fixed-point",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a second N run that reverses the corrected links back, or changes the reference anchor once link directions changed."
+    },
+    {
+      "caseId": "l3-fp-n-unicode-names",
+      "file": "cases/l3-fp-n-unicode-names.json",
+      "group": "fixed-point",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a second N run that re-encodes or normalizes any non-ASCII or whitespace name byte."
+    },
+    {
+      "caseId": "l3-fp-c-root-first",
+      "file": "cases/l3-fp-c-root-first.json",
+      "group": "fixed-point",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a second C run that reallocates birth-signature IDs from current content or re-stamps defaults."
+    },
+    {
+      "caseId": "l3-fp-c-topology",
+      "file": "cases/l3-fp-c-topology.json",
+      "group": "fixed-point",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a second C run that still changes topology arrays or now pulls the cross-container flow into Task_1."
+    },
+    {
+      "caseId": "l3-fp-c-gateways",
+      "file": "cases/l3-fp-c-gateways.json",
+      "group": "fixed-point",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a second C run that flips any gateway direction (sequential or stale-array evaluation)."
+    },
+    {
+      "caseId": "l3-fp-c-ports",
+      "file": "cases/l3-fp-c-ports.json",
+      "group": "fixed-point",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a second C run that creates another port for an association that already has its keyed port."
+    },
+    {
+      "caseId": "l3-fp-c-sets-default",
+      "file": "cases/l3-fp-c-sets-default.json",
+      "group": "fixed-point",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a second C run that creates another default set or reorders the default membership."
+    },
+    {
+      "caseId": "l3-fp-c-timers",
+      "file": "cases/l3-fp-c-timers.json",
+      "group": "fixed-point",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a second C run that touches timer definitions or ID-less expressions."
+    },
+    {
+      "caseId": "l3-fp-c-on-n-input",
+      "file": "cases/l3-fp-c-on-n-input.json",
+      "group": "fixed-point",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Proves the l3-n-full input is a C fixed point; fails an implementation whose C rewrites topology, sets, ports or the call documentation of an already completed document."
+    },
+    {
+      "caseId": "l3-fp-c-after-n",
+      "file": "cases/l3-fp-c-after-n.json",
+      "group": "fixed-point",
+      "operation": "complete",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation whose C rewrites N-owned supports, bindings or memberships of a normalized document."
+    },
+    {
+      "caseId": "l3-mix-n-full-js-py-js",
+      "file": "cases/l3-mix-n-full-js-py-js.json",
+      "group": "mixed-runtime",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§14.3",
+          "lines": [
+            963,
+            963
+          ]
+        },
+        {
+          "section": "§3.1",
+          "lines": [
+            260,
+            260
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a twin pair whose js first run differs from the sealed N(x) result, whose python run on those bytes is not an exact fixed point with an empty report in edit activation, or whose transport changes IDs, key order, number spelling or non-ASCII encoding."
+    },
+    {
+      "caseId": "l3-mix-n-full-py-js-py",
+      "file": "cases/l3-mix-n-full-py-js-py.json",
+      "group": "mixed-runtime",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§14.3",
+          "lines": [
+            963,
+            963
+          ]
+        },
+        {
+          "section": "§3.1",
+          "lines": [
+            260,
+            260
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a twin pair whose python first run differs from the sealed N(x) result, whose js run on those bytes is not an exact fixed point with an empty report in edit activation, or whose transport changes IDs, key order, number spelling or non-ASCII encoding."
+    },
+    {
+      "caseId": "l3-mix-n-two-processes-js-py-js",
+      "file": "cases/l3-mix-n-two-processes-js-py-js.json",
+      "group": "mixed-runtime",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§14.3",
+          "lines": [
+            963,
+            963
+          ]
+        },
+        {
+          "section": "§3.1",
+          "lines": [
+            260,
+            260
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a twin pair whose js first run differs from the sealed N(x) result, whose python run on those bytes is not an exact fixed point with an empty report in edit activation, or whose transport changes IDs, key order, number spelling or non-ASCII encoding."
+    },
+    {
+      "caseId": "l3-mix-n-two-processes-py-js-py",
+      "file": "cases/l3-mix-n-two-processes-py-js-py.json",
+      "group": "mixed-runtime",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§14.3",
+          "lines": [
+            963,
+            963
+          ]
+        },
+        {
+          "section": "§3.1",
+          "lines": [
+            260,
+            260
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a twin pair whose python first run differs from the sealed N(x) result, whose js run on those bytes is not an exact fixed point with an empty report in edit activation, or whose transport changes IDs, key order, number spelling or non-ASCII encoding."
+    },
+    {
+      "caseId": "l3-mix-n-unicode-names-js-py-js",
+      "file": "cases/l3-mix-n-unicode-names-js-py-js.json",
+      "group": "mixed-runtime",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§14.3",
+          "lines": [
+            963,
+            963
+          ]
+        },
+        {
+          "section": "§3.1",
+          "lines": [
+            260,
+            260
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a twin pair whose js first run differs from the sealed N(x) result, whose python run on those bytes is not an exact fixed point with an empty report in edit activation, or whose transport changes IDs, key order, number spelling or non-ASCII encoding."
+    },
+    {
+      "caseId": "l3-mix-n-unicode-names-py-js-py",
+      "file": "cases/l3-mix-n-unicode-names-py-js-py.json",
+      "group": "mixed-runtime",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.3",
+        "lines": [
+          569,
+          569
+        ]
+      },
+      "cites": [
+        {
+          "section": "§14.3",
+          "lines": [
+            963,
+            963
+          ]
+        },
+        {
+          "section": "§3.1",
+          "lines": [
+            260,
+            260
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a twin pair whose python first run differs from the sealed N(x) result, whose js run on those bytes is not an exact fixed point with an empty report in edit activation, or whose transport changes IDs, key order, number spelling or non-ASCII encoding."
+    },
+    {
+      "caseId": "l3-call-external-valid",
+      "file": "cases/l3-call-external-valid.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          374,
+          374
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that reports a finding for a valid marked external call, requires calledElement, or ignores the marker appended after source Documentation."
+    },
+    {
+      "caseId": "l3-call-internal",
+      "file": "cases/l3-call-internal.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          376,
+          376
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that classifies a call resolving to an in-document Process as incomplete, external or dangling."
+    },
+    {
+      "caseId": "l3-call-ambiguous",
+      "file": "cases/l3-call-ambiguous.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          370,
+          370
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that picks a winner among markers with different texts, reports duplicate or invalid instead, or treats the first marker as authoritative."
+    },
+    {
+      "caseId": "l3-call-duplicate",
+      "file": "cases/l3-call-duplicate.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          371,
+          371
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that deduplicates identical markers silently and recognizes an external call instead of reporting the duplicate."
+    },
+    {
+      "caseId": "l3-call-marker-invalid",
+      "file": "cases/l3-call-marker-invalid.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          372,
+          372
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that accepts an unknown marker text as a call kind or falls back to the incomplete-call classification."
+    },
+    {
+      "caseId": "l3-call-conflict",
+      "file": "cases/l3-call-conflict.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          373,
+          373
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that lets the internal target win over a valid external marker (or the reverse) instead of reporting the conflict."
+    },
+    {
+      "caseId": "l3-call-conflict-empty",
+      "file": "cases/l3-call-conflict-empty.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          373,
+          373
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that treats an empty calledElement as absent next to a valid marker, or refuses it as a dangling reference before classification."
+    },
+    {
+      "caseId": "l3-call-target-empty-draft",
+      "file": "cases/l3-call-target-empty-draft.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          375,
+          375
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that refuses an empty calledElement as reference-dangling before classification, or reports it at error severity in draft."
+    },
+    {
+      "caseId": "l3-call-target-empty-accept",
+      "file": "cases/l3-call-target-empty-accept.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          375,
+          375
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that keeps the draft warning at acceptance or classifies the empty target as required-missing."
+    },
+    {
+      "caseId": "l3-call-target-type",
+      "file": "cases/l3-call-target-type.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          377,
+          377
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that accepts any CallableElement as an internal call target or reports it as dangling."
+    },
+    {
+      "caseId": "l3-call-target-required-draft",
+      "file": "cases/l3-call-target-required-draft.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          379,
+          379
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that treats a targetless unmarked call as external, as an error in draft, or not at all."
+    },
+    {
+      "caseId": "l3-call-target-required-accept",
+      "file": "cases/l3-call-target-required-accept.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          379,
+          379
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that keeps the targetless unmarked call at warning severity for acceptance."
+    },
+    {
+      "caseId": "l3-call-source-doc-not-marker",
+      "file": "cases/l3-call-source-doc-not-marker.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          366,
+          366
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            368,
+            368
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            515,
+            515
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that recognizes the marker by its text without the exact configured textFormat."
+    },
+    {
+      "caseId": "l3-call-target-dangling-accept",
+      "file": "cases/l3-call-target-dangling-accept.json",
+      "group": "call-kind",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.1",
+        "lines": [
+          378,
+          378
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.2",
+          "lines": [
+            132,
+            132
+          ]
+        },
+        {
+          "section": "§6.4",
+          "lines": [
+            510,
+            510
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that refuses validate for a dangling calledElement, classifies it as incomplete or as a wrong target type, omits the integrity entry, or reports it at warning severity."
+    },
+    {
+      "caseId": "l3-path-disconnected-task-accept",
+      "file": "cases/l3-path-disconnected-task-accept.json",
+      "group": "ordinary-path",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§6.3",
+        "lines": [
+          501,
+          501
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.3",
+          "lines": [
+            499,
+            499
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            969,
+            969
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation whose external-call exemption also silences the disconnected ordinary Task, or that exempts every node once a linked external call exists."
+    },
+    {
+      "caseId": "l3-path-disconnected-task-draft",
+      "file": "cases/l3-path-disconnected-task-draft.json",
+      "group": "ordinary-path",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§6.3",
+        "lines": [
+          501,
+          501
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.3",
+          "lines": [
+            499,
+            499
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            969,
+            969
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that refuses or errors on an incomplete draft instead of reporting readiness warnings."
+    },
+    {
+      "caseId": "l3-path-gateway-without-incoming-accept",
+      "file": "cases/l3-path-gateway-without-incoming-accept.json",
+      "group": "ordinary-path",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§6.3",
+        "lines": [
+          501,
+          501
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.3",
+          "lines": [
+            499,
+            499
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            969,
+            969
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that checks only activities, or derives reachability from containment instead of resolved sourceRef->targetRef sequence flows."
+    },
+    {
+      "caseId": "l3-path-unreachable-component-accept",
+      "file": "cases/l3-path-unreachable-component-accept.json",
+      "group": "ordinary-path",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§6.3",
+        "lines": [
+          501,
+          501
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.3",
+          "lines": [
+            499,
+            499
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            969,
+            969
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that accepts a component able to reach End but unreachable from Start, or reports only its first node."
+    },
+    {
+      "caseId": "l3-path-cannot-reach-end-accept",
+      "file": "cases/l3-path-cannot-reach-end-accept.json",
+      "group": "ordinary-path",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§6.3",
+        "lines": [
+          501,
+          501
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.3",
+          "lines": [
+            499,
+            499
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            969,
+            969
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that checks reachability from Start only, or accepts a dead-end branch because another branch reaches End."
+    },
+    {
+      "caseId": "l3-path-incomplete-call-not-exempt-accept",
+      "file": "cases/l3-path-incomplete-call-not-exempt-accept.json",
+      "group": "ordinary-path",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§6.3",
+        "lines": [
+          501,
+          501
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.3",
+          "lines": [
+            499,
+            499
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            969,
+            969
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that extends the external-call exemption to a linked but unmarked, targetless call."
+    },
+    {
+      "caseId": "l3-path-unlinked-external-not-exempt-accept",
+      "file": "cases/l3-path-unlinked-external-not-exempt-accept.json",
+      "group": "ordinary-path",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§6.3",
+        "lines": [
+          501,
+          501
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.3",
+          "lines": [
+            499,
+            499
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            969,
+            969
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that exempts a recognized external call without any descriptive link; only recognized and linked calls are exempt."
+    },
+    {
+      "caseId": "l3-path-cross-container-flow-accept",
+      "file": "cases/l3-path-cross-container-flow-accept.json",
+      "group": "ordinary-path",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4",
+        "lines": [
+          347,
+          347
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.3",
+          "lines": [
+            501,
+            501
+          ]
+        },
+        {
+          "section": "§7.1",
+          "lines": [
+            544,
+            544
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "On the completed l3-c-topology tree, fails an implementation that accepts a SequenceFlow leaving its flow container, or lets that flow make Task_B reach an end event of another process."
+    },
+    {
+      "caseId": "l3-trig-single-trigger-accept",
+      "file": "cases/l3-trig-single-trigger-accept.json",
+      "group": "trigger-branch",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.2",
+        "lines": [
+          389,
+          389
+        ]
+      },
+      "cites": [
+        {
+          "section": "§16",
+          "lines": [
+            1158,
+            1158
+          ]
+        },
+        {
+          "section": "§2.2",
+          "lines": [
+            132,
+            132
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that requires a branch after a single incoming trigger."
+    },
+    {
+      "caseId": "l3-trig-downstream-branch-accept",
+      "file": "cases/l3-trig-downstream-branch-accept.json",
+      "group": "trigger-branch",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.2",
+        "lines": [
+          389,
+          389
+        ]
+      },
+      "cites": [
+        {
+          "section": "§16",
+          "lines": [
+            1158,
+            1158
+          ]
+        },
+        {
+          "section": "§2.2",
+          "lines": [
+            132,
+            132
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation of the stricter candidate (Start->ExclusiveGateway adjacency with named outgoing flows), which is disabled until expressly adopted; a downstream exclusive branch satisfies the ratified default."
+    },
+    {
+      "caseId": "l3-trig-no-branch-accept",
+      "file": "cases/l3-trig-no-branch-accept.json",
+      "group": "trigger-branch",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.2",
+        "lines": [
+          389,
+          389
+        ]
+      },
+      "cites": [
+        {
+          "section": "§16",
+          "lines": [
+            1158,
+            1158
+          ]
+        },
+        {
+          "section": "§2.2",
+          "lines": [
+            132,
+            132
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that accepts several triggers without any downstream exclusive branch at acceptance."
+    },
+    {
+      "caseId": "l3-trig-no-branch-draft",
+      "file": "cases/l3-trig-no-branch-draft.json",
+      "group": "trigger-branch",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.2",
+        "lines": [
+          389,
+          389
+        ]
+      },
+      "cites": [
+        {
+          "section": "§16",
+          "lines": [
+            1158,
+            1158
+          ]
+        },
+        {
+          "section": "§2.2",
+          "lines": [
+            132,
+            132
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that blocks drafts or reports the missing branch at error severity in draft."
+    },
+    {
+      "caseId": "l3-trig-parallel-only-accept",
+      "file": "cases/l3-trig-parallel-only-accept.json",
+      "group": "trigger-branch",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.2",
+        "lines": [
+          389,
+          389
+        ]
+      },
+      "cites": [
+        {
+          "section": "§16",
+          "lines": [
+            1158,
+            1158
+          ]
+        },
+        {
+          "section": "§2.2",
+          "lines": [
+            132,
+            132
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that counts a parallel gateway as the required exclusive branch."
+    },
+    {
+      "caseId": "l3-trig-normalize-no-invention",
+      "file": "cases/l3-trig-normalize-no-invention.json",
+      "group": "trigger-branch",
+      "operation": "normalize",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.2",
+        "lines": [
+          389,
+          389
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.2",
+          "lines": [
+            552,
+            552
+          ]
+        },
+        {
+          "section": "§2.4",
+          "lines": [
+            176,
+            176
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "N on a start event with two triggers and no branch must not insert a gateway, flows or choice names; it only creates the declared supports and one coalesced membership write, and keeps the situations text."
+    },
+    {
+      "caseId": "l3-io-complete-links-accept",
+      "file": "cases/l3-io-complete-links-accept.json",
+      "group": "io-links",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.3",
+        "lines": [
+          397,
+          400
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.3",
+          "lines": [
+            404,
+            404
+          ]
+        },
+        {
+          "section": "§6.3",
+          "lines": [
+            502,
+            502
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that requires links beyond the four evidenced relationships, treats the descriptive Associations as sequence flows, or flags a permitted link pair."
+    },
+    {
+      "caseId": "l3-io-missing-links-accept",
+      "file": "cases/l3-io-missing-links-accept.json",
+      "group": "io-links",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.3",
+        "lines": [
+          397,
+          400
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.3",
+          "lines": [
+            404,
+            404
+          ]
+        },
+        {
+          "section": "§6.3",
+          "lines": [
+            502,
+            502
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that fabricates endpoints, reports one finding for several missing links, or uses the draft severity at acceptance."
+    },
+    {
+      "caseId": "l3-io-missing-links-draft",
+      "file": "cases/l3-io-missing-links-draft.json",
+      "group": "io-links",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.3",
+        "lines": [
+          397,
+          400
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.3",
+          "lines": [
+            404,
+            404
+          ]
+        },
+        {
+          "section": "§6.3",
+          "lines": [
+            502,
+            502
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that blocks the draft or reports error severity for approved readiness rules in draft."
+    },
+    {
+      "caseId": "l3-io-wrong-direction-accept",
+      "file": "cases/l3-io-wrong-direction-accept.json",
+      "group": "io-links",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.3",
+        "lines": [
+          401,
+          401
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.3",
+          "lines": [
+            404,
+            404
+          ]
+        },
+        {
+          "section": "§6.3",
+          "lines": [
+            502,
+            502
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The supplier Association points from the DataInput to the external call: fails an implementation that ignores Association direction, counts the reversed link as the supplier, or reports only the readiness finding without the endpoint integrity error."
+    },
+    {
+      "caseId": "l3-io-wrong-direction-draft",
+      "file": "cases/l3-io-wrong-direction-draft.json",
+      "group": "io-links",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.3",
+        "lines": [
+          401,
+          401
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.3",
+          "lines": [
+            404,
+            404
+          ]
+        },
+        {
+          "section": "§6.3",
+          "lines": [
+            502,
+            502
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that downgrades the endpoint integrity error to a warning in draft (only readiness rules warn in draft)."
+    },
+    {
+      "caseId": "l3-io-endpoint-type-accept",
+      "file": "cases/l3-io-endpoint-type-accept.json",
+      "group": "io-links",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.3",
+        "lines": [
+          401,
+          401
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.3",
+          "lines": [
+            404,
+            404
+          ]
+        },
+        {
+          "section": "§6.3",
+          "lines": [
+            502,
+            502
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "An Association from an ordinary Task to the Process DataOutput: fails an implementation that accepts any Association to a DataOutput as a producer link, flags the valid data-association producer, or treats the gated external-producer candidate rule as covering an activity."
+    },
+    {
+      "caseId": "l3-io-link-owner-accept",
+      "file": "cases/l3-io-link-owner-accept.json",
+      "group": "io-links",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.3",
+        "lines": [
+          401,
+          401
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.3",
+          "lines": [
+            502,
+            502
+          ]
+        },
+        {
+          "section": "§4",
+          "lines": [
+            358,
+            358
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that checks link endpoint types but not ownership, accepts a trigger or supplier Association whose endpoint belongs to another process, or reports the two violations under one finding."
+    },
+    {
+      "caseId": "l3-io-link-owner-draft",
+      "file": "cases/l3-io-link-owner-draft.json",
+      "group": "io-links",
+      "operation": "validate",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§4.3",
+        "lines": [
+          401,
+          401
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.3",
+          "lines": [
+            502,
+            502
+          ]
+        },
+        {
+          "section": "§4",
+          "lines": [
+            358,
+            358
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that downgrades the cross-owner integrity errors to warnings in draft or blocks the draft validation itself."
+    },
+    {
+      "caseId": "l3-imp-remap-total",
+      "file": "cases/l3-imp-remap-total.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.1",
+          "lines": [
+            268,
+            268
+          ]
+        },
+        {
+          "section": "§10.1",
+          "lines": [
+            753,
+            753
+          ]
+        },
+        {
+          "section": "§8.1",
+          "lines": [
+            623,
+            623
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails a partial or sequential map application, a remap that misses calledElement, Lane.flowNodeRef, processRef, binding ownerId, DI bpmnElement or the called process's view plane, rewrites DI-own or surviving support IDs, keeps the input revision, or emits an idMap without the identity rows of unchanged elements."
+    },
+    {
+      "caseId": "l3-imp-remap-total-edit",
+      "file": "cases/l3-imp-remap-total-edit.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "refused:profile-open",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            921,
+            921
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1138,
+            1138
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Edit activation: the approved ID remap is still gated by OPEN-ID; fails an implementation that applies the remap in edit or refuses with another code than profile-open."
+    },
+    {
+      "caseId": "l3-imp-remap-unapproved",
+      "file": "cases/l3-imp-remap-unapproved.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "refused:operation-error",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            916,
+            916
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "The migration record carries no approval: fails an implementation that treats an ID remap as an implicit import normalization instead of refusing the invocation with operation-error."
+    },
+    {
+      "caseId": "l3-imp-remap-swap",
+      "file": "cases/l3-imp-remap-swap.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            288,
+            288
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that applies map entries one by one (the first rename collides with the second task) instead of building the total map first and applying it atomically."
+    },
+    {
+      "caseId": "l3-imp-remap-collision",
+      "file": "cases/l3-imp-remap-collision.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "refused:id-collision",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            288,
+            288
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that merges Task_1 into the existing unmapped Task_taken, overwrites it, or suffixes the result ID."
+    },
+    {
+      "caseId": "l3-imp-remap-duplicate-result",
+      "file": "cases/l3-imp-remap-duplicate-result.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "refused:id-collision",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            288,
+            288
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that accepts a non-injective map (two sources to one result) and keeps the last writer."
+    },
+    {
+      "caseId": "l3-imp-remap-unknown-source",
+      "file": "cases/l3-imp-remap-unknown-source.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "refused:reference-dangling",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.2",
+          "lines": [
+            132,
+            132
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "A map key naming no element of the document: fails an implementation that ignores the stale entry or reports a collision instead of refusing reference-dangling."
+    },
+    {
+      "caseId": "l3-imp-remap-target-grammar",
+      "file": "cases/l3-imp-remap-target-grammar.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "refused:profile-schema",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          290,
+          290
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            444,
+            444
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "A result ID outside the authoring subset: fails an implementation that accepts the invalid ID or normalizes it silently instead of refusing profile-schema."
+    },
+    {
+      "caseId": "l3-imp-remap-opaque",
+      "file": "cases/l3-imp-remap-opaque.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "refused:migration-reference-opaque",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§13",
+          "lines": [
+            916,
+            916
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that remaps around an opaque extension value without a pinned reference-free attestation, string-replaces inside it, or drops it."
+    },
+    {
+      "caseId": "l3-imp-remap-opaque-attested",
+      "file": "cases/l3-imp-remap-opaque-attested.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.1",
+          "lines": [
+            266,
+            266
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "With the attested reference-free property the remap proceeds and the opaque payload stays byte-identical even though it spells the old ID; fails an implementation that rewrites look-alike text or loses the extension value."
+    },
+    {
+      "caseId": "l3-imp-remap-dangling",
+      "file": "cases/l3-imp-remap-dangling.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.2",
+          "lines": [
+            132,
+            132
+          ]
+        },
+        {
+          "section": "§4.1",
+          "lines": [
+            378,
+            378
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "A dangling calledElement stays unchanged and is reported once as an observed reference-dangling entry while the migration succeeds (harmonization C2); fails an implementation that refuses, fetches or invents the target, rewrites the reference, or omits the observation."
+    },
+    {
+      "caseId": "l3-imp-remap-nonsubset-id",
+      "file": "cases/l3-imp-remap-nonsubset-id.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§3.2",
+        "lines": [
+          290,
+          290
+        ]
+      },
+      "cites": [
+        {
+          "section": "§5.2",
+          "lines": [
+            444,
+            444
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            921,
+            921
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that normalizes the accepted out-of-subset ID at edit time, refuses the approved explicit migration, or misses the flow reference to the remapped ID."
+    },
+    {
+      "caseId": "l3-imp-remap-qname",
+      "file": "cases/l3-imp-remap-qname.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§4.1",
+          "lines": [
+            378,
+            378
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that compares QName strings literally (missing tns:Process_sub_old), drops or rewrites the prefix, rewrites the external ext: reference, fetches it, refuses the migration, or omits the unsupported-namespace observation."
+    },
+    {
+      "caseId": "l3-imp-remap-owner",
+      "file": "cases/l3-imp-remap-owner.json",
+      "group": "import",
+      "operation": "remapIds",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.2",
+        "lines": [
+          444,
+          444
+        ]
+      },
+      "cites": [
+        {
+          "section": "§7.2",
+          "lines": [
+            565,
+            565
+          ]
+        },
+        {
+          "section": "§13",
+          "lines": [
+            921,
+            921
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Owner remap Process_A -> Process_R: fails an implementation that leaves binding ownerIds or the main processRef on the old ID, or reallocates the surviving Collaboration, main Participant and LaneSet from the new owner."
+    },
+    {
+      "caseId": "l3-imp-projection-out-of-base",
+      "file": "cases/l3-imp-projection-out-of-base.json",
+      "group": "import",
+      "operation": "importProjection",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§5.3",
+        "lines": [
+          450,
+          450
+        ]
+      },
+      "cites": [
+        {
+          "section": "§10.1",
+          "lines": [
+            755,
+            766
+          ]
+        },
+        {
+          "section": "§3.1",
+          "lines": [
+            268,
+            268
+          ]
+        }
+      ],
+      "runtimes": [
+        "js",
+        "python"
+      ],
+      "discriminates": "Fails an implementation that refuses the whole document because out-of-base types exist, keeps references to removed flows or to the removed item, removes the retained direct flow or the data association that keeps a retained source, keeps an emptied data-association shell or the Association to the removed gateway, or recomputes source pointers after removal (index 0 removed)."
+    },
+    {
+      "caseId": "l3-tx-incremental-draft",
+      "file": "cases/l3-tx-incremental-draft.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          632,
+          641
+        ]
+      },
+      "cites": [
+        {
+          "section": "§6.2",
+          "lines": [
+            474,
+            474
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1144,
+            1144
+          ]
+        },
+        {
+          "section": "§7.1",
+          "lines": [
+            544,
+            544
+          ]
+        },
+        {
+          "section": "§8.1",
+          "lines": [
+            595,
+            596
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that creates more than one history entry per command, recomputes IDs or reruns C/N on undo/redo, returns anything but the exact restored Snapshot/1 (envelope, presentation, selection, viewRevision), emits raw or intermediate change events, refuses incomplete drafts instead of reporting draft lint entries, or omits the C topology entries of each step."
+    },
+    {
+      "caseId": "l3-tx-batch-one-entry",
+      "file": "cases/l3-tx-batch-one-entry.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          632,
+          632
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.2",
+          "lines": [
+            641,
+            641
+          ]
+        },
+        {
+          "section": "§2.4",
+          "lines": [
+            158,
+            158
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that records one history entry per command of a batch, so a single undo would leave the first task behind, emits one callback per command, or runs C/N between the two commands."
+    },
+    {
+      "caseId": "l3-tx-cancelled",
+      "file": "cases/l3-tx-cancelled.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          629,
+          629
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.1",
+          "lines": [
+            604,
+            604
+          ]
+        },
+        {
+          "section": "§8.2",
+          "lines": [
+            633,
+            633
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that stages or commits a request whose signal is already aborted, rejects the Promise instead of returning operation-cancelled with the echoed identity and empty diagnostics, or emits a change event."
+    },
+    {
+      "caseId": "l3-tx-cancel-pending",
+      "file": "cases/l3-tx-cancel-pending.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          633,
+          633
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.1",
+          "lines": [
+            604,
+            604
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "The signal aborts after the request is accepted and staging began: fails an adapter that finishes the staged transaction, commits part of it, pushes a history entry, emits an event, or reports a code other than operation-cancelled."
+    },
+    {
+      "caseId": "l3-tx-dispose-no-leak",
+      "file": "cases/l3-tx-dispose-no-leak.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          635,
+          635
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.1",
+          "lines": [
+            604,
+            606
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that keeps delivering callbacks after dispose, resolves later calls successfully, rejects instead of returning canvas-disposed, fabricates an identity echo after disposal, or keeps a subscription usable after disposal."
+    },
+    {
+      "caseId": "l3-tx-dispose-pending",
+      "file": "cases/l3-tx-dispose-pending.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.1",
+        "lines": [
+          604,
+          604
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.2",
+          "lines": [
+            635,
+            635
+          ]
+        },
+        {
+          "section": "§8.1",
+          "lines": [
+            619,
+            619
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Disposal while a transaction is staging: fails an adapter that commits the pending transaction, emits a success event, leaves the guard in staging, or answers anything but canvas-disposed afterwards."
+    },
+    {
+      "caseId": "l3-tx-reentrant-refused",
+      "file": "cases/l3-tx-reentrant-refused.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          635,
+          635
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.2",
+          "lines": [
+            632,
+            632
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that executes an external native modeling command arriving while the root transaction is applying (nested stack execution), opens a second transaction, or lets the injected label change into the committed tree."
+    },
+    {
+      "caseId": "l3-tx-guard-recovery",
+      "file": "cases/l3-tx-guard-recovery.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          635,
+          635
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.1",
+          "lines": [
+            604,
+            604
+          ]
+        },
+        {
+          "section": "§10.1",
+          "lines": [
+            735,
+            735
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "An internal exception while applying: fails an adapter that rejects instead of returning operation-error after rollback, drops the attempted candidate lint entries from the refusal report, commits part of the stage, or leaves the guard in applying so that the next command refuses transaction-reentrant."
+    },
+    {
+      "caseId": "l3-tx-refusal-preserves",
+      "file": "cases/l3-tx-refusal-preserves.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          633,
+          633
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.2",
+          "lines": [
+            288,
+            288
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that suffixes or overwrites on a computed ID collision, commits a partial stage, pushes a history entry, or emits a change event for a refused command."
+    },
+    {
+      "caseId": "l3-tx-io-set-selection-required",
+      "file": "cases/l3-tx-io-set-selection-required.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          547,
+          547
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.3",
+          "lines": [
+            651,
+            651
+          ]
+        },
+        {
+          "section": "§16",
+          "lines": [
+            1154,
+            1154
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter or C that silently appends the new input to the first set when several sets exist; the command refuses with io-set-selection-required, no lint stage ran (empty report) and tree, history and callbacks stay untouched."
+    },
+    {
+      "caseId": "l3-tx-io-set-explicit-selection",
+      "file": "cases/l3-tx-io-set-explicit-selection.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.1",
+        "lines": [
+          547,
+          547
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.2",
+          "lines": [
+            641,
+            641
+          ]
+        },
+        {
+          "section": "§8.3",
+          "lines": [
+            651,
+            651
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that ignores the explicitly selected InputSet_2 (appending to InputSet_1 or to both), or whose undo/redo does not restore the exact sets and presentation."
+    },
+    {
+      "caseId": "l3-tx-di-only-move",
+      "file": "cases/l3-tx-di-only-move.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          630,
+          631
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.1",
+          "lines": [
+            268,
+            268
+          ]
+        },
+        {
+          "section": "§8.2",
+          "lines": [
+            641,
+            641
+          ]
+        },
+        {
+          "section": "§8.1.1",
+          "lines": [
+            610,
+            612
+          ]
+        },
+        {
+          "section": "§9.2",
+          "lines": [
+            690,
+            690
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that skips a drag because semanticRevision is unchanged, changes semanticRevision for a DI-only move, moves the task by another delta or other shapes too, drops the selection, creates zero or two history entries, or whose undo does not restore the exact archived Snapshot/1 including viewRevision."
+    },
+    {
+      "caseId": "l3-tx-corrected-noop",
+      "file": "cases/l3-tx-corrected-noop.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          641,
+          641
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.2",
+          "lines": [
+            631,
+            631
+          ]
+        },
+        {
+          "section": "§9.4",
+          "lines": [
+            723,
+            723
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "A nonzero drag of the anchored reference is corrected back to its region position: fails an adapter that keeps the dragged geometry, records a history entry, changes the view revision, emits a change event, or reports no correction notice for a gesture with no final semantic or visual difference."
+    },
+    {
+      "caseId": "l3-tx-theme-history",
+      "file": "cases/l3-tx-theme-history.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          643,
+          643
+        ]
+      },
+      "cites": [
+        {
+          "section": "§3.1",
+          "lines": [
+            264,
+            264
+          ]
+        },
+        {
+          "section": "§9.2",
+          "lines": [
+            690,
+            690
+          ]
+        },
+        {
+          "section": "§14.3",
+          "lines": [
+            967,
+            967
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that records the theme switch as a semantic history entry (undo would revert the theme instead of the task), replays native history to capture the theme snapshot (extra callbacks), changes semanticRevision on a theme switch, or whose undo does not keep the current theme with the restored layout and selection (exact viewRevision)."
+    },
+    {
+      "caseId": "l3-tx-delete-support-undo",
+      "file": "cases/l3-tx-delete-support-undo.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§7.2",
+        "lines": [
+          565,
+          565
+        ]
+      },
+      "cites": [
+        {
+          "section": "§2.4",
+          "lines": [
+            171,
+            171
+          ]
+        },
+        {
+          "section": "§8.2",
+          "lines": [
+            641,
+            641
+          ]
+        },
+        {
+          "section": "§7.3",
+          "lines": [
+            571,
+            571
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter whose N run after the deletion resurrects the reserved lane, that keeps the binding of the deleted lane, removes the empty bound lane set, or whose undo does not restore the actual deleted lane ID, binding and presentation."
+    },
+    {
+      "caseId": "l3-tx-stale-revision",
+      "file": "cases/l3-tx-stale-revision.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          629,
+          629
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.1",
+          "lines": [
+            587,
+            596
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that applies a command or an undo against a stale semantic or view revision, rebases it silently, or refuses with a code other than operation-error (harmonization C10)."
+    },
+    {
+      "caseId": "l3-tx-empty-history",
+      "file": "cases/l3-tx-empty-history.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          641,
+          641
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.1",
+          "lines": [
+            595,
+            596
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that answers undo or redo on an empty history with ok, a no-op snapshot or a rejected Promise instead of operation-error (harmonization C10)."
+    },
+    {
+      "caseId": "l3-tx-bare-recipe-refused",
+      "file": "cases/l3-tx-bare-recipe-refused.json",
+      "group": "transaction",
+      "operation": "transaction-script",
+      "expectedStatus": "ok",
+      "clause": {
+        "section": "§8.2",
+        "lines": [
+          635,
+          635
+        ]
+      },
+      "cites": [
+        {
+          "section": "§8.3",
+          "lines": [
+            657,
+            659
+          ]
+        }
+      ],
+      "runtimes": [
+        "js"
+      ],
+      "discriminates": "Fails an adapter that executes a bare recipe command or an unlisted upstream entry as a second recipe authority instead of refusing transaction-entry-unsupported (harmonization C8)."
+    }
+  ]
+}

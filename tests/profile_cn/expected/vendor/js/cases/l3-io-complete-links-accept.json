@@ -1,0 +1,516 @@
+{
+  "caseId": "l3-io-complete-links-accept",
+  "operation": "validate",
+  "phase": "post-normalize",
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Interface links",
+              "isExecutable": false,
+              "ioSpecification": {
+                "$type": "bpmn:InputOutputSpecification",
+                "dataInputs": [
+                  {
+                    "$type": "bpmn:DataInput",
+                    "id": "DataInput_In",
+                    "name": "Request"
+                  }
+                ],
+                "dataOutputs": [
+                  {
+                    "$type": "bpmn:DataOutput",
+                    "id": "DataOutput_Out",
+                    "name": "Answer"
+                  }
+                ],
+                "inputSets": [
+                  {
+                    "$type": "bpmn:InputSet",
+                    "id": "InputSet_IO",
+                    "dataInputRefs": [
+                      "DataInput_In"
+                    ]
+                  }
+                ],
+                "outputSets": [
+                  {
+                    "$type": "bpmn:OutputSet",
+                    "id": "OutputSet_IO",
+                    "dataOutputRefs": [
+                      "DataOutput_Out"
+                    ]
+                  }
+                ]
+              },
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_IO",
+                  "name": "Start",
+                  "outgoing": [
+                    "Flow_IO1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_Use",
+                  "name": "Use request",
+                  "incoming": [
+                    "Flow_IO1"
+                  ],
+                  "outgoing": [
+                    "Flow_IO2"
+                  ],
+                  "properties": [
+                    {
+                      "$type": "bpmn:Property",
+                      "id": "Property_Use"
+                    }
+                  ],
+                  "dataInputAssociations": [
+                    {
+                      "$type": "bpmn:DataInputAssociation",
+                      "id": "DIA_In",
+                      "sourceRef": [
+                        "DataInput_In"
+                      ],
+                      "targetRef": "Property_Use"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_Make",
+                  "name": "Make answer",
+                  "incoming": [
+                    "Flow_IO2"
+                  ],
+                  "outgoing": [
+                    "Flow_IO3"
+                  ],
+                  "properties": [
+                    {
+                      "$type": "bpmn:Property",
+                      "id": "Property_Make"
+                    }
+                  ],
+                  "dataOutputAssociations": [
+                    {
+                      "$type": "bpmn:DataOutputAssociation",
+                      "id": "DOA_Out",
+                      "sourceRef": [
+                        "Property_Make"
+                      ],
+                      "targetRef": "DataOutput_Out"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_IO",
+                  "name": "End",
+                  "incoming": [
+                    "Flow_IO3"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_IO1",
+                  "sourceRef": "Start_IO",
+                  "targetRef": "Task_Use"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_IO2",
+                  "sourceRef": "Task_Use",
+                  "targetRef": "Task_Make"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_IO3",
+                  "sourceRef": "Task_Make",
+                  "targetRef": "End_IO"
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_P",
+                  "name": "Partner",
+                  "incoming": [],
+                  "outgoing": [],
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "external",
+                      "textFormat": "text/x-neutral-call-kind"
+                    }
+                  ]
+                }
+              ],
+              "artifacts": [
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_PT",
+                  "sourceRef": "Call_P",
+                  "targetRef": "Start_IO",
+                  "associationDirection": "One"
+                },
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_Sup",
+                  "sourceRef": "Call_P",
+                  "targetRef": "DataInput_In",
+                  "associationDirection": "One"
+                },
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_Con",
+                  "sourceRef": "DataOutput_Out",
+                  "targetRef": "Call_P",
+                  "associationDirection": "One"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "8952919048dffa61150bcf7e685b6fab64681959d7da2d2c33059769faa257ce"
+      }
+    },
+    {
+      "role": "options",
+      "json": {
+        "phase": "post-normalize",
+        "readinessPolicy": "accept"
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "operation": "validate",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "baseRevision": "8952919048dffa61150bcf7e685b6fab64681959d7da2d2c33059769faa257ce",
+        "revision": "8952919048dffa61150bcf7e685b6fab64681959d7da2d2c33059769faa257ce",
+        "report": {
+          "reportVersion": "2",
+          "operation": "validate",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "inputRevision": "8952919048dffa61150bcf7e685b6fab64681959d7da2d2c33059769faa257ce",
+          "outputRevision": "8952919048dffa61150bcf7e685b6fab64681959d7da2d2c33059769faa257ce",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "ok": true,
+          "counts": {
+            "info": 0,
+            "warn": 0,
+            "error": 0
+          }
+        }
+      }
+    },
+    {
+      "role": "caller-state",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Interface links",
+              "isExecutable": false,
+              "ioSpecification": {
+                "$type": "bpmn:InputOutputSpecification",
+                "dataInputs": [
+                  {
+                    "$type": "bpmn:DataInput",
+                    "id": "DataInput_In",
+                    "name": "Request"
+                  }
+                ],
+                "dataOutputs": [
+                  {
+                    "$type": "bpmn:DataOutput",
+                    "id": "DataOutput_Out",
+                    "name": "Answer"
+                  }
+                ],
+                "inputSets": [
+                  {
+                    "$type": "bpmn:InputSet",
+                    "id": "InputSet_IO",
+                    "dataInputRefs": [
+                      "DataInput_In"
+                    ]
+                  }
+                ],
+                "outputSets": [
+                  {
+                    "$type": "bpmn:OutputSet",
+                    "id": "OutputSet_IO",
+                    "dataOutputRefs": [
+                      "DataOutput_Out"
+                    ]
+                  }
+                ]
+              },
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_IO",
+                  "name": "Start",
+                  "outgoing": [
+                    "Flow_IO1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_Use",
+                  "name": "Use request",
+                  "incoming": [
+                    "Flow_IO1"
+                  ],
+                  "outgoing": [
+                    "Flow_IO2"
+                  ],
+                  "properties": [
+                    {
+                      "$type": "bpmn:Property",
+                      "id": "Property_Use"
+                    }
+                  ],
+                  "dataInputAssociations": [
+                    {
+                      "$type": "bpmn:DataInputAssociation",
+                      "id": "DIA_In",
+                      "sourceRef": [
+                        "DataInput_In"
+                      ],
+                      "targetRef": "Property_Use"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_Make",
+                  "name": "Make answer",
+                  "incoming": [
+                    "Flow_IO2"
+                  ],
+                  "outgoing": [
+                    "Flow_IO3"
+                  ],
+                  "properties": [
+                    {
+                      "$type": "bpmn:Property",
+                      "id": "Property_Make"
+                    }
+                  ],
+                  "dataOutputAssociations": [
+                    {
+                      "$type": "bpmn:DataOutputAssociation",
+                      "id": "DOA_Out",
+                      "sourceRef": [
+                        "Property_Make"
+                      ],
+                      "targetRef": "DataOutput_Out"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_IO",
+                  "name": "End",
+                  "incoming": [
+                    "Flow_IO3"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_IO1",
+                  "sourceRef": "Start_IO",
+                  "targetRef": "Task_Use"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_IO2",
+                  "sourceRef": "Task_Use",
+                  "targetRef": "Task_Make"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_IO3",
+                  "sourceRef": "Task_Make",
+                  "targetRef": "End_IO"
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_P",
+                  "name": "Partner",
+                  "incoming": [],
+                  "outgoing": [],
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "external",
+                      "textFormat": "text/x-neutral-call-kind"
+                    }
+                  ]
+                }
+              ],
+              "artifacts": [
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_PT",
+                  "sourceRef": "Call_P",
+                  "targetRef": "Start_IO",
+                  "associationDirection": "One"
+                },
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_Sup",
+                  "sourceRef": "Call_P",
+                  "targetRef": "DataInput_In",
+                  "associationDirection": "One"
+                },
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_Con",
+                  "sourceRef": "DataOutput_Out",
+                  "targetRef": "Call_P",
+                  "associationDirection": "One"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "8952919048dffa61150bcf7e685b6fab64681959d7da2d2c33059769faa257ce"
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-1/lot3",
+    "source-preservation/lot3",
+    "profile-c14n/2"
+  ]
+}
