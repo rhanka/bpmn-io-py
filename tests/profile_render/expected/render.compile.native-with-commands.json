@@ -2,7 +2,7 @@
   "case": "render.compile.native-with-commands",
   "clause": "DESIGN R3.3 \u00a72.4.1 schema authority; \u00a79.3 glyph shape conditionals",
   "witness": "native glyph with commands is a schema violation",
-  "derivation": "The pinned schema requires empty commands for kind native (if/then maxItems 0); schema validation precedes compilation, so load_profile refuses profile-schema.",
+  "derivation": "The pinned schema requires empty commands for kind native (if/then maxItems 0); schema validation precedes compilation, so load_profile refuses profile-schema. Parity sync PS-25: a compileProfile refusal is the PureResult record {status, code, diagnostics: []} (DESIGN \u00a710.1 L737); compile refusals carry no diagnostic.",
   "operation": "compileProfile",
   "input": {
     "profile": {
@@ -26,7 +26,8 @@
   },
   "expected": {
     "status": "refused",
-    "code": "profile-schema"
+    "code": "profile-schema",
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

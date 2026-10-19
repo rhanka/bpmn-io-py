@@ -125,11 +125,16 @@ profile `exports[].format` value; `pinned_writer_options` is an
 
 Errata against `spec/SPEC_PROFILE_MECHANISM_PY.md` §6 (each justified):
 
-1. `prepare_export` options are exactly `{format, themeId, overrides, diStyles,
-   importedDi}`. DESIGN §8.1 lists `{format, themeId, overrides, diStyles,
-   signal?}`: Python is synchronous (no `signal`; an extra member refuses
-   `operation-error`), and the headless adapter takes its geometry from the
-   archived imported DI (§4.3), which the JS canvas reads from its live modeler.
+1. `prepare_export` options are the closed record `{format, themeId, overrides,
+   diStyles, importedDi?}` (block-B parity sync PS-34). DESIGN §8.1 lists `{format,
+   themeId, overrides, diStyles, signal?}`. `importedDi` (the Snapshot/1
+   `importedDi` record) is the geometry source of a headless adapter: the Python DI
+   adapter (§4.3) needs it at the layout stage, which the JS canvas serves from its
+   live modeler; when it is absent there, the preparation refuses
+   `operation-error` at that stage, never earlier (§12). `signal?` is a JS-only
+   runtime member, never written in a corpus file; Python is synchronous, so
+   `signal` is an unknown member there and refuses `operation-error` at the
+   options stage (runtime-specific, §17.5).
 2. `compute_layout`, `layout`, `layout_regions`, `layout_ticks` and
    `check_theme_switch` have no DESIGN ABI name. `layout`, `layout_regions`,
    `layout_ticks` and `check_theme_switch` are the shared seams of harmonization
@@ -207,7 +212,13 @@ echoes); `serializePrepared` echoes the preparation's `profileIdentity` and
 executed before the refusal (`[]` when none ran; never change entries: there is no
 candidate); `diagnostics` equals `report.entries`; `report.idMap` and
 `report.artifacts` are `[]`. PureResult refusals are `{status:"refused", code,
-diagnostics:[]}` for every lot-4 helper.
+diagnostics:[]}` for every lot-4 helper and for `compileProfile` (load then
+compile; block-B parity sync PS-25: compile refusals carry no diagnostic).
+`compileProfile` success is the PureResult `{status:"ok", payload,
+diagnostics:[]}`; its `payload` (the CompiledProfile) has no closed wire shape and
+is UNSEALED (`/payload`), and no compiled identity is sealed in lot 4 (parity sync
+PS-35; when a seal pins the §5.1 compiled identity it is a separate
+`compiled-identity` artifact).
 
 ### 3.5 Revisions
 
@@ -722,10 +733,14 @@ renderBinding.profileDigest` and `descriptorDigest(profileIdentity.descriptors) 
 renderBinding.descriptorDigest` (harmonization K15), else `render-stale`.
 
 Result: `profileIdentity` = `prepared.profileIdentity`, `baseRevision = revision =
-prepared.semanticRevision`, `report` with that identity/revision header, no entry,
-`idMap = prepared.idMap` and `artifacts = [{format, capability, digest: B(bytes),
-entryIndexes: []}]`; payload `{format, bytes, digest: B(bytes), idMap:
-prepared.idMap, capability: prepared.capability}`.
+prepared.semanticRevision`, `report` with that identity/revision header, `entries =
+prepared.report.entries` (unchanged, in their `profile-report/2` order), `idMap =
+prepared.idMap` and `artifacts = [{format, capability, digest: B(bytes),
+entryIndexes: [0, …, len(entries) − 1]}]`; payload `{format, bytes, digest:
+B(bytes), idMap: prepared.idMap, capability: prepared.capability}` (block-B parity
+sync PS-26: the download context carries the full report, DESIGN §8.1.1; every
+loss stays reachable through `entryIndexes`, §10.1; downloads consume the Result
+directly, §10.2).
 
 `drawio/1` structural contract (DESIGN R3.3 fixes no draw.io bytes: structural
 until engine goldens, OPEN-EXPORT-EVIDENCE): UTF-8 without BOM; newline per the
@@ -754,10 +769,12 @@ case harness passes an observer and compares the sealed `trace` (§17.4).
 
 Stages, in this order, each run exactly once on a staged deep copy:
 
-1. `options`: closed record `{format, themeId, overrides, diStyles, importedDi}`
-   (an unknown or missing member refuses `operation-error`); `format` declared in
-   `exports[]` with a registered adapter (else `export-format-unsupported`);
-   `themeId` resolvable (id or alias, else `render-stale`) (harmonization C18).
+1. `options`: closed record `{format, themeId, overrides, diStyles, importedDi?}`
+   (an unknown member, or a missing `format`, `themeId`, `overrides` or
+   `diStyles`, refuses `operation-error`; an absent `importedDi` is not checked
+   here, parity sync PS-34); `format` declared in `exports[]` with a registered
+   adapter (else `export-format-unsupported`); `themeId` resolvable (id or alias,
+   else `render-stale`) (harmonization C18).
 2. `compatibility` (as §4.2.1). 3. `graph`: the lot-3 envelope and graph checks
    (`create_read_context(compiled, staged, stage="load")`: block-A
    `validate_envelope`, duplicate ids, unclassified members, dangling or
@@ -767,9 +784,10 @@ Stages, in this order, each run exactly once on a staged deep copy:
    8. `layout`: every placement region must have a bound support or be an attachment
    region (§4.4), else `profile-open` (a missing support invokes gated N, never
    layout-created semantics; support creation is disabled while OPEN-RESERVED-N's
-   technical gate is open, DESIGN §9.4; harmonization C13); then
-   `compute_layout(compiled, staged, placements, options.importedDi,
-   theme_id=options.themeId)`. 9. `post-layout` lint on the staged tree hydrated
+   technical gate is open, DESIGN §9.4; harmonization C13); then an absent
+   `options.importedDi` refuses `operation-error` (the Python adapter has no other
+   geometry source; parity sync PS-34); then `compute_layout(compiled, staged,
+   placements, options.importedDi, theme_id=options.themeId)`. 9. `post-layout` lint on the staged tree hydrated
    with BPMNDI derived from the Layout/1 (per page a BPMNDiagram whose plane names
    `semanticRootId`; one BPMNShape per non-edge geometry record with `semanticId`
    and one BPMNEdge per edge record, ticks / 1000 as DI units). 10. `release` lint.
@@ -916,8 +934,10 @@ asset_bag={"neutral-metrics.json": <bytes>}, capabilities=profile.capabilities)`
 create_descriptor_context([{**pin, "descriptorBytes": <package bytes>} for pin in
 profile.descriptors])`; `compiled = compile_profile(validated,
 registry_from_json(<neutral-registry.json>), descriptor_context=context,
-base=json.loads(<base package bytes>))`. A `compileProfile` case compares only
-`status` (and `code`): block-A compile diagnostics are not lot-4 values.
+base=json.loads(<base package bytes>))`. A `compileProfile` case compares the
+PureResult record of §3.4: `{status:"refused", code, diagnostics:[]}`, or
+`{status:"ok", diagnostics:[]}` with `/payload` UNSEALED (block-B parity sync
+PS-25, PS-35).
 
 ### 17.3 Inputs
 
@@ -947,9 +967,10 @@ base=json.loads(<base package bytes>))`. A `compileProfile` case compares only
 ### 17.4 Comparison
 
 `expected` is the complete wire record of the result (`result.to_json()` for
-Result/1 and PureResult; `{status}`/`{status, code}` for `compileProfile`; for
-`mapExportSequence`, `{status:"sequence", steps:[<one record per call>]}`), plus
-these harness members, which are not part of the wire record:
+Result/1 and PureResult, `compileProfile` included: §3.4, with `/payload`
+UNSEALED on success; for `mapExportSequence`, `{status:"sequence", steps:[<one
+record per call>]}`), plus these harness members, which are not part of the wire
+record:
 
 - `unsealed`: RFC 6901 pointers (relative to the result record) removed from the
   actual result before comparison (and from the expected record when present);
@@ -984,10 +1005,15 @@ Parity cases (shared seams and DESIGN ABI operations, published for the JS twin)
 `render.compile.*`, `render.digest.*`, `render.fresh.*`, `render.r.*`,
 `render.template.*`, `render.legacy.*`, `render.regions.*`, `render.ticks.*`,
 `render.switch.*`, `render.base.*`, `export.compile.*`, `export.map.*`,
-`export.serialize.*`, `export.prepare.*`. Runtime-specific: `render.layout.*` (DI
-transcription; their region outcomes are re-expressed as `render.regions.*` and
-`render.base.*` cases), `render.text.*` (harmonization K17), `export.legacy.*`
-(per-library code inventories, shared rule).
+`export.serialize.*`, `export.prepare.*` except the three below. Runtime-specific:
+`render.layout.*` (DI transcription; their region outcomes are re-expressed as
+`render.regions.*` and `render.base.*` cases), `render.text.*` (harmonization K17),
+`export.legacy.*` (per-library code inventories, shared rule),
+`export.prepare.success` and `export.prepare.repairable-pre-normalize` (their
+layout stage runs through the Python DI transcription, harmonization K18) and
+`export.prepare.options-unknown-member` (its unknown member `signal` is a JS
+runtime member, §2 erratum 1) — block-B parity sync PS-36. Preparation refusals
+before the layout stage and the layout-stage support pre-check stay parity cases.
 
 Every parity case is also published as one `profile-parity-corpus/1` record
 (DESIGN §14.3; harmonization A1–A3, A5) under `tests/profile_render/expected/parity/`:

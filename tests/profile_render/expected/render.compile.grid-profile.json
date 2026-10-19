@@ -2,7 +2,7 @@
   "case": "render.compile.grid-profile",
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "the second neutral profile with its header-band glyph and synthetic side stripe compiles",
-  "derivation": "neutral-grid-profile.json unpatched: header-band headerHeight 12 is a nonnegative integer, every token matches its signature.",
+  "derivation": "neutral-grid-profile.json unpatched: header-band headerHeight 12 is a nonnegative integer, every token matches its signature. Parity sync PS-35: compileProfile success is the PureResult {status: ok, payload, diagnostics: []} (DESIGN \u00a710.1 L737); the CompiledProfile payload has no closed wire shape and is UNSEALED (/payload); no compiled identity is sealed here.",
   "operation": "compileProfile",
   "input": {
     "profile": {
@@ -11,7 +11,11 @@
     }
   },
   "expected": {
-    "status": "ok"
+    "status": "ok",
+    "diagnostics": [],
+    "unsealed": [
+      "/payload"
+    ]
   },
   "author": "spec-seal"
 }

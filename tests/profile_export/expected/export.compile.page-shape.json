@@ -2,7 +2,7 @@
   "case": "export.compile.page-shape",
   "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
   "witness": "page.shape cannot pass",
-  "derivation": "export-pages adds field shape: not in the page vocabulary, profile-export-field.",
+  "derivation": "export-pages adds field shape: not in the page vocabulary, profile-export-field. Parity sync PS-25: a compileProfile refusal is the PureResult record {status, code, diagnostics: []} (DESIGN \u00a710.1 L737); compile refusals carry no diagnostic.",
   "operation": "compileProfile",
   "input": {
     "profile": {
@@ -24,7 +24,8 @@
   },
   "expected": {
     "status": "refused",
-    "code": "profile-export-field"
+    "code": "profile-export-field",
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

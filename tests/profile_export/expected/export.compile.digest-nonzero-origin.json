@@ -2,7 +2,7 @@
   "case": "export.compile.digest-nonzero-origin",
   "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
   "witness": "non-counter policies require counterOrigin zero",
-  "derivation": "idPolicy digest with counterOrigin 5: profile-type.",
+  "derivation": "idPolicy digest with counterOrigin 5: profile-type. Parity sync PS-25: a compileProfile refusal is the PureResult record {status, code, diagnostics: []} (DESIGN \u00a710.1 L737); compile refusals carry no diagnostic.",
   "operation": "compileProfile",
   "input": {
     "profile": {
@@ -23,7 +23,8 @@
   },
   "expected": {
     "status": "refused",
-    "code": "profile-type"
+    "code": "profile-type",
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

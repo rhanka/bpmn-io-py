@@ -2,7 +2,7 @@
   "case": "export.serialize.drawio-grid-fixture",
   "clause": "DESIGN R3.3 \u00a710.1 serializePrepared; \u00a710.2 OPEN-EXPORT-EVIDENCE",
   "witness": "a node parented to another node keeps that parent in the serialized cells",
-  "derivation": "prepared = export.map.grid-fixture payload (writer = grid exports[0].serializer): diagram e_10 First sheet with cells e_12 'First on first' (layer) and e_13 'Last on first' parented to e_12 in IR emission order (e_12 then e_13 after the other page's node); diagram e_11 Second sheet with e_14 'Second view'. DESIGN R3.3 fixes no draw.io bytes (structural until engine goldens, OPEN-EXPORT-EVIDENCE), so the payload bytes and digest are UNSEALED and checked structurally with the shared drawio-structure/1 projection (harmonization L3): one diagram per IR page in IR order with id and name; inside each, every mxCell with vertex='1' or edge='1' in document order as {id, kind, parent, value?, source?, target?} (parent equal to the diagram layer cell written $layer; a node carries its IR name as value, an edge its IR name and endpoints, a label record is a vertex whose value is its text); byte invariants UTF-8 without BOM, no CR (newline LF), no compression (none), no paired empty element (short), digest = B(bytes); a second call returns identical bytes. Geometry and style attributes are not compared (DESIGN R3.3 pins no draw.io unit or style mapping). The Result echoes the preparation identity and revision; its report carries the idMap and one artifact record whose digest is B(bytes).",
+  "derivation": "prepared = export.map.grid-fixture payload (writer = grid exports[0].serializer): diagram e_10 First sheet with cells e_12 'First on first' (layer) and e_13 'Last on first' parented to e_12 in IR emission order (e_12 then e_13 after the other page's node); diagram e_11 Second sheet with e_14 'Second view'. DESIGN R3.3 fixes no draw.io bytes (structural until engine goldens, OPEN-EXPORT-EVIDENCE), so the payload bytes and digest are UNSEALED and checked structurally with the shared drawio-structure/1 projection (harmonization L3): one diagram per IR page in IR order with id and name; inside each, every mxCell with vertex='1' or edge='1' in document order as {id, kind, parent, value?, source?, target?} (parent equal to the diagram layer cell written $layer; a node carries its IR name as value, an edge its IR name and endpoints, a label record is a vertex whose value is its text); byte invariants UTF-8 without BOM, no CR (newline LF), no compression (none), no paired empty element (short), digest = B(bytes); a second call returns identical bytes. Geometry and style attributes are not compared (DESIGN R3.3 pins no draw.io unit or style mapping). The Result echoes the preparation identity and revision; its report carries the prepared report entries and idMap and one artifact record whose digest is B(bytes) and whose entryIndexes list every entry (parity sync PS-26: the download context carries the full report, DESIGN \u00a78.1.1 L621; every loss stays reachable through entryIndexes, \u00a710.1 L753; downloads consume the Result directly, \u00a710.2 L803).",
   "operation": "serializePrepared",
   "input": {
     "prepared": {
@@ -452,7 +452,89 @@
       },
       "inputRevision": "0292b602496b92003f9a4129ada522b9dd2a57e623a322d3ee1edee9f996eccc",
       "outputRevision": "0292b602496b92003f9a4129ada522b9dd2a57e623a322d3ee1edee9f996eccc",
-      "entries": [],
+      "entries": [
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0",
+            "targetId": "Task_B",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "A-page",
+          "occurrenceKey": "a-last-page",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0",
+            "targetId": "Task_B",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Z-page",
+          "occurrenceKey": "z-last",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1",
+            "targetId": "Task_A",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Z-page",
+          "occurrenceKey": "a-first",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        }
+      ],
       "rawStandardFindings": [],
       "idMap": [
         {
@@ -493,7 +575,11 @@
         {
           "format": "drawio",
           "capability": "structural",
-          "entryIndexes": []
+          "entryIndexes": [
+            0,
+            1,
+            2
+          ]
         }
       ]
     },

@@ -2,7 +2,7 @@
   "case": "render.compile.viewbox-negative-height",
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "path glyph viewBox needs a positive height",
-  "derivation": "Added path glyph with viewBox [0,0,24,-24] and valid commands: CR-09 refuses profile-glyph-shape.",
+  "derivation": "Added path glyph with viewBox [0,0,24,-24] and valid commands: CR-09 refuses profile-glyph-shape. Parity sync PS-25: a compileProfile refusal is the PureResult record {status, code, diagnostics: []} (DESIGN \u00a710.1 L737); compile refusals carry no diagnostic.",
   "operation": "compileProfile",
   "input": {
     "profile": {
@@ -47,7 +47,8 @@
   },
   "expected": {
     "status": "refused",
-    "code": "profile-glyph-shape"
+    "code": "profile-glyph-shape",
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

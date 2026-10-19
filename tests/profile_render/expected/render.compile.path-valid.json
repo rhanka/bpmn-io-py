@@ -2,7 +2,7 @@
   "case": "render.compile.path-valid",
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "path glyph with M, L, C, Q, Z of the right arities and a positive viewBox compiles",
-  "derivation": "Every DESIGN path condition holds (positive viewBox, nonempty commands, M/L two, C six, Q four, Z zero values); compilation succeeds.",
+  "derivation": "Every DESIGN path condition holds (positive viewBox, nonempty commands, M/L two, C six, Q four, Z zero values); compilation succeeds. Parity sync PS-35: compileProfile success is the PureResult {status: ok, payload, diagnostics: []} (DESIGN \u00a710.1 L737); the CompiledProfile payload has no closed wire shape and is UNSEALED (/payload); no compiled identity is sealed here.",
   "operation": "compileProfile",
   "input": {
     "profile": {
@@ -66,7 +66,11 @@
     }
   },
   "expected": {
-    "status": "ok"
+    "status": "ok",
+    "diagnostics": [],
+    "unsealed": [
+      "/payload"
+    ]
   },
   "author": "spec-seal"
 }
