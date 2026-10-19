@@ -69,30 +69,9 @@ def _vendored_cases() -> list[Path]:
     return records
 
 
-def _needs_lot3_prepare(case: dict) -> bool:
-    """Return whether a prepareExport case runs past the compatibility stage."""
-    trace = case.get("expected", {}).get("trace", [])
-    return isinstance(trace, list) and any(
-        stage not in ("options", "compatibility") for stage in trace
-    )
-
-
-def _prepare_marks(path: Path) -> list[pytest.Mark]:
-    """Mark lot-3-blocked prepareExport cases (removed at integration)."""
-    if path.stem.startswith("export.prepare."):
-        case = json.loads(path.read_text(encoding="utf-8"))
-        if _needs_lot3_prepare(case):
-            return [
-                pytest.mark.xfail(strict=True, reason="needs lot 3 C/N: past compatibility stage")
-            ]
-    return []
-
-
 def _python_params() -> list[pytest.ParamSet]:
-    """Collect Python cases with lot-3 markers for blocked prepare cases."""
-    return [
-        pytest.param(path, marks=_prepare_marks(path), id=path.stem) for path in _python_cases()
-    ]
+    """Collect Python cases (lot 3 is merged: no blockage markers)."""
+    return [pytest.param(path, id=path.stem) for path in _python_cases()]
 
 
 def _asset_bag_for(case_input: dict, profile: dict) -> dict[str, bytes] | None:
@@ -370,20 +349,18 @@ def _vendored_params() -> list[pytest.ParamSet]:
     params = []
     for path in _vendored_cases():
         case = json.loads(path.read_text(encoding="utf-8"))
-        marker = _lot3_vendored_marker(helper, case)
-        marks = [marker] if marker is not None else []
-        params.append(pytest.param(path, marks=marks, id=path.stem))
+        _assert_lot3_vendored_compiles(helper, case)
+        params.append(pytest.param(path, id=path.stem))
     return params
 
 
-def _lot3_vendored_marker(helper: ModuleType, case: dict) -> object:
-    """Return an xfail marker when a vendored export case needs lot 3."""
-    from tests.profile_render.test_lot4_cases import _lot3_blocked_marker
+def _assert_lot3_vendored_compiles(helper: ModuleType, case: dict) -> None:
+    """Compile the vendored profile of an export case (lot 3 is merged)."""
+    from tests.profile_render.test_lot4_cases import _assert_lot3_compiles
 
     operation = case.get("operation")
     if operation in ("mapExport", "compileProfile"):
-        return _lot3_blocked_marker(helper, case)
-    return None
+        _assert_lot3_compiles(helper, case)
 
 
 def _run_vendored_case(path: Path, helper: ModuleType) -> None:

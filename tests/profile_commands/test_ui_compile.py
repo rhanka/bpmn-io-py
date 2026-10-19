@@ -18,39 +18,7 @@ COMPILE_STEMS = sorted(
     if "expected" in path.read_text(encoding="utf-8")
 )
 
-#: Sealed cases blocked before CR-10 by the lot-3 block-A fixes (``count``
-#: reads ``selector`` instead of ``select`` and ``inverseReference``
-#: admission): the predicate walk refuses ``profile-type`` first. The
-#: integration job removes these markers once lot 3 is merged.
-XFAIL_NEEDS_LOT3 = frozenset(
-    {
-        "compile-enum-duplicate-values",
-        "compile-field-parameter-missing",
-        "compile-id-not-ordinary-input",
-        "compile-message-missing-fallback",
-        "compile-neutral-l5-ok",
-        "compile-ui-icon-unknown-glyph",
-        "compile-ui-label-unknown-message",
-        "compile-ui-parameter-duplicate",
-        "compile-ui-parameter-missing",
-        "compile-ui-parameter-source-type",
-        "compile-ui-parameter-unknown",
-        "compile-upstream-duplicate-across-entries",
-        "compile-upstream-duplicate-within-entry",
-    }
-)
-
-COMPILE_PARAMS = [
-    (
-        pytest.param(
-            stem,
-            marks=pytest.mark.xfail(strict=True, reason="needs lot 3 B-fix"),
-        )
-        if stem in XFAIL_NEEDS_LOT3
-        else stem
-    )
-    for stem in COMPILE_STEMS
-]
+COMPILE_PARAMS = list(COMPILE_STEMS)
 
 
 def _compile_outcome(stem: str) -> dict[str, object]:

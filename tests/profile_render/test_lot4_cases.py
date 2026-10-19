@@ -69,22 +69,20 @@ def _vendored_cases() -> list[Path]:
 _LOT4_COMPILE_CODES = frozenset({"profile-glyph-shape", "profile-export-field"})
 
 
-def _lot3_blocked_marker(helper: ModuleType, case: dict) -> Json:
-    """Return an xfail marker when a vendored profile is lot-3-blocked.
+def _assert_lot3_compiles(helper: ModuleType, case: dict) -> None:
+    """Compile one vendored profile (lot 3 is merged: blockage is a failure).
 
-    A vendored profile that refuses compilation for a non-lot-4 code
-    needs lot 3's compiler fixes (B1-B4) or C/N; the integration job
-    removes the marker once the lots merge. A lot-4-code refusal is a
-    lot-4 bug and stays loud.
+    A vendored profile that refuses compilation for a non-lot-4 code is a
+    defect in src. A lot-4-code refusal stays loud in the same way.
     """
     profile_ref = case.get("profile")
     if not isinstance(profile_ref, dict) or "vendored" not in profile_ref:
-        return None
+        return
     try:
         profile = json.loads(helper.vendored_bytes(profile_ref["vendored"]).decode("utf-8"))
     except Exception:  # noqa: BLE001 - unreadable pins stay loud
-        return None
-    return _compile_marker_for(helper, case, profile_ref, profile)
+        return
+    _compile_one_vendored_profile(helper, case, profile_ref, profile)
 
 
 def _vendored_load_pack(helper: ModuleType, load: dict) -> dict[str, bytes] | None:
@@ -116,8 +114,10 @@ def _vendored_marker_assets(
     return bag
 
 
-def _compile_marker_for(helper: ModuleType, case: dict, profile_ref: dict, profile: dict) -> Json:
-    """Compile one vendored profile and mark lot-3 blockage (or None)."""
+def _compile_one_vendored_profile(
+    helper: ModuleType, case: dict, profile_ref: dict, profile: dict
+) -> None:
+    """Compile one vendored profile (lot 3 is merged: blockage is a failure)."""
     from bpmn_io.profile._compiler import compile_profile, create_descriptor_context
     from bpmn_io.profile._loader import load_profile
     from bpmn_io.profile._render_tokens import registry_from_json
@@ -132,14 +132,14 @@ def _compile_marker_for(helper: ModuleType, case: dict, profile_ref: dict, profi
     load = profile_ref.get("load", {})
     pack = _vendored_load_pack(helper, load)
     if pack is None:
-        return None
+        return
     base_bytes = pack["base"]
     descriptor_bytes = pack["descriptors"]
     registry_doc = json.loads(pack["registry"].decode("utf-8"))
     schema_bytes = pack["schema"]
     bag = _vendored_marker_assets(helper, load, profile)
     if bag is None:
-        return None
+        return
     validated = load_profile(
         json.dumps(profile).encode("utf-8"),
         schema_bytes=schema_bytes,
@@ -148,11 +148,7 @@ def _compile_marker_for(helper: ModuleType, case: dict, profile_ref: dict, profi
         asset_bag=bag,
         capabilities=profile["capabilities"],
     )
-    if validated.status != "ok":
-        return pytest.mark.xfail(
-            strict=True,
-            reason=f"needs lot 3: vendored profile fails to load ({validated.code})",  # type: ignore[union-attr]
-        )
+    assert validated.status == "ok", validated.to_json()
     registry_result = registry_from_json(registry_doc)
     assert registry_result.status == "ok", registry_result.to_json()
     context_result = create_descriptor_context(
@@ -166,23 +162,22 @@ def _compile_marker_for(helper: ModuleType, case: dict, profile_ref: dict, profi
         json.loads(base_bytes.decode("utf-8")),
     )
     if compiled.status == "ok":
-        return None
+        return
     code = compiled.code  # type: ignore[union-attr]
     if code in _LOT4_COMPILE_CODES:
-        return None
-    reason = f"needs lot 3: vendored profile blocked at compile ({code})"
-    return pytest.mark.xfail(strict=True, reason=reason)
+        return
+    msg = f"vendored profile blocked at compile ({code})"
+    raise AssertionError(msg)
 
 
 def _vendored_params() -> list:
-    """Build vendored case params with lot-3 blockage markers."""
+    """Build vendored case params (lot 3 is merged: no blockage markers)."""
     helper = _load_helper()
     params = []
     for path in _vendored_cases():
         case = json.loads(path.read_text(encoding="utf-8"))
-        marker = _lot3_blocked_marker(helper, case)
-        marks = [marker] if marker is not None else []
-        params.append(pytest.param(path, marks=marks, id=path.stem))
+        _assert_lot3_compiles(helper, case)
+        params.append(pytest.param(path, id=path.stem))
     return params
 
 
@@ -488,6 +483,33 @@ def _vendored_role(roles: dict, name: str, helper: ModuleType) -> Json:
     return resolve_role_value(roles[name][0], helper)
 
 
+def _layout_theme_id(roles: dict, profile: dict, default: Json) -> str:
+    """Return the effective layout theme of one vendored record.
+
+    Base-geometry references name their owning theme
+    (``<document>-<theme>.base-geometry.json``): the seam lays that
+    geometry out, so the geometry policy sees the owning theme, not the
+    requested one. Falls back to the requested theme when the reference
+    names no profile theme.
+    """
+    assert isinstance(default, str)
+    entry = roles.get("base-geometry", [{}])[0]
+    reference = entry.get("vendored") if isinstance(entry, dict) else None
+    if not isinstance(reference, str):
+        return default
+    stem = reference.rsplit("/", 1)[-1]
+    stem = stem.removesuffix(".base-geometry.json")
+    candidates = [
+        theme.get("id")
+        for theme in profile.get("themes", [])
+        if isinstance(theme, dict) and isinstance(theme.get("id"), str)
+    ]
+    for theme_id in sorted(candidates, key=len, reverse=True):
+        if stem.endswith(f"-{theme_id}"):
+            return theme_id
+    return default
+
+
 def _vendored_asset_bag(helper: ModuleType, load: dict, profile: dict, roles: dict) -> dict:
     """Collect pinned metrics bytes for one vendored record."""
     bag: dict[str, bytes] = {}
@@ -698,12 +720,14 @@ def _run_vendored_case(path: Path, helper: ModuleType) -> None:
     if operation == "layout":
         from bpmn_io.profile._layout import layout
 
+        profile = payload.profile if hasattr(payload, "profile") else {}
+        theme_id = _layout_theme_id(roles, profile, _vendored_role(roles, "themeId", helper))
         result = layout(
             payload,
             _vendored_role(roles, "envelope", helper),
             _vendored_role(roles, "placements", helper),
             _vendored_role(roles, "base-geometry", helper),
-            theme_id=_vendored_role(roles, "themeId", helper),
+            theme_id=theme_id,
         )
         check_link_route(result, case["expected"], label)
     elif operation == "resolveTheme":

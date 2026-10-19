@@ -2,10 +2,7 @@
 
 Every harness record under ``tests/profile_commands/expected`` with a
 vendored profile executes its session through the public API and compares
-the twin observation exactly (markers resolved per section 9.1). All of
-them need the lot-3 plan/apply/complete/normalize functions or the lot-3
-compiler fixes today; the strict xfail markers below say which, and the
-integration job removes them after the merge.
+the twin observation exactly (markers resolved per section 9.1).
 """
 
 from __future__ import annotations
@@ -24,18 +21,13 @@ _QUERY_OPS = frozenset(
     }
 )
 
-#: Records blocked at compile by the lot-3 block-A fixes.
-XFAIL_BFIX = frozenset(
-    {
-        "lot5-surfaces-013-compile-duplicate-upstream",
-        "lot5-surfaces-014-compile-missing-fallback-text",
-    }
-)
-
 
 def _is_l3_script(record: dict[str, object]) -> bool:
     """Return whether a record carries a lot-3 transaction script."""
     roles = {entry.get("role") for entry in record["input"].get("inputArtifacts", [])}
+    artifact = record["input"].get("commandArtifact")
+    if isinstance(artifact, dict) and artifact.get("role") == "script":
+        return True
     return "script" in roles
 
 
@@ -48,16 +40,7 @@ def _is_compile(record: dict[str, object]) -> bool:
 VENDORED_STEMS = vendored.vendored_stems()
 assert VENDORED_STEMS, "no vendored records found"
 
-VENDORED_PARAMS = []
-for _stem in VENDORED_STEMS:
-    if _stem in XFAIL_BFIX:
-        VENDORED_PARAMS.append(
-            pytest.param(_stem, marks=pytest.mark.xfail(strict=True, reason="needs lot 3 B-fix"))
-        )
-    else:
-        VENDORED_PARAMS.append(
-            pytest.param(_stem, marks=pytest.mark.xfail(strict=True, reason="needs lot 3 C/N"))
-        )
+VENDORED_PARAMS = list(VENDORED_STEMS)
 
 
 @pytest.mark.parametrize("stem", VENDORED_PARAMS)
@@ -71,11 +54,9 @@ def test_vendored_case(stem: str) -> None:
         vendored.compare_twin(refusal.to_json(), record["expected"], record)
         return
     if _is_l3_script(record):
-        session = vendored.make_vsession(record)
+        session = vendored.make_script_session(record)
         assert session.compiled is not None, getattr(session, "compile_refusal", None)
         assert session.bridge is not None
-        activated = session.bridge.activate_business_profile(session.compiled)
-        assert activated.status == "ok", activated
         actual = vendored.run_l3_script(session, record)
         vendored.compare_l3_trace(
             actual["trace"],

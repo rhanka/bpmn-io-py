@@ -42,14 +42,6 @@ ROOT = Path(__file__).resolve().parents[2]
 EXPECTED = ROOT / "tests" / "profile_cn" / "expected"
 MECH = ROOT / "contracts" / "profile-mechanism" / "1"
 
-#: Operations with no implementation yet: value is the strict-xfail reason.
-PENDING = {
-    "validate": (
-        "no Block-A validate(compiled, wire-envelope, phase, readiness_policy) "
-        "binding in this branch (binding §9 runner row, §6.9); sealed JS-owned values kept"
-    ),
-}
-
 _CASE_FILES = sorted(EXPECTED.glob("*.json"))
 _CASE_OPS = {
     path.stem: json.loads(path.read_text(encoding="utf-8"))["operation"] for path in _CASE_FILES
@@ -418,6 +410,173 @@ def _run_stable(case: dict[str, object], record: dict[str, object]) -> None:
     assert jcs(ids) == jcs(case["expected"]), case["case"]
 
 
+_REFERENCE_SLOTS: dict[str, frozenset[str]] = {}
+
+
+def _reference_slots() -> dict[str, frozenset[str]]:
+    """Map BPMN type names to reference property names (superclass closure).
+
+    The case trees carry transport scalar ids; ``hydrate`` wants reference
+    slots as exactly ``{"$ref": id}``. Slots come from the same bundled
+    package the codec validates against.
+    """
+    if not _REFERENCE_SLOTS:
+        import json as _json
+
+        package = _json.loads(
+            (ROOT / "src/bpmn_io/resources/bpmn/bpmn.json").read_text(encoding="utf-8")
+        )
+        by_local = {t["name"].split(":")[-1]: t for t in package["types"]}
+
+        def closure(local: str, done: set[str]) -> set[str]:
+            entry = by_local.get(local)
+            if entry is None or local in done:
+                return set()
+            done.add(local)
+            refs = {
+                p["name"].split(":")[-1]
+                for p in entry.get("properties", [])
+                if p.get("isReference")
+            }
+            for base in entry.get("superClass", []):
+                refs |= closure(base.split(":")[-1], done)
+            return refs
+
+        for local in by_local:
+            found = closure(local, set())
+            if found:
+                _REFERENCE_SLOTS[f"bpmn:{local}"] = frozenset(found)
+    return _REFERENCE_SLOTS
+
+
+def _refify(node: object) -> object:
+    """Rewrite transport scalar ids in reference slots as ``{"$ref"}``."""
+    slots = _reference_slots()
+    if isinstance(node, dict):
+        out: dict[str, object] = {}
+        names = slots.get(str(node.get("$type")), frozenset())
+        for key, value in node.items():
+            if key in names:
+                out[key] = _refify_ref(value)
+            else:
+                out[key] = _refify(value)
+        return out
+    if isinstance(node, list):
+        return [_refify(entry) for entry in node]
+    return node
+
+
+def _refify_ref(value: object) -> object:
+    """Wrap one reference-slot value (scalar or list) as ``{"$ref"}``."""
+    if isinstance(value, str):
+        return {"$ref": value}
+    if isinstance(value, list):
+        return [{"$ref": entry} if isinstance(entry, str) else _refify(entry) for entry in value]
+    return _refify(value)
+
+
+def _run_validate(case: dict[str, object], record: dict[str, object]) -> None:
+    """Run one validate case through the Block-A lint bridge (spec §6.9).
+
+    ``lint`` returns the thin validate wire; the runner wraps it into the
+    full ``Result/1`` shape (revisions from the input envelope, identities
+    from the compiled profile — ``validate`` never mutates, so before and
+    after coincide). There is no public ``bpmn_io.profile.validate``: the
+    name is taken by the block-A schema validator.
+    """
+    from bpmn_io.codec.json import hydrate
+    from bpmn_io.profile._cn_context import build_tree_index, find_dangling
+    from bpmn_io.profile._lint import lint
+    from bpmn_io.profile._transaction import (
+        _map_lint_entry,
+        _raw_standard_findings,
+        sort_lot5_entries,
+    )
+    from bpmn_io.profile._ui import compiled_identity
+
+    compiled = _compiled(case["profile"])
+    frozen = jcs(record)
+    raw_tree = record["envelope"]["tree"]
+    assert isinstance(raw_tree, dict)
+    made = hydrate(_refify(raw_tree))
+    assert made.ok, made.diagnostics
+    options = record.get("options", {})
+    assert isinstance(options, dict)
+    envelope = record["envelope"]
+    assert isinstance(envelope, dict)
+    outcome = lint(
+        made.value,
+        compiled,
+        phase=options["phase"],
+        readiness_policy=options["readinessPolicy"],
+        bindings=envelope.get("bindings", []),
+    )
+    assert jcs(record) == frozen
+    identity = compiled_identity(compiled)
+    revision = envelope.get("semanticRevision")
+    wire_entries = outcome["report"].get("entries")
+    assert isinstance(wire_entries, list)
+    graph = find_dangling(
+        build_tree_index(raw_tree),
+        compiled.types or {},
+        compiled.ref_fields or frozenset(),
+    )
+    dangling_entries = [
+        {
+            "code": "reference-dangling",
+            "severity": "error",
+            "classification": "integrity",
+            "stage": options["phase"],
+            "ruleId": "adapter",
+            "messageKey": "reference-dangling",
+            "disposition": "observed",
+            "source": {
+                "domain": "tree",
+                "pointer": item["pointer"],
+                "targetId": item["targetId"],
+                "provenance": "exact",
+            },
+            "result": {
+                "domain": "none",
+                "pointer": None,
+                "targetId": None,
+                "provenance": "unavailable",
+            },
+            "beforePresent": False,
+            "afterPresent": False,
+        }
+        for item in graph
+    ]
+    entries = sort_lot5_entries(
+        [_map_lint_entry(entry) for entry in wire_entries] + dangling_entries
+    )
+    counts = {"info": 0, "warn": 0, "error": 0}
+    for entry in entries:
+        severity = entry.get("severity")
+        if severity in counts:
+            counts[severity] += 1
+    actual = {
+        "status": outcome["status"],
+        "operation": outcome["operation"],
+        "profileIdentity": identity,
+        "baseRevision": revision,
+        "revision": revision,
+        "report": {
+            **outcome["report"],
+            "entries": entries,
+            "rawStandardFindings": _raw_standard_findings(
+                outcome["report"].get("rawStandardFindings")
+            ),
+            "inputRevision": revision,
+            "outputRevision": revision,
+            "sourceIdentity": identity,
+            "targetIdentity": identity,
+        },
+        "payload": {"ok": counts["error"] == 0, "counts": counts},
+    }
+    assert jcs(actual) == jcs(case["expected"]), case["case"]
+
+
 _RUNNERS = {
     "complete": _run_complete,
     "normalize": _run_normalize,
@@ -430,21 +589,15 @@ _RUNNERS = {
     "propose_support_bindings": _run_propose,
     "remap_ids": _run_remap,
     "sort_placements": _run_sort,
+    "validate": _run_validate,
     "gates": _run_gates,
     "stable-id/1": _run_stable,
 }
 
 
 def _params() -> list[pytest.ParamSet]:
-    """Build one parameter per harness record (pending ops stay strict-xfail)."""
-    items = []
-    for path in _CASE_FILES:
-        operation = _CASE_OPS[path.stem]
-        marks = []
-        if operation in PENDING:
-            marks.append(pytest.mark.xfail(strict=True, reason=PENDING[operation]))
-        items.append(pytest.param(path.stem, marks=marks, id=path.stem))
-    return items
+    """Build one parameter per harness record (lot 3 is merged: no markers)."""
+    return [pytest.param(path.stem, id=path.stem) for path in _CASE_FILES]
 
 
 @pytest.mark.parametrize("case_id", _params())
@@ -456,7 +609,6 @@ def test_cn_case(case_id: str) -> None:
     assert case["author"] == "spec-seal"
     record = copy.deepcopy(case["input"])
     operation = case["operation"]
-    assert operation not in PENDING, f"pending operation reached the runner: {operation}"
     runner = _RUNNERS.get(operation)
     assert runner is not None, f"no runner for operation {operation!r}"
     runner(case, record)
@@ -466,4 +618,4 @@ def test_every_harness_record_consumed() -> None:
     """Every sealed harness record runs through the case driver above."""
     on_disk = sorted(path.stem for path in EXPECTED.glob("*.json"))
     assert on_disk == sorted(_CASE_OPS)
-    assert set(_CASE_OPS.values()) - set(PENDING) <= set(_RUNNERS)
+    assert set(_CASE_OPS.values()) <= set(_RUNNERS)

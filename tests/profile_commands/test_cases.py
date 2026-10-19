@@ -3,9 +3,7 @@
 Every native harness file with ``input.steps`` runs its setup and steps
 through the public API and compares each result byte-for-byte after
 ``$unsealed`` substitution, plus the ``equal``/``differ`` relations and
-the ``signal`` contract. Cases needing the lot-3 plan/apply/complete and
-normalize functions, or the lot-3 compiler fixes, carry strict xfail
-markers the integration job removes after the merge.
+the ``signal`` contract.
 """
 
 from __future__ import annotations
@@ -13,34 +11,6 @@ from __future__ import annotations
 import pytest
 
 from tests.profile_commands import harness
-
-#: Cases whose setup compiles today but whose batches need lot 3.
-XFAIL_NEEDS_LOT3_CN = frozenset(
-    {
-        "twin-grid-fixture-commands",
-    }
-)
-
-#: Cases blocked at setup compile by the lot-3 block-A fixes.
-XFAIL_NEEDS_LOT3_BFIX = frozenset(
-    {
-        "copy-fragment-preorder",
-        "copy-fragment-read-only",
-        "copy-unknown-id",
-        "field-display-prefix-exact",
-        "field-listing-widgets",
-        "l10n-resolution-order",
-        "lifecycle-activation-descriptor-mismatch",
-        "pick-field-states",
-        "pick-filter-sort",
-        "pick-paging",
-        "pick-paging-bounds",
-        "pick-query-case-sensitive",
-        "pick-query-no-normalization",
-        "surface-palette-entries-localized",
-        "surface-palette-entries-order",
-    }
-)
 
 
 def _step_stems() -> list[str]:
@@ -53,34 +23,10 @@ def _step_stems() -> list[str]:
     return sorted(stems)
 
 
-def _needs_lot3_cn(stem: str) -> bool:
-    """Return whether any step applies a non-empty command batch."""
-    case = harness.read_case(stem)
-    for step in case["input"].get("steps", []):
-        if step.get("op") != "apply_commands":
-            continue
-        if step.get("args", {}).get("commands"):
-            return True
-    return False
-
-
 STEP_STEMS = _step_stems()
 assert STEP_STEMS, "no native step cases found"
 
-STEP_PARAMS = []
-for _stem in STEP_STEMS:
-    if _stem in XFAIL_NEEDS_LOT3_CN or (
-        _stem not in XFAIL_NEEDS_LOT3_BFIX and _needs_lot3_cn(_stem)
-    ):
-        STEP_PARAMS.append(
-            pytest.param(_stem, marks=pytest.mark.xfail(strict=True, reason="needs lot 3 C/N"))
-        )
-    elif _stem in XFAIL_NEEDS_LOT3_BFIX:
-        STEP_PARAMS.append(
-            pytest.param(_stem, marks=pytest.mark.xfail(strict=True, reason="needs lot 3 B-fix"))
-        )
-    else:
-        STEP_PARAMS.append(_stem)
+STEP_PARAMS = list(STEP_STEMS)
 
 
 def _check_setup(_stem: str, setup: harness.Setup, case: dict[str, object]) -> None:
@@ -99,7 +45,8 @@ def test_native_case(stem: str) -> None:
     setup = harness.make_setup(case)
     assert setup.compiled is not None, getattr(setup, "compile_refusal", None)
     assert setup.bridge is not None
-    _check_setup(stem, setup, case)
+    if "setup" in case["expected"]:
+        _check_setup(stem, setup, case)
     expected_steps = case["expected"]["steps"]  # type: ignore[index]
     input_steps = case["input"]["steps"]  # type: ignore[index]
     assert len(input_steps) == len(expected_steps), stem
