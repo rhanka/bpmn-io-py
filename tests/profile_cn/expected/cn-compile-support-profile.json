@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "compile_profile",
   "profile": "support",
-  "derivation": "The R3.1 check compiles the support recipe against the fixture descriptors and base. ensure registers its as-handle, demands {parent,/property,create} and {envelope,/bindings,binding}, and declared writes are compared as a set (identical demands coalesce). Expected: ok with the listed identity.",
+  "derivation": "Hand review against DESIGN §2.4/§2.4.1 (no compiler output used). Variant = neutral minus place-task plus the vendored ensure-supports recipe, pins re-pinned to the support slice (a superset of the neutral slice: Collaboration/Participant/LaneSet/Lane, Definitions.rootElements admitting Collaboration, Process.laneSets). CR-05: the five ensure handles are declared before use (main as assignRef target, collaboration and laneSet as parents). CR-06 write set: the required demands are {root,/rootElements,create}, {collaboration,/participants,create} (twice), {self,/laneSets,create}, {laneSet,/lanes,create}, {envelope,/bindings,binding} (once per ensure) and {main,/processRef,reference}; identical demands coalesce (§2.4 'Identical writes coalesce'), giving exactly the six declared writes. CR-06 authority: ensure types are the four support types, each parent containment admits the ensured type, the name fields are declared scalars, and every written field (ids, names, containments, processRef) lists actor code in the support base. CR-07: ensure allocates ID-bearing types with string ownerId values (id of root or self). CR-14: ensure and assignRef belong to normalize. The kept neutral recipes use only types/fields present in both slices. Expected: ok, identity = §5.1 record with sha256 = H(variant).",
   "input": {
     "variant": "support"
   },

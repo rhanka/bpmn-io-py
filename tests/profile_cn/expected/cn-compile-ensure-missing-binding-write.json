@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "compile_profile",
   "profile": "support-no-binding-write",
-  "derivation": "Every ensure demands {envelope,/bindings,binding} (DESIGN §2.4.1 action/write matrix: parent/property create AND envelope /bindings binding). The variant drops that declared write from ensure-supports, so the declared and required write sets differ and compilation refuses profile-write-set.",
+  "derivation": "Hand review: every ensure demands {envelope,/bindings,binding} (DESIGN §2.4.1 action/write table: 'parent/property create and envelope /bindings binding'). The variant removes that declared write from ensure-supports; the per-step type, containment and producer checks pass exactly as for the support variant, and the recipe-level comparison finds a required write missing from the declared set (CR-06 'Every action maps to declared writes'). Expected: refused profile-write-set.",
   "input": {
     "variant": "support-no-binding-write"
   },

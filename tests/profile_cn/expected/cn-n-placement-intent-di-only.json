@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "neutral",
-  "derivation": "Same as cn-n-place-neutral with placement intent [{elementId: Task_A}] for a DI-only move: the intent is validated but N's semantic outputs depend only on the tree, so envelope, placements and report are identical (a DI-only drag changes only viewRevision, which N does not compute).",
+  "derivation": "Same as cn-n-place-neutral with placement intent [{elementId: Task_A}] for a DI-only move: the intent is validated but N's semantic outputs depend only on the tree, so envelope, placements and report are identical (a DI-only drag changes only viewRevision, which N does not compute). Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -105,6 +105,44 @@
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
       "inputRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7",
       "outputRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7"
     },
@@ -191,6 +229,44 @@
         "rawStandardFindings": [],
         "idMap": [],
         "artifacts": [],
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
         "inputRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7",
         "outputRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7"
       }

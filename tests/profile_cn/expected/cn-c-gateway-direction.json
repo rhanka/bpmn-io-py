@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "cn-c",
-  "derivation": "Counting SequenceFlows that target/source each gateway: G_mix 2 in/2 out -> Mixed, G_conv 2 in/1 out -> Converging (the stored Diverging is corrected), G_div 1 in/2 out -> Diverging, G_none 1 in/1 out -> Unspecified. The topology recipes replace stored incoming/outgoing with the same-container flow ids in UTF-16 id order (G_mix stale [F4,F2]/[F6] become [F2,F4]/[F5,F6]); nodes with no derived flow keep the property absent. Directions use the flows, never the stale stored arrays.",
+  "derivation": "Counting SequenceFlows that target/source each gateway: G_mix 2 in/2 out -> Mixed, G_conv 2 in/1 out -> Converging (the stored Diverging is corrected), G_div 1 in/2 out -> Diverging, G_none 1 in/1 out -> Unspecified. The topology recipes replace stored incoming/outgoing with the same-container flow ids in UTF-16 id order (G_mix stale [F4,F2]/[F6] become [F2,F4]/[F5,F6]); the end tasks T_end and T_end2 have no outgoing flow, so replace writes an empty outgoing array (absent -> [] is a change, H F1): 18 entries. Directions use the flows, never the stale stored arrays. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -159,7 +159,7 @@
       ]
     },
     "baseRevision": "cddaf0a745a4a62782b5437070eed2730d445b450f5bec47f0247874e00d655f",
-    "revision": "629abebf06ec3726a097e12a580636ebac823c8feb0949cf1a0ef441dd4bac47",
+    "revision": "bfec98e89648ea17302e8ec018561b13ee97a6b45227f0458db980df4da2b655",
     "report": {
       "reportVersion": "2",
       "operation": "complete",
@@ -174,13 +174,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/2",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
             "targetId": "G_div",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/2",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
             "targetId": "G_div",
             "provenance": "exact"
           },
@@ -201,13 +201,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/2",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
             "targetId": "G_div",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/2",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
             "targetId": "G_div",
             "provenance": "exact"
           },
@@ -229,13 +229,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/3",
+            "pointer": "/rootElements/0/flowElements/3/incoming",
             "targetId": "G_mix",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/3",
+            "pointer": "/rootElements/0/flowElements/3/incoming",
             "targetId": "G_mix",
             "provenance": "exact"
           },
@@ -261,13 +261,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/3",
+            "pointer": "/rootElements/0/flowElements/3/outgoing",
             "targetId": "G_mix",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/3",
+            "pointer": "/rootElements/0/flowElements/3/outgoing",
             "targetId": "G_mix",
             "provenance": "exact"
           },
@@ -292,13 +292,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/4",
+            "pointer": "/rootElements/0/flowElements/4/incoming",
             "targetId": "G_conv",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/4",
+            "pointer": "/rootElements/0/flowElements/4/incoming",
             "targetId": "G_conv",
             "provenance": "exact"
           },
@@ -320,13 +320,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/4",
+            "pointer": "/rootElements/0/flowElements/4/outgoing",
             "targetId": "G_conv",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/4",
+            "pointer": "/rootElements/0/flowElements/4/outgoing",
             "targetId": "G_conv",
             "provenance": "exact"
           },
@@ -347,40 +347,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/5",
+            "pointer": "/rootElements/0/flowElements/5/incoming",
             "targetId": "G_none",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/5",
-            "targetId": "G_none",
-            "provenance": "exact"
-          },
-          "beforePresent": false,
-          "afterPresent": true,
-          "after": [
-            "F4"
-          ],
-          "property": "outgoing"
-        },
-        {
-          "code": "complete/assignRef",
-          "severity": "info",
-          "classification": "repairable",
-          "stage": "complete",
-          "ruleId": "complete-gateway-topology",
-          "messageKey": "complete.assignRef",
-          "disposition": "corrected",
-          "source": {
-            "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/5",
-            "targetId": "G_none",
-            "provenance": "exact"
-          },
-          "result": {
-            "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/5",
+            "pointer": "/rootElements/0/flowElements/5/incoming",
             "targetId": "G_none",
             "provenance": "exact"
           },
@@ -396,18 +369,45 @@
           "severity": "info",
           "classification": "repairable",
           "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5/outgoing",
+            "targetId": "G_none",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5/outgoing",
+            "targetId": "G_none",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F4"
+          ],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
           "ruleId": "complete-start-topology",
           "messageKey": "complete.assignRef",
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/0",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
             "targetId": "S1",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/0",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
             "targetId": "S1",
             "provenance": "exact"
           },
@@ -428,13 +428,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/1",
+            "pointer": "/rootElements/0/flowElements/1/outgoing",
             "targetId": "S2",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/1",
+            "pointer": "/rootElements/0/flowElements/1/outgoing",
             "targetId": "S2",
             "provenance": "exact"
           },
@@ -455,13 +455,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/6",
+            "pointer": "/rootElements/0/flowElements/6/incoming",
             "targetId": "T_end",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/6",
+            "pointer": "/rootElements/0/flowElements/6/incoming",
             "targetId": "T_end",
             "provenance": "exact"
           },
@@ -482,13 +482,38 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/7",
+            "pointer": "/rootElements/0/flowElements/6/outgoing",
+            "targetId": "T_end",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/6/outgoing",
+            "targetId": "T_end",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/7/incoming",
             "targetId": "T_end2",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/7",
+            "pointer": "/rootElements/0/flowElements/7/incoming",
             "targetId": "T_end2",
             "provenance": "exact"
           },
@@ -500,6 +525,31 @@
           "property": "incoming"
         },
         {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/7/outgoing",
+            "targetId": "T_end2",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/7/outgoing",
+            "targetId": "T_end2",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
+        },
+        {
           "code": "complete/set",
           "severity": "info",
           "classification": "repairable",
@@ -509,13 +559,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/4",
+            "pointer": "/rootElements/0/flowElements/4/gatewayDirection",
             "targetId": "G_conv",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/4",
+            "pointer": "/rootElements/0/flowElements/4/gatewayDirection",
             "targetId": "G_conv",
             "provenance": "exact"
           },
@@ -535,13 +585,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/2",
+            "pointer": "/rootElements/0/flowElements/2/gatewayDirection",
             "targetId": "G_div",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/2",
+            "pointer": "/rootElements/0/flowElements/2/gatewayDirection",
             "targetId": "G_div",
             "provenance": "exact"
           },
@@ -560,13 +610,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/3",
+            "pointer": "/rootElements/0/flowElements/3/gatewayDirection",
             "targetId": "G_mix",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/3",
+            "pointer": "/rootElements/0/flowElements/3/gatewayDirection",
             "targetId": "G_mix",
             "provenance": "exact"
           },
@@ -585,13 +635,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/5",
+            "pointer": "/rootElements/0/flowElements/5/gatewayDirection",
             "targetId": "G_none",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/5",
+            "pointer": "/rootElements/0/flowElements/5/gatewayDirection",
             "targetId": "G_none",
             "provenance": "exact"
           },
@@ -604,8 +654,46 @@
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
       "inputRevision": "cddaf0a745a4a62782b5437070eed2730d445b450f5bec47f0247874e00d655f",
-      "outputRevision": "629abebf06ec3726a097e12a580636ebac823c8feb0949cf1a0ef441dd4bac47"
+      "outputRevision": "bfec98e89648ea17302e8ec018561b13ee97a6b45227f0458db980df4da2b655"
     },
     "payload": {
       "documentVersion": "1",
@@ -705,7 +793,8 @@
                 "name": "End work",
                 "incoming": [
                   "F6"
-                ]
+                ],
+                "outgoing": []
               },
               {
                 "$type": "bpmn:Task",
@@ -713,7 +802,8 @@
                 "name": "Other end work",
                 "incoming": [
                   "F7"
-                ]
+                ],
+                "outgoing": []
               },
               {
                 "$type": "bpmn:SequenceFlow",
@@ -768,7 +858,7 @@
         ]
       },
       "bindings": [],
-      "semanticRevision": "629abebf06ec3726a097e12a580636ebac823c8feb0949cf1a0ef441dd4bac47"
+      "semanticRevision": "bfec98e89648ea17302e8ec018561b13ee97a6b45227f0458db980df4da2b655"
     }
   },
   "fixedPoint": true

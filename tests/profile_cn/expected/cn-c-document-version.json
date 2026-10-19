@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "neutral",
-  "derivation": "documentVersion 2 is unknown: the first §3.3 row (and the closed §5.1 envelope check) refuses document-version-unsupported; the envelope failed validation, so the refusal echoes neither profileIdentity nor baseRevision (spec §4.5).",
+  "derivation": "documentVersion 2 is unknown: the first §3.3 row (and the closed §5.1 envelope check, precedence step 2) refuses document-version-unsupported. An unknown documentVersion is the H B3 no-echo case, so the refusal and its report carry neither profileIdentity/sourceIdentity nor baseRevision/inputRevision (§10.1: missing identity is omitted, not fabricated). Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty; nothing is echoed.",
   "input": {
     "envelope": {
       "documentVersion": "2",

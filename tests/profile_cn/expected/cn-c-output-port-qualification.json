@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "cn-c",
-  "derivation": "Same input as cn-c-output-port-gated under activation=qualification (§7.2/§13 neutral qualification may proceed): C creates stable-id(Task_O, output-port, DOA_missing) in Task_O.properties (absent before) and assigns sourceRef, a multi-valued reference.",
+  "derivation": "Same input as cn-c-output-port-gated under activation=qualification (§7.2/§13 neutral qualification may proceed): C creates stable-id(Task_O, output-port, DOA_missing) in Task_O.properties (absent before; the array is created) and assigns sourceRef, a multi-valued reference; the flowless Task_O receives empty incoming/outgoing arrays (H F1). Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -90,7 +90,7 @@
       ]
     },
     "baseRevision": "56ffab8417a058600042530f7d230a55a9567b7f23399d20ae5b5b15ffcbe92d",
-    "revision": "79019af680c15776ec3371bf0be4a19400220d01feae6e6b9f1fb72199b84140",
+    "revision": "1759420adb422b36c4f001b27b69e0ab52519543106f99709b46a6a8a2c31edb",
     "report": {
       "reportVersion": "2",
       "operation": "complete",
@@ -133,13 +133,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/2/dataOutputAssociations/0",
+            "pointer": "/rootElements/0/flowElements/2/dataOutputAssociations/0/sourceRef",
             "targetId": "DOA_missing",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/2/dataOutputAssociations/0",
+            "pointer": "/rootElements/0/flowElements/2/dataOutputAssociations/0/sourceRef",
             "targetId": "DOA_missing",
             "provenance": "exact"
           },
@@ -149,13 +149,101 @@
             "g_f8ae6ef32cee42a57b8475e8a250c1e7fa16d81ffab5fdfac33d9771492878c8"
           ],
           "property": "sourceRef"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
+            "targetId": "Task_O",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
+            "targetId": "Task_O",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
+            "targetId": "Task_O",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
+            "targetId": "Task_O",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
         }
       ],
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
       "inputRevision": "56ffab8417a058600042530f7d230a55a9567b7f23399d20ae5b5b15ffcbe92d",
-      "outputRevision": "79019af680c15776ec3371bf0be4a19400220d01feae6e6b9f1fb72199b84140"
+      "outputRevision": "1759420adb422b36c4f001b27b69e0ab52519543106f99709b46a6a8a2c31edb"
     },
     "payload": {
       "documentVersion": "1",
@@ -215,14 +303,16 @@
                     "$type": "bpmn:Property",
                     "id": "g_f8ae6ef32cee42a57b8475e8a250c1e7fa16d81ffab5fdfac33d9771492878c8"
                   }
-                ]
+                ],
+                "incoming": [],
+                "outgoing": []
               }
             ]
           }
         ]
       },
       "bindings": [],
-      "semanticRevision": "79019af680c15776ec3371bf0be4a19400220d01feae6e6b9f1fb72199b84140"
+      "semanticRevision": "1759420adb422b36c4f001b27b69e0ab52519543106f99709b46a6a8a2c31edb"
     }
   },
   "fixedPoint": true

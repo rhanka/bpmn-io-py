@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "plan_recipe+apply_plan",
   "profile": "cn-n",
-  "derivation": "The remove action requires actor authorization and explicit deletion intent; the authority carries deletionIntent false, so planning refuses profile-producer.",
+  "derivation": "The remove action requires actor authorization and explicit deletion intent; the authority carries deletionIntent false, so planning refuses profile-producer. The envelope carries the current cn-n identity (placement regions equal to the support roles, H K1; edit recipes completing the §2.4 action matrix), which fixes its revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -94,7 +94,7 @@
           "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
         }
       ],
-      "semanticRevision": "0a3197c20a44ee726b4543a30059b6cd37684d5c268b4d72e3d1b47817b5e472"
+      "semanticRevision": "f027dd5fcb0c0c50cb0315723b8286ab356dcfca118d30793a3bff37200455d7"
     },
     "recipe": "remove-element",
     "params": {

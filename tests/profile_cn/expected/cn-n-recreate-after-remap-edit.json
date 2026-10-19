@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "cn-n",
-  "derivation": "Same input as cn-n-recreate-after-remap with the default edit activation: the lane recreation is a persisted support creation, refused profile-open.",
+  "derivation": "Same input as cn-n-recreate-after-remap with the default edit activation: the lane recreation is a persisted support creation, refused profile-open. Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -46,7 +46,8 @@
               {
                 "$type": "bpmn:LaneSet",
                 "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
-                "name": "lane-set"
+                "name": "lane-set",
+                "lanes": []
               }
             ],
             "ioSpecification": {
@@ -92,7 +93,7 @@
           "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
         }
       ],
-      "semanticRevision": "e5a215cb35ae7b8af74bba02457d80a64bb0598705d71e57d7229ba8318293ea"
+      "semanticRevision": "3c0eafb3edddee6396bbc8e82c0e1f560501fd3cfed1fdaec5bbd578078e36af"
     },
     "activation": "edit",
     "placementIntent": null
@@ -108,14 +109,34 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "3c0eafb3edddee6396bbc8e82c0e1f560501fd3cfed1fdaec5bbd578078e36af"
     },
     "profileIdentity": {
       "mechanismVersion": "1",
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n/1",
       "version": "1.0.0",
-      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -129,6 +150,6 @@
         }
       ]
     },
-    "baseRevision": "e5a215cb35ae7b8af74bba02457d80a64bb0598705d71e57d7229ba8318293ea"
+    "baseRevision": "3c0eafb3edddee6396bbc8e82c0e1f560501fd3cfed1fdaec5bbd578078e36af"
   }
 }

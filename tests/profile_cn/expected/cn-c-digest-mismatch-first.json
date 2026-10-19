@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "grid",
-  "derivation": "Same profile id and version as the compiled grid profile, known unequal digests: the §3.3 identity-conflict row refuses profile-digest-mismatch (no P1 override) before any C write.",
+  "derivation": "Same profile id and version as the compiled grid profile, known unequal digests: the §3.3 identity-conflict row refuses profile-digest-mismatch (no P1 override) before any C write (precedence step 3). Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -81,7 +81,27 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "ae3afa642f956f032cc5d556f541d410cb828a5e06c0d0583ac1f4263792ad18"
     },
     "profileIdentity": {
       "mechanismVersion": "1",

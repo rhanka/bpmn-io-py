@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "remap_ids",
   "profile": "cn-n",
-  "derivation": "Task_m carries the unclassified property x (no descriptor role, no pinned reference-free attestation): remap cannot prove it holds no reference and refuses migration-reference-opaque.",
+  "derivation": "Task_m carries the unclassified property x (no descriptor role) and the command has no pinned reference-free attestation for it: remap cannot prove it holds no reference and refuses migration-reference-opaque. Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -64,10 +64,25 @@
         ]
       },
       "bindings": [],
-      "semanticRevision": "c4dcedbfcd1d79bea22aeab55f794d0b91966819b3357f3dbe17be76836c9464"
+      "semanticRevision": "9e4d1d7b2cd42bbd6f0a005f4beaa1dafea8d5201e6190a7e3e433bbb7c43e71"
     },
-    "idMap": {
-      "Process_sub": "Process_child"
+    "importedDi": {
+      "descriptorDigest": "e3acf62669c4c0dbd5e9ed8990fe82fa3da9fd418926c8fe4171dd7147ec900c",
+      "diagrams": [],
+      "sha256": "36eb07f4ba7b03c6eac800d8ef1c14c526d870c2ecfbb6f455b8a292ede8ad62"
+    },
+    "command": {
+      "kind": "id-remap",
+      "approved": true,
+      "approval": "technical",
+      "map": [
+        {
+          "sourceId": "Process_sub",
+          "resultId": "Process_child",
+          "domain": "migration"
+        }
+      ],
+      "referenceFreeAttestations": []
     },
     "activation": "qualification"
   },
@@ -82,14 +97,34 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "9e4d1d7b2cd42bbd6f0a005f4beaa1dafea8d5201e6190a7e3e433bbb7c43e71"
     },
     "profileIdentity": {
       "mechanismVersion": "1",
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n/1",
       "version": "1.0.0",
-      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -103,6 +138,6 @@
         }
       ]
     },
-    "baseRevision": "c4dcedbfcd1d79bea22aeab55f794d0b91966819b3357f3dbe17be76836c9464"
+    "baseRevision": "9e4d1d7b2cd42bbd6f0a005f4beaa1dafea8d5201e6190a7e3e433bbb7c43e71"
   }
 }

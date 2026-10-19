@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "neutral",
-  "derivation": "The neutral base grants no field to actor ai; in extraction mode the first present field (Definitions.rootElements) is not AI-producible, so C refuses profile-producer before identity allocation.",
+  "derivation": "The neutral base grants no field to actor ai; in extraction mode the first present field (Definitions.rootElements) is not AI-producible, so C refuses profile-producer before identity allocation. Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -58,7 +58,27 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "3ef0e4f005772c543cb19d6922c91a08fa79649484e0ad305f1bbc830c419271"
     },
     "profileIdentity": {
       "mechanismVersion": "1",

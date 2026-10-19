@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "bind_supports",
   "profile": "cn-n",
-  "derivation": "The import plan explicitly selects Collab_X as Process_P's collaboration support (activation qualification). bind_supports validates owner and target existence and uniqueness and adds the binding; the tree is unchanged and the revision changes through the bindings.",
+  "derivation": "The import plan explicitly selects Collab_X as Process_P's collaboration support (activation qualification). bind_supports validates owner and target existence and uniqueness and adds the binding; the tree is unchanged and the revision changes through the bindings. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -68,7 +68,7 @@
         ]
       },
       "bindings": [],
-      "semanticRevision": "a0d149c7b52cf90125974d4c9d72f92ef81f868f1b5776e53958b563cb79cc9a"
+      "semanticRevision": "79b530648257df7d03901b50530a1432781aca0b95855e4c70459ad5b7ca6d88"
     },
     "bindings": [
       {
@@ -87,7 +87,7 @@
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n/1",
       "version": "1.0.0",
-      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -101,8 +101,8 @@
         }
       ]
     },
-    "baseRevision": "a0d149c7b52cf90125974d4c9d72f92ef81f868f1b5776e53958b563cb79cc9a",
-    "revision": "113beb6c5291e596e437aad4b7acf8eea62a11da8685bdb422376eca66738cf8",
+    "baseRevision": "79b530648257df7d03901b50530a1432781aca0b95855e4c70459ad5b7ca6d88",
+    "revision": "b3a3a9eae022a3aabac4ecaad281d8acf4561bb38d1538d234eb40bcec5d789e",
     "report": {
       "reportVersion": "2",
       "operation": "bindSupports",
@@ -110,8 +110,46 @@
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
-      "inputRevision": "a0d149c7b52cf90125974d4c9d72f92ef81f868f1b5776e53958b563cb79cc9a",
-      "outputRevision": "113beb6c5291e596e437aad4b7acf8eea62a11da8685bdb422376eca66738cf8"
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "79b530648257df7d03901b50530a1432781aca0b95855e4c70459ad5b7ca6d88",
+      "outputRevision": "b3a3a9eae022a3aabac4ecaad281d8acf4561bb38d1538d234eb40bcec5d789e"
     },
     "payload": {
       "documentVersion": "1",
@@ -120,7 +158,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -181,7 +219,7 @@
           "targetId": "Collab_X"
         }
       ],
-      "semanticRevision": "113beb6c5291e596e437aad4b7acf8eea62a11da8685bdb422376eca66738cf8"
+      "semanticRevision": "b3a3a9eae022a3aabac4ecaad281d8acf4561bb38d1538d234eb40bcec5d789e"
     }
   }
 }

@@ -1,0 +1,61 @@
+{
+  "case": "cn-plan-optional-binding-missing",
+  "clause": "DESIGN R3.3 §2.4 action grammar; §2.4.1 action/write matrix; §2.5 planRecipe/applyPlan; §2.2 required use of MISSING; §2.4 bind zeroOrOne",
+  "author": "spec-seal",
+  "operation": "plan_recipe+apply_plan",
+  "profile": "cn-n",
+  "derivation": "rename-optional-task binds task with cardinality zeroOrOne over the owner's Task children; Process_opt has none, so task is MISSING (DESIGN §2.4 bind) and the set step is a required use of MISSING, which refuses (DESIGN §2.2): profile-type.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_opt",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_opt",
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "f275f8789f78bc97a71215769ef5455b2c7d142bea23029ad3c2777a17862516"
+    },
+    "recipe": "rename-optional-task",
+    "params": {
+      "owner": "Process_opt"
+    },
+    "authority": {
+      "actor": "editor",
+      "activation": "edit",
+      "deletionIntent": false
+    }
+  },
+  "expected": {
+    "plan": {
+      "status": "refused",
+      "code": "profile-type",
+      "diagnostics": []
+    }
+  }
+}

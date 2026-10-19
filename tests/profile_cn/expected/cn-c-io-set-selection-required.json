@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "cn-c",
-  "derivation": "DI_3 is covered by no InputSet while two InputSets exist: the profile refuse step aborts C with io-set-selection-required; the first set is never updated silently and the caller tree is unchanged.",
+  "derivation": "DI_3 is covered by no InputSet while two InputSets exist: the profile refuse step aborts C with io-set-selection-required; the first set is never updated silently and the caller tree is unchanged. Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -107,7 +107,27 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "5cae8520b1b9c80fc0828b3ded9c26823e1047dcc04a942027ef76f34f150dae"
     },
     "profileIdentity": {
       "mechanismVersion": "1",

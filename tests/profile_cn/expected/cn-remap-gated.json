@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "remap_ids",
   "profile": "cn-n",
-  "derivation": "ID remapping is a separate approved import migration (OPEN-ID technical gate and per-migration approval open): with the default edit activation remap_ids refuses profile-open.",
+  "derivation": "ID remapping is a separate approved import migration: the command record is valid and approved, but the OPEN-ID technical gate is open, so with the default edit activation remap_ids refuses profile-open (H H9: approval record and gate both apply). Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -46,7 +46,8 @@
               {
                 "$type": "bpmn:LaneSet",
                 "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
-                "name": "lane-set"
+                "name": "lane-set",
+                "lanes": []
               }
             ]
           },
@@ -82,10 +83,25 @@
           "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
         }
       ],
-      "semanticRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774"
+      "semanticRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b"
     },
-    "idMap": {
-      "Process_A": "Process_X"
+    "importedDi": {
+      "descriptorDigest": "e3acf62669c4c0dbd5e9ed8990fe82fa3da9fd418926c8fe4171dd7147ec900c",
+      "diagrams": [],
+      "sha256": "36eb07f4ba7b03c6eac800d8ef1c14c526d870c2ecfbb6f455b8a292ede8ad62"
+    },
+    "command": {
+      "kind": "id-remap",
+      "approved": true,
+      "approval": "technical",
+      "map": [
+        {
+          "sourceId": "Process_A",
+          "resultId": "Process_X",
+          "domain": "migration"
+        }
+      ],
+      "referenceFreeAttestations": []
     },
     "activation": "edit"
   },
@@ -100,14 +116,34 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b"
     },
     "profileIdentity": {
       "mechanismVersion": "1",
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n/1",
       "version": "1.0.0",
-      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -121,6 +157,6 @@
         }
       ]
     },
-    "baseRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774"
+    "baseRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b"
   }
 }

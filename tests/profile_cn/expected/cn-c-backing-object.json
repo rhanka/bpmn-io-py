@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "cn-c",
-  "derivation": "Candidates are the DataObjectReferences without dataObjectRef in id order (Ref_new, Ref_store). Each gets a DataObject allocated as stable-id(Process_D, backing-object, <reference id>), appended to Process_D.flowElements in candidate order, then the reference is assigned. Ref_kept's valid backing is preserved; the name 'Archive store' does not make a DataStore and the DataStoreReference without store gets none.",
+  "derivation": "Candidates are the DataObjectReferences without dataObjectRef in id order (Ref_new, Ref_store). Each gets a DataObject allocated as stable-id(Process_D, backing-object, <reference id>), appended to Process_D.flowElements in candidate order, then the reference is assigned. Ref_kept's valid backing is preserved; the name 'Archive store' does not make a DataStore and the DataStoreReference without store gets none. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -164,13 +164,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/0",
+            "pointer": "/rootElements/0/flowElements/0/dataObjectRef",
             "targetId": "Ref_new",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/0",
+            "pointer": "/rootElements/0/flowElements/0/dataObjectRef",
             "targetId": "Ref_new",
             "provenance": "exact"
           },
@@ -189,13 +189,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/3",
+            "pointer": "/rootElements/0/flowElements/3/dataObjectRef",
             "targetId": "Ref_store",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/3",
+            "pointer": "/rootElements/0/flowElements/3/dataObjectRef",
             "targetId": "Ref_store",
             "provenance": "exact"
           },
@@ -208,6 +208,44 @@
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
       "inputRevision": "c3360de36dd937c5d5be2d48e4138954a0a236b7d70b751beae1aadd96f8d898",
       "outputRevision": "367e0db28fdddaafd10fb729389ae62ce3e1f8101090000c9d07f982a1434bdb"
     },

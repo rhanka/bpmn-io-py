@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "apply_plan",
   "profile": "neutral",
-  "derivation": "The plan's baseRevision is the revision of the neutral input; the staged envelope is the already-applied output (another revision), so apply_plan refuses operation-error and stages nothing.",
+  "derivation": "The plan (with its carried cardinality fact) is the cn-plan-create-task-neutral plan whose baseRevision is the revision of the neutral input; the staged envelope is the already-applied output (another revision) and its tree argument equals that envelope's tree, so apply_plan refuses operation-error (stale plan) and stages nothing.",
   "input": {
     "plan": {
       "planVersion": "1",
@@ -24,7 +24,8 @@
           "id": "g_b8f4b8b61d3654926e4e44ae15143cf474cb72698f307ca0295fd4274a1f16d4",
           "fields": {
             "name": "New task"
-          }
+          },
+          "cardinality": "many"
         }
       ]
     },

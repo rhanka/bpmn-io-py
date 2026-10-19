@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "plan_recipe+apply_plan",
   "profile": "cn-n",
-  "derivation": "appendUnique and remove deltas on Lane_c.flowNodeRef coalesce by id, but appending and removing the same id Task_cmd refuses profile-write-conflict at application.",
+  "derivation": "appendUnique and remove deltas on Lane_c.flowNodeRef coalesce by id, but appending and removing the same id Task_cmd refuses profile-write-conflict at application. Both planned writes carry the cn facts of Lane.flowNodeRef (cardinality many, the admitted flow-node targetTypes; spec §3.2). The envelope carries the current cn-n identity (placement regions equal to the support roles, H K1; edit recipes completing the §2.4 action matrix), which fixes its revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -60,7 +60,7 @@
         ]
       },
       "bindings": [],
-      "semanticRevision": "622e3d81601f1e74b0190f31e1cc1bc05d40063176766579372585cc1c4f82c1"
+      "semanticRevision": "6998fefc477d72576081306781c599eb8910ef084227ead2298ab4e51f7803db"
     },
     "recipe": "toggle-membership",
     "params": {
@@ -81,7 +81,7 @@
         "phase": "edit",
         "actor": "editor",
         "activation": "edit",
-        "baseRevision": "622e3d81601f1e74b0190f31e1cc1bc05d40063176766579372585cc1c4f82c1",
+        "baseRevision": "6998fefc477d72576081306781c599eb8910ef084227ead2298ab4e51f7803db",
         "writes": [
           {
             "op": "assignRef",
@@ -93,6 +93,14 @@
             "mode": "appendUnique",
             "ids": [
               "Task_cmd"
+            ],
+            "cardinality": "many",
+            "targetTypes": [
+              "bpmn:CallActivity",
+              "bpmn:ExclusiveGateway",
+              "bpmn:ServiceTask",
+              "bpmn:StartEvent",
+              "bpmn:Task"
             ]
           },
           {
@@ -105,6 +113,14 @@
             "mode": "remove",
             "ids": [
               "Task_cmd"
+            ],
+            "cardinality": "many",
+            "targetTypes": [
+              "bpmn:CallActivity",
+              "bpmn:ExclusiveGateway",
+              "bpmn:ServiceTask",
+              "bpmn:StartEvent",
+              "bpmn:Task"
             ]
           }
         ]

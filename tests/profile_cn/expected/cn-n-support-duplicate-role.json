@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "support",
-  "derivation": "Vendored negative 'duplicate imported role rolls back' under activation=qualification: refusal support-binding-conflict, the whole staged operation rolls back and the caller tree and bindings are unchanged. The duplicate (ownerId, role) is rejected by the closed §5.1 envelope check before N, so the refusal echoes neither identity nor baseRevision.",
+  "derivation": "Vendored negative 'duplicate imported role rolls back' under activation=qualification: refusal support-binding-conflict, the whole staged operation rolls back and the caller tree and bindings are unchanged. The duplicate (ownerId, role) binding is rejected by envelope integrity (precedence step 4, H C1), after the §3.3 compatibility row accepted the exact identity; the envelope still has documentVersion 1, a shape-valid identity and a semanticRevision, so the refusal echoes them (H B3; the revision string is echoed as given). Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -119,7 +119,47 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
-    }
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      },
+      "inputRevision": "d066a2205677e1df3127a55c36cb9aeebb6e42e5ee9a5407358cbd3fb2aa046e"
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+        }
+      ]
+    },
+    "baseRevision": "d066a2205677e1df3127a55c36cb9aeebb6e42e5ee9a5407358cbd3fb2aa046e"
   }
 }

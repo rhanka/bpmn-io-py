@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "cn-n",
-  "derivation": "Same input as cn-n-reference-region-multi-process with the default edit activation: the Collaboration ensure would create a support, so N refuses profile-open.",
+  "derivation": "Same input as cn-n-reference-region-multi-process with the default edit activation: the Collaboration ensure would create a support, so N refuses profile-open. Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -91,7 +91,7 @@
         ]
       },
       "bindings": [],
-      "semanticRevision": "829988e5c92a068b50ba116a83ac40856faf661691acfefa2aa92c0f52bcbbde"
+      "semanticRevision": "a97380dd2b7e53573da54c7b0cbb97235b57f32451513293a1e85fc6237fadea"
     },
     "activation": "edit",
     "placementIntent": null
@@ -107,14 +107,34 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "a97380dd2b7e53573da54c7b0cbb97235b57f32451513293a1e85fc6237fadea"
     },
     "profileIdentity": {
       "mechanismVersion": "1",
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n/1",
       "version": "1.0.0",
-      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -128,6 +148,6 @@
         }
       ]
     },
-    "baseRevision": "829988e5c92a068b50ba116a83ac40856faf661691acfefa2aa92c0f52bcbbde"
+    "baseRevision": "a97380dd2b7e53573da54c7b0cbb97235b57f32451513293a1e85fc6237fadea"
   }
 }

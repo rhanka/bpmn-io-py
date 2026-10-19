@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "cn-n",
-  "derivation": "Call_ext carries exactly one marker of the candidate encoding (text external, no calledElement) and belongs to no lane: under activation=qualification (fixtures may exercise the candidate encoding, §4.1) appendUnique adds it to the bound external lane. Call_int (internal target) and Call_inc (incomplete) stay untouched in Lane_zeta, whose stored member order [Call_int, Call_inc, Task_E] and the lane order [Lane_zeta, Lane_alpha, Lane_ext] are preserved. No membership is removed, so the responsibility check is not involved. Lane_alpha is renamed: supports are found by binding, never by name, so the output differs from cn-n-external-membership-append only by that name.",
+  "derivation": "Call_ext carries exactly one marker of the candidate encoding (text external, no calledElement) and belongs to no lane: under activation=qualification (fixtures may exercise the candidate encoding, §4.1) appendUnique adds it to the bound external lane. Call_int (internal target) and Call_inc (incomplete) stay untouched in Lane_zeta, whose stored member order [Call_int, Call_inc, Task_E] and the lane order [Lane_zeta, Lane_alpha, Lane_ext] are preserved. No membership is removed, so the responsibility check is not involved. Lane_alpha is renamed: supports are found by binding, never by name, so the output differs from cn-n-external-membership-append only by that name. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -165,7 +165,7 @@
           "targetId": "Main_sub"
         }
       ],
-      "semanticRevision": "a56934883054e6bca5a0e1527f0ec724e84c82126bf1b855de1f89d1e2f4efc4"
+      "semanticRevision": "b2113095d26e46cbf38106d1860729474bbb1ec4eab5532005a2869ee126b72d"
     },
     "activation": "qualification",
     "placementIntent": null
@@ -178,7 +178,7 @@
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n/1",
       "version": "1.0.0",
-      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -192,8 +192,8 @@
         }
       ]
     },
-    "baseRevision": "a56934883054e6bca5a0e1527f0ec724e84c82126bf1b855de1f89d1e2f4efc4",
-    "revision": "948ba768be7ac8ebc412567d73ed96004edcc375f5944cf18fe609d920a0e792",
+    "baseRevision": "b2113095d26e46cbf38106d1860729474bbb1ec4eab5532005a2869ee126b72d",
+    "revision": "50bef546376df36f30893365be74263315df24288797dca42e5ba028556c9a85",
     "report": {
       "reportVersion": "2",
       "operation": "normalize",
@@ -208,13 +208,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/laneSets/0/lanes/2",
+            "pointer": "/rootElements/0/laneSets/0/lanes/2/flowNodeRef",
             "targetId": "Lane_ext",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/laneSets/0/lanes/2",
+            "pointer": "/rootElements/0/laneSets/0/lanes/2/flowNodeRef",
             "targetId": "Lane_ext",
             "provenance": "exact"
           },
@@ -229,8 +229,46 @@
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
-      "inputRevision": "a56934883054e6bca5a0e1527f0ec724e84c82126bf1b855de1f89d1e2f4efc4",
-      "outputRevision": "948ba768be7ac8ebc412567d73ed96004edcc375f5944cf18fe609d920a0e792"
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "b2113095d26e46cbf38106d1860729474bbb1ec4eab5532005a2869ee126b72d",
+      "outputRevision": "50bef546376df36f30893365be74263315df24288797dca42e5ba028556c9a85"
     },
     "payload": {
       "envelope": {
@@ -240,7 +278,7 @@
           "schemaVersion": "1.0.0",
           "profile": "neutral-cn-n/1",
           "version": "1.0.0",
-          "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
           "base": {
             "id": "neutral-cn-base/1",
             "version": "fixture-1",
@@ -395,7 +433,7 @@
             "targetId": "Main_sub"
           }
         ],
-        "semanticRevision": "948ba768be7ac8ebc412567d73ed96004edcc375f5944cf18fe609d920a0e792"
+        "semanticRevision": "50bef546376df36f30893365be74263315df24288797dca42e5ba028556c9a85"
       },
       "placements": [],
       "report": {
@@ -412,13 +450,13 @@
             "disposition": "corrected",
             "source": {
               "domain": "tree",
-              "pointer": "/rootElements/0/laneSets/0/lanes/2",
+              "pointer": "/rootElements/0/laneSets/0/lanes/2/flowNodeRef",
               "targetId": "Lane_ext",
               "provenance": "exact"
             },
             "result": {
               "domain": "tree",
-              "pointer": "/rootElements/0/laneSets/0/lanes/2",
+              "pointer": "/rootElements/0/laneSets/0/lanes/2/flowNodeRef",
               "targetId": "Lane_ext",
               "provenance": "exact"
             },
@@ -433,8 +471,46 @@
         "rawStandardFindings": [],
         "idMap": [],
         "artifacts": [],
-        "inputRevision": "a56934883054e6bca5a0e1527f0ec724e84c82126bf1b855de1f89d1e2f4efc4",
-        "outputRevision": "948ba768be7ac8ebc412567d73ed96004edcc375f5944cf18fe609d920a0e792"
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "inputRevision": "b2113095d26e46cbf38106d1860729474bbb1ec4eab5532005a2869ee126b72d",
+        "outputRevision": "50bef546376df36f30893365be74263315df24288797dca42e5ba028556c9a85"
       }
     }
   },

@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "support",
-  "derivation": "Vendored negative 'late band ID collision rolls back four earlier supports' under activation=qualification: refusal id-collision, the whole staged operation rolls back and the caller tree and bindings are unchanged.",
+  "derivation": "Vendored negative 'late band ID collision rolls back four earlier supports' under activation=qualification: refusal id-collision, the whole staged operation rolls back and the caller tree and bindings are unchanged. The four earlier ensures plan creations; the band ensure's allocator id is occupied by an unrelated, unbound Participant (precedence step 8, §6.3). Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -61,7 +61,27 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      },
+      "inputRevision": "ab93ec3a1acb9b443de800fed1984879839e118997478c60186cc2221072706a"
     },
     "profileIdentity": {
       "mechanismVersion": "1",

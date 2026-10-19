@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "cn-n-conflict",
-  "derivation": "The conflict variant adds a recipe setting the same reversed association's associationDirection to Both while reverse-reference-links sets One: two different scalar values for one target/path refuse profile-write-conflict; nothing is applied.",
+  "derivation": "The conflict variant adds a recipe setting the same reversed association's associationDirection to Both while reverse-reference-links sets One: two different scalar values for one target/path refuse profile-write-conflict; nothing is applied. Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n-conflict/1",
         "version": "1.0.0",
-        "sha256": "ac034ad2ac53cbc924bce33b4fc55392425efcce80280af34edb5b1bb904a77e",
+        "sha256": "4d19a76e115737204be1ee26a2da4642b0b07940652527570b0065d70102b18c",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -99,7 +99,7 @@
           "targetId": "Band_R"
         }
       ],
-      "semanticRevision": "b0d5126d57a674a5e2f17a0323f8127044bd5bf0fd543bb738aa5300dca4ae9e"
+      "semanticRevision": "2ca39cbe5c8fbfed59494e1b4f1bf8ef5cf098cfbc73e6dda4366e6529eeff6b"
     },
     "activation": "edit",
     "placementIntent": null
@@ -115,14 +115,34 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-conflict/1",
+        "version": "1.0.0",
+        "sha256": "4d19a76e115737204be1ee26a2da4642b0b07940652527570b0065d70102b18c",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "2ca39cbe5c8fbfed59494e1b4f1bf8ef5cf098cfbc73e6dda4366e6529eeff6b"
     },
     "profileIdentity": {
       "mechanismVersion": "1",
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n-conflict/1",
       "version": "1.0.0",
-      "sha256": "ac034ad2ac53cbc924bce33b4fc55392425efcce80280af34edb5b1bb904a77e",
+      "sha256": "4d19a76e115737204be1ee26a2da4642b0b07940652527570b0065d70102b18c",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -136,6 +156,6 @@
         }
       ]
     },
-    "baseRevision": "b0d5126d57a674a5e2f17a0323f8127044bd5bf0fd543bb738aa5300dca4ae9e"
+    "baseRevision": "2ca39cbe5c8fbfed59494e1b4f1bf8ef5cf098cfbc73e6dda4366e6529eeff6b"
   }
 }

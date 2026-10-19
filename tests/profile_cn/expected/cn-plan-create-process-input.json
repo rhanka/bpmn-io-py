@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "plan_recipe+apply_plan",
   "profile": "cn-n",
-  "derivation": "Input is the cn-remap-owner output. The ID-less ioSpecification is created by containment (no id) and addressed within the plan by its handle (index 0); the DataInput's ownerId is the explicitly evaluated owner id Process_X, never the ID-less parent: stable-id(Process_X, process-input, in-1).",
+  "derivation": "Input is the cn-remap-owner output. The ID-less ioSpecification is created by containment (no id) and addressed within the plan by its handle (index 0); the DataInput's ownerId is the explicitly evaluated owner id Process_X, never the ID-less parent: stable-id(Process_X, process-input, in-1). The two planned writes carry the cn slice facts apply needs: Process.ioSpecification is single-valued (cardinality single: an object, not an array) and dataInputs multi-valued (cardinality many); the LaneSet keeps its stored empty lanes array.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -46,7 +46,8 @@
               {
                 "$type": "bpmn:LaneSet",
                 "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
-                "name": "lane-set"
+                "name": "lane-set",
+                "lanes": []
               }
             ]
           },
@@ -82,7 +83,7 @@
           "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
         }
       ],
-      "semanticRevision": "9b5f16979fc74226302b202b81af4c82aa2d1038c41e7173cffb10cade7ee159"
+      "semanticRevision": "df8a01bfed826a08155442a5e2eead8be406be00193ebf000bb8ec3c9caf8b5c"
     },
     "recipe": "create-process-input",
     "params": {
@@ -104,7 +105,7 @@
         "phase": "create",
         "actor": "editor",
         "activation": "edit",
-        "baseRevision": "9b5f16979fc74226302b202b81af4c82aa2d1038c41e7173cffb10cade7ee159",
+        "baseRevision": "df8a01bfed826a08155442a5e2eead8be406be00193ebf000bb8ec3c9caf8b5c",
         "writes": [
           {
             "op": "create",
@@ -114,7 +115,8 @@
               "id": "Process_X"
             },
             "property": "ioSpecification",
-            "fields": {}
+            "fields": {},
+            "cardinality": "single"
           },
           {
             "op": "create",
@@ -127,7 +129,8 @@
             "id": "g_11c0faff8eb428f6a9f8f0e9dcef3bf459d9e79c4fedfdc9bd458a2cecf7a3af",
             "fields": {
               "name": "Request"
-            }
+            },
+            "cardinality": "many"
           }
         ]
       },
@@ -156,7 +159,8 @@
                 {
                   "$type": "bpmn:LaneSet",
                   "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
-                  "name": "lane-set"
+                  "name": "lane-set",
+                  "lanes": []
                 }
               ],
               "ioSpecification": {

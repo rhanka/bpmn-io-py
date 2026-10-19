@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "grid",
-  "derivation": "The grid profile's only complete recipe sets isExecutable to the literal true on every Process: the existing opposite value is overwritten (set has no only-if-absent mode) and the empty Process receives it too. The two neutral profiles choose opposite literals, so a hard-coded default fails one case.",
+  "derivation": "The grid profile's only complete recipe sets isExecutable to the literal true on every Process: the existing opposite value is overwritten (set has no only-if-absent mode) and the empty Process receives it too. The two neutral profiles choose opposite literals, so a hard-coded default fails one case. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -93,13 +93,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0",
+            "pointer": "/rootElements/0/isExecutable",
             "targetId": "Process_main",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0",
+            "pointer": "/rootElements/0/isExecutable",
             "targetId": "Process_main",
             "provenance": "exact"
           },
@@ -119,13 +119,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/1",
+            "pointer": "/rootElements/1/isExecutable",
             "targetId": "Process_empty",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/1",
+            "pointer": "/rootElements/1/isExecutable",
             "targetId": "Process_empty",
             "provenance": "exact"
           },
@@ -138,6 +138,44 @@
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
       "inputRevision": "a1403b608b219f99ba2ce28e4f40533004f4d1f0fdb5855722882cd1ef62d1d7",
       "outputRevision": "dbc28a6da60a00b542cb03c9257e0bf53f45a99a0d3df78ce338136e3c09b4ec"
     },

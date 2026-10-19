@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "cn-n-ensure-conflict",
-  "derivation": "The variant appends a recipe ensuring (Process_A, reference-band) with name 'band' while ensure-reference-band declares 'reference-band': identical ensure plans coalesce, conflicting definitions refuse profile-write-conflict (qualification, so no gate intervenes).",
+  "derivation": "The variant appends a recipe ensuring (Process_A, reference-band) with name 'band' while ensure-reference-band declares 'reference-band': identical ensure plans coalesce, conflicting definitions refuse profile-write-conflict (qualification, so no gate intervenes). Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n-ensure-conflict/1",
         "version": "1.0.0",
-        "sha256": "53909ab84534c96b1b3ed47a0b1e699e4728c6e54569a2508a2b6c91c16feaa2",
+        "sha256": "a047b64979b8b9b3806c3920fc6c7d28719d4089f76d4ab9dfba7962b9d80dd5",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -91,7 +91,7 @@
         ]
       },
       "bindings": [],
-      "semanticRevision": "107122752cf7bf8dbbfb83cf3fef14f4b6f07e67cf10a5a6560bb7239e6b70d5"
+      "semanticRevision": "9d0347c20b934e40b46d4b645b46ff48c5f107c481a6fe2fca11011ef318351e"
     },
     "activation": "qualification",
     "placementIntent": null
@@ -107,14 +107,34 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-ensure-conflict/1",
+        "version": "1.0.0",
+        "sha256": "a047b64979b8b9b3806c3920fc6c7d28719d4089f76d4ab9dfba7962b9d80dd5",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "9d0347c20b934e40b46d4b645b46ff48c5f107c481a6fe2fca11011ef318351e"
     },
     "profileIdentity": {
       "mechanismVersion": "1",
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n-ensure-conflict/1",
       "version": "1.0.0",
-      "sha256": "53909ab84534c96b1b3ed47a0b1e699e4728c6e54569a2508a2b6c91c16feaa2",
+      "sha256": "a047b64979b8b9b3806c3920fc6c7d28719d4089f76d4ab9dfba7962b9d80dd5",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -128,6 +148,6 @@
         }
       ]
     },
-    "baseRevision": "107122752cf7bf8dbbfb83cf3fef14f4b6f07e67cf10a5a6560bb7239e6b70d5"
+    "baseRevision": "9d0347c20b934e40b46d4b645b46ff48c5f107c481a6fe2fca11011ef318351e"
   }
 }

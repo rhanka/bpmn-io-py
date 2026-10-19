@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "plan_recipe+apply_plan",
   "profile": "cn-n",
-  "derivation": "rename-only-task binds one Task among the owner's flowElements with cardinality one; Process_amb has two, so planning refuses profile-ambiguous-binding (array order never chooses a winner).",
+  "derivation": "rename-only-task binds one Task among the owner's flowElements with cardinality one; Process_amb has two, so planning refuses profile-ambiguous-binding (array order never chooses a winner). The envelope carries the current cn-n identity (placement regions equal to the support roles, H K1; edit recipes completing the §2.4 action matrix), which fixes its revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -51,7 +51,7 @@
         ]
       },
       "bindings": [],
-      "semanticRevision": "7cddb7700c735368301e4012a937bc2598683a0730e9302df092728bbee971f0"
+      "semanticRevision": "182412828ebc12e1627191ff6b8d042644e28a7d57b8cd11f2c9c4b4ff168727"
     },
     "recipe": "rename-only-task",
     "params": {

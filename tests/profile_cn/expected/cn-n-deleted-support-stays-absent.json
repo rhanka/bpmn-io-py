@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "cn-n",
-  "derivation": "Input is the cn-plan-remove-empty-support output. Nothing needs the external-lane role, so N does not recreate it: no change, edit activation accepted.",
+  "derivation": "Input is the cn-plan-remove-empty-support output (LaneSet.lanes stored as []). Nothing needs the external-lane role, so N does not recreate it and never removes the empty array: no change, edit activation accepted. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -46,7 +46,8 @@
               {
                 "$type": "bpmn:LaneSet",
                 "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
-                "name": "lane-set"
+                "name": "lane-set",
+                "lanes": []
               }
             ]
           },
@@ -82,7 +83,7 @@
           "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
         }
       ],
-      "semanticRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774"
+      "semanticRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b"
     },
     "activation": "edit",
     "placementIntent": null
@@ -95,7 +96,7 @@
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n/1",
       "version": "1.0.0",
-      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -109,8 +110,8 @@
         }
       ]
     },
-    "baseRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774",
-    "revision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774",
+    "baseRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b",
+    "revision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b",
     "report": {
       "reportVersion": "2",
       "operation": "normalize",
@@ -118,8 +119,46 @@
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
-      "inputRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774",
-      "outputRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774"
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b",
+      "outputRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b"
     },
     "payload": {
       "envelope": {
@@ -129,7 +168,7 @@
           "schemaVersion": "1.0.0",
           "profile": "neutral-cn-n/1",
           "version": "1.0.0",
-          "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
           "base": {
             "id": "neutral-cn-base/1",
             "version": "fixture-1",
@@ -162,7 +201,8 @@
                 {
                   "$type": "bpmn:LaneSet",
                   "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
-                  "name": "lane-set"
+                  "name": "lane-set",
+                  "lanes": []
                 }
               ]
             },
@@ -198,7 +238,7 @@
             "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
           }
         ],
-        "semanticRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774"
+        "semanticRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b"
       },
       "placements": [],
       "report": {
@@ -208,8 +248,46 @@
         "rawStandardFindings": [],
         "idMap": [],
         "artifacts": [],
-        "inputRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774",
-        "outputRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774"
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "inputRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b",
+        "outputRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b"
       }
     }
   },

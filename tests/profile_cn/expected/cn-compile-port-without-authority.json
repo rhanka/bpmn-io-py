@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "compile_profile",
   "profile": "cn-c-noauth",
-  "derivation": "The producerDelta replaces code by dropped on DataInputAssociation.targetRef, so the input-port recipe's assignRef has no code producer: CR-06 refuses profile-producer (no implicit port authority).",
+  "derivation": "Hand review: the delta is valid (DataInputAssociation.targetRef exists and lists code in the cn base; DESIGN §2.4.1 'each producerDelta replaces its named from actor with to'), so the effective producers become {dropped, editor, import}. complete-input-port is a complete recipe (actor code) whose assignRef target self is a generic native binding (its select predicate is an all(...), not a bare typeIs): 'Generic native bindings conservatively check every admitted target type supporting the field', i.e. SequenceFlow, Association, DataInputAssociation and DataOutputAssociation targetRef; DataInputAssociation lacks code, and CR-06 'rejects a phase actor absent from the resulting field producer set'. No earlier recipe writes a DataInputAssociation field (link writes a typed Association targetRef with actor editor). Expected: refused profile-producer.",
   "input": {
     "variant": "cn-c-noauth"
   },

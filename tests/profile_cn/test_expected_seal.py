@@ -136,8 +136,49 @@ def test_expectation_file_shape(path: Path) -> None:
 
 
 def test_case_count_is_sealed() -> None:
-    """The sealed case set is exactly the 102 cases listed in the spec case table."""
-    assert len(_case_files()) == 102
+    """The sealed case set is exactly the 127 cases listed in the spec case table."""
+    assert len(_case_files()) == 127
+
+
+PARITY = EXPECTED / "parity"
+CORPUS_KEYS = {
+    "caseId",
+    "operation",
+    "phase",
+    "profileArtifact",
+    "inputArtifacts",
+    "expectedArtifacts",
+    "expectedStatus",
+    "comparatorIds",
+}
+RUNTIME_SPECIFIC = {"cn-gates-table", "cn-c-uncompiled-context"}
+
+
+def test_parity_manifest_pins_every_referenced_file() -> None:
+    """Every corpus/1 manifest entry equals the raw SHA-256 of its committed file."""
+    root = EXPECTED.parents[2]
+    manifest = json.loads((PARITY / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["format"] == "profile-parity-corpus/1"
+    assert manifest["pathBase"] == "."
+    for rel, want in manifest["files"].items():
+        assert hashlib.sha256((root / rel).read_bytes()).hexdigest() == want, rel
+    cases = {p.stem for p in (PARITY / "cases").glob("*.json")}
+    listed = {rel.rsplit("/", 1)[-1][:-5] for rel in manifest["files"] if "/parity/cases/" in rel}
+    assert cases == listed
+
+
+def test_parity_cases_are_closed_projections() -> None:
+    """Each parity case is a closed corpus/1 record projecting one harness case."""
+    harness = {p.stem for p in _case_files()}
+    for path in sorted((PARITY / "cases").glob("*.json")):
+        record = json.loads(path.read_bytes())
+        assert set(record) - {"commandArtifact"} == CORPUS_KEYS
+        assert record["caseId"] == path.stem
+        assert path.stem in harness
+        status = record["expectedStatus"]
+        assert status == "ok" or status.startswith("refused:")
+    projected = {p.stem for p in (PARITY / "cases").glob("*.json")}
+    assert projected == harness - RUNTIME_SPECIFIC
 
 
 def _load_helper() -> ModuleType:

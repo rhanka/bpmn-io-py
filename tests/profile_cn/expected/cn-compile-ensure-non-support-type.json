@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "compile_profile",
   "profile": "support-task-ensure",
-  "derivation": "ensure is restricted to declared structural support types (Collaboration, Participant, LaneSet, Lane); the variant ensures a bpmn:Task under Process flowElements (admitted containment) and refuses profile-producer.",
+  "derivation": "Hand review: the variant turns the lane ensure into an ensure of bpmn:Task under self.flowElements and replaces the declared {laneSet,/lanes,create} write by {self,/flowElements,create}, so the declared and required write sets still agree (no profile-write-set), the type is known and Process.flowElements admits Task (no profile-type), and the four earlier steps are unchanged. DESIGN §2.4: 'ensure is restricted to declared structural support roles and native Collaboration/Participant/LaneSet/Lane'; §2.4.1 action/write table: ensure needs 'declared structural type/role and ratified support authority', an authority condition of CR-06 whose authority code is profile-producer (the DESIGN fixture checker raises profile-producer for a non-support ensure). Expected: refused profile-producer.",
   "input": {
     "variant": "support-task-ensure"
   },

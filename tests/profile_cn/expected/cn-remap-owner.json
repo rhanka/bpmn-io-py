@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "remap_ids",
   "profile": "cn-n",
-  "derivation": "Input is the cn-n-deleted-support-stays-absent document. The total map renames Process_A to Process_X (identity elsewhere): the main Participant's processRef and every binding ownerId follow, while the surviving supports keep their actual stable-id ids allocated under Process_A (never reallocated). idMap is the complete original->result map of every ID-bearing element (domain migration, sorted).",
+  "derivation": "Input is the cn-n-deleted-support-stays-absent document plus its archived imported DI (one process diagram whose plane names Process_A). The approved command maps Process_A to Process_X; the total map is identity elsewhere. The main Participant's processRef, every binding ownerId and the DI plane bpmnElement follow, while the surviving supports keep their actual stable-id ids allocated under Process_A (never reallocated) and DI objects keep their own ids. Payload {envelope, importedDi} with the importedDi digest recomputed; report idMap is the complete original->result map of every ID-bearing element (identity rows included, domain migration, §10.1 order; H B14). No invalidation flag: the new revision implies it. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -46,7 +46,8 @@
               {
                 "$type": "bpmn:LaneSet",
                 "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
-                "name": "lane-set"
+                "name": "lane-set",
+                "lanes": []
               }
             ]
           },
@@ -82,10 +83,49 @@
           "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
         }
       ],
-      "semanticRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774"
+      "semanticRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b"
     },
-    "idMap": {
-      "Process_A": "Process_X"
+    "importedDi": {
+      "descriptorDigest": "e3acf62669c4c0dbd5e9ed8990fe82fa3da9fd418926c8fe4171dd7147ec900c",
+      "diagrams": [
+        {
+          "$type": "bpmndi:BPMNDiagram",
+          "id": "Diagram_del",
+          "plane": {
+            "$type": "bpmndi:BPMNPlane",
+            "id": "Diagram_del_plane",
+            "bpmnElement": "Process_A",
+            "planeElement": [
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "Shape_task_A1",
+                "bpmnElement": "Task_A1",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 100,
+                  "y": 80,
+                  "width": 100,
+                  "height": 80
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "sha256": "61724f35e8dfbad571c7781fbb771f0ef03595443c7f31bd8d4f69b6f262235c"
+    },
+    "command": {
+      "kind": "id-remap",
+      "approved": true,
+      "approval": "technical",
+      "map": [
+        {
+          "sourceId": "Process_A",
+          "resultId": "Process_X",
+          "domain": "migration"
+        }
+      ],
+      "referenceFreeAttestations": []
     },
     "activation": "qualification"
   },
@@ -97,7 +137,7 @@
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n/1",
       "version": "1.0.0",
-      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -111,8 +151,8 @@
         }
       ]
     },
-    "baseRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774",
-    "revision": "9b5f16979fc74226302b202b81af4c82aa2d1038c41e7173cffb10cade7ee159",
+    "baseRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b",
+    "revision": "df8a01bfed826a08155442a5e2eead8be406be00193ebf000bb8ec3c9caf8b5c",
     "report": {
       "reportVersion": "2",
       "operation": "remapIds",
@@ -151,17 +191,12 @@
         }
       ],
       "artifacts": [],
-      "inputRevision": "dfa61101ba2a95386af77c910de8ce3eb6fa1ecedbbe9b4f19844cccb7560774",
-      "outputRevision": "9b5f16979fc74226302b202b81af4c82aa2d1038c41e7173cffb10cade7ee159"
-    },
-    "payload": {
-      "documentVersion": "1",
-      "profileIdentity": {
+      "sourceIdentity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -175,62 +210,137 @@
           }
         ]
       },
-      "tree": {
-        "$type": "bpmn:Definitions",
-        "id": "Definitions_del",
-        "rootElements": [
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
           {
-            "$type": "bpmn:Process",
-            "id": "Process_X",
-            "isExecutable": false,
-            "flowElements": [
-              {
-                "$type": "bpmn:Task",
-                "id": "Task_A1",
-                "name": "Work"
-              }
-            ],
-            "laneSets": [
-              {
-                "$type": "bpmn:LaneSet",
-                "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
-                "name": "lane-set"
-              }
-            ]
-          },
-          {
-            "$type": "bpmn:Collaboration",
-            "id": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595",
-            "name": "collaboration",
-            "participants": [
-              {
-                "$type": "bpmn:Participant",
-                "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
-                "name": "main-participant",
-                "processRef": "Process_X"
-              }
-            ]
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
           }
         ]
       },
-      "bindings": [
-        {
-          "ownerId": "Process_X",
-          "role": "collaboration",
-          "targetId": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595"
+      "inputRevision": "b006aa5f6647c6121e9954d6d8f0435900a8d33550e46c3bddba71a3d300332b",
+      "outputRevision": "df8a01bfed826a08155442a5e2eead8be406be00193ebf000bb8ec3c9caf8b5c"
+    },
+    "payload": {
+      "envelope": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
         },
-        {
-          "ownerId": "Process_X",
-          "role": "lane-set",
-          "targetId": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61"
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_del",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_X",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A1",
+                  "name": "Work"
+                }
+              ],
+              "laneSets": [
+                {
+                  "$type": "bpmn:LaneSet",
+                  "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
+                  "name": "lane-set",
+                  "lanes": []
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Collaboration",
+              "id": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595",
+              "name": "collaboration",
+              "participants": [
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                  "name": "main-participant",
+                  "processRef": "Process_X"
+                }
+              ]
+            }
+          ]
         },
-        {
-          "ownerId": "Process_X",
-          "role": "main-participant",
-          "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
-        }
-      ],
-      "semanticRevision": "9b5f16979fc74226302b202b81af4c82aa2d1038c41e7173cffb10cade7ee159"
+        "bindings": [
+          {
+            "ownerId": "Process_X",
+            "role": "collaboration",
+            "targetId": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595"
+          },
+          {
+            "ownerId": "Process_X",
+            "role": "lane-set",
+            "targetId": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61"
+          },
+          {
+            "ownerId": "Process_X",
+            "role": "main-participant",
+            "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
+          }
+        ],
+        "semanticRevision": "df8a01bfed826a08155442a5e2eead8be406be00193ebf000bb8ec3c9caf8b5c"
+      },
+      "importedDi": {
+        "descriptorDigest": "e3acf62669c4c0dbd5e9ed8990fe82fa3da9fd418926c8fe4171dd7147ec900c",
+        "diagrams": [
+          {
+            "$type": "bpmndi:BPMNDiagram",
+            "id": "Diagram_del",
+            "plane": {
+              "$type": "bpmndi:BPMNPlane",
+              "id": "Diagram_del_plane",
+              "bpmnElement": "Process_X",
+              "planeElement": [
+                {
+                  "$type": "bpmndi:BPMNShape",
+                  "id": "Shape_task_A1",
+                  "bpmnElement": "Task_A1",
+                  "bounds": {
+                    "$type": "dc:Bounds",
+                    "x": 100,
+                    "y": 80,
+                    "width": 100,
+                    "height": 80
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "sha256": "5b560912c16c098bf87f077fddd973dfccabe5bd71d0de22b9b89e43e6cf2c5c"
+      }
     }
   }
 }

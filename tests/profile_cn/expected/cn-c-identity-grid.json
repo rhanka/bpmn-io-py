@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "grid",
-  "derivation": "C first allocates the missing Definitions id with owner document-root/1, slot definitions, key root, then fills missing child ids top-down with ownerId = the containing element id, slot = the descriptor-qualified containment property (bpmn:rootElements, bpmn:flowElements) and stableKey = JCS([contentSignature, duplicateOrdinal]); the two identical ID-less Review tasks get ordinals 0 and 1, Task_kept and Process_empty keep their ids, the ID-less Documentation stays ID-less. The profile complete-process recipe then sets isExecutable=true on every Process including the empty one. Entries are sorted per §10.1.",
+  "derivation": "C first allocates the missing Definitions id with owner document-root/1, slot definitions, key root, then fills missing child ids top-down with ownerId = the containing element id, slot = the descriptor-qualified containment property <containing $type>.<property> (bpmn:Definitions.rootElements, bpmn:Process.flowElements; H D1) and stableKey = JCS([contentSignature, duplicateOrdinal]); the two identical ID-less Review tasks get ordinals 0 and 1, Task_kept and Process_empty keep their ids, the ID-less Documentation stays ID-less. The profile complete-process recipe then sets isExecutable=true on every Process including the empty one (the neutral profiles declare no topology recipe and their Task types no incoming/outgoing). Entries address the written location (<element>/id, <element>/isExecutable; H B9) and are sorted per §10.1 plus the H G2 tie-breaks. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -93,7 +93,7 @@
       ]
     },
     "baseRevision": "f8d8cdd517c7ff2756bc4f14d10c5845c76c2bf86d1c94d37a25ef4e9dfffaaa",
-    "revision": "e0da4e3c9db17f4e24a3980c6cc1e4808ce18917654cbd06448b0a070e42d1c1",
+    "revision": "d020b5080bb7168a41e08dca6781623a70ed9358fe70644fd0613d7e516e84e1",
     "report": {
       "reportVersion": "2",
       "operation": "complete",
@@ -108,14 +108,14 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0",
+            "pointer": "/rootElements/0/isExecutable",
             "targetId": null,
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0",
-            "targetId": "g_907c58be38b03a733fcb44f6e1bb62fe71d3397df79c92d5938ce7738cebd353",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": "g_9aafd2d71e99a7a3fcf6d8197f8a87090ecdbc66adbc1ab7286a6d1035e3b7ae",
             "provenance": "generated"
           },
           "beforePresent": false,
@@ -133,13 +133,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/1",
+            "pointer": "/rootElements/1/isExecutable",
             "targetId": "Process_empty",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/1",
+            "pointer": "/rootElements/1/isExecutable",
             "targetId": "Process_empty",
             "provenance": "exact"
           },
@@ -158,13 +158,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "",
+            "pointer": "/id",
             "targetId": null,
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "",
+            "pointer": "/id",
             "targetId": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21",
             "provenance": "generated"
           },
@@ -183,19 +183,19 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0",
+            "pointer": "/rootElements/0/flowElements/0/id",
             "targetId": null,
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0",
-            "targetId": "g_907c58be38b03a733fcb44f6e1bb62fe71d3397df79c92d5938ce7738cebd353",
+            "pointer": "/rootElements/0/flowElements/0/id",
+            "targetId": "g_22c0f5e253cc6c62eb9e4ff5d4bbdc1fe3631167657c3df49d18074504c94819",
             "provenance": "generated"
           },
           "beforePresent": false,
           "afterPresent": true,
-          "after": "g_907c58be38b03a733fcb44f6e1bb62fe71d3397df79c92d5938ce7738cebd353",
+          "after": "g_22c0f5e253cc6c62eb9e4ff5d4bbdc1fe3631167657c3df49d18074504c94819",
           "property": "id"
         },
         {
@@ -208,19 +208,19 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/0",
+            "pointer": "/rootElements/0/flowElements/1/id",
             "targetId": null,
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/0",
-            "targetId": "g_1f382c1815e3ab94ea6875b01f2f8bbb40652880caa85c5e18754cf143aec7ac",
+            "pointer": "/rootElements/0/flowElements/1/id",
+            "targetId": "g_ca4189df9cf0ad1a3157edf21efbb71e813f6d11d9918f0194ca2afaa9c990f3",
             "provenance": "generated"
           },
           "beforePresent": false,
           "afterPresent": true,
-          "after": "g_1f382c1815e3ab94ea6875b01f2f8bbb40652880caa85c5e18754cf143aec7ac",
+          "after": "g_ca4189df9cf0ad1a3157edf21efbb71e813f6d11d9918f0194ca2afaa9c990f3",
           "property": "id"
         },
         {
@@ -233,19 +233,19 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/1",
+            "pointer": "/rootElements/0/flowElements/3/id",
             "targetId": null,
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/1",
-            "targetId": "g_4c60976961ad398555cf314aeaef851c6c977017a8c270d283929790baae803d",
+            "pointer": "/rootElements/0/flowElements/3/id",
+            "targetId": "g_63911dee75dd24916fc2db6cb58a608e244faaaa18cfac159da565572ff952a8",
             "provenance": "generated"
           },
           "beforePresent": false,
           "afterPresent": true,
-          "after": "g_4c60976961ad398555cf314aeaef851c6c977017a8c270d283929790baae803d",
+          "after": "g_63911dee75dd24916fc2db6cb58a608e244faaaa18cfac159da565572ff952a8",
           "property": "id"
         },
         {
@@ -258,27 +258,65 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/3",
+            "pointer": "/rootElements/0/id",
             "targetId": null,
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/3",
-            "targetId": "g_3b60299b04ef4fe3fbf7816755fe1c92f4331ab6f31f28a05fa038c85880f927",
+            "pointer": "/rootElements/0/id",
+            "targetId": "g_9aafd2d71e99a7a3fcf6d8197f8a87090ecdbc66adbc1ab7286a6d1035e3b7ae",
             "provenance": "generated"
           },
           "beforePresent": false,
           "afterPresent": true,
-          "after": "g_3b60299b04ef4fe3fbf7816755fe1c92f4331ab6f31f28a05fa038c85880f927",
+          "after": "g_9aafd2d71e99a7a3fcf6d8197f8a87090ecdbc66adbc1ab7286a6d1035e3b7ae",
           "property": "id"
         }
       ],
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
       "inputRevision": "f8d8cdd517c7ff2756bc4f14d10c5845c76c2bf86d1c94d37a25ef4e9dfffaaa",
-      "outputRevision": "e0da4e3c9db17f4e24a3980c6cc1e4808ce18917654cbd06448b0a070e42d1c1"
+      "outputRevision": "d020b5080bb7168a41e08dca6781623a70ed9358fe70644fd0613d7e516e84e1"
     },
     "payload": {
       "documentVersion": "1",
@@ -310,12 +348,12 @@
               {
                 "$type": "bpmn:ServiceTask",
                 "name": "Review",
-                "id": "g_1f382c1815e3ab94ea6875b01f2f8bbb40652880caa85c5e18754cf143aec7ac"
+                "id": "g_22c0f5e253cc6c62eb9e4ff5d4bbdc1fe3631167657c3df49d18074504c94819"
               },
               {
                 "$type": "bpmn:ServiceTask",
                 "name": "Review",
-                "id": "g_4c60976961ad398555cf314aeaef851c6c977017a8c270d283929790baae803d"
+                "id": "g_ca4189df9cf0ad1a3157edf21efbb71e813f6d11d9918f0194ca2afaa9c990f3"
               },
               {
                 "$type": "bpmn:ServiceTask",
@@ -331,10 +369,10 @@
                     "text": "Source note"
                   }
                 ],
-                "id": "g_3b60299b04ef4fe3fbf7816755fe1c92f4331ab6f31f28a05fa038c85880f927"
+                "id": "g_63911dee75dd24916fc2db6cb58a608e244faaaa18cfac159da565572ff952a8"
               }
             ],
-            "id": "g_907c58be38b03a733fcb44f6e1bb62fe71d3397df79c92d5938ce7738cebd353",
+            "id": "g_9aafd2d71e99a7a3fcf6d8197f8a87090ecdbc66adbc1ab7286a6d1035e3b7ae",
             "isExecutable": true
           },
           {
@@ -346,7 +384,7 @@
         "id": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21"
       },
       "bindings": [],
-      "semanticRevision": "e0da4e3c9db17f4e24a3980c6cc1e4808ce18917654cbd06448b0a070e42d1c1"
+      "semanticRevision": "d020b5080bb7168a41e08dca6781623a70ed9358fe70644fd0613d7e516e84e1"
     }
   },
   "fixedPoint": true

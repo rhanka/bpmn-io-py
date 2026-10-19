@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "cn-c",
-  "derivation": "The ID-less ioSpecification declares two inputs and one output and no sets. C creates one default InputSet and OutputSet whose ownerId is the explicitly evaluated Process id (never the ID-less parent): stable-id(Process_IO, input-set, default) and stable-id(Process_IO, output-set, default); membership is every declared IO id in UTF-16 order (DI_a before DI_b although declared second).",
+  "derivation": "The ID-less ioSpecification declares two inputs and one output and no sets. C creates one default InputSet and OutputSet whose ownerId is the explicitly evaluated Process id (never the ID-less parent): stable-id(Process_IO, input-set, default) and stable-id(Process_IO, output-set, default); membership is every declared IO id in UTF-16 order (DI_a before DI_b although declared second). The flowless Task_IO receives empty incoming/outgoing arrays (H F1). The assignRef of a created set is a write on a created element: source none/generated, result at <set>/dataInputRefs (H B9). Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -96,7 +96,7 @@
       ]
     },
     "baseRevision": "c64f327b029dcce160357dbb61dabbf9b33fbfe8f35b91de6032c3ba976ed789",
-    "revision": "c64119cfc628439672ded93a260c54aa38d87107a25a98218840e49c5293706e",
+    "revision": "66935e6d8b5ff948a0c917c8027c7a47d1f374ea88be7f8e9d6635ea63626f9a",
     "report": {
       "reportVersion": "2",
       "operation": "complete",
@@ -117,7 +117,7 @@
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/ioSpecification/inputSets/0",
+            "pointer": "/rootElements/0/ioSpecification/inputSets/0/dataInputRefs",
             "targetId": "g_885f6efc9b781837a76d0427e36af73c14630fc2b8458836acce84ed41ac1059",
             "provenance": "generated"
           },
@@ -177,7 +177,7 @@
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/0/ioSpecification/outputSets/0",
+            "pointer": "/rootElements/0/ioSpecification/outputSets/0/dataOutputRefs",
             "targetId": "g_ca45904f422b284f112fc0631344240bc947eeee48d38e405d4b1a50f0a7c186",
             "provenance": "generated"
           },
@@ -218,13 +218,101 @@
             ]
           },
           "property": "outputSets"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/incoming",
+            "targetId": "Task_IO",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/incoming",
+            "targetId": "Task_IO",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
+            "targetId": "Task_IO",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
+            "targetId": "Task_IO",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
         }
       ],
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
       "inputRevision": "c64f327b029dcce160357dbb61dabbf9b33fbfe8f35b91de6032c3ba976ed789",
-      "outputRevision": "c64119cfc628439672ded93a260c54aa38d87107a25a98218840e49c5293706e"
+      "outputRevision": "66935e6d8b5ff948a0c917c8027c7a47d1f374ea88be7f8e9d6635ea63626f9a"
     },
     "payload": {
       "documentVersion": "1",
@@ -300,14 +388,16 @@
               {
                 "$type": "bpmn:Task",
                 "id": "Task_IO",
-                "name": "Work"
+                "name": "Work",
+                "incoming": [],
+                "outgoing": []
               }
             ]
           }
         ]
       },
       "bindings": [],
-      "semanticRevision": "c64119cfc628439672ded93a260c54aa38d87107a25a98218840e49c5293706e"
+      "semanticRevision": "66935e6d8b5ff948a0c917c8027c7a47d1f374ea88be7f8e9d6635ea63626f9a"
     }
   },
   "fixedPoint": true

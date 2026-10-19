@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "cn-n",
-  "derivation": "The bound external lane's name differs from the ensure declaration's field (external-lane): reuse validation (type, parent/property, declared fields, single binding) fails and N refuses support-binding-conflict instead of renaming or adopting another lane.",
+  "derivation": "The bound external lane carries a user-chosen name, not the ensure declaration's creation field (external-lane). Reuse validation checks only type, parent and containment property, the processRef/owner relationship and the single binding (DESIGN §5.2; H C5: declared ensure fields are creation fields, a renamed bound support is reused unchanged): the lane is reused, never renamed back, and supports are never found by name. The marked Call_ext is already its member, so the appendUnique is a no-op; no effective change is gated, so the edit activation accepts with no entry (fixed point). Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -94,7 +94,10 @@
                   {
                     "$type": "bpmn:Lane",
                     "id": "Lane_ext",
-                    "name": "External (renamed)"
+                    "name": "External (renamed)",
+                    "flowNodeRef": [
+                      "Call_ext"
+                    ]
                   }
                 ]
               }
@@ -165,30 +168,20 @@
           "targetId": "Main_sub"
         }
       ],
-      "semanticRevision": "44cf831f2ce86f6437afd3d61d0a1109ab4eac2cff8210e228a08e047b9addbd"
+      "semanticRevision": "1c388f0ab938dd8dc2d1a957166672801e3d4098eb4f9158a4ea43c937157e50"
     },
-    "activation": "qualification",
+    "activation": "edit",
     "placementIntent": null
   },
   "expected": {
-    "status": "refused",
+    "status": "ok",
     "operation": "normalize",
-    "code": "support-binding-conflict",
-    "diagnostics": [],
-    "report": {
-      "reportVersion": "2",
-      "operation": "normalize",
-      "entries": [],
-      "rawStandardFindings": [],
-      "idMap": [],
-      "artifacts": []
-    },
     "profileIdentity": {
       "mechanismVersion": "1",
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n/1",
       "version": "1.0.0",
-      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -202,6 +195,271 @@
         }
       ]
     },
-    "baseRevision": "44cf831f2ce86f6437afd3d61d0a1109ab4eac2cff8210e228a08e047b9addbd"
-  }
+    "baseRevision": "1c388f0ab938dd8dc2d1a957166672801e3d4098eb4f9158a4ea43c937157e50",
+    "revision": "1c388f0ab938dd8dc2d1a957166672801e3d4098eb4f9158a4ea43c937157e50",
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "1c388f0ab938dd8dc2d1a957166672801e3d4098eb4f9158a4ea43c937157e50",
+      "outputRevision": "1c388f0ab938dd8dc2d1a957166672801e3d4098eb4f9158a4ea43c937157e50"
+    },
+    "payload": {
+      "envelope": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_ext",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_E",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_ext",
+                  "name": "External supplier",
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "Source: supplier call",
+                      "textFormat": "text/plain"
+                    },
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "external",
+                      "textFormat": "text/x-neutral-call-kind"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_int",
+                  "name": "Run sub-process",
+                  "calledElement": "Process_sub"
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_inc",
+                  "name": "Undecided call"
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_E",
+                  "name": "Prepare"
+                }
+              ],
+              "laneSets": [
+                {
+                  "$type": "bpmn:LaneSet",
+                  "id": "LS_E",
+                  "name": "lane-set",
+                  "lanes": [
+                    {
+                      "$type": "bpmn:Lane",
+                      "id": "Lane_zeta",
+                      "name": "Zeta",
+                      "flowNodeRef": [
+                        "Call_int",
+                        "Call_inc",
+                        "Task_E"
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Lane",
+                      "id": "Lane_alpha",
+                      "name": "Alpha"
+                    },
+                    {
+                      "$type": "bpmn:Lane",
+                      "id": "Lane_ext",
+                      "name": "External (renamed)",
+                      "flowNodeRef": [
+                        "Call_ext"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_sub",
+              "isExecutable": false
+            },
+            {
+              "$type": "bpmn:Collaboration",
+              "id": "Collab_E",
+              "name": "collaboration",
+              "participants": [
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "Main_E",
+                  "name": "main-participant",
+                  "processRef": "Process_E"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Collaboration",
+              "id": "Collab_sub",
+              "name": "collaboration",
+              "participants": [
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "Main_sub",
+                  "name": "main-participant",
+                  "processRef": "Process_sub"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [
+          {
+            "ownerId": "Process_E",
+            "role": "collaboration",
+            "targetId": "Collab_E"
+          },
+          {
+            "ownerId": "Process_E",
+            "role": "external-lane",
+            "targetId": "Lane_ext"
+          },
+          {
+            "ownerId": "Process_E",
+            "role": "lane-set",
+            "targetId": "LS_E"
+          },
+          {
+            "ownerId": "Process_E",
+            "role": "main-participant",
+            "targetId": "Main_E"
+          },
+          {
+            "ownerId": "Process_sub",
+            "role": "collaboration",
+            "targetId": "Collab_sub"
+          },
+          {
+            "ownerId": "Process_sub",
+            "role": "main-participant",
+            "targetId": "Main_sub"
+          }
+        ],
+        "semanticRevision": "1c388f0ab938dd8dc2d1a957166672801e3d4098eb4f9158a4ea43c937157e50"
+      },
+      "placements": [],
+      "report": {
+        "reportVersion": "2",
+        "operation": "normalize",
+        "entries": [],
+        "rawStandardFindings": [],
+        "idMap": [],
+        "artifacts": [],
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "inputRevision": "1c388f0ab938dd8dc2d1a957166672801e3d4098eb4f9158a4ea43c937157e50",
+        "outputRevision": "1c388f0ab938dd8dc2d1a957166672801e3d4098eb4f9158a4ea43c937157e50"
+      }
+    }
+  },
+  "fixedPoint": true
 }

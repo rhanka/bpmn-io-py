@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "plan_recipe+apply_plan",
   "profile": "neutral",
-  "derivation": "create-task on the vendored neutral input: one allocated create of bpmn:Task (the two profiles differ in task subtype) with ownerId = the owner parameter's id, slot task, key = the key parameter, appended to Process_1.flowElements. Explicit commands report no Report/2 entry (spec §3.3); created lists the new id.",
+  "derivation": "create-task on the vendored neutral input: one allocated create of bpmn:Task (the two profiles differ in task subtype) with ownerId = the owner parameter's id, slot task, key = the key parameter, appended to Process_1.flowElements. The planned write carries the descriptive fact apply needs (Process.flowElements is multi-valued: cardinality many; spec §3.2, DESIGN §2.5 applyPlan has no descriptor argument). Explicit commands report no Report/2 entry (spec §3.3); created lists the new id.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -86,7 +86,8 @@
             "id": "g_b8f4b8b61d3654926e4e44ae15143cf474cb72698f307ca0295fd4274a1f16d4",
             "fields": {
               "name": "New task"
-            }
+            },
+            "cardinality": "many"
           }
         ]
       },

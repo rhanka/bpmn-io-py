@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "cn-n",
-  "derivation": "Supports are imported and bound, so no support is created and the edit activation accepts: N reverses the unambiguous Task -> DataStoreReference pair (id Link_R preserved, before/after reported) and sets its declared direction One; relation direction is not a gated mutation. The reference is placed with its link.",
+  "derivation": "Supports are imported and bound, so no support is created and the edit activation accepts: N reverses the unambiguous Task -> DataStoreReference pair (id Link_R preserved, before/after reported) and sets its declared direction One; relation direction is not a gated mutation. The reference is placed with its link. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -99,7 +99,7 @@
           "targetId": "Band_R"
         }
       ],
-      "semanticRevision": "37b13bb2163b9163c52cf5b9bc80b70039b68a9b47b16f8c1429319bf77682a9"
+      "semanticRevision": "986857c63bd2ab9bfdc10092f4d7fa40e08530e512e28019579b71a1ee4a1b96"
     },
     "activation": "edit",
     "placementIntent": null
@@ -112,7 +112,7 @@
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n/1",
       "version": "1.0.0",
-      "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -126,64 +126,12 @@
         }
       ]
     },
-    "baseRevision": "37b13bb2163b9163c52cf5b9bc80b70039b68a9b47b16f8c1429319bf77682a9",
-    "revision": "2a7fc2ecdd95923e296efa867aef5b213e6ca4af8803a4b8aced58331154c720",
+    "baseRevision": "986857c63bd2ab9bfdc10092f4d7fa40e08530e512e28019579b71a1ee4a1b96",
+    "revision": "f1d7742f8517f22def07bf9b686cb544fae17b73c014d5c95604b13720ce29da",
     "report": {
       "reportVersion": "2",
       "operation": "normalize",
       "entries": [
-        {
-          "code": "normalize/assignRef",
-          "severity": "info",
-          "classification": "repairable",
-          "stage": "normalize",
-          "ruleId": "reverse-reference-links",
-          "messageKey": "normalize.assignRef",
-          "disposition": "corrected",
-          "source": {
-            "domain": "tree",
-            "pointer": "/rootElements/1/artifacts/0",
-            "targetId": "Link_R",
-            "provenance": "exact"
-          },
-          "result": {
-            "domain": "tree",
-            "pointer": "/rootElements/1/artifacts/0",
-            "targetId": "Link_R",
-            "provenance": "exact"
-          },
-          "beforePresent": true,
-          "afterPresent": true,
-          "before": "Ref_R",
-          "after": "Task_R",
-          "property": "targetRef"
-        },
-        {
-          "code": "normalize/assignRef",
-          "severity": "info",
-          "classification": "repairable",
-          "stage": "normalize",
-          "ruleId": "reverse-reference-links",
-          "messageKey": "normalize.assignRef",
-          "disposition": "corrected",
-          "source": {
-            "domain": "tree",
-            "pointer": "/rootElements/1/artifacts/0",
-            "targetId": "Link_R",
-            "provenance": "exact"
-          },
-          "result": {
-            "domain": "tree",
-            "pointer": "/rootElements/1/artifacts/0",
-            "targetId": "Link_R",
-            "provenance": "exact"
-          },
-          "beforePresent": true,
-          "afterPresent": true,
-          "before": "Task_R",
-          "after": "Ref_R",
-          "property": "sourceRef"
-        },
         {
           "code": "normalize/set",
           "severity": "info",
@@ -194,13 +142,13 @@
           "disposition": "corrected",
           "source": {
             "domain": "tree",
-            "pointer": "/rootElements/1/artifacts/0",
+            "pointer": "/rootElements/1/artifacts/0/associationDirection",
             "targetId": "Link_R",
             "provenance": "exact"
           },
           "result": {
             "domain": "tree",
-            "pointer": "/rootElements/1/artifacts/0",
+            "pointer": "/rootElements/1/artifacts/0/associationDirection",
             "targetId": "Link_R",
             "provenance": "exact"
           },
@@ -209,13 +157,103 @@
           "before": "None",
           "after": "One",
           "property": "associationDirection"
+        },
+        {
+          "code": "normalize/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "reverse-reference-links",
+          "messageKey": "normalize.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/artifacts/0/sourceRef",
+            "targetId": "Link_R",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/artifacts/0/sourceRef",
+            "targetId": "Link_R",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": "Task_R",
+          "after": "Ref_R",
+          "property": "sourceRef"
+        },
+        {
+          "code": "normalize/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "reverse-reference-links",
+          "messageKey": "normalize.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/artifacts/0/targetRef",
+            "targetId": "Link_R",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/artifacts/0/targetRef",
+            "targetId": "Link_R",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": "Ref_R",
+          "after": "Task_R",
+          "property": "targetRef"
         }
       ],
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
-      "inputRevision": "37b13bb2163b9163c52cf5b9bc80b70039b68a9b47b16f8c1429319bf77682a9",
-      "outputRevision": "2a7fc2ecdd95923e296efa867aef5b213e6ca4af8803a4b8aced58331154c720"
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "986857c63bd2ab9bfdc10092f4d7fa40e08530e512e28019579b71a1ee4a1b96",
+      "outputRevision": "f1d7742f8517f22def07bf9b686cb544fae17b73c014d5c95604b13720ce29da"
     },
     "payload": {
       "envelope": {
@@ -225,7 +263,7 @@
           "schemaVersion": "1.0.0",
           "profile": "neutral-cn-n/1",
           "version": "1.0.0",
-          "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
           "base": {
             "id": "neutral-cn-base/1",
             "version": "fixture-1",
@@ -311,13 +349,13 @@
             "targetId": "Band_R"
           }
         ],
-        "semanticRevision": "2a7fc2ecdd95923e296efa867aef5b213e6ca4af8803a4b8aced58331154c720"
+        "semanticRevision": "f1d7742f8517f22def07bf9b686cb544fae17b73c014d5c95604b13720ce29da"
       },
       "placements": [
         {
           "elementId": "Ref_R",
           "ownerProcessId": "Process_R",
-          "regionKey": "reference",
+          "regionKey": "reference-band",
           "relatedAssociationIds": [
             "Link_R"
           ],
@@ -329,30 +367,30 @@
         "operation": "normalize",
         "entries": [
           {
-            "code": "normalize/assignRef",
+            "code": "normalize/set",
             "severity": "info",
             "classification": "repairable",
             "stage": "normalize",
             "ruleId": "reverse-reference-links",
-            "messageKey": "normalize.assignRef",
+            "messageKey": "normalize.set",
             "disposition": "corrected",
             "source": {
               "domain": "tree",
-              "pointer": "/rootElements/1/artifacts/0",
+              "pointer": "/rootElements/1/artifacts/0/associationDirection",
               "targetId": "Link_R",
               "provenance": "exact"
             },
             "result": {
               "domain": "tree",
-              "pointer": "/rootElements/1/artifacts/0",
+              "pointer": "/rootElements/1/artifacts/0/associationDirection",
               "targetId": "Link_R",
               "provenance": "exact"
             },
             "beforePresent": true,
             "afterPresent": true,
-            "before": "Ref_R",
-            "after": "Task_R",
-            "property": "targetRef"
+            "before": "None",
+            "after": "One",
+            "property": "associationDirection"
           },
           {
             "code": "normalize/assignRef",
@@ -364,13 +402,13 @@
             "disposition": "corrected",
             "source": {
               "domain": "tree",
-              "pointer": "/rootElements/1/artifacts/0",
+              "pointer": "/rootElements/1/artifacts/0/sourceRef",
               "targetId": "Link_R",
               "provenance": "exact"
             },
             "result": {
               "domain": "tree",
-              "pointer": "/rootElements/1/artifacts/0",
+              "pointer": "/rootElements/1/artifacts/0/sourceRef",
               "targetId": "Link_R",
               "provenance": "exact"
             },
@@ -381,37 +419,75 @@
             "property": "sourceRef"
           },
           {
-            "code": "normalize/set",
+            "code": "normalize/assignRef",
             "severity": "info",
             "classification": "repairable",
             "stage": "normalize",
             "ruleId": "reverse-reference-links",
-            "messageKey": "normalize.set",
+            "messageKey": "normalize.assignRef",
             "disposition": "corrected",
             "source": {
               "domain": "tree",
-              "pointer": "/rootElements/1/artifacts/0",
+              "pointer": "/rootElements/1/artifacts/0/targetRef",
               "targetId": "Link_R",
               "provenance": "exact"
             },
             "result": {
               "domain": "tree",
-              "pointer": "/rootElements/1/artifacts/0",
+              "pointer": "/rootElements/1/artifacts/0/targetRef",
               "targetId": "Link_R",
               "provenance": "exact"
             },
             "beforePresent": true,
             "afterPresent": true,
-            "before": "None",
-            "after": "One",
-            "property": "associationDirection"
+            "before": "Ref_R",
+            "after": "Task_R",
+            "property": "targetRef"
           }
         ],
         "rawStandardFindings": [],
         "idMap": [],
         "artifacts": [],
-        "inputRevision": "37b13bb2163b9163c52cf5b9bc80b70039b68a9b47b16f8c1429319bf77682a9",
-        "outputRevision": "2a7fc2ecdd95923e296efa867aef5b213e6ca4af8803a4b8aced58331154c720"
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "inputRevision": "986857c63bd2ab9bfdc10092f4d7fa40e08530e512e28019579b71a1ee4a1b96",
+        "outputRevision": "f1d7742f8517f22def07bf9b686cb544fae17b73c014d5c95604b13720ce29da"
       }
     }
   },

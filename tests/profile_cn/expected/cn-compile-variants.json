@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "compile_profile",
   "profile": null,
-  "derivation": "Each variant is schema-valid and satisfies CR-01..CR-14 (count.select and reachable.from/to as pinned in the schema; inverseReference properties belong to the referencing type; ensure as in cn-compile-support-profile). The compiled identity's sha256 is H(variant profile).",
+  "derivation": "Written CR-01..CR-14 review of every success-path variant (no compiler output used; spec §11.2): neutral and grid are the vendored profiles; support as in cn-compile-support-profile, support-abort adds a refuse step (no write); grid-extraction replaces import by ai on three base fields (valid deltas, no recipe writes them); the cn variants add recipes whose every action maps to its declared writes (identical demands coalesce), whose written fields list the phase actor (code for complete/normalize, editor for commands) in the cn base, whose created types are admitted by their containment and whose ID modes agree with id admission; count uses select and reachable from/to as pinned in the schema; inverseReference properties belong to the referencing type. The compiled identity is the §5.1 record whose sha256 is H(variant profile).",
   "input": {
     "variants": [
       "neutral",
@@ -18,7 +18,10 @@
       "cn-n-conflict",
       "cn-n-relocate",
       "cn-n-unfixed",
-      "cn-n-ensure-conflict"
+      "cn-n-ensure-conflict",
+      "support-cmd",
+      "cn-c-second-pass",
+      "cn-n-second-pass"
     ]
   },
   "expected": [
@@ -191,7 +194,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n/1",
         "version": "1.0.0",
-        "sha256": "10e825af4112406e877772bb98cc3d772ec134c97c9900664c381709a48d431e",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -214,7 +217,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n-conflict/1",
         "version": "1.0.0",
-        "sha256": "ac034ad2ac53cbc924bce33b4fc55392425efcce80280af34edb5b1bb904a77e",
+        "sha256": "4d19a76e115737204be1ee26a2da4642b0b07940652527570b0065d70102b18c",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -237,7 +240,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n-relocate/1",
         "version": "1.0.0",
-        "sha256": "4698483fd8f488e696d71ae03a25bf7f09cb2bf5fa41365a0af92393ab47be41",
+        "sha256": "4d5f50dc43813cf1f5c24e0cf835075a14a054af8bdf81eaa3107d0dd48f07b2",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -260,7 +263,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n-unfixed/1",
         "version": "1.0.0",
-        "sha256": "aa48f91d16280729ffb6cadcc14475d40432758a2ac725eb71d149e473eb77e6",
+        "sha256": "3b5265bdb8370dbb7500351b6e48246030820860ed7e580d645591137b847631",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -283,7 +286,76 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n-ensure-conflict/1",
         "version": "1.0.0",
-        "sha256": "53909ab84534c96b1b3ed47a0b1e699e4728c6e54569a2508a2b6c91c16feaa2",
+        "sha256": "a047b64979b8b9b3806c3920fc6c7d28719d4089f76d4ab9dfba7962b9d80dd5",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "variant": "support-cmd",
+      "status": "ok",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-support-cmd/1",
+        "version": "1.1.0",
+        "sha256": "1d9c294f911262b3c4bf28deea69e641f4f26e8580f19a8d4cbf40b977ab19f1",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      }
+    },
+    {
+      "variant": "cn-c-second-pass",
+      "status": "ok",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c-second-pass/1",
+        "version": "1.0.0",
+        "sha256": "bf0fe1d3b0afaebaa87be46b2d2a3cd0855c7be0091336227718596a024b2e07",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "variant": "cn-n-second-pass",
+      "status": "ok",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-second-pass/1",
+        "version": "1.0.0",
+        "sha256": "0ef4721ff62c67ded55b8e0c9ded0379b9a3c00d8d2eeedde6ba42f9f61df867",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",

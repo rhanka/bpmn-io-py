@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "plan_recipe+apply_plan",
   "profile": "neutral",
-  "derivation": "add-note uses identity containment: the planned create carries no id (no ownerId, slot or key) and the Documentation is appended to Task_B.documentation exactly as the vendored neutral-fixture created[0]; created lists only ID-bearing creations (empty here).",
+  "derivation": "add-note uses identity containment: the planned create carries no id (no ownerId, slot or key) and its descriptive fact (Task.documentation is multi-valued: cardinality many); the Documentation is appended to Task_B.documentation exactly as the vendored neutral-fixture created[0]; created lists only ID-bearing creations (empty here).",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -85,7 +85,8 @@
             "fields": {
               "text": "Preserved source",
               "textFormat": "text/plain"
-            }
+            },
+            "cardinality": "many"
           }
         ]
       },

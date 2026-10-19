@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "cn-c",
-  "derivation": "Input is the cn-c-timer-siblings output with the two identified starts swapped: every id is present, later reorders never reallocate, so C is a no-op (no entry).",
+  "derivation": "Input is the cn-c-timer-siblings output with the two identified starts swapped: every id is present, later reorders never reallocate, and the stored empty topology arrays already equal the derived sets, so C is a no-op (no entry). Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -46,10 +46,11 @@
                       "$type": "bpmn:FormalExpression",
                       "body": "PT1H"
                     },
-                    "id": "g_c3afaa3b12d2cabbd183adbdee38a27b18022539b502d23460991ae39de449b2"
+                    "id": "g_c4723a191520330bd9401ded7077428d8675324e4fafea47a7c09c8f6b6c408d"
                   }
                 ],
-                "id": "g_8c2f78454c1b8308c01442e61b46fb3d87653f3d7700f5b0a38479a93c1d1785"
+                "id": "g_19346fbdcd16d391cb5e78174245803d31d2ce799d8b4fac0d55a18fe4f8c053",
+                "outgoing": []
               },
               {
                 "$type": "bpmn:StartEvent",
@@ -61,22 +62,25 @@
                       "$type": "bpmn:FormalExpression",
                       "body": "PT1H"
                     },
-                    "id": "g_d08d82ce99f6bedf5dc45aece958f2b7da29232a873bf3c9082a3a81382f956b"
+                    "id": "g_06d51ef04908f36d0d2f21381d6b845568ada7d6825f1857f2de87662395218a"
                   }
                 ],
-                "id": "g_8a2b3f0c3b50ed490466a82844d6811cf64af45a7936ba4ffe0637c125960bcd"
+                "id": "g_360bf5993fbaca3953545ee145422f98a18322db9f4f1b1d16a41b9386cf1797",
+                "outgoing": []
               },
               {
                 "$type": "bpmn:Task",
                 "id": "Task_T",
-                "name": "Hourly"
+                "name": "Hourly",
+                "incoming": [],
+                "outgoing": []
               }
             ]
           }
         ]
       },
       "bindings": [],
-      "semanticRevision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7"
+      "semanticRevision": "9be9dd047cb623ec46cf7400e248836ccc84bd10db09327cc8cc99ec6c8d0c45"
     },
     "mode": "retained",
     "activation": "edit"
@@ -103,8 +107,8 @@
         }
       ]
     },
-    "baseRevision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7",
-    "revision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7",
+    "baseRevision": "9be9dd047cb623ec46cf7400e248836ccc84bd10db09327cc8cc99ec6c8d0c45",
+    "revision": "9be9dd047cb623ec46cf7400e248836ccc84bd10db09327cc8cc99ec6c8d0c45",
     "report": {
       "reportVersion": "2",
       "operation": "complete",
@@ -112,8 +116,46 @@
       "rawStandardFindings": [],
       "idMap": [],
       "artifacts": [],
-      "inputRevision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7",
-      "outputRevision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7"
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "9be9dd047cb623ec46cf7400e248836ccc84bd10db09327cc8cc99ec6c8d0c45",
+      "outputRevision": "9be9dd047cb623ec46cf7400e248836ccc84bd10db09327cc8cc99ec6c8d0c45"
     },
     "payload": {
       "documentVersion": "1",
@@ -155,10 +197,11 @@
                       "$type": "bpmn:FormalExpression",
                       "body": "PT1H"
                     },
-                    "id": "g_c3afaa3b12d2cabbd183adbdee38a27b18022539b502d23460991ae39de449b2"
+                    "id": "g_c4723a191520330bd9401ded7077428d8675324e4fafea47a7c09c8f6b6c408d"
                   }
                 ],
-                "id": "g_8c2f78454c1b8308c01442e61b46fb3d87653f3d7700f5b0a38479a93c1d1785"
+                "id": "g_19346fbdcd16d391cb5e78174245803d31d2ce799d8b4fac0d55a18fe4f8c053",
+                "outgoing": []
               },
               {
                 "$type": "bpmn:StartEvent",
@@ -170,22 +213,25 @@
                       "$type": "bpmn:FormalExpression",
                       "body": "PT1H"
                     },
-                    "id": "g_d08d82ce99f6bedf5dc45aece958f2b7da29232a873bf3c9082a3a81382f956b"
+                    "id": "g_06d51ef04908f36d0d2f21381d6b845568ada7d6825f1857f2de87662395218a"
                   }
                 ],
-                "id": "g_8a2b3f0c3b50ed490466a82844d6811cf64af45a7936ba4ffe0637c125960bcd"
+                "id": "g_360bf5993fbaca3953545ee145422f98a18322db9f4f1b1d16a41b9386cf1797",
+                "outgoing": []
               },
               {
                 "$type": "bpmn:Task",
                 "id": "Task_T",
-                "name": "Hourly"
+                "name": "Hourly",
+                "incoming": [],
+                "outgoing": []
               }
             ]
           }
         ]
       },
       "bindings": [],
-      "semanticRevision": "04395d7a6ed3e51f073314aa3d0b0c21f3021e9f16c64b9363a3b904352ed1d7"
+      "semanticRevision": "9be9dd047cb623ec46cf7400e248836ccc84bd10db09327cc8cc99ec6c8d0c45"
     }
   },
   "fixedPoint": true

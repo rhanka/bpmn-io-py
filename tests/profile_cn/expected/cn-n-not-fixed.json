@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "normalize",
   "profile": "cn-n-unfixed",
-  "derivation": "decorate-main-participant sets name := concat(name, '*') on every Participant with a processRef: the bounded second evaluation would change the name again, so N refuses normalization-not-fixed and rolls back the whole stage (no partial reversal either).",
+  "derivation": "decorate-main-participant sets name := concat(name, '*') on every Participant with a processRef. First pass: Main_R becomes 'main-participant*' (with the Link_R reversal). The bounded second evaluation succeeds: the bound Main_R is reused unchanged (reuse validation compares no declared field, H C5), the reversed link no longer matches, but the recipe changes the name again to 'main-participant**'. N(N(x)) != N(x), so N refuses normalization-not-fixed and rolls back the whole stage (no partial reversal either). Witness of the 'second evaluation still changes a value' branch; the refusal branch is cn-n-second-pass-refused. Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -13,7 +13,7 @@
         "schemaVersion": "1.0.0",
         "profile": "neutral-cn-n-unfixed/1",
         "version": "1.0.0",
-        "sha256": "aa48f91d16280729ffb6cadcc14475d40432758a2ac725eb71d149e473eb77e6",
+        "sha256": "3b5265bdb8370dbb7500351b6e48246030820860ed7e580d645591137b847631",
         "base": {
           "id": "neutral-cn-base/1",
           "version": "fixture-1",
@@ -99,7 +99,7 @@
           "targetId": "Band_R"
         }
       ],
-      "semanticRevision": "86b1f85d9296d821ead2314253522bbabb76df459f15a0810f03b00e7c93c4c7"
+      "semanticRevision": "855b31917063a8d2afa3045f26766e8114ad02b8fe9ceb3ac95f02fa8579dcf8"
     },
     "activation": "edit",
     "placementIntent": null
@@ -115,14 +115,34 @@
       "entries": [],
       "rawStandardFindings": [],
       "idMap": [],
-      "artifacts": []
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-unfixed/1",
+        "version": "1.0.0",
+        "sha256": "3b5265bdb8370dbb7500351b6e48246030820860ed7e580d645591137b847631",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "855b31917063a8d2afa3045f26766e8114ad02b8fe9ceb3ac95f02fa8579dcf8"
     },
     "profileIdentity": {
       "mechanismVersion": "1",
       "schemaVersion": "1.0.0",
       "profile": "neutral-cn-n-unfixed/1",
       "version": "1.0.0",
-      "sha256": "aa48f91d16280729ffb6cadcc14475d40432758a2ac725eb71d149e473eb77e6",
+      "sha256": "3b5265bdb8370dbb7500351b6e48246030820860ed7e580d645591137b847631",
       "base": {
         "id": "neutral-cn-base/1",
         "version": "fixture-1",
@@ -136,6 +156,6 @@
         }
       ]
     },
-    "baseRevision": "86b1f85d9296d821ead2314253522bbabb76df459f15a0810f03b00e7c93c4c7"
+    "baseRevision": "855b31917063a8d2afa3045f26766e8114ad02b8fe9ceb3ac95f02fa8579dcf8"
   }
 }

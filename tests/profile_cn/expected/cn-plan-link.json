@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "plan_recipe+apply_plan",
   "profile": "neutral",
-  "derivation": "link creates one Association (allocated under Process_1, slot link, key l1) and assigns its single-valued sourceRef/targetRef to the element parameters; reference writes never create an endpoint (both exist).",
+  "derivation": "link creates one Association (allocated under Process_1, slot link, key l1) and assigns its single-valued sourceRef/targetRef to the element parameters; each assignRef carries cardinality single and the admitted targetTypes of the neutral descriptors (spec §3.2), which apply checks; reference writes never create an endpoint (both exist).",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -87,7 +87,8 @@
             "id": "g_3e8d8d30ade5675c1ec99da45b95079571760995c96aad93645ffb6664d68118",
             "fields": {
               "associationDirection": "None"
-            }
+            },
+            "cardinality": "many"
           },
           {
             "op": "assignRef",
@@ -99,6 +100,12 @@
             "mode": "replace",
             "ids": [
               "Task_A"
+            ],
+            "cardinality": "single",
+            "targetTypes": [
+              "bpmn:ServiceTask",
+              "bpmn:Task",
+              "bpmn:TextAnnotation"
             ]
           },
           {
@@ -111,6 +118,12 @@
             "mode": "replace",
             "ids": [
               "Task_B"
+            ],
+            "cardinality": "single",
+            "targetTypes": [
+              "bpmn:ServiceTask",
+              "bpmn:Task",
+              "bpmn:TextAnnotation"
             ]
           }
         ]

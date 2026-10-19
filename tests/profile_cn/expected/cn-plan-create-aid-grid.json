@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "plan_recipe+apply_plan",
   "profile": "grid",
-  "derivation": "create-aid on the vendored grid input: concat of the profile's marker literal '[Note] ' and the body gives '[Note] helper'; the allocated id is the pinned fixture vector stable-id(Process_1, aid, new-note) = g_61b2...800c.",
+  "derivation": "create-aid on the vendored grid input: concat of the profile's marker literal '[Note] ' and the body gives '[Note] helper'; the allocated id is the pinned fixture vector stable-id(Process_1, aid, new-note) = g_61b2...800c; the planned create carries cardinality many (Process.artifacts multi-valued, spec §3.2).",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -108,7 +108,8 @@
             "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
             "fields": {
               "text": "[Note] helper"
-            }
+            },
+            "cardinality": "many"
           }
         ]
       },
