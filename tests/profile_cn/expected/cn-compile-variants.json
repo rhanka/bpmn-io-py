@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "compile_profile",
   "profile": null,
-  "derivation": "Written CR-01..CR-14 review of every success-path variant (no compiler output used; spec §11.2): neutral and grid are the vendored profiles; support as in cn-compile-support-profile, support-abort adds a refuse step (no write); grid-extraction replaces import by ai on three base fields (valid deltas, no recipe writes them); the cn variants add recipes whose every action maps to its declared writes (identical demands coalesce), whose written fields list the phase actor (code for complete/normalize, editor for commands) in the cn base, whose created types are admitted by their containment and whose ID modes agree with id admission; count uses select and reachable from/to as pinned in the schema; inverseReference properties belong to the referencing type. The compiled identity is the §5.1 record whose sha256 is H(variant profile).",
+  "derivation": "Written CR-01..CR-14 review of every success-path variant (no compiler output used; spec §11.2): neutral and grid are the vendored profiles; support as in cn-compile-support-profile, support-abort adds a refuse step (no write); grid-extraction replaces import by ai on three base fields (valid deltas, no recipe writes them); the cn variants add recipes whose every action maps to its declared writes (identical demands coalesce), whose written fields list the phase actor (code for complete/normalize, editor for commands) in the cn base, whose created types are admitted by their containment and whose ID modes agree with id admission; count uses select and reachable from/to as pinned in the schema; inverseReference properties belong to the referencing type. The compiled identity is the §5.1 record whose sha256 is H(variant profile). Wire shape (parity sync PS-35): one PureResult {status: ok, payload, diagnostics: []} per variant in input order, payload UNSEALED (CompiledProfile has no wire shape; the member must exist); the identities are sealed apart as the compiled-identities artifact, one {variant, identity} per variant.",
   "input": {
     "variants": [
       "neutral",
@@ -26,8 +26,114 @@
   },
   "expected": [
     {
-      "variant": "neutral",
       "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    },
+    {
+      "status": "ok",
+      "payload": {
+        "$unsealed": "compiled-profile"
+      },
+      "diagnostics": []
+    }
+  ],
+  "compiledIdentities": [
+    {
+      "variant": "neutral",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -50,7 +156,6 @@
     },
     {
       "variant": "grid",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -73,7 +178,6 @@
     },
     {
       "variant": "support",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -96,7 +200,6 @@
     },
     {
       "variant": "support-abort",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -119,7 +222,6 @@
     },
     {
       "variant": "grid-extraction",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -142,7 +244,6 @@
     },
     {
       "variant": "cn-c",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -165,7 +266,6 @@
     },
     {
       "variant": "cn-c-unfixed",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -188,7 +288,6 @@
     },
     {
       "variant": "cn-n",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -211,7 +310,6 @@
     },
     {
       "variant": "cn-n-conflict",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -234,7 +332,6 @@
     },
     {
       "variant": "cn-n-relocate",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -257,7 +354,6 @@
     },
     {
       "variant": "cn-n-unfixed",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -280,7 +376,6 @@
     },
     {
       "variant": "cn-n-ensure-conflict",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -303,7 +398,6 @@
     },
     {
       "variant": "support-cmd",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -326,7 +420,6 @@
     },
     {
       "variant": "cn-c-second-pass",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",
@@ -349,7 +442,6 @@
     },
     {
       "variant": "cn-n-second-pass",
-      "status": "ok",
       "identity": {
         "mechanismVersion": "1",
         "schemaVersion": "1.0.0",

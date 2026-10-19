@@ -18,6 +18,11 @@
       "id": "plan-apply/lot3",
       "kind": "format",
       "note": "planRecipe cases with an apply artifact also call applyPlan(plan.payload, envelope.tree, envelope) and compare that PureResult"
+    },
+    {
+      "id": "compile/lot3",
+      "kind": "format",
+      "note": "compileProfile (parity sync PS-25, PS-35): the compile PureResult (one per profile artifact, in order, for a variant list) is compared under profile-c14n/2 after each {\"$unsealed\": reason} marker is replaced by the actual member at the same position, which must exist (CompiledProfile has no wire shape); the compiled-identity (compiled-identities) artifact is compared under profile-c14n/2 with the compiled section 5.1 identity"
     }
   ],
   "profiles": [
@@ -315,12 +320,12 @@
     "tests/profile_cn/expected/parity/cases/cn-c-unicode-names.json": "d367323e222f1a374bfb4f20460c1a11557c369d59599d55b969f673199fcdc6",
     "tests/profile_cn/expected/parity/cases/cn-c-version-mismatch-first.json": "ae0b72bfff5dc71147f2d25d4328f8342455c12affe47bd001d87918e202d3e1",
     "tests/profile_cn/expected/parity/cases/cn-c-wrong-type-reference.json": "52248b38ddc3e6068eac85b9ebea1b10c9df7ad4b3e057f7ee78aed9a8038fb8",
-    "tests/profile_cn/expected/parity/cases/cn-compile-create-identity-mismatch.json": "dd4168d0156990e1e28b611f22e5330592eb1a494d1010197f8e3dc5d68bc8e3",
-    "tests/profile_cn/expected/parity/cases/cn-compile-ensure-missing-binding-write.json": "2e70b04afccce32fa105544a7b942ab1466eaaf2746d0cfb73d4b51ea1716463",
-    "tests/profile_cn/expected/parity/cases/cn-compile-ensure-non-support-type.json": "b14bfb7e14a983adb471605e6f46fe7f21044a850aaeb9eac5ac987c6652ba60",
-    "tests/profile_cn/expected/parity/cases/cn-compile-port-without-authority.json": "676ec25b34df08c78105803ce7fc643505cb24904441e6537e8756f3865e6df6",
-    "tests/profile_cn/expected/parity/cases/cn-compile-support-profile.json": "9eb61f80fd42fb987980bc9930a511f37d27280aaa8c4246defc7ffb41eec40f",
-    "tests/profile_cn/expected/parity/cases/cn-compile-variants.json": "9f5e5c8cd10878004aa7e706e118a891dc78e55053436e14e2cff1cda9a11b5f",
+    "tests/profile_cn/expected/parity/cases/cn-compile-create-identity-mismatch.json": "29c0ea04bbcd27e69d12a980d7780445148745f1ef567b599b9c36ba5d5ddda4",
+    "tests/profile_cn/expected/parity/cases/cn-compile-ensure-missing-binding-write.json": "e741482a798e91fafdc75acc259f2b55e447f4954cfdb136be1436d84bfaa513",
+    "tests/profile_cn/expected/parity/cases/cn-compile-ensure-non-support-type.json": "1d905c1d14d98ca4169e0f1984b08a03b5d41592f0be1641032aa9a29541dcba",
+    "tests/profile_cn/expected/parity/cases/cn-compile-port-without-authority.json": "ef205d7c5fcbe97334a9e8e8a1815f952d4407f7d03c4251936582914260ef11",
+    "tests/profile_cn/expected/parity/cases/cn-compile-support-profile.json": "395dcfa98b0d35dadc13d0690b358a89c6f1e895b391c9829b14e4509858e0a1",
+    "tests/profile_cn/expected/parity/cases/cn-compile-variants.json": "cdcea7d4cd15ebc10e790b345603606903cee9a91e8c891a5ad069d24fa50fc7",
     "tests/profile_cn/expected/parity/cases/cn-n-after-explicit-selection.json": "461b79f09b313d394403eed8443095d712f12da552f86eb5d300a399973487b1",
     "tests/profile_cn/expected/parity/cases/cn-n-black-box-pool-retained.json": "605a5a1e12e00bf2815dda53aed3be4772185957bc192c9cacba5477bbf6186b",
     "tests/profile_cn/expected/parity/cases/cn-n-compat-before-integrity.json": "7764ca39610a7e5ae0b5b09f259389e1b42d790881fb9eb2b59191a38fb897b3",

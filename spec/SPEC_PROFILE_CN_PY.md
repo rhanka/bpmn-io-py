@@ -13,7 +13,9 @@ This revision is the single seal fix round of block B lot 3. It applies, in this
 precedence order: the DESIGN R3.3 text, the block-B JS/Python harmonization decisions
 (cited "H <row>", for example H D1; each decision binds both runtimes) and the seal
 review findings. §14 maps every applied decision and finding to the sections and
-cases it changed.
+cases it changed. The block-B parity sync then reconciled this seal with the JS
+lot-3 seal: its decisions are cited "PS-nn" and its import rows "PS-Hnn" (each binds
+both runtimes); §14.3 lists the values it changed and the cases it vendored.
 
 The sealed expectations live in `tests/profile_cn/expected/` and are pinned by
 `MANIFEST.sha256` (127 harness cases, 5 input artifacts, the derivation helper and
@@ -810,7 +812,7 @@ Each `tests/profile_cn/expected/<case>.json` holds `case` (= file stem), `clause
 | `normalize` | `normalize(compiled, input.envelope, input.placementIntent, activation=input.activation)` | `result.to_json()` |
 | `plan_recipe+apply_plan` | `ctx = create_read_context(compiled, input.envelope, stage="load")`; recipe = `compiled.recipes[input.recipe]` when `input.recipe` is a string, else `input.recipe` verbatim; `plan_recipe(recipe, ctx, input.params, Authority(actor, activation, deletion_intent=deletionIntent))` from `input.authority` (an invalid authority record is passed through so that it refuses); then, when `expected.apply` exists, `apply_plan(plan.payload, input.envelope["tree"], input.envelope)` | `expected.plan`, `expected.apply` (PureResult wire) |
 | `apply_plan` | `apply_plan(input.plan, input.get("stagedTree", input.envelope["tree"]), input.envelope)` | `expected.apply` |
-| `compile_profile` | build `input.variant` (or each of `input.variants`) | `status`, `code`, `identity` |
+| `compile_profile` | build `input.variant` (or each of `input.variants`, in order) | the PureResult wire (a list for `input.variants`) after each `{"$unsealed": <reason>}` marker is replaced by the actual member at the same position (the member must exist; PS-35: CompiledProfile has no wire shape); `compiled.identity` with `compiledIdentity` (each `compiledIdentities[i].identity`) |
 | `propose_support_bindings` | `propose_support_bindings(compiled, input.envelope, provenance=input.provenance)` | PureResult wire |
 | `bind_supports` | `bind_supports(compiled, input.envelope, input.bindings, activation=input.activation)` | `result.to_json()` |
 | `remap_ids` | `remap_ids(compiled, input.envelope, input.importedDi, input.command, activation=input.activation)` | `result.to_json()` |
@@ -849,11 +851,20 @@ with the harness values copied verbatim:
   `stagedTree`, `provenance`, `bindings`, `importedDi`, `placements`) and `{role:
   "profile", path, sha256}` for `compileProfile` variant lists; `commandArtifact` the
   `remapIds` migration command.
-- `expectedArtifacts`: the full Result/1 (`result`), PureResults (`plan`, `apply`),
-  compile verdicts or identities, or the placement list (H A8: reports and
-  diagnostics sealed in full); `expectedStatus` `ok` or `refused:<code>` (H A5) of the
-  last executed step; `comparatorIds` from the manifest (`profile-c14n/2`,
-  `fixed-point/lot3`, `plan-apply/lot3`).
+- `expectedArtifacts`: the full Result/1 (`result`), PureResults (`plan`, `apply`,
+  `compile`), the compiled identities (`compiled-identity`, `compiled-identities`;
+  PS-35) or the placement list (H A8: reports and diagnostics sealed in full);
+  `expectedStatus` `ok` or `refused:<code>` (H A5) of the last executed step;
+  `comparatorIds` from the manifest (`profile-c14n/2`, `fixed-point/lot3`,
+  `plan-apply/lot3`, `compile/lot3`).
+- `compileProfile` (PS-25, PS-35): `compile` is the PureResult, exactly `{status:
+  "refused", code, diagnostics: []}` for a refusal and `{status: "ok", payload,
+  diagnostics: []}` for a success, whose `payload` is the marker `{"$unsealed":
+  "compiled-profile"}` (the member must exist; it is never compared); a variant list
+  gives one PureResult per `profile` input artifact, in order. The compiled §5.1
+  identity of a success is the separate `compiled-identity` artifact (a list of
+  `{variant, identity}` records, `compiled-identities`, for a variant list). The
+  comparator is `compile/lot3`.
 
 `parity/manifest.json` declares `format`, `pathBase` (`.`, the repository root), the
 comparators, the profile load table (`variant`, profile path and digest,
@@ -998,12 +1009,12 @@ H A3). Case files are profile-c14n/2 bytes without a trailing newline.
 | `cn-n-after-explicit-selection` | normalize / cn-n | §5.2 support import rules; §13 OPEN-MACHINE; §16 item 6; §7.2 Structure | N reuses the selected Collaboration and keeps the ordinary pool. | ok, 3 entries, fixed point |
 | `cn-bind-supports-gated` | bind_supports / cn-n | §5.2 support import rules; §13 OPEN-MACHINE; §16 item 6 | Support binding activation refuses profile-open in edit. | refused `profile-open` |
 | `cn-bind-supports-conflict` | bind_supports / cn-n | §5.2 support import rules; §13 OPEN-MACHINE; §16 item 6; §5.1 owner+role unique | Binding an already bound owner+role refuses support-binding-conflict. | refused `support-binding-conflict` |
-| `cn-compile-support-profile` | compile_profile / support | §2.4.1 CR-05/CR-06/CR-07 for ensure; §7.3 (fixture compiles) | The R3.1 support recipe compiles (ensure aliases, writes, authority). | ok |
+| `cn-compile-support-profile` | compile_profile / support | §2.4.1 CR-05/CR-06/CR-07 for ensure; §7.3 (fixture compiles) | The R3.1 support recipe compiles (ensure aliases, writes, authority). | ok (payload UNSEALED), compiled identity |
 | `cn-compile-ensure-non-support-type` | compile_profile / support-task-ensure | §2.4 ensure restriction; §2.4.1 CR-06 | ensure of a non-support native type refuses profile-producer. | refused `profile-producer` |
 | `cn-compile-port-without-authority` | compile_profile / cn-c-noauth | §7.1 Completion C (Ports); §13 OPEN-IO; §16 item 8; §2.4.1 CR-06 | Port creation without explicit code authority refuses profile-producer. | refused `profile-producer` |
 | `cn-compile-ensure-missing-binding-write` | compile_profile / support-no-binding-write | §2.4.1 CR-06 write set; action/write matrix (ensure) | An ensure recipe must declare its envelope binding write. | refused `profile-write-set` |
 | `cn-compile-create-identity-mismatch` | compile_profile / neutral-containment-task | §2.4 create identity; §2.4.1 CR-07 | Containment identity on an ID-bearing type refuses profile-create-identity. | refused `profile-create-identity` |
-| `cn-compile-variants` | compile_profile / - | §2.4.1 compiler rejection mapping; §3.1 profile digest; §5.1 identity | Every success-path variant compiles to its listed identity. | exact value |
+| `cn-compile-variants` | compile_profile / - | §2.4.1 compiler rejection mapping; §3.1 profile digest; §5.1 identity | Every success-path variant compiles to its listed identity. | ok per variant (payload UNSEALED), compiled identities |
 | `cn-gates-table` | gates / - | §13 OPEN register; §16 owner decisions; §7.2 | The read-only lot-3 gate table. | exact value |
 
 The table is generated from the sealed files (clause) and the helper docstrings (witness).
@@ -1084,7 +1095,8 @@ DESIGN §2.4/§2.4.1 and the DESIGN fixture checker's rule order; each identity 
 standalone helper and recomputed by an independent Node JCS/SHA-256 script. The first
 seal's scratch probes (a patched copy of the Block A compiler and loader runs) are
 discarded and are not evidence; their schema-validity check of the variants is an
-input precondition only.
+input precondition only. The parity sync changed the wire shape only (PS-25, PS-35,
+§9.1): every status, code and identity value is unchanged.
 
 ## 12. Not covered
 
@@ -1198,3 +1210,13 @@ consumers (`cn-c-uncompiled-context`) and the conversion note of §3.4.
 The Python runner loads each JS profile with the descriptor and base bytes pinned by
 the JS corpus manifest. Python-native counterparts sealed here with Python-owned values:
 `cn-c-dangling-call`, `cn-remap-swap`, `cn-remap-opaque-attested`.
+
+### 14.3 Parity sync (block-B JS/Python reconciliation)
+
+Decisions applied to this seal's own values. The six cases keep their status, code
+and identity; only the wire shape and the parity projection change.
+
+| PS row | Effect in this binding | Changed cases |
+| --- | --- | --- |
+| PS-25 | a PureResult refusal is exactly `{status: "refused", code, diagnostics}`; a compile refusal carries `diagnostics: []` (§9.1) | `cn-compile-create-identity-mismatch`, `cn-compile-ensure-missing-binding-write`, `cn-compile-ensure-non-support-type`, `cn-compile-port-without-authority` |
+| PS-35 | a compile success is `{status: "ok", payload, diagnostics: []}` with `payload` UNSEALED (CompiledProfile has no wire shape); the compiled §5.1 identity is the separate `compiled-identity` artifact (`compiled-identities` for a list); comparator `compile/lot3` (§9, §9.1) | `cn-compile-support-profile`, `cn-compile-variants` |

@@ -6955,11 +6955,45 @@ def case_bind_supports_conflict() -> dict[str, Json]:
     )
 
 
+#: Parity sync PS-35: CompiledProfile has no wire shape, so the success payload
+#: is UNSEALED (the member must exist) and the §5.1 identity is sealed apart.
+COMPILED_PAYLOAD: dict[str, Json] = {"$unsealed": "compiled-profile"}
+COMPILE_REFUSAL_NOTE = (
+    " Wire shape (parity sync PS-25): a compile refusal is exactly the PureResult"
+    " {status: refused, code, diagnostics: []}."
+)
+COMPILE_SUCCESS_NOTE = (
+    " Wire shape (parity sync PS-35): the PureResult {status: ok, payload, diagnostics:"
+    " []} with payload UNSEALED (CompiledProfile has no wire shape; the member must"
+    " exist); the compiled §5.1 identity is sealed apart as the compiled-identity"
+    " artifact."
+)
+
+
 def _compile_case(
     cid: str, clause: str, derivation: str, variant: str, expected: Json
 ) -> dict[str, Json]:
+    """Return one compile case: a PureResult, plus the identity on success."""
+    if expected["status"] == "ok":  # type: ignore[index]
+        record = make_case(
+            cid,
+            clause,
+            derivation + COMPILE_SUCCESS_NOTE,
+            "compile_profile",
+            variant,
+            {"variant": variant},
+            pure_ok(copy.deepcopy(COMPILED_PAYLOAD)),
+        )
+        record["compiledIdentity"] = expected["identity"]  # type: ignore[index]
+        return record
     return make_case(
-        cid, clause, derivation, "compile_profile", variant, {"variant": variant}, expected
+        cid,
+        clause,
+        derivation + COMPILE_REFUSAL_NOTE,
+        "compile_profile",
+        variant,
+        {"variant": variant},
+        pure_refused(str(expected["code"])),  # type: ignore[index]
     )
 
 
@@ -7100,7 +7134,8 @@ def case_compile_variants() -> dict[str, Json]:
         "cn-c-second-pass",
         "cn-n-second-pass",
     ]
-    expected = [{"variant": n, "status": "ok", "identity": IDENTITY[n]} for n in names]
+    expected = [pure_ok(copy.deepcopy(COMPILED_PAYLOAD)) for _ in names]
+    identities = [{"variant": n, "identity": IDENTITY[n]} for n in names]
     derivation = (
         "Written CR-01..CR-14 review of every success-path variant (no compiler output"
         " used; spec §11.2): neutral and grid are the vendored profiles; support as in"
@@ -7113,8 +7148,12 @@ def case_compile_variants() -> dict[str, Json]:
         " id admission; count uses select and reachable from/to as pinned in the schema;"
         " inverseReference properties belong to the referencing type. The compiled"
         " identity is the §5.1 record whose sha256 is H(variant profile)."
+        " Wire shape (parity sync PS-35): one PureResult {status: ok, payload,"
+        " diagnostics: []} per variant in input order, payload UNSEALED (CompiledProfile"
+        " has no wire shape; the member must exist); the identities are sealed apart as"
+        " the compiled-identities artifact, one {variant, identity} per variant."
     )
-    return make_case(
+    record = make_case(
         "cn-compile-variants",
         "DESIGN R3.3 §2.4.1 compiler rejection mapping; §3.1 profile digest; §5.1 identity",
         derivation,
@@ -7123,6 +7162,8 @@ def case_compile_variants() -> dict[str, Json]:
         {"variants": names},
         expected,
     )
+    record["compiledIdentities"] = identities
+    return record
 
 
 GATES: dict[str, dict[str, str]] = {
@@ -7265,6 +7306,18 @@ CORPUS_COMPARATORS = [
             " envelope.tree, envelope) and compare that PureResult"
         ),
     },
+    {
+        "id": "compile/lot3",
+        "kind": "format",
+        "note": (
+            "compileProfile (parity sync PS-25, PS-35): the compile PureResult (one per"
+            " profile artifact, in order, for a variant list) is compared under"
+            ' profile-c14n/2 after each {"$unsealed": reason} marker is replaced by the'
+            " actual member at the same position, which must exist (CompiledProfile has no"
+            " wire shape); the compiled-identity (compiled-identities) artifact is compared"
+            " under profile-c14n/2 with the compiled section 5.1 identity"
+        ),
+    },
 ]
 
 
@@ -7361,13 +7414,17 @@ def corpus_record(record: dict[str, Json]) -> dict[str, Json]:  # noqa: C901, PL
         expected.append(_artifact("apply", exp["apply"]))
         status = _status(exp["apply"])
     elif operation == "compile_profile":
+        # Parity sync PS-25/PS-35: PureResult(s) plus the separately sealed identities.
+        comparators = ["compile/lot3"]
         names = inp.get("variants")
+        expected.append(_artifact("compile", exp))
         if names is None:
-            expected.append(_artifact("compile", exp))
             status = _status(exp)
+            if "compiledIdentity" in record:
+                expected.append(_artifact("compiled-identity", record["compiledIdentity"]))
         else:
             inputs += [{"role": "profile", **_profile_ref(str(n))} for n in names]  # type: ignore[union-attr]
-            expected.append(_artifact("identities", exp))
+            expected.append(_artifact("compiled-identities", record["compiledIdentities"]))
     elif operation == "propose_support_bindings":
         inputs += [
             _artifact("envelope", inp["envelope"]),

@@ -4,12 +4,13 @@
   "author": "spec-seal",
   "operation": "compile_profile",
   "profile": "support-no-binding-write",
-  "derivation": "Hand review: every ensure demands {envelope,/bindings,binding} (DESIGN §2.4.1 action/write table: 'parent/property create and envelope /bindings binding'). The variant removes that declared write from ensure-supports; the per-step type, containment and producer checks pass exactly as for the support variant, and the recipe-level comparison finds a required write missing from the declared set (CR-06 'Every action maps to declared writes'). Expected: refused profile-write-set.",
+  "derivation": "Hand review: every ensure demands {envelope,/bindings,binding} (DESIGN §2.4.1 action/write table: 'parent/property create and envelope /bindings binding'). The variant removes that declared write from ensure-supports; the per-step type, containment and producer checks pass exactly as for the support variant, and the recipe-level comparison finds a required write missing from the declared set (CR-06 'Every action maps to declared writes'). Expected: refused profile-write-set. Wire shape (parity sync PS-25): a compile refusal is exactly the PureResult {status: refused, code, diagnostics: []}.",
   "input": {
     "variant": "support-no-binding-write"
   },
   "expected": {
     "status": "refused",
-    "code": "profile-write-set"
+    "code": "profile-write-set",
+    "diagnostics": []
   }
 }
