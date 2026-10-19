@@ -31,6 +31,7 @@ from bpmn_io.profile import (
     normalize,
     plan_recipe,
     propose_support_bindings,
+    remap_ids,
     sort_placements,
 )
 
@@ -40,7 +41,6 @@ MECH = ROOT / "contracts" / "profile-mechanism" / "1"
 
 #: Operations with no implementation yet: value is the strict-xfail reason.
 PENDING = {
-    "remap_ids": "lot-3 pending: remap_ids (OPEN-ID gated)",
     "import_projection": "lot-3 pending: import_projection",
     "normalize_transport": "lot-3 pending: normalize plus the conductor joint run (binding §8)",
     "validate": (
@@ -337,6 +337,23 @@ def _run_bind(case: dict[str, object], record: dict[str, object]) -> None:
     assert jcs(actual) == jcs(case["expected"]), case["case"]
 
 
+def _run_remap(case: dict[str, object], record: dict[str, object]) -> None:
+    """Run one remap_ids case through the bound §9 call."""
+    compiled = _compiled(case["profile"])
+    frozen = jcs(record)
+    activation = record.get("activation") or "edit"
+    assert isinstance(activation, str)
+    actual = remap_ids(
+        compiled,
+        record["envelope"],
+        record["importedDi"],
+        record["command"],
+        activation=activation,
+    ).to_json()
+    assert jcs(record) == frozen
+    assert jcs(actual) == jcs(case["expected"]), case["case"]
+
+
 def _run_propose(case: dict[str, object], record: dict[str, object]) -> None:
     """Run one propose_support_bindings case through the bound §9 call."""
     compiled = _compiled(case["profile"])
@@ -370,6 +387,7 @@ _RUNNERS = {
     "bind_supports": _run_bind,
     "compile_profile": _run_compile,
     "propose_support_bindings": _run_propose,
+    "remap_ids": _run_remap,
     "sort_placements": _run_sort,
     "gates": _run_gates,
     "stable-id/1": _run_stable,

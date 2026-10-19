@@ -17,6 +17,7 @@ from bpmn_io.profile._cn_context import Authority, create_read_context
 from bpmn_io.profile._cn_gates import GATES
 from bpmn_io.profile._cn_normalize import normalize, sort_placements
 from bpmn_io.profile._cn_plan import plan_recipe
+from bpmn_io.profile._cn_remap import remap_ids
 from bpmn_io.profile._cn_supports import bind_supports, propose_support_bindings
 from bpmn_io.profile._compat import check_compatibility
 from bpmn_io.profile._compiler import (
@@ -160,5 +161,6 @@ __all__ = [  # noqa: RUF022 - lots append contiguous per-lot blocks
     "normalize",
     "plan_recipe",
     "propose_support_bindings",
+    "remap_ids",
     "sort_placements",
 ]
