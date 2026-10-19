@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from typing import Any, Final
 
 from bpmn_io.profile._c14n import jcs
-from bpmn_io.profile._cn_context import _utf16
+from bpmn_io.profile._cn_context import _utf16, to_wire_envelope
 from bpmn_io.profile._cn_normalize import sort_placements
 from bpmn_io.profile._cn_plan import _assignref_result, _RefusalError, _refuse, _walk_pointer
 from bpmn_io.profile._envelope import check_envelope_integrity, check_envelope_shape, sort_bindings
@@ -1111,10 +1111,11 @@ def apply_plan(
             or not isinstance(owned_plan.get("writes"), list)
         ):
             _refuse("operation-error")
-        if not isinstance(staged_tree, Mapping) or not isinstance(staged_envelope, Mapping):
+        wire_envelope = to_wire_envelope(staged_envelope)
+        if not isinstance(staged_tree, Mapping) or not isinstance(wire_envelope, Mapping):
             _refuse("operation-error")
         owned_tree: dict[str, Any] = copy.deepcopy(dict(staged_tree))
-        owned_envelope: dict[str, Any] = copy.deepcopy(dict(staged_envelope))
+        owned_envelope: dict[str, Any] = copy.deepcopy(dict(wire_envelope))
         failed = check_envelope_shape(owned_envelope)
         if failed is not None:
             _refuse(failed)

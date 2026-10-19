@@ -316,6 +316,80 @@ def check_graph(  # noqa: C901, PLR0912 - one branch per graph-index failure
     return None
 
 
+def _dangling_admits_key(
+    type_name: str,
+    key: str,
+    spec: dict[str, Any],
+    references: dict[str, tuple[str, ...]],
+    ref_fields: frozenset[tuple[str, str]],
+) -> bool:
+    """Return whether one element member can carry a reference value."""
+    if key == "$type":
+        return False
+    scalars = spec.get("scalars", ())
+    if isinstance(scalars, (list, tuple)) and key in scalars:
+        return (type_name, key) in ref_fields
+    containment = spec.get("containment", {})
+    if isinstance(containment, dict) and key in containment:
+        return False
+    return key in references or (type_name, key) in ref_fields
+
+
+def find_dangling(
+    index: TreeIndex,
+    types: dict[str, dict[str, Any]],
+    ref_fields: frozenset[tuple[str, str]] = frozenset(),
+) -> list[dict[str, str | None]]:
+    """Locate every dangling reference of one indexed JSON tree (§6.9 PS-20).
+
+    Same member classification as :func:`check_graph`, but exhaustive and
+    located: each reference value naming an absent target yields one
+    ``{"pointer", "targetId"}`` record in document order (list members
+    address their indexed member pointer). Empty values are not references;
+    target-type admission is not checked here — a present but mistyped
+    target is reported by its rule, never as dangling. The index is only
+    read, never mutated.
+    """
+    known = set(index.by_id)
+    found: list[dict[str, str | None]] = []
+    for element in index.elements:
+        type_name = element.get("$type")
+        if not isinstance(type_name, str) or type_name not in types:
+            continue
+        spec = types[type_name]
+        references = _reference_members(type_name, types)
+        holder = element.get("id")
+        holder_id = holder if isinstance(holder, str) and holder else None
+        base = index.pointers.get(id(element), "")
+        for key in element:
+            if not _dangling_admits_key(type_name, key, spec, references, ref_fields):
+                continue
+            value = element[key]
+            listed = isinstance(value, list)
+            items = value if listed else [value]
+            for position, item in enumerate(items):
+                if item is None:
+                    continue
+                target = item.get("$ref") if isinstance(item, dict) else item
+                if isinstance(target, str) and (target == "" or target in known):
+                    continue
+                found.append(
+                    {
+                        "pointer": _member_pointer(base, key, position, listed=listed),
+                        "targetId": holder_id,
+                    }
+                )
+    return found
+
+
+def _member_pointer(base: str, key: str, position: int, *, listed: bool) -> str:
+    """Address one reference member (indexed when multi-valued)."""
+    segment = _escape_segment(key)
+    if listed:
+        return f"{base}/{segment}/{position}"
+    return f"{base}/{segment}"
+
+
 def _check_reference_value(  # noqa: PLR0913 - reference check inputs travel together
     element: dict[str, Any],
     key: str,

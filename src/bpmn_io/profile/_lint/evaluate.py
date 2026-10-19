@@ -22,7 +22,7 @@ from typing import TYPE_CHECKING, Any
 
 from bpmn_io.profile._evaluate import ReadContext, evaluate_predicate, select
 from bpmn_io.profile._lint.c14n import utf16_key
-from bpmn_io.profile._lint.index import walk_tree
+from bpmn_io.profile._lint.index import _child_pointers, walk_tree
 from bpmn_io.profile._results import PureRefused
 
 if TYPE_CHECKING:
@@ -100,7 +100,7 @@ def evaluate_rule(
         msg = f"compiled rule <{rule_id}> misses its assert predicate"
         raise EvaluationError(msg)
     profile_rule_id = f"profile:{rule_id}"
-    context, pointers = _read_context(root, phase=phase, bindings=bindings)
+    context, pointers = _read_context(root, phase=phase, notions=notions, bindings=bindings)
     base_bindings: dict[str, Any] = {"root": root, "notions": dict(notions or {})}
     declared = rule.get("bindings", [])
     if not isinstance(declared, list):
@@ -133,7 +133,8 @@ def _read_context(
     root: ModdleElement,
     *,
     phase: str,
-    bindings: list[dict[str, Any]] | tuple[dict[str, Any], ...] | None,
+    notions: dict[str, dict[str, Any]] | None = None,
+    bindings: list[dict[str, Any]] | tuple[dict[str, Any], ...] | None = None,
 ) -> tuple[ReadContext, dict[int, str]]:
     """Build the immutable read context and handle-pointer map of ``root``."""
     pairs = walk_tree(root)
@@ -144,9 +145,23 @@ def _read_context(
         if isinstance((node_id := node.get("id")), str) and node_id
     }
     support = tuple(dict(entry) for entry in bindings) if bindings else ()
-    return ReadContext(root=root, elements=elements, by_id=by_id, bindings=support, stage=phase), {
-        id(node): pointer for node, pointer in pairs
-    }
+    owned: dict[str, object] = (
+        {key: dict(value) for key, value in notions.items()} if notions else {}
+    )
+    parents: dict[int, object] = {}
+    for node, pointer in pairs:
+        for child, _ in _child_pointers(node, pointer):
+            parents.setdefault(id(child), node)
+    context = ReadContext(
+        root=root,
+        elements=elements,
+        by_id=by_id,
+        bindings=support,
+        stage=phase,
+        notions=owned,
+        parents=parents,
+    )
+    return context, {id(node): pointer for node, pointer in pairs}
 
 
 def _select(
@@ -206,10 +221,25 @@ def _bind_rule(
             msg = f"compiled rule <{rule_id}> binding misses its name"
             raise EvaluationError(msg)
         handles = _select(entry.get("select"), context, bindings, rule_id=rule_id)
+        for fallback in _bind_fallbacks(entry, rule_id=rule_id):
+            if handles:
+                break
+            handles = _select(fallback, context, bindings, rule_id=rule_id)
         bound = _apply_cardinality(entry.get("cardinality"), handles, rule_id)
         if bound is not None:
             bindings[name] = bound
     return bindings
+
+
+def _bind_fallbacks(entry: dict[str, Any], *, rule_id: str) -> list[Any]:
+    """Return the ordered fallback selectors of one bind record."""
+    fallbacks = entry.get("fallbacks", [])
+    if fallbacks is None or fallbacks == []:
+        return []
+    if not isinstance(fallbacks, list):
+        msg = f"compiled rule <{rule_id}> fallbacks must be an array"
+        raise EvaluationError(msg)
+    return fallbacks
 
 
 def _apply_cardinality(cardinality: Any, handles: list[Any], rule_id: str) -> Any:  # noqa: ANN401

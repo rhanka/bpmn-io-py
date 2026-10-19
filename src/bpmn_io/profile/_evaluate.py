@@ -10,7 +10,7 @@ from __future__ import annotations
 import copy
 import math
 from dataclasses import dataclass, field
-from typing import TypeGuard
+from typing import Final, TypeGuard
 
 from bpmn_io._js import UNDEFINED
 from bpmn_io.profile._results import PureRefused, PureResult, PureSuccess
@@ -28,6 +28,146 @@ __all__ = [
 _MAX_ELEMENTS = 100000
 _MAX_DEPTH = 256
 _MISSING = object()
+
+_SUPERTYPE_PACKAGES: Final[tuple[str, ...]] = ("bpmn", "bpmndi", "dc", "di", "bioc")
+_supertype_cache: dict[str, dict[str, tuple[str, ...]]] = {}
+_many_cache: dict[str, frozenset[tuple[str, str]]] = {}
+
+
+def _load_descriptor_or_none(package: str) -> dict[str, object] | None:
+    """Load one pinned descriptor (None when unavailable)."""
+    from bpmn_io.descriptors import load_descriptor  # noqa: PLC0415 - lazy, keeps import light
+
+    try:
+        descriptor = load_descriptor(package)
+    except Exception:  # noqa: BLE001 - pinned reads stay total
+        return None
+    return descriptor if isinstance(descriptor, dict) else None
+
+
+def _pinned_supertypes() -> dict[str, tuple[str, ...]]:
+    """Return the pinned descriptor supertype chains (built once).
+
+    Keys and values are qualified ``prefix:Name`` pairs. Unknown packages
+    or load failures degrade to the empty map (callers fall back to exact
+    matching); the descriptors are pinned data, never edited here.
+    """
+    cached = _supertype_cache.get("chain")
+    if cached is not None:
+        return cached
+    chained: dict[str, tuple[str, ...]] = {}
+    for package in _SUPERTYPE_PACKAGES:
+        descriptor = _load_descriptor_or_none(package)
+        if descriptor is None:
+            continue
+        prefix = descriptor.get("prefix")
+        if not isinstance(prefix, str):
+            continue
+        kinds = descriptor.get("types")
+        if not isinstance(kinds, list):
+            continue
+        for entry in kinds:
+            if not isinstance(entry, dict):
+                continue
+            name = entry.get("name")
+            if not isinstance(name, str):
+                continue
+            supers = entry.get("superClass") or ()
+            qualified = tuple(
+                parent if ":" in parent else f"{prefix}:{parent}"
+                for parent in supers
+                if isinstance(parent, str)
+            )
+            chained[f"{prefix}:{name}"] = qualified
+    _supertype_cache["chain"] = chained
+    return chained
+
+
+def _many_entry_marks(entry: dict[str, object], prefix: str) -> set[tuple[str, str]]:
+    """Collect multi-valued (type, prop) pairs of one descriptor type."""
+    marked: set[tuple[str, str]] = set()
+    name = entry.get("name")
+    if not isinstance(name, str):
+        return marked
+    props = entry.get("properties")
+    if not isinstance(props, list):
+        return marked
+    for prop in props:
+        if not isinstance(prop, dict):
+            continue
+        member = prop.get("name")
+        if prop.get("isMany") is True and isinstance(member, str):
+            marked.add((f"{prefix}:{name}", member))
+    return marked
+
+
+def _collect_many_marks() -> frozenset[tuple[str, str]]:
+    """Collect pinned (type, prop) pairs marked multi-valued."""
+    marked: set[tuple[str, str]] = set()
+    for package in _SUPERTYPE_PACKAGES:
+        descriptor = _load_descriptor_or_none(package)
+        if descriptor is None:
+            continue
+        prefix = descriptor.get("prefix")
+        if not isinstance(prefix, str):
+            continue
+        kinds = descriptor.get("types")
+        if not isinstance(kinds, list):
+            continue
+        for entry in kinds:
+            if isinstance(entry, dict):
+                marked |= _many_entry_marks(entry, prefix)
+    return frozenset(marked)
+
+
+def _pinned_is_many(type_name: str, prop: str) -> bool:
+    """Return whether the pinned descriptor marks one property multi-valued.
+
+    The compiled profile facets carry no ``many``/``single`` marks in this
+    profile family, so plan-time cardinality consults the pinned metamodel
+    (``isMany``) as ground truth. Unknown pairs read single-valued.
+    """
+    marked = _many_cache.get("marks")
+    if marked is None:
+        marked = _collect_many_marks()
+        _many_cache["marks"] = marked
+    if (type_name, prop) in marked:
+        return True
+    # ``isMany`` is declared once on the metamodel supertype (DataAssociation
+    # carries ``sourceRef``); walk the pinned chain before giving up.
+    chain = _pinned_supertypes()
+    seen = {type_name}
+    stack = [type_name]
+    guard = 0
+    while stack and guard < 1024:
+        guard += 1
+        for parent in chain.get(stack.pop(), ()):
+            if (parent, prop) in marked:
+                return True
+            if parent not in seen:
+                seen.add(parent)
+                stack.append(parent)
+    return False
+
+
+def _is_assignable(actual: str, type_name: str) -> bool:
+    """Return whether ``actual`` is ``type_name`` or a pinned subtype of it."""
+    if actual == type_name:
+        return True
+    chain = _pinned_supertypes()
+    seen = {actual}
+    stack = [actual]
+    guard = 0
+    while stack and guard < 1024:
+        guard += 1
+        for parent in chain.get(stack.pop(), ()):
+            if parent == type_name:
+                return True
+            if parent not in seen:
+                seen.add(parent)
+                stack.append(parent)
+    return False
+
 
 _ECMA_START_WS = frozenset(
     [
@@ -225,17 +365,42 @@ def make_read_context(
 
 
 def _children_of_property(element: object, prop: str) -> list[object]:
-    """Collect children held under one named containment property."""
-    value = _read_property(element, prop)
-    if isinstance(value, dict):
-        return [value] if isinstance(value.get("$type"), str) else []
+    """Collect containment children held under one property (bounded)."""
+    if isinstance(element, dict):
+        return _dict_children_of_property(element, prop)
+    return _native_children_of_property(element, prop)
+
+
+def _dict_children_of_property(element: dict[str, object], prop: str) -> list[object]:
+    """Collect dict children held under one property."""
+    found: list[object] = []
+    value = element.get(prop)
+    if isinstance(value, dict) and isinstance(value.get("$type"), str):
+        found.append(value)
+    elif isinstance(value, list):
+        for entry in value:
+            if isinstance(entry, dict) and isinstance(entry.get("$type"), str):
+                found.append(entry)  # noqa: PERF401
+    return found
+
+
+def _native_children_of_property(element: object, prop: str) -> list[object]:
+    """Collect native children held under one property."""
+    found: list[object] = []
+    get = getattr(element, "get", None)
+    if not callable(get):
+        return found
+    try:
+        value = get(prop)
+    except Exception:  # noqa: BLE001 - native getters stay total
+        return found
+    if value is UNDEFINED or value is None:
+        return found
     if isinstance(value, list):
-        return [
-            entry
-            for entry in value
-            if isinstance(entry, dict) and isinstance(entry.get("$type"), str)
-        ]
-    return []
+        found.extend(value)
+    elif hasattr(value, "type_"):
+        found.append(value)
+    return found
 
 
 def _read_property(element: object, prop: str) -> object:
@@ -415,14 +580,15 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
             return actual == type_name
         # Assignable uses native descriptor inheritance (DESIGN §2.2): the
         # element's own registry-backed subtype check decides. Plain-dict
-        # trees carry no hierarchy, so they degrade to exact matching.
+        # trees walk the pinned descriptor hierarchy instead; unknown
+        # types degrade to exact matching.
         instance_of = getattr(target, "instance_of", None)
         if callable(instance_of):
             try:
                 return bool(instance_of(type_name))
             except Exception:  # noqa: BLE001 - evaluation stays total
                 return False
-        return actual == type_name
+        return _is_assignable(actual, type_name)
     if op == "present":
         return _eval_value(node.get("value"), context, bindings) is not _MISSING
     if op == "equal":

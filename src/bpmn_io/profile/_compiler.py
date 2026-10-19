@@ -992,7 +992,12 @@ def _authorize(scope: _Scope, btype: str, field_name: str, phase: str) -> str | 
     with no producer row is not an admitted write target for the field
     and is skipped.
     """
-    if scope.producers is None or scope.types is None or not field_name:
+    if (
+        scope.producers is None
+        or scope.types is None
+        or not field_name
+        or _support_unindexed(scope, btype)
+    ):
         return None
     actor = "code" if phase in ("complete", "normalize") else "editor"
     if btype in scope.types:
@@ -1141,6 +1146,20 @@ _SUPPORT_ENSURE_TYPES: frozenset[str] = frozenset(
 )
 
 
+def _support_unindexed(scope: _Scope, native_type: str) -> bool:
+    """Return whether one support-ensure type lacks a descriptor entry.
+
+    Support objects (§5.2) are native-managed: a profile may ensure them
+    without declaring them, in which case descriptor-bound checks degrade
+    instead of refusing.
+    """
+    return (
+        native_type in _SUPPORT_ENSURE_TYPES
+        and scope.types is not None
+        and native_type not in scope.types
+    )
+
+
 def _check_ensure_identity(
     step: dict[str, object], native_type: str, phase: str, scope: _Scope
 ) -> str | None:
@@ -1166,9 +1185,11 @@ def _check_ensure(  # noqa: PLR0911 - one return per ensure failure
     native_type = step.get("type")
     if not isinstance(native_type, str) or not native_type:
         return "profile-type"
-    if ":" in native_type and scope.types is not None and native_type not in scope.types:
+    if _support_unindexed(scope, native_type):
+        pass
+    elif ":" in native_type and scope.types is not None and native_type not in scope.types:
         return "profile-type"
-    if native_type not in _SUPPORT_ENSURE_TYPES:
+    elif native_type not in _SUPPORT_ENSURE_TYPES:
         return "profile-producer"
     owner = step.get("owner")
     parent = step.get("parent")

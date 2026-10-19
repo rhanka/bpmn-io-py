@@ -129,7 +129,13 @@ def test_ensure_registers_its_alias_for_later_steps() -> None:
             "order": "id",
         },
         "when": {"op": "true"},
-        "writes": [],
+        # CR-06: declared writes equal the step demands exactly (each
+        # ensure demands its create plus the envelope bindings channel).
+        "writes": [
+            {"binding": "envelope", "path": "/bindings", "mode": "binding"},
+            {"binding": "root", "path": "/rootElements", "mode": "create"},
+            {"binding": "collaboration", "path": "/participants", "mode": "create"},
+        ],
         "steps": [
             {
                 "op": "ensure",

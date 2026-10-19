@@ -24,7 +24,7 @@ from bpmn_io.profile._cn_context import (
 )
 from bpmn_io.profile._compiler import _authorize as _compiler_authorize
 from bpmn_io.profile._compiler import _Scope as _CompilerScope
-from bpmn_io.profile._evaluate import _MISSING, _eval_value, evaluate_predicate
+from bpmn_io.profile._evaluate import _MISSING, _eval_value, _pinned_is_many, evaluate_predicate
 from bpmn_io.profile._evaluate import select as _block_select
 from bpmn_io.profile._results import PureRefused, PureResult, pure_refused, pure_success
 from bpmn_io.profile._stable_id import allocate_stable_id
@@ -292,15 +292,27 @@ def _containment_cardinality(
 def _reference_cardinality(
     container_type: str, prop: str, types: dict[str, dict[str, Any]], stored: object
 ) -> str:
-    """Return the reference cardinality (facet, stored shape, then ``single``).
+    """Return the reference cardinality (facet, stored shape, admission).
 
-    A ``many`` facet wins, as does a stored list; anything else (absent,
-    scalar) stays ``single``. Empty writes to empty-or-absent singles are
-    still accepted by the replace count exemption (F1).
+    A ``many`` facet wins, as does a stored list; a stored scalar stays
+    ``single`` (profile-local facts never defer to global state). Only
+    when the property is absent does the pinned metamodel decide, and a
+    single admitted target narrows a metamodel-many reference to single
+    (the profile's closed world keeps no collection); unknown pairs stay
+    ``single``. Empty writes to empty-or-absent singles are still accepted
+    by the replace count exemption (F1).
     """
     if _is_many_reference(container_type, prop, types):
         return "many"
     if isinstance(stored, list):
+        return "many"
+    if stored is not _MISSING:
+        return "single"
+    # The compiled facets carry no ``many`` marks in this profile family,
+    # so an absent property consults the pinned metamodel ``isMany``;
+    # admitting exactly one target type narrows it to single.
+    admitted = _reference_members(container_type, types).get(prop, ())
+    if len(admitted) > 1 and _pinned_is_many(container_type, prop):
         return "many"
     return "single"
 

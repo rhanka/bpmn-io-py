@@ -67,3 +67,41 @@ def test_selector_self_orders_by_id() -> None:
     result = select({"from": "root", "via": "self", "order": "id"}, context, {})
     assert result.status == "ok"
     assert result.payload is not None  # type: ignore[union-attr]
+
+
+def test_typeis_assignable_walks_pinned_hierarchy_on_dicts() -> None:
+    """Assignable matches subtypes on plain-dict trees (DESIGN §2.2)."""
+    from bpmn_io.profile import evaluate_predicate
+    from bpmn_io.profile._evaluate import make_read_context
+
+    tree = {
+        "$type": "bpmn:Definitions",
+        "id": "D_1",
+        "rootElements": [
+            {
+                "$type": "bpmn:Process",
+                "id": "P_1",
+                "flowElements": [
+                    {"$type": "bpmn:UserTask", "id": "U_1"},
+                    {"$type": "bpmn:Task", "id": "T_1"},
+                ],
+            }
+        ],
+    }
+    context = make_read_context(tree)
+    user_task = tree["rootElements"][0]["flowElements"][0]  # type: ignore[index]
+    task = tree["rootElements"][0]["flowElements"][1]  # type: ignore[index]
+    assignable = {"op": "typeIs", "binding": "self", "type": "bpmn:Task", "mode": "assignable"}
+    first = evaluate_predicate(assignable, context, {"self": user_task})
+    assert first.status == "ok"
+    assert first.payload is True  # type: ignore[union-attr]
+    second = evaluate_predicate(assignable, context, {"self": task})
+    assert second.payload is True  # type: ignore[union-attr]
+    narrow = {
+        "op": "typeIs",
+        "binding": "self",
+        "type": "bpmn:UserTask",
+        "mode": "assignable",
+    }
+    third = evaluate_predicate(narrow, context, {"self": task})
+    assert third.payload is False  # type: ignore[union-attr]
