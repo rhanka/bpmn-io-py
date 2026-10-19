@@ -15,7 +15,12 @@ precedence order: the DESIGN R3.3 text, the block-B JS/Python harmonization deci
 review findings. §14 maps every applied decision and finding to the sections and
 cases it changed. The block-B parity sync then reconciled this seal with the JS
 lot-3 seal: its decisions are cited "PS-nn" and its import rows "PS-Hnn" (each binds
-both runtimes); §14.3 lists the values it changed and the cases it vendored.
+both runtimes); §14.3 lists the values it changed and the cases it vendored. The
+block-B Unicode-integrity audit (2026-10-19) found no code point lost in the own
+cases since their first seal; it gives `cn-c-unicode-names` the witnesses its
+derivation claims for no NFC and no case folding (`draft`, `Caf` + U+00E9 and
+`Cafe` + U+0301 after the five former names): eight distinct IDs, the former five
+unchanged (§11). Vendored JS cases keep the bytes of the JS seal that owns them.
 
 The sealed expectations live in `tests/profile_cn/expected/` and are pinned by
 `MANIFEST.sha256` (196 harness cases: 127 own cases and 69 vendored JS cases; 5 input
@@ -1002,7 +1007,7 @@ The parity sync imports 69 JS-owned lot-3 cases (rows PS-H01…PS-H07 and PS-H16
 | `cn-c-io-sets-preserved` | complete / cn-c | §7.1 Completion C (Sets); §16 item 8 | Existing sets keep every membership; nothing to complete. | ok, 0 entries, fixed point |
 | `cn-c-io-set-selection-required` | complete / cn-c | §7.1 Completion C (Sets); §16 item 8 | New uncovered input with several sets refuses io-set-selection-required. | refused `io-set-selection-required` |
 | `cn-c-documentation-preserved` | complete / neutral | §7.1 Completion C (Content); §3.2 identity mode containment | Documentation text and textFormat are preserved; no parsing, no ids. | ok, 1 entry, fixed point |
-| `cn-c-unicode-names` | complete / neutral | §3.2 contentSignature; §14.3 Unicode U+E000/U+10000 and whitespace | Private-use, astral and whitespace names give distinct deterministic ids. | ok, 5 entries, fixed point |
+| `cn-c-unicode-names` | complete / neutral | §3.2 contentSignature; §14.3 Unicode U+E000/U+10000 and whitespace | Private-use, astral, whitespace, case and NFC-pair names give distinct deterministic ids. | ok, 8 entries, fixed point |
 | `cn-c-timer-siblings` | complete / cn-c | §3.2 duplicateOrdinal; §14.3 ID collisions/reorders/timers | Identical ID-less timer starts get ordinals 0 and 1; nested ids follow. | ok, 8 entries, fixed point |
 | `cn-c-timer-siblings-reordered` | complete / cn-c | §3.2 (later reorders never reallocate IDs) | Reordering identified siblings never reallocates their ids. | ok, 0 entries, fixed point |
 | `cn-c-id-collision` | complete / neutral | §3.2 (computed collision is id-collision); §7.3 rollback | A computed id equal to a different existing element refuses id-collision. | refused `id-collision` |

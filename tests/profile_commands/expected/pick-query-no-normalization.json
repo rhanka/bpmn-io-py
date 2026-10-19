@@ -1,7 +1,7 @@
 {
   "case": "pick-query-no-normalization",
   "clause": "DESIGN R3.3 \u00a78.3 L657 literal substring with no normalization",
-  "derivation": "Precomposed Caf\u00e9 (U+00E9) matches only Store_10; the decomposed sequence e + U+0301 matches only Store_9; Cafe matches only Store_9 (its prefix), not the precomposed label; the astral U+1D49C matches only Store-x. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
+  "derivation": "Precomposed Caf\u00e9 (U+00E9) matches only Store_10; the decomposed sequence e + U+0301 matches only Store_9; Cafe matches only Store_9 (its prefix), not the precomposed label; the astral U+1D49C matches only Store-x. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers. Unicode-integrity audit (spec-seal): the integration reseal of this case is confirmed by hand derivation (profile-c14n/2 and SHA-256, nothing obtained from an implementation): Store_9 and the second query carry the decomposed UTF-8 bytes 43 61 66 65 CC 81 and 65 CC 81 of the first seal, which the seal fix round had normalized to the precomposed C3 A9 form, and every revision is H({tree, profileIdentity, bindings}) = 13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095.",
   "author": "spec-seal",
   "input": {
     "profile": {

@@ -1,7 +1,7 @@
 {
   "case": "pick-filter-sort",
   "clause": "DESIGN R3.3 \u00a78.3 L657 candidates {id,type,label} sorted by UTF-16 ID, filtered by targetTypes",
-  "derivation": "The store field admits bpmn:DataStore only: Task_1 (named Archive task) and Ref_1 are excluded. The seven stores sort by UTF-16 code units: Store-x (0x2D) < Store.y (0x2E) < Store_10 < Store_9 (digit order, not natural order) < Store_B < Store_b < store_a (uppercase S before lowercase s). A store without name has label equal to the empty string. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
+  "derivation": "The store field admits bpmn:DataStore only: Task_1 (named Archive task) and Ref_1 are excluded. The seven stores sort by UTF-16 code units: Store-x (0x2D) < Store.y (0x2E) < Store_10 < Store_9 (digit order, not natural order) < Store_B < Store_b < store_a (uppercase S before lowercase s). A store without name has label equal to the empty string. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers. Unicode-integrity reseal (spec-seal): Store_9 carries again the decomposed name Cafe + U+0301 (UTF-8 43 61 66 65 CC 81) of the first seal, which the seal fix round had normalized to the precomposed U+00E9; every query keeps its candidate set, and the Store_9 names and labels and every revision follow, H({tree, profileIdentity, bindings}) = 13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095.",
   "author": "spec-seal",
   "input": {
     "profile": {
@@ -54,7 +54,7 @@
           {
             "$type": "bpmn:DataStore",
             "id": "Store_9",
-            "name": "Caf\u00e9"
+            "name": "Cafe\u0301"
           },
           {
             "$type": "bpmn:DataStore",
@@ -73,7 +73,7 @@
       {
         "op": "query_references",
         "args": {
-          "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "baseRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
           "targetId": "Ref_1",
           "fieldId": "store",
           "query": "",
@@ -107,8 +107,8 @@
             }
           ]
         },
-        "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
-        "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+        "baseRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
+        "revision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
         "report": {
           "reportVersion": "2",
           "operation": "setDefinitions",
@@ -150,8 +150,8 @@
               }
             ]
           },
-          "inputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
-          "outputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "inputRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
+          "outputRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
           "entries": [],
           "rawStandardFindings": [],
           "idMap": [],
@@ -223,7 +223,7 @@
                 {
                   "$type": "bpmn:DataStore",
                   "id": "Store_9",
-                  "name": "Caf\u00e9"
+                  "name": "Cafe\u0301"
                 },
                 {
                   "$type": "bpmn:DataStore",
@@ -237,9 +237,9 @@
               ]
             },
             "bindings": [],
-            "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+            "semanticRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095"
           },
-          "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "semanticRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
           "viewRevision": {
             "$unsealed": "lot4-view-revision"
           }
@@ -267,8 +267,8 @@
             }
           ]
         },
-        "baseRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
-        "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+        "baseRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
+        "revision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
         "report": {
           "reportVersion": "2",
           "operation": "activateBusinessProfile",
@@ -310,8 +310,8 @@
               }
             ]
           },
-          "inputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
-          "outputRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "inputRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
+          "outputRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
           "entries": [],
           "rawStandardFindings": [],
           "idMap": [],
@@ -383,7 +383,7 @@
                 {
                   "$type": "bpmn:DataStore",
                   "id": "Store_9",
-                  "name": "Caf\u00e9"
+                  "name": "Cafe\u0301"
                 },
                 {
                   "$type": "bpmn:DataStore",
@@ -397,9 +397,9 @@
               ]
             },
             "bindings": [],
-            "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+            "semanticRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095"
           },
-          "semanticRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439",
+          "semanticRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095",
           "viewRevision": {
             "$unsealed": "lot4-view-revision"
           },
@@ -433,7 +433,7 @@
               {
                 "id": "Store_9",
                 "type": "bpmn:DataStore",
-                "label": "Caf\u00e9"
+                "label": "Cafe\u0301"
               },
               {
                 "id": "Store_B",
@@ -451,7 +451,7 @@
                 "label": "Archive"
               }
             ],
-            "revision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+            "revision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095"
           },
           "diagnostics": []
         }
@@ -459,6 +459,6 @@
     ]
   },
   "derived": {
-    "loadRevision": "2165030572db00f60d50687b31dbbde15cbfa7f7c9f021276ee63056c5c50439"
+    "loadRevision": "13df756c1123190511223eed736588463baa6623cddb37e4f0204f8db9269095"
   }
 }
