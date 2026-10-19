@@ -15,6 +15,7 @@ from typing import TYPE_CHECKING
 
 from bpmn_io.profile._c14n import digest, digest_bytes, jcs
 from bpmn_io.profile._results import PureRefused, PureResult, PureSuccess
+from bpmn_io.profile._ui import UiIndex, build_ui_index, check_ui_rules
 
 if TYPE_CHECKING:
     from bpmn_io.profile._loader import ValidatedProfile
@@ -171,6 +172,9 @@ class CompiledProfile:
     descriptor_digest: str
     registry_digest: str
     validation: tuple[object, ...] = ()
+    # lot 5 (CR-10): compiled UI/field/message index, attached between
+    # CR-09 and CR-11; None when the profile carries no UI section.
+    ui: UiIndex | None = None
 
 
 @dataclass
@@ -1765,6 +1769,11 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         if sorted(jcs(entry) for entry in required) != sorted(jcs(entry) for entry in declared):
             return PureRefused(code="profile-write-set")
 
+    # CR-10 UI/field rules (lot 5), between CR-09 and CR-11.
+    code = check_ui_rules(profile, recipes)
+    if code is not None:
+        return PureRefused(code=code)
+
     # CR-11/CR-12 recipe phase admission for exports and migrations.
     code = _check_export_migration_phases(profile, recipes)
     if code is not None:
@@ -1787,6 +1796,7 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
 
     validation_raw = profile.get("validation")
     validation_entries = tuple(validation_raw) if isinstance(validation_raw, list) else ()
+    ui_index = build_ui_index(profile)
     compiled = CompiledProfile(
         profile_digest=validated.digest,
         notions={
@@ -1804,5 +1814,6 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         ),
         registry_digest=digest(sorted(registry.capabilities)),
         validation=copy.deepcopy(validation_entries),
+        ui=ui_index,
     )
     return PureSuccess(payload=compiled)
