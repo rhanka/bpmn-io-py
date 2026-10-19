@@ -43,6 +43,7 @@ def test_pointer_escaping_and_append() -> None:
         policy=_policy(),
         compiled_rules={},
         index=_index(),
+        known_pointers=set(),
     )
     (entry,) = entries
     assert entry["source"]["pointer"] == "/rootElements/0/flowElements/0/a~0b/c~1d/0"
@@ -58,6 +59,7 @@ def test_unresolvable_id_yields_unavailable() -> None:
         policy=_policy(),
         compiled_rules={},
         index=_index(),
+        known_pointers=set(),
     )
     (entry,) = entries
     assert entry["source"]["pointer"] is None
@@ -92,6 +94,7 @@ def test_absolute_pointer_missing_refused() -> None:
         policy=_policy(),
         compiled_rules={},
         index=_index(),
+        known_pointers=set(),
     )
     (entry,) = entries
     assert entry["source"]["pointer"] is None
@@ -106,6 +109,7 @@ def test_standard_identity_and_severity() -> None:
         policy=_policy(),
         compiled_rules={},
         index=_index(),
+        known_pointers=set(),
     )
     (entry,) = entries
     assert entry["ruleId"] == "label-required"
@@ -125,6 +129,7 @@ def test_info_restored_from_warn_transport() -> None:
         policy=_policy(),
         compiled_rules={},
         index=_index(),
+        known_pointers=set(),
     )
     (entry,) = entries
     assert entry["severity"] == "info"

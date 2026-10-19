@@ -139,11 +139,14 @@ def _resolve_generic_pointer(
     known_pointers: Collection[str] | None,
 ) -> tuple[str | None, str]:
     """Validate one generic absolute pointer (syntax, scope, existence)."""
+    if known_pointers is None:
+        msg = "known_pointers is required"
+        raise TypeError(msg)
     if not _is_valid_absolute_pointer(path):
         return None, "unavailable"
     if has_id and (base is None or not _is_at_or_under(path, base)):
         return None, "unavailable"
-    if known_pointers is None or path not in known_pointers:
+    if path not in known_pointers:
         return None, "unavailable"
     return path, "exact"
 
@@ -161,7 +164,7 @@ def resolve_pointer(
     index: dict[str, str],
     reported_id: Any,  # noqa: ANN401 - upstream report content
     path: Any,  # noqa: ANN401 - upstream report content
-    known_pointers: Collection[str] | None = None,
+    known_pointers: Collection[str] | None,
 ) -> tuple[str | None, str]:
     """Resolve ``(reported_id, path)`` to ``(pointer, provenance)``.
 
@@ -171,10 +174,11 @@ def resolve_pointer(
     pointer (``[]`` points at the node itself). A verbatim absolute
     pointer (``""`` or a string starting with ``/``) is accepted as
     ``exact`` only when it is syntactically valid RFC 6901, resolves in
-    the immutable input via the required ``known_pointers`` walk set,
-    and lies at or under the absolute source pointer of the reported ID
-    when supplied. ID-less children require the same verified walk set;
-    without it every generic absolute pointer is unavailable.
+    the immutable input via the ``known_pointers`` walk set, and lies at
+    or under the absolute source pointer of the reported ID when
+    supplied. ``known_pointers`` is mandatory: resolving a generic
+    absolute pointer without the walk set raises ``TypeError`` instead of
+    silently producing ``unavailable``.
     Anything else yields ``(None, "unavailable")``; the adapter never
     fabricates the root pointer.
     """
