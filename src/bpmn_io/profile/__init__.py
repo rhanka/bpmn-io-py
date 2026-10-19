@@ -53,6 +53,7 @@ from bpmn_io.profile._inventory import (
 from bpmn_io.profile._lexical import LexicalError, LexicalOk, check_lexical
 from bpmn_io.profile._lint import lint
 from bpmn_io.profile._loader import ValidatedProfile, load_profile
+from bpmn_io.profile._queries import localize as localize
 from bpmn_io.profile._results import (
     STAGE_ORDER,
     Coordinate,
@@ -132,6 +133,8 @@ __all__ = [  # noqa: RUF022 - lots append contiguous per-lot blocks
     "jcs_bytes",
     "lint",
     "load_profile",
+    # lot 5: headless command and field surface.
+    "localize",
     "lower_full",
     "make_coordinate",
     "make_imported_di",

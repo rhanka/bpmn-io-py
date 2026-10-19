@@ -15,6 +15,7 @@ from typing import TYPE_CHECKING
 
 from bpmn_io.profile._c14n import digest, digest_bytes, jcs
 from bpmn_io.profile._results import PureRefused, PureResult, PureSuccess
+from bpmn_io.profile._ui import UiIndex, build_ui_index, check_ui_rules
 
 if TYPE_CHECKING:
     from bpmn_io.profile._loader import ValidatedProfile
@@ -196,6 +197,9 @@ class CompiledProfile:
     ref_fields: frozenset[tuple[str, str]] | None = None
     base_types: frozenset[str] | None = None
     capabilities: tuple[str, ...] = ()
+    # Lot 5 extension (CR-10): compiled UI/field/message index, attached
+    # between CR-09 and CR-11; None when the profile carries no UI section.
+    ui: UiIndex | None = None
 
 
 @dataclass
@@ -2079,6 +2083,11 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         if {jcs(entry) for entry in required} != {jcs(entry) for entry in declared}:
             return PureRefused(code="profile-write-set")
 
+    # CR-10 UI/field rules (lot 5), between CR-09 and CR-11.
+    code = check_ui_rules(profile, recipes)
+    if code is not None:
+        return PureRefused(code=code)
+
     # CR-11/CR-12 recipe phase admission for exports and migrations.
     code = _check_export_migration_phases(profile, recipes)
     if code is not None:
@@ -2105,6 +2114,7 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
     # B7 identity: closed §5.1 pin record; sha256 is validated.digest
     # (== digest(profile) since profile is validated.profile).
     identity = _profile_identity(profile, validated.digest)
+    ui_index = build_ui_index(profile)
     compiled = CompiledProfile(
         profile_digest=validated.digest,
         notions={
@@ -2133,6 +2143,7 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         capabilities=tuple(
             sorted(str(name) for name in registry.capabilities if isinstance(name, str))
         ),
+        ui=ui_index,
     )
     return PureSuccess(payload=compiled)
 
