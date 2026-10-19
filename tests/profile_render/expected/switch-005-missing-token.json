@@ -1,7 +1,7 @@
 {
   "case": "switch-005-missing-token",
   "clause": "DESIGN R3.3 \u00a79.4 L721; \u00a716 L1150",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 d1549f5a7524012127618989058b9a72b49a396243220a084ffd9bf77e3247e9; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: bare (a separate root) has no region.reference-band.* tokens; a missing value differs from a present one. Fails against: Treating missing tokens as equal to the other theme's values.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 d1549f5a7524012127618989058b9a72b49a396243220a084ffd9bf77e3247e9; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: bare (a separate root) has no region.reference-band.* tokens; a missing value differs from a present one. Fails against: Treating missing tokens as equal to the other theme's values.",
   "operation": "checkThemeSwitch",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

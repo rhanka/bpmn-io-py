@@ -1,7 +1,7 @@
 {
   "case": "admission-006-variant-parent-order",
   "clause": "DESIGN R3.3 \u00a72.4.1 L194\u2013L196; \u00a710.2 L770\u2013L774",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 27a9317538a3a761998e458cc65fee6ce60ee10f7377dd76d94eb4fe636c6884; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Variant parent-order (version 1.1.5) differs from the lot-4 package only as stated in the README variant table; its defect, if any, is a runtime condition and must not be refused at compile time. Fails against: Refusing at compile time a condition the DESIGN assigns to a runtime refusal code.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 27a9317538a3a761998e458cc65fee6ce60ee10f7377dd76d94eb4fe636c6884; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Variant parent-order (version 1.1.5) differs from the lot-4 package only as stated in the README variant table; its defect, if any, is a runtime condition and must not be refused at compile time. Fails against: Refusing at compile time a condition the DESIGN assigns to a runtime refusal code.",
   "operation": "compileProfile",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-parent-order.profile.json",

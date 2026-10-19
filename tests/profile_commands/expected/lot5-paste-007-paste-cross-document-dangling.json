@@ -1,29 +1,29 @@
 {
   "case": "lot5-paste-007-paste-cross-document-dangling",
   "clause": "DESIGN R3.3 \u00a78.3 L653; \u00a72.2 L132; \u00a78.2 L633; \u00a710.1 L735; \u00a710.1 L739",
-  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d), case file cases/paste-007-paste-cross-document-dangling.json SHA-256 6b0d0a34719b3fb244ee16317445e4d364a82076432d367923fa0f0eadab617b; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Pastes the reference with a dangling dataStoreRef, or silently drops the reference/creates a store, instead of refusing the invalid external reference. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/paste-007-paste-cross-document-dangling.json SHA-256 322c78413ff8dacabced5ea4c174da19b6e59c394fe4c692128766712e3a0c35; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Pastes the reference with a dangling dataStoreRef, or silently drops the reference/creates a store, instead of refusing the invalid external reference. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
   "author": "spec-seal",
   "operation": "applyCommands",
   "profile": {
     "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
-    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
   },
   "input": {
     "source": {
       "vendored": "vendor/js/lot5-ui/expectations/cases/paste-007-paste-cross-document-dangling.json",
-      "sha256": "6b0d0a34719b3fb244ee16317445e4d364a82076432d367923fa0f0eadab617b"
+      "sha256": "322c78413ff8dacabced5ea4c174da19b6e59c394fe4c692128766712e3a0c35"
     },
     "pathBase": "vendor/js/lot5-ui/expectations/",
     "inputArtifacts": [
       {
         "path": "fixtures/documents/foreign.snapshot.json",
         "role": "snapshot",
-        "sha256": "e38bbe03c04daff214ab79f623cc08f3191d5115d8b545df1dba31d3fdfd64e9"
+        "sha256": "f2e87a42bb91bb4a11065985fb004dca3c7efdb15b36afb9e4e94d527739abac"
       }
     ],
     "commandArtifact": {
       "json": {
-        "baseRevision": "4c3ea4e6d87c953da4bfb97174043d966c16d7afa89bbbbf4cc98fe60a07805e",
+        "baseRevision": "20a32271817608b490f9147ea4cfeb9dc00bc4eca8420465ce59fe334f8185a2",
         "commands": [
           {
             "command": "surface",
@@ -44,11 +44,11 @@
                 }
               ],
               "fragmentVersion": "1",
-              "sourceRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447"
+              "sourceRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1"
             }
           }
         ],
-        "expectedViewRevision": "ea55063fc742b9887f43b6b0ba37ce4f0549b39745dbae8da29bf73902f83d2c",
+        "expectedViewRevision": "65c62481d07d8f98c992c6bce7aa2ee07ad8cd22f00a7189dd0d8a9ca51cd4f1",
         "transactionId": "tx-paste-007"
       },
       "role": "transaction"
@@ -58,7 +58,7 @@
     "events": [],
     "history": {
       "probe": {
-        "baseRevision": "4c3ea4e6d87c953da4bfb97174043d966c16d7afa89bbbbf4cc98fe60a07805e",
+        "baseRevision": "20a32271817608b490f9147ea4cfeb9dc00bc4eca8420465ce59fe334f8185a2",
         "code": "operation-error",
         "diagnostics": [],
         "operation": "undo",
@@ -78,14 +78,14 @@
           "mechanismVersion": "1",
           "profile": "ui-neutral/1",
           "schemaVersion": "1.0.0",
-          "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+          "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
           "version": "1.1.0"
         },
         "report": {
           "artifacts": [],
           "entries": [],
           "idMap": [],
-          "inputRevision": "4c3ea4e6d87c953da4bfb97174043d966c16d7afa89bbbbf4cc98fe60a07805e",
+          "inputRevision": "20a32271817608b490f9147ea4cfeb9dc00bc4eca8420465ce59fe334f8185a2",
           "operation": "undo",
           "rawStandardFindings": [],
           "reportVersion": "2",
@@ -105,7 +105,7 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           }
         },
@@ -114,7 +114,7 @@
       "probeEvents": []
     },
     "result": {
-      "baseRevision": "4c3ea4e6d87c953da4bfb97174043d966c16d7afa89bbbbf4cc98fe60a07805e",
+      "baseRevision": "20a32271817608b490f9147ea4cfeb9dc00bc4eca8420465ce59fe334f8185a2",
       "code": "reference-dangling",
       "diagnostics": [],
       "operation": "applyCommands",
@@ -134,14 +134,14 @@
         "mechanismVersion": "1",
         "profile": "ui-neutral/1",
         "schemaVersion": "1.0.0",
-        "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+        "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
         "version": "1.1.0"
       },
       "report": {
         "artifacts": [],
         "entries": [],
         "idMap": [],
-        "inputRevision": "4c3ea4e6d87c953da4bfb97174043d966c16d7afa89bbbbf4cc98fe60a07805e",
+        "inputRevision": "20a32271817608b490f9147ea4cfeb9dc00bc4eca8420465ce59fe334f8185a2",
         "operation": "applyCommands",
         "rawStandardFindings": [],
         "reportVersion": "2",
@@ -161,7 +161,7 @@
           "mechanismVersion": "1",
           "profile": "ui-neutral/1",
           "schemaVersion": "1.0.0",
-          "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+          "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
           "version": "1.1.0"
         }
       },

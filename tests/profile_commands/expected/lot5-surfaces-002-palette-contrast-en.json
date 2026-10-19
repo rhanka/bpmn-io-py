@@ -1,35 +1,35 @@
 {
   "case": "lot5-surfaces-002-palette-contrast-en",
   "clause": "DESIGN R3.3 \u00a78.3 L649; \u00a73.1 L264; \u00a79.2 L694; \u00a78.3 L659; \u00a710.1 L737",
-  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d), case file cases/surfaces-002-palette-contrast-en.json SHA-256 6b3d6ca1499d1d8ac53186d9bfd355cb2ae6a523e67253db71bbacf6b243813e; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Lets the selected theme filter, relabel or re-icon surface entries (theme bypass): any difference from the plain-theme listing fails. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/surfaces-002-palette-contrast-en.json SHA-256 db0abe5e09317c8bae4b4014d7dbc30ca8c60d14b897e18faa93d0236d48b782; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Lets the selected theme filter, relabel or re-icon surface entries (theme bypass): any difference from the plain-theme listing fails. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
   "author": "spec-seal",
   "operation": "listEntries",
   "profile": {
     "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
-    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
   },
   "input": {
     "source": {
       "vendored": "vendor/js/lot5-ui/expectations/cases/surfaces-002-palette-contrast-en.json",
-      "sha256": "6b3d6ca1499d1d8ac53186d9bfd355cb2ae6a523e67253db71bbacf6b243813e"
+      "sha256": "db0abe5e09317c8bae4b4014d7dbc30ca8c60d14b897e18faa93d0236d48b782"
     },
     "pathBase": "vendor/js/lot5-ui/expectations/",
     "inputArtifacts": [
       {
         "path": "fixtures/documents/basic-contrast.snapshot.json",
         "role": "snapshot",
-        "sha256": "91026102f157d488a16814867e020dc9b9b4b18418a38476a2d1c1db73f1fb7d"
+        "sha256": "3e1f2f052e6896840c941a7689f6ca4263b772de866a70afdf4b1ebb7882d90f"
       },
       {
         "json": [
           {
-            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "locale": "en",
             "subject": "Proc_main",
             "surface": "palette"
           },
           {
-            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "locale": "en",
             "subject": "Proc_main",
             "surface": "paste"
@@ -88,7 +88,7 @@
                   "id": "reference-create",
                   "label": {
                     "key": "entry.reference-create",
-                    "text": "Reference document"
+                    "text": "Reserved band"
                   },
                   "order": 10,
                   "upstreamEntries": [
@@ -229,7 +229,7 @@
               "group": "flow"
             }
           ],
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "surface": "palette"
         },
         "status": "ok"
@@ -259,7 +259,7 @@
               "group": "edit"
             }
           ],
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "surface": "paste"
         },
         "status": "ok"

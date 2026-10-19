@@ -1,7 +1,7 @@
 {
   "case": "admission-009-neutral-successor",
   "clause": "DESIGN R3.3 \u00a714.3 L961; \u00a72.4 L164",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 c473eb94bf32f058bae5e8d5cba73eac9a0275a6cb3d1f24929632b623414775; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The neutral successor is the vendored neutral profile with the lot-4 package pins, a normalize recipe ensuring a lane-set and a lane bound to role content, and a lane notion/glyph; every other record is unchanged. Fails against: Refusing a region role declared only through an ensure recipe, or requiring the lot-0 base pin.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 c473eb94bf32f058bae5e8d5cba73eac9a0275a6cb3d1f24929632b623414775; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The neutral successor is the vendored neutral profile with the lot-4 package pins, a normalize recipe ensuring a lane-set and a lane bound to role content, and a lane notion/glyph; every other record is unchanged. Fails against: Refusing a region role declared only through an ensure recipe, or requiring the lot-0 base pin.",
   "operation": "compileProfile",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-successor.profile.json",

@@ -1,7 +1,7 @@
 {
   "case": "digest-005-metric-resources-reversed",
   "clause": "DESIGN R3.3 \u00a79.2 L687; \u00a79.2 L694",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 66a9fc9bede954ea0c0a914d7b8f251a35d715ef5d64c57eec8fc2bf769b328e; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Two metric resources supplied in reverse id order: metricsDigest = H([{neutral-metrics, B(neutral bytes)}, {z-metrics, B(z bytes)}]) sorted by id; viewRevision changes with it, every other output equals digest-003. Fails against: Hashing the supplied order, or deduplicating resources by content.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 66a9fc9bede954ea0c0a914d7b8f251a35d715ef5d64c57eec8fc2bf769b328e; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Two metric resources supplied in reverse id order: metricsDigest = H([{neutral-metrics, B(neutral bytes)}, {z-metrics, B(z bytes)}]) sorted by id; viewRevision changes with it, every other output equals digest-003. Fails against: Hashing the supplied order, or deduplicating resources by content.",
   "operation": "renderDigests",
   "profile": null,
   "input": [

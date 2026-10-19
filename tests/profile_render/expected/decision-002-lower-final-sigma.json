@@ -1,7 +1,7 @@
 {
   "case": "decision-002-lower-final-sigma",
   "clause": "DESIGN R3.3 \u00a79.3 L702; \u00a72.2 L116",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 b5da134cb5a942d7e415c24e36a59709913c612bb0857f55b6caa1202e67642c; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Theme lowered binds the choice label with case lower: U+0130 lowers to i + U+0307; the final capital sigma of \u039f\u0394\u039f\u03a3 (cased before, none after) becomes U+03C2 while the isolated \u03a3 becomes U+03C3; U+01C5 lowers to U+01C6. Fails against: Lowering every sigma to U+03C3, dropping U+0307, or locale-specific dotless i.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 b5da134cb5a942d7e415c24e36a59709913c612bb0857f55b6caa1202e67642c; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Theme lowered binds the choice label with case lower: U+0130 lowers to i + U+0307; the final capital sigma of \u039f\u0394\u039f\u03a3 (cased before, none after) becomes U+03C2 while the isolated \u03a3 becomes U+03C3; U+01C5 lowers to U+01C6. Fails against: Lowering every sigma to U+03C3, dropping U+0307, or locale-specific dotless i.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

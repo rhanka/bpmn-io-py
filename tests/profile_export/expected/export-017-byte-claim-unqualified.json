@@ -1,7 +1,7 @@
 {
   "case": "export-017-byte-claim-unqualified",
   "clause": "DESIGN R3.3 \u00a710.2 L799; \u00a710.1 L753; \u00a713 L933",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 a8b13150620def0ffd110402e3db9a31f667bd33a4f3e8c4b8e79ac1125c4d25; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The variant declares engine-byte-compatible for every occurrence, but no feature becomes byte-compatible by declaration alone: without qualified engine reference bytes the effective capability is structural (OPEN-EXPORT-EVIDENCE default) in the PreparedArtifact and its artifact record. Fails against: Reporting engine-byte-compatible from the profile declaration.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 a8b13150620def0ffd110402e3db9a31f667bd33a4f3e8c4b8e79ac1125c4d25; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The variant declares engine-byte-compatible for every occurrence, but no feature becomes byte-compatible by declaration alone: without qualified engine reference bytes the effective capability is structural (OPEN-EXPORT-EVIDENCE default) in the PreparedArtifact and its artifact record. Fails against: Reporting engine-byte-compatible from the profile declaration.",
   "operation": "mapExport",
   "profile": {
     "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-byte-claim.profile.json",

@@ -1,29 +1,29 @@
 {
   "case": "lot5-fields-035-state-call-hidden",
   "clause": "DESIGN R3.3 \u00a78.3 L653; \u00a78.3 L655; \u00a710.1 L737",
-  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d), case file cases/fields-035-state-call-hidden.json SHA-256 53c64564b4ebf5c2ca34e244144ce21fd15e707ba5b31b5e92cbe43368bbb1d9; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Lists a field whose visibility predicate is false (the hidden call target), or lists it as present but immutable. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/fields-035-state-call-hidden.json SHA-256 6e2b0c4f7cf2a4ffe31222c3bf8aa4b4fed2199377e2f460a6f45e40a0106a30; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Lists a field whose visibility predicate is false (the hidden call target), or lists it as present but immutable. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
   "author": "spec-seal",
   "operation": "listFields",
   "profile": {
     "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
-    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
   },
   "input": {
     "source": {
       "vendored": "vendor/js/lot5-ui/expectations/cases/fields-035-state-call-hidden.json",
-      "sha256": "53c64564b4ebf5c2ca34e244144ce21fd15e707ba5b31b5e92cbe43368bbb1d9"
+      "sha256": "6e2b0c4f7cf2a4ffe31222c3bf8aa4b4fed2199377e2f460a6f45e40a0106a30"
     },
     "pathBase": "vendor/js/lot5-ui/expectations/",
     "inputArtifacts": [
       {
         "path": "fixtures/documents/basic.snapshot.json",
         "role": "snapshot",
-        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+        "sha256": "e72fb51afb484918ca2c3aef4eff2a84502cbbd3c6e7aafd1a2f9baa8c8e7ce9"
       },
       {
         "json": [
           {
-            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "locale": "en",
             "targetId": "Call_5"
           }
@@ -59,7 +59,7 @@
               "widget": "text"
             }
           ],
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "targetId": "Call_5"
         },
         "status": "ok"

@@ -1,59 +1,59 @@
 {
   "case": "lot5-surfaces-010-element-call",
   "clause": "DESIGN R3.3 \u00a78.3 L649; \u00a78.3 L659; \u00a710.1 L737",
-  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d), case file cases/surfaces-010-element-call.json SHA-256 28aa3f222515ee90011756dfcae71fad538c38af62ad435a089061cc14ba6f08; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Adds connect-item-output to a CallActivity through an assignable Activity check, or drops the profile-only call-unlink context entry because no upstream entry maps it. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/surfaces-010-element-call.json SHA-256 83b3c7cd64fbe508f9f48ea1a18ccc4b3a621a1e3223b807091e1989c6ea7dbc; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Adds connect-item-output to a CallActivity through an assignable Activity check, or drops the profile-only call-unlink context entry because no upstream entry maps it. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
   "author": "spec-seal",
   "operation": "listEntries",
   "profile": {
     "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
-    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
   },
   "input": {
     "source": {
       "vendored": "vendor/js/lot5-ui/expectations/cases/surfaces-010-element-call.json",
-      "sha256": "28aa3f222515ee90011756dfcae71fad538c38af62ad435a089061cc14ba6f08"
+      "sha256": "83b3c7cd64fbe508f9f48ea1a18ccc4b3a621a1e3223b807091e1989c6ea7dbc"
     },
     "pathBase": "vendor/js/lot5-ui/expectations/",
     "inputArtifacts": [
       {
         "path": "fixtures/documents/basic.snapshot.json",
         "role": "snapshot",
-        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+        "sha256": "e72fb51afb484918ca2c3aef4eff2a84502cbbd3c6e7aafd1a2f9baa8c8e7ce9"
       },
       {
         "json": [
           {
-            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "locale": "en",
             "subject": "Call_1",
             "surface": "context"
           },
           {
-            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "locale": "en",
             "subject": "Call_1",
             "surface": "append"
           },
           {
-            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "locale": "en",
             "subject": "Call_1",
             "surface": "connect"
           },
           {
-            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "locale": "en",
             "subject": "Call_1",
             "surface": "replace"
           },
           {
-            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "locale": "en",
             "subject": "Call_1",
             "surface": "delete"
           },
           {
-            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "locale": "en",
             "subject": "Call_1",
             "surface": "direct-edit"
@@ -88,7 +88,7 @@
               "group": "edit"
             }
           ],
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "surface": "context"
         },
         "status": "ok"
@@ -148,7 +148,7 @@
               "group": "append"
             }
           ],
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "surface": "append"
         },
         "status": "ok"
@@ -179,7 +179,7 @@
               "group": "connect"
             }
           ],
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "surface": "connect"
         },
         "status": "ok"
@@ -188,7 +188,7 @@
         "diagnostics": [],
         "payload": {
           "groups": [],
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "surface": "replace"
         },
         "status": "ok"
@@ -219,7 +219,7 @@
               "group": "edit"
             }
           ],
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "surface": "delete"
         },
         "status": "ok"
@@ -249,7 +249,7 @@
               "group": "edit"
             }
           ],
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "surface": "direct-edit"
         },
         "status": "ok"

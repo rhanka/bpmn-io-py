@@ -1,17 +1,17 @@
 {
   "case": "lot5-surfaces-014-compile-missing-fallback-text",
   "clause": "DESIGN R3.3 \u00a78.3 L659; \u00a72.4.1 L190; \u00a72.4.1 L182; \u00a710.1 L737",
-  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d), case file cases/surfaces-014-compile-missing-fallback-text.json SHA-256 4289a5b90b172d088d028e771df6796ebc882c8c80f526ec91d8bcad6b3093ea; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS result artifact (the case carries no twin: compilation has no headless state). JS discrimination: Compiler that accepts a surface label without policies.localeFallback text (falling back to the message key at runtime) instead of rejecting it at compile time. Parity sync PS-25: the compile refusal is the PureResult {status, code, diagnostics: []} (value unchanged). Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/surfaces-014-compile-missing-fallback-text.json SHA-256 c7b8c11fa4ee6c9b8efd78a6109477151f1cd63fac089483ca5f9be0de40f0d3; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS result artifact (the case carries no twin: compilation has no headless state). JS discrimination: Compiler that accepts a surface label without policies.localeFallback text (falling back to the message key at runtime) instead of rejecting it at compile time. Parity sync PS-25: the compile refusal is the PureResult {status, code, diagnostics: []} (value unchanged). Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
   "author": "spec-seal",
   "operation": "compileProfile",
   "profile": {
     "vendored": "vendor/js/lot5-ui/expectations/fixtures/variants/missing-fallback-text.profile.json",
-    "sha256": "70dbe64ea8ce311b1f5463f413649d7863e8963823814bf2830afbda5748dcb3"
+    "sha256": "e89fd44d3433e337ce3660c61c44eeca2ee23a86915f75df6433180be33d62a5"
   },
   "input": {
     "source": {
       "vendored": "vendor/js/lot5-ui/expectations/cases/surfaces-014-compile-missing-fallback-text.json",
-      "sha256": "4289a5b90b172d088d028e771df6796ebc882c8c80f526ec91d8bcad6b3093ea"
+      "sha256": "c7b8c11fa4ee6c9b8efd78a6109477151f1cd63fac089483ca5f9be0de40f0d3"
     },
     "pathBase": "vendor/js/lot5-ui/expectations/",
     "inputArtifacts": [

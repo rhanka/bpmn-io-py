@@ -1,7 +1,7 @@
 {
   "case": "legacy-007-colored-sparse-di",
   "clause": "DESIGN R3.3 \u00a79.5 L729; \u00a79.3 L700",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 a61c35b3f1b791232820ef2930cc715a001aa08edf28e4ecdb6a7ead22b6c5ea; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Sparse imported colours apply only to their two occurrences: the native fill #ffe0e0 on Task_Ship_di beats the task notion fill, and the bioc stroke #0000aa on Task_Fix_di beats the facet stroke #aa0000 (the notion level is below bioc); legacy-colored inherits the legacy-standard stroke #333333 elsewhere. Fails against: Applying imported colours to every element or letting notion/facet tokens beat DI tokens.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 a61c35b3f1b791232820ef2930cc715a001aa08edf28e4ecdb6a7ead22b6c5ea; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Sparse imported colours apply only to their two occurrences: the native fill #ffe0e0 on Task_Ship_di beats the task notion fill, and the bioc stroke #0000aa on Task_Fix_di beats the facet stroke #aa0000 (the notion level is below bioc); legacy-colored inherits the legacy-standard stroke #333333 elsewhere. Fails against: Applying imported colours to every element or letting notion/facet tokens beat DI tokens.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",
