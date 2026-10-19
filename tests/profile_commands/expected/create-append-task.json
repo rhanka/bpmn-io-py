@@ -1,7 +1,7 @@
 {
   "case": "create-append-task",
   "clause": "DESIGN R3.3 \u00a78.3 L649 append surface; \u00a72.4 L163 create and L166 assignRef",
-  "derivation": "task-append from Task_1 (key a1, value Next) creates bpmn:Task stable-id/1(Process_1, task, a1) named Next and a bpmn:Association stable-id/1(Process_1, append-link, a1) from Task_1 to the new task with direction One, both appended to their containment arrays.",
+  "derivation": "task-append from Task_1 (key a1, value Next) creates bpmn:Task stable-id/1(Process_1, task, a1) named Next and a bpmn:Association stable-id/1(Process_1, append-link, a1) from Task_1 to the new task with direction One, both appended to their containment arrays. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

@@ -1,7 +1,7 @@
 {
   "case": "compile-message-missing-fallback",
   "clause": "DESIGN R3.3 \u00a78.3 L659 missing fallback text is a compiler error",
-  "derivation": "A message with only an fr text is added while policies.localeFallback is en; the DESIGN names no code, so the lot-5 binding uses the CR-05 missing-symbol code profile-symbol (DESIGN L190).",
+  "derivation": "A message with only an fr text is added while policies.localeFallback is en; the DESIGN names no code, so the lot-5 binding uses the CR-05 missing-symbol code profile-symbol (DESIGN L190). Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {

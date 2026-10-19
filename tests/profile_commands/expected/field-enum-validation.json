@@ -1,7 +1,7 @@
 {
   "case": "field-enum-validation",
   "clause": "DESIGN R3.3 \u00a78.3 L659 field input is validated on change for feedback and again atomically on submit; L655 enum choices",
-  "derivation": "check_field reports Sideways (not a choice value) and one (a choice name, not its value) invalid with the code the submit returns, profile-type, and the field validation message key; the submit of Sideways is refused. One is valid on change and on submit, and sets associationDirection to One.",
+  "derivation": "check_field reports Sideways (not a choice value) and one (a choice name, not its value) invalid with the code the submit returns, profile-type, and the field validation message key; the submit of Sideways is refused. One is valid on change and on submit, and sets associationDirection to One. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

@@ -1,7 +1,7 @@
 {
   "case": "history-batch-one-step",
   "clause": "DESIGN R3.3 \u00a78.2 L632 one reversible semantic+binding+DI delta and exactly one root transaction; L641",
-  "derivation": "One batch of three commands (task-create k2, rename Task_1 to B, aid-create a2) is accepted as one transaction: a single undo restores the initial snapshot and a single redo restores the after-state.",
+  "derivation": "One batch of three commands (task-create k2, rename Task_1 to B, aid-create a2) is accepted as one transaction: a single undo restores the initial snapshot and a single redo restores the after-state. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

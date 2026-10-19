@@ -1,7 +1,7 @@
 {
   "case": "field-reference-submits-ids",
   "clause": "DESIGN R3.3 \u00a78.3 L659 reference widgets submit IDs, not labels; L657 submitted ID is revalidated at command commit",
-  "derivation": "The store field of Ref_1 accepts the ID Store_2. Submitting the label Ledger is not an ID of any element (reference-dangling) and submitting Task_1 is not an admitted target type (profile-type); both refuse and the accepted assignment stays.",
+  "derivation": "The store field of Ref_1 accepts the ID Store_2. Submitting the label Ledger is not an ID of any element (reference-dangling) and submitting Task_1 is not an admitted target type (profile-type); both refuse and the accepted assignment stays. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

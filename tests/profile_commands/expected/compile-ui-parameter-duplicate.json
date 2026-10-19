@@ -1,7 +1,7 @@
 {
   "case": "compile-ui-parameter-duplicate",
   "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 exactly once; \u00a78.3 L655 duplicate required parameters",
-  "derivation": "task-create binds key twice; a parameter supplied twice refuses profile-ui-parameters.",
+  "derivation": "task-create binds key twice; a parameter supplied twice refuses profile-ui-parameters. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {

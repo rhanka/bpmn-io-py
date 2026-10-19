@@ -1,7 +1,7 @@
 {
   "case": "history-load-epoch",
   "clause": "DESIGN R3.3 \u00a78.2 L643 imports use a separate atomic load epoch; \u00a78.1 L584 setDefinitions",
-  "derivation": "After one accepted batch, set_definitions loads the initial document again: the load starts a new epoch, so undo has nothing to undo (operation-error) and the loaded envelope is current.",
+  "derivation": "After one accepted batch, set_definitions loads the initial document again: the load starts a new epoch, so undo has nothing to undo (operation-error) and the loaded envelope is current. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

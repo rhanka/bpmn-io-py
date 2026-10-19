@@ -1,7 +1,7 @@
 {
   "case": "delete-includes-dependents",
   "clause": "DESIGN R3.3 \u00a78.3 L653 explicitly include all dependent edges; no orphan shell remains; \u00a72.4 L171 includeDeclared",
-  "derivation": "aid-delete removes Aid_1 together with its declared dependents: Link_1 (Aid_1 as source) and Link_2 (Aid_1 as target). Note_1 and Link_3, which do not touch Aid_1, survive unchanged.",
+  "derivation": "aid-delete removes Aid_1 together with its declared dependents: Link_1 (Aid_1 as source) and Link_2 (Aid_1 as target). Note_1 and Link_3, which do not touch Aid_1, survive unchanged. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

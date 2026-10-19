@@ -1,7 +1,7 @@
 {
   "case": "compile-ui-parameter-source-type",
   "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 typed bindings; \u00a78.3 L655 owner/target/source are native handles, value is the typed field value",
-  "derivation": "The element parameter owner of task-create is bound from source value (a scalar), so the binding is ill-typed and compilation refuses profile-ui-parameters.",
+  "derivation": "The element parameter owner of task-create is bound from source value (a scalar), so the binding is ill-typed and compilation refuses profile-ui-parameters. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {

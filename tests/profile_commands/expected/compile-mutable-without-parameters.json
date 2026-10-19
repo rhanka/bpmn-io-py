@@ -1,7 +1,7 @@
 {
   "case": "compile-mutable-without-parameters",
   "clause": "DESIGN R3.3 \u00a78.3 L655 mutable fields require a complete parameter map; schema else->required parameters",
-  "derivation": "The mutable task name field loses its parameters array; the schema refuses profile-schema.",
+  "derivation": "The mutable task name field loses its parameters array; the schema refuses profile-schema. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {

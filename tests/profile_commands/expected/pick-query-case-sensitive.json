@@ -1,7 +1,7 @@
 {
   "case": "pick-query-case-sensitive",
   "clause": "DESIGN R3.3 \u00a78.3 L657 query is a literal Unicode substring of the display label, case-sensitive",
-  "derivation": "rchive matches Archive, archive box and the astral label (not ARCHIVE); A matches Archive and ARCHIVE only; archive matches archive box only; ARCHIVE matches only Store_B. Results keep UTF-16 ID order.",
+  "derivation": "rchive matches Archive, archive box and the astral label (not ARCHIVE); A matches Archive and ARCHIVE only; archive matches archive box only; ARCHIVE matches only Store_B. Results keep UTF-16 ID order. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

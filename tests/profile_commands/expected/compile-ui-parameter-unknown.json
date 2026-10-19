@@ -1,7 +1,7 @@
 {
   "case": "compile-ui-parameter-unknown",
   "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 typed gesture/field bindings; \u00a78.3 L655 no ambient parameter",
-  "derivation": "task-create binds a name extra that create-task does not declare; an undeclared parameter binding refuses profile-ui-parameters.",
+  "derivation": "task-create binds a name extra that create-task does not declare; an undeclared parameter binding refuses profile-ui-parameters. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {

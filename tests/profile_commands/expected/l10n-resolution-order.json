@@ -1,7 +1,7 @@
 {
   "case": "l10n-resolution-order",
   "clause": "DESIGN R3.3 \u00a78.3 L659 localization uses exact requested locale, then policies.localeFallback, then the stable message key",
-  "derivation": "label.store has en and fr texts: fr is exact; de, fr-CA (no BCP 47 truncation) and FR (case-sensitive) fall back to en; label.aid has only en; label.note de is exact; a key that is not a profile message (a library diagnostic key) resolves to the key itself.",
+  "derivation": "label.store has en and fr texts: fr is exact; de, fr-CA (no BCP 47 truncation) and FR (case-sensitive) fall back to en; label.aid has only en; label.note de is exact; a key that is not a profile message (a library diagnostic key) resolves to the key itself. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

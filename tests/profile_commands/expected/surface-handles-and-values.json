@@ -1,7 +1,7 @@
 {
   "case": "surface-handles-and-values",
   "clause": "DESIGN R3.3 \u00a78.3 L655 owner/target/source are validated native handles; L659 no implicit scalar coercion; \u00a72.2 L132 dangling references are integrity errors",
-  "derivation": "Owner Process_9 does not exist (reference-dangling). The string parameter name receives a number, a Boolean and null; none is coerced or treated as absent, each refuses profile-type. The tree is unchanged.",
+  "derivation": "Owner Process_9 does not exist (reference-dangling). The string parameter name receives a number, a Boolean and null; none is coerced or treated as absent, each refuses profile-type. The tree is unchanged. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

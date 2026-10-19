@@ -1,7 +1,7 @@
 {
   "case": "compile-ui-label-unknown-message",
   "clause": "DESIGN R3.3 \u00a72.4.1 L190 CR-05 every referenced message exists",
-  "derivation": "task-create refers to an undefined message label.unknown, so compilation refuses profile-symbol.",
+  "derivation": "task-create refers to an undefined message label.unknown, so compilation refuses profile-symbol. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {

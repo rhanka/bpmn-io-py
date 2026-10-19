@@ -1,7 +1,7 @@
 {
   "case": "compile-ui-icon-unknown-glyph",
   "clause": "DESIGN R3.3 \u00a78.3 L655 UI entries have icon {theme,glyph}; \u00a72.4.1 L190 CR-05 referenced glyphs exist",
-  "derivation": "task-create names glyph missing-glyph, absent from theme plain, so compilation refuses profile-symbol.",
+  "derivation": "task-create names glyph missing-glyph, absent from theme plain, so compilation refuses profile-symbol. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {

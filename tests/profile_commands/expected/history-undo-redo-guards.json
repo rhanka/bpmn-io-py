@@ -1,7 +1,7 @@
 {
   "case": "history-undo-redo-guards",
   "clause": "DESIGN R3.3 \u00a78.1 L595-L596 undo/redo({expectedRevision,expectedViewRevision}); \u00a78.2 L629 stale requests",
-  "derivation": "undo and redo with a stale expectedRevision or expectedViewRevision refuse operation-error and keep the history cursor: the following guarded undo and redo still succeed.",
+  "derivation": "undo and redo with a stale expectedRevision or expectedViewRevision refuse operation-error and keep the history cursor: the following guarded undo and redo still succeed. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

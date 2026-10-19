@@ -1,7 +1,7 @@
 {
   "case": "surface-palette-entries-grid",
   "clause": "DESIGN R3.3 \u00a78.3 L659 entries sort by order then ID; \u00a77.1 L538 two neutral profiles",
-  "derivation": "The grid fixture lists task-create (order 0) before aid-create (order 1) in its single basic group.",
+  "derivation": "The grid fixture lists task-create (order 0) before aid-create (order 1) in its single basic group. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

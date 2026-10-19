@@ -1,7 +1,7 @@
 {
   "case": "pick-field-states",
   "clause": "DESIGN R3.3 \u00a78.3 L657 filtered by field visibility/mutability; \u00a710.1 L737 PureResult read query",
-  "derivation": "store-view is visible but not mutable, so no candidate is offered; the text field name of Task_1 is not a reference widget (profile-type); an unknown field refuses profile-symbol; a missing target refuses reference-dangling; a stale baseRevision refuses operation-error.",
+  "derivation": "store-view is visible but not mutable, so no candidate is offered; the text field name of Task_1 is not a reference widget (profile-type); an unknown field refuses profile-symbol; a missing target refuses reference-dangling; a stale baseRevision refuses operation-error. Seal fix round: every step result is sealed in full, the closed Result/1 with its Report/2 header, entries, echo and diagnostics or the PureResult with empty diagnostics; commands use the I3 records and lot-4 or session members are excluded only through declared unsealed markers.",
   "author": "spec-seal",
   "input": {
     "profile": {

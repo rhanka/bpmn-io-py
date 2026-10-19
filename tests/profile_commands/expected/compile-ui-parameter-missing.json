@@ -1,7 +1,7 @@
 {
   "case": "compile-ui-parameter-missing",
   "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 every required recipe parameter supplied exactly once; \u00a78.3 L655",
-  "derivation": "The value->name binding of task-create is removed; required create-task parameter name is no longer supplied, so compilation refuses profile-ui-parameters.",
+  "derivation": "The value->name binding of task-create is removed; required create-task parameter name is no longer supplied, so compilation refuses profile-ui-parameters. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {

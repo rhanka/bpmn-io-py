@@ -1,7 +1,7 @@
 {
   "case": "compile-field-parameter-missing",
   "clause": "DESIGN R3.3 \u00a78.3 L655 mutable fields require a complete parameter map; \u00a72.4.1 L195",
-  "derivation": "The task name field keeps its rename command but loses the value->name binding; rename's required name parameter is unsupplied, so compilation refuses profile-ui-parameters.",
+  "derivation": "The task name field keeps its rename command but loses the value->name binding; rename's required name parameter is unsupplied, so compilation refuses profile-ui-parameters. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {

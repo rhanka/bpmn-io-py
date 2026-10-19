@@ -1,7 +1,7 @@
 {
   "case": "compile-enum-duplicate-records",
   "clause": "DESIGN R3.3 \u00a78.3 L655 unique choices; schema field choices uniqueItems",
-  "derivation": "Two identical choice records violate the pinned schema uniqueItems keyword, so load refuses profile-schema before compilation.",
+  "derivation": "Two identical choice records violate the pinned schema uniqueItems keyword, so load refuses profile-schema before compilation. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {
