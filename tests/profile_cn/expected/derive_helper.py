@@ -3167,8 +3167,17 @@ def case_c_documentation_preserved() -> dict[str, Json]:
 
 
 def case_c_unicode_names() -> dict[str, Json]:
-    """Private-use, astral and whitespace names give distinct deterministic ids."""
-    names = ["\ue000 private use", "\U00010000 astral", " Draft", "\u00a0Draft", "Draft"]
+    """Private-use, astral, whitespace, case and NFC-pair names give distinct deterministic ids."""
+    names = [
+        "\ue000 private use",
+        "\U00010000 astral",
+        " Draft",
+        "\u00a0Draft",
+        "Draft",
+        "draft",
+        "Caf\u00e9",
+        "Cafe\u0301",
+    ]
     tree_in = definitions(
         "Definitions_uni",
         node(
@@ -3188,9 +3197,12 @@ def case_c_unicode_names() -> dict[str, Json]:
     tree_out = with_ids(tree_in, assignments)
     derivation = (
         "Each ID-less task's contentSignature hashes its exact UTF-8 JCS name with no trim,"
-        " no NFC and no case folding, so U+E000, U+10000, a leading space, a leading NBSP and"
-        " the bare name give five distinct signatures, each ordinal 0. Names are preserved."
-        " Source targetId is the nearest original ID-bearing ancestor, Process_uni."
+        " no NFC and no case folding, so U+E000, U+10000, a leading space, a leading NBSP,"
+        " the bare name, its lowercase form and Cafe spelled with the precomposed U+00E9 and"
+        " with the canonically equivalent e + U+0301 give eight distinct signatures, each"
+        " ordinal 0; an allocator that trims, NFC-normalizes or case-folds merges some of them"
+        " and gives the later ones nonzero ordinals. Names are preserved. Source targetId is"
+        " the nearest original ID-bearing ancestor, Process_uni."
     )
     return complete_case(
         "cn-c-unicode-names",

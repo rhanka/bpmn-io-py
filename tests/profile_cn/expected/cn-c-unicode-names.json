@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "complete",
   "profile": "neutral",
-  "derivation": "Each ID-less task's contentSignature hashes its exact UTF-8 JCS name with no trim, no NFC and no case folding, so U+E000, U+10000, a leading space, a leading NBSP and the bare name give five distinct signatures, each ordinal 0. Names are preserved. Source targetId is the nearest original ID-bearing ancestor, Process_uni. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "derivation": "Each ID-less task's contentSignature hashes its exact UTF-8 JCS name with no trim, no NFC and no case folding, so U+E000, U+10000, a leading space, a leading NBSP, the bare name, its lowercase form and Cafe spelled with the precomposed U+00E9 and with the canonically equivalent e + U+0301 give eight distinct signatures, each ordinal 0; an allocator that trims, NFC-normalizes or case-folds merges some of them and gives the later ones nonzero ordinals. Names are preserved. Source targetId is the nearest original ID-bearing ancestor, Process_uni. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -55,13 +55,25 @@
               {
                 "$type": "bpmn:Task",
                 "name": "Draft"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "draft"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "Café"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "Café"
               }
             ]
           }
         ]
       },
       "bindings": [],
-      "semanticRevision": "a23184c207e18b7b0d4efb71796db1b24c671a0fce9906998c666ebdd75d6506"
+      "semanticRevision": "3cb52b7777f741bd83c24f6f6f7610ab0862531812294d78d5bf8c32224675be"
     },
     "mode": "retained",
     "activation": "edit"
@@ -88,8 +100,8 @@
         }
       ]
     },
-    "baseRevision": "a23184c207e18b7b0d4efb71796db1b24c671a0fce9906998c666ebdd75d6506",
-    "revision": "22fb36d28807eff3efd53bc9744b9c41892a8f4d4bb5111fe11e73b7457e6682",
+    "baseRevision": "3cb52b7777f741bd83c24f6f6f7610ab0862531812294d78d5bf8c32224675be",
+    "revision": "9c87bfe94d18dc637dadec0c72346b0443d60f7807523bd8c8c570f11206897f",
     "report": {
       "reportVersion": "2",
       "operation": "complete",
@@ -218,6 +230,81 @@
           "afterPresent": true,
           "after": "g_ded9d1d256c26714af2799a0d1acb048394f294e3de9dc9869680d7ab998fb02",
           "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5/id",
+            "targetId": "Process_uni",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5/id",
+            "targetId": "g_9834ffd6d04a70052fdfe0b920b69b490057fb451eb5f43956a78644ef3f78c4",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_9834ffd6d04a70052fdfe0b920b69b490057fb451eb5f43956a78644ef3f78c4",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/6/id",
+            "targetId": "Process_uni",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/6/id",
+            "targetId": "g_f4a76cca7f8bf9bee022c5189882c3163f4d10efa85a19346b370bc66d6416e3",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_f4a76cca7f8bf9bee022c5189882c3163f4d10efa85a19346b370bc66d6416e3",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/7/id",
+            "targetId": "Process_uni",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/7/id",
+            "targetId": "g_e2e28628749520dd2b019d27a98f5f114707844f6abfbdb25c2d2453e5f502cd",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_e2e28628749520dd2b019d27a98f5f114707844f6abfbdb25c2d2453e5f502cd",
+          "property": "id"
         }
       ],
       "rawStandardFindings": [],
@@ -261,8 +348,8 @@
           }
         ]
       },
-      "inputRevision": "a23184c207e18b7b0d4efb71796db1b24c671a0fce9906998c666ebdd75d6506",
-      "outputRevision": "22fb36d28807eff3efd53bc9744b9c41892a8f4d4bb5111fe11e73b7457e6682"
+      "inputRevision": "3cb52b7777f741bd83c24f6f6f7610ab0862531812294d78d5bf8c32224675be",
+      "outputRevision": "9c87bfe94d18dc637dadec0c72346b0443d60f7807523bd8c8c570f11206897f"
     },
     "payload": {
       "documentVersion": "1",
@@ -318,13 +405,28 @@
                 "$type": "bpmn:Task",
                 "name": "Draft",
                 "id": "g_ded9d1d256c26714af2799a0d1acb048394f294e3de9dc9869680d7ab998fb02"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "draft",
+                "id": "g_9834ffd6d04a70052fdfe0b920b69b490057fb451eb5f43956a78644ef3f78c4"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "Café",
+                "id": "g_f4a76cca7f8bf9bee022c5189882c3163f4d10efa85a19346b370bc66d6416e3"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "Café",
+                "id": "g_e2e28628749520dd2b019d27a98f5f114707844f6abfbdb25c2d2453e5f502cd"
               }
             ]
           }
         ]
       },
       "bindings": [],
-      "semanticRevision": "22fb36d28807eff3efd53bc9744b9c41892a8f4d4bb5111fe11e73b7457e6682"
+      "semanticRevision": "9c87bfe94d18dc637dadec0c72346b0443d60f7807523bd8c8c570f11206897f"
     }
   },
   "fixedPoint": true
