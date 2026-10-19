@@ -26,6 +26,7 @@ from bpmn_io.profile import (
     complete,
     create_descriptor_context,
     create_read_context,
+    import_projection,
     jcs,
     load_profile,
     normalize,
@@ -41,7 +42,6 @@ MECH = ROOT / "contracts" / "profile-mechanism" / "1"
 
 #: Operations with no implementation yet: value is the strict-xfail reason.
 PENDING = {
-    "import_projection": "lot-3 pending: import_projection",
     "normalize_transport": "lot-3 pending: normalize plus the conductor joint run (binding §8)",
     "validate": (
         "no Block-A validate(compiled, wire-envelope, phase, readiness_policy) "
@@ -337,6 +337,16 @@ def _run_bind(case: dict[str, object], record: dict[str, object]) -> None:
     assert jcs(actual) == jcs(case["expected"]), case["case"]
 
 
+def _run_import(case: dict[str, object], record: dict[str, object]) -> None:
+    """Run one import_projection case through the bound §9 call."""
+    compiled = _compiled(case["profile"])
+    frozen = jcs(record)
+    source = record["source"]["text"].encode("utf-8")
+    actual = import_projection(compiled, source, source_format="native-json").to_json()
+    assert jcs(record) == frozen
+    assert jcs(actual) == jcs(case["expected"]), case["case"]
+
+
 def _run_remap(case: dict[str, object], record: dict[str, object]) -> None:
     """Run one remap_ids case through the bound §9 call."""
     compiled = _compiled(case["profile"])
@@ -386,6 +396,7 @@ _RUNNERS = {
     "apply_plan": _run_apply,
     "bind_supports": _run_bind,
     "compile_profile": _run_compile,
+    "import_projection": _run_import,
     "propose_support_bindings": _run_propose,
     "remap_ids": _run_remap,
     "sort_placements": _run_sort,

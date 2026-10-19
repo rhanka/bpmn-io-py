@@ -162,10 +162,11 @@ class CompiledProfile:
     ``validation`` retains the raw profile validation records verbatim so the
     lint lane can derive its stage transport; record shape is validated there,
     not here. ``identity`` is the §5.1 record, ``types`` the descriptor index
-    with facets, ``producers`` the effective producer matrix and
+    with facets, ``producers`` the effective producer matrix,
     ``ref_fields`` the base-declared reference-kind fields (including
-    ID-valued scalars); the latter three stay ``None`` unless the profile
-    was compiled with its descriptor context and effective base (C/N refuse
+    ID-valued scalars) and ``base_types`` the effective-base admitted type
+    names; the latter four stay ``None`` unless the profile was compiled
+    with its descriptor context and effective base (C/N refuse
     ``descriptor-mismatch`` otherwise).
     """
 
@@ -180,6 +181,7 @@ class CompiledProfile:
     types: dict[str, dict[str, object]] | None = None
     producers: dict[tuple[str, str], frozenset[str]] | None = None
     ref_fields: frozenset[tuple[str, str]] | None = None
+    base_types: frozenset[str] | None = None
     capabilities: tuple[str, ...] = ()
 
 
@@ -1423,6 +1425,16 @@ def _recognition_cycle(notions_raw: list[object]) -> str | None:  # noqa: C901
     return None
 
 
+def _base_type_names(base: dict[str, object] | None) -> frozenset[str] | None:
+    """Return the effective-base admitted type names (None without a base)."""
+    if base is None:
+        return None
+    declared = base.get("types")
+    if not isinstance(declared, list):
+        return frozenset()
+    return frozenset(item for item in declared if isinstance(item, str))
+
+
 def _base_producers(  # noqa: PLR0911 - one return per base failure
     base: dict[str, object],
     producers: dict[tuple[str, str], frozenset[str]],
@@ -2023,6 +2035,7 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         types=copy.deepcopy(types) if descriptor_context is not None else None,
         producers=dict(producers) if base is not None and producers is not None else None,
         ref_fields=frozenset(ref_fields) if base is not None and ref_fields is not None else None,
+        base_types=_base_type_names(base),
         capabilities=tuple(
             sorted(str(name) for name in registry.capabilities if isinstance(name, str))
         ),
