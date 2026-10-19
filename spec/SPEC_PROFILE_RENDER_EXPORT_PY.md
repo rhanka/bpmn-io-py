@@ -1,11 +1,12 @@
 # SPEC PROFILE RENDER EXPORT PY — lot 4 Python binding (layout, R, themes, exporters)
 
 Status: sealed binding contract for lot 4 of `bpmn_io.profile` (target 0.3.0, no
-version bump in this lot), resealed in the single block-B seal fix round. This
-document adds no production code. It binds the lot-4 sections of the design to
-Python signatures, closed shapes, refusal codes and gates, and indexes the sealed
-expectation files under `tests/profile_render/expected/` and
-`tests/profile_export/expected/`.
+version bump in this lot), resealed in the single block-B seal fix round and again
+in the block-B JS/Python parity sync (§22). This document adds no production code.
+It binds the lot-4 sections of the design to Python signatures, closed shapes,
+refusal codes and gates, and indexes the sealed expectation files under
+`tests/profile_render/expected/` and `tests/profile_export/expected/`, including
+the vendored JS lot-4 cases (§17.6).
 
 Authority, in precedence order: DESIGN R3.3 (SHA-256
 `48139f5fd5bd789eacbf271081a95432c54d8361b1e52404e3443a25fa65782f`) sections
@@ -1126,7 +1127,8 @@ runner performs (§17.4).
 
 The per-file case tables (one row per expectation file: case, DESIGN clause, what
 it witnesses, expected status/code) are in Appendix A (render tree) and Appendix B
-(export tree) at the end of this document.
+(export tree) at the end of this document; the vendored JS cases and twins (§17.6)
+are listed in Appendix C (render tree) and Appendix D (export tree).
 
 ## 19. Not covered
 
@@ -1143,24 +1145,27 @@ it witnesses, expected status/code) are in Appendix A (render tree) and Appendix
 - Synthetic owners represented only through a collaboration participant; synthetic
   declarations inherited from fallback themes.
 - `bpmn`, `sparx` and `svg` export adapters (refused `export-format-unsupported` in
-  lot 4), BPMN XML column facts (harmonization L6: the BPMN column is the F7 writer,
-  outside the lot-4 Python modules), exact draw.io bytes and draw.io geometry/style
-  attribute values, compression `deflate-raw`, engine byte-compatibility
-  (OPEN-EXPORT-EVIDENCE, private goldens).
+  lot 4), exact draw.io bytes and draw.io geometry/style attribute values,
+  compression `deflate-raw`, engine byte-compatibility (OPEN-EXPORT-EVIDENCE,
+  private goldens). BPMN XML column facts (harmonization L6) are covered by the
+  vendored JS `bpmn-001…003` cases (§17.6, block-A writer).
+- Open, not decided by the parity sync: five vendored JS `mapExport` cases use the
+  profile's `ea` export (format `sparx`, native IDs): `export-002-main-sparx-native`
+  and `export-028-variety-sparx` (ok), `export-004-repeated-sparx-ambiguous`,
+  `export-008-synthetic-sparx-ambiguous` and `export-011-labels-native-ambiguous`
+  (`export-id-ambiguous`). The Python binding registers `drawio/1` only and refuses
+  an unregistered format at §10.1 step 2 (`export-format-unsupported`); the
+  vendored values stay those of the JS seal until a decision gives Python a
+  `sparx` mapping adapter or classifies these cases.
 - The exact block-A lint bridge output for standard bpmnlint findings in a refused
   preparation (sealed through `includes`, entry lists UNSEALED); raw standard
   findings of a preparation where standard rules fire.
-- The JS-only lot-4 cases the harmonization assigns to the Python parity run (JS
-  `ticks-*`, `region-*`, `layout-*`, `admission-*`, `render-*`, `synthetic-*`,
-  `decision-*`, `digest-*`, `legacy-*`, `history-*`, `switch-*`, `export-*`,
-  `idplan-*`, `serialize-*`, `bpmn-*`): not vendored in this round — their values
-  are owned by the JS seal, which is resealed in the same fix round; the Python
-  seams they need (`layout_ticks`, `layout_regions`, `layout`,
-  `check_theme_switch`, `template_geometry`, `map_legacy_diagnostics`,
-  `resolve_legacy_theme`) are bound here. Synthetic occurrences are laid out by
-  `layout` in Python while the JS twin creates them in R: the placement of synthetic
-  occurrences is not decided by the harmonization (open item for the conductor
-  before vendoring JS `synthetic-*`).
+- JS lot-4 cases not vendored (parity sync §5 and §1 rows): `legacy-adapter-001…013`
+  (per-library legacy code inventories, harmonization B24, L4; the mapping rule is
+  shared) and the two-sided `prepare-001…003`, `signature-*`, `template-*`,
+  `verify-*` (each behaviour is witnessed on both sides by each side's own
+  fixtures). Synthetic occurrences are Layout/1 records of the layout primitive
+  styled by R on both sides (parity sync PS-23, converged).
 - Cross-runtime witnesses (JS↔Python R/IR/report parity, three-process runs,
   browser rendering) — conductor joint run.
 - Metrics resources whose `textPolicy`/`unicode` differ from the neutral pins;
@@ -1244,7 +1249,8 @@ Current defaults; items superseded in the fix round are marked.
 
 A1–A6, A8 (shared camelCase operation names, corpus/1 projections of every parity
 case, §17.5), B2, B3, B4, B21–B25, C2 (graph stage of preparation), C13–C19, E3, F3, G2,
-G3, H5–H7, K1–K18, L2–L5. L6 (BPMN column) is not covered (§19).
+G3, H5–H7, K1–K18, L2–L5. L6 (BPMN column) was not covered in this round; the
+parity sync covers it through the vendored JS `bpmn-*` cases (§17.6, §22).
 
 ### 21.2 Review findings applied
 
@@ -1269,6 +1275,54 @@ the N→layout passage sealed (`render.layout.region-key-role-mismatch`,
   §10.2 "a claimed export-ir/1 adapter cannot arbitrarily omit a common supported
   field without advertising a capability loss" requires a declared loss for every
   metadata record the serializer drops (§10.3).
+
+## 22. Block-B parity sync record
+
+The JS/Python parity sync reconciles the two lot-4 seals after their fix rounds
+(row ids PS-nn; DESIGN R3.3 first, then the harmonization). It changes sealed
+values only through the hand-decided transformations below; no implementation was
+imported or run, and every vendored value is the JS seal's value or is derived from
+it by a listed decision.
+
+### 22.1 Decisions applied
+
+| Row | Decision | Effect on this seal |
+| --- | --- | --- |
+| PS-25 | A PureResult refusal is exactly `{status, code, diagnostics}`; compile refusals carry `diagnostics: []` | the 27 `render.compile.*` and `export.compile.*` refusals (§3.4, §17.2) |
+| PS-35 | Compile success is `{status:"ok", payload, diagnostics:[]}` with `payload` UNSEALED; a sealed compiled identity is a separate `compiled-identity` artifact | the 4 compile successes (no identity sealed) |
+| PS-26 | `serializePrepared` carries the prepared report entries and idMap and one artifact whose `entryIndexes` list every entry | `export.serialize.drawio-kinds` (12 entries), `-drawio-neutral-fixture` (3), `-drawio-grid-fixture` (3) (§11) |
+| PS-34 | `prepareExport` options `{format, themeId, overrides, diStyles, importedDi?}`; an absent `importedDi` refuses `operation-error` at the layout stage; `signal` is JS-only | §2 erratum 1, §12 stages 1 and 8; no value change |
+| PS-36 | Preparation cases whose layout stage is the DI transcription, and the `signal` case, are runtime-specific | `export.prepare.success`, `-repairable-pre-normalize`, `-options-unknown-member` leave `parity/` (§17.5) |
+| PS-33 | `layoutTicks` and `layoutRegions` return PureResult | the 19 vendored `ticks-*`/`region-*` records (§17.6) |
+| PS-06 | IO object centres on one row line (the §4.1 rule) | vendored `layout-008`, `layout-009`, `render-021`, `render-022`, `export-025`, `export-026`; twin `region-010` (§17.6) |
+| PS-37 | Byte-identical twins are aliases | `ticks-001-half-even`, `region-010-mixed-heights` |
+
+Rows already satisfied by this seal (no change): PS-07 (adapter-declared metadata
+losses, §10.3), PS-23 (synthetic occurrences are Layout/1 records of the layout
+primitive styled by R), PS-24 (bindings validated generically; the lot-4 envelopes
+bind `content` and `side` without an ensure recipe).
+
+### 22.2 Imports
+
+| Row | JS cases | Tree |
+| --- | --- | --- |
+| PS-H17 | `ticks-001…004`, `region-001…017`, `layout-001…011` (32 ids, 2 twins) | render |
+| PS-H18 | `admission-001…010`, `render-001…024`, `synthetic-001…013`, `decision-001…005`, `digest-001…008`, `legacy-001…008`, `history-001/002`, `switch-001…007` (77) | render |
+| PS-H19 | `export-001…028`, `idplan-001…007`, `serialize-001…008`, `bpmn-001…003` (46) | export |
+
+155 ids: 153 harness records (25 derived: 19 by PS-33, 6 by PS-06) and 2 twins,
+from the JS seal `f953942a2a86387120737c9f8d263e082e3ff94ec60036695c236abbbef4ae43`.
+After the sync the render tree holds 194 Python cases and 107 vendored records, the
+export tree 83 and 46, and the parity corpus publishes 224 records and lists 153
+vendored cases and 2 aliases (Appendices C and D).
+
+### 22.3 Open items
+
+- The `sparx` mapping of five vendored `mapExport` cases (§19).
+- R3.4 errata candidates recorded by the sync for these points: E-33
+  (`serializePrepared` report), E-34 (helper PureResult, compile payload), E-35
+  (`prepareExport` options), E-36 (IO row centre line), E-37 (adapter-declared
+  losses), E-40 (binding role declaration).
 
 ## Appendix A — render tree (`tests/profile_render/expected/`, 194 cases)
 
@@ -1556,3 +1610,168 @@ the N→layout passage sealed (`render.layout.region-key-role-mismatch`,
 | `export.serialize.stale-profile-digest` | §10.1 serializePrepared; §10.2 OPEN-EXPORT-EVIDENCE | the preparation identity must still name the profile its renderBinding was bound to | refused `render-stale` |
 | `export.serialize.stale-semantic` | §10.1 serializePrepared; §10.2 OPEN-EXPORT-EVIDENCE | the prepared semantic revision must match its renderBinding | refused `render-stale` |
 | `export.serialize.stale-view` | §10.1 serializePrepared; §10.2 OPEN-EXPORT-EVIDENCE | serialization verifies renderBinding freshness | refused `render-stale` |
+
+## Appendix C — vendored JS cases of the render tree (`tests/profile_render/expected/`, 107 records + 2 twins)
+
+| Case | DESIGN clause | Operation | Expected | Parity sync |
+| --- | --- | --- | --- | --- |
+| `admission-001-lot4-package` | §2.4.1 L186–L199; §2.4 L164 | `compileProfile` | ok | vendored unchanged |
+| `admission-002-variant-conflict` | §2.4.1 L194–L196; §10.2 L770–L774 | `compileProfile` | ok | vendored unchanged |
+| `admission-003-variant-labels-native` | §2.4.1 L194–L196; §10.2 L770–L774 | `compileProfile` | ok | vendored unchanged |
+| `admission-004-variant-byte-claim` | §2.4.1 L194–L196; §10.2 L770–L774 | `compileProfile` | ok | vendored unchanged |
+| `admission-005-variant-unsupported` | §2.4.1 L194–L196; §10.2 L770–L774 | `compileProfile` | ok | vendored unchanged |
+| `admission-006-variant-parent-order` | §2.4.1 L194–L196; §10.2 L770–L774 | `compileProfile` | ok | vendored unchanged |
+| `admission-007-variant-dup-emit` | §2.4.1 L194–L196; §10.2 L770–L774 | `compileProfile` | ok | vendored unchanged |
+| `admission-008-variant-missing-field` | §2.4.1 L194–L196; §10.2 L770–L774 | `compileProfile` | ok | vendored unchanged |
+| `admission-009-neutral-successor` | §14.3 L961; §2.4 L164 | `compileProfile` | ok | vendored unchanged |
+| `admission-010-grid-successor` | §14.3 L961; §2.4 L164 | `compileProfile` | ok | vendored unchanged |
+| `decision-001-question-and-choices` | §14.3 L971; §9.3 L698–L702 | `resolveTheme` | ok | vendored unchanged |
+| `decision-002-lower-final-sigma` | §9.3 L702; §2.2 L116 | `resolveTheme` | ok | vendored unchanged |
+| `decision-003-host-case-stale` | §9.3 L702; §9.2 L690 | `resolveTheme` | refused `render-stale` | vendored unchanged |
+| `decision-004-locale-case-stale` | §9.3 L702; §2.2 L116 | `resolveTheme` | refused `render-stale` | vendored unchanged |
+| `decision-005-case-operator` | §2.2 L116; §9.3 L702 | `evaluateValue` | ok | vendored unchanged |
+| `digest-001-page-rename` | §9.1 L667; §9.2 L683–L690 | `resolveTheme` | ok | vendored unchanged |
+| `digest-002-label-move` | §9.2 L683–L690 | `resolveTheme` | ok | vendored unchanged |
+| `digest-003-baseline` | §9.2 L679–L690 | `renderDigests` | ok | vendored unchanged |
+| `digest-004-descriptor-pins-reversed` | §9.2 L682; §9.2 L694 | `renderDigests` | ok | vendored unchanged |
+| `digest-005-metric-resources-reversed` | §9.2 L687; §9.2 L694 | `renderDigests` | ok | vendored unchanged |
+| `digest-006-metric-byte-changed` | §9.2 L687; §9.2 L694 | `renderDigests` | ok | vendored unchanged |
+| `digest-007-bags-sorted` | §9.2 L685–L686; §9.2 L692–L694 | `renderDigests` | ok | vendored unchanged |
+| `digest-008-bags-reversed` | §9.2 L692–L694 | `renderDigests` | ok | vendored unchanged |
+| `history-001-theme-round-trip` | §8.2 L643; §9.2 L694 | `theme-sequence` | ok | vendored unchanged |
+| `history-002-override-round-trip` | §9.2 L694; §8.2 L643 | `theme-sequence` | ok | vendored unchanged |
+| `layout-001-main` | §9.1 L667; §9.4 L721–L723 | `layout` | ok | vendored unchanged |
+| `layout-002-repeated-views` | §9.4 L725; §9.1 L667 | `layout` | ok | vendored unchanged |
+| `layout-003-multi-process` | §9.4 L725 | `layout` | ok | vendored unchanged |
+| `layout-004-empty-process` | §9.4 L725 | `layout` | ok | vendored unchanged |
+| `layout-005-missing-lane` | §9.4 L721; §9.3 L715 | `layout` | refused `render-region-missing` | vendored unchanged |
+| `layout-006-neutral-fixture` | §9.4 L721; §9.3 L715 | `layout` | refused `render-region-missing` | vendored unchanged |
+| `layout-007-grid-fixture` | §9.4 L721; §9.3 L715 | `layout` | refused `render-region-missing` | vendored unchanged |
+| `layout-008-neutral-successor` | §14.3 L961; §9.4 L721–L723 | `layout` | ok | PS-06 |
+| `layout-009-grid-successor` | §14.3 L961; §9.4 L721–L723; §9.3 L713–L715 | `layout` | ok | PS-06 |
+| `layout-010-anchor-twice` | §9.4 L723 | `layout` | ok | vendored unchanged |
+| `layout-011-geometry-theme-gated` | §9.4 L721; §13 L928; §16 L1150 | `layout` | refused `profile-open` | vendored unchanged |
+| `legacy-001-standard` | §9.5 L729 | `resolveLegacyTheme` | ok | vendored unchanged |
+| `legacy-002-legend` | §9.5 L729 | `resolveLegacyTheme` | ok | vendored unchanged |
+| `legacy-003-colored` | §9.5 L729 | `resolveLegacyTheme` | ok | vendored unchanged |
+| `legacy-004-no-alias-data` | §9.5 L729; §9.2 L690 | `resolveLegacyTheme` | refused `render-stale` | vendored unchanged |
+| `legacy-005-exact-name` | §9.5 L729; §9.2 L690 | `resolveLegacyTheme` | refused `render-stale` | vendored unchanged |
+| `legacy-006-alias-not-theme` | §9.5 L729; §9.2 L690 | `resolveTheme` | refused `render-stale` | vendored unchanged |
+| `legacy-007-colored-sparse-di` | §9.5 L729; §9.3 L700 | `resolveTheme` | ok | vendored unchanged |
+| `legacy-008-look-independent-recognition` | §9.5 L729; §9.3 L698 | `resolveTheme` | ok | vendored unchanged |
+| `region-001-single-anchored` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-002-wider-label` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-003-collision-shift` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-004-no-anchor-sequence` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-005-mixed-anchor` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-006-clamp-left` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-007-grow-lane-width` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-008-grow-page` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-009-grow-lane-height` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-010-mixed-heights` | — | — | — | twin of `render.regions.mixed-label-heights` (PS-06, PS-33; PS-37), no record |
+| `region-011-single-rounding` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-012-band-row` | §9.4 L721–L725 | `layoutRegions` | ok | PS-33 |
+| `region-013-empty-region` | §9.4 L723–L725 | `layoutRegions` | ok | PS-33 |
+| `region-014-zero-tokens` | §9.4 L721–L723 | `layoutRegions` | ok | PS-33 |
+| `region-015-repeated-view` | §9.4 L721–L725 | `layoutRegions` | ok | PS-33 |
+| `region-016-multi-band-a` | §9.4 L721–L725 | `layoutRegions` | ok | PS-33 |
+| `region-017-multi-band-b` | §9.4 L721–L725 | `layoutRegions` | ok | PS-33 |
+| `render-001-main-plain` | §9.1 L669–L673; §9.2 L679–L690; §9.3 L698–L700 | `resolveTheme` | ok | vendored unchanged |
+| `render-002-repeated-views` | §9.1 L671–L673; §2.2 L126 | `resolveTheme` | ok | vendored unchanged |
+| `render-003-multi-process` | §9.1 L671–L673 | `resolveTheme` | ok | vendored unchanged |
+| `render-004-empty-process` | §9.1 L673; §9.4 L725 | `resolveTheme` | ok | vendored unchanged |
+| `render-005-neutral-fixture` | §9.1 L669–L673; §9.3 L698–L702 | `resolveTheme` | ok | vendored unchanged |
+| `render-006-token-precedence` | §9.3 L700; §9.2 L692 | `resolveTheme` | ok | vendored unchanged |
+| `render-007-reordered-bags` | §9.2 L692–L694 | `resolveTheme` | ok | vendored unchanged |
+| `render-008-sparse-occurrence-override` | §9.3 L700; §9.2 L692 | `resolveTheme` | ok | vendored unchanged |
+| `render-009-semantic-override` | §9.3 L700; §9.1 L673 | `resolveTheme` | ok | vendored unchanged |
+| `render-010-style-conflict` | §9.3 L698 | `resolveTheme` | refused `render-style-conflict` | vendored unchanged |
+| `render-011-token-unknown` | §9.3 L700; §9.1 L673 | `resolveTheme` | refused `render-token-invalid` | vendored unchanged |
+| `render-012-token-value` | §9.3 L700; §9.1 L673 | `resolveTheme` | refused `render-token-invalid` | vendored unchanged |
+| `render-013-token-negative` | §9.3 L700; §9.1 L673 | `resolveTheme` | refused `render-token-invalid` | vendored unchanged |
+| `render-014-stale-choice-label` | §9.2 L690; §9.3 L698 | `resolveTheme` | refused `render-stale` | vendored unchanged |
+| `render-015-missing-label` | §9.2 L690; §9.1 L671 | `resolveTheme` | refused `render-stale` | vendored unchanged |
+| `render-016-extra-label` | §9.2 L690; §9.3 L698 | `resolveTheme` | refused `render-stale` | vendored unchanged |
+| `render-017-unsupported-coverage` | §9.1 L673; §9.3 L704 | `resolveTheme` | ok | vendored unchanged |
+| `render-018-unknown-theme` | §9.2 L690 | `resolveTheme` | refused `render-stale` | vendored unchanged |
+| `render-019-theme-alias` | §12 L837; §9.2 L684 | `resolveTheme` | ok | vendored unchanged |
+| `render-020-geometry-theme-gated` | §9.4 L721; §13 L928; §16 L1150 | `resolveTheme` | refused `profile-open` | vendored unchanged |
+| `render-021-neutral-successor` | §14.3 L961; §9.1 L669–L673 | `resolveTheme` | ok | PS-06 |
+| `render-022-grid-successor` | §14.3 L961; §9.3 L713–L715; §9.3 L702 | `resolveTheme` | ok | PS-06 |
+| `render-023-metric-chain` | §9.2 L687; §9.2 L694 | `resolveTheme` | ok | vendored unchanged |
+| `render-024-variety` | §9.3 L698; §9.1 L673 | `resolveTheme` | ok | vendored unchanged |
+| `switch-001-paint-only` | §9.4 L721; §16 L1150 | `checkThemeSwitch` | ok | vendored unchanged |
+| `switch-002-region-token` | §9.4 L721; §16 L1150 | `checkThemeSwitch` | refused `theme-geometry-conflict` | vendored unchanged |
+| `switch-003-text-fit-token` | §9.4 L721; §16 L1150 | `checkThemeSwitch` | refused `theme-geometry-conflict` | vendored unchanged |
+| `switch-004-own-geometry` | §9.4 L721; §13 L928; §16 L1150 | `checkThemeSwitch` | refused `profile-open` | vendored unchanged |
+| `switch-005-missing-token` | §9.4 L721; §16 L1150 | `checkThemeSwitch` | refused `theme-geometry-conflict` | vendored unchanged |
+| `switch-006-legacy-chain` | §9.4 L721; §16 L1150 | `checkThemeSwitch` | ok | vendored unchanged |
+| `switch-007-metrics-resource` | §9.4 L721; §9.3 L702 | `checkThemeSwitch` | refused `theme-geometry-conflict` | vendored unchanged |
+| `synthetic-001-band-stripe` | §9.3 L713–L715; §9.1 L667 | `layout` | ok | vendored unchanged |
+| `synthetic-002-per-page` | §9.3 L715 | `layout` | ok | vendored unchanged |
+| `synthetic-003-per-owner` | §9.3 L715 | `layout` | ok | vendored unchanged |
+| `synthetic-004-region-missing` | §9.3 L715 | `layout` | refused `render-region-missing` | vendored unchanged |
+| `synthetic-005-grid-fixture` | §9.3 L715 | `layout` | refused `render-region-missing` | vendored unchanged |
+| `synthetic-006-attached-badge` | §9.3 L712; §9.4 L725 | `layout` | ok | vendored unchanged |
+| `synthetic-007-badge-ambiguous-anchor` | §9.3 L712; §9.3 L715 | `layout` | refused `render-region-missing` | vendored unchanged |
+| `synthetic-008-badge-no-anchor` | §9.3 L712; §9.3 L715 | `layout` | refused `render-region-missing` | vendored unchanged |
+| `synthetic-009-badge-hide-source` | §9.3 L712; §9.3 L717; §13 L924 | `layout` | refused `render-unsupported` | vendored unchanged |
+| `synthetic-010-unbound-region` | §9.4 L721; §9.3 L715 | `layout` | refused `render-region-missing` | vendored unchanged |
+| `synthetic-011-stripe-styled` | §9.3 L715; §9.1 L673 | `resolveTheme` | ok | vendored unchanged |
+| `synthetic-012-badge-styled` | §9.3 L712; §9.3 L715 | `resolveTheme` | ok | vendored unchanged |
+| `synthetic-013-foreign-record` | §9.1 L673; §9.2 L690 | `resolveTheme` | refused `render-stale` | vendored unchanged |
+| `ticks-001-half-even` | — | — | — | twin of `render.ticks.half-even` (PS-33; PS-37), no record |
+| `ticks-002-rational-not-binary` | §3.1 L270 | `layoutTicks` | ok | PS-33 |
+| `ticks-003-negative-zero-and-tiny` | §3.1 L270 | `layoutTicks` | ok | PS-33 |
+| `ticks-004-large-and-integral` | §3.1 L270 | `layoutTicks` | ok | PS-33 |
+
+## Appendix D — vendored JS cases of the export tree (`tests/profile_export/expected/`, 46 records)
+
+| Case | DESIGN clause | Operation | Expected | Parity sync |
+| --- | --- | --- | --- | --- |
+| `bpmn-001-main-native` | §10.2 L790–L793 | `serializeBpmn` | ok | vendored unchanged |
+| `bpmn-002-multi-native` | §10.2 L790–L791 | `serializeBpmn` | ok | vendored unchanged |
+| `bpmn-003-variety-native` | §10.2 L794–L796 | `serializeBpmn` | ok | vendored unchanged |
+| `export-001-main-drawio` | §10.2 L770–L776; §10.2 L801; §10.1 L751–L753 | `mapExport` | ok | vendored unchanged |
+| `export-002-main-sparx-native` | §2.2 L130; §10.2 L776; §10.2 L793 | `mapExport` | ok | vendored unchanged |
+| `export-003-repeated-drawio` | §2.2 L130; §10.2 L801; §10.1 L753 | `mapExport` | ok | vendored unchanged |
+| `export-004-repeated-sparx-ambiguous` | §2.2 L130 | `mapExport` | refused `export-id-ambiguous` | vendored unchanged |
+| `export-005-multi-drawio` | §10.2 L790–L791; §10.2 L801 | `mapExport` | ok | vendored unchanged |
+| `export-006-empty-drawio` | §10.2 L770–L774 | `mapExport` | ok | vendored unchanged |
+| `export-007-synthetic-drawio` | §10.2 L770; §10.1 L753; §2.2 L130 | `mapExport` | ok | vendored unchanged |
+| `export-008-synthetic-sparx-ambiguous` | §2.2 L130 | `mapExport` | refused `export-id-ambiguous` | vendored unchanged |
+| `export-009-neutral-fixture` | §10.2 L770–L776; §10.2 L801 | `mapExport` | ok | vendored unchanged |
+| `export-010-decision-labels` | §14.3 L971; §10.2 L772 | `mapExport` | ok | vendored unchanged |
+| `export-011-labels-native-ambiguous` | §2.2 L130 | `mapExport` | refused `export-id-ambiguous` | vendored unchanged |
+| `export-012-parent-order` | §10.2 L774 | `mapExport` | refused `export-parent-order` | vendored unchanged |
+| `export-013-duplicate-key` | §10.2 L774 | `mapExport` | refused `export-parent-invalid` | vendored unchanged |
+| `export-014-missing-required` | §10.2 L770 | `mapExport` | refused `export-field-invalid` | vendored unchanged |
+| `export-015-unknown-format` | §10.2 L770; §10.2 L780 | `mapExport` | refused `export-format-unsupported` | vendored unchanged |
+| `export-016-page-shape` | §10.2 L772 | `compileProfile` | refused `profile-export-field` | vendored unchanged |
+| `export-017-byte-claim-unqualified` | §10.2 L799; §10.1 L753; §13 L933 | `mapExport` | ok | vendored unchanged |
+| `export-018-unsupported-capability` | §10.1 L753; §10.2 L797 | `mapExport` | refused `render-unsupported` | vendored unchanged |
+| `export-019-unsupported-coverage` | §10.2 L797; §10.1 L753 | `mapExport` | refused `render-unsupported` | vendored unchanged |
+| `export-020-stale-layout` | §9.2 L690 | `mapExport` | refused `render-stale` | vendored unchanged |
+| `export-021-stale-envelope` | §9.2 L690 | `mapExport` | refused `render-stale` | vendored unchanged |
+| `export-022-stale-payload` | §9.2 L690 | `mapExport` | refused `render-stale` | vendored unchanged |
+| `export-023-stale-theme` | §9.2 L690 | `mapExport` | refused `render-stale` | vendored unchanged |
+| `export-024-occurrence-mismatch` | §9.2 L690 | `mapExport` | refused `render-stale` | vendored unchanged |
+| `export-025-neutral-successor` | §14.3 L961; §10.2 L776; §10.2 L801 | `mapExport` | ok | PS-06 |
+| `export-026-grid-successor` | §14.3 L961; §10.2 L774; §10.2 L801 | `mapExport` | ok | PS-06 |
+| `export-027-variety-drawio` | §10.2 L794–L796; §10.2 L776 | `mapExport` | ok | vendored unchanged |
+| `export-028-variety-sparx` | §10.2 L794–L796; §2.2 L130 | `mapExport` | ok | vendored unchanged |
+| `idplan-001-counter-grid` | §10.2 L801 | `exportIdPlan` | ok | vendored unchanged |
+| `idplan-002-counter-domains` | §10.2 L801 | `exportIdPlan` | ok | vendored unchanged |
+| `idplan-003-digest` | §10.2 L801 | `exportIdPlan` | ok | vendored unchanged |
+| `idplan-004-native-unique` | §2.2 L130 | `exportIdPlan` | ok | vendored unchanged |
+| `idplan-005-native-duplicate` | §2.2 L130 | `exportIdPlan` | refused `export-id-ambiguous` | vendored unchanged |
+| `idplan-006-native-synthetic` | §2.2 L130 | `exportIdPlan` | refused `export-id-ambiguous` | vendored unchanged |
+| `idplan-007-utf16-key-order` | §10.2 L801; §2.2 L126 | `exportIdPlan` | ok | vendored unchanged |
+| `serialize-001-main-drawio` | §10.2 L801; §10.1 L737 | `serializePrepared` | ok | vendored unchanged |
+| `serialize-002-repeated-drawio` | §10.2 L801; §10.1 L737 | `serializePrepared` | ok | vendored unchanged |
+| `serialize-003-xml-escaping` | §10.2 L801; §10.1 L737 | `serializePrepared` | ok | vendored unchanged |
+| `serialize-004-determinism` | §10.2 L801; §14.3 L963 | `serializePrepared-sequence` | ok | vendored unchanged |
+| `serialize-005-stale-binding` | §10.1 L737; §9.2 L690 | `serializePrepared` | refused `render-stale` | vendored unchanged |
+| `serialize-006-revision-mismatch` | §10.1 L737; §9.2 L690 | `serializePrepared` | refused `render-stale` | vendored unchanged |
+| `serialize-007-stale-profile-digest` | §10.1 L737; §9.2 L681; §9.2 L690 | `serializePrepared` | refused `render-stale` | vendored unchanged |
+| `serialize-008-stale-descriptor-digest` | §10.1 L737; §9.2 L682; §9.2 L690 | `serializePrepared` | refused `render-stale` | vendored unchanged |

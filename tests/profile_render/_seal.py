@@ -2,11 +2,14 @@
 
 Imports nothing from ``bpmn_io``: the sealed files are checked against their
 manifest, their closed case shape and the standalone derivation helper only.
+Vendored JS cases (block-B parity sync) are checked against their pinned raw
+source files and the vendored JS seal.
 """
 
 from __future__ import annotations
 
 import ast
+import copy
 import hashlib
 import importlib.util
 import json
@@ -21,6 +24,7 @@ if TYPE_CHECKING:
 
 HELPER = Path(__file__).resolve().parent / "expected" / "derive_helper.py"
 MANIFEST_NAME = "MANIFEST.sha256"
+OWN_PREFIXES = ("render.", "export.")
 REQUIRED_KEYS = ("case", "clause", "derivation", "input", "expected", "author")
 STATUSES = frozenset({"ok", "refused", "sequence"})
 HARNESS_KEYS = frozenset(
@@ -112,10 +116,20 @@ def check_helper_imports(path: Path = HELPER) -> None:
 
 
 def load_cases(directory: Path) -> list[tuple[Path, dict[str, Any]]]:
-    """Load every case file of one tree (sorted by path; artifacts excluded)."""
+    """Load every Python-authored case file of one tree (sorted by path; artifacts excluded)."""
     return [
         (path, json.loads(path.read_text(encoding="utf-8")))
         for path in sorted(directory.glob("*.json"))
+        if path.stem.startswith(OWN_PREFIXES)
+    ]
+
+
+def load_vendored(directory: Path) -> list[tuple[Path, dict[str, Any]]]:
+    """Load every harness record of a vendored JS case of one tree (JS case ids)."""
+    return [
+        (path, json.loads(path.read_text(encoding="utf-8")))
+        for path in sorted(directory.glob("*.json"))
+        if not path.stem.startswith(OWN_PREFIXES)
     ]
 
 
@@ -213,9 +227,20 @@ def check_case_shapes(directory: Path, prefix: str) -> None:
                 check_result_shape(path.name, "mapExport", step)
         else:
             assert operation == "compileProfile", path.name
-            assert set(expected) <= {"status", "code"}, path.name
+            check_compile_shape(path.name, expected)
         for key in set(expected) & HARNESS_KEYS:
             check_harness_key(path.name, key, expected[key], expected)
+
+
+def check_compile_shape(name: str, expected: dict[str, Any]) -> None:
+    """A compileProfile result is a PureResult without diagnostic; success UNSEALs /payload."""
+    wire = {key: value for key, value in expected.items() if key not in HARNESS_KEYS}
+    assert wire["diagnostics"] == [], name
+    if wire["status"] == "ok":
+        assert set(wire) == {"status", "diagnostics"}, name
+        assert expected.get("unsealed") == ["/payload"], name
+    else:
+        assert set(wire) == {"status", "code", "diagnostics"}, name
 
 
 def check_harness_key(name: str, key: str, value: Json, expected: dict[str, Any]) -> None:
@@ -320,6 +345,15 @@ PARITY_PREFIXES = (
     "export.serialize.",
     "export.prepare.",
 )
+# Runtime-specific although under a parity prefix (block-B parity sync PS-36).
+RUNTIME_SPECIFIC = frozenset(
+    {
+        "export.prepare.success",
+        "export.prepare.repairable-pre-normalize",
+        "export.prepare.options-unknown-member",
+    }
+)
+JS_CORPUS = "bpmn-canvas:tests/fixtures/lot4-layout-export/expectations"
 
 
 def _artifact_value(parity_dir: Path, artifact: dict[str, Any]) -> Json:
@@ -400,7 +434,7 @@ def check_parity_corpus(helper: types.ModuleType, parity_dir: Path, *expected_di
         case["case"]: case
         for directory in expected_dirs
         for _, case in load_cases(directory)
-        if case["case"].startswith(PARITY_PREFIXES)
+        if case["case"].startswith(PARITY_PREFIXES) and case["case"] not in RUNTIME_SPECIFIC
     }
     records = sorted(parity_dir.glob("cases/*.json"))
     assert sorted(p.stem for p in records) == sorted(harness), (
@@ -428,6 +462,263 @@ def check_parity_corpus(helper: types.ModuleType, parity_dir: Path, *expected_di
             assert artifacts == harness_roles, path.name
         _check_parity_inputs(helper, parity_dir, path.name, case["input"], record)
     return len(records)
+
+
+def check_parity_vendored(helper: types.ModuleType, parity_dir: Path, *expected_dirs: Path) -> int:
+    """The parity manifest lists every vendored JS case and twin, never as a corpus record."""
+    manifest = json.loads((parity_dir / "manifest.json").read_text(encoding="utf-8"))
+    rows = [
+        {
+            "caseId": case["case"],
+            "source": f"{JS_CORPUS}/cases/{case['case']}.json",
+            "sha256": case["source"]["sha256"],
+        }
+        for directory in expected_dirs
+        for _, case in load_vendored(directory)
+    ]
+    assert manifest["vendored"] == sorted(rows, key=lambda row: row["caseId"])
+    aliases = [
+        {"caseId": case_id, "aliasOf": alias["aliasOf"], "sha256": alias["sha256"]}
+        for case_id, alias in sorted(helper.ALIASES.items())
+    ]
+    assert manifest["aliases"] == aliases
+    published = {path.stem for path in parity_dir.glob("cases/*.json")}
+    assert not published & {row["caseId"] for row in rows}, "a vendored case is re-published"
+    assert not published & set(helper.ALIASES), "a twin is re-published"
+    assert {alias["aliasOf"] for alias in aliases} <= published, "a twin target is not published"
+    return len(rows)
+
+
+# ----------------------------------------------------------- vendored JS cases
+
+VENDORED_KEYS = frozenset(
+    {
+        "case",
+        "clause",
+        "derivation",
+        "operation",
+        "profile",
+        "input",
+        "expected",
+        "expectedStatus",
+        "comparatorIds",
+        "artifacts",
+        "source",
+        "paritySync",
+        "author",
+    }
+)
+VENDORED_OPTIONAL = frozenset({"artifacts", "paritySync"})
+SEAM_DECISION = "PS-33"  # helper seams return PureResult
+ROW_DECISION = "PS-06"  # IO object centres on one row line
+SEAM_OPERATIONS = frozenset({"layoutTicks", "layoutRegions"})
+ROW_CASES = frozenset(
+    {
+        "layout-008-neutral-successor",
+        "layout-009-grid-successor",
+        "render-021-neutral-successor",
+        "render-022-grid-successor",
+        "export-025-neutral-successor",
+        "export-026-grid-successor",
+    }
+)
+
+
+def check_vendored_files(helper: types.ModuleType, directory: Path, tree: str) -> int:
+    """The vendor/js files are exactly the tree's VENDORED table and the JS seal's bytes."""
+    vendor = directory / "vendor" / "js"
+    table = helper.VENDORED[tree]
+    on_disk = sorted(
+        path.relative_to(vendor).as_posix() for path in vendor.rglob("*") if path.is_file()
+    )
+    assert on_disk == sorted(table), "vendored files differ from the VENDORED table"
+    for rel, want in table.items():
+        assert hashlib.sha256((vendor / rel).read_bytes()).hexdigest() == want, rel
+    assert table["seal.json"] == helper.JS_SEAL_SHA256
+    seal = json.loads((vendor / "seal.json").read_text(encoding="utf-8"))
+    listed = {entry["path"]: entry["sha256"] for entry in seal["files"]}
+    for rel, want in table.items():
+        if rel != "seal.json":
+            assert listed[rel] == want, f"{rel}: not the bytes of the JS seal"
+    return len(table)
+
+
+def _ref(helper: types.ModuleType, value: dict[str, Any]) -> Json:
+    """Resolve one ``{vendored, sha256}`` reference after checking its pin."""
+    assert helper.vendored_pin(value["vendored"]) == value["sha256"], value["vendored"]
+    return helper.vendored_json(value["vendored"])
+
+
+def _js_ref(helper: types.ModuleType, tree: str, artifact: dict[str, Any]) -> dict[str, str]:
+    """Re-express one JS ``{path, sha256}`` artifact reference as a vendored reference."""
+    return {"vendored": helper.js_path(tree, artifact["path"]), "sha256": artifact["sha256"]}
+
+
+def _set(document: Json, pointer: str, value: Json) -> None:
+    """Replace the value at one RFC 6901 pointer."""
+    *parents, last = [part.replace("~1", "/").replace("~0", "~") for part in pointer[1:].split("/")]
+    holder = document
+    for part in parents:
+        holder = holder[int(part)] if isinstance(holder, list) else holder[part]
+    if isinstance(holder, list):
+        holder[int(last)] = value
+    else:
+        holder[last] = value
+
+
+def revert_parity_changes(record: dict[str, Any]) -> dict[str, Any]:
+    """Copy a vendored record with every parity-sync change set back to its JS value."""
+    plain = copy.deepcopy(record)
+    for change in record.get("paritySync", {}).get("changes", []):
+        assert resolve(plain, change["pointer"]) == change["to"], change["pointer"]
+        _set(plain, change["pointer"], copy.deepcopy(change["from"]))
+    return plain
+
+
+def _check_decisions(record: dict[str, Any]) -> None:
+    """A section-1 decision is listed exactly where it changes an imported value."""
+    name = record["case"]
+    sync = record.get("paritySync", {})
+    decisions = sync.get("decisions", [])
+    assert set(sync) <= {"decisions", "changes"}, name
+    assert set(decisions) <= {SEAM_DECISION, ROW_DECISION}, name
+    assert (SEAM_DECISION in decisions) == (record["operation"] in SEAM_OPERATIONS), name
+    assert (ROW_DECISION in decisions) == (name in ROW_CASES), name
+    assert ("changes" in sync) == (ROW_DECISION in decisions), name
+    for decision in decisions:
+        assert f"parity-sync decision {decision}" in record["derivation"], name
+
+
+def _check_profile(
+    helper: types.ModuleType, tree: str, record: dict[str, Any], js_case: dict[str, Any]
+) -> None:
+    """The profile reference and its load inputs are the JS manifest package record."""
+    artifact = js_case["profileArtifact"]
+    if artifact is None:
+        assert record["profile"] is None, record["case"]
+        return
+    manifest = helper.vendored_json(f"{helper.TREES[tree]}/{helper.VENDOR}/manifest.json")
+    package = next(p for p in manifest["packages"] if p["profile"]["path"] == artifact["path"])
+    load = {
+        key: _js_ref(helper, tree, package[key])
+        for key in ("base", "descriptors", "registry", "schema")
+    }
+    assets = [_js_ref(helper, tree, asset) for asset in package["assets"]]
+    profile = _js_ref(helper, tree, artifact)
+    assert record["profile"] == {**profile, "load": {**load, "assets": assets}}, record["case"]
+    for reference in (profile, *load.values(), *assets):
+        _ref(helper, reference)
+
+
+def _check_inputs(
+    helper: types.ModuleType, tree: str, plain: dict[str, Any], js_case: dict[str, Any]
+) -> None:
+    """Inputs are the JS input artifacts in order, by reference or inline."""
+    name = plain["case"]
+    artifacts = js_case["inputArtifacts"]
+    assert [item["role"] for item in plain["input"]] == [a["role"] for a in artifacts], name
+    for item, artifact in zip(plain["input"], artifacts, strict=True):
+        if "path" not in artifact:
+            assert item == {"role": artifact["role"], "json": artifact["json"]}, name
+        elif "json" in item:
+            assert "paritySync" in plain, f"{name}: inline copy of a vendored input"
+            assert item["json"] == _ref(helper, _js_ref(helper, tree, artifact)), name
+        else:
+            assert item == {"role": artifact["role"], **_js_ref(helper, tree, artifact)}, name
+            _ref(helper, item)
+
+
+def _check_expected(
+    helper: types.ModuleType, tree: str, plain: dict[str, Any], js_case: dict[str, Any]
+) -> None:
+    """The expected record, comparators and other artifacts are the JS ones (PS-33 applied)."""
+    values = {
+        artifact["role"]: (
+            _ref(helper, _js_ref(helper, tree, artifact))
+            if "path" in artifact
+            else artifact["json"]
+        )
+        for artifact in js_case["expectedArtifacts"]
+    }
+    result = values.pop("result") if "result" in values else values.pop("output")
+    unsealed = values.pop("unsealed", None)
+    comparators = js_case["comparatorIds"]
+    if SEAM_DECISION in plain.get("paritySync", {}).get("decisions", []):
+        result = {"status": "ok", "payload": result, "diagnostics": []}
+        comparators = ["result-exact/1" if c == "seam-exact/1" else c for c in comparators]
+    if unsealed is not None:
+        result = {**result, "unsealed": [entry["pointer"] for entry in unsealed]}
+    name = plain["case"]
+    assert plain["expected"] == result, name
+    assert plain["comparatorIds"] == comparators, name
+    assert plain["expectedStatus"] == js_case["expectedStatus"], name
+    others = [{"role": role, "json": value} for role, value in values.items()]
+    assert plain.get("artifacts", []) == others, name
+
+
+def check_vendored_record(
+    helper: types.ModuleType, tree: str, path: Path, record: dict[str, Any]
+) -> None:
+    """One vendored record is the JS case, re-expressed, with only its decisions applied."""
+    name = path.name
+    assert VENDORED_KEYS - VENDORED_OPTIONAL <= set(record) <= VENDORED_KEYS, name
+    assert record["case"] == path.stem, name
+    assert record["author"] == "spec-seal", name
+    assert record["clause"].startswith("DESIGN R3.3 §"), name
+    source = record["source"]
+    assert source["vendored"] == f"{helper.TREES[tree]}/{helper.VENDOR}/cases/{path.name}", name
+    js_case = _ref(helper, source)
+    assert js_case["caseId"] == path.stem, name
+    assert helper.JS_SEAL_SHA256 in record["derivation"], name
+    assert source["sha256"] in record["derivation"], name
+    assert record["operation"] == js_case["operation"], name
+    _check_decisions(record)
+    _check_profile(helper, tree, record, js_case)
+    plain = revert_parity_changes(record)
+    _check_inputs(helper, tree, plain, js_case)
+    _check_expected(helper, tree, plain, js_case)
+
+
+def check_vendored(helper: types.ModuleType, directory: Path, tree: str) -> int:
+    """Every vendored case of the tree has exactly one checked harness record."""
+    records = load_vendored(directory)
+    cases = sorted(
+        rel.removeprefix("cases/").removesuffix(".json")
+        for rel in helper.VENDORED[tree]
+        if rel.startswith("cases/")
+    )
+    assert [path.stem for path, _ in records] == cases, "vendored records differ from the cases"
+    for path, record in records:
+        check_vendored_record(helper, tree, path, record)
+    return len(records)
+
+
+def _input_value(helper: types.ModuleType, record: dict[str, Any], role: str) -> Json:
+    item = next(item for item in record["input"] if item["role"] == role)
+    return item["json"] if "json" in item else _ref(helper, item)
+
+
+def check_vendored_digests(helper: types.ModuleType, record: dict[str, Any]) -> bool:
+    """R and PreparedArtifact digests of a vendored success follow the helper formulas."""
+    expected = record["expected"]
+    if not isinstance(expected, dict) or expected.get("status") != "ok":
+        return False
+    if record["operation"] == "resolveTheme":
+        render = expected["payload"]
+    elif record["operation"] == "mapExport":
+        render = _input_value(helper, record, "render")
+        prepared = expected["payload"]
+        assert prepared["renderBinding"] == render["binding"], record["case"]
+        assert prepared["viewRevision"] == helper.view_revision(render["binding"]), record["case"]
+        digest = prepared["report"]["artifacts"][0]["digest"]
+        assert digest == helper.h(prepared["ir"]), record["case"]
+        assert expected["report"] == prepared["report"], record["case"]
+    else:
+        return False
+    layout = _input_value(helper, record, "layout")
+    assert render["binding"]["layoutDigest"] == helper.h(layout), record["case"]
+    assert render["binding"]["payloadDigest"] == helper.payload_digest(render), record["case"]
+    return True
 
 
 def load_helper() -> types.ModuleType:

@@ -7,7 +7,8 @@ seal: the manifest pins every byte, the derivation helper imports nothing
 from ``bpmn_io``, every case is closed and authored, cross-case reuse is
 verbatim, every sealed digest is internally consistent, coverage follows the
 native pre-order and every case tree is admitted by the descriptor packages
-its profile pins.
+its profile pins. The vendored JS lot-4 cases (block-B parity sync) are the
+pinned JS seal bytes, re-expressed with only the section-1 decisions applied.
 """
 
 from __future__ import annotations
@@ -16,19 +17,37 @@ from pathlib import Path
 
 from tests.profile_render._seal import (
     HELPER,
+    PARITY_PREFIXES,
     case_profiles,
     check_case_shapes,
     check_helper_imports,
     check_input_from,
     check_manifest,
     check_parity_corpus,
+    check_parity_vendored,
+    check_vendored,
+    check_vendored_digests,
+    check_vendored_files,
     load_cases,
     load_helper,
+    load_vendored,
 )
 
 EXPECTED = Path(__file__).resolve().parent / "expected"
 EXPORT_EXPECTED = Path(__file__).resolve().parent.parent / "profile_export" / "expected"
 DH = load_helper()
+VENDORED_OPERATIONS = {
+    "layoutTicks",
+    "layoutRegions",
+    "layout",
+    "compileProfile",
+    "resolveTheme",
+    "evaluateValue",
+    "renderDigests",
+    "theme-sequence",
+    "checkThemeSwitch",
+    "resolveLegacyTheme",
+}
 
 
 def test_manifest_pins_every_sealed_file() -> None:
@@ -43,7 +62,11 @@ def test_manifest_detects_a_one_byte_change(tmp_path: Path) -> None:
             target = copy_dir / path.relative_to(EXPECTED)
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(path.read_bytes())
-    for victim in (min(copy_dir.glob("*.json")), copy_dir / "artifacts" / "render-base.json"):
+    for victim in (
+        min(copy_dir.glob("*.json")),
+        copy_dir / "artifacts" / "render-base.json",
+        copy_dir / "vendor" / "js" / "seal.json",
+    ):
         original = victim.read_bytes()
         data = bytearray(original)
         data[-2] = ord(" ") if data[-2] != ord(" ") else ord("\t")
@@ -160,7 +183,38 @@ def test_digest_records_are_consistent() -> None:
 
 
 def test_parity_corpus_repeats_the_sealed_values() -> None:
-    assert check_parity_corpus(DH, EXPECTED / "parity", EXPECTED, EXPORT_EXPECTED) > 200
+    assert check_parity_corpus(DH, EXPECTED / "parity", EXPECTED, EXPORT_EXPECTED) == 224
+
+
+def test_parity_manifest_lists_vendored_cases_and_twins() -> None:
+    assert check_parity_vendored(DH, EXPECTED / "parity", EXPECTED, EXPORT_EXPECTED) == 153
+
+
+def test_vendored_files_are_the_js_sealed_bytes() -> None:
+    assert check_vendored_files(DH, EXPECTED, "render") == 228
+    for path, want in DH.VENDORED_CONTRACTS.items():
+        assert DH.b((DH.ROOT / path).read_bytes()) == want, path
+
+
+def test_vendored_js_cases_match_their_sources() -> None:
+    assert check_vendored(DH, EXPECTED, "render") == 107
+    operations = {case["operation"] for _, case in load_vendored(EXPECTED)}
+    assert operations == VENDORED_OPERATIONS
+
+
+def test_vendored_digests_follow_the_helper_formulas() -> None:
+    checked = sum(check_vendored_digests(DH, case) for _, case in load_vendored(EXPECTED))
+    assert checked >= 20
+
+
+def test_twins_are_aliases_without_files() -> None:
+    own = {case["case"] for _, case in load_cases(EXPECTED)}
+    vendored = {case["case"] for _, case in load_vendored(EXPECTED)}
+    for case_id, alias in DH.ALIASES.items():
+        assert alias["aliasOf"] in own, case_id
+        assert alias["aliasOf"].startswith(PARITY_PREFIXES), case_id
+        assert case_id not in vendored, case_id
+        assert f"cases/{case_id}.json" not in DH.VENDORED["render"], case_id
 
 
 def test_result_envelope_members_follow_the_input_envelope() -> None:
