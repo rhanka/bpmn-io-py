@@ -2,8 +2,8 @@
   "case": "export.serialize.stale-view",
   "clause": "DESIGN R3.3 \u00a710.1 serializePrepared; \u00a710.2 OPEN-EXPORT-EVIDENCE",
   "witness": "serialization verifies renderBinding freshness",
-  "derivation": "viewRevision no longer equals H of the renderBinding view fields: render-stale.",
-  "operation": "serialize_prepared",
+  "derivation": "viewRevision no longer equals H of the renderBinding view fields: render-stale (the refusal echoes the preparation identity and revision).",
+  "operation": "serializePrepared",
   "input": {
     "prepared": {
       "format": "drawio",
@@ -161,11 +161,51 @@
         "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "e7f18318767bac7c9fb1aeba4cbdf97654c052d9f75271c2467192e5d600d92d"
+        "payloadDigest": "b99680a96b5a5c9e5f40d76e5b3c1384b7e4d00460caeebd4cc0f6f56b552c8b"
       },
       "report": {
         "reportVersion": "2",
         "operation": "mapExport",
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "inputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+        "outputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
         "entries": [
           {
             "code": "export-loss/semantic-type",
@@ -347,7 +387,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-stale"
+    "operation": "serializePrepared",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+    "code": "render-stale",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "serializePrepared",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "e652a0b5a0765e4c3c2955dc6f6b9e3c60a4e7c876edbba5824ed452d9dd23d1",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "render-token/1 boundary violation refuses",
   "derivation": "Occurrence override on Z-page/aa-task-b with null token value: the token fails its render-token/1 signature or the closed token-bag rules (\u00a79.2/\u00a79.3), render-token-invalid.",
-  "operation": "resolve_theme",
+  "operation": "resolveTheme",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -190,7 +190,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-token-invalid"
+    "operation": "resolveTheme",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+    "code": "render-token-invalid",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "resolveTheme",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

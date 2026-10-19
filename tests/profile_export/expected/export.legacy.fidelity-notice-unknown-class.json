@@ -2,8 +2,8 @@
   "case": "export.legacy.fidelity-notice-unknown-class",
   "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
   "witness": "a FidelityNotice without a closed loss class is not known",
-  "derivation": "style-dropped is listed, but its lossClass 'cosmetic' is outside the closed set: legacy-unmapped.",
-  "operation": "map_legacy_diagnostics",
+  "derivation": "style-dropped is listed, but its lossClass 'cosmetic' is outside the closed set: legacy-unmapped. Adapter-originated entries use ruleId adapter (DESIGN \u00a76.4 adapter convention; harmonization B24).",
+  "operation": "mapLegacyDiagnostics",
   "input": {
     "legacy": {
       "producer": "fidelity-notice",
@@ -31,7 +31,10 @@
         },
         {
           "producer": "fidelity-notice",
-          "legacyCode": "style-dropped"
+          "legacyCode": "style-dropped",
+          "lossClasses": [
+            "appearance"
+          ]
         }
       ]
     }
@@ -44,7 +47,7 @@
         "severity": "error",
         "classification": "integrity",
         "stage": "export",
-        "ruleId": "legacy-export/1",
+        "ruleId": "adapter",
         "messageKey": "legacy.unmapped",
         "disposition": "refused",
         "source": {
@@ -63,7 +66,8 @@
         "afterPresent": false,
         "legacyCode": "style-dropped"
       }
-    ]
+    ],
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

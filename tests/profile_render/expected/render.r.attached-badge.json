@@ -2,8 +2,8 @@
   "case": "render.r.attached-badge",
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "badge occurrence styled from its declaration tokens; source occurrence kept (hideSource false)",
-  "derivation": "Layout = render.layout.attached-badge payload; badge glyph badge, style declaration fill #ccccff + theme stroke; Assoc_N has neither geometry nor glyph: nonvisual.",
-  "operation": "resolve_theme",
+  "derivation": "Layout = render.layout.attached-badge payload; badge glyph badge, style declaration fill #ccccff + theme stroke; Assoc_N has neither geometry nor glyph: nonvisual. Coverage lists every ID-bearing element in native pre-order with containment members in UTF-16 name order (Definitions, Process, artifacts before flowElements, arrays in index order; harmonization G3, lot-0 precedent): rendered with occurrences, nonvisual without a layout record.",
+  "operation": "resolveTheme",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -275,6 +275,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "resolveTheme",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "d50f816aa85387eb1ae233c918f574e8e58505f6d366b1f42a56b98e6a9b890e",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+    "revision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+    "report": {
+      "reportVersion": "2",
+      "operation": "resolveTheme",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "d50f816aa85387eb1ae233c918f574e8e58505f6d366b1f42a56b98e6a9b890e",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "d50f816aa85387eb1ae233c918f574e8e58505f6d366b1f42a56b98e6a9b890e",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+      "outputRevision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "renderVersion": "1",
       "binding": {
@@ -287,7 +357,7 @@
         "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "e84583b291f3b684b36b07c1371bf67154e733df1bc353e57e5fda63f845b4e6"
+        "payloadDigest": "d15b2e089b5aa85cf1821a7f0237b966503f5cde0bdc2b47af7fd2d8526d992a"
       },
       "pages": [
         {
@@ -498,12 +568,12 @@
       ],
       "coverage": [
         {
-          "semanticId": "Assoc_N",
+          "semanticId": "Definitions_1",
           "occurrences": [],
           "disposition": "nonvisual"
         },
         {
-          "semanticId": "Definitions_1",
+          "semanticId": "Process_1",
           "occurrences": [],
           "disposition": "nonvisual"
         },
@@ -518,9 +588,19 @@
           "disposition": "rendered"
         },
         {
-          "semanticId": "Process_1",
+          "semanticId": "Assoc_N",
           "occurrences": [],
           "disposition": "nonvisual"
+        },
+        {
+          "semanticId": "Task_B",
+          "occurrences": [
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "aa-task-b"
+            }
+          ],
+          "disposition": "rendered"
         },
         {
           "semanticId": "Task_A",
@@ -532,16 +612,6 @@
             {
               "pageId": "A-page",
               "occurrenceKey": "zz-task-a-2"
-            }
-          ],
-          "disposition": "rendered"
-        },
-        {
-          "semanticId": "Task_B",
-          "occurrences": [
-            {
-              "pageId": "Z-page",
-              "occurrenceKey": "aa-task-b"
             }
           ],
           "disposition": "rendered"

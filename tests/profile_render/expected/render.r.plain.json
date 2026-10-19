@@ -2,8 +2,8 @@
   "case": "render.r.plain",
   "clause": "DESIGN R3.3 \u00a79.1 Closed layout and render data",
   "witness": "RenderData/1 for the neutral profile: style from binding then theme, glyphs, coverage of every ID-bearing element, full binding",
-  "derivation": "Occurrences copy render.layout.di-two-pages geometry; task style = binding fill #ffffff + theme stroke #000000 (region.* tokens excluded), aid style = binding fill #eeeeff + theme stroke; coverage sorted by UTF-16 semanticId with Definitions_1/Process_1 nonvisual; binding digests per \u00a79.2 (empty bags, metrics [{neutral-metrics, 151d1a1f...}]).",
-  "operation": "resolve_theme",
+  "derivation": "Occurrences copy render.layout.di-two-pages geometry; task style = binding fill #ffffff + theme stroke #000000 (region.* tokens excluded), aid style = binding fill #eeeeff + theme stroke; layout labels equal the evaluated labels; binding digests per \u00a79.2 (empty bags, metrics [{neutral-metrics, 151d1a1f...}]); read-only Result/1 with the B4 report header (source = target identity, input = output revision) and no entry. Coverage lists every ID-bearing element in native pre-order with containment members in UTF-16 name order (Definitions, Process, artifacts before flowElements, arrays in index order; harmonization G3, lot-0 precedent): rendered with occurrences, nonvisual without a layout record.",
+  "operation": "resolveTheme",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -179,6 +179,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "resolveTheme",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+    "revision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+    "report": {
+      "reportVersion": "2",
+      "operation": "resolveTheme",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+      "outputRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "renderVersion": "1",
       "binding": {
@@ -191,7 +261,7 @@
         "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "5a75c7e84154de0c8bfb06f93f56f2060f8f9c75f2e3167469996c793fd0812f"
+        "payloadDigest": "1505a6d6ffd7d7eff0e496bdce2085b042f6b244a593eceedad1a6903d88e4e7"
       },
       "pages": [
         {
@@ -372,6 +442,11 @@
           "disposition": "nonvisual"
         },
         {
+          "semanticId": "Process_1",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
           "semanticId": "Note_1",
           "occurrences": [
             {
@@ -382,9 +457,14 @@
           "disposition": "rendered"
         },
         {
-          "semanticId": "Process_1",
-          "occurrences": [],
-          "disposition": "nonvisual"
+          "semanticId": "Task_B",
+          "occurrences": [
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "aa-task-b"
+            }
+          ],
+          "disposition": "rendered"
         },
         {
           "semanticId": "Task_A",
@@ -396,16 +476,6 @@
             {
               "pageId": "A-page",
               "occurrenceKey": "zz-task-a-2"
-            }
-          ],
-          "disposition": "rendered"
-        },
-        {
-          "semanticId": "Task_B",
-          "occurrences": [
-            {
-              "pageId": "Z-page",
-              "occurrenceKey": "aa-task-b"
             }
           ],
           "disposition": "rendered"

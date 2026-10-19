@@ -2,8 +2,8 @@
   "case": "export.map.format-without-adapter",
   "clause": "DESIGN R3.3 \u00a710.2 Export recipe, capability and loss contract",
   "witness": "a declared format without a registered Python adapter refuses export-format-unsupported",
-  "derivation": "exports[0].format svg is declared, but lot 4 registers only drawio/1: export-format-unsupported.",
-  "operation": "map_export",
+  "derivation": "exports[0].format svg is declared, but lot 4 registers only drawio/1: export-format-unsupported. The refusal carries no artifact; it echoes the envelope identity and revision, and its report has the B4 source header and no entry (harmonization B2, B3, B4).",
+  "operation": "mapExport",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -388,7 +388,7 @@
         "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "8f95e5696aff67444467c7d6840170b68a493f4c99eb33dc9f7023a750a84386"
+        "payloadDigest": "3b26f045180aa7e980cf3c77d97d5e18b1573d39490b9bd3722a3e93ffb3979c"
       },
       "pages": [
         {
@@ -539,16 +539,6 @@
           "disposition": "nonvisual"
         },
         {
-          "semanticId": "Flow_1",
-          "occurrences": [
-            {
-              "pageId": "P1",
-              "occurrenceKey": "e-flow"
-            }
-          ],
-          "disposition": "rendered"
-        },
-        {
           "semanticId": "Process_x",
           "occurrences": [],
           "disposition": "nonvisual"
@@ -572,6 +562,16 @@
             }
           ],
           "disposition": "rendered"
+        },
+        {
+          "semanticId": "Flow_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "e-flow"
+            }
+          ],
+          "disposition": "rendered"
         }
       ],
       "diagnostics": []
@@ -580,7 +580,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "export-format-unsupported"
+    "operation": "mapExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "4a113e21def3f92cfac38762b61c3af196ab82f25fc9e137b8c115d496e32199",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "9d4f434e437e0f1f38920b78d85d39c004b663b058f8b3d0d068951b4dd05ce2",
+    "code": "export-format-unsupported",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "mapExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "4a113e21def3f92cfac38762b61c3af196ab82f25fc9e137b8c115d496e32199",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "9d4f434e437e0f1f38920b78d85d39c004b663b058f8b3d0d068951b4dd05ce2",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

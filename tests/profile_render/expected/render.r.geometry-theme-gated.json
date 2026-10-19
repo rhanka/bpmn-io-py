@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a713 OPEN-DI / OPEN-LOOK; \u00a79.4 shared geometry",
   "witness": "per-theme geometry is not approved while OPEN-DI/OPEN-LOOK keeps shared geometry",
   "derivation": "plain declares geometry 'theme'; \u00a716.6 ratified shared geometry and no geometry:theme policy is approved: profile-open.",
-  "operation": "resolve_theme",
+  "operation": "resolveTheme",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -185,7 +185,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "profile-open"
+    "operation": "resolveTheme",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "5f98651b5897b1a0c8b0946fc1cc3fc9d4e602e4e3a5fb0b3007c3c7b537fba9",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "91098c737a474a194f3ba2bff3e68e520a7ae5e8666ad38ab31428af7300b4c5",
+    "code": "profile-open",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "resolveTheme",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "5f98651b5897b1a0c8b0946fc1cc3fc9d4e602e4e3a5fb0b3007c3c7b537fba9",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "91098c737a474a194f3ba2bff3e68e520a7ae5e8666ad38ab31428af7300b4c5",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

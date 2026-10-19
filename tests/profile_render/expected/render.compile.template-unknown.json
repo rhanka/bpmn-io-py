@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 OPEN-RENDER-PRIMITIVES; \u00a72.4.1 schema authority",
   "witness": "a composite outside the closed template set cannot be expressed",
   "derivation": "template wavy-document is outside the closed enum header-band|corner-fold|attached-badge|band-stripe; load_profile refuses profile-schema (composites stay disabled).",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-profile.json",

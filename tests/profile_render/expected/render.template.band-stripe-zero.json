@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "band-stripe takes a leading vertical rectangle of width min(stripeWidth, region.width), full height",
   "derivation": "Region (0,0,500016,100000); stripeWidth 0 gives an empty leading rectangle; height = region height 100000.",
-  "operation": "template_geometry",
+  "operation": "templateGeometry",
   "input": {
     "glyph": {
       "id": "stripe",
@@ -39,7 +39,8 @@
         "width": 0,
         "height": 100000
       }
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

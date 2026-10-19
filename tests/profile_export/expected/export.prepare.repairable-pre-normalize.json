@@ -1,0 +1,1116 @@
+{
+  "case": "export.prepare.repairable-pre-normalize",
+  "clause": "DESIGN R3.3 \u00a710.2 prepareExport; \u00a76.2 stage table",
+  "witness": "a repairable pre-N error with its declared bounded repair recipe continues, is repaired by N and stays in the report as corrected",
+  "derivation": "Profile = export.prepare.success profile + an Association notion/glyph + the repairable rule and its normalize repair recipe (set associationDirection None on associations without one). DESIGN \u00a76.2: 'a repairable pre-N error may continue only with its declared bounded repair recipe; post-N unresolved errors block'; \u00a76.4: 'corrected pre-N findings remain history with disposition corrected'. The rule assoc-direction (phase pre-normalize, classification repairable, repairRecipe assoc-direction-fix, accept severity error) finds Assoc_1 without associationDirection. The pre-normalize stage does not block on it; N applies assoc-direction-fix (one normalize/set change entry with the written-location coordinates /rootElements/0/artifacts/1/associationDirection, lot-3 vocabulary and harmonization B8/B9); the post-normalize lint finds nothing, so the pre-N finding is reported with disposition corrected. Layout, R and map run on the staged tree (Assoc_1 now carries associationDirection None): page e_0, nodes s-note e_1 'helper', s-task-a e_2, s-task-b e_3; four capability semantic-type losses (the association edge included). The complete report lists the corrected finding, the N change entry and the losses in stage order; the Result keeps the input revision (read-only) while the prepared artifact and its renderBinding carry the staged revision. Options are validated before the pipeline (closed option record, format declared with a registered adapter, theme resolvable; harmonization C18); then each stage runs exactly once on a staged deep copy in the DESIGN \u00a710.2 order compatibility -> graph checks -> C -> pre-normalize -> N -> post-normalize -> layout -> post-layout -> release -> R -> map under the accept policy, edit activation; the sealed trace lists the stages the observer saw, in order. A refusal returns the complete report of the executed lint stages (no change entry, no candidate) and no artifact (harmonization B2); no input is mutated.",
+  "operation": "prepareExport",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "remove",
+          "path": "/recipes/4"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/21/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/21/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/21/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/21/severity",
+          "value": "off"
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "link",
+            "kind": "native",
+            "nativeType": "bpmn:Association",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "link",
+            "labels": [
+              {
+                "name": "en",
+                "value": "link"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:Association"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:Association",
+              "mode": "exact"
+            },
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [
+              {
+                "theme": "plain",
+                "glyph": "link",
+                "tokens": [],
+                "label": {
+                  "op": "literal",
+                  "value": ""
+                }
+              }
+            ],
+            "fields": [],
+            "exclusiveGroup": "primary"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/rules/-",
+          "value": {
+            "id": "assoc-direction",
+            "phase": "pre-normalize",
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Association",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "assert": {
+              "op": "present",
+              "value": {
+                "op": "read",
+                "binding": "self",
+                "path": "/associationDirection"
+              }
+            },
+            "code": "association-direction-missing",
+            "message": "invalid",
+            "classification": "repairable",
+            "repairRecipe": "assoc-direction-fix"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "assoc-direction-fix",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:Association",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "not",
+                    "arg": {
+                      "op": "present",
+                      "value": {
+                        "op": "read",
+                        "binding": "self",
+                        "path": "/associationDirection"
+                      }
+                    }
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/associationDirection",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/associationDirection",
+                "value": {
+                  "op": "literal",
+                  "value": "None"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/validation/2/settings/-",
+          "value": {
+            "rule": "profile:assoc-direction",
+            "severity": "warn",
+            "classification": "repairable"
+          }
+        },
+        {
+          "op": "add",
+          "path": "/validation/3/settings/-",
+          "value": {
+            "rule": "profile:assoc-direction",
+            "severity": "error",
+            "classification": "repairable"
+          }
+        }
+      ]
+    },
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_p",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_p",
+          "isExecutable": false,
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_A",
+              "name": "Draft"
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_B",
+              "name": "Ready"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_1",
+              "text": "[Aid] helper"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Assoc_1",
+              "sourceRef": "Note_1",
+              "targetRef": "Task_A"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "options": {
+      "format": "drawio",
+      "themeId": "plain",
+      "overrides": {
+        "semantic": [],
+        "occurrence": []
+      },
+      "diStyles": {
+        "native": [],
+        "bioc": []
+      },
+      "diagrams": [
+        {
+          "$type": "bpmndi:BPMNDiagram",
+          "id": "P1",
+          "name": "Main",
+          "plane": {
+            "$type": "bpmndi:BPMNPlane",
+            "id": "P1-plane",
+            "bpmnElement": "Process_p",
+            "planeElement": [
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "s-task-a",
+                "bpmnElement": "Task_A",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 100,
+                  "y": 100,
+                  "width": 100,
+                  "height": 80
+                }
+              },
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "s-task-b",
+                "bpmnElement": "Task_B",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 300,
+                  "y": 100,
+                  "width": 100,
+                  "height": 80
+                }
+              },
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "s-note",
+                "bpmnElement": "Note_1",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 100,
+                  "y": 240,
+                  "width": 120,
+                  "height": 40
+                }
+              },
+              {
+                "$type": "bpmndi:BPMNEdge",
+                "id": "s-assoc",
+                "bpmnElement": "Assoc_1",
+                "waypoint": [
+                  {
+                    "$type": "dc:Point",
+                    "x": 160,
+                    "y": 240
+                  },
+                  {
+                    "$type": "dc:Point",
+                    "x": 150,
+                    "y": 180
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "prepareExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "e0595ba62f05f24ffe29e352e65cb421f3589412c896cf96b63d89fc196988f9",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "22ecb17102c68c726c50b7ed1db1e97b12da7ba392d7ca3f4d329089fa265a8f",
+    "revision": "22ecb17102c68c726c50b7ed1db1e97b12da7ba392d7ca3f4d329089fa265a8f",
+    "report": {
+      "reportVersion": "2",
+      "operation": "prepareExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "e0595ba62f05f24ffe29e352e65cb421f3589412c896cf96b63d89fc196988f9",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "e0595ba62f05f24ffe29e352e65cb421f3589412c896cf96b63d89fc196988f9",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "22ecb17102c68c726c50b7ed1db1e97b12da7ba392d7ca3f4d329089fa265a8f",
+      "outputRevision": "22ecb17102c68c726c50b7ed1db1e97b12da7ba392d7ca3f4d329089fa265a8f",
+      "entries": [
+        {
+          "code": "association-direction-missing",
+          "severity": "error",
+          "classification": "repairable",
+          "stage": "pre-normalize",
+          "ruleId": "assoc-direction",
+          "messageKey": "invalid",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/artifacts/1",
+            "targetId": "Assoc_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false
+        },
+        {
+          "code": "normalize/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "assoc-direction-fix",
+          "messageKey": "normalize.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/artifacts/1/associationDirection",
+            "targetId": "Assoc_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/artifacts/1/associationDirection",
+            "targetId": "Assoc_1",
+            "provenance": "exact"
+          },
+          "property": "associationDirection",
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "None"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/artifacts/0",
+            "targetId": "Note_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "s-note",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/artifacts/1",
+            "targetId": "Assoc_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "s-assoc",
+          "emittedType": "edge",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0",
+            "targetId": "Task_A",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "s-task-a",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1",
+            "targetId": "Task_B",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "s-task-b",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [
+        {
+          "sourceId": "P1",
+          "resultId": "e_0",
+          "domain": "export",
+          "pageId": "P1"
+        },
+        {
+          "sourceId": "Note_1",
+          "resultId": "e_1",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "s-note"
+        },
+        {
+          "sourceId": "Task_A",
+          "resultId": "e_2",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "s-task-a"
+        },
+        {
+          "sourceId": "Task_B",
+          "resultId": "e_3",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "s-task-b"
+        }
+      ],
+      "artifacts": [
+        {
+          "format": "drawio",
+          "capability": "structural",
+          "digest": "e7fbea7c2d98e053899716ce008a8e521577c303c3d6d8c11843b7f1188419d1",
+          "entryIndexes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    "payload": {
+      "format": "drawio",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "e0595ba62f05f24ffe29e352e65cb421f3589412c896cf96b63d89fc196988f9",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "semanticRevision": "215a01ab257618dbc6935aa33fa1fa75dfe1fd9cea45cc53c654300ea9eb3e18",
+      "viewRevision": "9e5e6fd7b3634338006d76ddfeb0599ff561e6f3184e8fd3d2def3032e003612",
+      "ir": [
+        {
+          "kind": "page",
+          "id": "e_0",
+          "name": "Main",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 300000,
+            "height": 180000
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_1",
+          "name": "helper",
+          "parent": "e_0",
+          "bounds": {
+            "x": 100000,
+            "y": 240000,
+            "width": 120000,
+            "height": 40000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#eeeeff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 100000,
+              "y": 240000,
+              "width": 120000,
+              "height": 40000
+            },
+            "lines": [
+              "helper"
+            ]
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_2",
+          "name": "Draft",
+          "parent": "e_0",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 100000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Draft"
+            ]
+          }
+        },
+        {
+          "kind": "node",
+          "id": "e_3",
+          "name": "Ready",
+          "parent": "e_0",
+          "bounds": {
+            "x": 300000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "style": [
+            {
+              "name": "fill",
+              "value": "#ffffff"
+            },
+            {
+              "name": "stroke",
+              "value": "#000000"
+            }
+          ],
+          "label": {
+            "bounds": {
+              "x": 300000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Ready"
+            ]
+          }
+        }
+      ],
+      "renderBinding": {
+        "semanticRevision": "215a01ab257618dbc6935aa33fa1fa75dfe1fd9cea45cc53c654300ea9eb3e18",
+        "profileDigest": "e0595ba62f05f24ffe29e352e65cb421f3589412c896cf96b63d89fc196988f9",
+        "descriptorDigest": "f66cec713b5cf4361896f3183372486d6e29314299858d8098d4a5024f0a8f90",
+        "layoutDigest": "62eb38c2e59b323476ce34cc76f8a8c6badb199a8849e0f62e03e4af555490d9",
+        "themeId": "plain",
+        "themeDigest": "d09567ec09f69633b2bd7071d668838e7c6c10d1bccdd478fed31b6d4b0ed877",
+        "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+        "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+        "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+        "payloadDigest": "0ea7dc524ab4d59d684517ca67c56de0d924ee53ce8f286528747bd35f2734e0"
+      },
+      "report": {
+        "reportVersion": "2",
+        "operation": "prepareExport",
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "e0595ba62f05f24ffe29e352e65cb421f3589412c896cf96b63d89fc196988f9",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "e0595ba62f05f24ffe29e352e65cb421f3589412c896cf96b63d89fc196988f9",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "inputRevision": "22ecb17102c68c726c50b7ed1db1e97b12da7ba392d7ca3f4d329089fa265a8f",
+        "outputRevision": "22ecb17102c68c726c50b7ed1db1e97b12da7ba392d7ca3f4d329089fa265a8f",
+        "entries": [
+          {
+            "code": "association-direction-missing",
+            "severity": "error",
+            "classification": "repairable",
+            "stage": "pre-normalize",
+            "ruleId": "assoc-direction",
+            "messageKey": "invalid",
+            "disposition": "corrected",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/artifacts/1",
+              "targetId": "Assoc_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false
+          },
+          {
+            "code": "normalize/set",
+            "severity": "info",
+            "classification": "repairable",
+            "stage": "normalize",
+            "ruleId": "assoc-direction-fix",
+            "messageKey": "normalize.set",
+            "disposition": "corrected",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/artifacts/1/associationDirection",
+              "targetId": "Assoc_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/artifacts/1/associationDirection",
+              "targetId": "Assoc_1",
+              "provenance": "exact"
+            },
+            "property": "associationDirection",
+            "beforePresent": false,
+            "afterPresent": true,
+            "after": "None"
+          },
+          {
+            "code": "export-loss/semantic-type",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "drawing",
+            "messageKey": "export.loss.semantic-type",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/artifacts/0",
+              "targetId": "Note_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "s-note",
+            "emittedType": "node",
+            "lossClass": "semantic-type"
+          },
+          {
+            "code": "export-loss/semantic-type",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "drawing",
+            "messageKey": "export.loss.semantic-type",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/artifacts/1",
+              "targetId": "Assoc_1",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "s-assoc",
+            "emittedType": "edge",
+            "lossClass": "semantic-type"
+          },
+          {
+            "code": "export-loss/semantic-type",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "drawing",
+            "messageKey": "export.loss.semantic-type",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/flowElements/0",
+              "targetId": "Task_A",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "s-task-a",
+            "emittedType": "node",
+            "lossClass": "semantic-type"
+          },
+          {
+            "code": "export-loss/semantic-type",
+            "severity": "warn",
+            "classification": "loss",
+            "stage": "export",
+            "ruleId": "drawing",
+            "messageKey": "export.loss.semantic-type",
+            "disposition": "mapped",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/0/flowElements/1",
+              "targetId": "Task_B",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "unavailable"
+            },
+            "beforePresent": false,
+            "afterPresent": false,
+            "pageId": "P1",
+            "occurrenceKey": "s-task-b",
+            "emittedType": "node",
+            "lossClass": "semantic-type"
+          }
+        ],
+        "rawStandardFindings": [],
+        "idMap": [
+          {
+            "sourceId": "P1",
+            "resultId": "e_0",
+            "domain": "export",
+            "pageId": "P1"
+          },
+          {
+            "sourceId": "Note_1",
+            "resultId": "e_1",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "s-note"
+          },
+          {
+            "sourceId": "Task_A",
+            "resultId": "e_2",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "s-task-a"
+          },
+          {
+            "sourceId": "Task_B",
+            "resultId": "e_3",
+            "domain": "export",
+            "pageId": "P1",
+            "occurrenceKey": "s-task-b"
+          }
+        ],
+        "artifacts": [
+          {
+            "format": "drawio",
+            "capability": "structural",
+            "digest": "e7fbea7c2d98e053899716ce008a8e521577c303c3d6d8c11843b7f1188419d1",
+            "entryIndexes": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          }
+        ]
+      },
+      "capability": "structural",
+      "idMap": [
+        {
+          "sourceId": "P1",
+          "resultId": "e_0",
+          "domain": "export",
+          "pageId": "P1"
+        },
+        {
+          "sourceId": "Note_1",
+          "resultId": "e_1",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "s-note"
+        },
+        {
+          "sourceId": "Task_A",
+          "resultId": "e_2",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "s-task-a"
+        },
+        {
+          "sourceId": "Task_B",
+          "resultId": "e_3",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "s-task-b"
+        }
+      ]
+    },
+    "trace": [
+      "options",
+      "compatibility",
+      "graph",
+      "complete",
+      "pre-normalize",
+      "normalize",
+      "post-normalize",
+      "layout",
+      "post-layout",
+      "release",
+      "render",
+      "map"
+    ],
+    "inputsUnchanged": true
+  },
+  "author": "spec-seal"
+}

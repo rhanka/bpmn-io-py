@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
   "witness": "a page emits at the artifact root and must omit parent",
   "derivation": "export-pages emit carries parent outputId(self,page): CR-11 parent rule, profile-type.",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-profile.json",

@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "badge at (node.x+offsetX, node.y+node.height+offsetY) with the declared badge size; markerShift echoed",
   "derivation": "Node (100000,100000,100000,80000), offsets 5000/-10000: x = 105000, y = 100000+80000-10000 = 170000; badge size input (40000,20000).",
-  "operation": "template_geometry",
+  "operation": "templateGeometry",
   "input": {
     "glyph": {
       "id": "badge",
@@ -57,7 +57,8 @@
       },
       "markerShift": 3000,
       "hideSource": false
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

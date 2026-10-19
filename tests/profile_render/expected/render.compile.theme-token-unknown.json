@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a72.4.1 CR-09 presentation",
   "witness": "token without a pinned signature",
   "derivation": "Added theme token opacity; any additional token requires an explicit pinned signature (\u00a79.3), so CR-09 refuses profile-type.",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-profile.json",

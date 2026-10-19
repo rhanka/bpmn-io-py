@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.1 Closed layout and render data",
   "witness": "Layout/1 transcribed from DI: page order and names, repeated semantic IDs, key order opposite to semantic IDs, stripPrefix label",
   "derivation": "Pages follow the diagrams array (Z-page order 0, A-page order 1) with names copied from the diagram records; every DI value x1000 ticks; occurrence key = DI id, so on Z-page aa-task-b (Task_B) precedes mm-note and zz-task-a although Task_A < Task_B; Task_A keeps two occurrences (repeated view); labels: task binding read /name, aid binding stripPrefix '[Aid] ' -> 'helper'; no BPMNLabel so label bounds = shape bounds; page bounds = bbox of the page geometry (Z: x 100000..350000, y 100000..280000).",
-  "operation": "compute_layout",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -119,6 +119,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+    "revision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+      "outputRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "layoutVersion": "1",
       "pages": [

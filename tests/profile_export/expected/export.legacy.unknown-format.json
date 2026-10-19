@@ -2,8 +2,8 @@
   "case": "export.legacy.unknown-format",
   "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
   "witness": "IoError unknown-format row",
-  "derivation": "Listed io-error code unknown-format -> export-format-unsupported / export.format-unsupported / integrity / error, legacyCode kept; no ids: one entry with unavailable source.",
-  "operation": "map_legacy_diagnostics",
+  "derivation": "Listed io-error code unknown-format -> export-format-unsupported / export.format-unsupported / integrity / error, legacyCode kept; no ids: one entry with unavailable source. Adapter-originated entries use ruleId adapter (DESIGN \u00a76.4 adapter convention; harmonization B24).",
+  "operation": "mapLegacyDiagnostics",
   "input": {
     "legacy": {
       "producer": "io-error",
@@ -30,7 +30,10 @@
         },
         {
           "producer": "fidelity-notice",
-          "legacyCode": "style-dropped"
+          "legacyCode": "style-dropped",
+          "lossClasses": [
+            "appearance"
+          ]
         }
       ]
     }
@@ -43,7 +46,7 @@
         "severity": "error",
         "classification": "integrity",
         "stage": "export",
-        "ruleId": "legacy-export/1",
+        "ruleId": "adapter",
         "messageKey": "export.format-unsupported",
         "disposition": "refused",
         "source": {
@@ -62,7 +65,8 @@
         "afterPresent": false,
         "legacyCode": "unknown-format"
       }
-    ]
+    ],
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

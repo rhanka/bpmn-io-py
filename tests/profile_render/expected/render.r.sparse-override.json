@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "sparse overrides stay sparse: one token on one occurrence, digest over the sparse record",
   "derivation": "Only Z-page/aa-task-b gets fill #123456 (occurrence level); its stroke still comes from the theme; every other occurrence equals render.r.plain; overridesDigest = H of the one-record bag, never an expanded style.",
-  "operation": "resolve_theme",
+  "operation": "resolveTheme",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -190,6 +190,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "resolveTheme",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+    "revision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+    "report": {
+      "reportVersion": "2",
+      "operation": "resolveTheme",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+      "outputRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "renderVersion": "1",
       "binding": {
@@ -202,7 +272,7 @@
         "overridesDigest": "b66d8136add60480caf1b99612b52a37312af31cf33045f4ae63fd6c7cc9d0e2",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "8c9870232f179336f4157e2e79e699dd0b903ff2e5280787d6254638b09613c8"
+        "payloadDigest": "52f6738f3336f67d403be9dd63f146dc5842ebc8799f5eda73e0ae230226e547"
       },
       "pages": [
         {
@@ -383,6 +453,11 @@
           "disposition": "nonvisual"
         },
         {
+          "semanticId": "Process_1",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
           "semanticId": "Note_1",
           "occurrences": [
             {
@@ -393,9 +468,14 @@
           "disposition": "rendered"
         },
         {
-          "semanticId": "Process_1",
-          "occurrences": [],
-          "disposition": "nonvisual"
+          "semanticId": "Task_B",
+          "occurrences": [
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "aa-task-b"
+            }
+          ],
+          "disposition": "rendered"
         },
         {
           "semanticId": "Task_A",
@@ -407,16 +487,6 @@
             {
               "pageId": "A-page",
               "occurrenceKey": "zz-task-a-2"
-            }
-          ],
-          "disposition": "rendered"
-        },
-        {
-          "semanticId": "Task_B",
-          "occurrences": [
-            {
-              "pageId": "Z-page",
-              "occurrenceKey": "aa-task-b"
             }
           ],
           "disposition": "rendered"

@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
   "witness": "fields outside the node vocabulary refuse",
   "derivation": "export-nodes adds field source (edge vocabulary only): profile-export-field.",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-profile.json",

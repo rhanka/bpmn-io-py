@@ -1,0 +1,251 @@
+{
+  "case": "export.prepare.unknown-format",
+  "clause": "DESIGN R3.3 \u00a710.2 prepareExport; \u00a76.2 stage table",
+  "witness": "an option format without an exports[] record and adapter refuses before the pipeline",
+  "derivation": "options.format sparx is not declared in exports[]: export-format-unsupported at the options stage; no C, lint, N or layout runs (trace [options]); no artifact; no mutation. Options are validated before the pipeline (closed option record, format declared with a registered adapter, theme resolvable; harmonization C18); then each stage runs exactly once on a staged deep copy in the DESIGN \u00a710.2 order compatibility -> graph checks -> C -> pre-normalize -> N -> post-normalize -> layout -> post-layout -> release -> R -> map under the accept policy, edit activation; the sealed trace lists the stages the observer saw, in order. A refusal returns the complete report of the executed lint stages (no change entry, no candidate) and no artifact (harmonization B2); no input is mutated.",
+  "operation": "prepareExport",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "remove",
+          "path": "/recipes/4"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings/21/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings/21/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings/21/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/2/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/11/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/15/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/16/severity",
+          "value": "off"
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings/21/severity",
+          "value": "off"
+        }
+      ]
+    },
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_p",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_p",
+          "isExecutable": false,
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_A",
+              "name": "Draft"
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_B",
+              "name": "Ready"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "options": {
+      "format": "sparx",
+      "themeId": "plain",
+      "overrides": {
+        "semantic": [],
+        "occurrence": []
+      },
+      "diStyles": {
+        "native": [],
+        "bioc": []
+      },
+      "diagrams": [
+        {
+          "$type": "bpmndi:BPMNDiagram",
+          "id": "P1",
+          "name": "Main",
+          "plane": {
+            "$type": "bpmndi:BPMNPlane",
+            "id": "P1-plane",
+            "bpmnElement": "Process_p",
+            "planeElement": [
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "s-task-a",
+                "bpmnElement": "Task_A",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 100,
+                  "y": 100,
+                  "width": 100,
+                  "height": 80
+                }
+              },
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "s-task-b",
+                "bpmnElement": "Task_B",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 300,
+                  "y": 100,
+                  "width": 100,
+                  "height": 80
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "prepareExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "4f4301f93d703492e67234b2782ac5d0c45eecdf4704929036009317743aae2e",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "a2cac8d04cae86de0ab639747a0c49a8a5c163ce7701a1338c6c0a0467739f5c",
+    "code": "export-format-unsupported",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "prepareExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "4f4301f93d703492e67234b2782ac5d0c45eecdf4704929036009317743aae2e",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "a2cac8d04cae86de0ab639747a0c49a8a5c163ce7701a1338c6c0a0467739f5c",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "trace": [
+      "options"
+    ],
+    "inputsUnchanged": true
+  },
+  "author": "spec-seal"
+}

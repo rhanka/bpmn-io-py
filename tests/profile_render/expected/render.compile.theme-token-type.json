@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a72.4.1 CR-09 presentation",
   "witness": "theme token with a value outside its render-token/1 signature",
   "derivation": "neutral theme token fill = 12 (number); fill requires a #RRGGBB(AA) string; CR-09 token types refuse profile-type.",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-profile.json",

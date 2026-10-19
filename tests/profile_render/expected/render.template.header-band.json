@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "header-band divides at y+min(headerHeight,h)",
   "derivation": "headerHeight 12000 < h 80000: header (100000,200000,100000,12000), body starts at 200000+12000 with height 80000-12000 = 68000.",
-  "operation": "template_geometry",
+  "operation": "templateGeometry",
   "input": {
     "glyph": {
       "id": "band",
@@ -45,7 +45,8 @@
         "width": 100000,
         "height": 68000
       }
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

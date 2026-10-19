@@ -2,12 +2,32 @@
   "case": "render.layout.io-shared-theme-switch",
   "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
   "witness": "selecting another shared theme with identical geometry tokens leaves the layout unchanged",
-  "derivation": "Theme dense (fallback plain) changes only fill and repeats the region tokens; with themeId dense the chain [plain, dense] resolves the same region values and the task bindings (via the plain fallback), so the layout equals render.layout.io-anchored.",
-  "operation": "compute_layout",
+  "derivation": "Theme dense (fallback plain) changes only fill and repeats the region tokens; with themeId dense the chain [plain, dense] resolves the same region values and the task bindings (via the plain fallback), so the layout equals render.layout.io-anchored. The profile is re-pinned to the lot-4 extension packages neutral-render-descriptors/1 and neutral-render-base/1 (tests/profile_render/expected/artifacts/), which admit every native type of the tree.",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
       "patch": [
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
         {
           "op": "replace",
           "path": "/themes/0/tokens",
@@ -299,6 +319,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "92a5cf41ef3fdc3a3b5c08a5668a7f9e01e46f572af0a72c7d6a0fc9b053f3ef",
+      "base": {
+        "id": "neutral-render-base/1",
+        "version": "fixture-1",
+        "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-render-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+        }
+      ]
+    },
+    "baseRevision": "58b104c6ec1ce3ec3e23c4f016b5bd52b4b08785df4fb7b57b692c1b44e92058",
+    "revision": "58b104c6ec1ce3ec3e23c4f016b5bd52b4b08785df4fb7b57b692c1b44e92058",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "92a5cf41ef3fdc3a3b5c08a5668a7f9e01e46f572af0a72c7d6a0fc9b053f3ef",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "92a5cf41ef3fdc3a3b5c08a5668a7f9e01e46f572af0a72c7d6a0fc9b053f3ef",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "inputRevision": "58b104c6ec1ce3ec3e23c4f016b5bd52b4b08785df4fb7b57b692c1b44e92058",
+      "outputRevision": "58b104c6ec1ce3ec3e23c4f016b5bd52b4b08785df4fb7b57b692c1b44e92058",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "layoutVersion": "1",
       "pages": [
@@ -323,7 +413,7 @@
           "role": "content",
           "bounds": {
             "x": 132000,
-            "y": 25000,
+            "y": 15000,
             "width": 36000,
             "height": 50000
           }
@@ -335,7 +425,7 @@
           "role": "content",
           "bounds": {
             "x": 332000,
-            "y": 25000,
+            "y": 15000,
             "width": 36000,
             "height": 50000
           }
@@ -371,7 +461,7 @@
           "role": "content",
           "bounds": {
             "x": 388000,
-            "y": 25000,
+            "y": 15000,
             "width": 36000,
             "height": 50000
           }

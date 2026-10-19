@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "template geometry exists only for template glyphs",
   "derivation": "A native glyph has no template geometry; template_geometry refuses render-unsupported (spec \u00a78.2).",
-  "operation": "template_geometry",
+  "operation": "templateGeometry",
   "input": {
     "glyph": {
       "id": "task",
@@ -26,7 +26,8 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-unsupported"
+    "code": "render-unsupported",
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

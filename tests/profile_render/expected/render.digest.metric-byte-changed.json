@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
   "witness": "one changed metric byte changes metricsDigest and viewRevision",
   "derivation": "Same as render.digest.metric-bytes with the single byte 0 of defaultAdvance 600 changed to 1 (601); B of the raw bytes changes, hence metricsDigest and viewRevision.",
-  "operation": "render_digests",
+  "operation": "renderDigests",
   "input": {
     "record": {
       "semanticTree": {
@@ -136,7 +136,8 @@
       "metricsDigest": "acbfe5fc9b5ea655db645a1693681e947d4edac96ae88dc66af6e7678f80e97a",
       "viewRevision": "4cfb5bf9a547accdcb51660ff790a37cf3b184989c7516b6d95abad2e1d64cd6",
       "payloadDigest": "c6b466b92ba0016da6ea3511a662b3e6c43ecb93ac1eaa7aa8c614e3b2f3cced"
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

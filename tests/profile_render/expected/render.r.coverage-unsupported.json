@@ -1,9 +1,9 @@
 {
   "case": "render.r.coverage-unsupported",
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
-  "witness": "no automatic standard-notation fallback: drawn element without a deliberate glyph is covered as unsupported",
-  "derivation": "Layout = render.layout.edge-without-notion payload; Flow_1 has a geometry record but no notion/glyph in the neutral profile (\u00a79.3 divergence from automatic fallback), so it gets no occurrence and coverage disposition unsupported; everything else as render.r.plain.",
-  "operation": "resolve_theme",
+  "witness": "no automatic standard-notation fallback: drawn element without a deliberate glyph is covered as unsupported with one render-unsupported diagnostic",
+  "derivation": "Layout = render.layout.edge-without-notion payload; Flow_1 has a geometry record but no notion/glyph in the neutral profile (\u00a79.3 divergence from automatic fallback), so it gets no occurrence, coverage disposition unsupported (laid out without a glyph, harmonization K10) and one R diagnostic (harmonization B25): render-unsupported / render-unsupported, integrity, error, stage render, ruleId adapter, disposition observed, exact source /rootElements/0/flowElements/2 (Flow_1), result unavailable, pageId Z-page, occurrenceKey ee-flow; the resolveTheme report entries are the R diagnostics; everything else as render.r.plain. Coverage lists every ID-bearing element in native pre-order with containment members in UTF-16 name order (Definitions, Process, artifacts before flowElements, arrays in index order; harmonization G3, lot-0 precedent): rendered with occurrences, nonvisual without a layout record.",
+  "operation": "resolveTheme",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -216,6 +216,102 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "resolveTheme",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "4f9daaa09022668a7621bad9bf269a8301155e8cc0d8b84af4ff87a43a67eb99",
+    "revision": "4f9daaa09022668a7621bad9bf269a8301155e8cc0d8b84af4ff87a43a67eb99",
+    "report": {
+      "reportVersion": "2",
+      "operation": "resolveTheme",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "4f9daaa09022668a7621bad9bf269a8301155e8cc0d8b84af4ff87a43a67eb99",
+      "outputRevision": "4f9daaa09022668a7621bad9bf269a8301155e8cc0d8b84af4ff87a43a67eb99",
+      "entries": [
+        {
+          "code": "render-unsupported",
+          "severity": "error",
+          "classification": "integrity",
+          "stage": "render",
+          "ruleId": "adapter",
+          "messageKey": "render-unsupported",
+          "disposition": "observed",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2",
+            "targetId": "Flow_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Z-page",
+          "occurrenceKey": "ee-flow"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "renderVersion": "1",
       "binding": {
@@ -228,7 +324,7 @@
         "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "8733bfc258866ece520110aa2c60b62999f0c6d1758a068432745d267b5e54a4"
+        "payloadDigest": "9184d685aaf6c4814f855e10d9ac00d40335d8ffa83d50bb8516602d397de946"
       },
       "pages": [
         {
@@ -409,9 +505,9 @@
           "disposition": "nonvisual"
         },
         {
-          "semanticId": "Flow_1",
+          "semanticId": "Process_1",
           "occurrences": [],
-          "disposition": "unsupported"
+          "disposition": "nonvisual"
         },
         {
           "semanticId": "Note_1",
@@ -424,9 +520,14 @@
           "disposition": "rendered"
         },
         {
-          "semanticId": "Process_1",
-          "occurrences": [],
-          "disposition": "nonvisual"
+          "semanticId": "Task_B",
+          "occurrences": [
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "aa-task-b"
+            }
+          ],
+          "disposition": "rendered"
         },
         {
           "semanticId": "Task_A",
@@ -443,17 +544,38 @@
           "disposition": "rendered"
         },
         {
-          "semanticId": "Task_B",
-          "occurrences": [
-            {
-              "pageId": "Z-page",
-              "occurrenceKey": "aa-task-b"
-            }
-          ],
-          "disposition": "rendered"
+          "semanticId": "Flow_1",
+          "occurrences": [],
+          "disposition": "unsupported"
         }
       ],
-      "diagnostics": []
+      "diagnostics": [
+        {
+          "code": "render-unsupported",
+          "severity": "error",
+          "classification": "integrity",
+          "stage": "render",
+          "ruleId": "adapter",
+          "messageKey": "render-unsupported",
+          "disposition": "observed",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2",
+            "targetId": "Flow_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Z-page",
+          "occurrenceKey": "ee-flow"
+        }
+      ]
     }
   },
   "inputFrom": [

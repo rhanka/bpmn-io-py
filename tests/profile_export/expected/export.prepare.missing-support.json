@@ -2,8 +2,8 @@
   "case": "export.prepare.missing-support",
   "clause": "DESIGN R3.3 \u00a710.2 prepareExport; \u00a76.2 stage table",
   "witness": "preparation never creates supports: placements into an unbound region refuse profile-open",
-  "derivation": "Same as export.prepare.success but keeping place-task: N places Task_A/Task_B in region content, no support binding exists and support creation is gated (OPEN-RESERVED-N), so N or the layout refuses profile-open; no artifact; no stage after layout.",
-  "operation": "prepare_export",
+  "derivation": "Same as export.prepare.success but keeping place-task: N places Task_A/Task_B in region content and no support binding has role content. A missing support invokes gated N, never layout-created semantics; with support creation disabled (OPEN-RESERVED-N technical gate open, edit activation) preparation refuses profile-open at the layout stage (DESIGN \u00a79.4; harmonization C13: the standalone layout primitive would refuse render-region-missing). No artifact; no later stage; the lint stages before it found nothing. Options are validated before the pipeline (closed option record, format declared with a registered adapter, theme resolvable; harmonization C18); then each stage runs exactly once on a staged deep copy in the DESIGN \u00a710.2 order compatibility -> graph checks -> C -> pre-normalize -> N -> post-normalize -> layout -> post-layout -> release -> R -> map under the accept policy, edit activation; the sealed trace lists the stages the observer saw, in order. A refusal returns the complete report of the executed lint stages (no change entry, no candidate) and no artifact (harmonization B2); no input is mutated.",
+  "operation": "prepareExport",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -187,8 +187,61 @@
   },
   "expected": {
     "status": "refused",
+    "operation": "prepareExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "4df92482b28e4d83293f53aa1e1933528412300f5273d7b9c7b6f31c2379ad25",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "bd99a934f6449e3eff54b2ef3b4c2881f52be3358930b5b1ea386eb362770109",
     "code": "profile-open",
-    "stagesOnly": [
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "prepareExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "4df92482b28e4d83293f53aa1e1933528412300f5273d7b9c7b6f31c2379ad25",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "bd99a934f6449e3eff54b2ef3b4c2881f52be3358930b5b1ea386eb362770109",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "trace": [
+      "options",
+      "compatibility",
+      "graph",
       "complete",
       "pre-normalize",
       "normalize",

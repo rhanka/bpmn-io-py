@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
   "witness": "payloadDigest over one occurrence record",
   "derivation": "R3 input whose payload carries one occurrence (Z-page/k1); payloadDigest = H({pages, occurrences, coverage, diagnostics}).",
-  "operation": "render_digests",
+  "operation": "renderDigests",
   "input": {
     "record": {
       "semanticTree": {
@@ -152,7 +152,8 @@
       "metricsDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "viewRevision": "51500e5c281c82a9cbb0f6c64f15ac1bf844b3a41f572fb82004bd7c4a737a1c",
       "payloadDigest": "f91d8fa9dd30edede8cb3d760c9cea9f0655aa51ed82734dce2c31b57b22e91b"
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

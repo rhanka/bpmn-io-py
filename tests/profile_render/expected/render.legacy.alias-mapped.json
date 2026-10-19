@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.5 Legacy themes",
   "witness": "a legacy look name resolves only through injected compatibility data",
   "derivation": "compatibilityAliases [{kind:theme, old:standard, destination:plain, mode:explicit-adapter}] maps standard to the injected theme plain (\u00a79.5).",
-  "operation": "resolve_legacy_theme",
+  "operation": "resolveLegacyTheme",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -28,7 +28,8 @@
     "status": "ok",
     "payload": {
       "themeId": "plain"
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

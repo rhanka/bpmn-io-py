@@ -2,12 +2,32 @@
   "case": "render.layout.reference-band",
   "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
   "witness": "reference band uses its bound participant rectangle with the same header/padding rule",
-  "derivation": "Region (Process_1, reference-band) -> Band_1 (0,250000,600000,90000); tokens hw 20000, p 5000, g 10000, mh 60000; contentLeft 25000. Both references anchor on Task_1 (centre x 200000): Ref_1 left 175000, Ref_2 collides with 225000+10000 -> 235000. RH = max(60000, 50000+10000) = 60000 <= 90000; centre y 295000, objects at y 270000. The collaboration plane gives semanticRootId Collab_1.",
-  "operation": "compute_layout",
+  "derivation": "Region (Process_1, reference-band) -> Band_1 (0,250000,600000,90000); tokens hw 20000, p 5000, g 10000, mh 60000; contentLeft 25000. Both references anchor on Task_1 (centre x 200000): Ref_1 left 175000, Ref_2 collides with 225000+10000 -> 235000. RH = max(60000, 50000+10000) = 60000 <= 90000; row [250000, 310000], cy = 250000 + max(25000, 30000) = 280000: objects at y 255000. The collaboration plane gives semanticRootId Collab_1. Row rule (spec \u00a74.3): items in \u00a77.2 placement order; footprint max(object, label) width; left = anchor centre - footprint/2 when the anchor is shown, else contentLeft or previous right + gap; clamp to contentLeft; collision shifts right; one row at the top of the support body [Ly, Ly+RH], RH = max(minHeight, max(object+label) + 2 padding) (harmonization K2); every object centre lies on one line cy = Ly + max(A, (RH + A - B)/2), A = max h/2, B = max(h/2 + label height), so the union of the stacks is centred in the row (DESIGN \u00a79.4 'align centers on one IO row'); exact rationals, one roundEven per output coordinate. The profile is re-pinned to the lot-4 extension packages neutral-render-descriptors/1 and neutral-render-base/1 (tests/profile_render/expected/artifacts/), which admit every native type of the tree.",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
       "patch": [
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
         {
           "op": "replace",
           "path": "/themes/0/tokens",
@@ -232,6 +252,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "598b160e0b0c22f96ee5be44748117255294ba97e447f3431a1aacc876d04be5",
+      "base": {
+        "id": "neutral-render-base/1",
+        "version": "fixture-1",
+        "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-render-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+        }
+      ]
+    },
+    "baseRevision": "e014dc37e53404ca02d1ceed3e3990e243d1e976f3fc78ae8de560609048eb41",
+    "revision": "e014dc37e53404ca02d1ceed3e3990e243d1e976f3fc78ae8de560609048eb41",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "598b160e0b0c22f96ee5be44748117255294ba97e447f3431a1aacc876d04be5",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "598b160e0b0c22f96ee5be44748117255294ba97e447f3431a1aacc876d04be5",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "inputRevision": "e014dc37e53404ca02d1ceed3e3990e243d1e976f3fc78ae8de560609048eb41",
+      "outputRevision": "e014dc37e53404ca02d1ceed3e3990e243d1e976f3fc78ae8de560609048eb41",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "layoutVersion": "1",
       "pages": [
@@ -280,7 +370,7 @@
           "role": "reference-band",
           "bounds": {
             "x": 175000,
-            "y": 270000,
+            "y": 255000,
             "width": 50000,
             "height": 50000
           }
@@ -292,7 +382,7 @@
           "role": "reference-band",
           "bounds": {
             "x": 235000,
-            "y": 270000,
+            "y": 255000,
             "width": 50000,
             "height": 50000
           }

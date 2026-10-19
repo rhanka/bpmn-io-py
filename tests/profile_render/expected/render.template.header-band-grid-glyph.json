@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "the second neutral profile's own header-band glyph (headerHeight 12)",
   "derivation": "Glyph = neutral-grid-profile.json#/themes/0/glyphs/1 (headerHeight 12 ticks) on (0,0,100000,80000): header (0,0,100000,12), body (0,12,100000,79988).",
-  "operation": "template_geometry",
+  "operation": "templateGeometry",
   "input": {
     "glyph": {
       "id": "aid",
@@ -45,7 +45,8 @@
         "width": 100000,
         "height": 79988
       }
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

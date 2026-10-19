@@ -1,13 +1,33 @@
 {
   "case": "render.layout.io-wider-labels",
   "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
-  "witness": "labels wider than their IO object widen the footprint; DI label sizes kept, missing label measured; stacks centred",
-  "derivation": "IO notion label read /name. In_A label 80x14 DI units (80000 x 14000) wider than the 36000 object: footprint 80000, left max(40000, 150000-40000) = 110000, object centred at 132000, label at 110000. In_B has no BPMNLabel: 'Beta' measured 4 x 600 = 2400 wide, 1000 high; footprint 36000, left 332000, label x 332000+16800. Out_C label 60x14: footprint 60000, desired 320000 collides with 368000+20000 -> 388000, object at 400000. RH = max(80000, 64000+20000) = 84000 <= 100000; stacks centred on y 50000: In_A/Out_C top 18000 (label y 68000), In_B top 24500 (label y 74500).",
-  "operation": "compute_layout",
+  "witness": "labels wider than their IO object widen the footprint; DI label sizes kept, missing label measured; object centres on one row line",
+  "derivation": "IO notion label read /name. In_A label 80x14 DI units (80000 x 14000) wider than the 36000 object: footprint 80000, left max(40000, 150000-40000) = 110000, object centred at x 132000, label at 110000. In_B has no BPMNLabel: 'Beta' measured 4 x 600 = 2400 wide, 1000 high; footprint 36000, left 332000, label x 332000+16800. Out_C label 60x14: footprint 60000, desired 320000 collides with 368000+20000 -> 388000, object at 400000. RH = max(80000, 64000+20000) = 84000; A = 25000, B = 25000+14000 = 39000, cy = max(25000, (84000+25000-39000)/2) = 35000: the three object centres share y 35000 (objects at y 10000, labels directly below at y 60000), fixing the per-stack centring of the first seal (centres 43000/49500/43000). Row rule (spec \u00a74.3): items in \u00a77.2 placement order; footprint max(object, label) width; left = anchor centre - footprint/2 when the anchor is shown, else contentLeft or previous right + gap; clamp to contentLeft; collision shifts right; one row at the top of the support body [Ly, Ly+RH], RH = max(minHeight, max(object+label) + 2 padding) (harmonization K2); every object centre lies on one line cy = Ly + max(A, (RH + A - B)/2), A = max h/2, B = max(h/2 + label height), so the union of the stacks is centred in the row (DESIGN \u00a79.4 'align centers on one IO row'); exact rationals, one roundEven per output coordinate. The profile is re-pinned to the lot-4 extension packages neutral-render-descriptors/1 and neutral-render-base/1 (tests/profile_render/expected/artifacts/), which admit every native type of the tree.",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
       "patch": [
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
         {
           "op": "replace",
           "path": "/themes/0/tokens",
@@ -360,6 +380,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "d3826c19cce1a9addf6cfce1f1fb477a559a8997c571231010afd2c131dcacce",
+      "base": {
+        "id": "neutral-render-base/1",
+        "version": "fixture-1",
+        "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-render-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+        }
+      ]
+    },
+    "baseRevision": "120d867ffc8e89057081bec5201f82cbae0220e6a54b96805cc72d60e0fefe7b",
+    "revision": "120d867ffc8e89057081bec5201f82cbae0220e6a54b96805cc72d60e0fefe7b",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "d3826c19cce1a9addf6cfce1f1fb477a559a8997c571231010afd2c131dcacce",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "d3826c19cce1a9addf6cfce1f1fb477a559a8997c571231010afd2c131dcacce",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "inputRevision": "120d867ffc8e89057081bec5201f82cbae0220e6a54b96805cc72d60e0fefe7b",
+      "outputRevision": "120d867ffc8e89057081bec5201f82cbae0220e6a54b96805cc72d60e0fefe7b",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "layoutVersion": "1",
       "pages": [
@@ -384,7 +474,7 @@
           "role": "content",
           "bounds": {
             "x": 132000,
-            "y": 18000,
+            "y": 10000,
             "width": 36000,
             "height": 50000
           },
@@ -392,7 +482,7 @@
             "text": "Alpha",
             "bounds": {
               "x": 110000,
-              "y": 68000,
+              "y": 60000,
               "width": 80000,
               "height": 14000
             },
@@ -408,7 +498,7 @@
           "role": "content",
           "bounds": {
             "x": 332000,
-            "y": 24500,
+            "y": 10000,
             "width": 36000,
             "height": 50000
           },
@@ -416,7 +506,7 @@
             "text": "Beta",
             "bounds": {
               "x": 348800,
-              "y": 74500,
+              "y": 60000,
               "width": 2400,
               "height": 1000
             },
@@ -456,7 +546,7 @@
           "role": "content",
           "bounds": {
             "x": 400000,
-            "y": 18000,
+            "y": 10000,
             "width": 36000,
             "height": 50000
           },
@@ -464,7 +554,7 @@
             "text": "Result",
             "bounds": {
               "x": 388000,
-              "y": 68000,
+              "y": 60000,
               "width": 60000,
               "height": 14000
             },

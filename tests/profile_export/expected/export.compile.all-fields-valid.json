@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
   "witness": "every optional common field with its type compiles",
   "derivation": "Node fields id, name, shape, fill, stroke, textColor, fontFamily (strings) and fontSize, strokeWidth (numbers); an added edge recipe with id, source, target, name, stroke, dash, arrow (strings) and strokeWidth (number): valid against export-ir/1.",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-profile.json",

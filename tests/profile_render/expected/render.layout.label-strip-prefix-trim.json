@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "stripPrefix after the ecma262-2024-start leading trim; U+0085 and U+200B are not trimmed; the body is never trimmed",
   "derivation": "Recognition and label both use trim ecma262-2024-start (\u00a72.3 set): NBSP+BOM, IDEOGRAPHIC SPACE and LINE SEPARATOR+TAB are trimmed before '[Aid] ' is removed once; U+0085 and U+200B are outside the set, so those notes are not recognized and get no label; the remaining body keeps its own leading space.",
-  "operation": "compute_layout",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -138,6 +138,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "08ab5e23d8562e37012840cb32523912bbe61d36c179d6d8c8628401fd8b6b6d",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "1bc920b57f27379dfbe53114141cdba46c4bfa9a9c4701619a4f2e57d57cb596",
+    "revision": "1bc920b57f27379dfbe53114141cdba46c4bfa9a9c4701619a4f2e57d57cb596",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "08ab5e23d8562e37012840cb32523912bbe61d36c179d6d8c8628401fd8b6b6d",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "08ab5e23d8562e37012840cb32523912bbe61d36c179d6d8c8628401fd8b6b6d",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "1bc920b57f27379dfbe53114141cdba46c4bfa9a9c4701619a4f2e57d57cb596",
+      "outputRevision": "1bc920b57f27379dfbe53114141cdba46c4bfa9a9c4701619a4f2e57d57cb596",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "layoutVersion": "1",
       "pages": [

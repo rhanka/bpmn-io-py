@@ -2,12 +2,33 @@
   "case": "render.layout.io-pinned-neutral-tokens",
   "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
   "witness": "the pinned neutral region tokens (headerWidth 0, padding 8, gap 8, minHeight 40)",
-  "derivation": "Unpatched neutral theme: contentLeft 8; In_A 132000, In_B 332000, Out_C collides: 368000 + 8 = 368008; RH = max(40, 50000+16) = 50016 <= 100000; objects at y 25000.",
-  "operation": "compute_layout",
+  "derivation": "Neutral theme tokens unchanged (only the packages are re-pinned): contentLeft 8; In_A 132000, In_B 332000, Out_C collides: 368000 + 8 = 368008; RH = max(40, 50000+16) = 50016, cy = max(25000, 50016/2) = 25008: objects at y 8. Row rule (spec \u00a74.3): items in \u00a77.2 placement order; footprint max(object, label) width; left = anchor centre - footprint/2 when the anchor is shown, else contentLeft or previous right + gap; clamp to contentLeft; collision shifts right; one row at the top of the support body [Ly, Ly+RH], RH = max(minHeight, max(object+label) + 2 padding) (harmonization K2); every object centre lies on one line cy = Ly + max(A, (RH + A - B)/2), A = max h/2, B = max(h/2 + label height), so the union of the stacks is centred in the row (DESIGN \u00a79.4 'align centers on one IO row'); exact rationals, one roundEven per output coordinate. The profile is re-pinned to the lot-4 extension packages neutral-render-descriptors/1 and neutral-render-base/1 (tests/profile_render/expected/artifacts/), which admit every native type of the tree.",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
-      "patch": []
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        }
+      ]
     },
     "themeId": "plain",
     "tree": {
@@ -233,6 +254,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "bad1547079962ed14b6ff6dafdb7b8bdf019bb8b71b19b82a8598402f41b7c95",
+      "base": {
+        "id": "neutral-render-base/1",
+        "version": "fixture-1",
+        "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-render-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+        }
+      ]
+    },
+    "baseRevision": "43a28a9c73177d385e5e8efc4713b05a6bbf4e1624da539fa98091c697afa713",
+    "revision": "43a28a9c73177d385e5e8efc4713b05a6bbf4e1624da539fa98091c697afa713",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "bad1547079962ed14b6ff6dafdb7b8bdf019bb8b71b19b82a8598402f41b7c95",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "bad1547079962ed14b6ff6dafdb7b8bdf019bb8b71b19b82a8598402f41b7c95",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "inputRevision": "43a28a9c73177d385e5e8efc4713b05a6bbf4e1624da539fa98091c697afa713",
+      "outputRevision": "43a28a9c73177d385e5e8efc4713b05a6bbf4e1624da539fa98091c697afa713",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "layoutVersion": "1",
       "pages": [
@@ -257,7 +348,7 @@
           "role": "content",
           "bounds": {
             "x": 132000,
-            "y": 25000,
+            "y": 8,
             "width": 36000,
             "height": 50000
           }
@@ -269,7 +360,7 @@
           "role": "content",
           "bounds": {
             "x": 332000,
-            "y": 25000,
+            "y": 8,
             "width": 36000,
             "height": 50000
           }
@@ -305,7 +396,7 @@
           "role": "content",
           "bounds": {
             "x": 368008,
-            "y": 25000,
+            "y": 8,
             "width": 36000,
             "height": 50000
           }

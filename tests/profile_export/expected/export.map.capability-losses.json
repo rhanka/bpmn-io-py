@@ -2,8 +2,8 @@
   "case": "export.map.capability-losses",
   "clause": "DESIGN R3.3 \u00a710.2 Export recipe, capability and loss contract",
   "witness": "capability predicates evaluate once per occurrence; declared losses map like the loss action",
-  "derivation": "Records: (emittedType == edge -> structural, [relation-kind]) and (true -> structural, [semantic-type]). e-flow matches both, the tasks the second; each declared class yields one export-loss entry with ruleId = export id drawing, source = the semantic element, result unavailable; capability = worst(structural, structural) = structural; IR as export.map.counter-reuse.",
-  "operation": "map_export",
+  "derivation": "Records: (emittedType == edge -> structural, [relation-kind]) and (true -> structural, [semantic-type]). e-flow matches both, the tasks the second; each declared class yields one export-loss entry with ruleId = export id drawing, source = the semantic element, result unavailable (harmonization B23); capability = worst(structural, structural) = structural; IR as export.map.counter-reuse. R coverage lists every ID-bearing element in native pre-order (harmonization G3); read-only Result/1 with the B4 report header (source = target = envelope identity, input = output revision); PreparedArtifact.report is the same Report/2 record.",
+  "operation": "mapExport",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -588,7 +588,7 @@
         "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "8f95e5696aff67444467c7d6840170b68a493f4c99eb33dc9f7023a750a84386"
+        "payloadDigest": "3b26f045180aa7e980cf3c77d97d5e18b1573d39490b9bd3722a3e93ffb3979c"
       },
       "pages": [
         {
@@ -739,16 +739,6 @@
           "disposition": "nonvisual"
         },
         {
-          "semanticId": "Flow_1",
-          "occurrences": [
-            {
-              "pageId": "P1",
-              "occurrenceKey": "e-flow"
-            }
-          ],
-          "disposition": "rendered"
-        },
-        {
           "semanticId": "Process_x",
           "occurrences": [],
           "disposition": "nonvisual"
@@ -772,6 +762,16 @@
             }
           ],
           "disposition": "rendered"
+        },
+        {
+          "semanticId": "Flow_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "e-flow"
+            }
+          ],
+          "disposition": "rendered"
         }
       ],
       "diagnostics": []
@@ -780,6 +780,225 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "mapExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "9a7a5e8073712d3b262de2d7ba84e342e3821f4af53a3659c5c466cb5f015443",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "bb05633594155c101427a1ff0cd6a61bfc4b235999fb09f982a4a8ec037c75bd",
+    "revision": "bb05633594155c101427a1ff0cd6a61bfc4b235999fb09f982a4a8ec037c75bd",
+    "report": {
+      "reportVersion": "2",
+      "operation": "mapExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "9a7a5e8073712d3b262de2d7ba84e342e3821f4af53a3659c5c466cb5f015443",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "9a7a5e8073712d3b262de2d7ba84e342e3821f4af53a3659c5c466cb5f015443",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "bb05633594155c101427a1ff0cd6a61bfc4b235999fb09f982a4a8ec037c75bd",
+      "outputRevision": "bb05633594155c101427a1ff0cd6a61bfc4b235999fb09f982a4a8ec037c75bd",
+      "entries": [
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0",
+            "targetId": "Task_A",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "s-task-a",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1",
+            "targetId": "Task_B",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "s-task-b",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/relation-kind",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.relation-kind",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2",
+            "targetId": "Flow_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "e-flow",
+          "emittedType": "edge",
+          "lossClass": "relation-kind"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2",
+            "targetId": "Flow_1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "e-flow",
+          "emittedType": "edge",
+          "lossClass": "semantic-type"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [
+        {
+          "sourceId": "P1",
+          "resultId": "e_0",
+          "domain": "export",
+          "pageId": "P1"
+        },
+        {
+          "sourceId": "Flow_1",
+          "resultId": "e_3",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "e-flow"
+        },
+        {
+          "sourceId": "Task_A",
+          "resultId": "e_1",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "s-task-a"
+        },
+        {
+          "sourceId": "Task_B",
+          "resultId": "e_2",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "s-task-b"
+        }
+      ],
+      "artifacts": [
+        {
+          "format": "drawio",
+          "capability": "structural",
+          "digest": "4bdc48cfd0d438dd7ae96f52c83c94a787601286b77f0fe7ad9afca18ee7f2db",
+          "entryIndexes": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
     "payload": {
       "format": "drawio",
       "profileIdentity": {
@@ -938,11 +1157,51 @@
         "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "8f95e5696aff67444467c7d6840170b68a493f4c99eb33dc9f7023a750a84386"
+        "payloadDigest": "3b26f045180aa7e980cf3c77d97d5e18b1573d39490b9bd3722a3e93ffb3979c"
       },
       "report": {
         "reportVersion": "2",
         "operation": "mapExport",
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "9a7a5e8073712d3b262de2d7ba84e342e3821f4af53a3659c5c466cb5f015443",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "9a7a5e8073712d3b262de2d7ba84e342e3821f4af53a3659c5c466cb5f015443",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "inputRevision": "bb05633594155c101427a1ff0cd6a61bfc4b235999fb09f982a4a8ec037c75bd",
+        "outputRevision": "bb05633594155c101427a1ff0cd6a61bfc4b235999fb09f982a4a8ec037c75bd",
         "entries": [
           {
             "code": "export-loss/semantic-type",
@@ -1127,166 +1386,7 @@
           "occurrenceKey": "s-task-b"
         }
       ]
-    },
-    "report": {
-      "reportVersion": "2",
-      "operation": "mapExport",
-      "entries": [
-        {
-          "code": "export-loss/semantic-type",
-          "severity": "warn",
-          "classification": "loss",
-          "stage": "export",
-          "ruleId": "drawing",
-          "messageKey": "export.loss.semantic-type",
-          "disposition": "mapped",
-          "source": {
-            "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/0",
-            "targetId": "Task_A",
-            "provenance": "exact"
-          },
-          "result": {
-            "domain": "none",
-            "pointer": null,
-            "targetId": null,
-            "provenance": "unavailable"
-          },
-          "beforePresent": false,
-          "afterPresent": false,
-          "pageId": "P1",
-          "occurrenceKey": "s-task-a",
-          "emittedType": "node",
-          "lossClass": "semantic-type"
-        },
-        {
-          "code": "export-loss/semantic-type",
-          "severity": "warn",
-          "classification": "loss",
-          "stage": "export",
-          "ruleId": "drawing",
-          "messageKey": "export.loss.semantic-type",
-          "disposition": "mapped",
-          "source": {
-            "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/1",
-            "targetId": "Task_B",
-            "provenance": "exact"
-          },
-          "result": {
-            "domain": "none",
-            "pointer": null,
-            "targetId": null,
-            "provenance": "unavailable"
-          },
-          "beforePresent": false,
-          "afterPresent": false,
-          "pageId": "P1",
-          "occurrenceKey": "s-task-b",
-          "emittedType": "node",
-          "lossClass": "semantic-type"
-        },
-        {
-          "code": "export-loss/relation-kind",
-          "severity": "warn",
-          "classification": "loss",
-          "stage": "export",
-          "ruleId": "drawing",
-          "messageKey": "export.loss.relation-kind",
-          "disposition": "mapped",
-          "source": {
-            "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/2",
-            "targetId": "Flow_1",
-            "provenance": "exact"
-          },
-          "result": {
-            "domain": "none",
-            "pointer": null,
-            "targetId": null,
-            "provenance": "unavailable"
-          },
-          "beforePresent": false,
-          "afterPresent": false,
-          "pageId": "P1",
-          "occurrenceKey": "e-flow",
-          "emittedType": "edge",
-          "lossClass": "relation-kind"
-        },
-        {
-          "code": "export-loss/semantic-type",
-          "severity": "warn",
-          "classification": "loss",
-          "stage": "export",
-          "ruleId": "drawing",
-          "messageKey": "export.loss.semantic-type",
-          "disposition": "mapped",
-          "source": {
-            "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/2",
-            "targetId": "Flow_1",
-            "provenance": "exact"
-          },
-          "result": {
-            "domain": "none",
-            "pointer": null,
-            "targetId": null,
-            "provenance": "unavailable"
-          },
-          "beforePresent": false,
-          "afterPresent": false,
-          "pageId": "P1",
-          "occurrenceKey": "e-flow",
-          "emittedType": "edge",
-          "lossClass": "semantic-type"
-        }
-      ],
-      "rawStandardFindings": [],
-      "idMap": [
-        {
-          "sourceId": "P1",
-          "resultId": "e_0",
-          "domain": "export",
-          "pageId": "P1"
-        },
-        {
-          "sourceId": "Flow_1",
-          "resultId": "e_3",
-          "domain": "export",
-          "pageId": "P1",
-          "occurrenceKey": "e-flow"
-        },
-        {
-          "sourceId": "Task_A",
-          "resultId": "e_1",
-          "domain": "export",
-          "pageId": "P1",
-          "occurrenceKey": "s-task-a"
-        },
-        {
-          "sourceId": "Task_B",
-          "resultId": "e_2",
-          "domain": "export",
-          "pageId": "P1",
-          "occurrenceKey": "s-task-b"
-        }
-      ],
-      "artifacts": [
-        {
-          "format": "drawio",
-          "capability": "structural",
-          "digest": "4bdc48cfd0d438dd7ae96f52c83c94a787601286b77f0fe7ad9afca18ee7f2db",
-          "entryIndexes": [
-            0,
-            1,
-            2,
-            3
-          ]
-        }
-      ]
-    },
-    "baseRevision": "bb05633594155c101427a1ff0cd6a61bfc4b235999fb09f982a4a8ec037c75bd",
-    "revision": "bb05633594155c101427a1ff0cd6a61bfc4b235999fb09f982a4a8ec037c75bd"
+    }
   },
   "author": "spec-seal"
 }

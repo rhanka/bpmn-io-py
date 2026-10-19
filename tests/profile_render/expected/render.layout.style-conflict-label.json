@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "matched bindings with different label expressions refuse at layout",
   "derivation": "flagged binds label literal 'X' while task binds read /name for Task_B; label text is evaluated at layout, no winner: render-style-conflict.",
-  "operation": "compute_layout",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -184,7 +184,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-style-conflict"
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "efef71f6829c2d9abc0e524ba11b4e912d91a1150f3d08eaeaf2551cfc72d3e5",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "718cd3e13f539dc53afdd599510666a7a91d951aa6b09caf82872ce8c3d87e41",
+    "code": "render-style-conflict",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "efef71f6829c2d9abc0e524ba11b4e912d91a1150f3d08eaeaf2551cfc72d3e5",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "718cd3e13f539dc53afdd599510666a7a91d951aa6b09caf82872ce8c3d87e41",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "template parameter or viewBox violation refuses",
   "derivation": "string instead of ticks: template parameter duplicates, wrong types, missing fields or extras (and non-positive viewBox) refuse profile-glyph-shape (\u00a79.3).",
-  "operation": "template_geometry",
+  "operation": "templateGeometry",
   "input": {
     "glyph": {
       "id": "band",
@@ -32,7 +32,8 @@
   },
   "expected": {
     "status": "refused",
-    "code": "profile-glyph-shape"
+    "code": "profile-glyph-shape",
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

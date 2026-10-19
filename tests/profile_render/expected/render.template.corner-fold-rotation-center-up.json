@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "rotation centre ties round to the even neighbour upwards",
   "derivation": "headerRotation 270; label bounds (100001,200001,50001,20001): centre x = 125001.5 -> 125002, y = 210001.5 -> 210002.",
-  "operation": "template_geometry",
+  "operation": "templateGeometry",
   "input": {
     "glyph": {
       "id": "fold",
@@ -65,7 +65,8 @@
           "y": 210002
         }
       }
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

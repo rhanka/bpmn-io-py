@@ -1,0 +1,120 @@
+{
+  "case": "render.regions.grid-side",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
+  "witness": "the second neutral profile's side row: label sizes, collision and width growth",
+  "derivation": "render.layout.grid-side-stripe re-expressed: body Lane_side (0,0,500000,100000), tokens 0/8/8/40, labels 3000x1000; anchors Task_B (300000,200000,100000,80000) and Task_A (100000,200000,100000,80000): lefts 300000, 400008; width' 500016; RH 81016, cy 40008: objects at y 8, labels at y 80008; pageBounds (0,0,500016,390000). Row rule (spec \u00a74.3): items in \u00a77.2 placement order; footprint max(object, label) width; left = anchor centre - footprint/2 when the anchor is shown, else contentLeft or previous right + gap; clamp to contentLeft; collision shifts right; one row at the top of the support body [Ly, Ly+RH], RH = max(minHeight, max(object+label) + 2 padding) (harmonization K2); every object centre lies on one line cy = Ly + max(A, (RH + A - B)/2), A = max h/2, B = max(h/2 + label height), so the union of the stacks is centred in the row (DESIGN \u00a79.4 'align centers on one IO row'); exact rationals, one roundEven per output coordinate.",
+  "operation": "layoutRegions",
+  "input": {
+    "region": {
+      "page": {
+        "x": 0,
+        "y": 0,
+        "width": 500000,
+        "height": 390000
+      },
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 500000,
+        "height": 100000
+      },
+      "tokens": {
+        "headerWidth": 0,
+        "padding": 8,
+        "gap": 8,
+        "minHeight": 40
+      },
+      "items": [
+        {
+          "elementId": "Task_A",
+          "occurrenceKey": "Task_A_di",
+          "object": {
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "width": 3000,
+            "height": 1000
+          },
+          "anchor": {
+            "x": 300000,
+            "y": 200000,
+            "width": 100000,
+            "height": 80000
+          }
+        },
+        {
+          "elementId": "Task_B",
+          "occurrenceKey": "Task_B_di",
+          "object": {
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "width": 3000,
+            "height": 1000
+          },
+          "anchor": {
+            "x": 100000,
+            "y": 200000,
+            "width": 100000,
+            "height": 80000
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "pageBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 500016,
+        "height": 390000
+      },
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 500016,
+        "height": 100000
+      },
+      "items": [
+        {
+          "elementId": "Task_A",
+          "occurrenceKey": "Task_A_di",
+          "bounds": {
+            "x": 300000,
+            "y": 8,
+            "width": 100000,
+            "height": 80000
+          },
+          "labelBounds": {
+            "x": 348500,
+            "y": 80008,
+            "width": 3000,
+            "height": 1000
+          }
+        },
+        {
+          "elementId": "Task_B",
+          "occurrenceKey": "Task_B_di",
+          "bounds": {
+            "x": 400008,
+            "y": 8,
+            "width": 100000,
+            "height": 80000
+          },
+          "labelBounds": {
+            "x": 448508,
+            "y": 80008,
+            "width": 3000,
+            "height": 1000
+          }
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

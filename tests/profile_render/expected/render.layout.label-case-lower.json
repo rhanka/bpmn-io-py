@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "Unicode 15.0.0 full lower mapping with the untagged Final_Sigma context",
   "derivation": "case(lower): OMICRON SIGMA -> 'o final-sigma' (word-final), OMICRON SIGMA ALPHA keeps the medial sigma, 'ALPHA SIGMA space BETA' gives a final sigma before the space; U+0130 -> 'i' + U+0307 (full mapping), U+1E9E -> U+00DF; no locale tailoring.",
-  "operation": "compute_layout",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -147,6 +147,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "4078ae6aff715e699aa92f89c86aad0e27e9132beb77fa4fa46a675f1ef221a4",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "47ce8d41bb55b288ab6fa1e3e46d010e135a34e99aef7638d8618f01ea041d94",
+    "revision": "47ce8d41bb55b288ab6fa1e3e46d010e135a34e99aef7638d8618f01ea041d94",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "4078ae6aff715e699aa92f89c86aad0e27e9132beb77fa4fa46a675f1ef221a4",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "4078ae6aff715e699aa92f89c86aad0e27e9132beb77fa4fa46a675f1ef221a4",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "47ce8d41bb55b288ab6fa1e3e46d010e135a34e99aef7638d8618f01ea041d94",
+      "outputRevision": "47ce8d41bb55b288ab6fa1e3e46d010e135a34e99aef7638d8618f01ea041d94",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "layoutVersion": "1",
       "pages": [

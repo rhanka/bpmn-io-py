@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "corner-fold size roundEven(min(w,h)*foldRatio) and its three-point path",
   "derivation": "foldRatio 0.1 is the rational 1/10 (shortest decimal form): 5 x 1/10 = 0.5, tie to even 0 (the exact binary64 value of 0.1 would round to 1); path (x+w-fold,y),(x+w-fold,y+fold),(x+w,y+fold) gives the listed points.",
-  "operation": "template_geometry",
+  "operation": "templateGeometry",
   "input": {
     "glyph": {
       "id": "fold",
@@ -52,7 +52,8 @@
           "y": 0
         }
       ]
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

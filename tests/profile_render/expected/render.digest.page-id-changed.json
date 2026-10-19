@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
   "witness": "distinct page ID with an identical name changes layoutDigest, payloadDigest and viewRevision only",
   "derivation": "R3 input with pageId Z-page replaced by A-page in layout and payload pages; H recomputed over the changed Layout/1 and payload records (\u00a79.2 layoutDigest, payloadDigest, viewRevision); all other members keep the R3 values.",
-  "operation": "render_digests",
+  "operation": "renderDigests",
   "input": {
     "record": {
       "semanticTree": {
@@ -131,7 +131,8 @@
       "metricsDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "viewRevision": "51f27d768c5dbfa62983c410237954712341c1c03bd5f648ddd1c2b36c9d2c41",
       "payloadDigest": "443e06170c3670d52b5712bb15f3b8c49addec045d9063948c0767c0cbc2be39"
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

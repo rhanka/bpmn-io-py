@@ -2,12 +2,32 @@
   "case": "render.layout.io-region-token-missing",
   "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
   "witness": "region numeric inputs are injected tokens; no hidden default",
-  "derivation": "Theme tokens lack region.content.minHeight: render-region-missing (no private default, \u00a79.4).",
-  "operation": "compute_layout",
+  "derivation": "Theme tokens lack region.content.minHeight: render-region-missing (no private default, \u00a79.4). The profile is re-pinned to the lot-4 extension packages neutral-render-descriptors/1 and neutral-render-base/1 (tests/profile_render/expected/artifacts/), which admit every native type of the tree.",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
       "patch": [
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
         {
           "op": "replace",
           "path": "/themes/0/tokens",
@@ -260,7 +280,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-region-missing"
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "feeae05475ebc0353278c5601c0a35d7e2bc83048cc411be15170c35ae43293e",
+      "base": {
+        "id": "neutral-render-base/1",
+        "version": "fixture-1",
+        "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-render-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+        }
+      ]
+    },
+    "baseRevision": "7976b9b79dc3575ba8fa46d9f4de261baff7a4de94442b40f794e16a5793d71d",
+    "code": "render-region-missing",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "feeae05475ebc0353278c5601c0a35d7e2bc83048cc411be15170c35ae43293e",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "inputRevision": "7976b9b79dc3575ba8fa46d9f4de261baff7a4de94442b40f794e16a5793d71d",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

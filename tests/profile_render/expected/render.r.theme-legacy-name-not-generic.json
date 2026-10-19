@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.5 Legacy themes",
   "witness": "generic theme resolution never reads compatibility aliases",
   "derivation": "The profile declares compatibilityAliases standard -> plain, but generic code uses opaque theme ids (\u00a79.5); resolve_theme('standard') is unresolved: render-stale.",
-  "operation": "resolve_theme",
+  "operation": "resolveTheme",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -192,7 +192,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-stale"
+    "operation": "resolveTheme",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "d465a2b172c4ec02fa20b4663b58629adba6bac7d0fe0b67fedefe2a315d3145",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "8a50e931ee3841384273066b3e710f7aee8aca73ab394facd99e72abce86252c",
+    "code": "render-stale",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "resolveTheme",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "d465a2b172c4ec02fa20b4663b58629adba6bac7d0fe0b67fedefe2a315d3145",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "8a50e931ee3841384273066b3e710f7aee8aca73ab394facd99e72abce86252c",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

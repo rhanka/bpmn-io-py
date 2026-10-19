@@ -2,12 +2,32 @@
   "case": "render.layout.io-empty-process",
   "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
   "witness": "an empty process without IO needs no IO row; several processes resolve their own rectangle",
-  "derivation": "Process_2 has a bound content lane but no placement: its lane keeps the DI bounds (0,0,300000,90000) and no row is added; Process_1 on P1 as render.layout.io-anchored.",
-  "operation": "compute_layout",
+  "derivation": "Process_2 has a bound content lane but no placement: its lane keeps the DI bounds (0,0,300000,90000) and no row is added (no minHeight or padding growth); Process_1 on P1 as render.layout.io-anchored. The profile is re-pinned to the lot-4 extension packages neutral-render-descriptors/1 and neutral-render-base/1 (tests/profile_render/expected/artifacts/), which admit every native type of the tree.",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
       "patch": [
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
         {
           "op": "replace",
           "path": "/themes/0/tokens",
@@ -311,6 +331,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "7f0fbf9760c44faf68451f1142ba0e7de9b582f3d7a7d6e5f702aaefda8fa5da",
+      "base": {
+        "id": "neutral-render-base/1",
+        "version": "fixture-1",
+        "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-render-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+        }
+      ]
+    },
+    "baseRevision": "02c35bbc62f1f004a8191b8280d8e4d96f015e8f7a6f539341e97f55acf3cc23",
+    "revision": "02c35bbc62f1f004a8191b8280d8e4d96f015e8f7a6f539341e97f55acf3cc23",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7f0fbf9760c44faf68451f1142ba0e7de9b582f3d7a7d6e5f702aaefda8fa5da",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7f0fbf9760c44faf68451f1142ba0e7de9b582f3d7a7d6e5f702aaefda8fa5da",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "inputRevision": "02c35bbc62f1f004a8191b8280d8e4d96f015e8f7a6f539341e97f55acf3cc23",
+      "outputRevision": "02c35bbc62f1f004a8191b8280d8e4d96f015e8f7a6f539341e97f55acf3cc23",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "layoutVersion": "1",
       "pages": [
@@ -347,7 +437,7 @@
           "role": "content",
           "bounds": {
             "x": 132000,
-            "y": 25000,
+            "y": 15000,
             "width": 36000,
             "height": 50000
           }
@@ -359,7 +449,7 @@
           "role": "content",
           "bounds": {
             "x": 332000,
-            "y": 25000,
+            "y": 15000,
             "width": 36000,
             "height": 50000
           }
@@ -395,7 +485,7 @@
           "role": "content",
           "bounds": {
             "x": 388000,
-            "y": 25000,
+            "y": 15000,
             "width": 36000,
             "height": 50000
           }

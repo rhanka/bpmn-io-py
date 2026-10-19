@@ -2,8 +2,8 @@
   "case": "render.layout.attached-badge",
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "attached-badge synthetic: placement anchor's opposite node, offsets, declared size; attachment region needs no support",
-  "derivation": "Region aids has no support binding but the theme declares an attached-badge with region aids, so it is an attachment region (Note_1 keeps its DI geometry, role aids). Note_1 is represented on Z-page only; its placement anchor Assoc_N has opposite endpoint Task_A, unique on Z-page (zz-task-a, 100000,100000,100000,80000): badge (100000+5000, 100000+80000-10000) = (105000,170000) with the viewBox size 40x20 x1000. Key JCS([aid-badge, Note_1, Z-page]) sorts first on Z-page ('[' < 'a').",
-  "operation": "compute_layout",
+  "derivation": "Region aids has no support binding but the theme declares an attached-badge with region aids, so it is an attachment region (DESIGN \u00a79.4 'attached aids use explicit placement anchors'): Note_1 keeps its DI geometry, role aids. Note_1 is represented on Z-page only; its placement anchor Assoc_N has opposite endpoint Task_A, unique on Z-page (zz-task-a, 100000,100000,100000,80000): badge (100000+5000, 100000+80000-10000) = (105000,170000) with the viewBox size 40x20 x1000 (harmonization K6 for layout badges). Key JCS([aid-badge, Note_1, Z-page]) sorts first on Z-page ('[' < 'a').",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -202,6 +202,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "d50f816aa85387eb1ae233c918f574e8e58505f6d366b1f42a56b98e6a9b890e",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+    "revision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "d50f816aa85387eb1ae233c918f574e8e58505f6d366b1f42a56b98e6a9b890e",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "d50f816aa85387eb1ae233c918f574e8e58505f6d366b1f42a56b98e6a9b890e",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+      "outputRevision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "layoutVersion": "1",
       "pages": [

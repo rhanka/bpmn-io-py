@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
   "witness": "duplicate DiStyles/1 targets refuse",
   "derivation": "\u00a79.2: targets unique; two native records for Z-page/k1 refuse render-token-invalid (spec \u00a76.1).",
-  "operation": "render_digests",
+  "operation": "renderDigests",
   "input": {
     "record": {
       "semanticTree": {
@@ -142,7 +142,8 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-token-invalid"
+    "code": "render-token-invalid",
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

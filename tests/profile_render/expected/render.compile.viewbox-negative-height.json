@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "path glyph viewBox needs a positive height",
   "derivation": "Added path glyph with viewBox [0,0,24,-24] and valid commands: CR-09 refuses profile-glyph-shape.",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-profile.json",

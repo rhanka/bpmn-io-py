@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "Unicode 15.0.0 full upper mapping after stripPrefix, prefix removed exactly once",
   "derivation": "aid label = case(upper, stripPrefix(text, '[Aid] ')): U+00DF -> SS, U+0130 stays U+0130, U+0264 has no uppercase in 15.0.0 (stays), U+FB06 -> ST, U+03C2 -> U+03A3; '[Aid] [Aid] x' loses one prefix only; '[Aid]x' is recognized ([Aid] prefix) but does not match '[Aid] ', so the whole text is cased; a line feed splits label lines. Contract vectors: contracts/unicode-case/15.0.0/vectors.json.",
-  "operation": "compute_layout",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -198,6 +198,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "aa4a10f51be7c3a6c61273566574f58a72f4c095f7a6c426673ff0c82aedd0b4",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "060162b5bd70d783c34f756f093fcc90623a4a7621b6b606e5e3613acc4b3ec6",
+    "revision": "060162b5bd70d783c34f756f093fcc90623a4a7621b6b606e5e3613acc4b3ec6",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "aa4a10f51be7c3a6c61273566574f58a72f4c095f7a6c426673ff0c82aedd0b4",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "aa4a10f51be7c3a6c61273566574f58a72f4c095f7a6c426673ff0c82aedd0b4",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "060162b5bd70d783c34f756f093fcc90623a4a7621b6b606e5e3613acc4b3ec6",
+      "outputRevision": "060162b5bd70d783c34f756f093fcc90623a4a7621b6b606e5e3613acc4b3ec6",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "layoutVersion": "1",
       "pages": [

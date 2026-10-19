@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
   "witness": "two pages with distinct IDs and names in page order (Z-page order 0 before A-page order 1)",
   "derivation": "R3 input plus a second page A-page/Second sheet at order 1 in layout and payload; arrays keep page order (never sorted by pageId before hashing).",
-  "operation": "render_digests",
+  "operation": "renderDigests",
   "input": {
     "record": {
       "semanticTree": {
@@ -155,7 +155,8 @@
       "metricsDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "viewRevision": "9f40629829c20506e39a78972a75238865c15d89ad40439218363517d74547cf",
       "payloadDigest": "5f4f237d5034aa64964d8270ef009ca18d70451ec32607e646d9c7822e5e9a17"
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

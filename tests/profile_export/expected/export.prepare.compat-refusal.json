@@ -1,9 +1,9 @@
 {
   "case": "export.prepare.compat-refusal",
   "clause": "DESIGN R3.3 \u00a710.2 prepareExport; \u00a76.2 stage table",
-  "witness": "compatibility runs before C: refusal with an empty report, no artifact, no mutation",
-  "derivation": "Envelope identity is the unpatched neutral identity while the compiled profile is the patched one (same id/version, different digest): profile-digest-mismatch before any stage; the report has no entry.",
-  "operation": "prepare_export",
+  "witness": "compatibility runs right after option validation: refusal with an empty report, no artifact, no mutation",
+  "derivation": "Envelope identity is the unpatched neutral identity while the compiled profile is the patched one (same id/version, different digest): profile-digest-mismatch after the options stage and before any other stage; the report has no entry; the refusal echoes the envelope identity and revision. Options are validated before the pipeline (closed option record, format declared with a registered adapter, theme resolvable; harmonization C18); then each stage runs exactly once on a staged deep copy in the DESIGN \u00a710.2 order compatibility -> graph checks -> C -> pre-normalize -> N -> post-normalize -> layout -> post-layout -> release -> R -> map under the accept policy, edit activation; the sealed trace lists the stages the observer saw, in order. A refusal returns the complete report of the executed lint stages (no change entry, no candidate) and no artifact (harmonization B2); no input is mutated.",
+  "operation": "prepareExport",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -210,8 +210,61 @@
   },
   "expected": {
     "status": "refused",
+    "operation": "prepareExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "6034ffe30998c9b15dafba6926b2c7e350ba7dbd6b3c8249ada0075d390b60ea",
     "code": "profile-digest-mismatch",
-    "stagesOnly": [],
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "prepareExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "6034ffe30998c9b15dafba6926b2c7e350ba7dbd6b3c8249ada0075d390b60ea",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "trace": [
+      "options",
+      "compatibility"
+    ],
     "inputsUnchanged": true
   },
   "author": "spec-seal"

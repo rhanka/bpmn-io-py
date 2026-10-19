@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a72.4.1 schema authority; \u00a79.3 glyph shape conditionals",
   "witness": "path command L with three values is a schema violation",
   "derivation": "pathCommand M/L requires exactly two values in the pinned schema; three values refuse profile-schema at load.",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-profile.json",

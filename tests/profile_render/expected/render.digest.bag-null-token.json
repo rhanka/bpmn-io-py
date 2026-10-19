@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
   "witness": "null token values refuse",
   "derivation": "\u00a79.2 rejects nulls in Overrides/1; a null token value refuses render-token-invalid (spec \u00a76.1).",
-  "operation": "render_digests",
+  "operation": "renderDigests",
   "input": {
     "record": {
       "semanticTree": {
@@ -131,7 +131,8 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-token-invalid"
+    "code": "render-token-invalid",
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

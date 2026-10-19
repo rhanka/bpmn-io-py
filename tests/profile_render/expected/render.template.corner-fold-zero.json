@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "corner-fold size roundEven(min(w,h)*foldRatio) and its three-point path",
   "derivation": "ratio 0 gives fold 0 (all three points on the top-right corner); path (x+w-fold,y),(x+w-fold,y+fold),(x+w,y+fold) gives the listed points.",
-  "operation": "template_geometry",
+  "operation": "templateGeometry",
   "input": {
     "glyph": {
       "id": "fold",
@@ -52,7 +52,8 @@
           "y": 20
         }
       ]
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

@@ -1,11 +1,13 @@
-"""Seal integrity of the lot-4 render expectations (layout, R, themes).
+"""Seal integrity of the lot-4 render expectations (layout, R, themes, seams).
 
 The expectation files under ``expected/`` were authored from DESIGN R3.3
 §9 and the vendored contracts (see ``spec/SPEC_PROFILE_RENDER_EXPORT_PY.md``)
 and are never regenerated from library output. These tests only check the
 seal: the manifest pins every byte, the derivation helper imports nothing
 from ``bpmn_io``, every case is closed and authored, cross-case reuse is
-verbatim and every sealed digest is internally consistent.
+verbatim, every sealed digest is internally consistent, coverage follows the
+native pre-order and every case tree is admitted by the descriptor packages
+its profile pins.
 """
 
 from __future__ import annotations
@@ -14,10 +16,12 @@ from pathlib import Path
 
 from tests.profile_render._seal import (
     HELPER,
+    case_profiles,
     check_case_shapes,
     check_helper_imports,
     check_input_from,
     check_manifest,
+    check_parity_corpus,
     load_cases,
     load_helper,
 )
@@ -34,19 +38,23 @@ def test_manifest_pins_every_sealed_file() -> None:
 def test_manifest_detects_a_one_byte_change(tmp_path: Path) -> None:
     copy_dir = tmp_path / "expected"
     copy_dir.mkdir()
-    for path in EXPECTED.iterdir():
-        if path.is_file():
-            (copy_dir / path.name).write_bytes(path.read_bytes())
-    victim = min(copy_dir.glob("*.json"))
-    data = bytearray(victim.read_bytes())
-    data[-2] = ord(" ") if data[-2] != ord(" ") else ord("\t")
-    victim.write_bytes(bytes(data))
-    try:
-        check_manifest(copy_dir)
-    except AssertionError:
-        return
-    msg = "a one-byte change was not detected"
-    raise AssertionError(msg)
+    for path in EXPECTED.rglob("*"):
+        if path.is_file() and "__pycache__" not in path.parts:
+            target = copy_dir / path.relative_to(EXPECTED)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(path.read_bytes())
+    for victim in (min(copy_dir.glob("*.json")), copy_dir / "artifacts" / "render-base.json"):
+        original = victim.read_bytes()
+        data = bytearray(original)
+        data[-2] = ord(" ") if data[-2] != ord(" ") else ord("\t")
+        victim.write_bytes(bytes(data))
+        try:
+            check_manifest(copy_dir)
+        except AssertionError:
+            victim.write_bytes(original)
+            continue
+        msg = f"a one-byte change in {victim.name} was not detected"
+        raise AssertionError(msg)
 
 
 def test_helper_imports_nothing_from_bpmn_io() -> None:
@@ -62,16 +70,44 @@ def test_input_from_reuse_is_verbatim() -> None:
     assert check_input_from(EXPECTED, EXPORT_EXPECTED) > 0
 
 
+def test_extension_package_pins_match_their_bytes() -> None:
+    seen = set()
+    for directory in (EXPECTED, EXPORT_EXPECTED):
+        for path, case in load_cases(directory):
+            for profile_ref, _ in case_profiles(case):
+                profile = DH.profile_from_ref(profile_ref)
+                for pin in [profile["base"], *profile["descriptors"]]:
+                    assert pin == DH.package_pin(pin["id"]), path.name
+                    seen.add(pin["id"])
+    assert {"neutral-render-base/1", "neutral-render-descriptors/1"} <= seen
+
+
+def test_case_trees_are_admitted_by_the_pinned_descriptors() -> None:
+    checked = 0
+    for directory in (EXPECTED, EXPORT_EXPECTED):
+        for path, case in load_cases(directory):
+            for profile_ref, trees in case_profiles(case):
+                admitted = DH.admitted_types(DH.profile_from_ref(profile_ref))
+                for tree in trees:
+                    missing = DH.tree_types(tree) - admitted
+                    assert not missing, f"{path.name}: {sorted(missing)}"
+                    checked += 1
+    assert checked > 100
+
+
 def test_render_bindings_are_consistent() -> None:
     checked = 0
     for path, case in load_cases(EXPECTED):
         expected = case["expected"]
-        if case["operation"] != "resolve_theme" or expected["status"] != "ok":
+        if case["operation"] != "resolveTheme" or expected["status"] != "ok":
             continue
         render = expected["payload"]
         inputs = {**case["input"], "resolvedThemeId": render["binding"]["themeId"]}
         assert DH.render_binding(inputs, render) == render["binding"], path.name
         assert render["pages"] == case["input"]["layout"]["pages"], path.name
+        assert expected["report"]["entries"] == render["diagnostics"], path.name
+        coverage = [entry["semanticId"] for entry in render["coverage"]]
+        assert coverage == DH.native_preorder_ids(case["input"]["tree"]), path.name
         checked += 1
     assert checked > 10
 
@@ -79,7 +115,7 @@ def test_render_bindings_are_consistent() -> None:
 def test_freshness_cases_are_fresh_or_stale_as_sealed() -> None:
     checked = 0
     for path, case in load_cases(EXPECTED):
-        if case["operation"] != "verify_render_data":
+        if case["operation"] != "verifyRenderData":
             continue
         inputs = case["input"]
         render = inputs["r"]
@@ -98,7 +134,7 @@ def test_freshness_cases_are_fresh_or_stale_as_sealed() -> None:
 def test_digest_records_are_consistent() -> None:
     checked = 0
     for path, case in load_cases(EXPECTED):
-        if case["operation"] != "render_digests" or case["expected"]["status"] != "ok":
+        if case["operation"] != "renderDigests" or case["expected"]["status"] != "ok":
             continue
         record = case["input"]["record"]
         metrics = [
@@ -121,3 +157,25 @@ def test_digest_records_are_consistent() -> None:
         assert got == case["expected"]["payload"], path.name
         checked += 1
     assert checked > 5
+
+
+def test_parity_corpus_repeats_the_sealed_values() -> None:
+    assert check_parity_corpus(DH, EXPECTED / "parity", EXPECTED, EXPORT_EXPECTED) > 200
+
+
+def test_result_envelope_members_follow_the_input_envelope() -> None:
+    checked = 0
+    for directory in (EXPECTED, EXPORT_EXPECTED):
+        for path, case in load_cases(directory):
+            if case["operation"] not in ("computeLayout", "layout", "resolveTheme"):
+                continue
+            inputs = case["input"]
+            identity = DH.profile_identity(DH.profile_from_ref(inputs["profile"]))
+            revision = DH.semantic_revision(inputs["tree"], identity, inputs["bindings"])
+            expected = case["expected"]
+            assert expected["profileIdentity"] == identity, path.name
+            assert expected["baseRevision"] == revision, path.name
+            assert expected["report"]["sourceIdentity"] == identity, path.name
+            assert expected["report"]["inputRevision"] == revision, path.name
+            checked += 1
+    assert checked > 50

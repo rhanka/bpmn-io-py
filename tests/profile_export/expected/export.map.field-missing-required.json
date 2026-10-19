@@ -2,8 +2,8 @@
   "case": "export.map.field-missing-required",
   "clause": "DESIGN R3.3 \u00a710.2 Export recipe, capability and loss contract",
   "witness": "a required named field evaluating to MISSING refuses export-field-invalid",
-  "derivation": "Node id = read /semanticId; the 'legend' occurrence has no semanticId, so the required id is MISSING: export-field-invalid.",
-  "operation": "map_export",
+  "derivation": "Node id = read /semanticId; the 'legend' occurrence has no semanticId, so the required id is MISSING: export-field-invalid. The refusal carries no artifact; it echoes the envelope identity and revision, and its report has the B4 source header and no entry (harmonization B2, B3, B4).",
+  "operation": "mapExport",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -399,7 +399,7 @@
         "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "6c772b0ea4cdf6393cbfdf5ce4fce4a6ae77df9747b1aa21fdb91aa6dd2e42c1"
+        "payloadDigest": "1d2aa508b93cfc3202082ddec426f80e09124a925cc31f9d5e3f112776b3a58c"
       },
       "pages": [
         {
@@ -573,16 +573,6 @@
           "disposition": "nonvisual"
         },
         {
-          "semanticId": "Flow_1",
-          "occurrences": [
-            {
-              "pageId": "P1",
-              "occurrenceKey": "e-flow"
-            }
-          ],
-          "disposition": "rendered"
-        },
-        {
           "semanticId": "Process_x",
           "occurrences": [],
           "disposition": "nonvisual"
@@ -606,6 +596,16 @@
             }
           ],
           "disposition": "rendered"
+        },
+        {
+          "semanticId": "Flow_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "e-flow"
+            }
+          ],
+          "disposition": "rendered"
         }
       ],
       "diagnostics": []
@@ -614,7 +614,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "export-field-invalid"
+    "operation": "mapExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "74bb575a7e1701c01dce2e5c9d9dc285d77a8354fb295b9e5765d7c0ebdcf4f4",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "e22c57494b41736ce64bb6b3cc1f81b7f41dac25adb12223cfb824569dfc0f35",
+    "code": "export-field-invalid",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "mapExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "74bb575a7e1701c01dce2e5c9d9dc285d77a8354fb295b9e5765d7c0ebdcf4f4",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "e22c57494b41736ce64bb6b3cc1f81b7f41dac25adb12223cfb824569dfc0f35",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

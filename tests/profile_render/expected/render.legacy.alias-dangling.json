@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.5 Legacy themes",
   "witness": "a legacy alias must land on a declared theme",
   "derivation": "Record standard -> custom with no theme custom in the profile: unresolved input, render-stale (\u00a79.2).",
-  "operation": "resolve_legacy_theme",
+  "operation": "resolveLegacyTheme",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -26,7 +26,8 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-stale"
+    "code": "render-stale",
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

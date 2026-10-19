@@ -2,8 +2,8 @@
   "case": "export.prepare.success",
   "clause": "DESIGN R3.3 \u00a710.2 prepareExport; \u00a76.2 stage table",
   "witness": "end-to-end preparation on a post-N fixed point: C, lint, N, layout, R and map under accept",
-  "derivation": "Profile = neutral without the place-task normalize recipe and with the five standard rules that a two-task, flow-less process cannot satisfy turned off in the four accept tables. The tree is already a C/N fixed point (isExecutable false, IDs present, no normalize recipe), every accept lint stage has no finding, the layout transcribes the DI, R and the export follow export.map rules: pages e_0, nodes e_1/e_2, two capability semantic-type losses. The report is the complete prepareExport report (raw standard findings not sealed); revisions unchanged; inputs unmutated.",
-  "operation": "prepare_export",
+  "derivation": "Profile = neutral without the place-task normalize recipe and with the five standard rules that a two-task, flow-less process cannot satisfy turned off in the four accept tables. The tree is already a C/N fixed point (isExecutable false, IDs present, no normalize recipe), so C and N report no entry; every accept lint stage reports no finding and no raw standard finding (the post-layout lint sees BPMNDI derived from the Layout/1, so no-bpmndi holds); the layout transcribes the DI; R and the export follow the export.map rules: pages e_0, nodes e_1/e_2, two capability semantic-type losses. Read-only Result: baseRevision = revision = the input revision; the prepared artifact carries the staged revision (equal here) and the complete prepareExport report (B4 header) with artifact entryIndexes over every entry. Options are validated before the pipeline (closed option record, format declared with a registered adapter, theme resolvable; harmonization C18); then each stage runs exactly once on a staged deep copy in the DESIGN \u00a710.2 order compatibility -> graph checks -> C -> pre-normalize -> N -> post-normalize -> layout -> post-layout -> release -> R -> map under the accept policy, edit activation; the sealed trace lists the stages the observer saw, in order. A refusal returns the complete report of the executed lint stages (no change entry, no candidate) and no artifact (harmonization B2); no input is mutated.",
+  "operation": "prepareExport",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -191,6 +191,162 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "prepareExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "4f4301f93d703492e67234b2782ac5d0c45eecdf4704929036009317743aae2e",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "a2cac8d04cae86de0ab639747a0c49a8a5c163ce7701a1338c6c0a0467739f5c",
+    "revision": "a2cac8d04cae86de0ab639747a0c49a8a5c163ce7701a1338c6c0a0467739f5c",
+    "report": {
+      "reportVersion": "2",
+      "operation": "prepareExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "4f4301f93d703492e67234b2782ac5d0c45eecdf4704929036009317743aae2e",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "4f4301f93d703492e67234b2782ac5d0c45eecdf4704929036009317743aae2e",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "a2cac8d04cae86de0ab639747a0c49a8a5c163ce7701a1338c6c0a0467739f5c",
+      "outputRevision": "a2cac8d04cae86de0ab639747a0c49a8a5c163ce7701a1338c6c0a0467739f5c",
+      "entries": [
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0",
+            "targetId": "Task_A",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "s-task-a",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "drawing",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1",
+            "targetId": "Task_B",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "P1",
+          "occurrenceKey": "s-task-b",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [
+        {
+          "sourceId": "P1",
+          "resultId": "e_0",
+          "domain": "export",
+          "pageId": "P1"
+        },
+        {
+          "sourceId": "Task_A",
+          "resultId": "e_1",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "s-task-a"
+        },
+        {
+          "sourceId": "Task_B",
+          "resultId": "e_2",
+          "domain": "export",
+          "pageId": "P1",
+          "occurrenceKey": "s-task-b"
+        }
+      ],
+      "artifacts": [
+        {
+          "format": "drawio",
+          "capability": "structural",
+          "digest": "ab86aa6930b077eac5944865bbb67d620875dbf264d35b29478f61d46232825a",
+          "entryIndexes": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
     "payload": {
       "format": "drawio",
       "profileIdentity": {
@@ -308,6 +464,46 @@
       "report": {
         "reportVersion": "2",
         "operation": "prepareExport",
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "4f4301f93d703492e67234b2782ac5d0c45eecdf4704929036009317743aae2e",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "4f4301f93d703492e67234b2782ac5d0c45eecdf4704929036009317743aae2e",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+            }
+          ]
+        },
+        "inputRevision": "a2cac8d04cae86de0ab639747a0c49a8a5c163ce7701a1338c6c0a0467739f5c",
+        "outputRevision": "a2cac8d04cae86de0ab639747a0c49a8a5c163ce7701a1338c6c0a0467739f5c",
         "entries": [
           {
             "code": "export-loss/semantic-type",
@@ -423,105 +619,19 @@
         }
       ]
     },
-    "report": {
-      "reportVersion": "2",
-      "operation": "prepareExport",
-      "entries": [
-        {
-          "code": "export-loss/semantic-type",
-          "severity": "warn",
-          "classification": "loss",
-          "stage": "export",
-          "ruleId": "drawing",
-          "messageKey": "export.loss.semantic-type",
-          "disposition": "mapped",
-          "source": {
-            "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/0",
-            "targetId": "Task_A",
-            "provenance": "exact"
-          },
-          "result": {
-            "domain": "none",
-            "pointer": null,
-            "targetId": null,
-            "provenance": "unavailable"
-          },
-          "beforePresent": false,
-          "afterPresent": false,
-          "pageId": "P1",
-          "occurrenceKey": "s-task-a",
-          "emittedType": "node",
-          "lossClass": "semantic-type"
-        },
-        {
-          "code": "export-loss/semantic-type",
-          "severity": "warn",
-          "classification": "loss",
-          "stage": "export",
-          "ruleId": "drawing",
-          "messageKey": "export.loss.semantic-type",
-          "disposition": "mapped",
-          "source": {
-            "domain": "tree",
-            "pointer": "/rootElements/0/flowElements/1",
-            "targetId": "Task_B",
-            "provenance": "exact"
-          },
-          "result": {
-            "domain": "none",
-            "pointer": null,
-            "targetId": null,
-            "provenance": "unavailable"
-          },
-          "beforePresent": false,
-          "afterPresent": false,
-          "pageId": "P1",
-          "occurrenceKey": "s-task-b",
-          "emittedType": "node",
-          "lossClass": "semantic-type"
-        }
-      ],
-      "rawStandardFindings": [],
-      "idMap": [
-        {
-          "sourceId": "P1",
-          "resultId": "e_0",
-          "domain": "export",
-          "pageId": "P1"
-        },
-        {
-          "sourceId": "Task_A",
-          "resultId": "e_1",
-          "domain": "export",
-          "pageId": "P1",
-          "occurrenceKey": "s-task-a"
-        },
-        {
-          "sourceId": "Task_B",
-          "resultId": "e_2",
-          "domain": "export",
-          "pageId": "P1",
-          "occurrenceKey": "s-task-b"
-        }
-      ],
-      "artifacts": [
-        {
-          "format": "drawio",
-          "capability": "structural",
-          "digest": "ab86aa6930b077eac5944865bbb67d620875dbf264d35b29478f61d46232825a",
-          "entryIndexes": [
-            0,
-            1
-          ]
-        }
-      ]
-    },
-    "baseRevision": "a2cac8d04cae86de0ab639747a0c49a8a5c163ce7701a1338c6c0a0467739f5c",
-    "revision": "a2cac8d04cae86de0ab639747a0c49a8a5c163ce7701a1338c6c0a0467739f5c",
-    "unsealed": [
-      "/payload/report/rawStandardFindings",
-      "/report/rawStandardFindings"
+    "trace": [
+      "options",
+      "compatibility",
+      "graph",
+      "complete",
+      "pre-normalize",
+      "normalize",
+      "post-normalize",
+      "layout",
+      "post-layout",
+      "release",
+      "render",
+      "map"
     ],
     "inputsUnchanged": true
   },

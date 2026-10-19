@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "the header keeps its fixed height when the body grows (no uniform scaling)",
   "derivation": "Same glyph on h = 160000: header height stays 12000; body height 160000-12000 = 148000.",
-  "operation": "template_geometry",
+  "operation": "templateGeometry",
   "input": {
     "glyph": {
       "id": "band",
@@ -45,7 +45,8 @@
         "width": 100000,
         "height": 148000
       }
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "template parameter of the wrong type",
   "derivation": "Added corner-fold glyph with headerRotation \"90\" (string); wrong types refuse profile-glyph-shape.",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-profile.json",

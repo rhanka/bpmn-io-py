@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.1 Closed layout and render data",
   "witness": "edge endpoints must resolve exactly on the same page",
   "derivation": "Flow_1 now targets Task_C, which has no shape on Z-page; the endpoint cannot resolve to exactly one shape on the page (cross-page edges need explicit format support): render-unsupported.",
-  "operation": "compute_layout",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -228,7 +228,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-unsupported"
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "073791fd30b97a1cc073c54851e9b6cd713e25184dd35ce98829ba613727302f",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "d8857469ce069db83a7e0bce77fbfb0d0edf39525b29994035bfe373eaeffdfa",
+    "code": "render-unsupported",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "073791fd30b97a1cc073c54851e9b6cd713e25184dd35ce98829ba613727302f",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "d8857469ce069db83a7e0bce77fbfb0d0edf39525b29994035bfe373eaeffdfa",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

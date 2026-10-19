@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.1 Closed layout and render data",
   "witness": "edge occurrence: emittedType edge, binding stroke beats theme stroke",
   "derivation": "Layout = render.layout.edge payload; flow binding tokens {stroke #333333} beat theme stroke #000000, theme fill #ffffff fills the rest; emittedType edge for the edge record.",
-  "operation": "resolve_theme",
+  "operation": "resolveTheme",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -298,6 +298,76 @@
   },
   "expected": {
     "status": "ok",
+    "operation": "resolveTheme",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "073791fd30b97a1cc073c54851e9b6cd713e25184dd35ce98829ba613727302f",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "0f8d27b69f08a09dd8a66067f9c35741e21ed8d0da8fcdc02d267e9806c1aaf8",
+    "revision": "0f8d27b69f08a09dd8a66067f9c35741e21ed8d0da8fcdc02d267e9806c1aaf8",
+    "report": {
+      "reportVersion": "2",
+      "operation": "resolveTheme",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "073791fd30b97a1cc073c54851e9b6cd713e25184dd35ce98829ba613727302f",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "073791fd30b97a1cc073c54851e9b6cd713e25184dd35ce98829ba613727302f",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "0f8d27b69f08a09dd8a66067f9c35741e21ed8d0da8fcdc02d267e9806c1aaf8",
+      "outputRevision": "0f8d27b69f08a09dd8a66067f9c35741e21ed8d0da8fcdc02d267e9806c1aaf8",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
     "payload": {
       "renderVersion": "1",
       "binding": {
@@ -310,7 +380,7 @@
         "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "470e52af8b18ef6c87390bfc75e48688add725c68690381b178364e926b52fe1"
+        "payloadDigest": "6d8b28d32db2a6a5b1fc0dc34b7a9e7a3aa2fc077f248161cf5e7d18dd867707"
       },
       "pages": [
         {
@@ -545,14 +615,9 @@
           "disposition": "nonvisual"
         },
         {
-          "semanticId": "Flow_1",
-          "occurrences": [
-            {
-              "pageId": "Z-page",
-              "occurrenceKey": "ee-flow"
-            }
-          ],
-          "disposition": "rendered"
+          "semanticId": "Process_1",
+          "occurrences": [],
+          "disposition": "nonvisual"
         },
         {
           "semanticId": "Note_1",
@@ -565,9 +630,14 @@
           "disposition": "rendered"
         },
         {
-          "semanticId": "Process_1",
-          "occurrences": [],
-          "disposition": "nonvisual"
+          "semanticId": "Task_B",
+          "occurrences": [
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "aa-task-b"
+            }
+          ],
+          "disposition": "rendered"
         },
         {
           "semanticId": "Task_A",
@@ -584,11 +654,11 @@
           "disposition": "rendered"
         },
         {
-          "semanticId": "Task_B",
+          "semanticId": "Flow_1",
           "occurrences": [
             {
               "pageId": "Z-page",
-              "occurrenceKey": "aa-task-b"
+              "occurrenceKey": "ee-flow"
             }
           ],
           "disposition": "rendered"

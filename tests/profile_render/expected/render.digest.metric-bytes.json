@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
   "witness": "metricsDigest over {id, sha256=B(raw metric bytes)} of the vendored neutral metrics",
   "derivation": "R3 input with metrics = the exact bytes of contracts/profile-mechanism/1/neutral-metrics.json (B = 151d1a1f..., the pinned resource sha256); metricsDigest = H([{id:neutral-metrics, sha256}]).",
-  "operation": "render_digests",
+  "operation": "renderDigests",
   "input": {
     "record": {
       "semanticTree": {
@@ -136,7 +136,8 @@
       "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
       "viewRevision": "23209e07f0d52b6885600b7f200eb2a6e9658687d4287703f80327d2f5951562",
       "payloadDigest": "c6b466b92ba0016da6ea3511a662b3e6c43ecb93ac1eaa7aa8c614e3b2f3cced"
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

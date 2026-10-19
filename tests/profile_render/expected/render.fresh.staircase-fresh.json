@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
   "witness": "the same theme with its overrides and DI styles verifies",
   "derivation": "Inputs equal those of render.r.precedence-staircase: fresh, payload = {viewRevision}.",
-  "operation": "verify_render_data",
+  "operation": "verifyRenderData",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -300,7 +300,7 @@
         "overridesDigest": "665474e4d3f4c2b723fe0d8387fe55b8062abf6c9d5003d617400da8efe910f5",
         "diStylesDigest": "75d08a8eac4ea6afec02dfd5f21f047a705f2cf9222583e3d851451e235ac8b1",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "424c0a42b3df9acb3e661abb589d3cdf28682ab110a4d680b6fc5fbd91c68b9b"
+        "payloadDigest": "c448090ee5927ffc0cd7b612db9f473eb90d414917e944c228c1a3ef411c2c81"
       },
       "pages": [
         {
@@ -561,6 +561,11 @@
           "disposition": "nonvisual"
         },
         {
+          "semanticId": "Process_1",
+          "occurrences": [],
+          "disposition": "nonvisual"
+        },
+        {
           "semanticId": "Note_1",
           "occurrences": [
             {
@@ -571,9 +576,14 @@
           "disposition": "rendered"
         },
         {
-          "semanticId": "Process_1",
-          "occurrences": [],
-          "disposition": "nonvisual"
+          "semanticId": "Task_B",
+          "occurrences": [
+            {
+              "pageId": "Z-page",
+              "occurrenceKey": "aa-task-b"
+            }
+          ],
+          "disposition": "rendered"
         },
         {
           "semanticId": "Task_A",
@@ -585,16 +595,6 @@
             {
               "pageId": "A-page",
               "occurrenceKey": "zz-task-a-2"
-            }
-          ],
-          "disposition": "rendered"
-        },
-        {
-          "semanticId": "Task_B",
-          "occurrences": [
-            {
-              "pageId": "Z-page",
-              "occurrenceKey": "aa-task-b"
             }
           ],
           "disposition": "rendered"
@@ -682,7 +682,8 @@
     "status": "ok",
     "payload": {
       "viewRevision": "898265d61d0c4883e4c704a84599babee6e4f56e31a72f4403c03f015878de6c"
-    }
+    },
+    "diagnostics": []
   },
   "inputFrom": [
     {

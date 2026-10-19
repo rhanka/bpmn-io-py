@@ -2,8 +2,8 @@
   "case": "export.map.output-id-native-ambiguous",
   "clause": "DESIGN R3.3 \u00a72.2 outputId; \u00a710.2",
   "witness": "a native handle with two occurrences on the current page refuses export-occurrence-ambiguous",
-  "derivation": "Same recipe as export.map.output-id-native-handle but Task_A has two occurrences on P1 (s-task-a, s-task-a-2): export-occurrence-ambiguous.",
-  "operation": "map_export",
+  "derivation": "Same recipe as export.map.output-id-native-handle but Task_A has two occurrences on P1 (s-task-a, s-task-a-2): export-occurrence-ambiguous. The refusal carries no artifact; it echoes the envelope identity and revision, and its report has the B4 source header and no entry (harmonization B2, B3, B4).",
+  "operation": "mapExport",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -425,7 +425,7 @@
         "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
         "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
         "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
-        "payloadDigest": "51e824bcc5529f28deac6f83d0d71c2d6deb5439d2675b5278dc9e8d2502318e"
+        "payloadDigest": "a4139e895bd274f97698459c8732bccf4adb8938bc704ed5b4d8e0d660332745"
       },
       "pages": [
         {
@@ -612,16 +612,6 @@
           "disposition": "nonvisual"
         },
         {
-          "semanticId": "Flow_1",
-          "occurrences": [
-            {
-              "pageId": "P1",
-              "occurrenceKey": "e-flow"
-            }
-          ],
-          "disposition": "rendered"
-        },
-        {
           "semanticId": "Process_x",
           "occurrences": [],
           "disposition": "nonvisual"
@@ -649,6 +639,16 @@
             }
           ],
           "disposition": "rendered"
+        },
+        {
+          "semanticId": "Flow_1",
+          "occurrences": [
+            {
+              "pageId": "P1",
+              "occurrenceKey": "e-flow"
+            }
+          ],
+          "disposition": "rendered"
         }
       ],
       "diagnostics": []
@@ -657,7 +657,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "export-occurrence-ambiguous"
+    "operation": "mapExport",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "0ea4b76eb51b6fb8a7a87132dd0261c4cff038969ff4b99e7e97b3a10577b4cd",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "a66da17e138d6dfce02e5dfd6988270933ca46ccb30e545bffe2bb152eff0a01",
+    "code": "export-occurrence-ambiguous",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "mapExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "0ea4b76eb51b6fb8a7a87132dd0261c4cff038969ff4b99e7e97b3a10577b4cd",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "a66da17e138d6dfce02e5dfd6988270933ca46ccb30e545bffe2bb152eff0a01",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

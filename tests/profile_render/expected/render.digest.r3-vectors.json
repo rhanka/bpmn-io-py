@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
   "witness": "every binding digest and viewRevision on the pinned R3 vector, empty override/style bags, reordered descriptor pins",
   "derivation": "Input is contracts/profile-mechanism/1/r3-digest-vectors.json#/input without the xml member (metrics=[] keeps its meaning); expected is the pinned #/expected members for the nine \u00a79.2 values (empty bags hash {semantic:[],occurrence:[]} and {native:[],bioc:[]}, descriptor pins z/1,a/1 are sorted by id).",
-  "operation": "render_digests",
+  "operation": "renderDigests",
   "input": {
     "record": {
       "semanticTree": {
@@ -131,7 +131,8 @@
       "metricsDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "viewRevision": "51500e5c281c82a9cbb0f6c64f15ac1bf844b3a41f572fb82004bd7c4a737a1c",
       "payloadDigest": "c6b466b92ba0016da6ea3511a662b3e6c43ecb93ac1eaa7aa8c614e3b2f3cced"
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

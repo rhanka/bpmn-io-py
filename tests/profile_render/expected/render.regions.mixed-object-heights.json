@@ -1,0 +1,98 @@
+{
+  "case": "render.regions.mixed-object-heights",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
+  "witness": "a tall object without label next to a short object with a tall label: centres on one line and the body grows to contain the union",
+  "derivation": "Tokens 0/0/10000/0, body (0,0,400000,50000): X 40000x100000 (no label), Y 40000x20000 with label 30000x60000, no anchors: lefts 0, 50000; RH = max(0, max(100000, 80000)) = 100000; A = 50000, B = max(50000, 10000 + 60000) = 70000, A + B = 120000 > RH, so cy = 0 + max(50000, (100000 + 50000 - 70000)/2) = 50000 (union top on the body top): X at y 0, Y at y 40000, its label at (55000, 60000); height' = max(50000, 100000, 50000 + 70000) = 120000; pageBounds (0,0,400000,120000). Row rule (spec \u00a74.3): items in \u00a77.2 placement order; footprint max(object, label) width; left = anchor centre - footprint/2 when the anchor is shown, else contentLeft or previous right + gap; clamp to contentLeft; collision shifts right; one row at the top of the support body [Ly, Ly+RH], RH = max(minHeight, max(object+label) + 2 padding) (harmonization K2); every object centre lies on one line cy = Ly + max(A, (RH + A - B)/2), A = max h/2, B = max(h/2 + label height), so the union of the stacks is centred in the row (DESIGN \u00a79.4 'align centers on one IO row'); exact rationals, one roundEven per output coordinate.",
+  "operation": "layoutRegions",
+  "input": {
+    "region": {
+      "page": {
+        "x": 0,
+        "y": 0,
+        "width": 400000,
+        "height": 50000
+      },
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 400000,
+        "height": 50000
+      },
+      "tokens": {
+        "headerWidth": 0,
+        "padding": 0,
+        "gap": 10000,
+        "minHeight": 0
+      },
+      "items": [
+        {
+          "elementId": "X",
+          "occurrenceKey": "X_di",
+          "object": {
+            "width": 40000,
+            "height": 100000
+          }
+        },
+        {
+          "elementId": "Y",
+          "occurrenceKey": "Y_di",
+          "object": {
+            "width": 40000,
+            "height": 20000
+          },
+          "label": {
+            "width": 30000,
+            "height": 60000
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "pageBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 400000,
+        "height": 120000
+      },
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 400000,
+        "height": 120000
+      },
+      "items": [
+        {
+          "elementId": "X",
+          "occurrenceKey": "X_di",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 40000,
+            "height": 100000
+          }
+        },
+        {
+          "elementId": "Y",
+          "occurrenceKey": "Y_di",
+          "bounds": {
+            "x": 50000,
+            "y": 40000,
+            "width": 40000,
+            "height": 20000
+          },
+          "labelBounds": {
+            "x": 55000,
+            "y": 60000,
+            "width": 30000,
+            "height": 60000
+          }
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
   "witness": "one changed page name with the same pageId invalidates layoutDigest (\u00a79.1) and viewRevision",
   "derivation": "R3 input with the page name First sheet replaced by Renamed sheet (pageId unchanged); \u00a79.1 says name changes invalidate layoutDigest even when pageId is unchanged.",
-  "operation": "render_digests",
+  "operation": "renderDigests",
   "input": {
     "record": {
       "semanticTree": {
@@ -131,7 +131,8 @@
       "metricsDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "viewRevision": "dda0c4e1ae3fb9452d88687414f2a725fc9c0a9a6a247ccf1b5d4fc80e699736",
       "payloadDigest": "0b049e389c8ed99f4969b20201d58e52dca5232e5f9c6303978d9e7250c32987"
-    }
+    },
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

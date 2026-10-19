@@ -2,8 +2,8 @@
   "case": "render.layout.badge-hide-source-gated",
   "clause": "DESIGN R3.3 \u00a79.3 synthetic occurrences; \u00a713 OPEN-RENDER-PRIMITIVES",
   "witness": "hideSource source-hiding interaction stays disabled",
-  "derivation": "Same as render.layout.attached-badge with hideSource true; exact source-hiding is unqualified under OPEN-RENDER-PRIMITIVES and the headless ABI carries no placement into resolve_theme: render-unsupported.",
-  "operation": "compute_layout",
+  "derivation": "Same as render.layout.attached-badge with hideSource true; exact source-hiding is unqualified under OPEN-RENDER-PRIMITIVES (DESIGN default: no unsupported composite is activated) and the headless ABI carries no placement into resolveTheme: render-unsupported (harmonization C15).",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -202,7 +202,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-unsupported"
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "ffac0a27905470c7eef16337915322c451a66bff5713842312f01ffbccd6e396",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "0e03ada62ea659e27aaf3af9909e076c6c55bc0f7bb820362fb1eeb4241fa26d",
+    "code": "render-unsupported",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "ffac0a27905470c7eef16337915322c451a66bff5713842312f01ffbccd6e396",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "0e03ada62ea659e27aaf3af9909e076c6c55bc0f7bb820362fb1eeb4241fa26d",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

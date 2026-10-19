@@ -188,6 +188,85 @@ def profile_from_ref(ref: dict[str, Json]) -> Json:
     return apply_patch(contract(str(ref["base"])), list(ref.get("patch", [])))
 
 
+# ------------------------------------------------- package table (spec §16)
+
+ARTIFACTS = Path(__file__).resolve().parent / "artifacts"
+PACKAGES = {
+    "neutral-descriptors/1": (MECHANISM / "neutral-descriptors.json", "fixture-2"),
+    "neutral-base/1": (MECHANISM / "neutral-base.json", "fixture-2"),
+    "neutral-render-descriptors/1": (ARTIFACTS / "render-descriptors.json", "fixture-1"),
+    "neutral-render-base/1": (ARTIFACTS / "render-base.json", "fixture-1"),
+}
+
+
+def package_bytes(package_id: str) -> bytes:
+    """Return the raw bytes of one pinned package of the closed package table."""
+    return PACKAGES[package_id][0].read_bytes()
+
+
+def package_pin(package_id: str) -> dict[str, str]:
+    """Return ``{id, version, sha256 = B(raw bytes)}`` of one package."""
+    return {
+        "id": package_id,
+        "version": PACKAGES[package_id][1],
+        "sha256": b(package_bytes(package_id)),
+    }
+
+
+def admitted_types(profile: dict[str, Json]) -> set[str]:
+    """Return the native types of every descriptor package the profile pins."""
+    names: set[str] = set()
+    for pin in profile["descriptors"]:
+        document = json.loads(package_bytes(str(pin["id"])).decode("utf-8"))
+        names.update(document["types"])
+    return names
+
+
+def _is_element(value: Json) -> bool:
+    return isinstance(value, dict) and isinstance(value.get("$type"), str)
+
+
+def tree_types(tree: Json) -> set[str]:
+    """Return every element ``$type`` of one native JSON tree (explicit stack)."""
+    found: set[str] = set()
+    stack = [tree]
+    while stack:
+        node = stack.pop()
+        if isinstance(node, list):
+            stack.extend(node)
+        elif isinstance(node, dict):
+            if _is_element(node):
+                found.add(str(node["$type"]))
+            stack.extend(node.values())
+    return found
+
+
+def native_preorder_ids(tree: Json) -> list[str]:
+    """Return the IDs of ID-bearing elements in native pre-order (DESIGN §9.1 coverage).
+
+    An element precedes its contained elements; containment members (element
+    or element-array values) are visited in UTF-16 member-name order and
+    arrays in index order; ID-less elements are traversed but not listed.
+    """
+    out: list[str] = []
+    stack: list[Json] = [tree]
+    while stack:
+        node = stack.pop()
+        if not _is_element(node):
+            continue
+        if isinstance(node.get("id"), str):
+            out.append(str(node["id"]))
+        children: list[Json] = []
+        for key in sorted(node, key=utf16):
+            value = node[key]
+            if _is_element(value):
+                children.append(value)
+            elif isinstance(value, list) and value and all(_is_element(item) for item in value):
+                children.extend(value)
+        stack.extend(reversed(children))
+    return out
+
+
 # -------------------------------------------------------- identities (§3.1)
 
 

@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a72.4.1 CR-09 presentation",
   "witness": "synthetic occurrence tokens follow the same signatures",
   "derivation": "Grid side-stripe token fill #eef (three digits) fails the color signature; CR-09 refuses profile-type.",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-grid-profile.json",

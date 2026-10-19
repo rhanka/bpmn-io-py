@@ -1,0 +1,190 @@
+{
+  "case": "render.switch.text-fit-token-differs",
+  "clause": "DESIGN R3.3 \u00a79.4 shared geometry; \u00a716 item 6 (OPEN-DI / OPEN-LOOK)",
+  "witness": "font tokens are geometry-affecting",
+  "derivation": "plain -> bold: bold resolves fontWeight bold while plain has no fontWeight (text fit changes label sizes): theme-geometry-conflict. Geometry-affecting values are the resolved region.*, fontFamily, fontSize and fontWeight tokens and the theme metricsResource, each resolved through the theme's own fallback chain (nearest first); a name present in one chain only is a different value (harmonization K12); the check compares the two selected themes only (K13).",
+  "operation": "checkThemeSwitch",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/resources/-",
+          "value": {
+            "id": "neutral-metrics-copy",
+            "kind": "metrics",
+            "mediaType": "application/json",
+            "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0",
+            "assetKey": "neutral-metrics.json",
+            "license": "CC0-1.0",
+            "attribution": "Synthetic CC0 metric fixture supplied with R3."
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/-",
+          "value": {
+            "id": "dim",
+            "aliases": [],
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#f4f4f4"
+              }
+            ],
+            "glyphs": [],
+            "metricsResource": "neutral-metrics",
+            "geometry": "shared",
+            "fallback": "plain",
+            "syntheticOccurrences": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/-",
+          "value": {
+            "id": "dense",
+            "aliases": [],
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#ffffff"
+              },
+              {
+                "name": "stroke",
+                "value": "#000000"
+              },
+              {
+                "name": "region.content.headerWidth",
+                "value": 0
+              },
+              {
+                "name": "region.content.padding",
+                "value": 4
+              },
+              {
+                "name": "region.content.gap",
+                "value": 8
+              },
+              {
+                "name": "region.content.minHeight",
+                "value": 40
+              }
+            ],
+            "glyphs": [],
+            "metricsResource": "neutral-metrics",
+            "geometry": "shared",
+            "syntheticOccurrences": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/-",
+          "value": {
+            "id": "bold",
+            "aliases": [],
+            "tokens": [
+              {
+                "name": "fontWeight",
+                "value": "bold"
+              }
+            ],
+            "glyphs": [],
+            "metricsResource": "neutral-metrics",
+            "geometry": "shared",
+            "fallback": "plain",
+            "syntheticOccurrences": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/-",
+          "value": {
+            "id": "bare",
+            "aliases": [],
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#ffffff"
+              },
+              {
+                "name": "stroke",
+                "value": "#000000"
+              }
+            ],
+            "glyphs": [],
+            "metricsResource": "neutral-metrics",
+            "geometry": "shared",
+            "syntheticOccurrences": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/-",
+          "value": {
+            "id": "own",
+            "aliases": [],
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#eeeeee"
+              }
+            ],
+            "glyphs": [],
+            "metricsResource": "neutral-metrics",
+            "geometry": "theme",
+            "fallback": "plain",
+            "syntheticOccurrences": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/-",
+          "value": {
+            "id": "chained",
+            "aliases": [],
+            "tokens": [
+              {
+                "name": "stroke",
+                "value": "#111111"
+              }
+            ],
+            "glyphs": [],
+            "metricsResource": "neutral-metrics",
+            "geometry": "shared",
+            "fallback": "dim",
+            "syntheticOccurrences": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/-",
+          "value": {
+            "id": "other-metrics",
+            "aliases": [],
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#fafafa"
+              }
+            ],
+            "glyphs": [],
+            "metricsResource": "neutral-metrics-copy",
+            "geometry": "shared",
+            "fallback": "plain",
+            "syntheticOccurrences": []
+          }
+        }
+      ]
+    },
+    "from": "plain",
+    "to": "bold"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "theme-geometry-conflict",
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

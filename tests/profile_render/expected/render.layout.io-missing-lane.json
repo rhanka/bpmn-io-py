@@ -1,13 +1,33 @@
 {
   "case": "render.layout.io-missing-lane",
-  "clause": "DESIGN R3.3 \u00a79.4 missing support; \u00a713 OPEN-RESERVED-N (\u00a716.11)",
-  "witness": "missing external support with support creation disabled refuses profile-open",
-  "derivation": "Placements for In_A, In_B, Out_C in region content but no binding (Process_1, content): the layout never creates the lane, N support creation is gated (OPEN-RESERVED-N): profile-open.",
-  "operation": "compute_layout",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry (no matching region refuses render-region-missing); \u00a79.3",
+  "witness": "missing external support: the layout primitive refuses render-region-missing (support creation belongs to gated N)",
+  "derivation": "Placements for In_A, In_B, Out_C in region content but no binding (Process_1, content): the layout never creates the lane nor falls back to the pool or page rectangle: render-region-missing (DESIGN \u00a79.4 'a missing external support invokes gated N, never layout-created semantics', \u00a79.3 no matching region; harmonization C13). Preparation, where support creation is gated, refuses profile-open (export.prepare.missing-support). The profile is re-pinned to the lot-4 extension packages neutral-render-descriptors/1 and neutral-render-base/1 (tests/profile_render/expected/artifacts/), which admit every native type of the tree.",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
       "patch": [
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
         {
           "op": "replace",
           "path": "/themes/0/tokens",
@@ -258,7 +278,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "profile-open"
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "7f0fbf9760c44faf68451f1142ba0e7de9b582f3d7a7d6e5f702aaefda8fa5da",
+      "base": {
+        "id": "neutral-render-base/1",
+        "version": "fixture-1",
+        "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-render-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+        }
+      ]
+    },
+    "baseRevision": "13062d484e965a8e4b92b2f47425902c5d73f8605246dedaa532c18c61c190f0",
+    "code": "render-region-missing",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7f0fbf9760c44faf68451f1142ba0e7de9b582f3d7a7d6e5f702aaefda8fa5da",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "inputRevision": "13062d484e965a8e4b92b2f47425902c5d73f8605246dedaa532c18c61c190f0",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

@@ -2,8 +2,8 @@
   "case": "render.layout.badge-no-anchor",
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "source association hiding/attachment requires the unique approved placement anchor",
-  "derivation": "The Note_1 placement in region aids carries no anchorAssociationId: no anchor, render-region-missing.",
-  "operation": "compute_layout",
+  "derivation": "The Note_1 placement in region aids carries no anchorAssociationId: no anchor, render-region-missing (harmonization C14).",
+  "operation": "computeLayout",
   "input": {
     "profile": {
       "base": "neutral-profile.json",
@@ -201,7 +201,57 @@
   },
   "expected": {
     "status": "refused",
-    "code": "render-region-missing"
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "d50f816aa85387eb1ae233c918f574e8e58505f6d366b1f42a56b98e6a9b890e",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+    "code": "render-region-missing",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "d50f816aa85387eb1ae233c918f574e8e58505f6d366b1f42a56b98e6a9b890e",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "287f0b67013d78c221e0824f2dffdc71d3c41a4cea2919d1dddd42c04f1ae1de",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
   },
   "author": "spec-seal"
 }

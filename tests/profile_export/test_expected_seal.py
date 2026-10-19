@@ -1,4 +1,4 @@
-"""Seal integrity of the lot-4 export expectations (map, serialize, prepare).
+"""Seal integrity of the lot-4 export expectations (map, serialize, prepare, legacy).
 
 The expectation files under ``expected/`` were authored from DESIGN R3.3
 §10.1/§10.2 and the vendored contracts (see
@@ -35,6 +35,24 @@ def test_manifest_pins_every_sealed_file() -> None:
     check_manifest(EXPECTED)
 
 
+def test_manifest_detects_a_one_byte_change(tmp_path: Path) -> None:
+    copy_dir = tmp_path / "expected"
+    copy_dir.mkdir()
+    for path in EXPECTED.iterdir():
+        if path.is_file():
+            (copy_dir / path.name).write_bytes(path.read_bytes())
+    victim = max(copy_dir.glob("*.json"))
+    data = bytearray(victim.read_bytes())
+    data[-2] = ord(" ") if data[-2] != ord(" ") else ord("\t")
+    victim.write_bytes(bytes(data))
+    try:
+        check_manifest(copy_dir)
+    except AssertionError:
+        return
+    msg = "a one-byte change was not detected"
+    raise AssertionError(msg)
+
+
 def test_shared_helper_imports_nothing_from_bpmn_io() -> None:
     check_helper_imports()
 
@@ -48,9 +66,9 @@ def test_cross_tree_reuse_is_verbatim() -> None:
 
 
 def _map_steps(case: dict) -> list[tuple[dict, dict]]:
-    if case["operation"] == "map_export":
+    if case["operation"] == "mapExport":
         return [(case["input"], case["expected"])]
-    if case["operation"] == "map_export_sequence":
+    if case["operation"] == "mapExportSequence":
         return list(zip(case["input"]["steps"], case["expected"]["steps"], strict=True))
     return []
 
@@ -65,6 +83,8 @@ def test_prepared_artifacts_are_consistent() -> None:
                     {**inputs, **EMPTY_BAGS, "themeId": render["binding"]["themeId"]}, render
                 )
                 assert fresh == render["binding"], f"{path.name}: input R is not fresh"
+                coverage = [entry["semanticId"] for entry in render["coverage"]]
+                assert coverage == DH.native_preorder_ids(inputs["tree"]), path.name
             if expected["status"] != "ok":
                 continue
             prepared = expected["payload"]
@@ -75,6 +95,47 @@ def test_prepared_artifacts_are_consistent() -> None:
             assert expected["report"] == prepared["report"], path.name
             checked += 1
     assert checked > 10
+
+
+def test_prepare_results_are_consistent() -> None:
+    checked = 0
+    for path, case in load_cases(EXPECTED):
+        if case["operation"] != "prepareExport":
+            continue
+        expected = case["expected"]
+        assert expected["inputsUnchanged"] is True, path.name
+        if expected["status"] == "ok":
+            prepared = expected["payload"]
+            assert prepared["report"] == expected["report"], path.name
+            assert prepared["viewRevision"] == DH.view_revision(prepared["renderBinding"]), (
+                path.name
+            )
+            assert prepared["semanticRevision"] == prepared["renderBinding"]["semanticRevision"], (
+                path.name
+            )
+            assert prepared["report"]["artifacts"][0]["digest"] == DH.h(prepared["ir"]), path.name
+            indexes = prepared["report"]["artifacts"][0]["entryIndexes"]
+            assert indexes == list(range(len(prepared["report"]["entries"]))), path.name
+        checked += 1
+    assert checked >= 9
+
+
+def test_serialize_expectations_follow_the_drawio_projection() -> None:
+    checked = 0
+    for path, case in load_cases(EXPECTED):
+        if case["operation"] != "serializePrepared" or case["expected"]["status"] != "ok":
+            continue
+        prepared = case["input"]["prepared"]
+        structural = case["expected"]["structural"]
+        pages = [record for record in prepared["ir"] if record["kind"] == "page"]
+        assert [d["id"] for d in structural["diagrams"]] == [p["id"] for p in pages], path.name
+        assert [d["name"] for d in structural["diagrams"]] == [p["name"] for p in pages], path.name
+        cells = [c["id"] for d in structural["diagrams"] for c in d["cells"]]
+        drawn = [r["id"] for r in prepared["ir"] if r["kind"] in ("node", "edge", "label")]
+        assert sorted(cells) == sorted(drawn), path.name
+        assert case["expected"]["payload"]["idMap"] == prepared["idMap"], path.name
+        checked += 1
+    assert checked >= 3
 
 
 def test_digest_policy_ids_follow_the_formula() -> None:

@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
   "witness": "missing scalar widths use the declared fallback width; scalars not UTF-16 units; no NFC; case and width separate",
   "derivation": "neutral-metrics.json declares defaultAdvance 600, spaceAdvance 300, ascent 800, descent 200 and no per-scalar table, so every scalar except U+0020 takes the fallback 600 (\u00a79.3); width = widest line, height = lines x (800+200) ticks (spec \u00a77). Each vector states its arithmetic.",
-  "operation": "measure_text",
+  "operation": "measureText",
   "input": {
     "metrics": "neutral-metrics.json",
     "vectors": [
@@ -134,7 +134,8 @@
         "width": 1800,
         "height": 1000
       }
-    ]
+    ],
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

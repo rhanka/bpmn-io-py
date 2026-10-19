@@ -2,8 +2,8 @@
   "case": "export.legacy.duplicate-id",
   "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
   "witness": "IoError duplicate-id row",
-  "derivation": "Manifest listing duplicate-id; ids [Task_A] indexed: id-collision / id-collision / integrity / error.",
-  "operation": "map_legacy_diagnostics",
+  "derivation": "Manifest listing duplicate-id; ids [Task_A] indexed: id-collision / id-collision / integrity / error. Adapter-originated entries use ruleId adapter (DESIGN \u00a76.4 adapter convention; harmonization B24).",
+  "operation": "mapLegacyDiagnostics",
   "input": {
     "legacy": {
       "producer": "io-error",
@@ -33,7 +33,10 @@
         },
         {
           "producer": "fidelity-notice",
-          "legacyCode": "style-dropped"
+          "legacyCode": "style-dropped",
+          "lossClasses": [
+            "appearance"
+          ]
         },
         {
           "producer": "io-error",
@@ -53,7 +56,7 @@
         "severity": "error",
         "classification": "integrity",
         "stage": "export",
-        "ruleId": "legacy-export/1",
+        "ruleId": "adapter",
         "messageKey": "id-collision",
         "disposition": "refused",
         "source": {
@@ -72,7 +75,8 @@
         "afterPresent": false,
         "legacyCode": "duplicate-id"
       }
-    ]
+    ],
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

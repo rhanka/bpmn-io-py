@@ -3,7 +3,7 @@
   "clause": "DESIGN R3.3 \u00a72.4.1 CR-09 presentation",
   "witness": "duplicate token name in one render binding",
   "derivation": "notion task render binding tokens [fill #ffffff, fill #ffffff]; token names are unique per list (\u00a79.1), CR-09 refuses profile-type.",
-  "operation": "load_and_compile",
+  "operation": "compileProfile",
   "input": {
     "profile": {
       "base": "neutral-profile.json",

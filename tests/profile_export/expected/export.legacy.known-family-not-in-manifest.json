@@ -2,8 +2,8 @@
   "case": "export.legacy.known-family-not-in-manifest",
   "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
   "witness": "no code is guessed: a table code missing from the adapter manifest is legacy-unmapped",
-  "derivation": "duplicate-id belongs to the DESIGN table but this adapter manifest does not list it (ids [Task_A]): legacy-unmapped with unavailable coordinates (pointer null) and legacyCode duplicate-id.",
-  "operation": "map_legacy_diagnostics",
+  "derivation": "duplicate-id belongs to the DESIGN table but this adapter manifest does not list it (ids [Task_A]): legacy-unmapped with unavailable coordinates (pointer null) and legacyCode duplicate-id. Adapter-originated entries use ruleId adapter (DESIGN \u00a76.4 adapter convention; harmonization B24).",
+  "operation": "mapLegacyDiagnostics",
   "input": {
     "legacy": {
       "producer": "io-error",
@@ -33,7 +33,10 @@
         },
         {
           "producer": "fidelity-notice",
-          "legacyCode": "style-dropped"
+          "legacyCode": "style-dropped",
+          "lossClasses": [
+            "appearance"
+          ]
         }
       ]
     },
@@ -49,7 +52,7 @@
         "severity": "error",
         "classification": "integrity",
         "stage": "export",
-        "ruleId": "legacy-export/1",
+        "ruleId": "adapter",
         "messageKey": "legacy.unmapped",
         "disposition": "refused",
         "source": {
@@ -68,7 +71,8 @@
         "afterPresent": false,
         "legacyCode": "duplicate-id"
       }
-    ]
+    ],
+    "diagnostics": []
   },
   "author": "spec-seal"
 }

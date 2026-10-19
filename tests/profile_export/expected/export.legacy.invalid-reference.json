@@ -2,8 +2,8 @@
   "case": "export.legacy.invalid-reference",
   "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
   "witness": "IoError invalid-reference: one integrity entry per ID, pointer only when indexed",
-  "derivation": "Listed code invalid-reference with ids [Task_Z, Task_A]; Task_A is indexed at /rootElements/0/flowElements/0 (exact), Task_Z is not (pointer null, provenance unavailable, no guessed path); code and messageKey reference-dangling; profile-report/2 order puts the absent pointer before the present one.",
-  "operation": "map_legacy_diagnostics",
+  "derivation": "Listed code invalid-reference with ids [Task_Z, Task_A]; Task_A is indexed at /rootElements/0/flowElements/0 (exact), Task_Z is not (pointer null, provenance unavailable, no guessed path); code and messageKey reference-dangling; profile-report/2 order puts the absent pointer before the present one. Adapter-originated entries use ruleId adapter (DESIGN \u00a76.4 adapter convention; harmonization B24).",
+  "operation": "mapLegacyDiagnostics",
   "input": {
     "legacy": {
       "producer": "io-error",
@@ -34,7 +34,10 @@
         },
         {
           "producer": "fidelity-notice",
-          "legacyCode": "style-dropped"
+          "legacyCode": "style-dropped",
+          "lossClasses": [
+            "appearance"
+          ]
         }
       ]
     },
@@ -50,7 +53,7 @@
         "severity": "error",
         "classification": "integrity",
         "stage": "export",
-        "ruleId": "legacy-export/1",
+        "ruleId": "adapter",
         "messageKey": "reference-dangling",
         "disposition": "refused",
         "source": {
@@ -74,7 +77,7 @@
         "severity": "error",
         "classification": "integrity",
         "stage": "export",
-        "ruleId": "legacy-export/1",
+        "ruleId": "adapter",
         "messageKey": "reference-dangling",
         "disposition": "refused",
         "source": {
@@ -93,7 +96,8 @@
         "afterPresent": false,
         "legacyCode": "invalid-reference"
       }
-    ]
+    ],
+    "diagnostics": []
   },
   "author": "spec-seal"
 }
