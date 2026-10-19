@@ -178,45 +178,6 @@ def _children_of(  # noqa: C901
     return found
 
 
-def _children_of_property(element: object, prop: str) -> list[object]:
-    """Collect containment children held under one property (bounded)."""
-    if isinstance(element, dict):
-        return _dict_children_of_property(element, prop)
-    return _native_children_of_property(element, prop)
-
-
-def _dict_children_of_property(element: dict[str, object], prop: str) -> list[object]:
-    """Collect dict children held under one property."""
-    found: list[object] = []
-    value = element.get(prop)
-    if isinstance(value, dict) and isinstance(value.get("$type"), str):
-        found.append(value)
-    elif isinstance(value, list):
-        for entry in value:
-            if isinstance(entry, dict) and isinstance(entry.get("$type"), str):
-                found.append(entry)  # noqa: PERF401
-    return found
-
-
-def _native_children_of_property(element: object, prop: str) -> list[object]:
-    """Collect native children held under one property."""
-    found: list[object] = []
-    get = getattr(element, "get", None)
-    if not callable(get):
-        return found
-    try:
-        value = get(prop)
-    except Exception:  # noqa: BLE001 - native getters stay total
-        return found
-    if value is UNDEFINED or value is None:
-        return found
-    if isinstance(value, list):
-        found.extend(value)
-    elif hasattr(value, "type_"):
-        found.append(value)
-    return found
-
-
 def _index_tree(root: object) -> tuple[tuple[object, ...], dict[str, object], dict[int, object]]:
     """Build a bounded containment index with explicit stack traversal.
 
@@ -395,6 +356,9 @@ def _eval_value(  # noqa: C901, PLR0912, PLR0911, PLR0915
     if op == "case":
         value = _eval_value(node.get("value"), context, bindings)
         mode = node.get("mode")
+        if value is _MISSING:
+            # F3: MISSING yields no label; propagate for the caller to map.
+            return _MISSING
         if not isinstance(value, str) or mode not in ("upper", "lower"):
             raise TypeError("profile-type")  # noqa: EM101
         return apply_case(value, str(mode))

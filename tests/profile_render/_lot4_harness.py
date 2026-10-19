@@ -215,6 +215,10 @@ def check_inputs_unchanged(before: dict, after: dict) -> None:
 def compare_case_result(actual: Json, expected: dict, label: str) -> None:
     """Compare one result record with its sealed expectation (spec §17.4)."""
     expected = copy.deepcopy(expected)
+    if isinstance(expected, list):
+        # evaluateValue records pin a list of per-value results; exact match.
+        assert actual == expected, label
+        return
     unsealed = expected.pop("unsealed", None)
     includes = expected.pop("includes", None)
     for member in ("trace", "linkRoute", "structural", "inputsUnchanged"):

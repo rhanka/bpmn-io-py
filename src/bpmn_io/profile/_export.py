@@ -10,6 +10,7 @@ the complete report and no artifact; symbol tables never survive a call.
 from __future__ import annotations
 
 import copy
+import dataclasses
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -991,7 +992,8 @@ def map_export(
     for entry in candidate.get("coverage", []):
         if isinstance(entry, dict) and entry.get("disposition") == "unsupported":
             return refused_result("mapExport", "render-unsupported", echo_identity, echo_revision)
-    run, capability, code = _map_planned(compiled, tree, candidate, export, format)
+    wire_bindings = wire.get("bindings") if isinstance(wire, dict) else None
+    run, capability, code = _map_planned(compiled, tree, candidate, export, format, wire_bindings)
     if code is not None or run is None or capability is None:
         return refused_result("mapExport", code or "render-stale", echo_identity, echo_revision)
     return _map_finished(run, candidate, format, capability, (echo_identity, echo_revision))
@@ -1084,12 +1086,13 @@ def _map_checked(
     return (export, tree, candidate), None
 
 
-def _map_planned(
+def _map_planned(  # noqa: PLR0913, PLR0917 - support threading matches map_export
     compiled: object,
     tree: dict[str, Json],
     candidate: dict[str, Json],
     export: dict[str, Json],
     format: object,  # noqa: A002 - format is the exports[] member name
+    support: object = None,
 ) -> tuple[_ExportRun | None, str | None, str | None]:
     """Build one export run through capability and planning (run, class, code)."""
     run = _ExportRun()
@@ -1111,6 +1114,13 @@ def _map_planned(
     run.adapter = adapter
     notions = getattr(compiled, "notions", None)
     run.context = make_read_context(tree, notions=notions if isinstance(notions, dict) else {})
+    # Support bindings drive boundRole recognition (e.g. the band notion);
+    # attach the wire bindings like the render read context does.
+    support_entries = support if isinstance(support, list) else []
+    run.context = dataclasses.replace(
+        run.context,
+        bindings=tuple(entry for entry in support_entries if isinstance(entry, dict)),
+    )
     capability, code = _check_capability(run)
     if code is not None:
         return None, None, code

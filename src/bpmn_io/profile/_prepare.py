@@ -442,7 +442,8 @@ def _di_element(record: dict[str, Json], page_id: str) -> dict[str, Json] | None
     if not isinstance(occurrence, str) or not isinstance(semantic_id, str) or bounds is None:
         return None
     element_id = f"di-{page_id}-{occurrence}"
-    if record.get("role") == "edge":
+    # DESIGN §9 edge rule is presence-based (both role vocabularies sealed).
+    if "sourceOccurrence" in record or "targetOccurrence" in record:
         waypoints = record.get("waypoints")
         points = [_di_point(point) for point in waypoints] if isinstance(waypoints, list) else []
         if any(point is None for point in points):

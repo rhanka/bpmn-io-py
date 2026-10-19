@@ -166,9 +166,15 @@ def _index_list_entries(node: list[Json], pointer: str) -> list[tuple[Json, str]
 
 
 def _ref_id(value: Json) -> str | None:
-    """Extract one semantic reference id (string, $ref or element)."""
+    """Extract one semantic reference id (string, $ref, element or single list)."""
     if isinstance(value, str):
         return value or None
+    if isinstance(value, list):
+        # Data associations carry endpoint arrays; a singleton names one
+        # endpoint, a longer array stays ambiguous (None).
+        if len(value) == 1:
+            return _ref_id(value[0])
+        return None
     if isinstance(value, dict):
         ref = value.get("$ref")
         if isinstance(ref, str) and ref:
@@ -265,10 +271,15 @@ def _check_geometry_record(record: object) -> bool:
         return False
     if not _check_geometry_optional(record):
         return False
-    if record.get("role") == "edge":
+    # DESIGN §9 edge rule is presence-based (both vocabularies sealed):
+    # a record carrying endpoints or waypoints is an edge and must be
+    # complete; a record carrying none of the three is a nonedge.
+    has_edge_fields = (
+        "sourceOccurrence" in record or "targetOccurrence" in record or "waypoints" in record
+    )
+    if has_edge_fields:
         return _check_edge_endpoints(record)
-    has_endpoints = "sourceOccurrence" in record or "targetOccurrence" in record
-    return not (has_endpoints or "waypoints" in record)
+    return True
 
 
 def _check_page_record(page: object) -> bool:
@@ -354,8 +365,12 @@ def check_layout_record(value: object) -> bool:
 def _matched_bindings_for_theme(
     contributions: list[dict[str, Json]], chain: list[dict[str, Json]]
 ) -> dict[str, Json] | None:
-    """Return the nearest-chain render binding of one notion (or None)."""
-    for theme in chain:
+    """Return the nearest-chain render binding of one notion (or None).
+
+    The chain runs from the fallback root to the selected theme, so the
+    nearest theme comes last and wins.
+    """
+    for theme in reversed(chain):
         theme_id = str(theme.get("id"))
         for binding in contributions:
             if binding.get("theme") == theme_id:
@@ -1102,6 +1117,52 @@ def _region_support(
     return None
 
 
+def _tree_parent_ids(tree: dict[str, Json]) -> dict[str, str]:
+    """Map one JSON tree's element ids to the nearest id-bearing parent id."""
+    parents: dict[str, str] = {}
+    stack: list[tuple[object, str | None]] = [(tree, None)]
+    seen: set[int] = set()
+    while stack:
+        node, parent_id = stack.pop()
+        if not isinstance(node, (dict, list)) or id(node) in seen:
+            continue
+        seen.add(id(node))
+        if isinstance(node, dict):
+            node_id = node.get("id")
+            current = node_id if isinstance(node_id, str) and node_id else parent_id
+            if isinstance(node_id, str) and node_id and parent_id is not None:
+                parents.setdefault(node_id, parent_id)
+            stack.extend((value, current) for value in node.values())
+        else:
+            stack.extend((value, parent_id) for value in node)
+    return parents
+
+
+def _anchor_node_bounds(
+    staged: _StagedLayout, page_id: str, opposite: str
+) -> dict[str, Json] | None:
+    """Resolve one anchor opposite to its unique page bounds (None when absent).
+
+    The opposite endpoint may be a port without its own geometry (a
+    ``bpmn:Property`` under an activity); climb to the nearest ancestor
+    carrying exactly one geometry record on the page. Several records
+    stay ambiguous with no anchor.
+    """
+    on_page = [entry for entry in staged.geometry if entry.get("pageId") == page_id]
+    parents = _tree_parent_ids(staged.tree)
+    seen: set[str] = set()
+    current: str | None = opposite
+    while isinstance(current, str) and current and current not in seen:
+        seen.add(current)
+        matches = [entry.get("bounds") for entry in on_page if entry.get("semanticId") == current]
+        if len(matches) == 1 and isinstance(matches[0], dict):
+            return matches[0]
+        if matches:
+            return None
+        current = parents.get(current)
+    return None
+
+
 def _region_page_items(
     region_placements: list[Json], page_id: str, staged: _StagedLayout
 ) -> tuple[list[dict[str, Json]] | None, str | None]:
@@ -1131,13 +1192,9 @@ def _region_page_items(
             if isinstance(anchor_id, str) and anchor_id:
                 opposite = _association_opposite(staged.by_id, anchor_id, str(element_id))
                 if opposite is not None:
-                    anchors = [
-                        entry.get("bounds")
-                        for entry in staged.geometry
-                        if entry.get("pageId") == page_id and entry.get("semanticId") == opposite
-                    ]
-                    if len(anchors) == 1 and isinstance(anchors[0], dict):
-                        item["anchor"] = anchors[0]
+                    anchor = _anchor_node_bounds(staged, page_id, opposite)
+                    if anchor is not None:
+                        item["anchor"] = anchor
             items.append(item)
     return items, None
 
@@ -1274,7 +1331,7 @@ def _reroute_links(geometry: list[dict[str, Json]], relocated: set[tuple[str, st
         (str(record.get("pageId")), str(record.get("occurrenceKey"))): record for record in geometry
     }
     for record in geometry:
-        if record.get("role") != "edge":
+        if "sourceOccurrence" not in record or "targetOccurrence" not in record:
             continue
         source = record.get("sourceOccurrence")
         target = record.get("targetOccurrence")
@@ -1403,13 +1460,9 @@ def _badge_node_box(
     opposite = _association_opposite(staged.by_id, anchor_id, owner_id)
     node_box = None
     if opposite is not None:
-        matches = [
-            entry.get("bounds")
-            for entry in staged.geometry
-            if entry.get("pageId") == page.get("pageId") and entry.get("semanticId") == opposite
-        ]
-        if len(matches) == 1 and isinstance(matches[0], dict):
-            node_box = matches[0]
+        page_id = page.get("pageId")
+        if isinstance(page_id, str):
+            node_box = _anchor_node_bounds(staged, page_id, opposite)
     if node_box is None:
         return None
     return node_box

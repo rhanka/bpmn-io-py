@@ -492,6 +492,13 @@ def _check_record_text(  # noqa: PLR0913, PLR0917 - label-check frame is fixed
     record: dict[str, Json],
 ) -> str | None:
     """Evaluate one occurrence label and check it against the record label."""
+    if not matched:
+        # No notion means no label contract: a record label on a named
+        # element is stale (its bindings produce no label); a nameless
+        # element (e.g. an annotation carrying DI text) goes to the
+        # unsupported path below instead of refusing here.
+        unmatched_named = record.get("label") is not None and isinstance(element.get("name"), str)
+        return "render-stale" if unmatched_named else None
     asts, code = _notion_label_asts(matched, context.chain)
     if code is not None:
         return code
@@ -563,9 +570,10 @@ def _semantic_occurrence(
     if code is not None:
         return None, code, None
     role = record.get("role")
-    occurrence["emittedType"] = (
-        "edge" if role == "edge" else ("label" if role == "label" else "node")
-    )
+    # DESIGN §9 edge rule is presence-based (both `edge` and `content`
+    # role vocabularies are sealed): endpoints mark an edge record.
+    is_edge = "sourceOccurrence" in record or "targetOccurrence" in record
+    occurrence["emittedType"] = "edge" if is_edge else ("label" if role == "label" else "node")
     levels = _TokenLevels(
         occurrence=_lookup_tokens(context.overrides["occurrence"], page_id, occurrence_key),
         semantic=_lookup_semantic(context.overrides["semantic"], semantic_id),
@@ -577,7 +585,7 @@ def _semantic_occurrence(
         diagnostic = _unsupported_diagnostic(tree, semantic_id, page_id, occurrence_key)
         return None, None, diagnostic
     occurrence["glyphId"] = glyph_id
-    if role == "edge":
+    if occurrence["emittedType"] == "edge":
         _echo_edge(record, occurrence)
     return occurrence, None, None
 
