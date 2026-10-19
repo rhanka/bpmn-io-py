@@ -17,7 +17,7 @@ from bpmn_io.profile._cn_context import Authority, create_read_context
 from bpmn_io.profile._cn_gates import GATES
 from bpmn_io.profile._cn_normalize import normalize, sort_placements
 from bpmn_io.profile._cn_plan import plan_recipe
-from bpmn_io.profile._cn_supports import propose_support_bindings
+from bpmn_io.profile._cn_supports import bind_supports, propose_support_bindings
 from bpmn_io.profile._compat import check_compatibility
 from bpmn_io.profile._compiler import (
     CompiledProfile,
@@ -154,6 +154,7 @@ __all__ = [  # noqa: RUF022 - lots append contiguous per-lot blocks
     "Authority",
     "GATES",
     "apply_plan",
+    "bind_supports",
     "complete",
     "create_read_context",
     "normalize",

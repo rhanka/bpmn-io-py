@@ -21,6 +21,7 @@ from bpmn_io.profile import (
     Authority,
     allocate_stable_id,
     apply_plan,
+    bind_supports,
     compile_profile,
     complete,
     create_descriptor_context,
@@ -39,7 +40,6 @@ MECH = ROOT / "contracts" / "profile-mechanism" / "1"
 
 #: Operations with no implementation yet: value is the strict-xfail reason.
 PENDING = {
-    "bind_supports": "lot-3 pending: bind_supports (OPEN-MACHINE gated)",
     "remap_ids": "lot-3 pending: remap_ids (OPEN-ID gated)",
     "import_projection": "lot-3 pending: import_projection",
     "normalize_transport": "lot-3 pending: normalize plus the conductor joint run (binding §8)",
@@ -324,6 +324,19 @@ def _run_normalize(case: dict[str, object], record: dict[str, object]) -> None:
         _assert_normalize_fixed_point(compiled, actual, record.get("placementIntent"), activation)
 
 
+def _run_bind(case: dict[str, object], record: dict[str, object]) -> None:
+    """Run one bind_supports case through the bound §9 call."""
+    compiled = _compiled(case["profile"])
+    frozen = jcs(record)
+    activation = record.get("activation") or "edit"
+    assert isinstance(activation, str)
+    actual = bind_supports(
+        compiled, record["envelope"], record["bindings"], activation=activation
+    ).to_json()
+    assert jcs(record) == frozen
+    assert jcs(actual) == jcs(case["expected"]), case["case"]
+
+
 def _run_propose(case: dict[str, object], record: dict[str, object]) -> None:
     """Run one propose_support_bindings case through the bound §9 call."""
     compiled = _compiled(case["profile"])
@@ -354,6 +367,7 @@ _RUNNERS = {
     "normalize": _run_normalize,
     "plan_recipe+apply_plan": _run_plan,
     "apply_plan": _run_apply,
+    "bind_supports": _run_bind,
     "compile_profile": _run_compile,
     "propose_support_bindings": _run_propose,
     "sort_placements": _run_sort,
