@@ -1,0 +1,130 @@
+{
+  "case": "cn-sort-placements",
+  "clause": "DESIGN R3.3 §7.2 placement sort order; §3.1 UTF-16 ordering",
+  "author": "spec-seal",
+  "operation": "sort_placements",
+  "profile": null,
+  "derivation": "Order by UTF-16 (ownerProcessId, regionKey, elementId, anchorAssociationId with absent before present, relatedAssociationIds compared element-wise, prefix first). P_10 precedes P_2; for the same target the anchorless record comes first, then related [A1] < [A1,B2] < [A2]; U+10000 (surrogates D800 DC00) precedes U+E000 in UTF-16 although it follows it in code-point order.",
+  "input": {
+    "placements": [
+      {
+        "elementId": "x",
+        "ownerProcessId": "P_10",
+        "regionKey": "a",
+        "relatedAssociationIds": []
+      },
+      {
+        "elementId": "E",
+        "ownerProcessId": "P_2",
+        "regionKey": "a",
+        "relatedAssociationIds": []
+      },
+      {
+        "elementId": "E",
+        "ownerProcessId": "P_10",
+        "regionKey": "a",
+        "relatedAssociationIds": [
+          "A2"
+        ],
+        "anchorAssociationId": "A1"
+      },
+      {
+        "elementId": "E",
+        "ownerProcessId": "P_10",
+        "regionKey": "b",
+        "relatedAssociationIds": []
+      },
+      {
+        "elementId": "E",
+        "ownerProcessId": "P_10",
+        "regionKey": "a",
+        "relatedAssociationIds": [
+          "A1",
+          "B2"
+        ],
+        "anchorAssociationId": "A1"
+      },
+      {
+        "elementId": "𐀀x",
+        "ownerProcessId": "P_10",
+        "regionKey": "a",
+        "relatedAssociationIds": []
+      },
+      {
+        "elementId": "E",
+        "ownerProcessId": "P_10",
+        "regionKey": "a",
+        "relatedAssociationIds": [
+          "A1"
+        ],
+        "anchorAssociationId": "A1"
+      },
+      {
+        "elementId": "E",
+        "ownerProcessId": "P_10",
+        "regionKey": "a",
+        "relatedAssociationIds": []
+      }
+    ]
+  },
+  "expected": [
+    {
+      "elementId": "E",
+      "ownerProcessId": "P_10",
+      "regionKey": "a",
+      "relatedAssociationIds": []
+    },
+    {
+      "elementId": "E",
+      "ownerProcessId": "P_10",
+      "regionKey": "a",
+      "relatedAssociationIds": [
+        "A1"
+      ],
+      "anchorAssociationId": "A1"
+    },
+    {
+      "elementId": "E",
+      "ownerProcessId": "P_10",
+      "regionKey": "a",
+      "relatedAssociationIds": [
+        "A1",
+        "B2"
+      ],
+      "anchorAssociationId": "A1"
+    },
+    {
+      "elementId": "E",
+      "ownerProcessId": "P_10",
+      "regionKey": "a",
+      "relatedAssociationIds": [
+        "A2"
+      ],
+      "anchorAssociationId": "A1"
+    },
+    {
+      "elementId": "𐀀x",
+      "ownerProcessId": "P_10",
+      "regionKey": "a",
+      "relatedAssociationIds": []
+    },
+    {
+      "elementId": "x",
+      "ownerProcessId": "P_10",
+      "regionKey": "a",
+      "relatedAssociationIds": []
+    },
+    {
+      "elementId": "E",
+      "ownerProcessId": "P_10",
+      "regionKey": "b",
+      "relatedAssociationIds": []
+    },
+    {
+      "elementId": "E",
+      "ownerProcessId": "P_2",
+      "regionKey": "a",
+      "relatedAssociationIds": []
+    }
+  ]
+}

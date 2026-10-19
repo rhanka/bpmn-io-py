@@ -1,0 +1,391 @@
+{
+  "case": "cn-c-identity-neutral",
+  "clause": "DESIGN R3.3 §3.2 ID allocation; §7.1 Completion C (Identity/defaults, Process)",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "neutral",
+  "derivation": "C first allocates the missing Definitions id with owner document-root/1, slot definitions, key root, then fills missing child ids top-down with ownerId = the containing element id, slot = the descriptor-qualified containment property <containing $type>.<property> (bpmn:Definitions.rootElements, bpmn:Process.flowElements; H D1) and stableKey = JCS([contentSignature, duplicateOrdinal]); the two identical ID-less Review tasks get ordinals 0 and 1, Task_kept and Process_empty keep their ids, the ID-less Documentation stays ID-less. The profile complete-process recipe then sets isExecutable=false on every Process including the empty one (the neutral profiles declare no topology recipe and their Task types no incoming/outgoing). Entries address the written location (<element>/id, <element>/isExecutable; H B9) and are sorted per §10.1 plus the H G2 tie-breaks. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "name": "Review"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "Review"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_kept",
+                "name": "Kept"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "Other",
+                "documentation": [
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "Source note"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_empty"
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "828b6d130841ac76ec701355972fc2a6226e7d1d15c16025cb28ccb7e232da4c"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "828b6d130841ac76ec701355972fc2a6226e7d1d15c16025cb28ccb7e232da4c",
+    "revision": "962ff4ea2b2aaedbd91d436963e021b7acfb9c334956d2a8a2cd7650e07f0296",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-process",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": "g_f4b9e7905af7a3b76b63e6556ab80094c4a3088203a319abf028d70e083f9926",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": false,
+          "property": "isExecutable"
+        },
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-process",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/isExecutable",
+            "targetId": "Process_empty",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/isExecutable",
+            "targetId": "Process_empty",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": false,
+          "property": "isExecutable"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/id",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/id",
+            "targetId": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/id",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/id",
+            "targetId": "g_6b5e7e715b813d2336b611d87feb0f67ee7a3e4d0e40bfd7e061517fa9c06b4a",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_6b5e7e715b813d2336b611d87feb0f67ee7a3e4d0e40bfd7e061517fa9c06b4a",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/id",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/id",
+            "targetId": "g_c7f9fd503e3bd1269d7a4aea850225d622dd15a33277b979d7ef48c9b36df0ae",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_c7f9fd503e3bd1269d7a4aea850225d622dd15a33277b979d7ef48c9b36df0ae",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/id",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/id",
+            "targetId": "g_1f606ed57865b1df381ac0e439701f920963223b0d1661263e3e1be0e476f50a",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_1f606ed57865b1df381ac0e439701f920963223b0d1661263e3e1be0e476f50a",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/id",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/id",
+            "targetId": "g_f4b9e7905af7a3b76b63e6556ab80094c4a3088203a319abf028d70e083f9926",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_f4b9e7905af7a3b76b63e6556ab80094c4a3088203a319abf028d70e083f9926",
+          "property": "id"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "828b6d130841ac76ec701355972fc2a6226e7d1d15c16025cb28ccb7e232da4c",
+      "outputRevision": "962ff4ea2b2aaedbd91d436963e021b7acfb9c334956d2a8a2cd7650e07f0296"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "name": "Review",
+                "id": "g_6b5e7e715b813d2336b611d87feb0f67ee7a3e4d0e40bfd7e061517fa9c06b4a"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "Review",
+                "id": "g_c7f9fd503e3bd1269d7a4aea850225d622dd15a33277b979d7ef48c9b36df0ae"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_kept",
+                "name": "Kept"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "Other",
+                "documentation": [
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "Source note"
+                  }
+                ],
+                "id": "g_1f606ed57865b1df381ac0e439701f920963223b0d1661263e3e1be0e476f50a"
+              }
+            ],
+            "id": "g_f4b9e7905af7a3b76b63e6556ab80094c4a3088203a319abf028d70e083f9926",
+            "isExecutable": false
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_empty",
+            "isExecutable": false
+          }
+        ],
+        "id": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21"
+      },
+      "bindings": [],
+      "semanticRevision": "962ff4ea2b2aaedbd91d436963e021b7acfb9c334956d2a8a2cd7650e07f0296"
+    }
+  },
+  "fixedPoint": true
+}

@@ -1,0 +1,100 @@
+{
+  "case": "cn-c-invalid-mode",
+  "clause": "DESIGN R3.3 §2.5 complete(compiled, envelope, mode); §10.1 refusal record; spec §3.4",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "neutral",
+  "derivation": "mode accepts exactly extraction or retained (spec §3.4, H B7); 'draft' is a readiness policy, not a C mode, so the call refuses operation-error at precedence step 1 (H C1/C11). The envelope argument is itself a JSON object with documentVersion 1, a shape-valid identity and a semanticRevision, so the refusal echoes them (H B3: only an unknown documentVersion, an unparseable input or the not-loaded state omit the echo). Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_mode",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1"
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "5bcdc54709430bcdf93f14ee8a019a420829cef73a602e6c4ed7e9c333519101"
+    },
+    "mode": "draft",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "complete",
+    "code": "operation-error",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "5bcdc54709430bcdf93f14ee8a019a420829cef73a602e6c4ed7e9c333519101"
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "5bcdc54709430bcdf93f14ee8a019a420829cef73a602e6c4ed7e9c333519101"
+  }
+}

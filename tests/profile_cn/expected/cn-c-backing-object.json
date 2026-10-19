@@ -1,0 +1,325 @@
+{
+  "case": "cn-c-backing-object",
+  "clause": "DESIGN R3.3 §7.1 Completion C (Internal item); §2.4 create, assignRef",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "cn-c",
+  "derivation": "Candidates are the DataObjectReferences without dataObjectRef in id order (Ref_new, Ref_store). Each gets a DataObject allocated as stable-id(Process_D, backing-object, <reference id>), appended to Process_D.flowElements in candidate order, then the reference is assigned. Ref_kept's valid backing is preserved; the name 'Archive store' does not make a DataStore and the DataStoreReference without store gets none. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_item",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_D",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:DataObjectReference",
+                "id": "Ref_new",
+                "name": "Draft form"
+              },
+              {
+                "$type": "bpmn:DataObjectReference",
+                "id": "Ref_kept",
+                "dataObjectRef": "DataObject_kept"
+              },
+              {
+                "$type": "bpmn:DataObject",
+                "id": "DataObject_kept"
+              },
+              {
+                "$type": "bpmn:DataObjectReference",
+                "id": "Ref_store",
+                "name": "Archive store"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "StoreRef_1",
+                "name": "Archive"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "c3360de36dd937c5d5be2d48e4138954a0a236b7d70b751beae1aadd96f8d898"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-c/1",
+      "version": "1.0.0",
+      "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "c3360de36dd937c5d5be2d48e4138954a0a236b7d70b751beae1aadd96f8d898",
+    "revision": "367e0db28fdddaafd10fb729389ae62ce3e1f8101090000c9d07f982a1434bdb",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/create",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-backing-object",
+          "messageKey": "complete.create",
+          "disposition": "corrected",
+          "source": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "generated"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/6",
+            "targetId": "g_d3dbae2995a832321197b0ade64adb81851352419b6cf27abf403d8e8bf849e2",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": {
+            "$type": "bpmn:DataObject",
+            "id": "g_d3dbae2995a832321197b0ade64adb81851352419b6cf27abf403d8e8bf849e2"
+          },
+          "property": "flowElements"
+        },
+        {
+          "code": "complete/create",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-backing-object",
+          "messageKey": "complete.create",
+          "disposition": "corrected",
+          "source": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "generated"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5",
+            "targetId": "g_dcb864b71b2c5a87696e8712ef821a64ee9ee8a12fc1bc71c418aac5dfd591f8",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": {
+            "$type": "bpmn:DataObject",
+            "id": "g_dcb864b71b2c5a87696e8712ef821a64ee9ee8a12fc1bc71c418aac5dfd591f8"
+          },
+          "property": "flowElements"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-backing-object",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/dataObjectRef",
+            "targetId": "Ref_new",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/dataObjectRef",
+            "targetId": "Ref_new",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_dcb864b71b2c5a87696e8712ef821a64ee9ee8a12fc1bc71c418aac5dfd591f8",
+          "property": "dataObjectRef"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-backing-object",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/dataObjectRef",
+            "targetId": "Ref_store",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/dataObjectRef",
+            "targetId": "Ref_store",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_d3dbae2995a832321197b0ade64adb81851352419b6cf27abf403d8e8bf849e2",
+          "property": "dataObjectRef"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "c3360de36dd937c5d5be2d48e4138954a0a236b7d70b751beae1aadd96f8d898",
+      "outputRevision": "367e0db28fdddaafd10fb729389ae62ce3e1f8101090000c9d07f982a1434bdb"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_item",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_D",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:DataObjectReference",
+                "id": "Ref_new",
+                "name": "Draft form",
+                "dataObjectRef": "g_dcb864b71b2c5a87696e8712ef821a64ee9ee8a12fc1bc71c418aac5dfd591f8"
+              },
+              {
+                "$type": "bpmn:DataObjectReference",
+                "id": "Ref_kept",
+                "dataObjectRef": "DataObject_kept"
+              },
+              {
+                "$type": "bpmn:DataObject",
+                "id": "DataObject_kept"
+              },
+              {
+                "$type": "bpmn:DataObjectReference",
+                "id": "Ref_store",
+                "name": "Archive store",
+                "dataObjectRef": "g_d3dbae2995a832321197b0ade64adb81851352419b6cf27abf403d8e8bf849e2"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "StoreRef_1",
+                "name": "Archive"
+              },
+              {
+                "$type": "bpmn:DataObject",
+                "id": "g_dcb864b71b2c5a87696e8712ef821a64ee9ee8a12fc1bc71c418aac5dfd591f8"
+              },
+              {
+                "$type": "bpmn:DataObject",
+                "id": "g_d3dbae2995a832321197b0ade64adb81851352419b6cf27abf403d8e8bf849e2"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "367e0db28fdddaafd10fb729389ae62ce3e1f8101090000c9d07f982a1434bdb"
+    }
+  },
+  "fixedPoint": true
+}

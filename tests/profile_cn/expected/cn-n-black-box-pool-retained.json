@@ -1,0 +1,560 @@
+{
+  "case": "cn-n-black-box-pool-retained",
+  "clause": "DESIGN R3.3 §5.2 (ordinary pool never taken over); §13 OPEN-MACHINE; §16 item 6",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "cn-n",
+  "derivation": "Collab_X/Pool_X carry the support labels but no binding and non-allocator ids: N never finds a support by name and never takes over an ordinary black-box pool, so it creates a new Collaboration, main Participant and band for Process_P (OPEN-MACHINE default: create a new band when none is explicitly selected) and leaves Collab_X and Pool_X byte-identical. Ref_P has no association: placement without anchor. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_pool",
+        "rootElements": [
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_P",
+            "name": "Register"
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_P",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_P",
+                "name": "Consult register"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_P",
+                "dataStoreRef": "Store_P"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "Collab_X",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "Pool_X",
+                "name": "reference-band"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "79b530648257df7d03901b50530a1432781aca0b95855e4c70459ad5b7ca6d88"
+    },
+    "activation": "qualification",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "normalize",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n/1",
+      "version": "1.0.0",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "79b530648257df7d03901b50530a1432781aca0b95855e4c70459ad5b7ca6d88",
+    "revision": "e91f8545f4630eb7502a5d061fdc7fd1d4de142c14989ae8aaf75b86111c23a5",
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [
+        {
+          "code": "normalize/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "ensure-base-supports",
+          "messageKey": "normalize.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "generated"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/3/participants/0/processRef",
+            "targetId": "g_d3abcc9fcea1d178b0870ff624cc2600043081f95f825549049d02fc3936593e",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "Process_P",
+          "property": "processRef"
+        },
+        {
+          "code": "normalize/ensure",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "ensure-base-supports",
+          "messageKey": "normalize.ensure",
+          "disposition": "corrected",
+          "source": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "generated"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/3",
+            "targetId": "g_b8f2ecc649273f3bc0d8ef7c3521138d68af574a97d59d3c38d11eef3761ba4e",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": {
+            "$type": "bpmn:Collaboration",
+            "id": "g_b8f2ecc649273f3bc0d8ef7c3521138d68af574a97d59d3c38d11eef3761ba4e",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "g_d3abcc9fcea1d178b0870ff624cc2600043081f95f825549049d02fc3936593e",
+                "name": "main-participant",
+                "processRef": "Process_P"
+              },
+              {
+                "$type": "bpmn:Participant",
+                "id": "g_290cac707e8065eadfd5b6095acd3129e66aa1c27a0685008ac775c803e1ad0c",
+                "name": "reference-band"
+              }
+            ]
+          },
+          "property": "rootElements"
+        },
+        {
+          "code": "normalize/ensure",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "ensure-base-supports",
+          "messageKey": "normalize.ensure",
+          "disposition": "corrected",
+          "source": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "generated"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/3/participants/0",
+            "targetId": "g_d3abcc9fcea1d178b0870ff624cc2600043081f95f825549049d02fc3936593e",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": {
+            "$type": "bpmn:Participant",
+            "id": "g_d3abcc9fcea1d178b0870ff624cc2600043081f95f825549049d02fc3936593e",
+            "name": "main-participant",
+            "processRef": "Process_P"
+          },
+          "property": "participants"
+        },
+        {
+          "code": "normalize/ensure",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "ensure-reference-band",
+          "messageKey": "normalize.ensure",
+          "disposition": "corrected",
+          "source": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "generated"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/3/participants/1",
+            "targetId": "g_290cac707e8065eadfd5b6095acd3129e66aa1c27a0685008ac775c803e1ad0c",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": {
+            "$type": "bpmn:Participant",
+            "id": "g_290cac707e8065eadfd5b6095acd3129e66aa1c27a0685008ac775c803e1ad0c",
+            "name": "reference-band"
+          },
+          "property": "participants"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "79b530648257df7d03901b50530a1432781aca0b95855e4c70459ad5b7ca6d88",
+      "outputRevision": "e91f8545f4630eb7502a5d061fdc7fd1d4de142c14989ae8aaf75b86111c23a5"
+    },
+    "payload": {
+      "envelope": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_pool",
+          "rootElements": [
+            {
+              "$type": "bpmn:DataStore",
+              "id": "Store_P",
+              "name": "Register"
+            },
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_P",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_P",
+                  "name": "Consult register"
+                },
+                {
+                  "$type": "bpmn:DataStoreReference",
+                  "id": "Ref_P",
+                  "dataStoreRef": "Store_P"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Collaboration",
+              "id": "Collab_X",
+              "name": "collaboration",
+              "participants": [
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "Pool_X",
+                  "name": "reference-band"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Collaboration",
+              "id": "g_b8f2ecc649273f3bc0d8ef7c3521138d68af574a97d59d3c38d11eef3761ba4e",
+              "name": "collaboration",
+              "participants": [
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "g_d3abcc9fcea1d178b0870ff624cc2600043081f95f825549049d02fc3936593e",
+                  "name": "main-participant",
+                  "processRef": "Process_P"
+                },
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "g_290cac707e8065eadfd5b6095acd3129e66aa1c27a0685008ac775c803e1ad0c",
+                  "name": "reference-band"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [
+          {
+            "ownerId": "Process_P",
+            "role": "collaboration",
+            "targetId": "g_b8f2ecc649273f3bc0d8ef7c3521138d68af574a97d59d3c38d11eef3761ba4e"
+          },
+          {
+            "ownerId": "Process_P",
+            "role": "main-participant",
+            "targetId": "g_d3abcc9fcea1d178b0870ff624cc2600043081f95f825549049d02fc3936593e"
+          },
+          {
+            "ownerId": "Process_P",
+            "role": "reference-band",
+            "targetId": "g_290cac707e8065eadfd5b6095acd3129e66aa1c27a0685008ac775c803e1ad0c"
+          }
+        ],
+        "semanticRevision": "e91f8545f4630eb7502a5d061fdc7fd1d4de142c14989ae8aaf75b86111c23a5"
+      },
+      "placements": [
+        {
+          "elementId": "Ref_P",
+          "ownerProcessId": "Process_P",
+          "regionKey": "reference-band",
+          "relatedAssociationIds": []
+        }
+      ],
+      "report": {
+        "reportVersion": "2",
+        "operation": "normalize",
+        "entries": [
+          {
+            "code": "normalize/assignRef",
+            "severity": "info",
+            "classification": "repairable",
+            "stage": "normalize",
+            "ruleId": "ensure-base-supports",
+            "messageKey": "normalize.assignRef",
+            "disposition": "corrected",
+            "source": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "generated"
+            },
+            "result": {
+              "domain": "tree",
+              "pointer": "/rootElements/3/participants/0/processRef",
+              "targetId": "g_d3abcc9fcea1d178b0870ff624cc2600043081f95f825549049d02fc3936593e",
+              "provenance": "generated"
+            },
+            "beforePresent": false,
+            "afterPresent": true,
+            "after": "Process_P",
+            "property": "processRef"
+          },
+          {
+            "code": "normalize/ensure",
+            "severity": "info",
+            "classification": "repairable",
+            "stage": "normalize",
+            "ruleId": "ensure-base-supports",
+            "messageKey": "normalize.ensure",
+            "disposition": "corrected",
+            "source": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "generated"
+            },
+            "result": {
+              "domain": "tree",
+              "pointer": "/rootElements/3",
+              "targetId": "g_b8f2ecc649273f3bc0d8ef7c3521138d68af574a97d59d3c38d11eef3761ba4e",
+              "provenance": "generated"
+            },
+            "beforePresent": false,
+            "afterPresent": true,
+            "after": {
+              "$type": "bpmn:Collaboration",
+              "id": "g_b8f2ecc649273f3bc0d8ef7c3521138d68af574a97d59d3c38d11eef3761ba4e",
+              "name": "collaboration",
+              "participants": [
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "g_d3abcc9fcea1d178b0870ff624cc2600043081f95f825549049d02fc3936593e",
+                  "name": "main-participant",
+                  "processRef": "Process_P"
+                },
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "g_290cac707e8065eadfd5b6095acd3129e66aa1c27a0685008ac775c803e1ad0c",
+                  "name": "reference-band"
+                }
+              ]
+            },
+            "property": "rootElements"
+          },
+          {
+            "code": "normalize/ensure",
+            "severity": "info",
+            "classification": "repairable",
+            "stage": "normalize",
+            "ruleId": "ensure-base-supports",
+            "messageKey": "normalize.ensure",
+            "disposition": "corrected",
+            "source": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "generated"
+            },
+            "result": {
+              "domain": "tree",
+              "pointer": "/rootElements/3/participants/0",
+              "targetId": "g_d3abcc9fcea1d178b0870ff624cc2600043081f95f825549049d02fc3936593e",
+              "provenance": "generated"
+            },
+            "beforePresent": false,
+            "afterPresent": true,
+            "after": {
+              "$type": "bpmn:Participant",
+              "id": "g_d3abcc9fcea1d178b0870ff624cc2600043081f95f825549049d02fc3936593e",
+              "name": "main-participant",
+              "processRef": "Process_P"
+            },
+            "property": "participants"
+          },
+          {
+            "code": "normalize/ensure",
+            "severity": "info",
+            "classification": "repairable",
+            "stage": "normalize",
+            "ruleId": "ensure-reference-band",
+            "messageKey": "normalize.ensure",
+            "disposition": "corrected",
+            "source": {
+              "domain": "none",
+              "pointer": null,
+              "targetId": null,
+              "provenance": "generated"
+            },
+            "result": {
+              "domain": "tree",
+              "pointer": "/rootElements/3/participants/1",
+              "targetId": "g_290cac707e8065eadfd5b6095acd3129e66aa1c27a0685008ac775c803e1ad0c",
+              "provenance": "generated"
+            },
+            "beforePresent": false,
+            "afterPresent": true,
+            "after": {
+              "$type": "bpmn:Participant",
+              "id": "g_290cac707e8065eadfd5b6095acd3129e66aa1c27a0685008ac775c803e1ad0c",
+              "name": "reference-band"
+            },
+            "property": "participants"
+          }
+        ],
+        "rawStandardFindings": [],
+        "idMap": [],
+        "artifacts": [],
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "inputRevision": "79b530648257df7d03901b50530a1432781aca0b95855e4c70459ad5b7ca6d88",
+        "outputRevision": "e91f8545f4630eb7502a5d061fdc7fd1d4de142c14989ae8aaf75b86111c23a5"
+      }
+    }
+  },
+  "fixedPoint": true
+}

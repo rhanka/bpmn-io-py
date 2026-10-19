@@ -1,0 +1,331 @@
+{
+  "case": "cn-c-unicode-names",
+  "clause": "DESIGN R3.3 §3.2 contentSignature; §14.3 Unicode U+E000/U+10000 and whitespace",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "neutral",
+  "derivation": "Each ID-less task's contentSignature hashes its exact UTF-8 JCS name with no trim, no NFC and no case folding, so U+E000, U+10000, a leading space, a leading NBSP and the bare name give five distinct signatures, each ordinal 0. Names are preserved. Source targetId is the nearest original ID-bearing ancestor, Process_uni. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_uni",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_uni",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "name": " private use"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "𐀀 astral"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": " Draft"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": " Draft"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "Draft"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "a23184c207e18b7b0d4efb71796db1b24c671a0fce9906998c666ebdd75d6506"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "a23184c207e18b7b0d4efb71796db1b24c671a0fce9906998c666ebdd75d6506",
+    "revision": "22fb36d28807eff3efd53bc9744b9c41892a8f4d4bb5111fe11e73b7457e6682",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/id",
+            "targetId": "Process_uni",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/id",
+            "targetId": "g_13d19ff0e28d03145ff3d239cfb2c6f7827ae40c77ceb278c3a6049d9bbd9aa1",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_13d19ff0e28d03145ff3d239cfb2c6f7827ae40c77ceb278c3a6049d9bbd9aa1",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/id",
+            "targetId": "Process_uni",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/id",
+            "targetId": "g_fb166cba970b426b362b45cf0a8f0654b282a59cf75c608921b9d1fc6e822758",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_fb166cba970b426b362b45cf0a8f0654b282a59cf75c608921b9d1fc6e822758",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/id",
+            "targetId": "Process_uni",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/id",
+            "targetId": "g_cd7a86a38aac251b8fc6263695d7897ba0fa89baac8af5f4d1d74f2630d62502",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_cd7a86a38aac251b8fc6263695d7897ba0fa89baac8af5f4d1d74f2630d62502",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/id",
+            "targetId": "Process_uni",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/id",
+            "targetId": "g_a595a7983fb60eaa6bc3e51496eb526985765f8601f48d86f99aa87dd3df0798",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_a595a7983fb60eaa6bc3e51496eb526985765f8601f48d86f99aa87dd3df0798",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/4/id",
+            "targetId": "Process_uni",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/4/id",
+            "targetId": "g_ded9d1d256c26714af2799a0d1acb048394f294e3de9dc9869680d7ab998fb02",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_ded9d1d256c26714af2799a0d1acb048394f294e3de9dc9869680d7ab998fb02",
+          "property": "id"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "a23184c207e18b7b0d4efb71796db1b24c671a0fce9906998c666ebdd75d6506",
+      "outputRevision": "22fb36d28807eff3efd53bc9744b9c41892a8f4d4bb5111fe11e73b7457e6682"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_uni",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_uni",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "name": " private use",
+                "id": "g_13d19ff0e28d03145ff3d239cfb2c6f7827ae40c77ceb278c3a6049d9bbd9aa1"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "𐀀 astral",
+                "id": "g_fb166cba970b426b362b45cf0a8f0654b282a59cf75c608921b9d1fc6e822758"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": " Draft",
+                "id": "g_cd7a86a38aac251b8fc6263695d7897ba0fa89baac8af5f4d1d74f2630d62502"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": " Draft",
+                "id": "g_a595a7983fb60eaa6bc3e51496eb526985765f8601f48d86f99aa87dd3df0798"
+              },
+              {
+                "$type": "bpmn:Task",
+                "name": "Draft",
+                "id": "g_ded9d1d256c26714af2799a0d1acb048394f294e3de9dc9869680d7ab998fb02"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "22fb36d28807eff3efd53bc9744b9c41892a8f4d4bb5111fe11e73b7457e6682"
+    }
+  },
+  "fixedPoint": true
+}

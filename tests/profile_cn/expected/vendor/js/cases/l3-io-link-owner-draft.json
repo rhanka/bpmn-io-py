@@ -1,0 +1,573 @@
+{
+  "caseId": "l3-io-link-owner-draft",
+  "operation": "validate",
+  "phase": "post-normalize",
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Front",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_FA",
+                  "name": "Request",
+                  "outgoing": [
+                    "Flow_FA1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_FA",
+                  "name": "Take request",
+                  "incoming": [
+                    "Flow_FA1"
+                  ],
+                  "outgoing": [
+                    "Flow_FA2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_FA",
+                  "name": "Taken",
+                  "incoming": [
+                    "Flow_FA2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_FA1",
+                  "sourceRef": "Start_FA",
+                  "targetRef": "Task_FA"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_FA2",
+                  "sourceRef": "Task_FA",
+                  "targetRef": "End_FA"
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_FA",
+                  "name": "Partner",
+                  "incoming": [],
+                  "outgoing": [],
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "external",
+                      "textFormat": "text/x-neutral-call-kind"
+                    }
+                  ]
+                }
+              ],
+              "artifacts": [
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_FA",
+                  "sourceRef": "Call_FA",
+                  "targetRef": "Start_FA",
+                  "associationDirection": "One"
+                },
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_X1",
+                  "sourceRef": "Call_FA",
+                  "targetRef": "Start_FB",
+                  "associationDirection": "One"
+                },
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_X2",
+                  "sourceRef": "Call_FA",
+                  "targetRef": "DataInput_FB",
+                  "associationDirection": "One"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_B",
+              "name": "Back",
+              "isExecutable": false,
+              "ioSpecification": {
+                "$type": "bpmn:InputOutputSpecification",
+                "dataInputs": [
+                  {
+                    "$type": "bpmn:DataInput",
+                    "id": "DataInput_FB",
+                    "name": "Order"
+                  }
+                ],
+                "dataOutputs": [],
+                "inputSets": [
+                  {
+                    "$type": "bpmn:InputSet",
+                    "id": "InputSet_FB",
+                    "dataInputRefs": [
+                      "DataInput_FB"
+                    ]
+                  }
+                ],
+                "outputSets": [
+                  {
+                    "$type": "bpmn:OutputSet",
+                    "id": "OutputSet_FB"
+                  }
+                ]
+              },
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_FB",
+                  "name": "Order taken",
+                  "outgoing": [
+                    "Flow_FB1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_FB",
+                  "name": "Process order",
+                  "incoming": [
+                    "Flow_FB1"
+                  ],
+                  "outgoing": [
+                    "Flow_FB2"
+                  ],
+                  "properties": [
+                    {
+                      "$type": "bpmn:Property",
+                      "id": "Property_FB"
+                    }
+                  ],
+                  "dataInputAssociations": [
+                    {
+                      "$type": "bpmn:DataInputAssociation",
+                      "id": "DIA_FB",
+                      "sourceRef": [
+                        "DataInput_FB"
+                      ],
+                      "targetRef": "Property_FB"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_FB",
+                  "name": "Processed",
+                  "incoming": [
+                    "Flow_FB2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_FB1",
+                  "sourceRef": "Start_FB",
+                  "targetRef": "Task_FB"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_FB2",
+                  "sourceRef": "Task_FB",
+                  "targetRef": "End_FB"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "1c0fa53eeaeae9af9b9d730ff2e797ffd67ca62663db37bcebd8949877ab1430"
+      }
+    },
+    {
+      "role": "options",
+      "json": {
+        "phase": "post-normalize",
+        "readinessPolicy": "draft"
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "operation": "validate",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "baseRevision": "1c0fa53eeaeae9af9b9d730ff2e797ffd67ca62663db37bcebd8949877ab1430",
+        "revision": "1c0fa53eeaeae9af9b9d730ff2e797ffd67ca62663db37bcebd8949877ab1430",
+        "report": {
+          "reportVersion": "2",
+          "operation": "validate",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "inputRevision": "1c0fa53eeaeae9af9b9d730ff2e797ffd67ca62663db37bcebd8949877ab1430",
+          "outputRevision": "1c0fa53eeaeae9af9b9d730ff2e797ffd67ca62663db37bcebd8949877ab1430",
+          "entries": [
+            {
+              "code": "link-owner-invalid",
+              "severity": "error",
+              "classification": "integrity",
+              "stage": "post-normalize",
+              "ruleId": "link-owner",
+              "messageKey": "link-owner-invalid",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/artifacts/1",
+                "targetId": "Assoc_X1",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            },
+            {
+              "code": "link-owner-invalid",
+              "severity": "error",
+              "classification": "integrity",
+              "stage": "post-normalize",
+              "ruleId": "link-owner-io",
+              "messageKey": "link-owner-invalid",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/artifacts/2",
+                "targetId": "Assoc_X2",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            }
+          ],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "ok": false,
+          "counts": {
+            "info": 0,
+            "warn": 0,
+            "error": 2
+          }
+        }
+      }
+    },
+    {
+      "role": "caller-state",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Front",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_FA",
+                  "name": "Request",
+                  "outgoing": [
+                    "Flow_FA1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_FA",
+                  "name": "Take request",
+                  "incoming": [
+                    "Flow_FA1"
+                  ],
+                  "outgoing": [
+                    "Flow_FA2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_FA",
+                  "name": "Taken",
+                  "incoming": [
+                    "Flow_FA2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_FA1",
+                  "sourceRef": "Start_FA",
+                  "targetRef": "Task_FA"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_FA2",
+                  "sourceRef": "Task_FA",
+                  "targetRef": "End_FA"
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_FA",
+                  "name": "Partner",
+                  "incoming": [],
+                  "outgoing": [],
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "external",
+                      "textFormat": "text/x-neutral-call-kind"
+                    }
+                  ]
+                }
+              ],
+              "artifacts": [
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_FA",
+                  "sourceRef": "Call_FA",
+                  "targetRef": "Start_FA",
+                  "associationDirection": "One"
+                },
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_X1",
+                  "sourceRef": "Call_FA",
+                  "targetRef": "Start_FB",
+                  "associationDirection": "One"
+                },
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_X2",
+                  "sourceRef": "Call_FA",
+                  "targetRef": "DataInput_FB",
+                  "associationDirection": "One"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_B",
+              "name": "Back",
+              "isExecutable": false,
+              "ioSpecification": {
+                "$type": "bpmn:InputOutputSpecification",
+                "dataInputs": [
+                  {
+                    "$type": "bpmn:DataInput",
+                    "id": "DataInput_FB",
+                    "name": "Order"
+                  }
+                ],
+                "dataOutputs": [],
+                "inputSets": [
+                  {
+                    "$type": "bpmn:InputSet",
+                    "id": "InputSet_FB",
+                    "dataInputRefs": [
+                      "DataInput_FB"
+                    ]
+                  }
+                ],
+                "outputSets": [
+                  {
+                    "$type": "bpmn:OutputSet",
+                    "id": "OutputSet_FB"
+                  }
+                ]
+              },
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_FB",
+                  "name": "Order taken",
+                  "outgoing": [
+                    "Flow_FB1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_FB",
+                  "name": "Process order",
+                  "incoming": [
+                    "Flow_FB1"
+                  ],
+                  "outgoing": [
+                    "Flow_FB2"
+                  ],
+                  "properties": [
+                    {
+                      "$type": "bpmn:Property",
+                      "id": "Property_FB"
+                    }
+                  ],
+                  "dataInputAssociations": [
+                    {
+                      "$type": "bpmn:DataInputAssociation",
+                      "id": "DIA_FB",
+                      "sourceRef": [
+                        "DataInput_FB"
+                      ],
+                      "targetRef": "Property_FB"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_FB",
+                  "name": "Processed",
+                  "incoming": [
+                    "Flow_FB2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_FB1",
+                  "sourceRef": "Start_FB",
+                  "targetRef": "Task_FB"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_FB2",
+                  "sourceRef": "Task_FB",
+                  "targetRef": "End_FB"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "1c0fa53eeaeae9af9b9d730ff2e797ffd67ca62663db37bcebd8949877ab1430"
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-1/lot3",
+    "source-preservation/lot3",
+    "profile-c14n/2"
+  ]
+}

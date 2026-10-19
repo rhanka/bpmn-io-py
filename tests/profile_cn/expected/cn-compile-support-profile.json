@@ -1,0 +1,37 @@
+{
+  "case": "cn-compile-support-profile",
+  "clause": "DESIGN R3.3 §2.4.1 CR-05/CR-06/CR-07 for ensure; §7.3 (fixture compiles)",
+  "author": "spec-seal",
+  "operation": "compile_profile",
+  "profile": "support",
+  "derivation": "Hand review against DESIGN §2.4/§2.4.1 (no compiler output used). Variant = neutral minus place-task plus the vendored ensure-supports recipe, pins re-pinned to the support slice (a superset of the neutral slice: Collaboration/Participant/LaneSet/Lane, Definitions.rootElements admitting Collaboration, Process.laneSets). CR-05: the five ensure handles are declared before use (main as assignRef target, collaboration and laneSet as parents). CR-06 write set: the required demands are {root,/rootElements,create}, {collaboration,/participants,create} (twice), {self,/laneSets,create}, {laneSet,/lanes,create}, {envelope,/bindings,binding} (once per ensure) and {main,/processRef,reference}; identical demands coalesce (§2.4 'Identical writes coalesce'), giving exactly the six declared writes. CR-06 authority: ensure types are the four support types, each parent containment admits the ensured type, the name fields are declared scalars, and every written field (ids, names, containments, processRef) lists actor code in the support base. CR-07: ensure allocates ID-bearing types with string ownerId values (id of root or self). CR-14: ensure and assignRef belong to normalize. The kept neutral recipes use only types/fields present in both slices. Expected: ok, identity = §5.1 record with sha256 = H(variant). Wire shape (parity sync PS-35): the PureResult {status: ok, payload, diagnostics: []} with payload UNSEALED (CompiledProfile has no wire shape; the member must exist); the compiled §5.1 identity is sealed apart as the compiled-identity artifact.",
+  "input": {
+    "variant": "support"
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "$unsealed": "compiled-profile"
+    },
+    "diagnostics": []
+  },
+  "compiledIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral/1",
+    "version": "1.1.0",
+    "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+    "base": {
+      "id": "neutral-base/1",
+      "version": "fixture-2",
+      "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-descriptors/1",
+        "version": "fixture-2",
+        "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+      }
+    ]
+  }
+}

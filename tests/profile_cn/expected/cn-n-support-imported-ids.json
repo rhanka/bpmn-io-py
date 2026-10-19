@@ -1,0 +1,325 @@
+{
+  "case": "cn-n-support-imported-ids",
+  "clause": "DESIGN R3.3 §7.2 Structure; §7.3 neutral-support-fixture.R31.json; §3.2 multi-Process support domain witness; §5.2; §5.2 imported ID reuse",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "support",
+  "derivation": "Vendored case 'imported support IDs survive': every role is correctly bound to an imported non-generated id (type, parent/property and declared fields agree), so N reuses all five, the processRef write is a no-op, no id is allocated and the report is empty (fixture changeCount 0). Reuse is not a gated mutation, so the qualification activation accepts it. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_support",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "name": "Process_A",
+            "laneSets": [
+              {
+                "$type": "bpmn:LaneSet",
+                "id": "Imported_Process_A_lane_set",
+                "name": "lane-set",
+                "lanes": [
+                  {
+                    "$type": "bpmn:Lane",
+                    "id": "Imported_Process_A_external_lane",
+                    "name": "external-lane"
+                  }
+                ]
+              }
+            ],
+            "isExecutable": false
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "Imported_Process_A_collaboration",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "Imported_Process_A_main_participant",
+                "name": "main-participant",
+                "processRef": "Process_A"
+              },
+              {
+                "$type": "bpmn:Participant",
+                "id": "Imported_Process_A_reference_band",
+                "name": "reference-band"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "ownerId": "Process_A",
+          "role": "collaboration",
+          "targetId": "Imported_Process_A_collaboration"
+        },
+        {
+          "ownerId": "Process_A",
+          "role": "external-lane",
+          "targetId": "Imported_Process_A_external_lane"
+        },
+        {
+          "ownerId": "Process_A",
+          "role": "lane-set",
+          "targetId": "Imported_Process_A_lane_set"
+        },
+        {
+          "ownerId": "Process_A",
+          "role": "main-participant",
+          "targetId": "Imported_Process_A_main_participant"
+        },
+        {
+          "ownerId": "Process_A",
+          "role": "reference-band",
+          "targetId": "Imported_Process_A_reference_band"
+        }
+      ],
+      "semanticRevision": "3d222df989cc064f4c7a96b05b7aae471fdf4a8b4d86e612074b17b183357575"
+    },
+    "activation": "qualification",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "normalize",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+        }
+      ]
+    },
+    "baseRevision": "3d222df989cc064f4c7a96b05b7aae471fdf4a8b4d86e612074b17b183357575",
+    "revision": "3d222df989cc064f4c7a96b05b7aae471fdf4a8b4d86e612074b17b183357575",
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      },
+      "inputRevision": "3d222df989cc064f4c7a96b05b7aae471fdf4a8b4d86e612074b17b183357575",
+      "outputRevision": "3d222df989cc064f4c7a96b05b7aae471fdf4a8b4d86e612074b17b183357575"
+    },
+    "payload": {
+      "envelope": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_support",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Process_A",
+              "laneSets": [
+                {
+                  "$type": "bpmn:LaneSet",
+                  "id": "Imported_Process_A_lane_set",
+                  "name": "lane-set",
+                  "lanes": [
+                    {
+                      "$type": "bpmn:Lane",
+                      "id": "Imported_Process_A_external_lane",
+                      "name": "external-lane"
+                    }
+                  ]
+                }
+              ],
+              "isExecutable": false
+            },
+            {
+              "$type": "bpmn:Collaboration",
+              "id": "Imported_Process_A_collaboration",
+              "name": "collaboration",
+              "participants": [
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "Imported_Process_A_main_participant",
+                  "name": "main-participant",
+                  "processRef": "Process_A"
+                },
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "Imported_Process_A_reference_band",
+                  "name": "reference-band"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [
+          {
+            "ownerId": "Process_A",
+            "role": "collaboration",
+            "targetId": "Imported_Process_A_collaboration"
+          },
+          {
+            "ownerId": "Process_A",
+            "role": "external-lane",
+            "targetId": "Imported_Process_A_external_lane"
+          },
+          {
+            "ownerId": "Process_A",
+            "role": "lane-set",
+            "targetId": "Imported_Process_A_lane_set"
+          },
+          {
+            "ownerId": "Process_A",
+            "role": "main-participant",
+            "targetId": "Imported_Process_A_main_participant"
+          },
+          {
+            "ownerId": "Process_A",
+            "role": "reference-band",
+            "targetId": "Imported_Process_A_reference_band"
+          }
+        ],
+        "semanticRevision": "3d222df989cc064f4c7a96b05b7aae471fdf4a8b4d86e612074b17b183357575"
+      },
+      "placements": [],
+      "report": {
+        "reportVersion": "2",
+        "operation": "normalize",
+        "entries": [],
+        "rawStandardFindings": [],
+        "idMap": [],
+        "artifacts": [],
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral/1",
+          "version": "1.1.0",
+          "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+          "base": {
+            "id": "neutral-base/1",
+            "version": "fixture-2",
+            "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "fixture-2",
+              "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+            }
+          ]
+        },
+        "inputRevision": "3d222df989cc064f4c7a96b05b7aae471fdf4a8b4d86e612074b17b183357575",
+        "outputRevision": "3d222df989cc064f4c7a96b05b7aae471fdf4a8b4d86e612074b17b183357575"
+      }
+    }
+  },
+  "fixedPoint": true
+}

@@ -1,0 +1,221 @@
+{
+  "case": "l3-c-namespace-defaults",
+  "clause": "DESIGN R3.3 §5.1 L434",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": {
+    "vendored": "tests/profile_cn/expected/vendor/js/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32",
+    "descriptorBytes": {
+      "path": "tests/profile_cn/expected/vendor/js/profile/neutral-cn-descriptors.json",
+      "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+    },
+    "baseBytes": {
+      "path": "tests/profile_cn/expected/vendor/js/profile/neutral-cn-base.json",
+      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+    }
+  },
+  "derivation": "Vendored unchanged from JS seal 6b807ee2c219f614d0f434cb8568c8d15acc0cc425a11bfdaa5cf027d86e8b06, case file SHA-256 1503f013c330eb5d3fc267ed098fa4e1403d39f3758d5d0f5f71672cd2976e13; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC). Import row PS-H04: complete witnesses. fixedPoint: DESIGN §7.3 C(C(x)) = C(x), N(N(x)) = N(x) for any accepted x. Discriminates (JS index): Fails an implementation that leaves required generated Definitions defaults absent or stamps values other than the profile's declared namespace and base-contract version.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn/1",
+        "version": "1.1.0",
+        "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-cn-1",
+          "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-cn-1",
+            "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_ns",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "name": "Defaults",
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "c3911ebd9ec99d3c4cc5f74796c5099f36c18e46cf3df5ab21f3b98afbcbc1d4"
+    },
+    "mode": "retained"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn/1",
+      "version": "1.1.0",
+      "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-cn-1",
+        "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-cn-1",
+          "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+        }
+      ]
+    },
+    "baseRevision": "c3911ebd9ec99d3c4cc5f74796c5099f36c18e46cf3df5ab21f3b98afbcbc1d4",
+    "revision": "c9a054e856666aa37b46be49161776dc06e6866d975cf503e6b2eaa51245c180",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn/1",
+        "version": "1.1.0",
+        "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-cn-1",
+          "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-cn-1",
+            "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn/1",
+        "version": "1.1.0",
+        "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-cn-1",
+          "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-cn-1",
+            "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+          }
+        ]
+      },
+      "inputRevision": "c3911ebd9ec99d3c4cc5f74796c5099f36c18e46cf3df5ab21f3b98afbcbc1d4",
+      "outputRevision": "c9a054e856666aa37b46be49161776dc06e6866d975cf503e6b2eaa51245c180",
+      "entries": [
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "c-definitions-exporter",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/exporterVersion",
+            "targetId": "Definitions_ns",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/exporterVersion",
+            "targetId": "Definitions_ns",
+            "provenance": "exact"
+          },
+          "property": "exporterVersion",
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "fixture-cn-1"
+        },
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "c-definitions-namespace",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/targetNamespace",
+            "targetId": "Definitions_ns",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/targetNamespace",
+            "targetId": "Definitions_ns",
+            "provenance": "exact"
+          },
+          "property": "targetNamespace",
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "urn:neutral-cn:1"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn/1",
+        "version": "1.1.0",
+        "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-cn-1",
+          "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-cn-1",
+            "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_ns",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "name": "Defaults",
+            "isExecutable": false
+          }
+        ],
+        "targetNamespace": "urn:neutral-cn:1",
+        "exporterVersion": "fixture-cn-1"
+      },
+      "bindings": [],
+      "semanticRevision": "c9a054e856666aa37b46be49161776dc06e6866d975cf503e6b2eaa51245c180"
+    }
+  },
+  "fixedPoint": true
+}

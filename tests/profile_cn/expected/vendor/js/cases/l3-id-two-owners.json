@@ -1,0 +1,430 @@
+{
+  "caseId": "l3-id-two-owners",
+  "operation": "complete",
+  "phase": "complete",
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "First",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "name": "Same"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_B",
+              "name": "Second",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "name": "Same"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "eb3982fdeac0d2cafd99a7aed7a8405adec3f3161beb2d1dc930b62c0b231187"
+      }
+    },
+    {
+      "role": "mode",
+      "json": "retained"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "operation": "complete",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "baseRevision": "eb3982fdeac0d2cafd99a7aed7a8405adec3f3161beb2d1dc930b62c0b231187",
+        "revision": "94ce182dc3a152cbf5a08d3d4e34d31d21a66fc7b10d8df71c3a491153f84245",
+        "report": {
+          "reportVersion": "2",
+          "operation": "complete",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "inputRevision": "eb3982fdeac0d2cafd99a7aed7a8405adec3f3161beb2d1dc930b62c0b231187",
+          "outputRevision": "94ce182dc3a152cbf5a08d3d4e34d31d21a66fc7b10d8df71c3a491153f84245",
+          "entries": [
+            {
+              "code": "complete/assignRef",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "complete",
+              "ruleId": "c-topology-incoming",
+              "messageKey": "complete.assignRef",
+              "disposition": "corrected",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0/incoming",
+                "targetId": "Process_A",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0/incoming",
+                "targetId": "g_681e40aff517d4e2e7feed7c89482b57e0d2c065d639452ee85a5e5686de5756",
+                "provenance": "generated"
+              },
+              "property": "incoming",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": []
+            },
+            {
+              "code": "complete/assignRef",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "complete",
+              "ruleId": "c-topology-incoming",
+              "messageKey": "complete.assignRef",
+              "disposition": "corrected",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/1/flowElements/0/incoming",
+                "targetId": "Process_B",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/1/flowElements/0/incoming",
+                "targetId": "g_0e2f8e0cb14c00d1963e5943ad60eaebac464b405e0cd7c3f3b64e1ea7b230e4",
+                "provenance": "generated"
+              },
+              "property": "incoming",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": []
+            },
+            {
+              "code": "complete/assignRef",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "complete",
+              "ruleId": "c-topology-outgoing",
+              "messageKey": "complete.assignRef",
+              "disposition": "corrected",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0/outgoing",
+                "targetId": "Process_A",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0/outgoing",
+                "targetId": "g_681e40aff517d4e2e7feed7c89482b57e0d2c065d639452ee85a5e5686de5756",
+                "provenance": "generated"
+              },
+              "property": "outgoing",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": []
+            },
+            {
+              "code": "complete/assignRef",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "complete",
+              "ruleId": "c-topology-outgoing",
+              "messageKey": "complete.assignRef",
+              "disposition": "corrected",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/1/flowElements/0/outgoing",
+                "targetId": "Process_B",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/1/flowElements/0/outgoing",
+                "targetId": "g_0e2f8e0cb14c00d1963e5943ad60eaebac464b405e0cd7c3f3b64e1ea7b230e4",
+                "provenance": "generated"
+              },
+              "property": "outgoing",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": []
+            },
+            {
+              "code": "complete/allocate-id",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "complete",
+              "ruleId": "stable-id/1",
+              "messageKey": "complete.allocate-id",
+              "disposition": "corrected",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0/id",
+                "targetId": "Process_A",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0/id",
+                "targetId": "g_681e40aff517d4e2e7feed7c89482b57e0d2c065d639452ee85a5e5686de5756",
+                "provenance": "generated"
+              },
+              "property": "id",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": "g_681e40aff517d4e2e7feed7c89482b57e0d2c065d639452ee85a5e5686de5756"
+            },
+            {
+              "code": "complete/allocate-id",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "complete",
+              "ruleId": "stable-id/1",
+              "messageKey": "complete.allocate-id",
+              "disposition": "corrected",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/1/flowElements/0/id",
+                "targetId": "Process_B",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/1/flowElements/0/id",
+                "targetId": "g_0e2f8e0cb14c00d1963e5943ad60eaebac464b405e0cd7c3f3b64e1ea7b230e4",
+                "provenance": "generated"
+              },
+              "property": "id",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": "g_0e2f8e0cb14c00d1963e5943ad60eaebac464b405e0cd7c3f3b64e1ea7b230e4"
+            }
+          ],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_cn",
+            "targetNamespace": "urn:neutral-cn:1",
+            "exporterVersion": "fixture-cn-1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_A",
+                "name": "First",
+                "isExecutable": false,
+                "flowElements": [
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "g_681e40aff517d4e2e7feed7c89482b57e0d2c065d639452ee85a5e5686de5756",
+                    "name": "Same",
+                    "incoming": [],
+                    "outgoing": []
+                  }
+                ]
+              },
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_B",
+                "name": "Second",
+                "isExecutable": false,
+                "flowElements": [
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "g_0e2f8e0cb14c00d1963e5943ad60eaebac464b405e0cd7c3f3b64e1ea7b230e4",
+                    "name": "Same",
+                    "incoming": [],
+                    "outgoing": []
+                  }
+                ]
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "94ce182dc3a152cbf5a08d3d4e34d31d21a66fc7b10d8df71c3a491153f84245"
+        }
+      }
+    },
+    {
+      "role": "caller-state",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "First",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "name": "Same"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_B",
+              "name": "Second",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "name": "Same"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "eb3982fdeac0d2cafd99a7aed7a8405adec3f3161beb2d1dc930b62c0b231187"
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-1/lot3",
+    "source-preservation/lot3",
+    "profile-c14n/2"
+  ]
+}

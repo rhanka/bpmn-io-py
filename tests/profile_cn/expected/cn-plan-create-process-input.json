@@ -1,0 +1,219 @@
+{
+  "case": "cn-plan-create-process-input",
+  "clause": "DESIGN R3.3 §2.4 action grammar; §2.4.1 action/write matrix; §2.5 planRecipe/applyPlan; §3.2 (ownerId explicit, including under an ID-less ioSpecification)",
+  "author": "spec-seal",
+  "operation": "plan_recipe+apply_plan",
+  "profile": "cn-n",
+  "derivation": "Input is the cn-remap-owner output. The ID-less ioSpecification is created by containment (no id) and addressed within the plan by its handle (index 0); the DataInput's ownerId is the explicitly evaluated owner id Process_X, never the ID-less parent: stable-id(Process_X, process-input, in-1). The two planned writes carry the cn slice facts apply needs: Process.ioSpecification is single-valued (cardinality single: an object, not an array) and dataInputs multi-valued (cardinality many); the LaneSet keeps its stored empty lanes array.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_del",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_X",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_A1",
+                "name": "Work"
+              }
+            ],
+            "laneSets": [
+              {
+                "$type": "bpmn:LaneSet",
+                "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
+                "name": "lane-set",
+                "lanes": []
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                "name": "main-participant",
+                "processRef": "Process_X"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "ownerId": "Process_X",
+          "role": "collaboration",
+          "targetId": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595"
+        },
+        {
+          "ownerId": "Process_X",
+          "role": "lane-set",
+          "targetId": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61"
+        },
+        {
+          "ownerId": "Process_X",
+          "role": "main-participant",
+          "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
+        }
+      ],
+      "semanticRevision": "df8a01bfed826a08155442a5e2eead8be406be00193ebf000bb8ec3c9caf8b5c"
+    },
+    "recipe": "create-process-input",
+    "params": {
+      "owner": "Process_X",
+      "key": "in-1",
+      "name": "Request"
+    },
+    "authority": {
+      "actor": "editor",
+      "activation": "edit",
+      "deletionIntent": false
+    }
+  },
+  "expected": {
+    "plan": {
+      "status": "ok",
+      "payload": {
+        "planVersion": "1",
+        "phase": "create",
+        "actor": "editor",
+        "activation": "edit",
+        "baseRevision": "df8a01bfed826a08155442a5e2eead8be406be00193ebf000bb8ec3c9caf8b5c",
+        "writes": [
+          {
+            "op": "create",
+            "recipeId": "create-process-input",
+            "type": "bpmn:InputOutputSpecification",
+            "parent": {
+              "id": "Process_X"
+            },
+            "property": "ioSpecification",
+            "fields": {},
+            "cardinality": "single"
+          },
+          {
+            "op": "create",
+            "recipeId": "create-process-input",
+            "type": "bpmn:DataInput",
+            "parent": {
+              "handle": 0
+            },
+            "property": "dataInputs",
+            "id": "g_11c0faff8eb428f6a9f8f0e9dcef3bf459d9e79c4fedfdc9bd458a2cecf7a3af",
+            "fields": {
+              "name": "Request"
+            },
+            "cardinality": "many"
+          }
+        ]
+      },
+      "diagnostics": []
+    },
+    "apply": {
+      "status": "ok",
+      "payload": {
+        "reportVersion": "change/1",
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_del",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_X",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A1",
+                  "name": "Work"
+                }
+              ],
+              "laneSets": [
+                {
+                  "$type": "bpmn:LaneSet",
+                  "id": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61",
+                  "name": "lane-set",
+                  "lanes": []
+                }
+              ],
+              "ioSpecification": {
+                "$type": "bpmn:InputOutputSpecification",
+                "dataInputs": [
+                  {
+                    "$type": "bpmn:DataInput",
+                    "id": "g_11c0faff8eb428f6a9f8f0e9dcef3bf459d9e79c4fedfdc9bd458a2cecf7a3af",
+                    "name": "Request"
+                  }
+                ]
+              }
+            },
+            {
+              "$type": "bpmn:Collaboration",
+              "id": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595",
+              "name": "collaboration",
+              "participants": [
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                  "name": "main-participant",
+                  "processRef": "Process_X"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [
+          {
+            "ownerId": "Process_X",
+            "role": "collaboration",
+            "targetId": "g_17974a6bbbf45ceadc1ea2cc03e9f60fc1d5d16b99f4cf4286ee888a1a072595"
+          },
+          {
+            "ownerId": "Process_X",
+            "role": "lane-set",
+            "targetId": "g_0e429a95d39ce4ebf9262cdc14703da079bba8bb5361313c0f516e10f6380b61"
+          },
+          {
+            "ownerId": "Process_X",
+            "role": "main-participant",
+            "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
+          }
+        ],
+        "entries": [],
+        "placements": [],
+        "created": [
+          "g_11c0faff8eb428f6a9f8f0e9dcef3bf459d9e79c4fedfdc9bd458a2cecf7a3af"
+        ],
+        "removed": []
+      },
+      "diagnostics": []
+    }
+  }
+}

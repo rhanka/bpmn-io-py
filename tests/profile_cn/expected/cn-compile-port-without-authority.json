@@ -1,0 +1,16 @@
+{
+  "case": "cn-compile-port-without-authority",
+  "clause": "DESIGN R3.3 §7.1 Completion C (Ports); §13 OPEN-IO; §16 item 8; §2.4.1 CR-06",
+  "author": "spec-seal",
+  "operation": "compile_profile",
+  "profile": "cn-c-noauth",
+  "derivation": "Hand review: the delta is valid (DataInputAssociation.targetRef exists and lists code in the cn base; DESIGN §2.4.1 'each producerDelta replaces its named from actor with to'), so the effective producers become {dropped, editor, import}. complete-input-port is a complete recipe (actor code) whose assignRef target self is a generic native binding (its select predicate is an all(...), not a bare typeIs): 'Generic native bindings conservatively check every admitted target type supporting the field', i.e. SequenceFlow, Association, DataInputAssociation and DataOutputAssociation targetRef; DataInputAssociation lacks code, and CR-06 'rejects a phase actor absent from the resulting field producer set'. No earlier recipe writes a DataInputAssociation field (link writes a typed Association targetRef with actor editor). Expected: refused profile-producer. Wire shape (parity sync PS-25): a compile refusal is exactly the PureResult {status: refused, code, diagnostics: []}.",
+  "input": {
+    "variant": "cn-c-noauth"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-producer",
+    "diagnostics": []
+  }
+}

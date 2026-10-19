@@ -1,0 +1,241 @@
+{
+  "case": "cn-c-documentation-preserved",
+  "clause": "DESIGN R3.3 §7.1 Completion C (Content); §3.2 identity mode containment",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "neutral",
+  "derivation": "Documentation.text is source evidence and textFormat an explicit contract field: C keeps the JSON-looking text unparsed, the whitespace bytes intact, the absent textFormat absent, the annotation text unchanged, and allocates no id for ID-less Documentation (identity mode containment). Only isExecutable changes. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_doc",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_doc",
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_doc",
+                "name": "Documented",
+                "documentation": [
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "{\"kind\": \"json-looking\"}",
+                    "textFormat": "application/json"
+                  },
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "  two  spaces\n"
+                  },
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "plain",
+                    "textFormat": "text/plain"
+                  }
+                ]
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Ann_1",
+                "text": "[Aid] keep  this"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "8307c95a406a0188fa807e9c5fab8fe25d041ff3be845cd695fb1e6dc9372a4f"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "8307c95a406a0188fa807e9c5fab8fe25d041ff3be845cd695fb1e6dc9372a4f",
+    "revision": "ae34720ab7f95dbd6205afb8c0db8f1a9c71c48d7cb31474461059103565f63c",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-process",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": "Process_doc",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": "Process_doc",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": false,
+          "property": "isExecutable"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "8307c95a406a0188fa807e9c5fab8fe25d041ff3be845cd695fb1e6dc9372a4f",
+      "outputRevision": "ae34720ab7f95dbd6205afb8c0db8f1a9c71c48d7cb31474461059103565f63c"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_doc",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_doc",
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_doc",
+                "name": "Documented",
+                "documentation": [
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "{\"kind\": \"json-looking\"}",
+                    "textFormat": "application/json"
+                  },
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "  two  spaces\n"
+                  },
+                  {
+                    "$type": "bpmn:Documentation",
+                    "text": "plain",
+                    "textFormat": "text/plain"
+                  }
+                ]
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:TextAnnotation",
+                "id": "Ann_1",
+                "text": "[Aid] keep  this"
+              }
+            ],
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "ae34720ab7f95dbd6205afb8c0db8f1a9c71c48d7cb31474461059103565f63c"
+    }
+  },
+  "fixedPoint": true
+}

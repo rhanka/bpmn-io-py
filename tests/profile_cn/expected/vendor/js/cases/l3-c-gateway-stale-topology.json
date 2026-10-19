@@ -1,0 +1,815 @@
+{
+  "caseId": "l3-c-gateway-stale-topology",
+  "operation": "complete",
+  "phase": "complete",
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_G",
+              "name": "Gateways",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_G",
+                  "name": "Begin",
+                  "outgoing": [
+                    "Flow_01"
+                  ]
+                },
+                {
+                  "$type": "bpmn:ParallelGateway",
+                  "id": "Gateway_Split",
+                  "name": "Split",
+                  "gatewayDirection": "Diverging",
+                  "incoming": [
+                    "Flow_01"
+                  ],
+                  "outgoing": [
+                    "Flow_02",
+                    "Flow_03"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A",
+                  "name": "Branch A",
+                  "incoming": [
+                    "Flow_02"
+                  ],
+                  "outgoing": [
+                    "Flow_04"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_B",
+                  "name": "Branch B",
+                  "incoming": [
+                    "Flow_03"
+                  ],
+                  "outgoing": [
+                    "Flow_05"
+                  ]
+                },
+                {
+                  "$type": "bpmn:ExclusiveGateway",
+                  "id": "Gateway_Mixed",
+                  "name": "Route",
+                  "gatewayDirection": "Converging",
+                  "incoming": [
+                    "Flow_04"
+                  ],
+                  "outgoing": [
+                    "Flow_06",
+                    "Flow_07"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_C",
+                  "name": "Branch C",
+                  "incoming": [
+                    "Flow_06"
+                  ],
+                  "outgoing": [
+                    "Flow_08"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_D",
+                  "name": "Branch D",
+                  "incoming": [
+                    "Flow_07"
+                  ],
+                  "outgoing": [
+                    "Flow_09"
+                  ]
+                },
+                {
+                  "$type": "bpmn:ExclusiveGateway",
+                  "id": "Gateway_Join",
+                  "name": "Join",
+                  "gatewayDirection": "Converging",
+                  "incoming": [
+                    "Flow_08",
+                    "Flow_09"
+                  ],
+                  "outgoing": [
+                    "Flow_10"
+                  ]
+                },
+                {
+                  "$type": "bpmn:ExclusiveGateway",
+                  "id": "Gateway_Pass",
+                  "name": "Pass",
+                  "gatewayDirection": "Unspecified",
+                  "incoming": [
+                    "Flow_10"
+                  ],
+                  "outgoing": [
+                    "Flow_11"
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_G",
+                  "name": "Finish",
+                  "incoming": [
+                    "Flow_11"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_01",
+                  "sourceRef": "Start_G",
+                  "targetRef": "Gateway_Split"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_02",
+                  "sourceRef": "Gateway_Split",
+                  "targetRef": "Task_A"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_03",
+                  "sourceRef": "Gateway_Split",
+                  "targetRef": "Task_B"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_04",
+                  "sourceRef": "Task_A",
+                  "targetRef": "Gateway_Mixed"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_05",
+                  "sourceRef": "Task_B",
+                  "targetRef": "Gateway_Mixed"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_06",
+                  "sourceRef": "Gateway_Mixed",
+                  "targetRef": "Task_C"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_07",
+                  "sourceRef": "Gateway_Mixed",
+                  "targetRef": "Task_D"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_08",
+                  "sourceRef": "Task_C",
+                  "targetRef": "Gateway_Join"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_09",
+                  "sourceRef": "Task_D",
+                  "targetRef": "Gateway_Join"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_10",
+                  "sourceRef": "Gateway_Join",
+                  "targetRef": "Gateway_Pass"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_11",
+                  "sourceRef": "Gateway_Pass",
+                  "targetRef": "End_G"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "0a247a213394db2d0931ddf67dee8892810ca0f3e8ece8ed1a55a25f6d0fe562"
+      }
+    },
+    {
+      "role": "mode",
+      "json": "retained"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "operation": "complete",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "baseRevision": "0a247a213394db2d0931ddf67dee8892810ca0f3e8ece8ed1a55a25f6d0fe562",
+        "revision": "b7751bdc249b1057b0cc8a6e1420a6dd430083893c29fc4dd1a6f1f6c1f71967",
+        "report": {
+          "reportVersion": "2",
+          "operation": "complete",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "inputRevision": "0a247a213394db2d0931ddf67dee8892810ca0f3e8ece8ed1a55a25f6d0fe562",
+          "outputRevision": "b7751bdc249b1057b0cc8a6e1420a6dd430083893c29fc4dd1a6f1f6c1f71967",
+          "entries": [
+            {
+              "code": "complete/set",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "complete",
+              "ruleId": "c-gateway-mixed",
+              "messageKey": "complete.set",
+              "disposition": "corrected",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/4/gatewayDirection",
+                "targetId": "Gateway_Mixed",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/4/gatewayDirection",
+                "targetId": "Gateway_Mixed",
+                "provenance": "exact"
+              },
+              "property": "gatewayDirection",
+              "beforePresent": true,
+              "before": "Converging",
+              "afterPresent": true,
+              "after": "Mixed"
+            },
+            {
+              "code": "complete/assignRef",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "complete",
+              "ruleId": "c-topology-incoming",
+              "messageKey": "complete.assignRef",
+              "disposition": "corrected",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/4/incoming",
+                "targetId": "Gateway_Mixed",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/4/incoming",
+                "targetId": "Gateway_Mixed",
+                "provenance": "exact"
+              },
+              "property": "incoming",
+              "beforePresent": true,
+              "before": [
+                "Flow_04"
+              ],
+              "afterPresent": true,
+              "after": [
+                "Flow_04",
+                "Flow_05"
+              ]
+            }
+          ],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_cn",
+            "targetNamespace": "urn:neutral-cn:1",
+            "exporterVersion": "fixture-cn-1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_G",
+                "name": "Gateways",
+                "isExecutable": false,
+                "flowElements": [
+                  {
+                    "$type": "bpmn:StartEvent",
+                    "id": "Start_G",
+                    "name": "Begin",
+                    "outgoing": [
+                      "Flow_01"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:ParallelGateway",
+                    "id": "Gateway_Split",
+                    "name": "Split",
+                    "gatewayDirection": "Diverging",
+                    "incoming": [
+                      "Flow_01"
+                    ],
+                    "outgoing": [
+                      "Flow_02",
+                      "Flow_03"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_A",
+                    "name": "Branch A",
+                    "incoming": [
+                      "Flow_02"
+                    ],
+                    "outgoing": [
+                      "Flow_04"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_B",
+                    "name": "Branch B",
+                    "incoming": [
+                      "Flow_03"
+                    ],
+                    "outgoing": [
+                      "Flow_05"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:ExclusiveGateway",
+                    "id": "Gateway_Mixed",
+                    "name": "Route",
+                    "gatewayDirection": "Mixed",
+                    "incoming": [
+                      "Flow_04",
+                      "Flow_05"
+                    ],
+                    "outgoing": [
+                      "Flow_06",
+                      "Flow_07"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_C",
+                    "name": "Branch C",
+                    "incoming": [
+                      "Flow_06"
+                    ],
+                    "outgoing": [
+                      "Flow_08"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_D",
+                    "name": "Branch D",
+                    "incoming": [
+                      "Flow_07"
+                    ],
+                    "outgoing": [
+                      "Flow_09"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:ExclusiveGateway",
+                    "id": "Gateway_Join",
+                    "name": "Join",
+                    "gatewayDirection": "Converging",
+                    "incoming": [
+                      "Flow_08",
+                      "Flow_09"
+                    ],
+                    "outgoing": [
+                      "Flow_10"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:ExclusiveGateway",
+                    "id": "Gateway_Pass",
+                    "name": "Pass",
+                    "gatewayDirection": "Unspecified",
+                    "incoming": [
+                      "Flow_10"
+                    ],
+                    "outgoing": [
+                      "Flow_11"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:EndEvent",
+                    "id": "End_G",
+                    "name": "Finish",
+                    "incoming": [
+                      "Flow_11"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_01",
+                    "sourceRef": "Start_G",
+                    "targetRef": "Gateway_Split"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_02",
+                    "sourceRef": "Gateway_Split",
+                    "targetRef": "Task_A"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_03",
+                    "sourceRef": "Gateway_Split",
+                    "targetRef": "Task_B"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_04",
+                    "sourceRef": "Task_A",
+                    "targetRef": "Gateway_Mixed"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_05",
+                    "sourceRef": "Task_B",
+                    "targetRef": "Gateway_Mixed"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_06",
+                    "sourceRef": "Gateway_Mixed",
+                    "targetRef": "Task_C"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_07",
+                    "sourceRef": "Gateway_Mixed",
+                    "targetRef": "Task_D"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_08",
+                    "sourceRef": "Task_C",
+                    "targetRef": "Gateway_Join"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_09",
+                    "sourceRef": "Task_D",
+                    "targetRef": "Gateway_Join"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_10",
+                    "sourceRef": "Gateway_Join",
+                    "targetRef": "Gateway_Pass"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_11",
+                    "sourceRef": "Gateway_Pass",
+                    "targetRef": "End_G"
+                  }
+                ]
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "b7751bdc249b1057b0cc8a6e1420a6dd430083893c29fc4dd1a6f1f6c1f71967"
+        }
+      }
+    },
+    {
+      "role": "caller-state",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_G",
+              "name": "Gateways",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_G",
+                  "name": "Begin",
+                  "outgoing": [
+                    "Flow_01"
+                  ]
+                },
+                {
+                  "$type": "bpmn:ParallelGateway",
+                  "id": "Gateway_Split",
+                  "name": "Split",
+                  "gatewayDirection": "Diverging",
+                  "incoming": [
+                    "Flow_01"
+                  ],
+                  "outgoing": [
+                    "Flow_02",
+                    "Flow_03"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A",
+                  "name": "Branch A",
+                  "incoming": [
+                    "Flow_02"
+                  ],
+                  "outgoing": [
+                    "Flow_04"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_B",
+                  "name": "Branch B",
+                  "incoming": [
+                    "Flow_03"
+                  ],
+                  "outgoing": [
+                    "Flow_05"
+                  ]
+                },
+                {
+                  "$type": "bpmn:ExclusiveGateway",
+                  "id": "Gateway_Mixed",
+                  "name": "Route",
+                  "gatewayDirection": "Converging",
+                  "incoming": [
+                    "Flow_04"
+                  ],
+                  "outgoing": [
+                    "Flow_06",
+                    "Flow_07"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_C",
+                  "name": "Branch C",
+                  "incoming": [
+                    "Flow_06"
+                  ],
+                  "outgoing": [
+                    "Flow_08"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_D",
+                  "name": "Branch D",
+                  "incoming": [
+                    "Flow_07"
+                  ],
+                  "outgoing": [
+                    "Flow_09"
+                  ]
+                },
+                {
+                  "$type": "bpmn:ExclusiveGateway",
+                  "id": "Gateway_Join",
+                  "name": "Join",
+                  "gatewayDirection": "Converging",
+                  "incoming": [
+                    "Flow_08",
+                    "Flow_09"
+                  ],
+                  "outgoing": [
+                    "Flow_10"
+                  ]
+                },
+                {
+                  "$type": "bpmn:ExclusiveGateway",
+                  "id": "Gateway_Pass",
+                  "name": "Pass",
+                  "gatewayDirection": "Unspecified",
+                  "incoming": [
+                    "Flow_10"
+                  ],
+                  "outgoing": [
+                    "Flow_11"
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_G",
+                  "name": "Finish",
+                  "incoming": [
+                    "Flow_11"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_01",
+                  "sourceRef": "Start_G",
+                  "targetRef": "Gateway_Split"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_02",
+                  "sourceRef": "Gateway_Split",
+                  "targetRef": "Task_A"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_03",
+                  "sourceRef": "Gateway_Split",
+                  "targetRef": "Task_B"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_04",
+                  "sourceRef": "Task_A",
+                  "targetRef": "Gateway_Mixed"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_05",
+                  "sourceRef": "Task_B",
+                  "targetRef": "Gateway_Mixed"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_06",
+                  "sourceRef": "Gateway_Mixed",
+                  "targetRef": "Task_C"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_07",
+                  "sourceRef": "Gateway_Mixed",
+                  "targetRef": "Task_D"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_08",
+                  "sourceRef": "Task_C",
+                  "targetRef": "Gateway_Join"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_09",
+                  "sourceRef": "Task_D",
+                  "targetRef": "Gateway_Join"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_10",
+                  "sourceRef": "Gateway_Join",
+                  "targetRef": "Gateway_Pass"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_11",
+                  "sourceRef": "Gateway_Pass",
+                  "targetRef": "End_G"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "0a247a213394db2d0931ddf67dee8892810ca0f3e8ece8ed1a55a25f6d0fe562"
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-1/lot3",
+    "source-preservation/lot3",
+    "profile-c14n/2"
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "case": "cn-bind-supports-gated",
+  "clause": "DESIGN R3.3 §5.2 support import rules; §13 OPEN-MACHINE; §16 item 6",
+  "author": "spec-seal",
+  "operation": "bind_supports",
+  "profile": "cn-n",
+  "derivation": "Import support binding is N/import activation gated by OPEN-MACHINE (technical gate open): the default edit activation refuses profile-open. Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_pool",
+        "rootElements": [
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_P",
+            "name": "Register"
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_P",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_P",
+                "name": "Consult register"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_P",
+                "dataStoreRef": "Store_P"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "Collab_X",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "Pool_X",
+                "name": "reference-band"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "79b530648257df7d03901b50530a1432781aca0b95855e4c70459ad5b7ca6d88"
+    },
+    "bindings": [
+      {
+        "ownerId": "Process_P",
+        "role": "collaboration",
+        "targetId": "Collab_X"
+      }
+    ],
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "bindSupports",
+    "code": "profile-open",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "bindSupports",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "79b530648257df7d03901b50530a1432781aca0b95855e4c70459ad5b7ca6d88"
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n/1",
+      "version": "1.0.0",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "79b530648257df7d03901b50530a1432781aca0b95855e4c70459ad5b7ca6d88"
+  }
+}

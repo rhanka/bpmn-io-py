@@ -1,0 +1,310 @@
+{
+  "caseId": "l3-call-target-type",
+  "operation": "validate",
+  "phase": "post-normalize",
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Calls",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_C",
+                  "name": "Start",
+                  "outgoing": [
+                    "Flow_C1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_C",
+                  "name": "Called work",
+                  "calledElement": "GlobalTask_1",
+                  "incoming": [
+                    "Flow_C1"
+                  ],
+                  "outgoing": [
+                    "Flow_C2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_C",
+                  "name": "End",
+                  "incoming": [
+                    "Flow_C2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_C1",
+                  "sourceRef": "Start_C",
+                  "targetRef": "Call_C"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_C2",
+                  "sourceRef": "Call_C",
+                  "targetRef": "End_C"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:GlobalTask",
+              "id": "GlobalTask_1",
+              "name": "Global"
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "70a24f3328e8241a137900d80f6fb37b35c36c985468873ed0a04bb6620c3208"
+      }
+    },
+    {
+      "role": "options",
+      "json": {
+        "phase": "post-normalize",
+        "readinessPolicy": "accept"
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "operation": "validate",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "baseRevision": "70a24f3328e8241a137900d80f6fb37b35c36c985468873ed0a04bb6620c3208",
+        "revision": "70a24f3328e8241a137900d80f6fb37b35c36c985468873ed0a04bb6620c3208",
+        "report": {
+          "reportVersion": "2",
+          "operation": "validate",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "inputRevision": "70a24f3328e8241a137900d80f6fb37b35c36c985468873ed0a04bb6620c3208",
+          "outputRevision": "70a24f3328e8241a137900d80f6fb37b35c36c985468873ed0a04bb6620c3208",
+          "entries": [
+            {
+              "code": "call-target-type",
+              "severity": "error",
+              "classification": "integrity",
+              "stage": "post-normalize",
+              "ruleId": "call-target-type",
+              "messageKey": "call-target-type",
+              "disposition": "observed",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/1",
+                "targetId": "Call_C",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": false,
+              "afterPresent": false
+            }
+          ],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "ok": false,
+          "counts": {
+            "info": 0,
+            "warn": 0,
+            "error": 1
+          }
+        }
+      }
+    },
+    {
+      "role": "caller-state",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Calls",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_C",
+                  "name": "Start",
+                  "outgoing": [
+                    "Flow_C1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_C",
+                  "name": "Called work",
+                  "calledElement": "GlobalTask_1",
+                  "incoming": [
+                    "Flow_C1"
+                  ],
+                  "outgoing": [
+                    "Flow_C2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_C",
+                  "name": "End",
+                  "incoming": [
+                    "Flow_C2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_C1",
+                  "sourceRef": "Start_C",
+                  "targetRef": "Call_C"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_C2",
+                  "sourceRef": "Call_C",
+                  "targetRef": "End_C"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:GlobalTask",
+              "id": "GlobalTask_1",
+              "name": "Global"
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "70a24f3328e8241a137900d80f6fb37b35c36c985468873ed0a04bb6620c3208"
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-1/lot3",
+    "source-preservation/lot3",
+    "profile-c14n/2"
+  ]
+}

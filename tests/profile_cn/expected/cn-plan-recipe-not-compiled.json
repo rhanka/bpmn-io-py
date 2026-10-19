@@ -1,0 +1,141 @@
+{
+  "case": "cn-plan-recipe-not-compiled",
+  "clause": "DESIGN R3.3 §2.4 action grammar; §2.4.1 action/write matrix; §2.5 planRecipe/applyPlan; §2.4.1 CR-05 symbols",
+  "author": "spec-seal",
+  "operation": "plan_recipe+apply_plan",
+  "profile": "neutral",
+  "derivation": "The recipe argument keeps the id create-task but changes its allocation slot, so it differs (JCS) from compiled.recipes['create-task']: planning accepts only compiled recipes (CR-05 symbols; no recipe from outside the profile), so plan_recipe refuses profile-symbol before reading parameters.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_1",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_B",
+                "name": "Ready"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_A",
+                "name": ""
+              }
+            ],
+            "artifacts": []
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "9c4c6e42acdc67dff8f6aca8375ae37415733f0a58e42ef8c1a296c05b297b11"
+    },
+    "recipe": {
+      "id": "create-task",
+      "phase": "create",
+      "parameters": [
+        {
+          "name": "owner",
+          "type": "element",
+          "required": true
+        },
+        {
+          "name": "key",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "select": {
+        "from": "owner",
+        "via": "self",
+        "where": {
+          "op": "true"
+        },
+        "order": "id"
+      },
+      "when": {
+        "op": "true"
+      },
+      "writes": [
+        {
+          "binding": "owner",
+          "path": "/flowElements",
+          "mode": "create"
+        }
+      ],
+      "steps": [
+        {
+          "op": "create",
+          "as": "created",
+          "type": "bpmn:Task",
+          "parent": "owner",
+          "property": "flowElements",
+          "slot": "task-other",
+          "key": {
+            "op": "param",
+            "name": "key"
+          },
+          "fields": [
+            {
+              "name": "name",
+              "value": {
+                "op": "param",
+                "name": "name"
+              }
+            }
+          ],
+          "identity": "allocated",
+          "ownerId": {
+            "op": "id",
+            "binding": "owner"
+          }
+        }
+      ]
+    },
+    "params": {
+      "owner": "Process_1",
+      "key": "k-new",
+      "name": "New task"
+    },
+    "authority": {
+      "actor": "editor",
+      "activation": "edit",
+      "deletionIntent": false
+    }
+  },
+  "expected": {
+    "plan": {
+      "status": "refused",
+      "code": "profile-symbol",
+      "diagnostics": []
+    }
+  }
+}

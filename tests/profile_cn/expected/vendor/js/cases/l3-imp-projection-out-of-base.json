@@ -1,0 +1,412 @@
+{
+  "caseId": "l3-imp-projection-out-of-base",
+  "operation": "importProjection",
+  "phase": "import",
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "source",
+      "text": "{\"$type\":\"bpmn:Definitions\",\"id\":\"Definitions_proj\",\"targetNamespace\":\"urn:neutral-cn:1\",\"exporterVersion\":\"fixture-cn-1\",\"rootElements\":[{\"$type\":\"bpmn:Process\",\"id\":\"Process_J\",\"name\":\"Projection\",\"isExecutable\":false,\"flowElements\":[{\"$type\":\"bpmn:ComplexGateway\",\"id\":\"ComplexGateway_X\",\"name\":\"Complex\",\"gatewayDirection\":\"Unspecified\",\"incoming\":[\"Flow_a\"],\"outgoing\":[\"Flow_b\"]},{\"$type\":\"bpmn:StartEvent\",\"id\":\"Start_J\",\"name\":\"Start\",\"outgoing\":[\"Flow_a\",\"Flow_d\"]},{\"$type\":\"bpmn:Task\",\"id\":\"Task_J\",\"name\":\"Work\",\"incoming\":[\"Flow_b\",\"Flow_d\"],\"outgoing\":[\"Flow_c\"],\"properties\":[{\"$type\":\"bpmn:Property\",\"id\":\"Property_J1\"},{\"$type\":\"bpmn:Property\",\"id\":\"Property_J2\"},{\"$type\":\"bpmn:Property\",\"id\":\"Property_J3\"}],\"dataInputAssociations\":[{\"$type\":\"bpmn:DataInputAssociation\",\"id\":\"DIA_drop\",\"sourceRef\":[\"Legacy_1\"],\"targetRef\":\"Property_J1\"},{\"$type\":\"bpmn:DataInputAssociation\",\"id\":\"DIA_keep\",\"sourceRef\":[\"Legacy_1\",\"DataObjectReference_K\"],\"targetRef\":\"Property_J2\"}],\"dataOutputAssociations\":[{\"$type\":\"bpmn:DataOutputAssociation\",\"id\":\"DOA_drop\",\"sourceRef\":[\"Property_J3\"],\"targetRef\":\"Legacy_1\"}]},{\"$type\":\"bpmn:EndEvent\",\"id\":\"End_J\",\"name\":\"End\",\"incoming\":[\"Flow_c\"]},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_a\",\"sourceRef\":\"Start_J\",\"targetRef\":\"ComplexGateway_X\"},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_b\",\"sourceRef\":\"ComplexGateway_X\",\"targetRef\":\"Task_J\"},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_c\",\"sourceRef\":\"Task_J\",\"targetRef\":\"End_J\"},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_d\",\"sourceRef\":\"Start_J\",\"targetRef\":\"Task_J\"},{\"$type\":\"neutral:LegacyItem\",\"id\":\"Legacy_1\",\"name\":\"Legacy form\"},{\"$type\":\"bpmn:DataObjectReference\",\"id\":\"DataObjectReference_K\",\"dataObjectRef\":\"DataObject_K\"},{\"$type\":\"bpmn:DataObject\",\"id\":\"DataObject_K\"}],\"artifacts\":[{\"$type\":\"bpmn:TextAnnotation\",\"id\":\"Note_J\",\"text\":\"Complex rule\"},{\"$type\":\"bpmn:Association\",\"id\":\"Assoc_J\",\"sourceRef\":\"Note_J\",\"targetRef\":\"ComplexGateway_X\",\"associationDirection\":\"None\"},{\"$type\":\"bpmn:Association\",\"id\":\"Assoc_K\",\"sourceRef\":\"Note_J\",\"targetRef\":\"Task_J\",\"associationDirection\":\"None\"}]}]}",
+      "sha256": "ddcc06d14ab307127b0d502f1b2a77c04e94d6a22900decd435961a6cc4a88ad"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "operation": "importProjection",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "baseRevision": "c98bf095fd907a5a8ef766332d41743d349266128bfc42c94bc27644b483e62e",
+        "revision": "c98bf095fd907a5a8ef766332d41743d349266128bfc42c94bc27644b483e62e",
+        "report": {
+          "reportVersion": "2",
+          "operation": "importProjection",
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "inputRevision": "c98bf095fd907a5a8ef766332d41743d349266128bfc42c94bc27644b483e62e",
+          "outputRevision": "c98bf095fd907a5a8ef766332d41743d349266128bfc42c94bc27644b483e62e",
+          "entries": [
+            {
+              "code": "import-loss/unsupported-feature",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "import",
+              "ruleId": "adapter",
+              "messageKey": "import.loss.unsupported-feature",
+              "disposition": "dropped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/artifacts/1",
+                "targetId": "Assoc_J",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": true,
+              "before": {
+                "$type": "bpmn:Association",
+                "id": "Assoc_J",
+                "sourceRef": "Note_J",
+                "targetRef": "ComplexGateway_X",
+                "associationDirection": "None"
+              },
+              "afterPresent": false,
+              "lossClass": "unsupported-feature"
+            },
+            {
+              "code": "import-loss/unsupported-feature",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "import",
+              "ruleId": "adapter",
+              "messageKey": "import.loss.unsupported-feature",
+              "disposition": "dropped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/0",
+                "targetId": "ComplexGateway_X",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": true,
+              "before": {
+                "$type": "bpmn:ComplexGateway",
+                "id": "ComplexGateway_X",
+                "name": "Complex",
+                "gatewayDirection": "Unspecified",
+                "incoming": [
+                  "Flow_a"
+                ],
+                "outgoing": [
+                  "Flow_b"
+                ]
+              },
+              "afterPresent": false,
+              "lossClass": "unsupported-feature"
+            },
+            {
+              "code": "import-loss/unsupported-feature",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "import",
+              "ruleId": "adapter",
+              "messageKey": "import.loss.unsupported-feature",
+              "disposition": "dropped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/2/dataInputAssociations/0",
+                "targetId": "DIA_drop",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": true,
+              "before": {
+                "$type": "bpmn:DataInputAssociation",
+                "id": "DIA_drop",
+                "sourceRef": [
+                  "Legacy_1"
+                ],
+                "targetRef": "Property_J1"
+              },
+              "afterPresent": false,
+              "lossClass": "unsupported-feature"
+            },
+            {
+              "code": "import-loss/unsupported-feature",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "import",
+              "ruleId": "adapter",
+              "messageKey": "import.loss.unsupported-feature",
+              "disposition": "dropped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/2/dataOutputAssociations/0",
+                "targetId": "DOA_drop",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": true,
+              "before": {
+                "$type": "bpmn:DataOutputAssociation",
+                "id": "DOA_drop",
+                "sourceRef": [
+                  "Property_J3"
+                ],
+                "targetRef": "Legacy_1"
+              },
+              "afterPresent": false,
+              "lossClass": "unsupported-feature"
+            },
+            {
+              "code": "import-loss/unsupported-feature",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "import",
+              "ruleId": "adapter",
+              "messageKey": "import.loss.unsupported-feature",
+              "disposition": "dropped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/4",
+                "targetId": "Flow_a",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": true,
+              "before": {
+                "$type": "bpmn:SequenceFlow",
+                "id": "Flow_a",
+                "sourceRef": "Start_J",
+                "targetRef": "ComplexGateway_X"
+              },
+              "afterPresent": false,
+              "lossClass": "unsupported-feature"
+            },
+            {
+              "code": "import-loss/unsupported-feature",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "import",
+              "ruleId": "adapter",
+              "messageKey": "import.loss.unsupported-feature",
+              "disposition": "dropped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/5",
+                "targetId": "Flow_b",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": true,
+              "before": {
+                "$type": "bpmn:SequenceFlow",
+                "id": "Flow_b",
+                "sourceRef": "ComplexGateway_X",
+                "targetRef": "Task_J"
+              },
+              "afterPresent": false,
+              "lossClass": "unsupported-feature"
+            },
+            {
+              "code": "import-loss/unsupported-feature",
+              "severity": "warn",
+              "classification": "loss",
+              "stage": "import",
+              "ruleId": "adapter",
+              "messageKey": "import.loss.unsupported-feature",
+              "disposition": "dropped",
+              "source": {
+                "domain": "tree",
+                "pointer": "/rootElements/0/flowElements/8",
+                "targetId": "Legacy_1",
+                "provenance": "exact"
+              },
+              "result": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "unavailable"
+              },
+              "beforePresent": true,
+              "before": {
+                "$type": "neutral:LegacyItem",
+                "id": "Legacy_1",
+                "name": "Legacy form"
+              },
+              "afterPresent": false,
+              "lossClass": "unsupported-feature"
+            }
+          ],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_proj",
+            "targetNamespace": "urn:neutral-cn:1",
+            "exporterVersion": "fixture-cn-1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_J",
+                "name": "Projection",
+                "isExecutable": false,
+                "flowElements": [
+                  {
+                    "$type": "bpmn:StartEvent",
+                    "id": "Start_J",
+                    "name": "Start",
+                    "outgoing": [
+                      "Flow_d"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "Task_J",
+                    "name": "Work",
+                    "incoming": [
+                      "Flow_d"
+                    ],
+                    "outgoing": [
+                      "Flow_c"
+                    ],
+                    "properties": [
+                      {
+                        "$type": "bpmn:Property",
+                        "id": "Property_J1"
+                      },
+                      {
+                        "$type": "bpmn:Property",
+                        "id": "Property_J2"
+                      },
+                      {
+                        "$type": "bpmn:Property",
+                        "id": "Property_J3"
+                      }
+                    ],
+                    "dataInputAssociations": [
+                      {
+                        "$type": "bpmn:DataInputAssociation",
+                        "id": "DIA_keep",
+                        "sourceRef": [
+                          "DataObjectReference_K"
+                        ],
+                        "targetRef": "Property_J2"
+                      }
+                    ],
+                    "dataOutputAssociations": []
+                  },
+                  {
+                    "$type": "bpmn:EndEvent",
+                    "id": "End_J",
+                    "name": "End",
+                    "incoming": [
+                      "Flow_c"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_c",
+                    "sourceRef": "Task_J",
+                    "targetRef": "End_J"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_d",
+                    "sourceRef": "Start_J",
+                    "targetRef": "Task_J"
+                  },
+                  {
+                    "$type": "bpmn:DataObjectReference",
+                    "id": "DataObjectReference_K",
+                    "dataObjectRef": "DataObject_K"
+                  },
+                  {
+                    "$type": "bpmn:DataObject",
+                    "id": "DataObject_K"
+                  }
+                ],
+                "artifacts": [
+                  {
+                    "$type": "bpmn:TextAnnotation",
+                    "id": "Note_J",
+                    "text": "Complex rule"
+                  },
+                  {
+                    "$type": "bpmn:Association",
+                    "id": "Assoc_K",
+                    "sourceRef": "Note_J",
+                    "targetRef": "Task_J",
+                    "associationDirection": "None"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "role": "caller-state",
+      "text": "{\"$type\":\"bpmn:Definitions\",\"id\":\"Definitions_proj\",\"targetNamespace\":\"urn:neutral-cn:1\",\"exporterVersion\":\"fixture-cn-1\",\"rootElements\":[{\"$type\":\"bpmn:Process\",\"id\":\"Process_J\",\"name\":\"Projection\",\"isExecutable\":false,\"flowElements\":[{\"$type\":\"bpmn:ComplexGateway\",\"id\":\"ComplexGateway_X\",\"name\":\"Complex\",\"gatewayDirection\":\"Unspecified\",\"incoming\":[\"Flow_a\"],\"outgoing\":[\"Flow_b\"]},{\"$type\":\"bpmn:StartEvent\",\"id\":\"Start_J\",\"name\":\"Start\",\"outgoing\":[\"Flow_a\",\"Flow_d\"]},{\"$type\":\"bpmn:Task\",\"id\":\"Task_J\",\"name\":\"Work\",\"incoming\":[\"Flow_b\",\"Flow_d\"],\"outgoing\":[\"Flow_c\"],\"properties\":[{\"$type\":\"bpmn:Property\",\"id\":\"Property_J1\"},{\"$type\":\"bpmn:Property\",\"id\":\"Property_J2\"},{\"$type\":\"bpmn:Property\",\"id\":\"Property_J3\"}],\"dataInputAssociations\":[{\"$type\":\"bpmn:DataInputAssociation\",\"id\":\"DIA_drop\",\"sourceRef\":[\"Legacy_1\"],\"targetRef\":\"Property_J1\"},{\"$type\":\"bpmn:DataInputAssociation\",\"id\":\"DIA_keep\",\"sourceRef\":[\"Legacy_1\",\"DataObjectReference_K\"],\"targetRef\":\"Property_J2\"}],\"dataOutputAssociations\":[{\"$type\":\"bpmn:DataOutputAssociation\",\"id\":\"DOA_drop\",\"sourceRef\":[\"Property_J3\"],\"targetRef\":\"Legacy_1\"}]},{\"$type\":\"bpmn:EndEvent\",\"id\":\"End_J\",\"name\":\"End\",\"incoming\":[\"Flow_c\"]},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_a\",\"sourceRef\":\"Start_J\",\"targetRef\":\"ComplexGateway_X\"},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_b\",\"sourceRef\":\"ComplexGateway_X\",\"targetRef\":\"Task_J\"},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_c\",\"sourceRef\":\"Task_J\",\"targetRef\":\"End_J\"},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_d\",\"sourceRef\":\"Start_J\",\"targetRef\":\"Task_J\"},{\"$type\":\"neutral:LegacyItem\",\"id\":\"Legacy_1\",\"name\":\"Legacy form\"},{\"$type\":\"bpmn:DataObjectReference\",\"id\":\"DataObjectReference_K\",\"dataObjectRef\":\"DataObject_K\"},{\"$type\":\"bpmn:DataObject\",\"id\":\"DataObject_K\"}],\"artifacts\":[{\"$type\":\"bpmn:TextAnnotation\",\"id\":\"Note_J\",\"text\":\"Complex rule\"},{\"$type\":\"bpmn:Association\",\"id\":\"Assoc_J\",\"sourceRef\":\"Note_J\",\"targetRef\":\"ComplexGateway_X\",\"associationDirection\":\"None\"},{\"$type\":\"bpmn:Association\",\"id\":\"Assoc_K\",\"sourceRef\":\"Note_J\",\"targetRef\":\"Task_J\",\"associationDirection\":\"None\"}]}]}",
+      "sha256": "ddcc06d14ab307127b0d502f1b2a77c04e94d6a22900decd435961a6cc4a88ad"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-1/lot3",
+    "source-preservation/lot3",
+    "profile-c14n/2"
+  ]
+}

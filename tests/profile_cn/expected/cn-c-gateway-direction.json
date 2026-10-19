@@ -1,0 +1,865 @@
+{
+  "case": "cn-c-gateway-direction",
+  "clause": "DESIGN R3.3 §7.1 Completion C (Topology); §2.2 ids; §2.4 assignRef",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "cn-c",
+  "derivation": "Counting SequenceFlows that target/source each gateway: G_mix 2 in/2 out -> Mixed, G_conv 2 in/1 out -> Converging (the stored Diverging is corrected), G_div 1 in/2 out -> Diverging, G_none 1 in/1 out -> Unspecified. The topology recipes replace stored incoming/outgoing with the same-container flow ids in UTF-16 id order (G_mix stale [F4,F2]/[F6] become [F2,F4]/[F5,F6]); the end tasks T_end and T_end2 have no outgoing flow, so replace writes an empty outgoing array (absent -> [] is a change, H F1): 18 entries. Directions use the flows, never the stale stored arrays. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_G",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_G",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:StartEvent",
+                "id": "S1"
+              },
+              {
+                "$type": "bpmn:StartEvent",
+                "id": "S2"
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_div"
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_mix",
+                "incoming": [
+                  "F4",
+                  "F2"
+                ],
+                "outgoing": [
+                  "F6"
+                ]
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_conv",
+                "gatewayDirection": "Diverging"
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_none"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_end",
+                "name": "End work"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_end2",
+                "name": "Other end work"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F1",
+                "sourceRef": "S1",
+                "targetRef": "G_div"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F2",
+                "sourceRef": "G_div",
+                "targetRef": "G_mix"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F3",
+                "sourceRef": "G_div",
+                "targetRef": "G_conv"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F4",
+                "sourceRef": "G_none",
+                "targetRef": "G_mix"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F5",
+                "sourceRef": "G_mix",
+                "targetRef": "G_conv"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F6",
+                "sourceRef": "G_mix",
+                "targetRef": "T_end"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F7",
+                "sourceRef": "G_conv",
+                "targetRef": "T_end2"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F8",
+                "sourceRef": "S2",
+                "targetRef": "G_none"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "cddaf0a745a4a62782b5437070eed2730d445b450f5bec47f0247874e00d655f"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-c/1",
+      "version": "1.0.0",
+      "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "cddaf0a745a4a62782b5437070eed2730d445b450f5bec47f0247874e00d655f",
+    "revision": "bfec98e89648ea17302e8ec018561b13ee97a6b45227f0458db980df4da2b655",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
+            "targetId": "G_div",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
+            "targetId": "G_div",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F1"
+          ],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
+            "targetId": "G_div",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
+            "targetId": "G_div",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F2",
+            "F3"
+          ],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/incoming",
+            "targetId": "G_mix",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/incoming",
+            "targetId": "G_mix",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": [
+            "F4",
+            "F2"
+          ],
+          "after": [
+            "F2",
+            "F4"
+          ],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/outgoing",
+            "targetId": "G_mix",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/outgoing",
+            "targetId": "G_mix",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": [
+            "F6"
+          ],
+          "after": [
+            "F5",
+            "F6"
+          ],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/4/incoming",
+            "targetId": "G_conv",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/4/incoming",
+            "targetId": "G_conv",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F3",
+            "F5"
+          ],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/4/outgoing",
+            "targetId": "G_conv",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/4/outgoing",
+            "targetId": "G_conv",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F7"
+          ],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5/incoming",
+            "targetId": "G_none",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5/incoming",
+            "targetId": "G_none",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F8"
+          ],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5/outgoing",
+            "targetId": "G_none",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5/outgoing",
+            "targetId": "G_none",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F4"
+          ],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-start-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
+            "targetId": "S1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
+            "targetId": "S1",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F1"
+          ],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-start-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/outgoing",
+            "targetId": "S2",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/outgoing",
+            "targetId": "S2",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F8"
+          ],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/6/incoming",
+            "targetId": "T_end",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/6/incoming",
+            "targetId": "T_end",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F6"
+          ],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/6/outgoing",
+            "targetId": "T_end",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/6/outgoing",
+            "targetId": "T_end",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/7/incoming",
+            "targetId": "T_end2",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/7/incoming",
+            "targetId": "T_end2",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F7"
+          ],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/7/outgoing",
+            "targetId": "T_end2",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/7/outgoing",
+            "targetId": "T_end2",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "gateway-direction-converging",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/4/gatewayDirection",
+            "targetId": "G_conv",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/4/gatewayDirection",
+            "targetId": "G_conv",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": "Diverging",
+          "after": "Converging",
+          "property": "gatewayDirection"
+        },
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "gateway-direction-diverging",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/gatewayDirection",
+            "targetId": "G_div",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/gatewayDirection",
+            "targetId": "G_div",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "Diverging",
+          "property": "gatewayDirection"
+        },
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "gateway-direction-mixed",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/gatewayDirection",
+            "targetId": "G_mix",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/gatewayDirection",
+            "targetId": "G_mix",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "Mixed",
+          "property": "gatewayDirection"
+        },
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "gateway-direction-unspecified",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5/gatewayDirection",
+            "targetId": "G_none",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/5/gatewayDirection",
+            "targetId": "G_none",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "Unspecified",
+          "property": "gatewayDirection"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "cddaf0a745a4a62782b5437070eed2730d445b450f5bec47f0247874e00d655f",
+      "outputRevision": "bfec98e89648ea17302e8ec018561b13ee97a6b45227f0458db980df4da2b655"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_G",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_G",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:StartEvent",
+                "id": "S1",
+                "outgoing": [
+                  "F1"
+                ]
+              },
+              {
+                "$type": "bpmn:StartEvent",
+                "id": "S2",
+                "outgoing": [
+                  "F8"
+                ]
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_div",
+                "incoming": [
+                  "F1"
+                ],
+                "outgoing": [
+                  "F2",
+                  "F3"
+                ],
+                "gatewayDirection": "Diverging"
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_mix",
+                "incoming": [
+                  "F2",
+                  "F4"
+                ],
+                "outgoing": [
+                  "F5",
+                  "F6"
+                ],
+                "gatewayDirection": "Mixed"
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_conv",
+                "gatewayDirection": "Converging",
+                "incoming": [
+                  "F3",
+                  "F5"
+                ],
+                "outgoing": [
+                  "F7"
+                ]
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_none",
+                "incoming": [
+                  "F8"
+                ],
+                "outgoing": [
+                  "F4"
+                ],
+                "gatewayDirection": "Unspecified"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_end",
+                "name": "End work",
+                "incoming": [
+                  "F6"
+                ],
+                "outgoing": []
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_end2",
+                "name": "Other end work",
+                "incoming": [
+                  "F7"
+                ],
+                "outgoing": []
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F1",
+                "sourceRef": "S1",
+                "targetRef": "G_div"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F2",
+                "sourceRef": "G_div",
+                "targetRef": "G_mix"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F3",
+                "sourceRef": "G_div",
+                "targetRef": "G_conv"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F4",
+                "sourceRef": "G_none",
+                "targetRef": "G_mix"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F5",
+                "sourceRef": "G_mix",
+                "targetRef": "G_conv"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F6",
+                "sourceRef": "G_mix",
+                "targetRef": "T_end"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F7",
+                "sourceRef": "G_conv",
+                "targetRef": "T_end2"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F8",
+                "sourceRef": "S2",
+                "targetRef": "G_none"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "bfec98e89648ea17302e8ec018561b13ee97a6b45227f0458db980df4da2b655"
+    }
+  },
+  "fixedPoint": true
+}

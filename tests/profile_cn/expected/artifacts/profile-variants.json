@@ -1,0 +1,4702 @@
+{
+  "author": "spec-seal",
+  "format": "profile-variants/1",
+  "note": "Each variant is the vendored source profile (or its parent variant) with the explicit RFC 6902 add/replace/remove delta applied in order. identity is the DESIGN R3.3 section 5.1 profileIdentity of the result; sha256 is H(profile). Load the variant with the listed descriptor and base bytes.",
+  "variants": [
+    {
+      "name": "neutral",
+      "source": "contracts/profile-mechanism/1/neutral-profile.json",
+      "delta": [],
+      "descriptorBytes": "contracts/profile-mechanism/1/neutral-descriptors.json",
+      "baseBytes": "contracts/profile-mechanism/1/neutral-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "grid",
+      "source": "contracts/profile-mechanism/1/neutral-grid-profile.json",
+      "delta": [],
+      "descriptorBytes": "contracts/profile-mechanism/1/neutral-descriptors.json",
+      "baseBytes": "contracts/profile-mechanism/1/neutral-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "3d0c95bd8359e3acb107fb114ed8073239cbe4ff3b64b6f280a1f36ae6a87058",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "support",
+      "source": "contracts/profile-mechanism/1/neutral-profile.json",
+      "delta": [
+        {
+          "op": "remove",
+          "path": "/recipes/4"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "ensure-supports",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "root",
+                "path": "/rootElements",
+                "mode": "create"
+              },
+              {
+                "binding": "envelope",
+                "path": "/bindings",
+                "mode": "binding"
+              },
+              {
+                "binding": "collaboration",
+                "path": "/participants",
+                "mode": "create"
+              },
+              {
+                "binding": "main",
+                "path": "/processRef",
+                "mode": "reference"
+              },
+              {
+                "binding": "self",
+                "path": "/laneSets",
+                "mode": "create"
+              },
+              {
+                "binding": "laneSet",
+                "path": "/lanes",
+                "mode": "create"
+              }
+            ],
+            "steps": [
+              {
+                "op": "ensure",
+                "as": "collaboration",
+                "type": "bpmn:Collaboration",
+                "parent": "root",
+                "property": "rootElements",
+                "owner": "self",
+                "role": "collaboration",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "root"
+                },
+                "slot": "collaboration",
+                "key": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "collaboration"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "main",
+                "type": "bpmn:Participant",
+                "parent": "collaboration",
+                "property": "participants",
+                "owner": "self",
+                "role": "main-participant",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "main-participant",
+                "key": {
+                  "op": "literal",
+                  "value": "main-participant"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "main-participant"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "assignRef",
+                "target": "main",
+                "path": "/processRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "self"
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "laneSet",
+                "type": "bpmn:LaneSet",
+                "parent": "self",
+                "property": "laneSets",
+                "owner": "self",
+                "role": "lane-set",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "lane-set",
+                "key": {
+                  "op": "literal",
+                  "value": "lane-set"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "lane-set"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "lane",
+                "type": "bpmn:Lane",
+                "parent": "laneSet",
+                "property": "lanes",
+                "owner": "self",
+                "role": "external-lane",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "external-lane",
+                "key": {
+                  "op": "literal",
+                  "value": "external-lane"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "external-lane"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "band",
+                "type": "bpmn:Participant",
+                "parent": "collaboration",
+                "property": "participants",
+                "owner": "self",
+                "role": "reference-band",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "reference-band",
+                "key": {
+                  "op": "literal",
+                  "value": "reference-band"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "reference-band"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/base/sha256",
+          "value": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors/0/sha256",
+          "value": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/support-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/support-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7ddd41340d6d6fe24c4bd2ac2a13b04a47e0094e4114fb9d3fe1ca415ecd6bd0",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      }
+    },
+    {
+      "name": "support-abort",
+      "parent": "support",
+      "delta": [
+        {
+          "op": "add",
+          "path": "/recipes/9/steps/-",
+          "value": {
+            "op": "refuse",
+            "code": "fixture-abort",
+            "target": "self"
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/support-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/support-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "2f3858c3c523de2b7170f70d1e4ef48eac3d58fe33564998e2eeaa36660e0de2",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      }
+    },
+    {
+      "name": "support-task-ensure",
+      "parent": "support",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/recipes/9/steps/4",
+          "value": {
+            "op": "ensure",
+            "as": "lane",
+            "type": "bpmn:Task",
+            "parent": "self",
+            "property": "flowElements",
+            "owner": "self",
+            "role": "external-lane",
+            "ownerId": {
+              "op": "id",
+              "binding": "self"
+            },
+            "slot": "external-lane",
+            "key": {
+              "op": "literal",
+              "value": "external-lane"
+            },
+            "fields": [
+              {
+                "name": "name",
+                "value": {
+                  "op": "literal",
+                  "value": "external-lane"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/recipes/9/writes/5",
+          "value": {
+            "binding": "self",
+            "path": "/flowElements",
+            "mode": "create"
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/support-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/support-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "ff5d4726f3d121566f6372283e90a1960147b54ccf81f67dd5b663a7d789d82e",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      }
+    },
+    {
+      "name": "grid-extraction",
+      "source": "contracts/profile-mechanism/1/neutral-grid-profile.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/producerDelta",
+          "value": [
+            {
+              "nativeType": "bpmn:Definitions",
+              "path": "/rootElements",
+              "from": "import",
+              "to": "ai",
+              "reason": "Synthetic extraction authority for the lot-3 seal (spec section 6.1)."
+            },
+            {
+              "nativeType": "bpmn:Process",
+              "path": "/flowElements",
+              "from": "import",
+              "to": "ai",
+              "reason": "Synthetic extraction authority for the lot-3 seal (spec section 6.1)."
+            },
+            {
+              "nativeType": "bpmn:ServiceTask",
+              "path": "/name",
+              "from": "import",
+              "to": "ai",
+              "reason": "Synthetic extraction authority for the lot-3 seal (spec section 6.1)."
+            }
+          ]
+        }
+      ],
+      "descriptorBytes": "contracts/profile-mechanism/1/neutral-descriptors.json",
+      "baseBytes": "contracts/profile-mechanism/1/neutral-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "4a00d1ecbf2eb1a96e3fe12e8d920fa8b7e4e7191bb6375db01f186db5c53cca",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-c",
+      "source": "contracts/profile-mechanism/1/neutral-profile.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-cn-c/1"
+        },
+        {
+          "op": "replace",
+          "path": "/version",
+          "value": "1.0.0"
+        },
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "complete-start-topology",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:StartEvent",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/outgoing",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "container",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/outgoing",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "ids",
+                    "select": {
+                      "from": "self",
+                      "via": "inverseReference",
+                      "property": "sourceRef",
+                      "where": {
+                        "op": "all",
+                        "args": [
+                          {
+                            "op": "typeIs",
+                            "binding": "self",
+                            "type": "bpmn:SequenceFlow",
+                            "mode": "exact"
+                          },
+                          {
+                            "op": "count",
+                            "select": {
+                              "from": "self",
+                              "via": "owner",
+                              "where": {
+                                "op": "equal",
+                                "left": {
+                                  "op": "id",
+                                  "binding": "self"
+                                },
+                                "right": {
+                                  "op": "id",
+                                  "binding": "container"
+                                }
+                              },
+                              "order": "id"
+                            },
+                            "min": 1
+                          }
+                        ]
+                      },
+                      "order": "id"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "complete-gateway-topology",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:ExclusiveGateway",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/incoming",
+                "mode": "reference"
+              },
+              {
+                "binding": "self",
+                "path": "/outgoing",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "container",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/incoming",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "ids",
+                    "select": {
+                      "from": "self",
+                      "via": "inverseReference",
+                      "property": "targetRef",
+                      "where": {
+                        "op": "all",
+                        "args": [
+                          {
+                            "op": "typeIs",
+                            "binding": "self",
+                            "type": "bpmn:SequenceFlow",
+                            "mode": "exact"
+                          },
+                          {
+                            "op": "count",
+                            "select": {
+                              "from": "self",
+                              "via": "owner",
+                              "where": {
+                                "op": "equal",
+                                "left": {
+                                  "op": "id",
+                                  "binding": "self"
+                                },
+                                "right": {
+                                  "op": "id",
+                                  "binding": "container"
+                                }
+                              },
+                              "order": "id"
+                            },
+                            "min": 1
+                          }
+                        ]
+                      },
+                      "order": "id"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/outgoing",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "ids",
+                    "select": {
+                      "from": "self",
+                      "via": "inverseReference",
+                      "property": "sourceRef",
+                      "where": {
+                        "op": "all",
+                        "args": [
+                          {
+                            "op": "typeIs",
+                            "binding": "self",
+                            "type": "bpmn:SequenceFlow",
+                            "mode": "exact"
+                          },
+                          {
+                            "op": "count",
+                            "select": {
+                              "from": "self",
+                              "via": "owner",
+                              "where": {
+                                "op": "equal",
+                                "left": {
+                                  "op": "id",
+                                  "binding": "self"
+                                },
+                                "right": {
+                                  "op": "id",
+                                  "binding": "container"
+                                }
+                              },
+                              "order": "id"
+                            },
+                            "min": 1
+                          }
+                        ]
+                      },
+                      "order": "id"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "complete-task-topology",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Task",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/incoming",
+                "mode": "reference"
+              },
+              {
+                "binding": "self",
+                "path": "/outgoing",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "container",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/incoming",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "ids",
+                    "select": {
+                      "from": "self",
+                      "via": "inverseReference",
+                      "property": "targetRef",
+                      "where": {
+                        "op": "all",
+                        "args": [
+                          {
+                            "op": "typeIs",
+                            "binding": "self",
+                            "type": "bpmn:SequenceFlow",
+                            "mode": "exact"
+                          },
+                          {
+                            "op": "count",
+                            "select": {
+                              "from": "self",
+                              "via": "owner",
+                              "where": {
+                                "op": "equal",
+                                "left": {
+                                  "op": "id",
+                                  "binding": "self"
+                                },
+                                "right": {
+                                  "op": "id",
+                                  "binding": "container"
+                                }
+                              },
+                              "order": "id"
+                            },
+                            "min": 1
+                          }
+                        ]
+                      },
+                      "order": "id"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/outgoing",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "ids",
+                    "select": {
+                      "from": "self",
+                      "via": "inverseReference",
+                      "property": "sourceRef",
+                      "where": {
+                        "op": "all",
+                        "args": [
+                          {
+                            "op": "typeIs",
+                            "binding": "self",
+                            "type": "bpmn:SequenceFlow",
+                            "mode": "exact"
+                          },
+                          {
+                            "op": "count",
+                            "select": {
+                              "from": "self",
+                              "via": "owner",
+                              "where": {
+                                "op": "equal",
+                                "left": {
+                                  "op": "id",
+                                  "binding": "self"
+                                },
+                                "right": {
+                                  "op": "id",
+                                  "binding": "container"
+                                }
+                              },
+                              "order": "id"
+                            },
+                            "min": 1
+                          }
+                        ]
+                      },
+                      "order": "id"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "gateway-direction-mixed",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:ExclusiveGateway",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "inverseReference",
+                    "property": "targetRef",
+                    "where": {
+                      "op": "typeIs",
+                      "binding": "self",
+                      "type": "bpmn:SequenceFlow",
+                      "mode": "exact"
+                    },
+                    "order": "id"
+                  },
+                  "min": 2
+                },
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "inverseReference",
+                    "property": "sourceRef",
+                    "where": {
+                      "op": "typeIs",
+                      "binding": "self",
+                      "type": "bpmn:SequenceFlow",
+                      "mode": "exact"
+                    },
+                    "order": "id"
+                  },
+                  "min": 2
+                }
+              ]
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/gatewayDirection",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/gatewayDirection",
+                "value": {
+                  "op": "literal",
+                  "value": "Mixed"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "gateway-direction-converging",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:ExclusiveGateway",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "inverseReference",
+                    "property": "targetRef",
+                    "where": {
+                      "op": "typeIs",
+                      "binding": "self",
+                      "type": "bpmn:SequenceFlow",
+                      "mode": "exact"
+                    },
+                    "order": "id"
+                  },
+                  "min": 2
+                },
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "inverseReference",
+                    "property": "sourceRef",
+                    "where": {
+                      "op": "typeIs",
+                      "binding": "self",
+                      "type": "bpmn:SequenceFlow",
+                      "mode": "exact"
+                    },
+                    "order": "id"
+                  },
+                  "min": 0,
+                  "max": 1
+                }
+              ]
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/gatewayDirection",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/gatewayDirection",
+                "value": {
+                  "op": "literal",
+                  "value": "Converging"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "gateway-direction-diverging",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:ExclusiveGateway",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "inverseReference",
+                    "property": "targetRef",
+                    "where": {
+                      "op": "typeIs",
+                      "binding": "self",
+                      "type": "bpmn:SequenceFlow",
+                      "mode": "exact"
+                    },
+                    "order": "id"
+                  },
+                  "min": 0,
+                  "max": 1
+                },
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "inverseReference",
+                    "property": "sourceRef",
+                    "where": {
+                      "op": "typeIs",
+                      "binding": "self",
+                      "type": "bpmn:SequenceFlow",
+                      "mode": "exact"
+                    },
+                    "order": "id"
+                  },
+                  "min": 2
+                }
+              ]
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/gatewayDirection",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/gatewayDirection",
+                "value": {
+                  "op": "literal",
+                  "value": "Diverging"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "gateway-direction-unspecified",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:ExclusiveGateway",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "inverseReference",
+                    "property": "targetRef",
+                    "where": {
+                      "op": "typeIs",
+                      "binding": "self",
+                      "type": "bpmn:SequenceFlow",
+                      "mode": "exact"
+                    },
+                    "order": "id"
+                  },
+                  "min": 0,
+                  "max": 1
+                },
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "inverseReference",
+                    "property": "sourceRef",
+                    "where": {
+                      "op": "typeIs",
+                      "binding": "self",
+                      "type": "bpmn:SequenceFlow",
+                      "mode": "exact"
+                    },
+                    "order": "id"
+                  },
+                  "min": 0,
+                  "max": 1
+                }
+              ]
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/gatewayDirection",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/gatewayDirection",
+                "value": {
+                  "op": "literal",
+                  "value": "Unspecified"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "complete-backing-object",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:DataObjectReference",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "not",
+                    "arg": {
+                      "op": "present",
+                      "value": {
+                        "op": "read",
+                        "binding": "self",
+                        "path": "/dataObjectRef"
+                      }
+                    }
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "container",
+                "path": "/flowElements",
+                "mode": "create"
+              },
+              {
+                "binding": "self",
+                "path": "/dataObjectRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "container",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "create",
+                "as": "backing",
+                "type": "bpmn:DataObject",
+                "parent": "container",
+                "property": "flowElements",
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "container"
+                },
+                "slot": "backing-object",
+                "key": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "fields": []
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/dataObjectRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "backing"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "complete-input-port",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:DataInputAssociation",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "not",
+                    "arg": {
+                      "op": "present",
+                      "value": {
+                        "op": "read",
+                        "binding": "self",
+                        "path": "/targetRef"
+                      }
+                    }
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "activity",
+                "path": "/properties",
+                "mode": "create"
+              },
+              {
+                "binding": "self",
+                "path": "/targetRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "activity",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "create",
+                "as": "port",
+                "type": "bpmn:Property",
+                "parent": "activity",
+                "property": "properties",
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "activity"
+                },
+                "slot": "input-port",
+                "key": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "fields": []
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/targetRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "port"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "complete-output-port",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:DataOutputAssociation",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "not",
+                    "arg": {
+                      "op": "present",
+                      "value": {
+                        "op": "read",
+                        "binding": "self",
+                        "path": "/sourceRef"
+                      }
+                    }
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "activity",
+                "path": "/properties",
+                "mode": "create"
+              },
+              {
+                "binding": "self",
+                "path": "/sourceRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "activity",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "create",
+                "as": "port",
+                "type": "bpmn:Property",
+                "parent": "activity",
+                "property": "properties",
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "activity"
+                },
+                "slot": "output-port",
+                "key": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "fields": []
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/sourceRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "port"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "complete-default-input-set",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:InputOutputSpecification",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "children",
+                    "property": "inputSets",
+                    "where": {
+                      "op": "true"
+                    },
+                    "order": "id"
+                  },
+                  "min": 0,
+                  "max": 0
+                },
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "children",
+                    "property": "dataInputs",
+                    "where": {
+                      "op": "true"
+                    },
+                    "order": "id"
+                  },
+                  "min": 1
+                }
+              ]
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/inputSets",
+                "mode": "create"
+              },
+              {
+                "binding": "created",
+                "path": "/dataInputRefs",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "process",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "create",
+                "as": "created",
+                "type": "bpmn:InputSet",
+                "parent": "self",
+                "property": "inputSets",
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "process"
+                },
+                "slot": "input-set",
+                "key": {
+                  "op": "literal",
+                  "value": "default"
+                },
+                "fields": []
+              },
+              {
+                "op": "assignRef",
+                "target": "created",
+                "path": "/dataInputRefs",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "ids",
+                    "select": {
+                      "from": "self",
+                      "via": "children",
+                      "property": "dataInputs",
+                      "where": {
+                        "op": "true"
+                      },
+                      "order": "id"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "complete-default-output-set",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:InputOutputSpecification",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "children",
+                    "property": "outputSets",
+                    "where": {
+                      "op": "true"
+                    },
+                    "order": "id"
+                  },
+                  "min": 0,
+                  "max": 0
+                },
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "children",
+                    "property": "dataOutputs",
+                    "where": {
+                      "op": "true"
+                    },
+                    "order": "id"
+                  },
+                  "min": 1
+                }
+              ]
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/outputSets",
+                "mode": "create"
+              },
+              {
+                "binding": "created",
+                "path": "/dataOutputRefs",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "process",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "create",
+                "as": "created",
+                "type": "bpmn:OutputSet",
+                "parent": "self",
+                "property": "outputSets",
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "process"
+                },
+                "slot": "output-set",
+                "key": {
+                  "op": "literal",
+                  "value": "default"
+                },
+                "fields": []
+              },
+              {
+                "op": "assignRef",
+                "target": "created",
+                "path": "/dataOutputRefs",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "ids",
+                    "select": {
+                      "from": "self",
+                      "via": "children",
+                      "property": "dataOutputs",
+                      "where": {
+                        "op": "true"
+                      },
+                      "order": "id"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "complete-input-set-selection",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:InputOutputSpecification",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "children",
+                    "property": "inputSets",
+                    "where": {
+                      "op": "true"
+                    },
+                    "order": "id"
+                  },
+                  "min": 2
+                },
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "children",
+                    "property": "dataInputs",
+                    "where": {
+                      "op": "count",
+                      "select": {
+                        "from": "self",
+                        "via": "inverseReference",
+                        "property": "dataInputRefs",
+                        "where": {
+                          "op": "true"
+                        },
+                        "order": "id"
+                      },
+                      "min": 0,
+                      "max": 0
+                    },
+                    "order": "id"
+                  },
+                  "min": 1
+                }
+              ]
+            },
+            "writes": [],
+            "steps": [
+              {
+                "op": "refuse",
+                "code": "io-set-selection-required",
+                "target": "self"
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/cn-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/cn-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-c-unfixed",
+      "parent": "cn-c",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-cn-c-unfixed/1"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "suffix-task-name",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Task",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/name",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/name",
+                "value": {
+                  "op": "concat",
+                  "values": [
+                    {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/name"
+                    },
+                    {
+                      "op": "literal",
+                      "value": "!"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/cn-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/cn-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c-unfixed/1",
+        "version": "1.0.0",
+        "sha256": "21cd4759cbdb251ba1879e8d9f969f13cc30ace506050567008e998e6299cc4b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-c-noauth",
+      "parent": "cn-c",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-cn-c-noauth/1"
+        },
+        {
+          "op": "replace",
+          "path": "/producerDelta",
+          "value": [
+            {
+              "nativeType": "bpmn:DataInputAssociation",
+              "path": "/targetRef",
+              "from": "code",
+              "to": "dropped",
+              "reason": "Synthetic withdrawal of port authority (spec section 2.4)."
+            }
+          ]
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/cn-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/cn-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c-noauth/1",
+        "version": "1.0.0",
+        "sha256": "e7444b3167a98a2647c6597e0a23fe0cdc1163ea03c6b3200886ce476f2bd32c",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-n",
+      "source": "contracts/profile-mechanism/1/neutral-profile.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-cn-n/1"
+        },
+        {
+          "op": "replace",
+          "path": "/version",
+          "value": "1.0.0"
+        },
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        {
+          "op": "remove",
+          "path": "/recipes/4"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "ensure-base-supports",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "root",
+                "path": "/rootElements",
+                "mode": "create"
+              },
+              {
+                "binding": "envelope",
+                "path": "/bindings",
+                "mode": "binding"
+              },
+              {
+                "binding": "collaboration",
+                "path": "/participants",
+                "mode": "create"
+              },
+              {
+                "binding": "main",
+                "path": "/processRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "ensure",
+                "as": "collaboration",
+                "type": "bpmn:Collaboration",
+                "parent": "root",
+                "property": "rootElements",
+                "owner": "self",
+                "role": "collaboration",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "root"
+                },
+                "slot": "collaboration",
+                "key": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "collaboration"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "main",
+                "type": "bpmn:Participant",
+                "parent": "collaboration",
+                "property": "participants",
+                "owner": "self",
+                "role": "main-participant",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "main-participant",
+                "key": {
+                  "op": "literal",
+                  "value": "main-participant"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "main-participant"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "assignRef",
+                "target": "main",
+                "path": "/processRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "self"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "ensure-external-lane",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "any",
+              "args": [
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "children",
+                    "property": "flowElements",
+                    "where": {
+                      "op": "all",
+                      "args": [
+                        {
+                          "op": "typeIs",
+                          "binding": "self",
+                          "type": "bpmn:CallActivity",
+                          "mode": "exact"
+                        },
+                        {
+                          "op": "count",
+                          "select": {
+                            "from": "self",
+                            "via": "children",
+                            "property": "documentation",
+                            "where": {
+                              "op": "equal",
+                              "left": {
+                                "op": "read",
+                                "binding": "self",
+                                "path": "/textFormat"
+                              },
+                              "right": {
+                                "op": "literal",
+                                "value": "text/x-neutral-call-kind"
+                              }
+                            },
+                            "order": "id"
+                          },
+                          "min": 1,
+                          "max": 1
+                        },
+                        {
+                          "op": "count",
+                          "select": {
+                            "from": "self",
+                            "via": "children",
+                            "property": "documentation",
+                            "where": {
+                              "op": "all",
+                              "args": [
+                                {
+                                  "op": "equal",
+                                  "left": {
+                                    "op": "read",
+                                    "binding": "self",
+                                    "path": "/textFormat"
+                                  },
+                                  "right": {
+                                    "op": "literal",
+                                    "value": "text/x-neutral-call-kind"
+                                  }
+                                },
+                                {
+                                  "op": "equal",
+                                  "left": {
+                                    "op": "read",
+                                    "binding": "self",
+                                    "path": "/text"
+                                  },
+                                  "right": {
+                                    "op": "literal",
+                                    "value": "external"
+                                  }
+                                }
+                              ]
+                            },
+                            "order": "id"
+                          },
+                          "min": 1,
+                          "max": 1
+                        },
+                        {
+                          "op": "not",
+                          "arg": {
+                            "op": "present",
+                            "value": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/calledElement"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "order": "id"
+                  },
+                  "min": 1
+                },
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "descendants",
+                    "where": {
+                      "op": "any",
+                      "args": [
+                        {
+                          "op": "typeIs",
+                          "binding": "self",
+                          "type": "bpmn:DataInput",
+                          "mode": "exact"
+                        },
+                        {
+                          "op": "typeIs",
+                          "binding": "self",
+                          "type": "bpmn:DataOutput",
+                          "mode": "exact"
+                        }
+                      ]
+                    },
+                    "order": "id"
+                  },
+                  "min": 1
+                }
+              ]
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/laneSets",
+                "mode": "create"
+              },
+              {
+                "binding": "envelope",
+                "path": "/bindings",
+                "mode": "binding"
+              },
+              {
+                "binding": "laneSet",
+                "path": "/lanes",
+                "mode": "create"
+              }
+            ],
+            "steps": [
+              {
+                "op": "ensure",
+                "as": "laneSet",
+                "type": "bpmn:LaneSet",
+                "parent": "self",
+                "property": "laneSets",
+                "owner": "self",
+                "role": "lane-set",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "lane-set",
+                "key": {
+                  "op": "literal",
+                  "value": "lane-set"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "lane-set"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "lane",
+                "type": "bpmn:Lane",
+                "parent": "laneSet",
+                "property": "lanes",
+                "owner": "self",
+                "role": "external-lane",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "external-lane",
+                "key": {
+                  "op": "literal",
+                  "value": "external-lane"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "external-lane"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "ensure-reference-band",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "count",
+              "select": {
+                "from": "self",
+                "via": "children",
+                "property": "flowElements",
+                "where": {
+                  "op": "typeIs",
+                  "binding": "self",
+                  "type": "bpmn:DataStoreReference",
+                  "mode": "exact"
+                },
+                "order": "id"
+              },
+              "min": 1
+            },
+            "writes": [
+              {
+                "binding": "root",
+                "path": "/rootElements",
+                "mode": "create"
+              },
+              {
+                "binding": "envelope",
+                "path": "/bindings",
+                "mode": "binding"
+              },
+              {
+                "binding": "collaboration",
+                "path": "/participants",
+                "mode": "create"
+              }
+            ],
+            "steps": [
+              {
+                "op": "ensure",
+                "as": "collaboration",
+                "type": "bpmn:Collaboration",
+                "parent": "root",
+                "property": "rootElements",
+                "owner": "self",
+                "role": "collaboration",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "root"
+                },
+                "slot": "collaboration",
+                "key": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "collaboration"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "band",
+                "type": "bpmn:Participant",
+                "parent": "collaboration",
+                "property": "participants",
+                "owner": "self",
+                "role": "reference-band",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "reference-band",
+                "key": {
+                  "op": "literal",
+                  "value": "reference-band"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "reference-band"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "relocate-marked-calls",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:CallActivity",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "count",
+                    "select": {
+                      "from": "self",
+                      "via": "children",
+                      "property": "documentation",
+                      "where": {
+                        "op": "equal",
+                        "left": {
+                          "op": "read",
+                          "binding": "self",
+                          "path": "/textFormat"
+                        },
+                        "right": {
+                          "op": "literal",
+                          "value": "text/x-neutral-call-kind"
+                        }
+                      },
+                      "order": "id"
+                    },
+                    "min": 1,
+                    "max": 1
+                  },
+                  {
+                    "op": "count",
+                    "select": {
+                      "from": "self",
+                      "via": "children",
+                      "property": "documentation",
+                      "where": {
+                        "op": "all",
+                        "args": [
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/textFormat"
+                            },
+                            "right": {
+                              "op": "literal",
+                              "value": "text/x-neutral-call-kind"
+                            }
+                          },
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/text"
+                            },
+                            "right": {
+                              "op": "literal",
+                              "value": "external"
+                            }
+                          }
+                        ]
+                      },
+                      "order": "id"
+                    },
+                    "min": 1,
+                    "max": 1
+                  },
+                  {
+                    "op": "not",
+                    "arg": {
+                      "op": "present",
+                      "value": {
+                        "op": "read",
+                        "binding": "self",
+                        "path": "/calledElement"
+                      }
+                    }
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "process",
+                "path": "/laneSets",
+                "mode": "create"
+              },
+              {
+                "binding": "envelope",
+                "path": "/bindings",
+                "mode": "binding"
+              },
+              {
+                "binding": "laneSet",
+                "path": "/lanes",
+                "mode": "create"
+              },
+              {
+                "binding": "lane",
+                "path": "/flowNodeRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "process",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "ensure",
+                "as": "laneSet",
+                "type": "bpmn:LaneSet",
+                "parent": "process",
+                "property": "laneSets",
+                "owner": "process",
+                "role": "lane-set",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "process"
+                },
+                "slot": "lane-set",
+                "key": {
+                  "op": "literal",
+                  "value": "lane-set"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "lane-set"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "lane",
+                "type": "bpmn:Lane",
+                "parent": "laneSet",
+                "property": "lanes",
+                "owner": "process",
+                "role": "external-lane",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "process"
+                },
+                "slot": "external-lane",
+                "key": {
+                  "op": "literal",
+                  "value": "external-lane"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "external-lane"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "assignRef",
+                "target": "lane",
+                "path": "/flowNodeRef",
+                "mode": "appendUnique",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "self"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "reverse-reference-links",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:Association",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "count",
+                    "select": {
+                      "from": "self",
+                      "via": "reference",
+                      "property": "sourceRef",
+                      "where": {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:Task",
+                        "mode": "exact"
+                      },
+                      "order": "id"
+                    },
+                    "min": 1
+                  },
+                  {
+                    "op": "count",
+                    "select": {
+                      "from": "self",
+                      "via": "reference",
+                      "property": "targetRef",
+                      "where": {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:DataStoreReference",
+                        "mode": "exact"
+                      },
+                      "order": "id"
+                    },
+                    "min": 1
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/sourceRef",
+                "mode": "reference"
+              },
+              {
+                "binding": "self",
+                "path": "/targetRef",
+                "mode": "reference"
+              },
+              {
+                "binding": "self",
+                "path": "/associationDirection",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "source",
+                "select": {
+                  "from": "self",
+                  "via": "reference",
+                  "property": "sourceRef",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "target",
+                "select": {
+                  "from": "self",
+                  "via": "reference",
+                  "property": "targetRef",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/sourceRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "target"
+                  }
+                ]
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/targetRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "source"
+                  }
+                ]
+              },
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/associationDirection",
+                "value": {
+                  "op": "literal",
+                  "value": "One"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "place-references",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:DataStoreReference",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "placement"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "current",
+                "select": {
+                  "from": "self",
+                  "via": "self",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "process",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "anchor",
+                "select": {
+                  "from": "root",
+                  "via": "all",
+                  "where": {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:Association",
+                        "mode": "exact"
+                      },
+                      {
+                        "op": "any",
+                        "args": [
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/sourceRef"
+                            },
+                            "right": {
+                              "op": "id",
+                              "binding": "current"
+                            }
+                          },
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/targetRef"
+                            },
+                            "right": {
+                              "op": "id",
+                              "binding": "current"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "order": "id"
+                },
+                "cardinality": "first"
+              },
+              {
+                "op": "place",
+                "target": "self",
+                "owner": "process",
+                "region": "reference-band",
+                "related": {
+                  "from": "root",
+                  "via": "all",
+                  "where": {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:Association",
+                        "mode": "exact"
+                      },
+                      {
+                        "op": "any",
+                        "args": [
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/sourceRef"
+                            },
+                            "right": {
+                              "op": "id",
+                              "binding": "current"
+                            }
+                          },
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/targetRef"
+                            },
+                            "right": {
+                              "op": "id",
+                              "binding": "current"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "order": "id"
+                },
+                "anchor": "anchor"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "place-interface",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "any",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:DataInput",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:DataOutput",
+                    "mode": "exact"
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "placement"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "current",
+                "select": {
+                  "from": "self",
+                  "via": "self",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "spec",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "process",
+                "select": {
+                  "from": "spec",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "anchor",
+                "select": {
+                  "from": "root",
+                  "via": "all",
+                  "where": {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:Association",
+                        "mode": "exact"
+                      },
+                      {
+                        "op": "any",
+                        "args": [
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/sourceRef"
+                            },
+                            "right": {
+                              "op": "id",
+                              "binding": "current"
+                            }
+                          },
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/targetRef"
+                            },
+                            "right": {
+                              "op": "id",
+                              "binding": "current"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "order": "id"
+                },
+                "cardinality": "first"
+              },
+              {
+                "op": "place",
+                "target": "self",
+                "owner": "process",
+                "region": "external-lane",
+                "related": {
+                  "from": "root",
+                  "via": "all",
+                  "where": {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:Association",
+                        "mode": "exact"
+                      },
+                      {
+                        "op": "any",
+                        "args": [
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/sourceRef"
+                            },
+                            "right": {
+                              "op": "id",
+                              "binding": "current"
+                            }
+                          },
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/targetRef"
+                            },
+                            "right": {
+                              "op": "id",
+                              "binding": "current"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "order": "id"
+                },
+                "anchor": "anchor"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "create-process-input",
+            "phase": "create",
+            "parameters": [
+              {
+                "name": "owner",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "owner",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "owner",
+                "path": "/ioSpecification",
+                "mode": "create"
+              },
+              {
+                "binding": "spec",
+                "path": "/dataInputs",
+                "mode": "create"
+              }
+            ],
+            "steps": [
+              {
+                "op": "create",
+                "as": "spec",
+                "type": "bpmn:InputOutputSpecification",
+                "parent": "owner",
+                "property": "ioSpecification",
+                "identity": "containment",
+                "fields": []
+              },
+              {
+                "op": "create",
+                "as": "input",
+                "type": "bpmn:DataInput",
+                "parent": "spec",
+                "property": "dataInputs",
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "owner"
+                },
+                "slot": "process-input",
+                "key": {
+                  "op": "param",
+                  "name": "key"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "param",
+                      "name": "name"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "remove-element",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "remove"
+              }
+            ],
+            "steps": [
+              {
+                "op": "remove",
+                "target": "self",
+                "dependents": {
+                  "from": "self",
+                  "via": "self",
+                  "where": {
+                    "op": "false"
+                  },
+                  "order": "id"
+                },
+                "policy": "refuseIfReferenced"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "conflicting-rename",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/name",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/name",
+                "value": {
+                  "op": "literal",
+                  "value": "first"
+                }
+              },
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/name",
+                "value": {
+                  "op": "literal",
+                  "value": "second"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "toggle-membership",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "lane",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "node",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "lane",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/flowNodeRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/flowNodeRef",
+                "mode": "appendUnique",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "node"
+                  }
+                ]
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/flowNodeRef",
+                "mode": "remove",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "node"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "rename-only-task",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "owner",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "owner",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "task",
+                "path": "/name",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "task",
+                "select": {
+                  "from": "owner",
+                  "via": "children",
+                  "property": "flowElements",
+                  "where": {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:Task",
+                    "mode": "exact"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "set",
+                "target": "task",
+                "path": "/name",
+                "value": {
+                  "op": "literal",
+                  "value": "Only"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "clear-name",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/name",
+                "mode": "unset"
+              }
+            ],
+            "steps": [
+              {
+                "op": "unset",
+                "target": "self",
+                "path": "/name"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "rename-optional-task",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "owner",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "owner",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "task",
+                "path": "/name",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "task",
+                "select": {
+                  "from": "owner",
+                  "via": "children",
+                  "property": "flowElements",
+                  "where": {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:Task",
+                    "mode": "exact"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "zeroOrOne"
+              },
+              {
+                "op": "set",
+                "target": "task",
+                "path": "/name",
+                "value": {
+                  "op": "literal",
+                  "value": "Only"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "assign-lane-member",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "lane",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "node",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "lane",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/flowNodeRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/flowNodeRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "node"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "move-annotation",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "note",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "process",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "note",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "reparent"
+              },
+              {
+                "binding": "process",
+                "path": "/artifacts",
+                "mode": "reparent"
+              }
+            ],
+            "steps": [
+              {
+                "op": "reparent",
+                "target": "self",
+                "parent": "process",
+                "property": "artifacts",
+                "position": "last"
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/cn-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/cn-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-n-conflict",
+      "parent": "cn-n",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-cn-n-conflict/1"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "orient-reference-links-both",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:Association",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "count",
+                    "select": {
+                      "from": "self",
+                      "via": "reference",
+                      "property": "sourceRef",
+                      "where": {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:Task",
+                        "mode": "exact"
+                      },
+                      "order": "id"
+                    },
+                    "min": 1
+                  },
+                  {
+                    "op": "count",
+                    "select": {
+                      "from": "self",
+                      "via": "reference",
+                      "property": "targetRef",
+                      "where": {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:DataStoreReference",
+                        "mode": "exact"
+                      },
+                      "order": "id"
+                    },
+                    "min": 1
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/associationDirection",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/associationDirection",
+                "value": {
+                  "op": "literal",
+                  "value": "Both"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/cn-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/cn-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-conflict/1",
+        "version": "1.0.0",
+        "sha256": "4d19a76e115737204be1ee26a2da4642b0b07940652527570b0065d70102b18c",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-n-relocate",
+      "parent": "cn-n",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-cn-n-relocate/1"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "release-marked-calls",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:CallActivity",
+                        "mode": "exact"
+                      },
+                      {
+                        "op": "count",
+                        "select": {
+                          "from": "self",
+                          "via": "children",
+                          "property": "documentation",
+                          "where": {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/textFormat"
+                            },
+                            "right": {
+                              "op": "literal",
+                              "value": "text/x-neutral-call-kind"
+                            }
+                          },
+                          "order": "id"
+                        },
+                        "min": 1,
+                        "max": 1
+                      },
+                      {
+                        "op": "count",
+                        "select": {
+                          "from": "self",
+                          "via": "children",
+                          "property": "documentation",
+                          "where": {
+                            "op": "all",
+                            "args": [
+                              {
+                                "op": "equal",
+                                "left": {
+                                  "op": "read",
+                                  "binding": "self",
+                                  "path": "/textFormat"
+                                },
+                                "right": {
+                                  "op": "literal",
+                                  "value": "text/x-neutral-call-kind"
+                                }
+                              },
+                              {
+                                "op": "equal",
+                                "left": {
+                                  "op": "read",
+                                  "binding": "self",
+                                  "path": "/text"
+                                },
+                                "right": {
+                                  "op": "literal",
+                                  "value": "external"
+                                }
+                              }
+                            ]
+                          },
+                          "order": "id"
+                        },
+                        "min": 1,
+                        "max": 1
+                      },
+                      {
+                        "op": "not",
+                        "arg": {
+                          "op": "present",
+                          "value": {
+                            "op": "read",
+                            "binding": "self",
+                            "path": "/calledElement"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "op": "count",
+                    "select": {
+                      "from": "self",
+                      "via": "inverseReference",
+                      "property": "flowNodeRef",
+                      "where": {
+                        "op": "true"
+                      },
+                      "order": "id"
+                    },
+                    "min": 1
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "process",
+                "path": "/laneSets",
+                "mode": "create"
+              },
+              {
+                "binding": "envelope",
+                "path": "/bindings",
+                "mode": "binding"
+              },
+              {
+                "binding": "laneSet",
+                "path": "/lanes",
+                "mode": "create"
+              },
+              {
+                "binding": "business",
+                "path": "/flowNodeRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "call",
+                "select": {
+                  "from": "self",
+                  "via": "self",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "bind",
+                "as": "process",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "ensure",
+                "as": "laneSet",
+                "type": "bpmn:LaneSet",
+                "parent": "process",
+                "property": "laneSets",
+                "owner": "process",
+                "role": "lane-set",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "process"
+                },
+                "slot": "lane-set",
+                "key": {
+                  "op": "literal",
+                  "value": "lane-set"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "lane-set"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "lane",
+                "type": "bpmn:Lane",
+                "parent": "laneSet",
+                "property": "lanes",
+                "owner": "process",
+                "role": "external-lane",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "process"
+                },
+                "slot": "external-lane",
+                "key": {
+                  "op": "literal",
+                  "value": "external-lane"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "external-lane"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "bind",
+                "as": "business",
+                "select": {
+                  "from": "call",
+                  "via": "inverseReference",
+                  "property": "flowNodeRef",
+                  "where": {
+                    "op": "not",
+                    "arg": {
+                      "op": "equal",
+                      "left": {
+                        "op": "id",
+                        "binding": "self"
+                      },
+                      "right": {
+                        "op": "id",
+                        "binding": "lane"
+                      }
+                    }
+                  },
+                  "order": "id"
+                },
+                "cardinality": "first"
+              },
+              {
+                "op": "assignRef",
+                "target": "business",
+                "path": "/flowNodeRef",
+                "mode": "remove",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "call"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/cn-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/cn-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-relocate/1",
+        "version": "1.0.0",
+        "sha256": "4d5f50dc43813cf1f5c24e0cf835075a14a054af8bdf81eaa3107d0dd48f07b2",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-n-unfixed",
+      "parent": "cn-n",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-cn-n-unfixed/1"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "decorate-main-participant",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:Participant",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "count",
+                    "select": {
+                      "from": "self",
+                      "via": "reference",
+                      "property": "processRef",
+                      "where": {
+                        "op": "true"
+                      },
+                      "order": "id"
+                    },
+                    "min": 1
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/name",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/name",
+                "value": {
+                  "op": "concat",
+                  "values": [
+                    {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/name"
+                    },
+                    {
+                      "op": "literal",
+                      "value": "*"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/cn-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/cn-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-unfixed/1",
+        "version": "1.0.0",
+        "sha256": "3b5265bdb8370dbb7500351b6e48246030820860ed7e580d645591137b847631",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-n-ensure-conflict",
+      "parent": "cn-n",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-cn-n-ensure-conflict/1"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "ensure-band-other-name",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "count",
+              "select": {
+                "from": "self",
+                "via": "children",
+                "property": "flowElements",
+                "where": {
+                  "op": "typeIs",
+                  "binding": "self",
+                  "type": "bpmn:DataStoreReference",
+                  "mode": "exact"
+                },
+                "order": "id"
+              },
+              "min": 1
+            },
+            "writes": [
+              {
+                "binding": "root",
+                "path": "/rootElements",
+                "mode": "create"
+              },
+              {
+                "binding": "envelope",
+                "path": "/bindings",
+                "mode": "binding"
+              },
+              {
+                "binding": "collaboration",
+                "path": "/participants",
+                "mode": "create"
+              }
+            ],
+            "steps": [
+              {
+                "op": "ensure",
+                "as": "collaboration",
+                "type": "bpmn:Collaboration",
+                "parent": "root",
+                "property": "rootElements",
+                "owner": "self",
+                "role": "collaboration",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "root"
+                },
+                "slot": "collaboration",
+                "key": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "collaboration"
+                    }
+                  }
+                ]
+              },
+              {
+                "op": "ensure",
+                "as": "band",
+                "type": "bpmn:Participant",
+                "parent": "collaboration",
+                "property": "participants",
+                "owner": "self",
+                "role": "reference-band",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "self"
+                },
+                "slot": "reference-band",
+                "key": {
+                  "op": "literal",
+                  "value": "reference-band"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "literal",
+                      "value": "band"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/cn-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/cn-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-ensure-conflict/1",
+        "version": "1.0.0",
+        "sha256": "a047b64979b8b9b3806c3920fc6c7d28719d4089f76d4ab9dfba7962b9d80dd5",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "name": "support-no-binding-write",
+      "parent": "support",
+      "delta": [
+        {
+          "op": "remove",
+          "path": "/recipes/9/writes/1"
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/support-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/support-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "7df6ae4e6a350ee639901e8a0b5ec68e1876b0e04dc2e45de97fd8267afcc7d2",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      }
+    },
+    {
+      "name": "support-cmd",
+      "parent": "support",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-support-cmd/1"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "assign-lane-member",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "lane",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "node",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "lane",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/flowNodeRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/flowNodeRef",
+                "mode": "replace",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "node"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/support-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/support-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-support-cmd/1",
+        "version": "1.1.0",
+        "sha256": "1d9c294f911262b3c4bf28deea69e641f4f26e8580f19a8d4cbf40b977ab19f1",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-c-second-pass",
+      "parent": "cn-c",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-cn-c-second-pass/1"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "mark-task-name",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Task",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/name",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/name",
+                "value": {
+                  "op": "literal",
+                  "value": "marked"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "refuse-marked-task",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:Task",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "equal",
+                    "left": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/name"
+                    },
+                    "right": {
+                      "op": "literal",
+                      "value": "marked"
+                    }
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [],
+            "steps": [
+              {
+                "op": "refuse",
+                "code": "fixture-second-pass",
+                "target": "self"
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/cn-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/cn-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c-second-pass/1",
+        "version": "1.0.0",
+        "sha256": "bf0fe1d3b0afaebaa87be46b2d2a3cd0855c7be0091336227718596a024b2e07",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-n-second-pass",
+      "parent": "cn-n",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/profile",
+          "value": "neutral-cn-n-second-pass/1"
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "mark-main-participant",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:Participant",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "count",
+                    "select": {
+                      "from": "self",
+                      "via": "reference",
+                      "property": "processRef",
+                      "where": {
+                        "op": "true"
+                      },
+                      "order": "id"
+                    },
+                    "min": 1
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/name",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/name",
+                "value": {
+                  "op": "literal",
+                  "value": "marked"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "refuse-marked-participant",
+            "phase": "normalize",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:Participant",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "equal",
+                    "left": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/name"
+                    },
+                    "right": {
+                      "op": "literal",
+                      "value": "marked"
+                    }
+                  }
+                ]
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [],
+            "steps": [
+              {
+                "op": "refuse",
+                "code": "fixture-second-pass",
+                "target": "self"
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "tests/profile_cn/expected/artifacts/cn-descriptors.json",
+      "baseBytes": "tests/profile_cn/expected/artifacts/cn-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n-second-pass/1",
+        "version": "1.0.0",
+        "sha256": "0ef4721ff62c67ded55b8e0c9ded0379b9a3c00d8d2eeedde6ba42f9f61df867",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      }
+    },
+    {
+      "name": "neutral-containment-task",
+      "parent": "neutral",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/recipes/0/steps/0",
+          "value": {
+            "op": "create",
+            "as": "created",
+            "type": "bpmn:Task",
+            "parent": "owner",
+            "property": "flowElements",
+            "identity": "containment",
+            "fields": [
+              {
+                "name": "name",
+                "value": {
+                  "op": "param",
+                  "name": "name"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "descriptorBytes": "contracts/profile-mechanism/1/neutral-descriptors.json",
+      "baseBytes": "contracts/profile-mechanism/1/neutral-base.json",
+      "identity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "3ef20ccf6269a3f8b47ac1333e4d24c73d2d57935d60652c96901064315e8871",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      }
+    }
+  ]
+}
