@@ -11,7 +11,10 @@ Revision SF (seal fix round, 2026-10-18): it applies the block-B JS↔Python
 harmonization decisions of 2026-10-18 (cited below as "harmonization <row>", for
 example harmonization J1) with the precedence DESIGN text > harmonization
 decision > review finding, and follows the lot-3 C/N freeze for every contract
-shared with lot 3 that no harmonization row changes.
+shared with lot 3 that no harmonization row changes. Revision PS (block-B
+JS↔Python parity sync, 2026-10-19, cited as "parity sync PS-nn"): the compile
+success observable of PS-35 (§6), and the Python rules adopted as shared
+contract by PS-12, PS-14 and PS-17 (§3.2, §4.3, §11).
 
 The sealed expectations live in `tests/profile_commands/expected/` (harness
 cases, committed byte artifacts under `artifacts/`, the
@@ -129,7 +132,9 @@ elements contained in another requested element, in **source document
 pre-order** (harmonization B20): a depth-first walk of the canonical
 (profile-c14n/2) document from Definitions, an element before its descendants,
 object members in UTF-16 key order (the canonical member order: for a Process,
-`artifacts` before `flowElements`) and array items by index.
+`artifacts` before `flowElements`) and array items by index. This member order
+is the shared contract of both libraries (block-B parity sync PS-14; the same
+traversal as the coverage order of harmonization G3).
 
 ### 3.3 Payloads
 
@@ -226,7 +231,7 @@ no C/N and no lint, clears history, increments the session-local `historyEpoch`
 - Handles must be IDs of ID-bearing elements present on the stage, otherwise
   `reference-dangling`; a non-string handle refuses `profile-type`. A field
   command whose `context.target` is not recognized as the named notion refuses
-  `profile-type`.
+  `profile-type` (shared contract, block-B parity sync PS-12).
 - A bound value must match the recipe parameter type without coercion:
   `string` ↔ str, `number` ↔ finite int/float that is not a Boolean, `boolean` ↔
   bool; `null` is never accepted; otherwise `profile-type`.
@@ -238,7 +243,8 @@ no C/N and no lint, clears history, increments the session-local `historyEpoch`
 - Commands of the `delete` and `replace` surfaces (and upstream IDs mapped to
   them) are planned with explicit deletion intent (lot-3 `Authority(actor="editor",
   deletion_intent=True)`); every other command without it, so a `remove` action
-  reached from them refuses `profile-producer` (lot-3 freeze).
+  reached from them refuses `profile-producer` (lot-3 freeze; shared contract,
+  block-B parity sync PS-17).
 
 ### 4.4 Fields (DESIGN §8.3 L653, L655, L659)
 
@@ -479,9 +485,13 @@ Per command of `apply_commands`, first failure wins:
    recipes exist → `profile-symbol` (CR-05).
 
 Writing an existing ID stays a CR-06 `profile-producer` refusal (DESIGN §2.4
-L165, §2.4.1 L206). A compile success is compared as `{status: "ok", identity:
-compiled.identity, diagnostics: []}`; a load or compile refusal as the
-`PureResult` refusal `{status: "refused", code, diagnostics: []}`.
+L165, §2.4.1 L206). A compile success is compared as the `PureResult` success
+`{status: "ok", payload, diagnostics: []}` whose `payload`, the
+`CompiledProfile`, has no wire shape and is unsealed (`compiled-profile`); the
+compiled §5.1 identity (`compiled.identity`) is sealed separately as
+`expected.compiledIdentity` (parity role `compiled-identity`). A load or compile
+refusal is the `PureResult` refusal `{status: "refused", code, diagnostics: []}`
+(DESIGN §10.1 L737; shared contract, block-B parity sync PS-25 and PS-35).
 
 ## 7. Gates
 
@@ -536,7 +546,9 @@ composition followed by the case delta (RFC 6902 `add`, `replace`, `remove`,
    is created.
 
 `expected.compile` (compile cases) is the first refusal of steps 2–3, or the
-compile success record of §6.
+compile success record of §6; a compile success also carries
+`expected.compiledIdentity`, the identity record of the compiled profile (equal
+to the composed profile identity, recomputed by `derive_helper.py check`).
 
 ### 8.3 Steps and matching
 
@@ -577,6 +589,7 @@ Unsealed reasons (harmonization A8 explicit UNSEALED list):
 | `session-history-epoch` | `historyEpoch` | session-local counter excluded from parity (DESIGN §3.1 L268) |
 | `session-subscription` | `subscriptionId` | session-local, excluded from parity (DESIGN §8.1 L606) |
 | `raw-lint-transport` | `report.rawStandardFindings` of the two vendored-validation witnesses | raw upstream report records are the frozen upstream comparator (DESIGN §3.1 L272, §6.4 L508, L520); their Report/2 record shape is not fixed |
+| `compiled-profile` | `payload` of a compile success | the `CompiledProfile` is an in-process object without wire shape (DESIGN §10.1 L737, §2.5 L227); its identity is sealed as `expected.compiledIdentity` (parity sync PS-35) |
 
 ## 9. Parity projection (`profile-parity-corpus/1`, harmonization A1–A5)
 
@@ -590,7 +603,8 @@ Unsealed reasons (harmonization A8 explicit UNSEALED list):
 bridge input, the initial envelope and the loaded importedDi (`{role, json}`);
 `commandArtifact` `{role: "sequence", json: {sequenceVersion: "1", steps: [{step,
 action, request?, save?}]}}`; `expectedArtifacts` the setup and step outcomes
-(or the compile outcome); `expectedStatus` `ok`/`refused:<code>` for a
+(or the compile outcome, plus the `compiled-identity` artifact of a compile
+success, comparator `lot5-py/compiled-identity`); `expectedStatus` `ok`/`refused:<code>` for a
 single-step or compile case and `ok` for a sequence (step refusals are step
 outcomes); `comparatorIds` from `parity/manifest.json`, whose `pathBase` is
 `tests/profile_commands/expected/` and whose `files` pin every parity record and
@@ -648,7 +662,9 @@ id).
 ## 11. Design-default resolutions
 
 `design-default` lines (the DESIGN names no value; the lot-5 binding chooses; rows
-1, 3, 7 and 8 are now shared contract decisions, harmonization C7, C8, D6, D7):
+1, 3, 7 and 8 are now shared contract decisions, harmonization C7, C8, D6, D7;
+row 13, the copy pre-order of row 16 and row 17 are shared contract decisions of
+the block-B parity sync, PS-12, PS-14 and PS-17):
 
 1. `ui.when` false, hidden/immutable/readonly field edit → `profile-producer` (§8.3 L649; harmonization C7).
 2. Stale `baseRevision`/`expectedViewRevision`/`expectedRevision` and nothing to undo/redo → `operation-error` (existing bridge binding; §8.2 L629 names no code; harmonization C10).
@@ -662,11 +678,11 @@ id).
 10. C and N run once after the whole batch, commands stage sequentially (§8.2 L631, §8.3 L653; harmonization I4).
 11. Lint: both draft stages run inside `apply_commands` and their entries are sealed; a pre-normalize error that is not `repairable` and any post-normalize error block with the code of the first unresolved error entry (§6.2 L474, L481; harmonization J1, C19). This reverses the former item 11.
 12. OPEN-RESERVED-N is enforced by N itself in activation `edit` (harmonization H1, H2); the former new-binding comparison is withdrawn.
-13. A field command whose target is not recognized as the named notion → `profile-type`.
+13. A field command whose target is not recognized as the named notion → `profile-type` (parity sync PS-12).
 14. The lot-5 fixture profiles set the 26 standard bpmnlint settings to `off` in all ten validation records (the vendored descriptor slice cannot express FlowNode connectivity, so connectivity rules flag every Task); the vendored records are exercised by `fixture-profile-neutral-lint`.
 15. Report composition and lint entry coordinates of §4.9; undo/redo `baseRevision` of E5.
-16. Signal polls P1, P2 (after each command) and P3 (§4.8); `copy` pre-order over the canonical document (§3.2).
-17. Deletion intent exactly for `delete` and `replace` surface commands (§4.3).
+16. Signal polls P1, P2 (after each command) and P3 (§4.8; runtime mechanics, parity sync PS-18); `copy` pre-order over the canonical document (§3.2; parity sync PS-14).
+17. Deletion intent exactly for `delete` and `replace` surface commands (§4.3; parity sync PS-17).
 
 ## 12. Case table
 
@@ -678,12 +694,12 @@ One row per sealed harness file (status summary: `ok xN` counts successful steps
 | `compile-enum-duplicate-values` | §2.4.1 L195 | enum choices share a JSON value under different names | compile refused `profile-ui-parameters` |
 | `compile-enum-empty-choices` | §8.3 L655 | enum widget without choices (schema) | compile refused `profile-schema` |
 | `compile-field-parameter-missing` | §8.3 L655; §2.4.1 L195 | mutable field map incomplete | compile refused `profile-ui-parameters` |
-| `compile-grid-l5-ok` | §2.4.1 L195; §8.3 L655 | every CR-10 rule satisfied (grid) | compile ok |
+| `compile-grid-l5-ok` | §2.4.1 L195; §8.3 L655; §10.1 L737 | every CR-10 rule satisfied (grid) | compile ok (payload unsealed); compiled identity |
 | `compile-id-not-ordinary-input` | §8.3 L653; §2.4 L165; §2.4.1 L206 | a recipe writing an existing ID | compile refused `profile-producer` |
 | `compile-message-missing-fallback` | §8.3 L659 | message without policies.localeFallback text | compile refused `profile-symbol` |
 | `compile-mutable-without-command` | §8.3 L659 | mutable field without command (schema) | compile refused `profile-schema` |
 | `compile-mutable-without-parameters` | §8.3 L655 | mutable field without parameter map (schema) | compile refused `profile-schema` |
-| `compile-neutral-l5-ok` | §2.4.1 L195; §8.3 L655 | every CR-10 rule satisfied (neutral) | compile ok |
+| `compile-neutral-l5-ok` | §2.4.1 L195; §8.3 L655; §10.1 L737 | every CR-10 rule satisfied (neutral) | compile ok (payload unsealed); compiled identity |
 | `compile-readonly-with-command` | §8.3 L655 | readonly widget carrying a command (schema) | compile refused `profile-schema` |
 | `compile-reference-empty-target-types` | §8.3 L655 | reference widget without targetTypes (schema) | compile refused `profile-schema` |
 | `compile-ui-icon-unknown-glyph` | §8.3 L655; §2.4.1 L190 | UI icon names an undefined glyph | compile refused `profile-symbol` |

@@ -8,7 +8,12 @@
     {
       "id": "lot5-py/compile-outcome",
       "kind": "parity",
-      "note": "loadProfile then compileProfile on the profileArtifact bytes with the base and descriptors artifacts: the first refusal as {status, code, diagnostics}, or {status: ok, identity, diagnostics} with identity the compiled profile identity record."
+      "note": "loadProfile then compileProfile on the profileArtifact bytes with the base and descriptors artifacts: the first refusal as {status, code, diagnostics}, or the success {status: ok, payload, diagnostics} whose payload (the compiled profile, no wire shape) is the {$unsealed: compiled-profile} member."
+    },
+    {
+      "id": "lot5-py/compiled-identity",
+      "kind": "parity",
+      "note": "The profileIdentity record (DESIGN R3.3 \u00a75.1) carried by the compiled profile of a compile success, exact under profile-c14n/2."
     },
     {
       "id": "profile-c14n/2",
@@ -53,12 +58,12 @@
     "parity/lot5-py-compile-enum-duplicate-values.json": "df1bbee2fd95f0cb503705d07221d4819a2e9998b3b49ca1baaba8814279aabf",
     "parity/lot5-py-compile-enum-empty-choices.json": "ddaa944c321566d8d2a9f617f79ab419963d981ec5a76beec7920f62ccea235d",
     "parity/lot5-py-compile-field-parameter-missing.json": "4faad6cad072072c0b78f6bf8c81f9ec96f9d865f2fd9ee03cd6f4da5ebe93ab",
-    "parity/lot5-py-compile-grid-l5-ok.json": "586c8d59ba313399c3bb963184b5812f4945d45635ded2b310b189c4f9b6cd5b",
+    "parity/lot5-py-compile-grid-l5-ok.json": "8e1db276c3fe837b54293fcbd212631722f9fabc7fa3b9153a40a8ad4acc41de",
     "parity/lot5-py-compile-id-not-ordinary-input.json": "4c6029f25cc45881c4e328c1bbc49bd65fb7bfc36dd04c3e2f9ff77a684d6283",
     "parity/lot5-py-compile-message-missing-fallback.json": "04840748fcbf7e6193c843708016a5627275950264e9af10af4ef0252466ae8c",
     "parity/lot5-py-compile-mutable-without-command.json": "708e7696132055a0a98f78b060185575a3e6b52bc7617b370ce411772f9de379",
     "parity/lot5-py-compile-mutable-without-parameters.json": "10574c679ba7364eabadb7075361a9d43334f2ee6666124810c368760a6d9c28",
-    "parity/lot5-py-compile-neutral-l5-ok.json": "d7df3b02c7908d193d99d0af16351b5677d44d62be2db605e95d218c162fcd3e",
+    "parity/lot5-py-compile-neutral-l5-ok.json": "a4b401bdb30fa7a98c16d3be97b3b56a0e8d45c688be17a03c444e9c63de4b13",
     "parity/lot5-py-compile-readonly-with-command.json": "0ff3c33dc651ea64d4bca61fad2fa7cb90c1202431452e17b1bfa064adda57c1",
     "parity/lot5-py-compile-reference-empty-target-types.json": "a254b36c126fd5c44542d35c04611aa125a320d92c6962cef1caebd7d7c6ec13",
     "parity/lot5-py-compile-ui-icon-unknown-glyph.json": "2914abcf5b178cb28ae5ed366280dff6b5a8458eff6275d58b4473ed937abd56",

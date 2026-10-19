@@ -574,6 +574,11 @@ def check_case(case: dict[str, object]) -> list[str]:
             and digest(want_identity) != digest(identity)
         ):
             problems.append("derived identity differs from the composed profile")
+    compiled_identity = _as_dict(case["expected"]).get("compiledIdentity")
+    if compiled_identity is not None and (
+        identity is None or digest(compiled_identity) != digest(identity)
+    ):
+        problems.append("expected.compiledIdentity differs from the composed profile identity")
     problems.extend(_check_load(case, identity))
     problems.extend(_check_profile_artifact(case, profile))
     for envelope in iter_envelopes(case.get("expected")):
@@ -667,8 +672,16 @@ COMPARATORS = [
         "note": (
             "loadProfile then compileProfile on the profileArtifact bytes with the base "
             "and descriptors artifacts: the first refusal as {status, code, diagnostics}, "
-            "or {status: ok, identity, diagnostics} with identity the compiled profile "
-            "identity record."
+            "or the success {status: ok, payload, diagnostics} whose payload (the compiled "
+            "profile, no wire shape) is the {$unsealed: compiled-profile} member."
+        ),
+    },
+    {
+        "id": "lot5-py/compiled-identity",
+        "kind": "parity",
+        "note": (
+            "The profileIdentity record (DESIGN R3.3 §5.1) carried by the compiled profile "
+            "of a compile success, exact under profile-c14n/2."
         ),
     },
     {
@@ -747,9 +760,14 @@ def _parity_sequence(steps: object) -> dict[str, object]:
 def _parity_expected(case: dict[str, object], record: dict[str, object]) -> None:
     expected = _as_dict(case["expected"])
     if "compile" in expected:
-        record["expectedArtifacts"] = [{"role": "compile-outcome", "json": expected["compile"]}]
+        artifacts = [{"role": "compile-outcome", "json": expected["compile"]}]
+        comparators = ["lot5-py/compile-outcome"]
+        if "compiledIdentity" in expected:
+            artifacts.append({"role": "compiled-identity", "json": expected["compiledIdentity"]})
+            comparators.append("lot5-py/compiled-identity")
+        record["expectedArtifacts"] = artifacts
         record["expectedStatus"] = _outcome_status(expected["compile"])
-        record["comparatorIds"] = ["lot5-py/compile-outcome", "profile-c14n/2"]
+        record["comparatorIds"] = [*comparators, "profile-c14n/2"]
         return
     outcomes: list[dict[str, object]] = []
     if "setup" in expected:

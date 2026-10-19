@@ -36,8 +36,11 @@ UNSEALED_REASONS = frozenset(
         "session-history-epoch",
         "session-subscription",
         "raw-lint-transport",
+        "compiled-profile",
     }
 )
+#: The PureResult compile success (DESIGN R3.3 §10.1 L737, parity sync PS-35).
+COMPILE_SUCCESS = {"status": "ok", "payload": {"$unsealed": "compiled-profile"}, "diagnostics": []}
 FORBIDDEN_MODULE = "bpmn_io"
 #: Prefix of an absolute local home path, assembled so this file carries none.
 LOCAL_PATH_PREFIX = chr(0x2F) + "home" + chr(0x2F)
@@ -144,8 +147,16 @@ def test_case_shapes_are_closed() -> None:
         assert isinstance(profile, dict)
         assert set(profile) == {"fixture", "delta", "artifact"}, stem
         if "compile" in expected:
-            assert set(expected) == {"compile"}, stem
+            outcome = expected["compile"]
+            assert isinstance(outcome, dict)
             assert set(case_input) == {"profile"}, stem
+            if outcome["status"] == "ok":
+                assert outcome == COMPILE_SUCCESS, stem
+                assert set(expected) == {"compile", "compiledIdentity"}, stem
+            else:
+                assert set(outcome) == {"status", "code", "diagnostics"}, stem
+                assert outcome["diagnostics"] == [], stem
+                assert set(expected) == {"compile"}, stem
             continue
         steps = case_input["steps"]
         expected_steps = expected["steps"]

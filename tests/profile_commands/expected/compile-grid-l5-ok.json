@@ -1,7 +1,7 @@
 {
   "case": "compile-grid-l5-ok",
-  "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10; \u00a78.3 L655",
-  "derivation": "The composed grid fixture compiles: its three UI entries and two fields bind every required parameter exactly once and every label and validation message has text for policies.localeFallback (en). Seal fix round: the outcome is {status ok, identity, empty diagnostics}, identity being the compiled profile identity of the committed profile bytes.",
+  "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10; \u00a78.3 L655; \u00a710.1 L737",
+  "derivation": "The composed grid fixture compiles: its three UI entries and two fields bind every required parameter exactly once and every label and validation message has text for policies.localeFallback (en). Parity sync PS-35 (DESIGN \u00a710.1 L737: PureResult success is exactly {status, payload, diagnostics}): the outcome is {status ok, payload, empty diagnostics} whose payload, the CompiledProfile (no wire shape), is unsealed as compiled-profile; the compiled profile identity of the committed profile bytes is sealed separately as expected.compiledIdentity (parity role compiled-identity). The identity values are unchanged.",
   "author": "spec-seal",
   "input": {
     "profile": {
@@ -13,26 +13,29 @@
   "expected": {
     "compile": {
       "status": "ok",
-      "identity": {
-        "mechanismVersion": "1",
-        "schemaVersion": "1.0.0",
-        "profile": "neutral-grid/1",
-        "version": "2.6.0",
-        "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
-        "base": {
-          "id": "neutral-base/1",
-          "version": "lot5-1",
-          "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
-        },
-        "descriptors": [
-          {
-            "id": "neutral-descriptors/1",
-            "version": "lot5-1",
-            "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
-          }
-        ]
+      "payload": {
+        "$unsealed": "compiled-profile"
       },
       "diagnostics": []
+    },
+    "compiledIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-grid/1",
+      "version": "2.6.0",
+      "sha256": "34e7e05b196f76b220c7447cfe2eda40f50311fdf7debc88512ea2e3676727a6",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
     }
   }
 }
