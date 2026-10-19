@@ -10,7 +10,6 @@ scheduling, browser handle or network access.
 from __future__ import annotations
 
 import copy
-import importlib
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, cast
 
@@ -22,6 +21,7 @@ from bpmn_io.profile._envelope import (
     validate_bindings,
     validate_envelope,
 )
+from bpmn_io.profile._layout import compute_layout
 from bpmn_io.profile._queries import (
     check_field as _query_check_field,
 )
@@ -37,6 +37,8 @@ from bpmn_io.profile._queries import (
 from bpmn_io.profile._queries import (
     query_references as _query_references,
 )
+from bpmn_io.profile._render import resolve_theme
+from bpmn_io.profile._render_digest import descriptor_digest, view_revision
 from bpmn_io.profile._results import (
     PureRefused,
     PureResult,
@@ -89,28 +91,44 @@ def _lot4_view_revision(
     compiled: CompiledProfile | None,
     envelope: DocumentEnvelope,
     imported_di: dict[str, object],
-) -> str | None:
-    """Attempt the lot-4 section-9.2 view digest (None when unavailable).
+) -> str:
+    """Compute the lot-4 section-9.2 view digest (no silent fallback).
 
-    Calls through the lot-4 ``compute_layout`` signature; any missing
-    entry point, refusal or unexpected shape falls back to the
-    semantic-revision placeholder the caller applies.
+    Runs the lot-4 pipeline directly — ``compute_layout`` over the
+    archived ``importedDi``, then ``resolve_theme`` with the default
+    presentation — and returns ``view_revision`` of the render binding.
+    A signature mismatch raises; a refusal raises ``RuntimeError`` (a
+    missing binding record raises ``TypeError``) instead of masking
+    behind a placeholder. The snapshot
+    ``viewRevision`` is this value. The single exception is a load with
+    no active profile (``compiled is None`` precedes activation by
+    construction): the lot-4 pipeline needs compiled themes, so no
+    digest exists; the sealed load payload leaves this value unsealed
+    and the load must still succeed.
     """
-    try:
-        layout_module = importlib.import_module("bpmn_io.profile._layout")
-        compute_layout = layout_module.compute_layout
-    except ImportError:
-        return None
-    try:
-        outcome = compute_layout(compiled, envelope, [], imported_di, theme_id="plain")
-    except Exception:  # noqa: BLE001 - layout stays out of the guards
-        return None
-    if getattr(outcome, "status", None) != "ok":
-        return None
-    payload = getattr(outcome, "payload", None)
-    if isinstance(payload, dict) and isinstance(payload.get("viewRevision"), str):
-        return str(payload["viewRevision"])
-    return None
+    if compiled is None:
+        return envelope.semantic_revision
+    staged = compute_layout(compiled, envelope, [], imported_di, theme_id="plain")
+    if getattr(staged, "status", None) != "ok":
+        msg = f"viewRevision unavailable: lot-4 layout refused ({getattr(staged, 'code', None)})"
+        raise RuntimeError(msg)
+    resolved = resolve_theme(
+        compiled,
+        envelope,
+        getattr(staged, "payload", None),
+        "plain",
+        {"semantic": [], "occurrence": []},
+        {"native": [], "bioc": []},
+    )
+    if getattr(resolved, "status", None) != "ok":
+        msg = f"viewRevision unavailable: lot-4 resolve refused ({getattr(resolved, 'code', None)})"
+        raise RuntimeError(msg)
+    payload = getattr(resolved, "payload", None)
+    binding = payload.get("binding") if isinstance(payload, dict) else None
+    if not isinstance(binding, dict):
+        msg = "viewRevision unavailable: lot-4 render has no binding record"
+        raise TypeError(msg)
+    return view_revision(binding)
 
 
 def _entry_from_wire(entry: dict[str, object], severity: str, classification: str) -> ReportEntry:
@@ -256,9 +274,8 @@ class HeadlessBridge:
         )
 
     def _current_view(self, envelope: DocumentEnvelope) -> str:
-        """Return the current viewRevision (lot-4 digest or the placeholder)."""
-        view = _lot4_view_revision(self.compiled, envelope, self.imported_di)
-        return view if view is not None else envelope.semantic_revision
+        """Return the current viewRevision (the lot-4 section-9.2 digest)."""
+        return _lot4_view_revision(self.compiled, envelope, self.imported_di)
 
     def _presentation(self) -> dict[str, object]:
         """Build the snapshot presentation with the archived DI record."""
@@ -347,10 +364,14 @@ class HeadlessBridge:
                 "setDefinitions", "operation-error", argued_identity, argued_revision
             )
         committed = complete_envelope(envelope.profile_identity, envelope.tree, envelope.bindings)
+        descriptors = committed.profile_identity.get("descriptors")
         stored_di = (
             copy.deepcopy(imported_di)
             if imported_di is not None
-            else make_imported_di(envelope.tree, "")
+            else make_imported_di(
+                envelope.tree,
+                descriptor_digest(descriptors) if isinstance(descriptors, list) else "",
+            )
         )
         self.envelope = committed
         self.imported_di = stored_di
@@ -363,6 +384,17 @@ class HeadlessBridge:
             committed.semantic_revision,
             committed.semantic_revision,
         )
+        view = self._current_view(committed)
+        self._emit(
+            {
+                "envelope": committed.to_json(),
+                "semanticRevision": committed.semantic_revision,
+                "viewRevision": view,
+                "transactionId": "",
+                "origin": "load",
+                "report": report.to_json(),
+            }
+        )
         return ResultSuccess(
             operation="setDefinitions",
             profile_identity=dict(committed.profile_identity),
@@ -372,7 +404,7 @@ class HeadlessBridge:
             payload={
                 "envelope": committed.to_json(),
                 "semanticRevision": committed.semantic_revision,
-                "viewRevision": self._current_view(committed),
+                "viewRevision": view,
             },
         )
 
@@ -807,6 +839,8 @@ class HeadlessBridge:
 
     def dispose(self) -> PureResult:
         """Dispose this session; later calls refuse as disposed (erratum E4)."""
+        if self.disposed:
+            return pure_refused("canvas-disposed")
         self.disposed = True
         return pure_success({"disposed": True})
 

@@ -27,6 +27,8 @@ CONTRACTS = ROOT / "contracts" / "profile-mechanism" / "1"
 ARTIFACTS = EXPECTED / "artifacts"
 
 SCHEMA_BYTES = (CONTRACTS / "profile-mechanism-1.schema.json").read_bytes()
+METRICS_BYTES = (CONTRACTS / "neutral-metrics.json").read_bytes()
+METRICS_BAG = {"neutral-metrics.json": METRICS_BYTES}
 BASE_BYTES = (ARTIFACTS / "neutral-base.lot5.json").read_bytes()
 BASE_DOCUMENT = json.loads(BASE_BYTES.decode("utf-8"))
 DEFAULT_DESCRIPTOR_BYTES = (ARTIFACTS / "neutral-descriptors.lot5.json").read_bytes()
@@ -99,6 +101,64 @@ class Setup:
         self.listeners: dict[str, list[Json]] = {}
 
 
+def _compile_packages(
+    pins: list[dict[str, Json]], packages: list[dict[str, Json]]
+) -> list[dict[str, Json]]:
+    """Return compile packages satisfying validated pins with known bytes.
+
+    Bridge packages cover their own pins; the default package covers the
+    default pin. Anything else falls back to the bridge packages (legacy).
+    """
+    by_pin = {
+        (str(entry.get("id")), str(entry.get("version")), str(entry.get("sha256"))): entry
+        for entry in packages
+        if isinstance(entry, dict)
+    }
+    default = dict(DEFAULT_DESCRIPTOR_PIN)
+    default["descriptorBytes"] = DEFAULT_DESCRIPTOR_BYTES
+    by_pin.setdefault(
+        (
+            str(DEFAULT_DESCRIPTOR_PIN["id"]),
+            str(DEFAULT_DESCRIPTOR_PIN["version"]),
+            str(DEFAULT_DESCRIPTOR_PIN["sha256"]),
+        ),
+        default,
+    )
+    matched: list[dict[str, Json]] = []
+    for entry in pins:
+        key = (str(entry.get("id")), str(entry.get("version")), str(entry.get("sha256")))
+        package = by_pin.get(key)
+        if package is None:
+            return packages
+        matched.append(package)
+    return matched or packages
+
+
+def _setup_pins(packages: list[dict[str, Json]], profile_bytes: bytes) -> list[dict[str, Json]]:
+    """Build descriptor pins from the bridge packages or the declared pins.
+
+    A mismatch case pairs the bridge packages against a profile declaring
+    its own descriptors: loading validates the profile's declared pins
+    (a correct caller supplies those), while activation checks the bridge
+    context. Fall back to the package pins when the profile declares none.
+    """
+    pins = [
+        {"id": entry["id"], "version": entry["version"], "sha256": entry["sha256"]}
+        for entry in packages
+    ]
+    try:
+        declared = json.loads(profile_bytes.decode("utf-8")).get("descriptors")
+    except ValueError:
+        declared = None
+    if isinstance(declared, list) and declared:
+        pins = [
+            {"id": entry["id"], "version": entry["version"], "sha256": entry["sha256"]}
+            for entry in declared
+            if isinstance(entry, dict)
+        ]
+    return pins
+
+
 def make_setup(case: dict[str, Json]) -> Setup:
     """Run the section 8.2 setup; returns live objects (no comparison)."""
     from bpmn_io.profile import (
@@ -125,24 +185,30 @@ def make_setup(case: dict[str, Json]) -> Setup:
     context_result = create_descriptor_context(packages)
     assert context_result.status == "ok", context_result
     setup.context = context_result.payload
-    pins = [
-        {"id": entry["id"], "version": entry["version"], "sha256": entry["sha256"]}
-        for entry in packages
-    ]
+    profile_bytes = profile_artifact_bytes(case)
+    pins = _setup_pins(packages, profile_bytes)
     load_result = load_profile(
-        profile_artifact_bytes(case),
+        profile_bytes,
         schema_bytes=SCHEMA_BYTES,
         base_bytes=BASE_BYTES,
         descriptor_pins=pins,
+        asset_bag=dict(METRICS_BAG),
     )
     if load_result.status != "ok":
         setup.validated = None
         setup.load_refusal = load_result  # type: ignore[attr-defined]
         return setup
     setup.validated = load_result.payload
+    # Compilation needs the profile's own descriptor types: satisfy the
+    # validated pins from the bridge packages when they match, else from
+    # the default package; the bridge keeps the cased packages so the
+    # activation pin check still sees the intended mismatch.
+    compile_packages = _compile_packages(pins, packages)
+    compile_context_result = create_descriptor_context(compile_packages)
+    assert compile_context_result.status == "ok", compile_context_result
     compile_result = compile_profile(
         setup.validated,
-        descriptor_context=setup.context,
+        descriptor_context=compile_context_result.payload,
         base=copy.deepcopy(BASE_DOCUMENT),
     )
     if compile_result.status != "ok":
@@ -182,12 +248,19 @@ def _resolve_pointer(document: Json, pointer: str) -> Json:
 
 
 def _resolve_current(setup: Setup, value: Json) -> Json:
-    """Resolve ``$current``/``$saved`` placeholders inside step arguments."""
+    """Resolve ``$current``/``$saved`` placeholders inside step arguments.
+
+    When no snapshot exists (nothing loaded, bridge disposed), ``$current``
+    resolves to the empty string: still a well-typed revision, so the call
+    under test refuses on its loaded-state guard, which is what the sealed
+    lifecycle records pin.
+    """
     if isinstance(value, dict):
         if set(value.keys()) == {"$current"}:
             assert setup.bridge is not None
             snapshot = setup.bridge.get_snapshot()
-            assert snapshot.status == "ok", snapshot
+            if snapshot.status != "ok":
+                return ""
             payload = snapshot.payload  # type: ignore[union-attr]
             assert isinstance(payload, dict)
             key = value["$current"]

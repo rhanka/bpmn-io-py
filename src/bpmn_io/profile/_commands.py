@@ -104,6 +104,16 @@ def _is_element(value: object) -> TypeGuard[dict[str, object]]:
     )
 
 
+def _is_container(value: object) -> TypeGuard[dict[str, object]]:
+    """Return whether a value is a traversable typed node (ID optional).
+
+    ID-less typed containers (``bpmn:IoSpecification`` carries no id)
+    still hold addressable descendants; the walk descends into them while
+    only ID-bearing nodes join the index.
+    """
+    return isinstance(value, dict) and isinstance(value.get("$type"), str)
+
+
 def canonical_preorder(tree: object) -> list[tuple[dict[str, object], str | None, str | None]]:
     """Walk one tree in canonical pre-order (explicit stack, bounded).
 
@@ -128,13 +138,14 @@ def canonical_preorder(tree: object) -> list[tuple[dict[str, object], str | None
         raw_id = node.get("id")
         node_id = raw_id if isinstance(raw_id, str) else None
         found.append((node, parent_id, prop))
+        holder = node_id if node_id is not None else parent_id
         children: list[tuple[dict[str, object], str | None, str | None]] = []
         for key in sorted(node.keys(), key=_utf16):
             value = node[key]
-            if _is_element(value):
-                children.append((value, node_id, key))
+            if _is_container(value):
+                children.append((value, holder, key))
             elif isinstance(value, list):
-                children.extend((entry, node_id, key) for entry in value if _is_element(entry))
+                children.extend((entry, holder, key) for entry in value if _is_container(entry))
         stack.extend(reversed(children))
     return found
 
@@ -668,6 +679,20 @@ def replacement_rows(
     return [{"sourceId": removed[0], "resultId": created[0], "domain": "migration"}]
 
 
+def _requires_paste_id(types: dict[str, dict[str, object]], type_name: object) -> bool:
+    """Return whether one fragment node type requires a string id.
+
+    Fail-closed: unknown or id-admitted types require ids; only types the
+    descriptor marks with the ``id`` flag false pass id-less.
+    """
+    if not isinstance(type_name, str):
+        return True
+    record = types.get(type_name)
+    if not isinstance(record, dict):
+        return True
+    return record.get("id", True) is not False
+
+
 def _prepare_paste_root(  # noqa: PLR0913, PLR0917 - paste root inputs are fixed
     index: StageIndex,
     types: dict[str, dict[str, object]],
@@ -691,7 +716,12 @@ def _prepare_paste_root(  # noqa: PLR0913, PLR0917 - paste root inputs are fixed
     for node, _, _ in canonical_preorder(fresh):
         node_id = node.get("id")
         if not isinstance(node_id, str):
-            raise CommandError("profile-type")  # noqa: EM101
+            # Id-optional fragment nodes (the descriptor ``id`` flag is
+            # false, e.g. documentation) pass through unchanged; every
+            # other node must carry a string id for reallocation.
+            if _requires_paste_id(types, node.get("$type")):
+                raise CommandError("profile-type")  # noqa: EM101
+            continue
         new_id = allocate_stable_id(owner_id, "paste", jcs([key, node_id]))
         if new_id in index.by_id or new_id in remap.values():
             raise CommandError("id-collision")  # noqa: EM101
@@ -735,8 +765,10 @@ def _apply_paste(
         container.append(fresh)
         for element, parent_id, element_prop in canonical_preorder(fresh):
             element_id = element.get("id")
-            if not isinstance(element_id, str):  # pragma: no cover - remapped
-                raise CommandError("profile-type")  # noqa: EM101
+            if not isinstance(element_id, str):
+                # Id-optional nodes carry no index entry (same as the stage
+                # index, which skips id-less elements).
+                continue
             index.by_id[element_id] = element
             index.parent[element_id] = parent_id if parent_id is not None else owner_id
             index.prop[element_id] = element_prop if parent_id is not None else prop

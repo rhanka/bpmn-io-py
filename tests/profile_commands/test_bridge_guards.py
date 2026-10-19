@@ -8,23 +8,17 @@ Non-empty accepted batches stay under the sealed case runner.
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
 
 from bpmn_io.profile._bridge import HeadlessBridge
 from bpmn_io.profile._c14n import jcs
-from bpmn_io.profile._compiler import CompiledProfile
 from bpmn_io.profile._envelope import complete_envelope
-from bpmn_io.profile._ui import UiIndex
+from bpmn_io.profile._ui import compiled_identity
 
-_IDENTITY = {
-    "mechanismVersion": "1",
-    "schemaVersion": "1.0.0",
-    "profile": "neutral",
-    "version": "1",
-    "sha256": "ab" * 32,
-    "base": {},
-    "descriptors": [],
-}
+if TYPE_CHECKING:
+    from bpmn_io.profile._compiler import CompiledProfile
 
 _TREE = {
     "$type": "bpmn:Definitions",
@@ -36,28 +30,62 @@ _TREE = {
 }
 
 
-def _compiled() -> CompiledProfile:
-    """Build one synthetic compiled profile carrying the test identity."""
-    return CompiledProfile(
-        profile_digest="ab" * 32,
-        notions={},
-        recipes={},
-        rules={},
-        descriptor_digest="ab" * 32,
-        registry_digest="ab" * 32,
-        validation=(),
-        ui=UiIndex(identity=dict(_IDENTITY)),
+def _setup() -> tuple[object, CompiledProfile]:
+    """Compile the real neutral lot-5 profile with its context (exit a)."""
+    import copy
+
+    from tests.profile_commands import harness as _harness
+
+    raw = (_harness.EXPECTED / "artifacts/profiles/neutral-lot5.json").read_bytes()
+    package = dict(_harness.DEFAULT_DESCRIPTOR_PIN)
+    package["descriptorBytes"] = _harness.DEFAULT_DESCRIPTOR_BYTES
+    from bpmn_io.profile import (
+        compile_profile,
+        create_descriptor_context,
+        load_profile,
     )
+
+    context_result = create_descriptor_context([package])
+    assert context_result.status == "ok", context_result.to_json()
+    pins = [{"id": package["id"], "version": package["version"], "sha256": package["sha256"]}]
+    load_result = load_profile(
+        raw,
+        schema_bytes=_harness.SCHEMA_BYTES,
+        base_bytes=_harness.BASE_BYTES,
+        descriptor_pins=pins,
+        asset_bag=dict(_harness.METRICS_BAG),
+    )
+    assert load_result.status == "ok", load_result.to_json()
+    compile_result = compile_profile(
+        load_result.payload,  # type: ignore[union-attr]
+        descriptor_context=context_result.payload,  # type: ignore[union-attr]
+        base=copy.deepcopy(_harness.BASE_DOCUMENT),
+    )
+    assert compile_result.status == "ok", compile_result.to_json()
+    return context_result.payload, compile_result.payload  # type: ignore[return-value]
+
+
+def _compiled() -> CompiledProfile:
+    """Compile the real neutral lot-5 profile (exit a needs lot-4 themes)."""
+    _, compiled = _setup()
+    return compiled
 
 
 @pytest.fixture
 def bridge() -> HeadlessBridge:
     """Return one loaded bridge with an active business profile."""
-    session = HeadlessBridge()
-    loaded = session.set_definitions(complete_envelope(dict(_IDENTITY), dict(_TREE), []))
+    import copy
+
+    from bpmn_io.profile import create_bridge
+
+    context, compiled = _setup()
+    identity = compiled_identity(compiled)
+    session = create_bridge(context)
+    loaded = session.set_definitions(complete_envelope(identity, copy.deepcopy(_TREE), []))
     assert getattr(loaded, "status", None) == "ok"
-    activated = session.activate_business_profile(_compiled())
+    activated = session.activate_business_profile(compiled)
     assert getattr(activated, "status", None) == "ok"
+    assert isinstance(session, HeadlessBridge)
     return session
 
 
@@ -127,7 +155,6 @@ def test_stale_revision_refusal_preserves_everything(bridge: HeadlessBridge) -> 
     _ = revision
 
 
-@pytest.mark.xfail(strict=True, reason="needs lot 3 C/N")
 def test_unknown_entry_refusal_preserves_everything(bridge: HeadlessBridge) -> None:
     """An unknown UI entry refuses profile-symbol with identical state."""
     revision, view = _revisions(bridge)
@@ -204,11 +231,86 @@ def test_stale_undo_refuses(bridge: HeadlessBridge) -> None:
 
 def test_load_starts_a_new_history_epoch(bridge: HeadlessBridge) -> None:
     """set_definitions clears both stacks and bumps the epoch (E1)."""
+    import copy
+
     first = bridge.history_epoch
+    assert bridge.envelope is not None
     reloaded = bridge.set_definitions(
-        complete_envelope(dict(_IDENTITY), dict(_TREE), []),
+        complete_envelope(dict(bridge.envelope.profile_identity), copy.deepcopy(_TREE), []),
     )
     assert getattr(reloaded, "status", None) == "ok"
     assert bridge.history == []
     assert bridge.redo_history == []
     assert bridge.history_epoch == first + 1
+
+
+def test_stage_sources_rebase_onto_tx_start() -> None:
+    """Complete entries on batch-created subjects lose the stage-local source."""
+    from bpmn_io.profile._transaction import _rebase_stage_sources
+
+    pre_ids = frozenset({"Definitions_1", "Process_1"})
+    created = {
+        "code": "complete/assignRef",
+        "stage": "complete",
+        "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
+            "targetId": "Start_new",
+            "provenance": "exact",
+        },
+        "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
+            "targetId": "Start_new",
+            "provenance": "exact",
+        },
+    }
+    kept = {
+        "code": "complete/set",
+        "stage": "complete",
+        "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": "Process_1",
+            "provenance": "exact",
+        },
+        "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": "Process_1",
+            "provenance": "exact",
+        },
+    }
+    rebased = _rebase_stage_sources([created, kept], pre_ids)
+    assert rebased[0]["source"] == {
+        "domain": "none",
+        "pointer": None,
+        "targetId": None,
+        "provenance": "generated",
+    }
+    assert rebased[0]["result"]["provenance"] == "generated"
+    assert rebased[1] == kept
+
+
+def test_load_emits_one_load_event() -> None:
+    """set_definitions emits exactly one load-origin change event (L606)."""
+    import copy
+
+    from bpmn_io.profile import create_bridge
+
+    context, compiled = _setup()
+    identity = compiled_identity(compiled)
+    session = create_bridge(context)
+    collected: list[dict[str, object]] = []
+    subscribed = session.on_change(collected.append)
+    assert getattr(subscribed, "status", None) == "ok"
+    loaded = session.set_definitions(complete_envelope(identity, copy.deepcopy(_TREE), []))
+    assert getattr(loaded, "status", None) == "ok"
+    assert len(collected) == 1
+    event = collected[0]
+    assert event["origin"] == "load"
+    assert event["transactionId"] == ""
+    assert event["semanticRevision"] == loaded.payload["semanticRevision"]
+    assert event["viewRevision"] == loaded.payload["viewRevision"]
+    assert event["envelope"] == loaded.payload["envelope"]
+    assert isinstance(event["report"], dict)

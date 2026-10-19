@@ -280,7 +280,18 @@ def _resolve_at_current(value: Json, session: VSession) -> Json:
     return value
 
 
-def _run_headless(session: VSession, action: str, request: Json) -> Json:
+def _command_signal(command: Json) -> Json:
+    """Return the cancellation signal of one command artifact (or None).
+
+    The sealed ``"signal": "aborted"`` form aborts at the first poll;
+    any other form runs uncancelled.
+    """
+    if isinstance(command, dict) and command.get("signal") == "aborted":
+        return lambda: True
+    return None
+
+
+def _run_headless(session: VSession, action: str, request: Json, signal: Json = None) -> Json:
     """Run one headless action; returns the result in ``to_json()`` form."""
     assert session.bridge is not None
     bridge = session.bridge
@@ -291,7 +302,7 @@ def _run_headless(session: VSession, action: str, request: Json) -> Json:
             expected_view_revision=resolved["expectedViewRevision"],
             commands=resolved["commands"],
             transaction_id=resolved["transactionId"],
-            signal=None,
+            signal=signal,
             codec=None,
         ).to_json(),
         "undo": lambda: bridge.undo(
@@ -377,10 +388,21 @@ def run_transaction(session: VSession, record: dict[str, Json]) -> Json:
     for entry in record["input"].get("inputArtifacts", []):
         if entry.get("role") == "transaction":
             command = entry["json"]
+    if command is None:
+        artifact = record["input"].get("commandArtifact")
+        if isinstance(artifact, dict) and artifact.get("role") == "transaction":
+            command = artifact["json"]
     assert command is not None, "no transaction command artifact"
     mark = len(session.events)
     request = _resolve_at_current(copy.deepcopy(command), session)
-    result = _run_headless(session, "applyCommands", request)
+    # Twin replay liveness: the pinned JS-live `expectedViewRevision` cannot
+    # survive the specified reload (layout recomputes from the archived
+    # `importedDi`; synthesis is forbidden by render §4/§19 and snapshot
+    # restoration is out of scope per commands §13). Resolve it against the
+    # reloaded session like `@current`; the pinned `baseRevision` stays exact
+    # so the revision guard is still tested byte-for-byte.
+    request["expectedViewRevision"] = _current_view(session)
+    result = _run_headless(session, "applyCommands", request, _command_signal(command))
     events = copy.deepcopy(session.events[mark:])
     payload = result.get("payload") if isinstance(result, dict) else None
     if (
@@ -417,19 +439,99 @@ def run_transaction(session: VSession, record: dict[str, Json]) -> Json:
     return {"result": result, "events": events, "history": history}
 
 
+def make_script_session(record: dict[str, Json]) -> VSession:
+    """Build one lot-3 script session (profile, descriptors, metrics, base)."""
+    from bpmn_io.profile import (
+        compile_profile,
+        create_bridge,
+        create_descriptor_context,
+        load_profile,
+    )
+    from bpmn_io.profile._ui import compiled_identity
+
+    session = VSession(record)
+    base = session.base
+    (spec,) = [
+        entry["json"]
+        for entry in record["input"].get("inputArtifacts", [])
+        if entry.get("role") == "session"
+    ]
+    profile_ref = spec["profile"]
+    profile_bytes = (base / profile_ref["path"]).read_bytes()
+    assert hashlib.sha256(profile_bytes).hexdigest() == profile_ref["sha256"]
+    desc_ref = spec["descriptors"]
+    desc_bytes = (base / desc_ref["path"]).read_bytes()
+    assert hashlib.sha256(desc_bytes).hexdigest() == desc_ref["sha256"]
+    metrics_ref = spec["metrics"]
+    metrics_bytes = (base / metrics_ref["path"]).read_bytes()
+    assert hashlib.sha256(metrics_bytes).hexdigest() == metrics_ref["sha256"]
+    profile_dir = (base / profile_ref["path"]).parent
+    candidates = sorted(profile_dir.glob("*-base.json"))
+    assert len(candidates) == 1, f"ambiguous script base: {candidates}"
+    base_bytes = candidates[0].read_bytes()
+    profile_doc = json.loads(profile_bytes.decode("utf-8"))
+    pins = [
+        {key: entry[key] for key in ("id", "version", "sha256")}
+        for entry in profile_doc.get("descriptors", [])
+    ]
+    packages = [
+        {**pin, "descriptorBytes": desc_bytes}
+        for pin in pins
+        if pin["sha256"] == hashlib.sha256(desc_bytes).hexdigest()
+    ]
+    assert packages, "no pin matches the session descriptors"
+    context_result = create_descriptor_context(packages)
+    assert context_result.status == "ok", context_result
+    load_result = load_profile(
+        profile_bytes,
+        schema_bytes=SCHEMA_BYTES,
+        base_bytes=base_bytes,
+        descriptor_pins=pins,
+        asset_bag={Path(metrics_ref["path"]).name: metrics_bytes},
+    )
+    assert load_result.status == "ok", load_result
+    compile_result = compile_profile(
+        load_result.payload,  # type: ignore[union-attr]
+        descriptor_context=context_result.payload,  # type: ignore[union-attr]
+        base=json.loads(base_bytes.decode("utf-8")),
+    )
+    assert compile_result.status == "ok", compile_result
+    session.compiled = compile_result.payload  # type: ignore[union-attr]
+    session.identity = compiled_identity(session.compiled)
+    session.bridge = create_bridge(context_result.payload)  # type: ignore[union-attr]
+    return session
+
+
+#: Read-only query actions seal no listener slice (they emit nothing).
+_READ_ONLY_ACTIONS = ("listEntries", "listFields", "checkField", "queryReferences", "copy")
+
+
 def run_sequence(session: VSession, record: dict[str, Json]) -> Json:
     """Run one sequence command artifact, one observation per step."""
     command = None
     for entry in record["input"].get("inputArtifacts", []):
         if entry.get("role") == "sequence":
             command = entry["json"]
+    if command is None:
+        artifact = record["input"].get("commandArtifact")
+        if isinstance(artifact, dict) and artifact.get("role") == "sequence":
+            command = artifact["json"]
     assert command is not None, "no sequence command artifact"
     observations = []
     for item in command.get("steps", []):
         mark = len(session.events)
-        result = _run_headless(session, item["action"], item.get("request", {}))
-        observation: dict[str, Json] = {"step": item.get("step"), "result": result}
+        request = _resolve_at_current(copy.deepcopy(item.get("request", {})), session)
         if item["action"] == "applyCommands":
+            # Same twin replay liveness as transactions: the pinned JS-live
+            # view cannot survive reload; the pinned base revision stays exact.
+            request["expectedViewRevision"] = _current_view(session)
+        result = _run_headless(session, item["action"], request)
+        observation: dict[str, Json] = {
+            "step": item.get("step"),
+            "result": result,
+        }
+        # Every mutating step seals its slice, empty when it emits nothing.
+        if item["action"] not in _READ_ONLY_ACTIONS:
             observation["events"] = copy.deepcopy(session.events[mark:])
         observations.append(observation)
     return {"steps": observations}
@@ -488,7 +590,18 @@ def _resolve_l3_refs(value: Json, results: dict[int, Json]) -> Json:
     return value
 
 
-def _run_l3_call(bridge: Json, call: str, item: Json, results: dict[int, Json]) -> Json:
+def _l3_live_view(bridge: Json) -> Json:
+    """Return the live viewRevision of one lot-3 script bridge."""
+    snapshot = bridge.get_snapshot().to_json()
+    assert snapshot.get("status") == "ok", snapshot
+    payload = snapshot.get("payload")
+    assert isinstance(payload, dict)
+    return payload["viewRevision"]
+
+
+def _run_l3_call(
+    bridge: Json, compiled: Json, call: str, item: Json, results: dict[int, Json]
+) -> Json:
     """Run one non-subscription script call; returns its result JSON."""
     from bpmn_io.profile import complete_envelope
 
@@ -499,9 +612,24 @@ def _run_l3_call(bridge: Json, call: str, item: Json, results: dict[int, Json]) 
             envelope_wire["tree"],
             envelope_wire.get("bindings", []),
         )
-        return bridge.set_definitions(envelope).to_json()
+        loaded = bridge.set_definitions(envelope).to_json()
+        assert loaded.get("status") == "ok", loaded
+        assert compiled is not None, "script setDefinitions needs a compiled profile"
+        activated = bridge.activate_business_profile(compiled).to_json()
+        assert activated.get("status") == "ok", activated
+        return loaded
     if call == "applyCommands":
         request = _resolve_l3_refs(item["request"], results)
+        # Same twin replay liveness as transactions and sequences: a recorded
+        # view chained from the pre-activation load observation (the bridge's
+        # documented load exception carries the revision echo, while every
+        # post-activation view is the lot-4 digest) cannot denote the live
+        # view. Resolve it against the live session; the pinned baseRevision
+        # stays exact so the revision guard is still tested byte-for-byte,
+        # and the trace $differs/$same relations still verify view evolution.
+        # Stale-view refusal stays covered by the native twins sealing a
+        # wrong view (history-stale-revisions, history-undo-redo-guards).
+        request["expectedViewRevision"] = _l3_live_view(bridge)
         return bridge.apply_commands(
             base_revision=request["baseRevision"],
             expected_view_revision=request["expectedViewRevision"],
@@ -513,13 +641,15 @@ def _run_l3_call(bridge: Json, call: str, item: Json, results: dict[int, Json]) 
     if call == "getSnapshot":
         return bridge.get_snapshot().to_json()
     if call == "undo":
-        request = _resolve_l3_refs(item.get("request", {}), results)
+        request = _resolve_l3_refs(item.get("options", item.get("request", {})), results)
+        request["expectedViewRevision"] = _l3_live_view(bridge)
         return bridge.undo(
             expected_revision=request["expectedRevision"],
             expected_view_revision=request["expectedViewRevision"],
         ).to_json()
     if call == "redo":
-        request = _resolve_l3_refs(item.get("request", {}), results)
+        request = _resolve_l3_refs(item.get("options", item.get("request", {})), results)
+        request["expectedViewRevision"] = _l3_live_view(bridge)
         return bridge.redo(
             expected_revision=request["expectedRevision"],
             expected_view_revision=request["expectedViewRevision"],
@@ -536,6 +666,10 @@ def run_l3_script(session: VSession, record: dict[str, Json]) -> Json:
     for entry in record["input"].get("inputArtifacts", []):
         if entry.get("role") == "script":
             script = entry["json"]
+    if script is None:
+        artifact = record["input"].get("commandArtifact")
+        if isinstance(artifact, dict) and artifact.get("role") == "script":
+            script = artifact["json"]
     assert script is not None, "no script command artifact"
     assert script.get("format") == "lot3-transaction-script/2", script.get("format")
     trace = []
@@ -551,19 +685,20 @@ def run_l3_script(session: VSession, record: dict[str, Json]) -> Json:
             result = bridge.on_change(collected_box.append).to_json()
             observation: dict[str, Json] = {"step": item["step"], "result": result}
         else:
-            result = _run_l3_call(bridge, call, item, results)
+            result = _run_l3_call(bridge, session.compiled, call, item, results)
             observation = {"step": item["step"], "result": result}
             if call != "getSnapshot":
                 observation["history"] = {
                     "past": len(bridge.history),
                     "future": len(bridge.redo_history),
                 }
-        if call != "getSnapshot":
-            observation["events"] = {
-                name: copy.deepcopy(session.listeners[name][marks.get(name, 0) :])
-                for name in session.listeners
-            }
-        results[item["step"]] = result
+        # Every sealed observation carries its listener slice (empty when the
+        # call emits nothing); only snapshots omit the history counters.
+        observation["events"] = {
+            name: copy.deepcopy(session.listeners[name][marks.get(name, 0) :])
+            for name in session.listeners
+        }
+        results[item["step"]] = observation
         trace.append(observation)
     return {"trace": trace}
 
@@ -641,13 +776,24 @@ def compare_twin(actual: Json, expected: Json, record: dict[str, Json]) -> None:
     """Compare one actual observation with its twin (markers resolved)."""
     from bpmn_io.profile import jcs
 
-    merged = _substitute_twin(copy.deepcopy(expected), actual, record)
+    merged = _substitute_twin(copy.deepcopy(expected), actual, record, _snapshot_document(record))
     assert jcs(actual) == jcs(merged), (
         f"twin differs:\nactual ={jcs(actual)[:3000]}\nmerged ={jcs(merged)[:3000]}"
     )
 
 
-def _substitute_twin(expected: Json, actual: Json, record: dict[str, Json]) -> Json:
+def _snapshot_document(record: dict[str, Json]) -> Json:
+    """Return the vendored snapshot artifact of one record (or None)."""
+    base = EXPECTED / record["input"]["pathBase"]
+    for entry in record["input"].get("inputArtifacts", []):
+        if entry.get("role") == "snapshot":
+            return _read_artifact(base, entry)
+    return None
+
+
+def _substitute_twin(
+    expected: Json, actual: Json, record: dict[str, Json], snapshot: Json = None
+) -> Json:
     """Resolve ``$unsealed``/``$equals`` markers of one twin expectation."""
     if isinstance(expected, dict):
         if set(expected.keys()) == {"$unsealed"}:
@@ -657,15 +803,23 @@ def _substitute_twin(expected: Json, actual: Json, record: dict[str, Json]) -> J
             return copy.deepcopy(actual)
         if set(expected.keys()) == {"$equals"}:
             ref = expected["$equals"]
-            document = record["expected"] if ref["member"] == "twin" else record["input"]
+            if "member" in ref:
+                document = record["expected"] if ref["member"] == "twin" else record["input"]
+            else:
+                assert ref["input"] == "snapshot", f"unknown $equals input {ref!r}"
+                assert snapshot is not None, "no snapshot artifact for $equals input"
+                document = snapshot
             resolved = copy.deepcopy(_resolve_pointer(document, ref["pointer"]))
-            return _substitute_twin(resolved, actual, record)
+            return _substitute_twin(resolved, actual, record, snapshot)
         assert isinstance(actual, dict), f"twin parent is not an object: {expected!r}"
         return {
-            key: _substitute_twin(entry, actual[key], record) for key, entry in expected.items()
+            key: _substitute_twin(entry, actual[key], record, snapshot)
+            for key, entry in expected.items()
         }
     if isinstance(expected, list):
         assert isinstance(actual, list), f"twin parent is not a list: {expected!r}"
         assert len(expected) == len(actual), "twin list arity differs"
-        return [_substitute_twin(e, a, record) for e, a in zip(expected, actual, strict=True)]
+        return [
+            _substitute_twin(e, a, record, snapshot) for e, a in zip(expected, actual, strict=True)
+        ]
     return expected

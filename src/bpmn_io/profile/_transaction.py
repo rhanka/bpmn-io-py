@@ -176,6 +176,64 @@ def sort_lot5_entries(
     return coalesced
 
 
+def _tree_ids(tree: dict[str, object]) -> frozenset[str]:
+    """Collect every element id of one tree (bounded explicit stack)."""
+    found: set[str] = set()
+    stack: list[object] = [tree]
+    seen = 0
+    while stack and seen < 1000000:
+        current = stack.pop()
+        seen += 1
+        if isinstance(current, dict):
+            element_id = current.get("id")
+            if isinstance(element_id, str):
+                found.add(element_id)
+            stack.extend(current.values())
+        elif isinstance(current, list):
+            stack.extend(current)
+    return frozenset(found)
+
+
+def _rebase_stage_sources(
+    entries: list[dict[str, object]], pre_ids: frozenset[str]
+) -> list[dict[str, object]]:
+    """Rebase complete/normalize sources onto the transaction-start input.
+
+    Stage functions address their own stage input, so a repair on an element
+    created by the batch resolves a stage-local input side. Source
+    coordinates address the transaction-start input instead: when the output
+    subject is absent from it, the source is the none record and the result
+    provenance is generated. Entries of every other stage pass through
+    untouched.
+    """
+    rebased: list[dict[str, object]] = []
+    for entry in entries:
+        source = entry.get("source")
+        result = entry.get("result")
+        target = result.get("targetId") if isinstance(result, dict) else None
+        if (
+            entry.get("stage") in ("complete", "normalize")
+            and isinstance(source, dict)
+            and source.get("domain") == "tree"
+            and isinstance(result, dict)
+            and result.get("domain") == "tree"
+            and isinstance(target, str)
+            and target not in pre_ids
+        ):
+            fixed = dict(entry)
+            fixed["source"] = {
+                "domain": "none",
+                "pointer": None,
+                "targetId": None,
+                "provenance": "generated",
+            }
+            fixed["result"] = {**result, "provenance": "generated"}
+            rebased.append(fixed)
+        else:
+            rebased.append(entry)
+    return rebased
+
+
 def _map_lint_entry(entry: object) -> dict[str, object]:
     """Map one lint bridge entry to the section-4.9 coordinates."""
     record = copy.deepcopy(entry) if isinstance(entry, dict) else {}
@@ -456,11 +514,17 @@ def run_apply(  # noqa: PLR0913 - pipeline inputs are fixed
     if getattr(completed, "status", None) != "ok":
         raise ApplyError(str(getattr(completed, "code", "operation-error")))
     c_payload = getattr(completed, "payload", {})
-    c_envelope = c_payload.get("envelope") if isinstance(c_payload, dict) else None
+    # Lot-3 `complete` carries the envelope wire itself as its payload
+    # (fixed-point reruns feed it back directly); `normalize` nests its
+    # envelope under `payload.envelope` instead.
+    c_envelope = c_payload if isinstance(c_payload, dict) else None
     c_entries = _wire_entries(_report_wire(getattr(completed, "report", None)))
     if not isinstance(c_envelope, dict):
         raise ApplyError("operation-error")  # noqa: EM101
-    return _run_normalize(lot3, compiled, c_envelope, c_entries, signal, is_disposed, id_map)
+    pre_ids = _tree_ids(tree) if isinstance(tree, dict) else frozenset()
+    return _run_normalize(
+        lot3, compiled, c_envelope, c_entries, signal, is_disposed, id_map, pre_ids
+    )
 
 
 def _run_normalize(  # noqa: PLR0913, PLR0917 - normalize inputs are fixed
@@ -471,6 +535,7 @@ def _run_normalize(  # noqa: PLR0913, PLR0917 - normalize inputs are fixed
     signal: Callable[[], bool] | None,
     is_disposed: Callable[[], bool],
     id_map: list[dict[str, object]],
+    pre_ids: frozenset[str] = frozenset(),
 ) -> StagedResult:
     """Run section-4.8 steps 7-10: draft lints around one normalize pass."""
     c_tree = c_envelope.get("tree")
@@ -504,7 +569,8 @@ def _run_normalize(  # noqa: PLR0913, PLR0917 - normalize inputs are fixed
         raise ApplyError(code, combined, pre_raw + post_raw)
     # Step 10: final signal poll.
     _poll(signal, is_disposed)
-    entries = sort_lot5_entries(c_entries + pre_entries + n_entries + post_entries)
+    staged = _rebase_stage_sources(c_entries + n_entries, pre_ids)
+    entries = sort_lot5_entries(staged + pre_entries + post_entries)
     final_revision = n_envelope.get("semanticRevision")
     if not isinstance(final_revision, str):
         raise ApplyError("operation-error", combined, pre_raw + post_raw)  # noqa: EM101

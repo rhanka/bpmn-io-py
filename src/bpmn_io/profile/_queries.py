@@ -217,8 +217,13 @@ def _resolve_check_field(
     index: StageIndex,
     target_id: str,
     field_id: str,
-) -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
-    """Resolve one reference-query field to ``(target, field, recipe)``."""
+) -> tuple[dict[str, object], dict[str, object], dict[str, object] | None]:
+    """Resolve one reference-query field to ``(target, field, recipe)``.
+
+    A field without a command carries no recipe (``None``): it is never
+    editable and its callers report it invalid, never refused. A named
+    but unknown command is a broken profile and still refuses.
+    """
     ui = _ui_index(compiled)
     target = index.by_id.get(target_id)
     if target is None:
@@ -235,8 +240,10 @@ def _resolve_check_field(
     if len({notion_id for notion_id, _ in holders}) > 1:
         raise CommandError("profile-ambiguous-notion")  # noqa: EM101
     _, field_entry = holders[0]
-    recipes = getattr(compiled, "recipes", {})
     command_name = field_entry.get("command")
+    if command_name is None:
+        return target, field_entry, None
+    recipes = getattr(compiled, "recipes", {})
     recipe = recipes.get(str(command_name)) if isinstance(recipes, dict) else None
     if not isinstance(recipe, dict):
         raise CommandError("profile-producer")  # noqa: EM101
@@ -273,7 +280,7 @@ def check_field(
         )
     except CommandError as exc:
         return pure_refused(exc.code)
-    if not _field_editable(compiled, tree, target, field_entry):
+    if recipe is None or not _field_editable(compiled, tree, target, field_entry):
         return _invalid_outcome(field_entry, "profile-producer")
     try:
         check_field_value(index, field_entry, recipe, target_id, value)
