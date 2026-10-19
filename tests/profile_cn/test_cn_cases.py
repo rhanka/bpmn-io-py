@@ -29,6 +29,7 @@ from bpmn_io.profile import (
     load_profile,
     normalize,
     plan_recipe,
+    propose_support_bindings,
     sort_placements,
 )
 
@@ -38,7 +39,6 @@ MECH = ROOT / "contracts" / "profile-mechanism" / "1"
 
 #: Operations with no implementation yet: value is the strict-xfail reason.
 PENDING = {
-    "propose_support_bindings": "lot-3 pending: propose_support_bindings",
     "bind_supports": "lot-3 pending: bind_supports (OPEN-MACHINE gated)",
     "remap_ids": "lot-3 pending: remap_ids (OPEN-ID gated)",
     "import_projection": "lot-3 pending: import_projection",
@@ -324,6 +324,17 @@ def _run_normalize(case: dict[str, object], record: dict[str, object]) -> None:
         _assert_normalize_fixed_point(compiled, actual, record.get("placementIntent"), activation)
 
 
+def _run_propose(case: dict[str, object], record: dict[str, object]) -> None:
+    """Run one propose_support_bindings case through the bound §9 call."""
+    compiled = _compiled(case["profile"])
+    frozen = jcs(record)
+    outcome = propose_support_bindings(
+        compiled, record["envelope"], provenance=record["provenance"]
+    )
+    assert jcs(record) == frozen
+    assert jcs(_pure_wire(outcome)) == jcs(case["expected"]), case["case"]
+
+
 def _run_gates(case: dict[str, object], _record: dict[str, object]) -> None:
     """Run the gate-table case against GATES."""
     assert jcs(_plain(GATES)) == jcs(case["expected"]), case["case"]
@@ -344,6 +355,7 @@ _RUNNERS = {
     "plan_recipe+apply_plan": _run_plan,
     "apply_plan": _run_apply,
     "compile_profile": _run_compile,
+    "propose_support_bindings": _run_propose,
     "sort_placements": _run_sort,
     "gates": _run_gates,
     "stable-id/1": _run_stable,

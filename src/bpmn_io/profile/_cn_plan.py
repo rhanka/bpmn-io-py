@@ -74,6 +74,9 @@ class _Shared:
     roles: dict[tuple[str, str], tuple[Any, ...]] = field(default_factory=dict)
     planned_ids: set[str] = field(default_factory=set)
     planned_sequence: int = 0
+    propose: bool = False
+    provenance: frozenset[str] = frozenset()
+    proposals: list[dict[str, object]] = field(default_factory=list)
 
 
 @dataclass
@@ -597,6 +600,74 @@ def _parent_key(parent: dict[str, Any], planned: list[_Planned], context: ReadCo
     return f"pointer:{pointer}"
 
 
+def _reuse_candidate_valid(
+    planner: _Planner,
+    target: dict[str, Any],
+    type_name: str,
+    parent: dict[str, Any],
+    prop: str,
+) -> bool:
+    """Return whether one element satisfies the §6.3 reuse validation."""
+    if planner.element_type(target) != type_name:
+        return False
+    actual_parent = planner.context.parents.get(id(target))
+    if actual_parent is not parent:
+        return False
+    return _child_property(actual_parent, parent, prop, target) == prop
+
+
+def _is_binding_target(planner: _Planner, element_id: str) -> bool:
+    """Return whether one element is already a snapshot binding target."""
+    for record in planner.context.envelope["bindings"]:
+        if isinstance(record, dict) and record.get("targetId") == element_id:
+            return True
+    return False
+
+
+def _propose_ensure(  # noqa: PLR0913, PLR0917 - one ensure fact set per call
+    planner: _Planner,
+    planned_id: str,
+    type_name: str,
+    parent: dict[str, Any],
+    prop: str,
+    owner_id: str,
+    role: str,
+    identity: tuple[Any, ...],
+    role_key: tuple[str, str],
+    bindings: dict[str, object],
+    alias: str,
+) -> bool:
+    """Run one ensure in recovery-proposal mode (True when occupied, §6.7).
+
+    A free stable id falls through to the normal creation path (its write is
+    discarded by the dry run). An occupied id never refuses: a qualified,
+    attested, unbound occupant is proposed as a reuse, anything else binds
+    the alias to the occupying element.
+    """
+    element = planner.context.by_id.get(planned_id)
+    if not isinstance(element, dict):
+        return False
+    try:
+        valid = _reuse_candidate_valid(planner, element, type_name, parent, prop)
+    except _RefusalError:
+        valid = False
+    if (
+        valid
+        and planned_id in planner.shared.provenance
+        and not _is_binding_target(planner, planned_id)
+    ):
+        proposal: dict[str, object] = {"ownerId": owner_id, "role": role, "targetId": planned_id}
+        for existing in planner.shared.proposals:
+            if existing.get("targetId") == planned_id and existing != proposal:
+                _refuse("support-binding-conflict")
+        if proposal not in planner.shared.proposals:
+            planner.shared.proposals.append(proposal)
+    planner.shared.ensure[identity] = element
+    planner.shared.roles[role_key] = identity
+    bindings[alias] = element
+    return True
+
+
 def _snapshot_binding(planner: _Planner, owner_id: str, role: str) -> dict[str, Any] | None:
     """Find one snapshot binding by ``(ownerId, role)`` (None when absent)."""
     for record in planner.context.envelope["bindings"]:
@@ -681,13 +752,7 @@ def _exec_ensure(  # noqa: C901, PLR0912, PLR0915 - one gate branch per ensure o
         target = planner.context.by_id.get(target_id) if isinstance(target_id, str) else None
         if not isinstance(target, dict):
             _refuse("support-binding-conflict")
-        if planner.element_type(target) != type_name:
-            _refuse("support-binding-conflict")
-        actual_parent = planner.context.parents.get(id(target))
-        if (
-            actual_parent is not parent
-            or _child_property(actual_parent, parent, prop, target) != prop
-        ):
+        if not _reuse_candidate_valid(planner, target, type_name, parent, prop):
             _refuse("support-binding-conflict")
         write = {
             "op": "ensure",
@@ -710,7 +775,23 @@ def _exec_ensure(  # noqa: C901, PLR0912, PLR0915 - one gate branch per ensure o
         return
     planner.gate_ensure_create()
     planned_id = allocate_stable_id(owner_arg, slot, key)
-    if planned_id in planner.context.by_id or planned_id in planner.shared.planned_ids:
+    if planner.shared.propose and _propose_ensure(
+        planner,
+        planned_id,
+        type_name,
+        parent,
+        prop,
+        owner_id,
+        role,
+        identity,
+        role_key,
+        bindings,
+        alias,
+    ):
+        return
+    if not planner.shared.propose and (
+        planned_id in planner.context.by_id or planned_id in planner.shared.planned_ids
+    ):
         _refuse("id-collision")
     element = planner.materialize(type_name, planned_id, fields)
     write = {
