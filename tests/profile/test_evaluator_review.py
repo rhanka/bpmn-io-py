@@ -202,8 +202,8 @@ def test_reachable_follows_resolved_edges() -> None:
     bindings = {"one": tasks["T1"], "two": tasks["T2"]}
     predicate = {
         "op": "reachable",
-        "source": {"from": "one", "via": "self", "order": "id"},
-        "target": {"from": "two", "via": "self", "order": "id"},
+        "from": {"from": "one", "via": "self", "order": "id"},
+        "to": {"from": "two", "via": "self", "order": "id"},
         "edgeTypes": ["bpmn:SequenceFlow"],
         "minHops": 1,
     }
@@ -222,8 +222,8 @@ def test_reachable_reports_direction_and_bounds() -> None:
     tasks = {element["id"]: element for element in graph["rootElements"]}
     backward = {
         "op": "reachable",
-        "source": {"from": "two", "via": "self", "order": "id"},
-        "target": {"from": "one", "via": "self", "order": "id"},
+        "from": {"from": "two", "via": "self", "order": "id"},
+        "to": {"from": "one", "via": "self", "order": "id"},
         "edgeTypes": ["bpmn:SequenceFlow"],
         "minHops": 1,
     }
@@ -231,8 +231,8 @@ def test_reachable_reports_direction_and_bounds() -> None:
     assert evaluate_predicate(backward, context, bindings).payload is False  # type: ignore[union-attr]
     too_far = {
         "op": "reachable",
-        "source": {"from": "one", "via": "self", "order": "id"},
-        "target": {"from": "two", "via": "self", "order": "id"},
+        "from": {"from": "one", "via": "self", "order": "id"},
+        "to": {"from": "two", "via": "self", "order": "id"},
         "edgeTypes": ["bpmn:SequenceFlow"],
         "minHops": 2,
     }
