@@ -1,7 +1,7 @@
 {
   "case": "render-007-reordered-bags",
   "clause": "DESIGN R3.3 \u00a79.2 L692\u2013L694",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0), case file SHA-256 fced1b6c1f8ad07c570da88510b4e0cede141c309cbe8054b67a91b63649368b; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The render-006 records with every bag reversed (two targets each in semantic, occurrence, native and bioc) and every token list reversed normalize to the same Overrides/1 and DiStyles/1 (targets by UTF-16 key, tokens by name), hence the byte-identical Result/1 and digests. Fails against: Hashing the caller order (different overridesDigest/diStylesDigest), sorting tokens but not records, or letting the last record win.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 fced1b6c1f8ad07c570da88510b4e0cede141c309cbe8054b67a91b63649368b; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The render-006 records with every bag reversed (two targets each in semantic, occurrence, native and bioc) and every token list reversed normalize to the same Overrides/1 and DiStyles/1 (targets by UTF-16 key, tokens by name), hence the byte-identical Result/1 and digests. Fails against: Hashing the caller order (different overridesDigest/diStylesDigest), sorting tokens but not records, or letting the last record win.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

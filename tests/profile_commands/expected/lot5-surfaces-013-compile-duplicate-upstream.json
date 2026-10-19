@@ -1,17 +1,17 @@
 {
   "case": "lot5-surfaces-013-compile-duplicate-upstream",
   "clause": "DESIGN R3.3 \u00a78.3 L659; \u00a72.4.1 L190; \u00a72.4.1 L182; \u00a710.1 L737",
-  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d), case file cases/surfaces-013-compile-duplicate-upstream.json SHA-256 08c547b9695f40cb3333a9abe4777aefe5ae7e0320e1a38b8c7c5dfd22413a7a; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS result artifact (the case carries no twin: compilation has no headless state). JS discrimination: Compiler without the L659 upstream-uniqueness check accepts two recipes for create.task. Parity sync PS-25: the compile refusal is the PureResult {status, code, diagnostics: []} (value unchanged). Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/surfaces-013-compile-duplicate-upstream.json SHA-256 c8446f358e98075e25c649408cb1b3c109a97189d701dea23de22a6761408456; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS result artifact (the case carries no twin: compilation has no headless state). JS discrimination: Compiler without the L659 upstream-uniqueness check accepts two recipes for create.task. Parity sync PS-25: the compile refusal is the PureResult {status, code, diagnostics: []} (value unchanged). Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
   "author": "spec-seal",
   "operation": "compileProfile",
   "profile": {
     "vendored": "vendor/js/lot5-ui/expectations/fixtures/variants/duplicate-upstream.profile.json",
-    "sha256": "b229d51d19cc706564b7daecfe544ba46823c18a3e1313d5b128a4fb228d8546"
+    "sha256": "7cbc0ecd30bfa22dc081b9d19fa2cfe89f7266b96a8822af9f84a6e3da01d20f"
   },
   "input": {
     "source": {
       "vendored": "vendor/js/lot5-ui/expectations/cases/surfaces-013-compile-duplicate-upstream.json",
-      "sha256": "08c547b9695f40cb3333a9abe4777aefe5ae7e0320e1a38b8c7c5dfd22413a7a"
+      "sha256": "c8446f358e98075e25c649408cb1b3c109a97189d701dea23de22a6761408456"
     },
     "pathBase": "vendor/js/lot5-ui/expectations/",
     "inputArtifacts": [

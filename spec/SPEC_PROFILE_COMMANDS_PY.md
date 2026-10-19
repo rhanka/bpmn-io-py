@@ -636,7 +636,7 @@ PS-11).
   seal (lot-5 `manifest.json` `files`; lot-3 `manifest.json` `files` for the case,
   lot-3 `seal.json` for its profile, descriptor and base packages and the metrics
   asset), taken from the JS seals whose `seal.json` SHA-256 are
-  `7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d` (lot 5) and
+  `1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4` (lot 5) and
   `1adc160ccd3c2567c5f45b1a1b92322a21f0dcccaf9676f3a7901b0642259934` (lot 3). The
   schema pin of the vendored lot-5 registry
   (`c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da`) is the

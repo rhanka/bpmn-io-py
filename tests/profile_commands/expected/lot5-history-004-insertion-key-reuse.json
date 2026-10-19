@@ -1,24 +1,24 @@
 {
   "case": "lot5-history-004-insertion-key-reuse",
   "clause": "DESIGN R3.3 \u00a73.2 L288; \u00a78.3 L655",
-  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d), case file cases/history-004-insertion-key-reuse.json SHA-256 f93a9e6206ed8589534e8e93c42e071ab11c683998c289119b5397247c00f9b2; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same sequence steps, one {step, result, events?} record per step. Presentation members stay unsealed (twin-presentation). JS discrimination: Suffixes or re-randomizes the colliding allocated ID (a second task appears) instead of refusing id-collision. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/history-004-insertion-key-reuse.json SHA-256 af94cd462e963aa9d0c745afec502fd89df7676cb5d4c915e54a60ba4f612e49; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same sequence steps, one {step, result, events?} record per step. Presentation members stay unsealed (twin-presentation). JS discrimination: Suffixes or re-randomizes the colliding allocated ID (a second task appears) instead of refusing id-collision. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
   "author": "spec-seal",
   "operation": "sequence",
   "profile": {
     "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
-    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
   },
   "input": {
     "source": {
       "vendored": "vendor/js/lot5-ui/expectations/cases/history-004-insertion-key-reuse.json",
-      "sha256": "f93a9e6206ed8589534e8e93c42e071ab11c683998c289119b5397247c00f9b2"
+      "sha256": "af94cd462e963aa9d0c745afec502fd89df7676cb5d4c915e54a60ba4f612e49"
     },
     "pathBase": "vendor/js/lot5-ui/expectations/",
     "inputArtifacts": [
       {
         "path": "fixtures/documents/basic.snapshot.json",
         "role": "snapshot",
-        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+        "sha256": "e72fb51afb484918ca2c3aef4eff2a84502cbbd3c6e7aafd1a2f9baa8c8e7ce9"
       }
     ],
     "commandArtifact": {
@@ -28,7 +28,7 @@
           {
             "action": "applyCommands",
             "request": {
-              "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+              "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
               "commands": [
                 {
                   "command": "surface",
@@ -48,7 +48,7 @@
           {
             "action": "applyCommands",
             "request": {
-              "baseRevision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+              "baseRevision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
               "commands": [
                 {
                   "command": "surface",
@@ -68,7 +68,7 @@
           {
             "action": "undo",
             "request": {
-              "expectedRevision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+              "expectedRevision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
               "expectedViewRevision": "@current"
             },
             "step": 3
@@ -96,7 +96,7 @@
                 "pointer": "/steps/0/result/report"
               }
             },
-            "semanticRevision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+            "semanticRevision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
             "transactionId": "tx-history-4-1",
             "viewRevision": {
               "$unsealed": "twin-presentation",
@@ -105,7 +105,7 @@
           }
         ],
         "result": {
-          "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "operation": "applyCommands",
           "payload": {
             "changed": true,
@@ -128,10 +128,10 @@
                 "mechanismVersion": "1",
                 "profile": "ui-neutral/1",
                 "schemaVersion": "1.0.0",
-                "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
                 "version": "1.1.0"
               },
-              "semanticRevision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+              "semanticRevision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
               "tree": {
                 "$type": "bpmn:Definitions",
                 "exporterVersion": "ui-neutral-base/1",
@@ -366,7 +366,7 @@
                 "targetNamespace": "urn:example:lot5-ui"
               }
             },
-            "semanticRevision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+            "semanticRevision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
             "transactionId": "tx-history-4-1",
             "viewRevision": {
               "$unsealed": "twin-presentation",
@@ -389,7 +389,7 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           },
           "report": {
@@ -443,9 +443,9 @@
               }
             ],
             "idMap": [],
-            "inputRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "inputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "operation": "applyCommands",
-            "outputRevision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+            "outputRevision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
             "rawStandardFindings": [],
             "reportVersion": "2",
             "sourceIdentity": {
@@ -464,7 +464,7 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             },
             "targetIdentity": {
@@ -483,11 +483,11 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             }
           },
-          "revision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+          "revision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
           "status": "ok"
         },
         "step": 1
@@ -495,7 +495,7 @@
       {
         "events": [],
         "result": {
-          "baseRevision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+          "baseRevision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
           "code": "id-collision",
           "diagnostics": [],
           "operation": "applyCommands",
@@ -515,14 +515,14 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           },
           "report": {
             "artifacts": [],
             "entries": [],
             "idMap": [],
-            "inputRevision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+            "inputRevision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
             "operation": "applyCommands",
             "rawStandardFindings": [],
             "reportVersion": "2",
@@ -542,7 +542,7 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             }
           },
@@ -566,7 +566,7 @@
                 "pointer": "/steps/2/result/report"
               }
             },
-            "semanticRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "semanticRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "transactionId": "tx-history-4-1",
             "viewRevision": {
               "$unsealed": "twin-presentation",
@@ -575,7 +575,7 @@
           }
         ],
         "result": {
-          "baseRevision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+          "baseRevision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
           "operation": "undo",
           "payload": {
             "envelope": {
@@ -610,16 +610,16 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           },
           "report": {
             "artifacts": [],
             "entries": [],
             "idMap": [],
-            "inputRevision": "4257c8d6e32a43e82a84dc0a694f45191eb3c88914228234c754212cfd21c971",
+            "inputRevision": "d454becf68c1f0ca2e57444d82fa9e9d7e37fea01d035d7ac8c3d40fb6c28669",
             "operation": "undo",
-            "outputRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "outputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "rawStandardFindings": [],
             "reportVersion": "2",
             "sourceIdentity": {
@@ -638,7 +638,7 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             },
             "targetIdentity": {
@@ -657,11 +657,11 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             }
           },
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "status": "ok"
         },
         "step": 3

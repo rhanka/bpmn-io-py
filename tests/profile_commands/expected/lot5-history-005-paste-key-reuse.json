@@ -1,24 +1,24 @@
 {
   "case": "lot5-history-005-paste-key-reuse",
   "clause": "DESIGN R3.3 \u00a73.2 L288; \u00a78.3 L653",
-  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d), case file cases/history-005-paste-key-reuse.json SHA-256 aa1d367ba2194f3a8979f58a6934d978b525ea80c791f4c0c9de2fb51f908c29; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same sequence steps, one {step, result, events?} record per step. Presentation members stay unsealed (twin-presentation). JS discrimination: Pastes a second copy by suffixing IDs when the same transaction-scoped insertion key is replayed. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/history-005-paste-key-reuse.json SHA-256 27c9db2b73d32410756b51dd5e70910896acb37e89953af1e93aa9314b9731ed; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same sequence steps, one {step, result, events?} record per step. Presentation members stay unsealed (twin-presentation). JS discrimination: Pastes a second copy by suffixing IDs when the same transaction-scoped insertion key is replayed. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
   "author": "spec-seal",
   "operation": "sequence",
   "profile": {
     "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
-    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
   },
   "input": {
     "source": {
       "vendored": "vendor/js/lot5-ui/expectations/cases/history-005-paste-key-reuse.json",
-      "sha256": "aa1d367ba2194f3a8979f58a6934d978b525ea80c791f4c0c9de2fb51f908c29"
+      "sha256": "27c9db2b73d32410756b51dd5e70910896acb37e89953af1e93aa9314b9731ed"
     },
     "pathBase": "vendor/js/lot5-ui/expectations/",
     "inputArtifacts": [
       {
         "path": "fixtures/documents/basic.snapshot.json",
         "role": "snapshot",
-        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+        "sha256": "e72fb51afb484918ca2c3aef4eff2a84502cbbd3c6e7aafd1a2f9baa8c8e7ce9"
       }
     ],
     "commandArtifact": {
@@ -28,7 +28,7 @@
           {
             "action": "applyCommands",
             "request": {
-              "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+              "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
               "commands": [
                 {
                   "command": "surface",
@@ -49,7 +49,7 @@
                       }
                     ],
                     "fragmentVersion": "1",
-                    "sourceRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447"
+                    "sourceRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1"
                   }
                 }
               ],
@@ -61,7 +61,7 @@
           {
             "action": "applyCommands",
             "request": {
-              "baseRevision": "b20b07fd8b50eb2efa3dfd12a44bfee03fcca1a9b6b6b3aa55d21768a36dab92",
+              "baseRevision": "e30dbc469193af0b3dc63c8ca6b356f3728ea882aabb827eecf13f049bfd7f22",
               "commands": [
                 {
                   "command": "surface",
@@ -82,7 +82,7 @@
                       }
                     ],
                     "fragmentVersion": "1",
-                    "sourceRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447"
+                    "sourceRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1"
                   }
                 }
               ],
@@ -114,7 +114,7 @@
                 "pointer": "/steps/0/result/report"
               }
             },
-            "semanticRevision": "b20b07fd8b50eb2efa3dfd12a44bfee03fcca1a9b6b6b3aa55d21768a36dab92",
+            "semanticRevision": "e30dbc469193af0b3dc63c8ca6b356f3728ea882aabb827eecf13f049bfd7f22",
             "transactionId": "tx-history-5-1",
             "viewRevision": {
               "$unsealed": "twin-presentation",
@@ -123,7 +123,7 @@
           }
         ],
         "result": {
-          "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "operation": "applyCommands",
           "payload": {
             "changed": true,
@@ -146,10 +146,10 @@
                 "mechanismVersion": "1",
                 "profile": "ui-neutral/1",
                 "schemaVersion": "1.0.0",
-                "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
                 "version": "1.1.0"
               },
-              "semanticRevision": "b20b07fd8b50eb2efa3dfd12a44bfee03fcca1a9b6b6b3aa55d21768a36dab92",
+              "semanticRevision": "e30dbc469193af0b3dc63c8ca6b356f3728ea882aabb827eecf13f049bfd7f22",
               "tree": {
                 "$type": "bpmn:Definitions",
                 "exporterVersion": "ui-neutral-base/1",
@@ -384,7 +384,7 @@
                 "targetNamespace": "urn:example:lot5-ui"
               }
             },
-            "semanticRevision": "b20b07fd8b50eb2efa3dfd12a44bfee03fcca1a9b6b6b3aa55d21768a36dab92",
+            "semanticRevision": "e30dbc469193af0b3dc63c8ca6b356f3728ea882aabb827eecf13f049bfd7f22",
             "transactionId": "tx-history-5-1",
             "viewRevision": {
               "$unsealed": "twin-presentation",
@@ -407,16 +407,16 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           },
           "report": {
             "artifacts": [],
             "entries": [],
             "idMap": [],
-            "inputRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "inputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "operation": "applyCommands",
-            "outputRevision": "b20b07fd8b50eb2efa3dfd12a44bfee03fcca1a9b6b6b3aa55d21768a36dab92",
+            "outputRevision": "e30dbc469193af0b3dc63c8ca6b356f3728ea882aabb827eecf13f049bfd7f22",
             "rawStandardFindings": [],
             "reportVersion": "2",
             "sourceIdentity": {
@@ -435,7 +435,7 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             },
             "targetIdentity": {
@@ -454,11 +454,11 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             }
           },
-          "revision": "b20b07fd8b50eb2efa3dfd12a44bfee03fcca1a9b6b6b3aa55d21768a36dab92",
+          "revision": "e30dbc469193af0b3dc63c8ca6b356f3728ea882aabb827eecf13f049bfd7f22",
           "status": "ok"
         },
         "step": 1
@@ -466,7 +466,7 @@
       {
         "events": [],
         "result": {
-          "baseRevision": "b20b07fd8b50eb2efa3dfd12a44bfee03fcca1a9b6b6b3aa55d21768a36dab92",
+          "baseRevision": "e30dbc469193af0b3dc63c8ca6b356f3728ea882aabb827eecf13f049bfd7f22",
           "code": "id-collision",
           "diagnostics": [],
           "operation": "applyCommands",
@@ -486,14 +486,14 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           },
           "report": {
             "artifacts": [],
             "entries": [],
             "idMap": [],
-            "inputRevision": "b20b07fd8b50eb2efa3dfd12a44bfee03fcca1a9b6b6b3aa55d21768a36dab92",
+            "inputRevision": "e30dbc469193af0b3dc63c8ca6b356f3728ea882aabb827eecf13f049bfd7f22",
             "operation": "applyCommands",
             "rawStandardFindings": [],
             "reportVersion": "2",
@@ -513,7 +513,7 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             }
           },

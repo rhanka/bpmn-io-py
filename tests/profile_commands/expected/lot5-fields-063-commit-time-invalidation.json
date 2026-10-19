@@ -1,24 +1,24 @@
 {
   "case": "lot5-fields-063-commit-time-invalidation",
   "clause": "DESIGN R3.3 \u00a78.3 L657; \u00a72.4 L166",
-  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d), case file cases/fields-063-commit-time-invalidation.json SHA-256 84e8c69095b9fef9e4f0d69473d843c0aee17636f0fa7b1f5d24bce16b5d8a61; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same sequence steps, one {step, result, events?} record per step. Presentation members stay unsealed (twin-presentation). JS discrimination: Trusts the candidate list of the earlier revision and commits a reference to the deleted Task_X. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/fields-063-commit-time-invalidation.json SHA-256 d7c1decd5ea1d6156a92c81f9be4dfcebebbd3609886a61b50c623969c01dae3; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same sequence steps, one {step, result, events?} record per step. Presentation members stay unsealed (twin-presentation). JS discrimination: Trusts the candidate list of the earlier revision and commits a reference to the deleted Task_X. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
   "author": "spec-seal",
   "operation": "sequence",
   "profile": {
     "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
-    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
   },
   "input": {
     "source": {
       "vendored": "vendor/js/lot5-ui/expectations/cases/fields-063-commit-time-invalidation.json",
-      "sha256": "84e8c69095b9fef9e4f0d69473d843c0aee17636f0fa7b1f5d24bce16b5d8a61"
+      "sha256": "d7c1decd5ea1d6156a92c81f9be4dfcebebbd3609886a61b50c623969c01dae3"
     },
     "pathBase": "vendor/js/lot5-ui/expectations/",
     "inputArtifacts": [
       {
         "path": "fixtures/documents/basic.snapshot.json",
         "role": "snapshot",
-        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+        "sha256": "e72fb51afb484918ca2c3aef4eff2a84502cbbd3c6e7aafd1a2f9baa8c8e7ce9"
       }
     ],
     "commandArtifact": {
@@ -28,7 +28,7 @@
           {
             "action": "queryReferences",
             "request": {
-              "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+              "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
               "fieldId": "target",
               "limit": 10,
               "offset": 0,
@@ -40,7 +40,7 @@
           {
             "action": "applyCommands",
             "request": {
-              "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+              "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
               "commands": [
                 {
                   "command": "surface",
@@ -58,7 +58,7 @@
           {
             "action": "applyCommands",
             "request": {
-              "baseRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+              "baseRevision": "6e826d7a0e6e38d24dcb3c3cc83901b9c1e314d797ab693a36c7bc5be6768046",
               "commands": [
                 {
                   "command": "field",
@@ -98,7 +98,7 @@
                 "type": "bpmn:UserTask"
               }
             ],
-            "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447"
+            "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1"
           },
           "status": "ok"
         },
@@ -120,7 +120,7 @@
                 "pointer": "/steps/1/result/report"
               }
             },
-            "semanticRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+            "semanticRevision": "6e826d7a0e6e38d24dcb3c3cc83901b9c1e314d797ab693a36c7bc5be6768046",
             "transactionId": "tx-fields-invalidate-1",
             "viewRevision": {
               "$unsealed": "twin-presentation",
@@ -129,7 +129,7 @@
           }
         ],
         "result": {
-          "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "operation": "applyCommands",
           "payload": {
             "changed": true,
@@ -152,10 +152,10 @@
                 "mechanismVersion": "1",
                 "profile": "ui-neutral/1",
                 "schemaVersion": "1.0.0",
-                "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
                 "version": "1.1.0"
               },
-              "semanticRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+              "semanticRevision": "6e826d7a0e6e38d24dcb3c3cc83901b9c1e314d797ab693a36c7bc5be6768046",
               "tree": {
                 "$type": "bpmn:Definitions",
                 "exporterVersion": "ui-neutral-base/1",
@@ -380,7 +380,7 @@
                 "targetNamespace": "urn:example:lot5-ui"
               }
             },
-            "semanticRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+            "semanticRevision": "6e826d7a0e6e38d24dcb3c3cc83901b9c1e314d797ab693a36c7bc5be6768046",
             "transactionId": "tx-fields-invalidate-1",
             "viewRevision": {
               "$unsealed": "twin-presentation",
@@ -403,16 +403,16 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           },
           "report": {
             "artifacts": [],
             "entries": [],
             "idMap": [],
-            "inputRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "inputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "operation": "applyCommands",
-            "outputRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+            "outputRevision": "6e826d7a0e6e38d24dcb3c3cc83901b9c1e314d797ab693a36c7bc5be6768046",
             "rawStandardFindings": [],
             "reportVersion": "2",
             "sourceIdentity": {
@@ -431,7 +431,7 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             },
             "targetIdentity": {
@@ -450,11 +450,11 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             }
           },
-          "revision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+          "revision": "6e826d7a0e6e38d24dcb3c3cc83901b9c1e314d797ab693a36c7bc5be6768046",
           "status": "ok"
         },
         "step": 2
@@ -462,7 +462,7 @@
       {
         "events": [],
         "result": {
-          "baseRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+          "baseRevision": "6e826d7a0e6e38d24dcb3c3cc83901b9c1e314d797ab693a36c7bc5be6768046",
           "code": "reference-dangling",
           "diagnostics": [],
           "operation": "applyCommands",
@@ -482,14 +482,14 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           },
           "report": {
             "artifacts": [],
             "entries": [],
             "idMap": [],
-            "inputRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+            "inputRevision": "6e826d7a0e6e38d24dcb3c3cc83901b9c1e314d797ab693a36c7bc5be6768046",
             "operation": "applyCommands",
             "rawStandardFindings": [],
             "reportVersion": "2",
@@ -509,7 +509,7 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             }
           },

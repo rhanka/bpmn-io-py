@@ -472,7 +472,7 @@ def synthetic_key(declaration_id: str, owner_id: str, page_id: str) -> str:
 
 # ------------------------------- vendored JS lot-4 cases (block-B parity sync, §17.6)
 
-JS_SEAL_SHA256 = "5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0"
+JS_SEAL_SHA256 = "681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb"
 TREES = {"render": "tests/profile_render/expected", "export": "tests/profile_export/expected"}
 VENDOR = "vendor/js"
 
@@ -942,7 +942,7 @@ VENDORED: dict[str, dict[str, str]] = {
             "d5dfc0b0815ec0c67d3348ef462b19d8dbf1c21594a5e2ef26bac4dc2053fc70"
         ),
         "cases/layout-011-geometry-theme-gated.json": (
-            "1d54213a2d9fa6f5c8dc9d3fd9225c856cb8d24499ecefca21bee0134399cb8f"
+            "9e314a98e79a6c1dba68bc29e6070b477402a4c371521312aa8d68728b540d8f"
         ),
         "cases/legacy-001-standard.json": (
             "9f17f68d2b0261d2c9c2358cd3a6e64c50ce768dee0bbb892738b0d5d5af62d9"
@@ -1157,8 +1157,8 @@ VENDORED: dict[str, dict[str, str]] = {
         "cases/ticks-004-large-and-integral.json": (
             "d88ac00acee6127a626114c8a7fc1141a3ec67e0d3fdf05c82629263c22869d0"
         ),
-        "manifest.json": "5648d7f2b9ab4ba1cc45487cf643d4545d55173f480ddde7f0f4cb520fbe4bf1",
-        "seal.json": "5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0",
+        "manifest.json": "ac3dce5b4fce1810d48437406703d9b28d8bffff556ede42bded9e1a9522eb23",
+        "seal.json": "681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb",
     },
     "export": {
         "artifacts/choices-plain.render.json": (
@@ -1548,8 +1548,8 @@ VENDORED: dict[str, dict[str, str]] = {
         "cases/serialize-008-stale-descriptor-digest.json": (
             "8ac04ab429c4235136dab1a714325909aee618dab95e05788fff170909f4289e"
         ),
-        "manifest.json": "5648d7f2b9ab4ba1cc45487cf643d4545d55173f480ddde7f0f4cb520fbe4bf1",
-        "seal.json": "5d50127e5eac2791d4699f6cf4094b803bd05c1681a445298bf74a06b892f2c0",
+        "manifest.json": "ac3dce5b4fce1810d48437406703d9b28d8bffff556ede42bded9e1a9522eb23",
+        "seal.json": "681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb",
     },
 }
 

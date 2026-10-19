@@ -1,29 +1,29 @@
 {
   "case": "lot5-palette-005-end",
   "clause": "DESIGN R3.3 \u00a78.3 L649; \u00a78.3 L655; \u00a72.4 L163; \u00a73.2 L276; \u00a73.2 L278-L282; \u00a78.2 L632; \u00a78.2 L633; \u00a78.2 L641; \u00a78.1 L606; \u00a710.1 L735; \u00a710.1 L739; \u00a79.2 L690",
-  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 7a1c85aa4ef6c56cff827980d12b8bddce8157d9b06d683ac9b63c0152fe991d), case file cases/palette-005-end.json SHA-256 c8a3982dd61ffa28d04db9731cbbf0699b04a416cb6a8e101486609ff2212ec8; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. Presentation members stay unsealed (twin-presentation). JS discrimination: Creates the native bpmn:EndEvent with an upstream ID or default name, or invents a calledElement/definition for the new element. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/palette-005-end.json SHA-256 73fc8fb2367f0dea4b22d59b8fe9951373f5057ce84799ebb25e68f8084ed293; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. Presentation members stay unsealed (twin-presentation). JS discrimination: Creates the native bpmn:EndEvent with an upstream ID or default name, or invents a calledElement/definition for the new element. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
   "author": "spec-seal",
   "operation": "applyCommands",
   "profile": {
     "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
-    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
   },
   "input": {
     "source": {
       "vendored": "vendor/js/lot5-ui/expectations/cases/palette-005-end.json",
-      "sha256": "c8a3982dd61ffa28d04db9731cbbf0699b04a416cb6a8e101486609ff2212ec8"
+      "sha256": "73fc8fb2367f0dea4b22d59b8fe9951373f5057ce84799ebb25e68f8084ed293"
     },
     "pathBase": "vendor/js/lot5-ui/expectations/",
     "inputArtifacts": [
       {
         "path": "fixtures/documents/basic.snapshot.json",
         "role": "snapshot",
-        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+        "sha256": "e72fb51afb484918ca2c3aef4eff2a84502cbbd3c6e7aafd1a2f9baa8c8e7ce9"
       }
     ],
     "commandArtifact": {
       "json": {
-        "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+        "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
         "commands": [
           {
             "command": "surface",
@@ -35,7 +35,7 @@
             "entry": "end-create"
           }
         ],
-        "expectedViewRevision": "8d81a8958bd3639d2044da9807b7f44f2cae466688963388240c81ec0e85edd1",
+        "expectedViewRevision": "097d7205eaf7fd73c5ef93e83b261f82ebfc66656bfed674655908f529c43254",
         "transactionId": "tx-palette-end"
       },
       "role": "transaction"
@@ -57,7 +57,7 @@
             "pointer": "/result/report"
           }
         },
-        "semanticRevision": "9485635c183632aed717ff9585bc19fcc83dcdcc4e5d1d05f520546b8eed6886",
+        "semanticRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
         "transactionId": "tx-palette-end",
         "viewRevision": {
           "$unsealed": "twin-presentation",
@@ -82,7 +82,7 @@
                 "pointer": "/history/redo/result/report"
               }
             },
-            "semanticRevision": "9485635c183632aed717ff9585bc19fcc83dcdcc4e5d1d05f520546b8eed6886",
+            "semanticRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
             "transactionId": "tx-palette-end",
             "viewRevision": {
               "$unsealed": "twin-presentation",
@@ -91,7 +91,7 @@
           }
         ],
         "result": {
-          "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "operation": "redo",
           "payload": {
             "envelope": {
@@ -126,16 +126,16 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           },
           "report": {
             "artifacts": [],
             "entries": [],
             "idMap": [],
-            "inputRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "inputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "operation": "redo",
-            "outputRevision": "9485635c183632aed717ff9585bc19fcc83dcdcc4e5d1d05f520546b8eed6886",
+            "outputRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
             "rawStandardFindings": [],
             "reportVersion": "2",
             "sourceIdentity": {
@@ -154,7 +154,7 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             },
             "targetIdentity": {
@@ -173,11 +173,11 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             }
           },
-          "revision": "9485635c183632aed717ff9585bc19fcc83dcdcc4e5d1d05f520546b8eed6886",
+          "revision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
           "status": "ok"
         }
       },
@@ -197,7 +197,7 @@
                 "pointer": "/history/undo/result/report"
               }
             },
-            "semanticRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "semanticRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "transactionId": "tx-palette-end",
             "viewRevision": {
               "$unsealed": "twin-presentation",
@@ -206,7 +206,7 @@
           }
         ],
         "result": {
-          "baseRevision": "9485635c183632aed717ff9585bc19fcc83dcdcc4e5d1d05f520546b8eed6886",
+          "baseRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
           "operation": "undo",
           "payload": {
             "envelope": {
@@ -241,16 +241,16 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           },
           "report": {
             "artifacts": [],
             "entries": [],
             "idMap": [],
-            "inputRevision": "9485635c183632aed717ff9585bc19fcc83dcdcc4e5d1d05f520546b8eed6886",
+            "inputRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
             "operation": "undo",
-            "outputRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "outputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
             "rawStandardFindings": [],
             "reportVersion": "2",
             "sourceIdentity": {
@@ -269,7 +269,7 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             },
             "targetIdentity": {
@@ -288,17 +288,17 @@
               "mechanismVersion": "1",
               "profile": "ui-neutral/1",
               "schemaVersion": "1.0.0",
-              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
               "version": "1.1.0"
             }
           },
-          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
           "status": "ok"
         }
       }
     },
     "result": {
-      "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+      "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
       "operation": "applyCommands",
       "payload": {
         "changed": true,
@@ -321,10 +321,10 @@
             "mechanismVersion": "1",
             "profile": "ui-neutral/1",
             "schemaVersion": "1.0.0",
-            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
             "version": "1.1.0"
           },
-          "semanticRevision": "9485635c183632aed717ff9585bc19fcc83dcdcc4e5d1d05f520546b8eed6886",
+          "semanticRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
           "tree": {
             "$type": "bpmn:Definitions",
             "exporterVersion": "ui-neutral-base/1",
@@ -559,7 +559,7 @@
             "targetNamespace": "urn:example:lot5-ui"
           }
         },
-        "semanticRevision": "9485635c183632aed717ff9585bc19fcc83dcdcc4e5d1d05f520546b8eed6886",
+        "semanticRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
         "transactionId": "tx-palette-end",
         "viewRevision": {
           "$unsealed": "twin-presentation",
@@ -582,16 +582,16 @@
         "mechanismVersion": "1",
         "profile": "ui-neutral/1",
         "schemaVersion": "1.0.0",
-        "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+        "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
         "version": "1.1.0"
       },
       "report": {
         "artifacts": [],
         "entries": [],
         "idMap": [],
-        "inputRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+        "inputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
         "operation": "applyCommands",
-        "outputRevision": "9485635c183632aed717ff9585bc19fcc83dcdcc4e5d1d05f520546b8eed6886",
+        "outputRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
         "rawStandardFindings": [],
         "reportVersion": "2",
         "sourceIdentity": {
@@ -610,7 +610,7 @@
           "mechanismVersion": "1",
           "profile": "ui-neutral/1",
           "schemaVersion": "1.0.0",
-          "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+          "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
           "version": "1.1.0"
         },
         "targetIdentity": {
@@ -629,11 +629,11 @@
           "mechanismVersion": "1",
           "profile": "ui-neutral/1",
           "schemaVersion": "1.0.0",
-          "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+          "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
           "version": "1.1.0"
         }
       },
-      "revision": "9485635c183632aed717ff9585bc19fcc83dcdcc4e5d1d05f520546b8eed6886",
+      "revision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
       "status": "ok"
     }
   }
