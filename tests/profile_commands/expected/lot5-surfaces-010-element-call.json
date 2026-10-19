@@ -1,0 +1,259 @@
+{
+  "case": "lot5-surfaces-010-element-call",
+  "clause": "DESIGN R3.3 \u00a78.3 L649; \u00a78.3 L659; \u00a710.1 L737",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 0353affc89e60853fa6dac9e99bb1aea40fed7fc9670311dee15964ccb755813), case file cases/surfaces-010-element-call.json SHA-256 28aa3f222515ee90011756dfcae71fad538c38af62ad435a089061cc14ba6f08; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Adds connect-item-output to a CallActivity through an assignable Activity check, or drops the profile-only call-unlink context entry because no upstream entry maps it. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "listEntries",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/surfaces-010-element-call.json",
+      "sha256": "28aa3f222515ee90011756dfcae71fad538c38af62ad435a089061cc14ba6f08"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/basic.snapshot.json",
+        "role": "snapshot",
+        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+      },
+      {
+        "json": [
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Call_1",
+            "surface": "context"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Call_1",
+            "surface": "append"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Call_1",
+            "surface": "connect"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Call_1",
+            "surface": "replace"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Call_1",
+            "surface": "delete"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Call_1",
+            "surface": "direct-edit"
+          }
+        ],
+        "role": "queries"
+      }
+    ]
+  },
+  "expected": {
+    "result": [
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "call",
+                    "theme": "plain"
+                  },
+                  "id": "call-unlink",
+                  "label": {
+                    "key": "entry.call-unlink",
+                    "text": "Unlink call"
+                  },
+                  "order": 0,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "edit"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "context"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "task",
+                    "theme": "plain"
+                  },
+                  "id": "append-task",
+                  "label": {
+                    "key": "entry.append-task",
+                    "text": "Append task"
+                  },
+                  "order": 0,
+                  "upstreamEntries": [
+                    "append.append-task"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "end",
+                    "theme": "plain"
+                  },
+                  "id": "append-end",
+                  "label": {
+                    "key": "entry.append-end",
+                    "text": "Append end"
+                  },
+                  "order": 10,
+                  "upstreamEntries": [
+                    "append.end-event"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "aid",
+                    "theme": "plain"
+                  },
+                  "id": "aid-attach",
+                  "label": {
+                    "key": "entry.aid-attach",
+                    "text": "Attach aid"
+                  },
+                  "order": 20,
+                  "upstreamEntries": [
+                    "append.text-annotation"
+                  ]
+                }
+              ],
+              "group": "append"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "append"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "flow",
+                    "theme": "plain"
+                  },
+                  "id": "connect-flow",
+                  "label": {
+                    "key": "entry.connect-flow",
+                    "text": "Connect"
+                  },
+                  "order": 0,
+                  "upstreamEntries": [
+                    "connect",
+                    "global-connect-tool"
+                  ]
+                }
+              ],
+              "group": "connect"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "connect"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "replace"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "note",
+                    "theme": "plain"
+                  },
+                  "id": "delete-element",
+                  "label": {
+                    "key": "entry.delete-element",
+                    "text": "Delete"
+                  },
+                  "order": 10,
+                  "upstreamEntries": [
+                    "delete",
+                    "removeSelection"
+                  ]
+                }
+              ],
+              "group": "edit"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "delete"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "task",
+                    "theme": "plain"
+                  },
+                  "id": "rename-direct",
+                  "label": {
+                    "key": "entry.rename-direct",
+                    "text": "Rename"
+                  },
+                  "order": 30,
+                  "upstreamEntries": [
+                    "directEditing"
+                  ]
+                }
+              ],
+              "group": "edit"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "direct-edit"
+        },
+        "status": "ok"
+      }
+    ]
+  }
+}

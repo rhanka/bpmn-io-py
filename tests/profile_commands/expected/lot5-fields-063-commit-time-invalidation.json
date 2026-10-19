@@ -1,0 +1,522 @@
+{
+  "case": "lot5-fields-063-commit-time-invalidation",
+  "clause": "DESIGN R3.3 \u00a78.3 L657; \u00a72.4 L166",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 0353affc89e60853fa6dac9e99bb1aea40fed7fc9670311dee15964ccb755813), case file cases/fields-063-commit-time-invalidation.json SHA-256 84e8c69095b9fef9e4f0d69473d843c0aee17636f0fa7b1f5d24bce16b5d8a61; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same sequence steps, one {step, result, events?} record per step. Presentation members stay unsealed (twin-presentation). JS discrimination: Trusts the candidate list of the earlier revision and commits a reference to the deleted Task_X. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "sequence",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/fields-063-commit-time-invalidation.json",
+      "sha256": "84e8c69095b9fef9e4f0d69473d843c0aee17636f0fa7b1f5d24bce16b5d8a61"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/basic.snapshot.json",
+        "role": "snapshot",
+        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+      }
+    ],
+    "commandArtifact": {
+      "json": {
+        "sequenceVersion": "1",
+        "steps": [
+          {
+            "action": "queryReferences",
+            "request": {
+              "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+              "fieldId": "target",
+              "limit": 10,
+              "offset": 0,
+              "query": "Standalone",
+              "targetId": "AidLink_1"
+            },
+            "step": 1
+          },
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+              "commands": [
+                {
+                  "command": "surface",
+                  "context": {
+                    "target": "Task_X"
+                  },
+                  "entry": "delete-element"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-fields-invalidate-1"
+            },
+            "step": 2
+          },
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+              "commands": [
+                {
+                  "command": "field",
+                  "context": {
+                    "target": "AidLink_1",
+                    "value": "Task_X"
+                  },
+                  "field": "target",
+                  "notion": "aid-link"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-fields-invalidate-2"
+            },
+            "step": 3
+          }
+        ]
+      },
+      "role": "sequence"
+    }
+  },
+  "expected": {
+    "steps": [
+      {
+        "result": {
+          "diagnostics": [],
+          "payload": {
+            "candidates": [
+              {
+                "id": "Task_X",
+                "label": "Standalone check",
+                "type": "bpmn:Task"
+              },
+              {
+                "id": "Task_Y",
+                "label": "Standalone approval",
+                "type": "bpmn:UserTask"
+              }
+            ],
+            "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447"
+          },
+          "status": "ok"
+        },
+        "step": 1
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/1/result/payload/envelope"
+              }
+            },
+            "origin": "command",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/1/result/report"
+              }
+            },
+            "semanticRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+            "transactionId": "tx-fields-invalidate-1",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "operation": "applyCommands",
+          "payload": {
+            "changed": true,
+            "envelope": {
+              "bindings": [],
+              "documentVersion": "1",
+              "profileIdentity": {
+                "base": {
+                  "id": "ui-neutral-base/1",
+                  "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                  "version": "lot5-2"
+                },
+                "descriptors": [
+                  {
+                    "id": "ui-neutral-descriptors/1",
+                    "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                    "version": "lot5-2"
+                  }
+                ],
+                "mechanismVersion": "1",
+                "profile": "ui-neutral/1",
+                "schemaVersion": "1.0.0",
+                "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+                "version": "1.1.0"
+              },
+              "semanticRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "exporterVersion": "ui-neutral-base/1",
+                "id": "Defs_ui",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "artifacts": [
+                      {
+                        "$type": "bpmn:TextAnnotation",
+                        "id": "Note_1",
+                        "text": "[Aid] spreadsheet"
+                      },
+                      {
+                        "$type": "bpmn:Association",
+                        "associationDirection": "One",
+                        "id": "Link_1",
+                        "sourceRef": "Ref_1",
+                        "targetRef": "Task_A"
+                      },
+                      {
+                        "$type": "bpmn:Association",
+                        "associationDirection": "None",
+                        "id": "AidLink_1",
+                        "sourceRef": "Note_1",
+                        "targetRef": "Task_B"
+                      },
+                      {
+                        "$type": "bpmn:TextAnnotation",
+                        "documentation": [
+                          {
+                            "$type": "bpmn:Documentation",
+                            "text": "Source: tool inventory, sheet 2"
+                          }
+                        ],
+                        "id": "Note_2",
+                        "text": "[Aid]calculator"
+                      },
+                      {
+                        "$type": "bpmn:TextAnnotation",
+                        "id": "Note_3",
+                        "text": " [Aid] ledger"
+                      },
+                      {
+                        "$type": "bpmn:TextAnnotation",
+                        "id": "Note_4",
+                        "text": "Check totals"
+                      }
+                    ],
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_1",
+                        "name": "Order received"
+                      },
+                      {
+                        "$type": "bpmn:Task",
+                        "id": "Task_A",
+                        "name": "Check order"
+                      },
+                      {
+                        "$type": "bpmn:UserTask",
+                        "id": "Task_B",
+                        "name": "Approve order"
+                      },
+                      {
+                        "$type": "bpmn:EndEvent",
+                        "id": "End_1",
+                        "name": "Order closed"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "Flow_1",
+                        "sourceRef": "Start_1",
+                        "targetRef": "Task_A"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "Flow_2",
+                        "name": "Fit stra\u00dfe",
+                        "sourceRef": "Task_A",
+                        "targetRef": "Task_B"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "Flow_3",
+                        "sourceRef": "Task_B",
+                        "targetRef": "End_1"
+                      },
+                      {
+                        "$type": "bpmn:DataStoreReference",
+                        "dataStoreRef": "Store_1",
+                        "id": "Ref_1"
+                      },
+                      {
+                        "$type": "bpmn:DataObjectReference",
+                        "dataObjectRef": "Obj_1",
+                        "id": "Item_1",
+                        "name": "Order form"
+                      },
+                      {
+                        "$type": "bpmn:DataObject",
+                        "id": "Obj_1"
+                      },
+                      {
+                        "$type": "bpmn:CallActivity",
+                        "calledElement": "Proc-review",
+                        "documentation": [
+                          {
+                            "$type": "bpmn:Documentation",
+                            "text": "Source: review procedure, step 4"
+                          }
+                        ],
+                        "id": "Call_1",
+                        "name": "Run review"
+                      },
+                      {
+                        "$type": "bpmn:CallActivity",
+                        "calledElement": "ProcArchive",
+                        "id": "Call_2",
+                        "name": "R\u00e9vision cycle"
+                      },
+                      {
+                        "$type": "bpmn:DataStoreReference",
+                        "dataStoreRef": "Store_2",
+                        "id": "Ref_2"
+                      },
+                      {
+                        "$type": "bpmn:CallActivity",
+                        "id": "Call_3",
+                        "name": "Draft call"
+                      },
+                      {
+                        "$type": "bpmn:UserTask",
+                        "id": "Task_Y",
+                        "name": "Standalone approval"
+                      },
+                      {
+                        "$type": "bpmn:CallActivity",
+                        "calledElement": "ProcArchive",
+                        "id": "Call_4",
+                        "name": "[Locked] Archive run"
+                      },
+                      {
+                        "$type": "bpmn:CallActivity",
+                        "calledElement": "Proc-review",
+                        "id": "Call_5",
+                        "name": "[Hidden] Legacy run"
+                      }
+                    ],
+                    "id": "Proc_main",
+                    "ioSpecification": {
+                      "$type": "bpmn:InputOutputSpecification",
+                      "dataInputs": [
+                        {
+                          "$type": "bpmn:DataInput",
+                          "id": "Input_1",
+                          "name": "Customer request"
+                        }
+                      ],
+                      "inputSets": [
+                        {
+                          "$type": "bpmn:InputSet",
+                          "dataInputRefs": [
+                            "Input_1"
+                          ],
+                          "id": "Set_A",
+                          "name": "Standard"
+                        },
+                        {
+                          "$type": "bpmn:InputSet",
+                          "id": "Set_B",
+                          "name": "Express"
+                        }
+                      ]
+                    },
+                    "isExecutable": false,
+                    "name": "Order handling"
+                  },
+                  {
+                    "$type": "bpmn:Process",
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_r",
+                        "name": "Review requested"
+                      },
+                      {
+                        "$type": "bpmn:Task",
+                        "id": "Task_R",
+                        "name": "Review case"
+                      }
+                    ],
+                    "id": "Proc-review",
+                    "isExecutable": false,
+                    "name": "R\u00e9vision cycle"
+                  },
+                  {
+                    "$type": "bpmn:Process",
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_x",
+                        "name": "Archive requested"
+                      }
+                    ],
+                    "id": "ProcArchive",
+                    "isExecutable": false,
+                    "name": "Archive records \ud800\udc00"
+                  },
+                  {
+                    "$type": "bpmn:DataStore",
+                    "id": "Store_1",
+                    "name": "Policy handbook"
+                  },
+                  {
+                    "$type": "bpmn:DataStore",
+                    "id": "Store_2",
+                    "name": "Tariff sheet"
+                  }
+                ],
+                "targetNamespace": "urn:example:lot5-ui"
+              }
+            },
+            "semanticRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+            "transactionId": "tx-fields-invalidate-1",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "operation": "applyCommands",
+            "outputRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+          "status": "ok"
+        },
+        "step": 2
+      },
+      {
+        "events": [],
+        "result": {
+          "baseRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+          "code": "reference-dangling",
+          "diagnostics": [],
+          "operation": "applyCommands",
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "811310a036015541219b17b396c0dc55b98005027d2d0948b952be75cfb08b04",
+            "operation": "applyCommands",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+              "version": "1.1.0"
+            }
+          },
+          "status": "refused"
+        },
+        "step": 3
+      }
+    ]
+  }
+}

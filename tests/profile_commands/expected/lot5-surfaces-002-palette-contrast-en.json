@@ -1,0 +1,269 @@
+{
+  "case": "lot5-surfaces-002-palette-contrast-en",
+  "clause": "DESIGN R3.3 \u00a78.3 L649; \u00a73.1 L264; \u00a79.2 L694; \u00a78.3 L659; \u00a710.1 L737",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 0353affc89e60853fa6dac9e99bb1aea40fed7fc9670311dee15964ccb755813), case file cases/surfaces-002-palette-contrast-en.json SHA-256 6b3d6ca1499d1d8ac53186d9bfd355cb2ae6a523e67253db71bbacf6b243813e; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Lets the selected theme filter, relabel or re-icon surface entries (theme bypass): any difference from the plain-theme listing fails. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "listEntries",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/surfaces-002-palette-contrast-en.json",
+      "sha256": "6b3d6ca1499d1d8ac53186d9bfd355cb2ae6a523e67253db71bbacf6b243813e"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/basic-contrast.snapshot.json",
+        "role": "snapshot",
+        "sha256": "91026102f157d488a16814867e020dc9b9b4b18418a38476a2d1c1db73f1fb7d"
+      },
+      {
+        "json": [
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Proc_main",
+            "surface": "palette"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Proc_main",
+            "surface": "paste"
+          }
+        ],
+        "role": "queries"
+      }
+    ]
+  },
+  "expected": {
+    "result": [
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "aid",
+                    "theme": "plain"
+                  },
+                  "id": "aid-create",
+                  "label": {
+                    "key": "entry.aid-create",
+                    "text": "Aid note"
+                  },
+                  "order": 0,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "notes"
+            },
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "item",
+                    "theme": "plain"
+                  },
+                  "id": "item-create",
+                  "label": {
+                    "key": "entry.item-create",
+                    "text": "Item"
+                  },
+                  "order": 10,
+                  "upstreamEntries": [
+                    "create.data-object"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "reference",
+                    "theme": "plain"
+                  },
+                  "id": "reference-create",
+                  "label": {
+                    "key": "entry.reference-create",
+                    "text": "Reference document"
+                  },
+                  "order": 10,
+                  "upstreamEntries": [
+                    "create.data-store"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "input",
+                    "theme": "plain"
+                  },
+                  "id": "input-create",
+                  "label": {
+                    "key": "entry.input-create",
+                    "text": "Process input"
+                  },
+                  "order": 20,
+                  "upstreamEntries": []
+                },
+                {
+                  "icon": {
+                    "glyph": "input",
+                    "theme": "plain"
+                  },
+                  "id": "input-loose-create",
+                  "label": {
+                    "key": "entry.input-loose-create",
+                    "text": "Unassigned input"
+                  },
+                  "order": 30,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "data"
+            },
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "start",
+                    "theme": "plain"
+                  },
+                  "id": "start-create",
+                  "label": {
+                    "key": "entry.start-create",
+                    "text": "Start"
+                  },
+                  "order": 0,
+                  "upstreamEntries": [
+                    "create.start-event"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "end",
+                    "theme": "plain"
+                  },
+                  "id": "end-create",
+                  "label": {
+                    "key": "entry.end-create",
+                    "text": "End"
+                  },
+                  "order": 9,
+                  "upstreamEntries": [
+                    "create.end-event"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "user-task",
+                    "theme": "plain"
+                  },
+                  "id": "UserTask-create",
+                  "label": {
+                    "key": "entry.UserTask-create",
+                    "text": "User task"
+                  },
+                  "order": 10,
+                  "upstreamEntries": []
+                },
+                {
+                  "icon": {
+                    "glyph": "task",
+                    "theme": "plain"
+                  },
+                  "id": "task-create",
+                  "label": {
+                    "key": "entry.task-create",
+                    "text": "Task"
+                  },
+                  "order": 10,
+                  "upstreamEntries": [
+                    "create.task"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "gateway",
+                    "theme": "plain"
+                  },
+                  "id": "gateway-create",
+                  "label": {
+                    "key": "entry.gateway-create",
+                    "text": "Decision"
+                  },
+                  "order": 20,
+                  "upstreamEntries": [
+                    "create.exclusive-gateway"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "call",
+                    "theme": "plain"
+                  },
+                  "id": "call-create",
+                  "label": {
+                    "key": "entry.call-create",
+                    "text": "Call"
+                  },
+                  "order": 40,
+                  "upstreamEntries": []
+                },
+                {
+                  "icon": {
+                    "glyph": "call",
+                    "theme": "plain"
+                  },
+                  "id": "external-call-create",
+                  "label": {
+                    "key": "entry.external-call-create",
+                    "text": "External call"
+                  },
+                  "order": 50,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "flow"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "palette"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "process",
+                    "theme": "plain"
+                  },
+                  "id": "paste-elements",
+                  "label": {
+                    "key": "entry.paste-elements",
+                    "text": "Paste"
+                  },
+                  "order": 20,
+                  "upstreamEntries": [
+                    "paste"
+                  ]
+                }
+              ],
+              "group": "edit"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "paste"
+        },
+        "status": "ok"
+      }
+    ]
+  }
+}

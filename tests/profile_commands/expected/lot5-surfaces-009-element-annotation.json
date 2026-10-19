@@ -1,0 +1,216 @@
+{
+  "case": "lot5-surfaces-009-element-annotation",
+  "clause": "DESIGN R3.3 \u00a78.3 L649; \u00a72.3 L141; \u00a78.3 L653; \u00a78.3 L659; \u00a710.1 L737",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 0353affc89e60853fa6dac9e99bb1aea40fed7fc9670311dee15964ccb755813), case file cases/surfaces-009-element-annotation.json SHA-256 b30d6bfecb3d7ed9348575997167ce7e1d67da6b1822a770eb6831462fe17a55; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Evaluates content conditions inside ui.when, or offers the generic rename-direct for annotations. Parity sync PS-11: a read of a member the subject lacks yields MISSING, never an evaluation error (the JS discrimination text that called it an error is not carried over); this annotation listing does not depend on it, so the value is unchanged. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "listEntries",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/surfaces-009-element-annotation.json",
+      "sha256": "b30d6bfecb3d7ed9348575997167ce7e1d67da6b1822a770eb6831462fe17a55"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/basic.snapshot.json",
+        "role": "snapshot",
+        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+      },
+      {
+        "json": [
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Note_1",
+            "surface": "context"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Note_1",
+            "surface": "append"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Note_1",
+            "surface": "connect"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Note_1",
+            "surface": "replace"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Note_1",
+            "surface": "delete"
+          },
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "locale": "en",
+            "subject": "Note_1",
+            "surface": "direct-edit"
+          }
+        ],
+        "role": "queries"
+      }
+    ]
+  },
+  "expected": {
+    "result": [
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "context"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "append"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "link",
+                    "theme": "plain"
+                  },
+                  "id": "connect-annotation-link",
+                  "label": {
+                    "key": "entry.connect-annotation-link",
+                    "text": "Link annotation"
+                  },
+                  "order": 40,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "connect"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "connect"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "aid",
+                    "theme": "plain"
+                  },
+                  "id": "note-to-aid",
+                  "label": {
+                    "key": "entry.note-to-aid",
+                    "text": "Change to aid"
+                  },
+                  "order": 30,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "replace"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "replace"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "note",
+                    "theme": "plain"
+                  },
+                  "id": "delete-element",
+                  "label": {
+                    "key": "entry.delete-element",
+                    "text": "Delete"
+                  },
+                  "order": 10,
+                  "upstreamEntries": [
+                    "delete",
+                    "removeSelection"
+                  ]
+                }
+              ],
+              "group": "edit"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "delete"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "aid",
+                    "theme": "plain"
+                  },
+                  "id": "aid-direct-edit",
+                  "label": {
+                    "key": "entry.aid-direct-edit",
+                    "text": "Edit aid"
+                  },
+                  "order": 40,
+                  "upstreamEntries": []
+                },
+                {
+                  "icon": {
+                    "glyph": "note",
+                    "theme": "plain"
+                  },
+                  "id": "note-direct-edit",
+                  "label": {
+                    "key": "entry.note-direct-edit",
+                    "text": "Edit note"
+                  },
+                  "order": 50,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "edit"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "surface": "direct-edit"
+        },
+        "status": "ok"
+      }
+    ]
+  }
+}

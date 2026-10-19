@@ -19,7 +19,10 @@ re-derive every value by hand:
 - the ``profile-parity-corpus/1`` projection of every case under ``parity/``
   (a transcription of the harness values, DESIGN R3.3 §14.3);
 - the raw SHA-256 of every JS file vendored under ``vendor/js/`` (``VENDORED``:
-  the pins of the owning JS seals, block-B parity sync).
+  the pins of the owning JS seals, block-B parity sync), the value members of
+  every vendored harness record re-derived from its vendored JS case
+  (``vendored_record``) and the arithmetic of the vendored values (envelope
+  revisions, Result/1 and Report/2 bookkeeping, archived importedDi digests).
 
 Usage (from the repository root)::
 
@@ -815,8 +818,8 @@ def parity_text(record: dict[str, object]) -> str:
     return json.dumps(record, ensure_ascii=True, sort_keys=True, separators=(",", ":")) + "\n"
 
 
-def parity_manifest(files: dict[str, str]) -> dict[str, object]:
-    """Return the parity manifest (sha256 of every parity file and referenced artifact)."""
+def parity_manifest(files: dict[str, str], vendored: list[dict[str, object]]) -> dict[str, object]:
+    """Return the parity manifest (parity files, referenced artifacts, vendored cases)."""
     return {
         "comparators": COMPARATORS,
         "corpusVersion": "lot5-py-1",
@@ -832,8 +835,15 @@ def parity_manifest(files: dict[str, str]) -> dict[str, object]:
                 "Profile and package artifacts are the exact profile-c14n/2 bytes of their "
                 "compositions, so raw SHA-256 equals H(document)."
             ),
+            (
+                "vendored lists the JS cases vendored by the block-B parity sync (source: the "
+                "JS repository path; sha256: the pin of the owning JS seal); their harness "
+                "records and raw files live under pathBase, and they are not re-published "
+                "under parity/ because the owning JS seal publishes their corpus records."
+            ),
         ],
         "pathBase": PATH_BASE,
+        "vendored": vendored,
     }
 
 
@@ -850,7 +860,10 @@ def expected_parity() -> dict[str, str]:
     for path in sorted(HERE.glob("*.json")):
         if path.name.startswith("fixture-"):
             continue
-        record = parity_record(_as_dict(load_json(path)))
+        case = _as_dict(load_json(path))
+        if is_vendored(case):
+            continue
+        record = parity_record(case)
         texts[f"parity/{record['caseId']}.json"] = parity_text(record)
     return texts
 
@@ -874,7 +887,8 @@ def check_parity() -> list[str]:
     for path in sorted((HERE / "artifacts").rglob("*.json")):
         files[path.relative_to(HERE).as_posix()] = raw_digest(path.read_bytes())
     manifest = parity_dir / "manifest.json"
-    want = json.dumps(parity_manifest(files), indent=2, ensure_ascii=True) + "\n"
+    derived = parity_manifest(files, vendored_parity_list())
+    want = json.dumps(derived, indent=2, ensure_ascii=True) + "\n"
     if not manifest.is_file() or manifest.read_text(encoding="utf-8") != want:
         problems.append("parity/manifest.json differs from the derived manifest")
     return problems
@@ -1418,6 +1432,231 @@ def check_vendored() -> list[str]:
     return problems
 
 
+# ------------------------------------------------------------ vendored JS cases
+VENDOR_JS = "vendor/js/"
+JS_FIXTURES = "tests/fixtures/"
+#: The owning JS corpora: vendored prefix of their case files, ``pathBase`` of the
+#: paths inside their records (relative to this directory), SHA-256 of their
+#: ``seal.json`` (named by every derivation).
+VENDORED_CORPORA = (
+    {
+        "cases": "vendor/js/lot5-ui/expectations/cases/",
+        "pathBase": "vendor/js/lot5-ui/expectations/",
+        "seal": "0353affc89e60853fa6dac9e99bb1aea40fed7fc9670311dee15964ccb755813",
+    },
+    {
+        "cases": "vendor/js/lot3-cn/expectations/cases/",
+        "pathBase": "vendor/js/",
+        "seal": "6b807ee2c219f614d0f434cb8568c8d15acc0cc425a11bfdaa5cf027d86e8b06",
+    },
+)
+#: JS operations renamed in the harness record (multi-step scripts are sequences).
+VENDORED_OPERATIONS = {"canvas.sequence": "sequence", "transaction-script": "sequence"}
+IMPORTED_DI_KEYS = frozenset({"descriptorDigest", "diagrams", "sha256"})
+
+
+def is_vendored(entry: dict[str, object]) -> bool:
+    """Tell whether a harness record is a vendored JS case (``profile.vendored``)."""
+    profile = entry.get("profile")
+    return isinstance(profile, dict) and "vendored" in profile
+
+
+def _canonical(value: object) -> str:
+    return json.dumps(value, sort_keys=True, ensure_ascii=True, separators=(",", ":"))
+
+
+def _vendored_corpus(case_path: str) -> dict[str, str]:
+    for corpus in VENDORED_CORPORA:
+        if case_path.startswith(corpus["cases"]):
+            return corpus
+    msg = f"{case_path} is not a vendored case file"
+    raise DerivationError(msg)
+
+
+def _artifact_json(source: dict[str, object], role: str) -> object:
+    for artifact in _as_list(source["expectedArtifacts"]):
+        record = _as_dict(artifact)
+        if record["role"] == role:
+            return record["json"]
+    return None
+
+
+def _vendored_expected(source: dict[str, object]) -> object:
+    twin = _artifact_json(source, "twin")
+    if twin is not None:
+        return twin
+    trace = _artifact_json(source, "trace")
+    if trace is not None:
+        return {"trace": trace, "unsealed": _artifact_json(source, "unsealed")}
+    return _artifact_json(source, "result")
+
+
+def _vendored_command(source: dict[str, object], expected: object) -> object:
+    """Return the command artifact; a sequence keeps only the steps the twin replays.
+
+    A gesture step becomes the headless ``applyCommands`` request carrying the
+    command record the JS seal seals as staged by that step and the step's sealed
+    ``baseRevision``; ``"@current"`` stays the JS placeholder of the current
+    ``viewRevision``.
+    """
+    command = source.get("commandArtifact")
+    if not isinstance(command, dict) or not isinstance(expected, dict) or "steps" not in expected:
+        return command
+    script = _as_dict(command["json"])
+    twin = {int(_as_dict(step)["step"]): _as_dict(step) for step in _as_list(expected["steps"])}
+    observed = _as_list(_artifact_json(source, "sequence") or [])
+    steps: list[object] = []
+    for entry in _as_list(script["steps"]):
+        step = _as_dict(entry)
+        number = int(str(step["step"]))
+        if number not in twin:
+            continue
+        if step.get("action") == "gesture":
+            staged = _as_dict(_as_dict(observed[number - 1])["staged"])
+            request = {
+                "baseRevision": _as_dict(twin[number]["result"])["baseRevision"],
+                "commands": staged["commands"],
+                "expectedViewRevision": "@current",
+                "transactionId": staged["transactionId"],
+            }
+            step = {"action": "applyCommands", "request": request, "step": number}
+        steps.append(step)
+    return {"json": {**script, "steps": steps}, "role": command["role"]}
+
+
+def vendored_record(case_path: str) -> dict[str, object]:
+    """Derive the value members of the harness record of one vendored JS case."""
+    corpus = _vendored_corpus(case_path)
+    source = _as_dict(json.loads(vendored_bytes(case_path)))
+    base = corpus["pathBase"]
+    expected = _vendored_expected(source)
+    case_input: dict[str, object] = {
+        "source": {"vendored": case_path, "sha256": VENDORED[case_path]},
+        "pathBase": base,
+        "inputArtifacts": source["inputArtifacts"],
+    }
+    command = _vendored_command(source, expected)
+    if command is not None:
+        case_input["commandArtifact"] = command
+    operation = str(source["operation"])
+    profile = _as_dict(source["profileArtifact"])
+    return {
+        "case": source["caseId"],
+        "author": "spec-seal",
+        "operation": VENDORED_OPERATIONS.get(operation, operation),
+        "profile": {"vendored": base + str(profile["path"]), "sha256": profile["sha256"]},
+        "input": case_input,
+        "expected": expected,
+    }
+
+
+def iter_imported_di(node: object) -> Iterator[dict[str, object]]:
+    """Yield every archived importedDi record below ``node`` (explicit stack)."""
+    stack = [node]
+    while stack:
+        current = stack.pop()
+        if isinstance(current, dict):
+            if set(current) == IMPORTED_DI_KEYS:
+                yield current
+            stack.extend(current.values())
+        elif isinstance(current, list):
+            stack.extend(current)
+
+
+def _vendored_paths(node: object, base: str) -> list[str]:
+    """Problems of the pinned and plain fixture paths inside vendored input artifacts."""
+    problems: list[str] = []
+    stack = [node]
+    while stack:
+        current = stack.pop()
+        if isinstance(current, dict):
+            path, pin = current.get("path"), current.get("sha256")
+            if isinstance(path, str) and isinstance(pin, str) and VENDORED.get(base + path) != pin:
+                problems.append(f"{path} is not vendored with its pinned digest")
+            stack.extend(current.values())
+        elif isinstance(current, list):
+            stack.extend(current)
+        elif isinstance(current, str) and current.startswith("fixtures/"):
+            if base + current not in VENDORED:
+                problems.append(f"{current} is not vendored")
+    return problems
+
+
+def _check_vendored_values(record: dict[str, object], profile_path: str) -> list[str]:
+    """Recompute the arithmetic of the vendored values (revisions, bookkeeping, DI)."""
+    problems: list[str] = []
+    case_input = _as_dict(record["input"])
+    base = str(case_input["pathBase"])
+    documents = [record["expected"], case_input["inputArtifacts"]]
+    for artifact in _as_list(case_input["inputArtifacts"]):
+        path = _as_dict(artifact).get("path")
+        if isinstance(path, str) and base + path in VENDORED:
+            documents.append(load_json(HERE / (base + path)))
+    pins = _as_dict(load_json(HERE / profile_path))["descriptors"]
+    for document in documents:
+        for envelope in iter_envelopes(document):
+            problems.extend(_check_envelope(envelope, None))
+        for imported in iter_imported_di(document):
+            problems.extend(check_imported_di(imported, pins))
+    for result in iter_results(record["expected"]):
+        if isinstance(result.get("report"), dict):
+            problems.extend(check_result(result))
+    return problems
+
+
+def check_vendored_record(entry: dict[str, object]) -> list[str]:
+    """Return the problems of one vendored harness record.
+
+    Every value member must equal its derivation from the vendored JS case, the
+    derivation text must name the owning seal and case file digests, every
+    referenced file must be vendored with its pin, and the arithmetic of the
+    vendored values (envelope revisions, closed Result/1 and Report/2
+    bookkeeping, archived importedDi digests) must recompute.
+    """
+    source = _as_dict(_as_dict(entry["input"])["source"])
+    case_path = str(source["vendored"])
+    if case_path not in VENDORED:
+        return [f"{case_path} is not a VENDORED file"]
+    want = vendored_record(case_path)
+    problems = [
+        f"{key} differs from its derivation from the vendored JS case"
+        for key, value in want.items()
+        if _canonical(entry.get(key)) != _canonical(value)
+    ]
+    if problems:
+        return problems
+    derivation = str(entry["derivation"])
+    seal = _vendored_corpus(case_path)["seal"]
+    if seal not in derivation or VENDORED[case_path] not in derivation:
+        problems.append("derivation does not name the owning seal and case file digests")
+    profile = _as_dict(want["profile"])
+    profile_path = str(profile["vendored"])
+    if VENDORED.get(profile_path) != profile["sha256"]:
+        return [*problems, f"{profile_path} is not vendored with the profileArtifact digest"]
+    case_input = _as_dict(want["input"])
+    problems.extend(_vendored_paths(case_input["inputArtifacts"], str(case_input["pathBase"])))
+    problems.extend(_check_vendored_values(want, profile_path))
+    return problems
+
+
+def vendored_parity_list() -> list[dict[str, object]]:
+    """Return the parity-manifest ``vendored`` list, one entry per vendored harness case."""
+    entries: list[dict[str, object]] = []
+    for path in sorted(HERE.glob("*.json")):
+        entry = _as_dict(load_json(path))
+        if not is_vendored(entry):
+            continue
+        case_path = str(_as_dict(_as_dict(entry["input"])["source"])["vendored"])
+        entries.append(
+            {
+                "caseId": entry["case"],
+                "source": JS_FIXTURES + case_path.removeprefix(VENDOR_JS),
+                "sha256": VENDORED[case_path],
+            }
+        )
+    return sorted(entries, key=lambda item: _u16(item["caseId"]))
+
+
 def check_file(path: Path) -> list[str]:
     """Return the derivation problems of one expectation file."""
     entry = _as_dict(load_json(path))
@@ -1426,6 +1665,8 @@ def check_file(path: Path) -> list[str]:
         return _check_document_fixture(entry)
     if name.startswith("fixture-profile-"):
         return _check_profile_fixture(entry)
+    if is_vendored(entry):
+        return check_vendored_record(entry)
     return check_case(entry)
 
 

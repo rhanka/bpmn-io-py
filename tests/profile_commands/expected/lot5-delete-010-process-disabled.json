@@ -1,0 +1,156 @@
+{
+  "case": "lot5-delete-010-process-disabled",
+  "clause": "DESIGN R3.3 \u00a78.3 L649; \u00a72.4 L174; \u00a78.2 L633; \u00a710.1 L735; \u00a710.1 L739",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 0353affc89e60853fa6dac9e99bb1aea40fed7fc9670311dee15964ccb755813), case file cases/delete-010-process-disabled.json SHA-256 dd38d350fd56c727d6fdfcbd018e17bc1cb91040820d3635f8822db66cefd4a1; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Accepts a programmatic delete of the Process (ui.when lists deletable element types only). Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "applyCommands",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/delete-010-process-disabled.json",
+      "sha256": "dd38d350fd56c727d6fdfcbd018e17bc1cb91040820d3635f8822db66cefd4a1"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/basic.snapshot.json",
+        "role": "snapshot",
+        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+      }
+    ],
+    "commandArtifact": {
+      "json": {
+        "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+        "commands": [
+          {
+            "command": "surface",
+            "context": {
+              "target": "Proc_main"
+            },
+            "entry": "delete-element"
+          }
+        ],
+        "expectedViewRevision": "8d81a8958bd3639d2044da9807b7f44f2cae466688963388240c81ec0e85edd1",
+        "transactionId": "tx-delete-010"
+      },
+      "role": "transaction"
+    }
+  },
+  "expected": {
+    "events": [],
+    "history": {
+      "probe": {
+        "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+        "code": "operation-error",
+        "diagnostics": [],
+        "operation": "undo",
+        "profileIdentity": {
+          "base": {
+            "id": "ui-neutral-base/1",
+            "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+            "version": "lot5-2"
+          },
+          "descriptors": [
+            {
+              "id": "ui-neutral-descriptors/1",
+              "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+              "version": "lot5-2"
+            }
+          ],
+          "mechanismVersion": "1",
+          "profile": "ui-neutral/1",
+          "schemaVersion": "1.0.0",
+          "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+          "version": "1.1.0"
+        },
+        "report": {
+          "artifacts": [],
+          "entries": [],
+          "idMap": [],
+          "inputRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+          "operation": "undo",
+          "rawStandardFindings": [],
+          "reportVersion": "2",
+          "sourceIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+            "version": "1.1.0"
+          }
+        },
+        "status": "refused"
+      },
+      "probeEvents": []
+    },
+    "result": {
+      "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+      "code": "profile-producer",
+      "diagnostics": [],
+      "operation": "applyCommands",
+      "profileIdentity": {
+        "base": {
+          "id": "ui-neutral-base/1",
+          "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+          "version": "lot5-2"
+        },
+        "descriptors": [
+          {
+            "id": "ui-neutral-descriptors/1",
+            "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+            "version": "lot5-2"
+          }
+        ],
+        "mechanismVersion": "1",
+        "profile": "ui-neutral/1",
+        "schemaVersion": "1.0.0",
+        "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+        "version": "1.1.0"
+      },
+      "report": {
+        "artifacts": [],
+        "entries": [],
+        "idMap": [],
+        "inputRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+        "operation": "applyCommands",
+        "rawStandardFindings": [],
+        "reportVersion": "2",
+        "sourceIdentity": {
+          "base": {
+            "id": "ui-neutral-base/1",
+            "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+            "version": "lot5-2"
+          },
+          "descriptors": [
+            {
+              "id": "ui-neutral-descriptors/1",
+              "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+              "version": "lot5-2"
+            }
+          ],
+          "mechanismVersion": "1",
+          "profile": "ui-neutral/1",
+          "schemaVersion": "1.0.0",
+          "sha256": "5cd7b5106b0a5030710d242b4ae61a23afde78cfc9ee803765175762b1217e5a",
+          "version": "1.1.0"
+        }
+      },
+      "status": "refused"
+    }
+  }
+}

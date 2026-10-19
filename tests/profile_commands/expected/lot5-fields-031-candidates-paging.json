@@ -1,0 +1,56 @@
+{
+  "case": "lot5-fields-031-candidates-paging",
+  "clause": "DESIGN R3.3 \u00a78.3 L657; \u00a710.1 L737",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 0353affc89e60853fa6dac9e99bb1aea40fed7fc9670311dee15964ccb755813), case file cases/fields-031-candidates-paging.json SHA-256 3be21d70761d29d19736a841d7c4f5d21df2daee35e6049c76e206b8fadc613e; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Pages before sorting (returning the second Process in document order, Proc-review), or treats offset as 1-based. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "queryReferences",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "fa85d93dd8c7eb1a042e861a0c3b42c3cf1bc98913a5339569cb2590834db108"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/fields-031-candidates-paging.json",
+      "sha256": "3be21d70761d29d19736a841d7c4f5d21df2daee35e6049c76e206b8fadc613e"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/basic.snapshot.json",
+        "role": "snapshot",
+        "sha256": "4e4ed9a303081351a3bd3fda885c5f3754505f1cc16aa69fa9b16e98b8040f37"
+      },
+      {
+        "json": [
+          {
+            "baseRevision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447",
+            "fieldId": "target",
+            "limit": 1,
+            "offset": 1,
+            "query": "",
+            "targetId": "Call_1"
+          }
+        ],
+        "role": "queries"
+      }
+    ]
+  },
+  "expected": {
+    "result": [
+      {
+        "diagnostics": [],
+        "payload": {
+          "candidates": [
+            {
+              "id": "ProcArchive",
+              "label": "Archive records \ud800\udc00",
+              "type": "bpmn:Process"
+            }
+          ],
+          "revision": "ae1e03ac50433b06e6746239ba35a77ba572876d7726c172f9ad8eba0b847447"
+        },
+        "status": "ok"
+      }
+    ]
+  }
+}

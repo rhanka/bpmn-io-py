@@ -13,8 +13,9 @@ example harmonization J1) with the precedence DESIGN text > harmonization
 decision > review finding, and follows the lot-3 C/N freeze for every contract
 shared with lot 3 that no harmonization row changes. Revision PS (block-B
 JS↔Python parity sync, 2026-10-19, cited as "parity sync PS-nn"): the compile
-success observable of PS-35 (§6), and the Python rules adopted as shared
-contract by PS-12, PS-14 and PS-17 (§3.2, §4.3, §11).
+success observable of PS-35 (§6), the Python rules adopted as shared contract by
+PS-12, PS-14 and PS-17 (§3.2, §4.3, §11), and the JS-owned cases vendored
+unchanged with their values (§9.1, §12.1).
 
 The sealed expectations live in `tests/profile_commands/expected/` (harness
 cases, committed byte artifacts under `artifacts/`, the
@@ -509,6 +510,7 @@ Every file `tests/profile_commands/expected/<case>.json` is one JSON object with
 `case` (= file stem), `clause` (starts with `DESIGN R3.3 §`), `derivation`,
 `author` (`spec-seal`), `input`, `expected`, and optionally `derived`
 (`loadRevision`, `ids`, `identity`, recomputed by `derive_helper.py check`).
+Vendored JS cases use the record of §9.1.
 
 ### 8.1 Fixtures and committed bytes (harmonization A3, A6)
 
@@ -609,6 +611,102 @@ single-step or compile case and `ok` for a sequence (step refusals are step
 outcomes); `comparatorIds` from `parity/manifest.json`, whose `pathBase` is
 `tests/profile_commands/expected/` and whose `files` pin every parity record and
 referenced artifact by SHA-256. The JS↔Python joint run executes these records.
+
+### 9.1 Vendored JS cases (block-B parity sync, harmonization §3)
+
+The block-B parity sync imports into this seal the JS cases that witness a
+Python headless behaviour: PS-H23, the 150 JS lot-5 programmatic surface,
+palette, context, connect, replace, delete, fields and paste cases carrying a
+`twin` artifact, `history-001`…`-005`, `history-012`, `twin-001`, `demo-001`
+(steps 1–11) and the surface compile cases `surfaces-013` and `-014`; PS-H24, the
+JS lot-3 transaction script `l3-tx-incremental-draft` as a headless sequence
+(harmonization J1). Their values stay those of the owning JS seal: they are
+vendored unchanged, never recomputed and never obtained from an implementation.
+Every section-1 decision of the parity sync was checked against every vendored
+value and changes none (PS-08, PS-09, PS-10, PS-11, PS-14, PS-15, PS-16, PS-25,
+PS-28 and PS-29 hold as sealed); a JS discrimination text that contradicts a
+decision is not carried into the derivation (`lot5-surfaces-009-element-annotation`,
+PS-11).
+
+- **Files.** The JS case files and every byte sequence they reference are
+  committed raw under `expected/vendor/js/`, a mirror of the JS `tests/fixtures/`
+  directory (`lot5-ui/expectations/` for lot 5; `lot3-cn/expectations/` and the
+  lot-0 metrics asset under `profile-parity-corpus/` for lot 3).
+  `derive_helper.VENDORED` pins each file with the raw SHA-256 of its owning JS
+  seal (lot-5 `manifest.json` `files`; lot-3 `manifest.json` `files` for the case,
+  lot-3 `seal.json` for its profile, descriptor and base packages and the metrics
+  asset), taken from the JS seals whose `seal.json` SHA-256 are
+  `0353affc89e60853fa6dac9e99bb1aea40fed7fc9670311dee15964ccb755813` (lot 5) and
+  `6b807ee2c219f614d0f434cb8568c8d15acc0cc425a11bfdaa5cf027d86e8b06` (lot 3). The
+  schema pin of the vendored lot-5 registry
+  (`c97cfba64560ec0e7098294a5e185187de9d1f2207b272c2f002f576865692da`) is the
+  committed `contracts/profile-mechanism/1/profile-mechanism-1.schema.json`.
+- **Harness record.** `expected/<JS caseId>.json` is `{case, clause, derivation,
+  author: "spec-seal", operation, profile: {vendored, sha256}, input: {source:
+  {vendored, sha256}, pathBase, inputArtifacts, commandArtifact?}, expected}`.
+  `derive_helper.vendored_record` derives every member but `clause` and
+  `derivation` from the vendored case file and `check` requires equality;
+  `clause` lists the JS DESIGN clauses; `derivation` names the owning seal and
+  case file digests (checked), the JS discrimination text and the decision
+  notes. `operation` is the JS operation (A4 camelCase), `sequence` for
+  `canvas.sequence` and `transaction-script`. `inputArtifacts` and
+  `commandArtifact` are the JS records unchanged, their paths relative to
+  `pathBase`; the `demo-001` sequence keeps the steps 1–11 the twin replays, each
+  gesture step 1–9 written as the `applyCommands` request that carries the
+  command record the JS seal seals as staged by that step and that step's sealed
+  `baseRevision`.
+- **Expected.** The JS `twin` artifact (the Python headless outputs of the same
+  input) for every lot-5 case except the two compile cases, which carry the JS
+  `result` artifact (`{status: "refused", code, diagnostics: []}`), and `{trace,
+  unsealed}` (the JS trace and its UNSEALED pointer list) for
+  `l3-tx-incremental-draft`. `check` also recomputes the arithmetic of these
+  values: every envelope `semanticRevision` (expected values and vendored input
+  snapshots), the closed Result/1 and Report/2 bookkeeping of every result whose
+  report is sealed, and every archived `importedDi` digest (PS-15).
+- **Execution** (harness support for the code job; the seal test runs nothing):
+  - Lot-5 session (JS harness contract item 1): `profileArtifact` is loaded and
+    compiled with the vendored registry `fixtures/ui-neutral-registry.json` (raw
+    digest domain), base `fixtures/ui-neutral-base.json`, descriptors
+    `fixtures/ui-neutral-descriptors.json` and the asset bag
+    `{ui-neutral-metrics.json: fixtures/ui-neutral-metrics.json}`; the bridge
+    context is the descriptors package. A twin case loads the `envelope` of the
+    `snapshot` input with its archived `presentation.importedDi`, activates the
+    compiled profile, then runs `commandArtifact` (`transaction` →
+    `apply_commands`; `sequence` → its steps in order) or each `queries` record
+    (the bridge method of the case operation). `"@current"` is
+    `get_snapshot().payload.viewRevision` at that moment; events are those of a
+    listener subscribed before the call.
+  - The observation compared with `expected`: a transaction gives `{result,
+    events, history}`, `history` being `undo` then `redo` (current revisions,
+    each `{result, events}`) after a commit, or `{probe, probeEvents}` (the
+    refused `undo`) after a refusal or no-op; queries give `{result: [...]}`, one
+    `PureResult` per query; a sequence gives `{steps: [{step, result,
+    events?}]}`. Comparison is profile-c14n/2 equality after the JS markers:
+    `{"$unsealed": reason, "type": t}` (present with JSON type `t`; reasons
+    `twin-presentation`, the presentation members, and
+    `replacement-map-multi-create`, the `report.idMap` of one conversion that
+    creates two ID-bearing elements), `{"$equals": {"member": "twin", "pointer":
+    p}}` (equal to the actual observation at `p`) and `{"$equals": {"input":
+    "snapshot", "pointer": p}}` (equal to the vendored snapshot at `p`).
+  - Compile cases: `load_profile` and `compile_profile` of the variant
+    `profileArtifact` with the `compile-inputs` record; the first refusal is
+    compared with `expected`.
+  - `l3-tx-incremental-draft`: the `lot3-transaction-script/2` steps run on one
+    headless bridge set up from the `session` record (profile, descriptors,
+    metrics; base `lot3-cn/expectations/profile/neutral-cn-base.json`):
+    `onChange` → `on_change`, `setDefinitions` → `set_definitions` then
+    `activate_business_profile` of the session profile, `applyCommands` →
+    `apply_commands`, `getSnapshot` → `get_snapshot`, `undo`, `redo`;
+    `{"$ref": {step, pointer}}` resolves to an earlier actual step value, and the
+    trace compares under its `$same`/`$differs` relations and the UNSEALED
+    pointers of `unsealed`.
+- **Parity.** Vendored cases are not re-published under `parity/` (the owning
+  JS seal publishes them); `parity/manifest.json` lists each one under `vendored`
+  as `{caseId, source, sha256}` (`source` the JS repository path, `sha256` the
+  owning seal's pin). The JS lot-5 seal does not import `tx-cancelled`,
+  `tx-dispose-during-transaction` and `tx-reentrant-refused` (parity sync
+  section 5: synchronous poll points and re-entrant callbacks are runtime
+  mechanics, PS-18); they remain Python records under `parity/`.
 
 ## 10. Cross-lot contracts consumed
 
@@ -797,6 +895,165 @@ One row per sealed harness file (status summary: `ok xN` counts successful steps
 | `tx-dispose-during-transaction` | §8.1 L619; §8.2 L635 | dispose during a batch commits nothing | refused `canvas-disposed` |
 | `tx-reentrant-refused` | §8.2 L635 | re-entrant command refused; reads see the committed state | ok x2 |
 
+### 12.1 Vendored JS cases (§9.1)
+
+One row per vendored harness record (clauses from the JS clause records; the
+status summary counts the results of the twin, compile outcome or trace).
+
+| Case | DESIGN clause | Witness | Expected |
+| --- | --- | --- | --- |
+| `l3-tx-incremental-draft` | §8.2 L632-L641; §6.2 L474; §16 L1144; §7.1 L544; §8.1 L595-L596 | vendored JS lot-3 transaction script, incremental draft (headless sequence) | trace ok x11 |
+| `lot5-connect-001-flow-programmatic` | §8.3 L649; §4 L347; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS connect 001: flow programmatic | twin ok x1 |
+| `lot5-connect-003-reference-link-programmatic` | §8.3 L651; §4 L353; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS connect 003: reference link programmatic | twin ok x1 |
+| `lot5-connect-005-item-input` | §8.3 L651; §4 L350; §7.1 L546; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS connect 005: item input | twin ok x1 |
+| `lot5-connect-006-item-output` | §8.3 L651; §4 L350; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS connect 006: item output | twin ok x1 |
+| `lot5-connect-007-annotation-link` | §4 L354; §8.3 L651; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS connect 007: annotation link | twin ok x1 |
+| `lot5-connect-008-reference-to-call` | §4 L353; §8.3 L651; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS connect 008: reference to call | twin ok x1 |
+| `lot5-connect-009-ineligible-target-noop` | §2.4 L158; §4 L353; §8.2 L641; §10.1 L735; §10.1 L739 | vendored JS connect 009: ineligible target noop | twin ok x1 |
+| `lot5-connect-011-flow-from-end` | §8.3 L649; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS connect 011: flow from end | twin refused `profile-producer` |
+| `lot5-context-001-append-task-programmatic` | §8.3 L649; §8.3 L655; §2.4 L163; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690; §10.1 L751; §6.2 L474; §6.4 L515 | vendored JS context 001: append task programmatic | twin ok x1 |
+| `lot5-context-003-append-end` | §8.3 L649; §2.3 L143; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS context 003: append end | twin ok x1 |
+| `lot5-context-004-aid-attach` | §4 L354; §8.3 L653; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS context 004: aid attach | twin ok x1 |
+| `lot5-context-005-append-on-end` | §8.3 L649; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS context 005: append on end | twin refused `profile-producer` |
+| `lot5-context-006-call-unlink` | §8.3 L659; §2.4 L165; §8.3 L653; §4 L356; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS context 006: call unlink | twin ok x1 |
+| `lot5-context-007-call-unlink-noop` | §2.4 L158; §8.2 L641; §10.1 L735; §10.1 L739 | vendored JS context 007: call unlink noop | twin ok x1 |
+| `lot5-delete-001-reference-with-links` | §8.3 L653; §2.4 L171; §4.4 L408; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS delete 001: reference with links | twin ok x1 |
+| `lot5-delete-002-unconnected-task` | §8.3 L653; §2.4 L171; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS delete 002: unconnected task | twin ok x1 |
+| `lot5-delete-003-outgoing-only` | §8.3 L653; §2.4 L171; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS delete 003: outgoing only | twin ok x1 |
+| `lot5-delete-004-incoming-refused` | §8.3 L653; §2.4 L171; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS delete 004: incoming refused | twin refused `reference-dangling` |
+| `lot5-delete-005-flow` | §8.3 L653; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS delete 005: flow | twin ok x1 |
+| `lot5-delete-008-multi-atomic` | §2.4 L172; §8.2 L643; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS delete 008: multi atomic | twin refused `reference-dangling` |
+| `lot5-delete-009-annotation-with-link` | §8.3 L653; §2.4 L171; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS delete 009: annotation with link | twin ok x1 |
+| `lot5-delete-010-process-disabled` | §8.3 L649; §2.4 L174; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS delete 010: process disabled | twin refused `profile-producer` |
+| `lot5-delete-011-last-element-keeps-empty-array` | §8.3 L653; §2.4 L171; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS delete 011: last element keeps empty array | twin ok x1 |
+| `lot5-demo-001-acceptance-script` | §14.2 L954; §8.3 L649; §8.3 L651; §8.3 L653; §8.2 L632; §8.2 L641; §10.2 L803; §2.4 L163 | vendored JS demo 001: acceptance script | twin ok x11 |
+| `lot5-fields-001-state-task` | §8.3 L653; §8.3 L655; §10.1 L737 | vendored JS fields 001: state task | twin ok x1 |
+| `lot5-fields-002-state-task-fr` | §8.3 L653; §8.3 L655; §8.3 L659; §10.1 L737 | vendored JS fields 002: state task fr | twin ok x1 |
+| `lot5-fields-003-state-aid` | §8.3 L653; §8.3 L655; §9.3 L702; §2.2 L115; §10.1 L737 | vendored JS fields 003: state aid | twin ok x1 |
+| `lot5-fields-004-state-aid-no-space` | §8.3 L653; §8.3 L655; §2.2 L115; §9.3 L702; §10.1 L737 | vendored JS fields 004: state aid no space | twin ok x1 |
+| `lot5-fields-005-state-note-leading-space` | §8.3 L653; §8.3 L655; §2.3 L146; §2.3 L152; §10.1 L737 | vendored JS fields 005: state note leading space | twin ok x1 |
+| `lot5-fields-006-state-process` | §8.3 L653; §8.3 L655; §2.1 L79; §8.3 L659; §10.1 L737 | vendored JS fields 006: state process | twin ok x1 |
+| `lot5-fields-007-state-call` | §8.3 L653; §8.3 L655; §8.3 L657; §10.1 L737 | vendored JS fields 007: state call | twin ok x1 |
+| `lot5-fields-008-state-user-task` | §8.3 L653; §8.3 L655; §2.3 L154; §10.1 L737 | vendored JS fields 008: state user task | twin ok x1 |
+| `lot5-fields-009-edit-task-name` | §8.3 L653; §8.3 L655; §8.3 L659; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS fields 009: edit task name | twin ok x1 |
+| `lot5-fields-010-edit-situations-crlf` | §8.3 L653; §8.3 L655; §8.3 L659; §4.2 L387; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS fields 010: edit situations crlf | twin ok x1 |
+| `lot5-fields-011-edit-empty-name` | §8.3 L653; §8.3 L655; §8.3 L659; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690; §10.1 L751; §6.2 L474; §6.4 L515 | vendored JS fields 011: edit empty name | twin ok x1 |
+| `lot5-fields-012-edit-aid-body` | §8.3 L653; §8.3 L655; §8.3 L659; §9.3 L702; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS fields 012: edit aid body | twin ok x1 |
+| `lot5-fields-013-edit-aid-body-typed-marker` | §8.3 L653; §8.3 L655; §8.3 L659; §9.3 L702; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS fields 013: edit aid body typed marker | twin ok x1 |
+| `lot5-fields-014-edit-aid-no-space-keeps-evidence` | §8.3 L653; §8.3 L655; §8.3 L659; §9.3 L702; §4 L356; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS fields 014: edit aid no space keeps evidence | twin ok x1 |
+| `lot5-fields-015-edit-call-target-keeps-evidence` | §8.3 L653; §8.3 L655; §8.3 L659; §8.3 L657; §4 L356; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS fields 015: edit call target keeps evidence | twin ok x1 |
+| `lot5-fields-016-edit-process-kind` | §8.3 L653; §8.3 L655; §8.3 L659; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS fields 016: edit process kind | twin ok x1 |
+| `lot5-fields-017-edit-reference-override` | §8.3 L653; §8.3 L655; §8.3 L659; §4.4 L408; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS fields 017: edit reference override | twin ok x1 |
+| `lot5-fields-018-edit-store-title` | §8.3 L653; §8.3 L655; §8.3 L659; §4.4 L408; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS fields 018: edit store title | twin ok x1 |
+| `lot5-fields-019-edit-no-op` | §8.3 L653; §8.3 L655; §8.3 L659; §8.2 L641; §10.1 L735; §10.1 L739 | vendored JS fields 019: edit no op | twin ok x1 |
+| `lot5-fields-020-edit-call-target-wrong-type` | §8.3 L657; §8.3 L655; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 020: edit call target wrong type | twin refused `profile-type` |
+| `lot5-fields-021-edit-call-target-dangling` | §8.3 L657; §4.1 L378; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 021: edit call target dangling | twin refused `reference-dangling` |
+| `lot5-fields-022-edit-enum-not-a-choice` | §8.3 L659; §2.3 L145; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 022: edit enum not a choice | twin refused `profile-type` |
+| `lot5-fields-023-edit-readonly` | §8.3 L655; §8.3 L659; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 023: edit readonly | twin refused `profile-producer` |
+| `lot5-fields-024-edit-number-no-coercion` | §8.3 L659; §2.2 L114; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 024: edit number no coercion | twin refused `profile-type` |
+| `lot5-fields-027-candidates-all` | §8.3 L657; §2.2 L123; §10.1 L737 | vendored JS fields 027: candidates all | twin ok x1 |
+| `lot5-fields-028-candidates-case` | §8.3 L657; §10.1 L737 | vendored JS fields 028: candidates case | twin ok x1 |
+| `lot5-fields-029-candidates-case-miss` | §8.3 L657; §10.1 L737 | vendored JS fields 029: candidates case miss | twin ok x1 |
+| `lot5-fields-030-candidates-normalization` | §8.3 L657; §10.1 L737 | vendored JS fields 030: candidates normalization | twin ok x1 |
+| `lot5-fields-031-candidates-paging` | §8.3 L657; §10.1 L737 | vendored JS fields 031: candidates paging | twin ok x1 |
+| `lot5-fields-032-candidates-astral` | §8.3 L657; §10.1 L737 | vendored JS fields 032: candidates astral | twin ok x1 |
+| `lot5-fields-033-candidates-unknown-field` | §8.3 L657; §2.4.1 L190; §10.1 L737 | vendored JS fields 033: candidates unknown field | twin refused `profile-symbol` |
+| `lot5-fields-034-state-call-locked` | §8.3 L653; §8.3 L655; §10.1 L737 | vendored JS fields 034: state call locked | twin ok x1 |
+| `lot5-fields-035-state-call-hidden` | §8.3 L653; §8.3 L655; §10.1 L737 | vendored JS fields 035: state call hidden | twin ok x1 |
+| `lot5-fields-036-state-choice-upper` | §8.3 L653; §8.3 L655; §2.2 L116; §10.1 L737 | vendored JS fields 036: state choice upper | twin ok x1 |
+| `lot5-fields-037-state-aid-link-anchor` | §8.3 L653; §8.3 L655; §10.1 L737 | vendored JS fields 037: state aid link anchor | twin ok x1 |
+| `lot5-fields-038-state-no-fields` | §8.3 L653; §8.3 L655; §10.1 L737 | vendored JS fields 038: state no fields | twin ok x1 |
+| `lot5-fields-039-check-enum` | §8.3 L659; §8.3 L655; §10.1 L737 | vendored JS fields 039: check enum | twin ok x3 |
+| `lot5-fields-040-check-reference` | §8.3 L659; §8.3 L657; §10.1 L737 | vendored JS fields 040: check reference | twin ok x4 |
+| `lot5-fields-041-check-text` | §8.3 L659; §2.2 L114; §10.1 L737 | vendored JS fields 041: check text | twin ok x3 |
+| `lot5-fields-042-check-denied` | §8.3 L659; §8.3 L653; §8.3 L649; §10.1 L737 | vendored JS fields 042: check denied | twin ok x3 |
+| `lot5-fields-043-check-unknown-field` | §8.3 L659; §2.4.1 L190; §10.1 L737 | vendored JS fields 043: check unknown field | twin refused `profile-symbol` |
+| `lot5-fields-044-check-unknown-target` | §8.3 L659; §2.2 L132; §10.1 L737 | vendored JS fields 044: check unknown target | twin refused `reference-dangling` |
+| `lot5-fields-045-check-stale-revision` | §8.3 L659; §8.2 L629; §10.1 L737 | vendored JS fields 045: check stale revision | twin refused `operation-error` |
+| `lot5-fields-046-edit-locked-target` | §8.3 L653; §8.3 L649; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 046: edit locked target | twin refused `profile-producer` |
+| `lot5-fields-047-edit-hidden-target` | §8.3 L653; §8.3 L649; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 047: edit hidden target | twin refused `profile-producer` |
+| `lot5-fields-048-edit-unknown-field` | §2.4.1 L190; §8.3 L655; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 048: edit unknown field | twin refused `profile-symbol` |
+| `lot5-fields-049-edit-unknown-target` | §8.3 L655; §2.2 L132; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 049: edit unknown target | twin refused `reference-dangling` |
+| `lot5-fields-050-edit-value-omitted` | §8.3 L655; §8.3 L659; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 050: edit value omitted | twin refused `profile-ui-parameters` |
+| `lot5-fields-051-edit-boolean-no-coercion` | §8.3 L659; §2.2 L114; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 051: edit boolean no coercion | twin refused `profile-type` |
+| `lot5-fields-052-edit-aid-link-anchor` | §8.3 L653; §8.3 L655; §8.3 L659; §8.3 L657; §2.4 L166; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS fields 052: edit aid link anchor | twin ok x1 |
+| `lot5-fields-053-edit-aid-link-other-process` | §8.3 L657; §2.4 L166; §4 L358; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS fields 053: edit aid link other process | twin refused `profile-type` |
+| `lot5-fields-054-candidates-anchor-ownership` | §8.3 L657; §4 L358; §10.1 L737 | vendored JS fields 054: candidates anchor ownership | twin ok x1 |
+| `lot5-fields-055-candidates-locked-field` | §8.3 L657; §8.3 L653; §10.1 L737 | vendored JS fields 055: candidates locked field | twin ok x1 |
+| `lot5-fields-056-candidates-hidden-field` | §8.3 L657; §8.3 L653; §10.1 L737 | vendored JS fields 056: candidates hidden field | twin ok x1 |
+| `lot5-fields-057-candidates-not-reference` | §8.3 L657; §10.1 L737 | vendored JS fields 057: candidates not reference | twin refused `profile-type` |
+| `lot5-fields-058-candidates-negative-offset` | §8.3 L657; §2.4.1 L189; §10.1 L737 | vendored JS fields 058: candidates negative offset | twin refused `profile-bounds` |
+| `lot5-fields-059-candidates-fractional-limit` | §8.3 L657; §2.4.1 L189; §10.1 L737 | vendored JS fields 059: candidates fractional limit | twin refused `profile-bounds` |
+| `lot5-fields-060-candidates-boolean-limit` | §8.3 L657; §2.4.1 L189; §10.1 L737 | vendored JS fields 060: candidates boolean limit | twin refused `profile-bounds` |
+| `lot5-fields-061-candidates-unknown-target` | §8.3 L657; §2.2 L132; §10.1 L737 | vendored JS fields 061: candidates unknown target | twin refused `reference-dangling` |
+| `lot5-fields-062-candidates-stale-revision` | §8.3 L657; §10.1 L737 | vendored JS fields 062: candidates stale revision | twin refused `operation-error` |
+| `lot5-fields-063-commit-time-invalidation` | §8.3 L657; §2.4 L166 | vendored JS fields 063: commit time invalidation | twin ok x2; refused `reference-dangling` |
+| `lot5-history-001-refusal-leaves-no-entry` | §8.2 L633; §8.2 L641; §3.1 L268; §10.1 L735 | vendored JS history 001: refusal leaves no entry | twin ok x3; refused `reference-dangling` |
+| `lot5-history-002-noop-leaves-no-entry` | §8.2 L641; §8.1 L606 | vendored JS history 002: noop leaves no entry | twin ok x3 |
+| `lot5-history-003-entry-point-chain` | §8.2 L632; §8.2 L641; §8.3 L649; §8.3 L651; §3.2 L276 | vendored JS history 003: entry point chain | twin ok x15 |
+| `lot5-history-004-insertion-key-reuse` | §3.2 L288; §8.3 L655 | vendored JS history 004: insertion key reuse | twin ok x2; refused `id-collision` |
+| `lot5-history-005-paste-key-reuse` | §3.2 L288; §8.3 L653 | vendored JS history 005: paste key reuse | twin ok x1; refused `id-collision` |
+| `lot5-history-012-empty-batch-noop` | §8.2 L641; §10.1 L735 | vendored JS history 012: empty batch noop | twin ok x1 |
+| `lot5-palette-001-task-programmatic` | §8.3 L649; §8.3 L655; §8.3 L659; §2.4 L163; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690; §10.1 L751; §6.2 L474; §6.4 L515 | vendored JS palette 001: task programmatic | twin ok x1 |
+| `lot5-palette-003-user-task` | §8.3 L649; §8.3 L655; §2.4 L163; §3.2 L276; §3.2 L278-L282; §2.3 L143; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690; §10.1 L751; §6.2 L474; §6.4 L515 | vendored JS palette 003: user task | twin ok x1 |
+| `lot5-palette-004-start` | §8.3 L649; §8.3 L655; §2.4 L163; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS palette 004: start | twin ok x1 |
+| `lot5-palette-005-end` | §8.3 L649; §8.3 L655; §2.4 L163; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS palette 005: end | twin ok x1 |
+| `lot5-palette-006-gateway` | §8.3 L649; §8.3 L655; §2.4 L163; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS palette 006: gateway | twin ok x1 |
+| `lot5-palette-007-call` | §8.3 L649; §8.3 L655; §2.4 L163; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS palette 007: call | twin ok x1 |
+| `lot5-palette-008-reference` | §8.3 L651; §4 L352; §4.4 L408; §2.4 L163; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS palette 008: reference | twin ok x1 |
+| `lot5-palette-009-item` | §8.3 L651; §4 L349; §2.4 L163; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS palette 009: item | twin ok x1 |
+| `lot5-palette-010-aid` | §8.3 L653; §9.3 L702; §2.4 L163; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS palette 010: aid | twin ok x1 |
+| `lot5-palette-013-input-set-b-programmatic` | §8.3 L651; §7.1 L547; §1.1 L32; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS palette 013: input set b programmatic | twin ok x1 |
+| `lot5-palette-015-input-missing-target` | §8.3 L655; §2.4.1 L195; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 015: input missing target | twin refused `profile-ui-parameters` |
+| `lot5-palette-016-disabled-owner` | §8.3 L649; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 016: disabled owner | twin refused `profile-producer` |
+| `lot5-palette-017-unknown-entry` | §8.3 L659; §2.4.1 L190; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 017: unknown entry | twin refused `profile-symbol` |
+| `lot5-palette-018-final-only-report` | §8.2 L631; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS palette 018: final only report | twin ok x1 |
+| `lot5-palette-019-contrast-theme-same-tree` | §8.3 L649; §3.1 L264; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690; §10.1 L751; §6.2 L474; §6.4 L515 | vendored JS palette 019: contrast theme same tree | twin ok x1 |
+| `lot5-palette-020-upstream-command-mapped` | §8.3 L659; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690; §10.1 L751; §6.2 L474; §6.4 L515 | vendored JS palette 020: upstream command mapped | twin ok x1 |
+| `lot5-palette-021-unlisted-upstream` | §8.3 L659; §8.2 L635; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 021: unlisted upstream | twin refused `transaction-entry-unsupported` |
+| `lot5-palette-022-bare-recipe-command` | §8.2 L635; §8.3 L657; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 022: bare recipe command | twin refused `transaction-entry-unsupported` |
+| `lot5-palette-023-unknown-member` | §8.3 L655; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 023: unknown member | twin refused `profile-ui-parameters` |
+| `lot5-palette-024-extra-source` | §8.3 L655; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 024: extra source | twin refused `profile-ui-parameters` |
+| `lot5-palette-025-non-string-handle` | §8.3 L655; §2.2 L113; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 025: non string handle | twin refused `profile-type` |
+| `lot5-palette-026-dangling-handle` | §8.3 L655; §2.2 L113; §2.2 L132; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 026: dangling handle | twin refused `reference-dangling` |
+| `lot5-palette-027-null-value` | §8.3 L655; §8.3 L659; §2.2 L113; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 027: null value | twin refused `profile-type` |
+| `lot5-palette-028-number-value` | §8.3 L659; §2.2 L114; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 028: number value | twin refused `profile-type` |
+| `lot5-palette-029-input-loose-two-sets` | §7.1 L547; §8.3 L651; §8.2 L631; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 029: input loose two sets | twin refused `io-set-selection-required` |
+| `lot5-palette-030-cancelled-before-call` | §8.1 L604; §8.2 L629; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS palette 030: cancelled before call | twin refused `operation-cancelled` |
+| `lot5-paste-001-copy-task` | §8.3 L657; §10.1 L737 | vendored JS paste 001: copy task | twin ok x1 |
+| `lot5-paste-002-copy-group` | §8.3 L657; §10.1 L737 | vendored JS paste 002: copy group | twin ok x1 |
+| `lot5-paste-003-paste-task` | §8.3 L653; §2.4 L174; §3.2 L288; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS paste 003: paste task | twin ok x1 |
+| `lot5-paste-005-paste-group` | §8.3 L653; §2.4 L174; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS paste 005: paste group | twin ok x1 |
+| `lot5-paste-006-paste-reference-shared-store` | §8.3 L653; §4.4 L408; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS paste 006: paste reference shared store | twin ok x1 |
+| `lot5-paste-007-paste-cross-document-dangling` | §8.3 L653; §2.2 L132; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS paste 007: paste cross document dangling | twin refused `reference-dangling` |
+| `lot5-paste-008-paste-batch-one-pass` | §8.3 L653; §8.2 L631; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690; §10.1 L751; §6.2 L474; §6.4 L515 | vendored JS paste 008: paste batch one pass | twin ok x1 |
+| `lot5-paste-009-paste-into-task` | §8.3 L649; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS paste 009: paste into task | twin refused `profile-producer` |
+| `lot5-paste-011-copy-stale-revision` | §8.3 L657; §10.1 L737; §8.2 L629 | vendored JS paste 011: copy stale revision | twin refused `operation-error` |
+| `lot5-paste-012-copy-unknown-id` | §8.3 L657; §10.1 L737; §2.2 L132 | vendored JS paste 012: copy unknown id | twin refused `reference-dangling` |
+| `lot5-paste-013-copy-definitions-root` | §8.3 L657; §10.1 L737; §2.4 L174 | vendored JS paste 013: copy definitions root | twin refused `profile-type` |
+| `lot5-paste-014-paste-then-edit-same-batch` | §8.3 L653; §8.2 L631; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS paste 014: paste then edit same batch | twin ok x1 |
+| `lot5-paste-015-paste-call-keeps-evidence` | §8.3 L653; §4 L356; §3.2 L288; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS paste 015: paste call keeps evidence | twin ok x1 |
+| `lot5-replace-001-task-to-user-programmatic` | §8.3 L651; §2.4 L163; §2.4 L171; §2.4.1 L182; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690; §10.1 L753 | vendored JS replace 001: task to user programmatic | twin ok x1 |
+| `lot5-replace-003-user-to-task` | §8.3 L651; §2.3 L143; §2.4 L171; §3.2 L276; §3.2 L278-L282; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690; §10.1 L753 | vendored JS replace 003: user to task | twin ok x1 |
+| `lot5-replace-004-exact-type-refusal` | §8.3 L649; §2.3 L143; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS replace 004: exact type refusal | twin refused `profile-producer` |
+| `lot5-replace-005-reference-to-item` | §8.3 L651; §4 L349; §4 L352; §4.4 L408; §2.4 L171; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS replace 005: reference to item | twin ok x1 |
+| `lot5-replace-006-reference-to-item-linked` | §8.3 L651; §2.4 L171; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS replace 006: reference to item linked | twin refused `reference-dangling` |
+| `lot5-replace-007-referenced-task-refused` | §8.3 L651; §2.4 L171; §2.4.1 L182; §8.2 L633; §10.1 L735; §10.1 L739 | vendored JS replace 007: referenced task refused | twin refused `reference-dangling` |
+| `lot5-replace-008-note-to-aid-same-type` | §8.3 L651; §9.3 L702; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690 | vendored JS replace 008: note to aid same type | twin ok x1 |
+| `lot5-surfaces-001-palette-plain-en` | §8.3 L649; §8.3 L655; §8.3 L659; §10.1 L737 | vendored JS surfaces 001: palette plain en | twin ok x2 |
+| `lot5-surfaces-002-palette-contrast-en` | §8.3 L649; §3.1 L264; §9.2 L694; §8.3 L659; §10.1 L737 | vendored JS surfaces 002: palette contrast en | twin ok x2 |
+| `lot5-surfaces-003-palette-locale-fr` | §8.3 L649; §8.3 L659; §10.1 L737 | vendored JS surfaces 003: palette locale fr | twin ok x2 |
+| `lot5-surfaces-004-palette-locale-fr-ca` | §8.3 L649; §8.3 L659; §10.1 L737 | vendored JS surfaces 004: palette locale fr ca | twin ok x2 |
+| `lot5-surfaces-005-element-task` | §8.3 L649; §2.3 L143; §8.3 L651; §8.3 L659; §10.1 L737 | vendored JS surfaces 005: element task | twin ok x6 |
+| `lot5-surfaces-006-element-user-task` | §8.3 L649; §2.3 L143; §8.3 L659; §10.1 L737 | vendored JS surfaces 006: element user task | twin ok x6 |
+| `lot5-surfaces-007-element-end` | §8.3 L649; §8.3 L659; §10.1 L737 | vendored JS surfaces 007: element end | twin ok x6 |
+| `lot5-surfaces-008-element-reference` | §8.3 L649; §8.3 L651; §8.3 L659; §10.1 L737 | vendored JS surfaces 008: element reference | twin ok x6 |
+| `lot5-surfaces-009-element-annotation` | §8.3 L649; §2.3 L141; §8.3 L653; §8.3 L659; §10.1 L737 | vendored JS surfaces 009: element annotation | twin ok x6 |
+| `lot5-surfaces-010-element-call` | §8.3 L649; §8.3 L659; §10.1 L737 | vendored JS surfaces 010: element call | twin ok x6 |
+| `lot5-surfaces-013-compile-duplicate-upstream` | §8.3 L659; §2.4.1 L190; §2.4.1 L182; §10.1 L737 | vendored JS surfaces 013: compile duplicate upstream | compile refused `profile-symbol` |
+| `lot5-surfaces-014-compile-missing-fallback-text` | §8.3 L659; §2.4.1 L190; §2.4.1 L182; §10.1 L737 | vendored JS surfaces 014: compile missing fallback text | compile refused `profile-symbol` |
+| `lot5-twin-001-assignable-rule-user-task` | §2.3 L143; §1.1 L32; §14.3 L963; §8.2 L632; §8.2 L633; §8.2 L641; §8.1 L606; §10.1 L735; §10.1 L739; §9.2 L690; §10.1 L751; §6.2 L474; §6.4 L515 | vendored JS twin 001: assignable rule user task | twin ok x1 |
+
 ## 13. Not covered
 
 - Browser gestures, pointer capture, drag coalescing, DI-only drag/resize/
@@ -823,10 +1080,11 @@ One row per sealed harness file (status summary: `ok xN` counts successful steps
   batch (§4.8 step 12, normative but not sealed), selection preservation (no
   headless selection API) and unexpected internal exceptions mapped to
   `operation-error` after rollback (§8.1 L604, needs fault injection).
-- The JS-only lot-5 cases marked "add to py" by the harmonization (programmatic
-  surfaces, palette, context, connect, replace, delete, fields and paste cases,
-  history-001…005, the assignable-rule twin and the headless steps of the owner
-  demo script): their values belong to the JS seal and are vendored into the
-  parity run after the JS fix round (harness support only).
+- Closed by the block-B parity sync: the JS-only lot-5 cases marked "add to py"
+  by the harmonization (programmatic surfaces, palette, context, connect,
+  replace, delete, fields and paste cases, history-001…005, the assignable-rule
+  twin and the headless steps of the owner demo script) and the lot-3 headless
+  script are vendored (§9.1, §12.1); their execution by the headless runner is
+  harness support for the code job and is not run by the seal test.
 - Cross-runtime execution: JS→Python→JS transport and the twin canvas command
   artifacts of §14.3 need the conductor's joint run over `parity/`.
