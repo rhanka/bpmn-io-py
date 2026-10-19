@@ -10,6 +10,7 @@ from functools import partial
 from typing import Any
 
 from bpmn_io.codec.json import hydrate
+from bpmn_io.profile._evaluate import _load_descriptor_or_none
 from bpmn_io.profile._export import ADAPTERS, map_export
 from bpmn_io.profile._layout import _placement_region_key, compute_layout
 from bpmn_io.profile._lint import lint
@@ -122,6 +123,7 @@ class _Run:
         self.deferred_recipes: list[str] = []
         self.raw_findings: dict[str, list[Json]] = {}
         self.read_echo(wire)
+        _read_staged_revision(self)
 
     def read_echo(self, envelope: object) -> None:
         """Capture the §3.4 refusal echo from the input envelope."""
@@ -225,7 +227,6 @@ def _run_complete(run: _Run) -> str | None:
         return result.code
     if isinstance(result.payload, dict):
         run.staged = _copy(result.payload)
-    _read_staged_revision(run)
     run.c_entries = _take_entries(result.report.entries)
     return None
 
@@ -236,6 +237,29 @@ def _staged_bindings(run: _Run) -> list[Json] | None:
         if isinstance(bindings, list):
             return list(bindings)
     return None
+
+
+def _b12_entry(raw: Json) -> Json:
+    """Map one unified lint entry to the B12 Report/2 shape.
+
+    Harmonization B12 (bare rule id, unavailable result coordinate):
+    ``profile:<id>`` rule ids render bare; the result coordinate is
+    always unavailable (the source coordinate keeps the exact hit).
+    Mirrors the transaction lint mapping.
+    """
+    if not isinstance(raw, dict):
+        return raw
+    mapped = dict(raw)
+    rule_id = mapped.get("ruleId")
+    if isinstance(rule_id, str) and rule_id.startswith("profile:"):
+        mapped["ruleId"] = rule_id[len("profile:") :]
+    mapped["result"] = {
+        "domain": "none",
+        "pointer": None,
+        "targetId": None,
+        "provenance": "unavailable",
+    }
+    return mapped
 
 
 def _run_lint(run: _Run, name: str) -> str | None:
@@ -253,7 +277,7 @@ def _run_lint(run: _Run, name: str) -> str | None:
     )
     report = unified.get("report") if isinstance(unified, dict) else None
     raw_entries = report.get("entries") if isinstance(report, dict) else None
-    raw_list = list(raw_entries) if isinstance(raw_entries, list) else []
+    raw_list = [_b12_entry(raw) for raw in raw_entries] if isinstance(raw_entries, list) else []
     raw_findings = report.get("rawStandardFindings") if isinstance(report, dict) else None
     run.raw_findings[name] = list(raw_findings) if isinstance(raw_findings, list) else []
     if name == "post-normalize":
@@ -265,9 +289,28 @@ def _run_lint(run: _Run, name: str) -> str | None:
     return _first_unresolved(run, name)
 
 
+def _repair_recipe(rules: object, rule_id: str) -> str | None:
+    """Return the declared repair recipe of one rule (None when absent).
+
+    Unified Report/2 entries carry no recipe field; the recipe is declared
+    on the compiled rule (``profile:<id>`` entries resolve against the
+    bare compiled rule id).
+    """
+    if not isinstance(rules, dict):
+        return None
+    record = rules.get(rule_id)
+    if not isinstance(record, dict) and rule_id.startswith("profile:"):
+        record = rules.get(rule_id[len("profile:") :])
+    if not isinstance(record, dict):
+        return None
+    recipe = record.get("repairRecipe")
+    return recipe if isinstance(recipe, str) and recipe else None
+
+
 def _defer_repairable(run: _Run, raw_list: list[Json]) -> None:
     """Append pre-normalize findings, deferring repairable errors with a recipe."""
     recipes = getattr(run.compiled, "recipes", None)
+    rules = getattr(run.compiled, "rules", None)
     for raw in raw_list:
         entry = _entry_from_json(raw)
         if entry is None:
@@ -277,8 +320,8 @@ def _defer_repairable(run: _Run, raw_list: list[Json]) -> None:
             continue
         if entry.classification != "repairable":
             continue
-        recipe = raw.get("repairRecipe") if isinstance(raw, dict) else None
-        if not isinstance(recipe, str) or not recipe:
+        recipe = _repair_recipe(rules, entry.rule_id)
+        if recipe is None:
             continue
         if isinstance(recipes, dict):
             record = recipes.get(recipe)
@@ -340,7 +383,6 @@ def _run_normalize(run: _Run) -> str | None:
     envelope_value = payload.get("envelope")
     if isinstance(envelope_value, dict):
         run.staged = _copy(envelope_value)
-    _read_staged_revision(run)
     run.placements = _copy(payload.get("placements"))
     run.n_entries = _take_entries(result.report.entries)
     return None
@@ -374,6 +416,125 @@ def _run_layout(run: _Run) -> str | None:
     return None
 
 
+_REFERENCE_PACKAGES = ("bpmn", "bpmndi", "dc", "di", "bioc")
+
+_reference_cache: dict[str, dict[str, frozenset[str]]] = {}
+
+
+def _reference_entry_facts(
+    entry: dict[str, Json], prefix: str
+) -> tuple[str, tuple[str, ...], frozenset[str]] | None:
+    """Read one descriptor type's qualified name, supertypes and reference props."""
+    name = entry.get("name")
+    if not isinstance(name, str):
+        return None
+    qualified = f"{prefix}:{name}"
+    parents = entry.get("superClass") or ()
+    supers = tuple(
+        parent if ":" in parent else f"{prefix}:{parent}"
+        for parent in parents
+        if isinstance(parent, str)
+    )
+    props = entry.get("properties")
+    refs: set[str] = set()
+    if isinstance(props, list):
+        for field in props:
+            if not isinstance(field, dict):
+                continue
+            member = field.get("name")
+            if field.get("isReference") is True and isinstance(member, str):
+                refs.add(member)
+    return qualified, supers, frozenset(refs)
+
+
+def _fold_reference_slots(
+    own: dict[str, frozenset[str]], supers: dict[str, tuple[str, ...]], qualified: str
+) -> frozenset[str]:
+    """Fold one type's own reference props with its supertype chain."""
+    seen = {qualified}
+    merged = set(own.get(qualified, frozenset()))
+    stack = list(supers.get(qualified, ()))
+    while stack:
+        parent = stack.pop()
+        if parent in seen:
+            continue
+        seen.add(parent)
+        merged |= own.get(parent, frozenset())
+        stack.extend(supers.get(parent, ()))
+    return frozenset(merged)
+
+
+def _pinned_reference_slots() -> dict[str, frozenset[str]]:
+    """Return pinned reference slots per qualified type (own plus inherited).
+
+    Block-A ``hydrate`` reads references as ``{"$ref": id}`` objects while
+    profile trees carry bare id strings; lint hydration wraps the string
+    form at this boundary only (staged trees keep the profile convention).
+    Unknown packages or load failures degrade to the empty map (no
+    wrapping); the descriptors are pinned data, never edited here.
+    """
+    cached = _reference_cache.get("slots")
+    if cached is not None:
+        return cached
+    own: dict[str, frozenset[str]] = {}
+    supers: dict[str, tuple[str, ...]] = {}
+    for package in _REFERENCE_PACKAGES:
+        descriptor = _load_descriptor_or_none(package)
+        if descriptor is None:
+            continue
+        prefix = descriptor.get("prefix")
+        kinds = descriptor.get("types")
+        if not isinstance(prefix, str) or not isinstance(kinds, list):
+            continue
+        for entry in kinds:
+            if not isinstance(entry, dict):
+                continue
+            facts = _reference_entry_facts(entry, prefix)
+            if facts is None:
+                continue
+            qualified, parents, refs = facts
+            supers[qualified] = parents
+            own[qualified] = refs
+    folded = {name: _fold_reference_slots(own, supers, name) for name in own}
+    _reference_cache["slots"] = folded
+    return folded
+
+
+def _wrap_reference(value: Json) -> Json:
+    """Wrap one reference-slot value into the ``{"$ref": id}`` form."""
+    if isinstance(value, str):
+        return {"$ref": value}
+    if isinstance(value, list):
+        return [_wrap_reference(item) if isinstance(item, str) else item for item in value]
+    return value
+
+
+def _to_hydrate_form(tree: Json) -> Json:
+    """Rewrite profile string references to the block-A hydrate form.
+
+    Walks with an explicit stack; reference slots come from the pinned
+    descriptors (own plus inherited). Values already in ``{"$ref"}`` form,
+    non-string scalars and unknown types pass through unchanged.
+    """
+    if not isinstance(tree, dict):
+        return tree
+    slots = _pinned_reference_slots()
+    work: list[Json] = [tree]
+    while work:
+        node = work.pop()
+        if isinstance(node, dict):
+            type_name = node.get("$type")
+            refs = slots.get(type_name, frozenset()) if isinstance(type_name, str) else frozenset()
+            for key, value in node.items():
+                if key in refs:
+                    node[key] = _wrap_reference(value)
+                elif isinstance(value, (dict, list)):
+                    work.append(value)
+        elif isinstance(node, list):
+            work.extend(node)
+    return tree
+
+
 def _hydrate_for_lint(run: _Run, name: str) -> object | None:
     """Hydrate the staged tree, with Layout/1-derived BPMNDI for post-layout."""
     if not isinstance(run.staged, dict):
@@ -387,7 +548,7 @@ def _hydrate_for_lint(run: _Run, name: str) -> object | None:
             return None
         existing = tree.get("diagrams")
         tree["diagrams"] = [*existing, *overlay] if isinstance(existing, list) else overlay
-    hydrated = hydrate(tree)
+    hydrated = hydrate(_to_hydrate_form(tree))
     if not hydrated.ok:
         return None
     value: object = hydrated.value

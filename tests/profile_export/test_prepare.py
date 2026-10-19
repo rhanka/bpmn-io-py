@@ -10,8 +10,6 @@ import copy
 import json
 from pathlib import Path
 
-import pytest
-
 from tests.profile_render._lot4_harness import (
     build_case_envelope,
     compile_profile_doc,
@@ -27,10 +25,22 @@ def _success_input() -> dict:
     return copy.deepcopy(case["input"])
 
 
+def _asset_bag(profile: dict) -> dict[str, bytes] | None:
+    """Attach the pinned metrics bytes when the profile declares them."""
+    from tests.profile_render._lot4_harness import MECHANISM
+
+    bag: dict[str, bytes] = {}
+    for entry in profile.get("resources", []):
+        key = entry.get("assetKey") if isinstance(entry, dict) else None
+        if key == "neutral-metrics.json":
+            bag[key] = (MECHANISM / key).read_bytes()
+    return bag or None
+
+
 def _compiled_envelope(case_input: dict) -> tuple[object, object]:
     """Compile the case profile and build its envelope."""
     profile = profile_from_ref(case_input["profile"])
-    compiled_result, _, _ = compile_profile_doc(copy.deepcopy(profile), None)
+    compiled_result, _, _ = compile_profile_doc(copy.deepcopy(profile), _asset_bag(profile))
     assert compiled_result.status == "ok", compiled_result.to_json()
     compiled = compiled_result.payload
     envelope = build_case_envelope(
@@ -126,14 +136,74 @@ def test_prepare_export_without_observer_refuses_options_code() -> None:
     assert result.code == "render-stale"  # type: ignore[union-attr]
 
 
-@pytest.mark.xfail(strict=True, reason="needs lot 3 C/N: graph stage has no context")
 def test_full_pipeline_runs_twelve_stages() -> None:
     from bpmn_io.profile._prepare import run_pipeline
+    from tests.profile_render._lot4_harness import build_imported_di
 
     case_input = _success_input()
     compiled, envelope = _compiled_envelope(case_input)
     options = _options(case_input)
-    options["importedDi"] = {"descriptorDigest": "x", "diagrams": [], "sha256": "y"}
+    options["importedDi"] = build_imported_di(
+        compiled.identity, copy.deepcopy(case_input["options"]["diagrams"])
+    )
     trace: list[str] = []
     result = run_pipeline(compiled, envelope, options, observer=trace.append)
+    assert trace == list(_twelve_stages())
     assert result.status == "ok", result.to_json()  # type: ignore[union-attr]
+
+
+def _twelve_stages() -> tuple[str, ...]:
+    """Return the sealed twelve prepare stage names."""
+    from bpmn_io.profile._prepare import PREPARE_STAGES
+
+    return PREPARE_STAGES
+
+
+def test_hydrate_for_lint_accepts_string_references() -> None:
+    """Pre-normalize lint hydrates a staged tree with profile string refs."""
+    from types import SimpleNamespace
+
+    from bpmn_io.profile._prepare import _hydrate_for_lint
+
+    tree = {
+        "$type": "bpmn:Definitions",
+        "id": "D",
+        "rootElements": [
+            {
+                "$type": "bpmn:Process",
+                "id": "P",
+                "flowElements": [
+                    {"$type": "bpmn:Task", "id": "T", "outgoing": ["F"]},
+                    {"$type": "bpmn:SequenceFlow", "id": "F", "sourceRef": "T", "targetRef": "T"},
+                ],
+            }
+        ],
+    }
+    run = SimpleNamespace(staged={"tree": tree}, layout=None)
+    assert _hydrate_for_lint(run, "pre-normalize") is not None
+
+
+def test_hydrate_for_lint_accepts_layout_overlay_string_references() -> None:
+    """Post-layout lint hydrates staged BPMNDI with profile string refs."""
+    from types import SimpleNamespace
+
+    from bpmn_io.profile._prepare import _hydrate_for_lint
+
+    tree = {
+        "$type": "bpmn:Definitions",
+        "id": "D",
+        "rootElements": [{"$type": "bpmn:Process", "id": "P"}],
+    }
+    layout = {
+        "pages": [{"pageId": "p_0", "semanticRootId": "P"}],
+        "geometry": [
+            {
+                "pageId": "p_0",
+                "occurrenceKey": "T",
+                "semanticId": "T",
+                "bounds": {"x": 0, "y": 0, "width": 1000, "height": 1000},
+            }
+        ],
+    }
+    run = SimpleNamespace(staged={"tree": tree}, layout=layout)
+    assert _hydrate_for_lint(run, "post-layout") is not None
