@@ -7,13 +7,14 @@ stored binding from its inputs.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any
 
 from bpmn_io.profile._c14n import digest, digest_bytes
 from bpmn_io.profile._render_tokens import normalize_di_styles, normalize_overrides
 from bpmn_io.profile._results import PureRefused, PureResult, PureSuccess
 
-__all__ = ["render_digests", "verify_render_data", "view_revision"]
+__all__ = ["check_render_freshness", "render_digests", "verify_render_data", "view_revision"]
 
 Json = Any
 
@@ -268,6 +269,221 @@ def render_digests(record: object) -> PureResult:  # noqa: PLR0911
     return PureSuccess(payload=digests)
 
 
+@dataclass(frozen=True)
+class _FreshnessState:
+    """Validated inputs for one freshness recomputation."""
+
+    identity: dict[str, Json]
+    descriptors: list[Json]
+    themes: list[Json]
+    chain: list[dict[str, Json]]
+    canonical: str
+    assets: object
+    tree: dict[str, Json]
+    bindings: list[Json]
+    layout: dict[str, Json]
+    render: dict[str, Json]
+    echoes: dict[str, Json]
+    normalized_overrides: dict[str, Json] | None
+    normalized_styles: dict[str, Json] | None
+
+
+def _render_echoes(render: object) -> dict[str, Json] | None:
+    """Return one RenderData/1 binding echoes record (None when stale)."""
+    if not isinstance(render, dict):
+        return None
+    echoes = render.get("binding")
+    return echoes if isinstance(echoes, dict) else None
+
+
+def _freshness_source(compiled: object, theme_id: object) -> _FreshnessSource | None:
+    """Validate compiled parts and the theme chain (None when stale)."""
+    identity = getattr(compiled, "identity", None)
+    profile = getattr(compiled, "profile", None)
+    assets = getattr(compiled, "assets", None)
+    if not isinstance(identity, dict) or not isinstance(profile, dict):
+        return None
+    descriptors = identity.get("descriptors")
+    if not isinstance(descriptors, list):
+        return None
+    themes = profile.get("themes")
+    if (
+        not isinstance(theme_id, str)
+        or not isinstance(themes, list)
+        or not all(isinstance(theme, dict) for theme in themes)
+    ):
+        return None
+    chain = theme_chain(themes, theme_id)
+    if chain is None:
+        return None
+    return _FreshnessSource(identity, descriptors, themes, chain, str(chain[-1].get("id")), assets)
+
+
+@dataclass(frozen=True)
+class _FreshnessSource:
+    """Compiled profile parts of one freshness check."""
+
+    identity: dict[str, Json]
+    descriptors: list[Json]
+    themes: list[Json]
+    chain: list[dict[str, Json]]
+    canonical: str
+    assets: object
+
+
+def _freshness_bags(
+    overrides: object, di_styles: object
+) -> tuple[dict[str, Json] | None, dict[str, Json] | None] | None:
+    """Normalize one overrides/diStyles pair (None when stale)."""
+    normalized_overrides = None if overrides is None else normalize_overrides(overrides)
+    normalized_styles = None if di_styles is None else normalize_di_styles(di_styles)
+    if (overrides is not None and normalized_overrides is None) or (
+        di_styles is not None and normalized_styles is None
+    ):
+        return None
+    return normalized_overrides, normalized_styles
+
+
+def _fresh_static_digests(
+    state: _FreshnessState,
+) -> tuple[list[dict[str, str]], str] | None:
+    """Compute one check's metrics entries and theme digest (None when stale)."""
+    metric_entries = _metric_resources(state.chain, state.assets)
+    if metric_entries is None:
+        return None
+    theme_hash = theme_digest(state.themes, state.canonical)
+    if theme_hash is None:
+        return None
+    return metric_entries, theme_hash
+
+
+def _check_fresh_digests(state: _FreshnessState) -> str | None:
+    """Recompute one binding echo by echo (code or None)."""
+    static = _fresh_static_digests(state)
+    if static is None:
+        return "render-stale"
+    metric_entries, theme_hash = static
+    try:
+        fresh: dict[str, object] = {
+            "semanticRevision": semantic_revision(state.tree, state.identity, state.bindings),
+            "profileDigest": state.identity.get("sha256"),
+            "descriptorDigest": descriptor_digest(state.descriptors),
+            "layoutDigest": digest(state.layout),
+            "themeId": state.canonical,
+            "themeDigest": theme_hash,
+            "metricsDigest": metrics_digest(metric_entries),
+        }
+    except Exception:  # noqa: BLE001 - malformed pins are stale input
+        return "render-stale"
+    if state.normalized_overrides is not None:
+        fresh["overridesDigest"] = digest(state.normalized_overrides)
+    if state.normalized_styles is not None:
+        fresh["diStylesDigest"] = digest(state.normalized_styles)
+    try:
+        fresh["payloadDigest"] = payload_digest(
+            {
+                "pages": state.render["pages"],
+                "occurrences": state.render["occurrences"],
+                "coverage": state.render["coverage"],
+                "diagnostics": state.render["diagnostics"],
+            }
+        )
+    except (KeyError, TypeError):
+        return "render-stale"
+    for key, value in fresh.items():
+        if state.echoes.get(key) != value:
+            return "render-stale"
+    if state.render.get("pages") != state.layout.get("pages"):
+        return "render-stale"
+    return None
+
+
+def _check_fresh_geometry(state: _FreshnessState) -> str | None:
+    """Check stripped occurrences equal the layout geometry (code or None)."""
+    geometry = state.layout.get("geometry") if isinstance(state.layout, dict) else None
+    if not isinstance(geometry, list):
+        return "render-stale"
+    records: dict[tuple[str, str], dict[str, Json]] = {
+        (str(record.get("pageId")), str(record.get("occurrenceKey"))): record
+        for record in geometry
+        if isinstance(record, dict)
+    }
+    occurrences = state.render.get("occurrences")
+    if not isinstance(occurrences, list):
+        return "render-stale"
+    for occurrence in occurrences:
+        if not isinstance(occurrence, dict):
+            return "render-stale"
+        lookup = (str(occurrence.get("pageId")), str(occurrence.get("occurrenceKey")))
+        record = records.get(lookup)
+        if record is None:
+            return "render-stale"
+        stripped = {name: value for name, value in occurrence.items() if name not in _R_ONLY_KEYS}
+        if stripped != record:
+            return "render-stale"
+    return None
+
+
+def check_render_freshness(  # noqa: PLR0913, PLR0917 - spec §6.2 binding signature
+    compiled: object,
+    tree: object,
+    bindings: object,
+    layout: object,
+    render: object,
+    theme_id: object,
+    overrides: object = None,
+    di_styles: object = None,
+) -> str | None:
+    """Check one RenderData/1 binding echo by echo (spec §6.2).
+
+    Returns a refusal code or ``None``. ``overrides``/``di_styles``
+    ``None`` skips the two bag digests (``map_export`` does not take
+    them; they stay bound through ``viewRevision``). Geometry equality
+    strips ``emittedType``, ``style`` and ``glyphId`` (harmonization
+    K14).
+    """
+    echoes = _render_echoes(render)
+    if echoes is None:
+        return "render-stale"
+    source = _freshness_source(compiled, theme_id)
+    if source is None:
+        return "render-stale"
+    bags = _freshness_bags(overrides, di_styles)
+    if bags is None:
+        return "render-stale"
+    normalized_overrides, normalized_styles = bags
+    if (
+        not isinstance(tree, dict)
+        or not isinstance(bindings, list)
+        or not isinstance(layout, dict)
+        or not isinstance(render, dict)
+    ):
+        return "render-stale"
+    state = _FreshnessState(
+        source.identity,
+        source.descriptors,
+        source.themes,
+        source.chain,
+        source.canonical,
+        source.assets,
+        tree,
+        bindings,
+        layout,
+        render,
+        echoes,
+        normalized_overrides,
+        normalized_styles,
+    )
+    code = _check_fresh_digests(state)
+    if code is not None:
+        return code
+    return _check_fresh_geometry(state)
+
+
+#: RenderData/1 members no layout geometry record carries (harmonization K14).
+_R_ONLY_KEYS = frozenset({"emittedType", "style", "glyphId"})
+
+
 def verify_render_data(  # noqa: PLR0913, PLR0917
     compiled: object,
     envelope: object,
@@ -278,5 +494,41 @@ def verify_render_data(  # noqa: PLR0913, PLR0917
     di_styles: object,
 ) -> PureResult:
     """Recompute one RenderData/1 binding and return its viewRevision."""
-    _ = (compiled, envelope, layout, render, theme_id, overrides, di_styles)
-    return PureRefused(code="render-stale")
+    wire = envelope.to_json() if hasattr(envelope, "to_json") else envelope
+    if not isinstance(wire, dict):
+        return PureRefused(code="render-stale")
+    code = check_render_freshness(
+        compiled,
+        wire.get("tree"),
+        wire.get("bindings"),
+        layout,
+        render,
+        theme_id,
+        overrides,
+        di_styles,
+    )
+    if code is not None:
+        return PureRefused(code=code)
+    echoes = render.get("binding") if isinstance(render, dict) else None
+    if not isinstance(echoes, dict):
+        return PureRefused(code="render-stale")
+    return PureSuccess(payload={"viewRevision": view_revision(echoes)})
+
+
+def _metric_resources(chain: list[dict[str, Json]], assets: object) -> list[dict[str, str]] | None:
+    """Collect ``{id, sha256}`` metrics resources along one theme chain.
+
+    Returns ``None`` when a referenced resource has no verified bytes.
+    """
+    seen: list[str] = []
+    for theme in reversed(chain):
+        resource = theme.get("metricsResource")
+        if isinstance(resource, str) and resource not in seen:
+            seen.append(resource)
+    resources: list[dict[str, str]] = []
+    for resource in seen:
+        raw = assets.get(resource) if isinstance(assets, dict) else None
+        if not isinstance(raw, (bytes, bytearray)):
+            return None
+        resources.append({"id": resource, "sha256": digest_bytes(bytes(raw))})
+    return resources
