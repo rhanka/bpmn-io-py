@@ -10,6 +10,9 @@ entry order (with the harmonization G2 tie-breaks) and the §7.2 placement
 order, plus the verbatim profile-parity-corpus/1 projection of the harness
 cases. It never interprets a recipe, predicate or selector: every expected
 tree, binding, placement, plan and report entry below is written by hand.
+The JS-owned cases imported by the block-B parity sync are the one exception:
+their bytes are committed under ``vendor/js/``, pinned here by the JS seal's
+digests, and their harness records copy those values (never recomputed).
 
 Running ``python tests/profile_cn/expected/derive_helper.py`` from the
 repository root rewrites the sealed files from this hand-authored data and
@@ -7467,8 +7470,14 @@ def corpus_record(record: dict[str, Json]) -> dict[str, Json]:  # noqa: C901, PL
     return corpus
 
 
-def corpus_files(records: list[dict[str, Json]]) -> dict[str, bytes]:
-    """Return the parity/ files (relative to the expected directory)."""
+def corpus_files(
+    records: list[dict[str, Json]], vendored: list[dict[str, Json]]
+) -> dict[str, bytes]:
+    """Return the parity/ files (relative to the expected directory).
+
+    Vendored JS cases are listed, not projected (the JS seal publishes them);
+    the byte-identical twins of parity sync PS-37 are listed as aliases.
+    """
     files: dict[str, bytes] = {}
     used: set[str] = set()
     for record in records:
@@ -7507,6 +7516,7 @@ def corpus_files(records: list[dict[str, Json]]) -> dict[str, bytes]:
         "comparators": CORPUS_COMPARATORS,
         "profiles": profiles,
         "files": {key: referenced[key] for key in sorted(referenced, key=utf16)},
+        **vendored_manifest(records, vendored),
         "notes": [
             (
                 "pathBase is the repository root; every path in this manifest and in the"
@@ -7524,6 +7534,17 @@ def corpus_files(records: list[dict[str, Json]]) -> dict[str, bytes]:
             (
                 "Runtime-specific harness cases (cn-gates-table, cn-c-uncompiled-context)"
                 " have no projection."
+            ),
+            (
+                "vendored: JS-owned cases imported by the parity sync, committed under"
+                " vendoredSeal.root as the JS seal publishes them (two carry a parity sync"
+                " decision, spec section 9.2); they are not projected here; sha256 is the"
+                " committed file digest."
+            ),
+            (
+                "aliases: byte-identical twins (parity sync PS-37); caseId is the JS case,"
+                " aliasOf the Python case projected here, sha256 the JS case file digest;"
+                " no file is copied."
             ),
         ],
     }
@@ -7841,6 +7862,315 @@ def vendored_files() -> dict[str, bytes]:
     return files
 
 
+def committed_digest(rel: str) -> str:
+    """Return the raw SHA-256 of one committed vendored file (reconciled or not)."""
+    fix = RECONCILED.get(rel)
+    return str(fix["sha256"]) if fix is not None else VENDORED[rel]
+
+
+def vendored_manifest(
+    records: list[dict[str, Json]], vendored: list[dict[str, Json]]
+) -> dict[str, Json]:
+    """Return the parity manifest members listing the vendored cases and aliases."""
+    projected = {str(r["case"]) for r in records} - RUNTIME_SPECIFIC
+    vendored_ids = {str(r["case"]) for r in vendored}
+    for alias in ALIASES:
+        if alias["aliasOf"] not in projected or alias["caseId"] in projected | vendored_ids:
+            message = f"alias does not name a projected twin: {alias['caseId']}"
+            raise ValueError(message)
+    rows = [
+        {
+            "caseId": cid,
+            "source": VENDOR_REL + f"cases/{cid}.json",
+            "sha256": committed_digest(f"cases/{cid}.json"),
+        }
+        for cid in sorted(vendored_ids, key=utf16)
+    ]
+    return {
+        "vendoredSeal": {
+            "runtime": "js",
+            "sealSha256": JS_SEAL_SHA256,
+            "commit": JS_SEAL_COMMIT,
+            "root": VENDOR_REL,
+        },
+        "vendored": rows,
+        "aliases": copy.deepcopy(ALIASES),
+    }
+
+
+VENDOR_REL = "tests/profile_cn/expected/" + VENDOR_DIR
+JS_ROOT = "lot3-cn/expectations/"
+#: Descriptor and base bytes every vendored neutral-cn profile loads with.
+JS_PROFILE_INPUTS = ("profile/neutral-cn-descriptors.json", "profile/neutral-cn-base.json")
+#: Parity sync import rows: the Python binding each row needs, then its JS cases.
+ROW_NOTES = {
+    "PS-H01": "validate on the neutral-cn profile; the dangling-call entry has the PS-20 shape",
+    "PS-H02": "normalize witnesses",
+    "PS-H03": "the stable-id/1 pure vector and complete",
+    "PS-H04": "complete witnesses",
+    "PS-H05": "complete fixed points on normalized and N inputs",
+    "PS-H06": "remap_ids and import_projection",
+    "PS-H07": (
+        "cross-runtime transport run jointly by the conductor (H A7); the Python hops"
+        " are checked here"
+    ),
+    "PS-H16": "cases added by the JS seal fix round",
+}
+VENDORED_ROWS: dict[str, tuple[str, ...]] = {
+    "PS-H01": (
+        "l3-call-ambiguous",
+        "l3-call-conflict-empty",
+        "l3-call-conflict",
+        "l3-call-duplicate",
+        "l3-call-external-valid",
+        "l3-call-internal",
+        "l3-call-marker-invalid",
+        "l3-call-source-doc-not-marker",
+        "l3-call-target-dangling-accept",
+        "l3-call-target-empty-accept",
+        "l3-call-target-empty-draft",
+        "l3-call-target-required-accept",
+        "l3-call-target-required-draft",
+        "l3-call-target-type",
+        "l3-path-cannot-reach-end-accept",
+        "l3-path-cross-container-flow-accept",
+        "l3-path-disconnected-task-accept",
+        "l3-path-disconnected-task-draft",
+        "l3-path-gateway-without-incoming-accept",
+        "l3-path-incomplete-call-not-exempt-accept",
+        "l3-path-unlinked-external-not-exempt-accept",
+        "l3-path-unreachable-component-accept",
+        "l3-trig-downstream-branch-accept",
+        "l3-trig-no-branch-accept",
+        "l3-trig-no-branch-draft",
+        "l3-trig-parallel-only-accept",
+        "l3-trig-single-trigger-accept",
+        "l3-io-complete-links-accept",
+        "l3-io-endpoint-type-accept",
+        "l3-io-link-owner-accept",
+        "l3-io-link-owner-draft",
+        "l3-io-missing-links-accept",
+        "l3-io-missing-links-draft",
+        "l3-io-wrong-direction-accept",
+        "l3-io-wrong-direction-draft",
+    ),
+    "PS-H02": (
+        "l3-trig-normalize-no-invention",
+        "l3-n-legacy-marker-ignored",
+        "l3-n-empty-process",
+        "l3-n-unicode-names",
+        "l3-n-binding-wrong-type",
+    ),
+    "PS-H03": ("l3-id-stable-vectors", "l3-id-rename-stable", "l3-id-two-owners"),
+    "PS-H04": (
+        "l3-c-gateway-stale-topology",
+        "l3-c-gateway-phase-start",
+        "l3-c-sets-single-uncovered",
+        "l3-c-preserve",
+        "l3-c-write-conflict",
+        "l3-c-write-coalesce",
+        "l3-c-namespace-defaults",
+        "l3-c-dangling-call",
+    ),
+    "PS-H05": ("l3-fp-c-on-n-input", "l3-fp-c-after-n"),
+    "PS-H06": (
+        "l3-imp-remap-swap",
+        "l3-imp-remap-duplicate-result",
+        "l3-imp-remap-opaque-attested",
+        "l3-imp-remap-nonsubset-id",
+        "l3-imp-projection-out-of-base",
+    ),
+    "PS-H07": (
+        "l3-mix-n-full-js-py-js",
+        "l3-mix-n-full-py-js-py",
+        "l3-mix-n-two-processes-js-py-js",
+        "l3-mix-n-two-processes-py-js-py",
+        "l3-mix-n-unicode-names-js-py-js",
+        "l3-mix-n-unicode-names-py-js-py",
+    ),
+    "PS-H16": (
+        "l3-id-ordinal-missing-only",
+        "l3-imp-remap-qname",
+        "l3-n-after-owner-remap",
+        "l3-n-anchor-after-link-removal",
+        "l3-n-business-lane-refusal-edit",
+    ),
+}
+#: JS corpus operation -> Python harness operation (spec §9.2).
+VENDORED_OPERATIONS = {
+    "complete": "complete",
+    "importProjection": "import_projection",
+    "normalize": "normalize",
+    "remapIds": "remap_ids",
+    "stable-id/1": "stable-id/1",
+    "validate": "validate",
+}
+#: JS input roles whose Python harness key differs (camelCase input keys).
+VENDORED_INPUT_KEYS = {"placement-intent": "placementIntent", "transport-route": "transportRoute"}
+TRANSPORT_ROLES = {"transport", "transport-bytes", "hop-results"}
+#: Byte-identical twins (parity sync PS-37): the JS case is an alias of the
+#: Python case and is not copied; sha256 is the JS case file digest.
+ALIASES: list[dict[str, str]] = [
+    {
+        "caseId": "l3-n-place-grid-shared-anchor",
+        "aliasOf": "cn-n-place-grid-shared-anchor",
+        "sha256": "f84cca15574a2ef5e5ae52d60a0fb3a74e31c48f48d2b706cab95b0d033b46b3",
+    },
+    {
+        "caseId": "l3-n-place-neutral",
+        "aliasOf": "cn-n-place-neutral",
+        "sha256": "80ebe7a9d6f74afe770fd3fac4b025f8075aaab9d561718881698f07604db27d",
+    },
+]
+
+
+def _vendored_value(artifact: dict[str, Json]) -> Json:
+    """Return one JS artifact value: its JSON value, else its {text, sha256} record."""
+    if "json" in artifact:
+        return copy.deepcopy(artifact["json"])
+    return {"text": artifact["text"], "sha256": artifact["sha256"]}
+
+
+def _js_clause(meta: dict[str, Json]) -> str:
+    """Return the harness clause of one JS index row (its primary DESIGN clause)."""
+    clause: dict[str, Json] = meta["clause"]  # type: ignore[assignment]
+    first, last = clause["lines"]  # type: ignore[misc]
+    lines = f"L{first}" if first == last else f"L{first}-L{last}"
+    return f"DESIGN R3.3 {clause['section']} {lines}"
+
+
+def _vendored_profile(case: dict[str, Json]) -> Json:
+    """Return the harness profile record of one JS case (vendored path and pins)."""
+    ref = case["profileArtifact"]
+    if ref is None:
+        return None
+    rel = str(ref["path"]).removeprefix(JS_ROOT)  # type: ignore[index]
+    profile = load_json(OUT / VENDOR_DIR / rel)
+    descriptors, base = JS_PROFILE_INPUTS
+    pins_agree = (
+        VENDORED.get(rel) == ref["sha256"]  # type: ignore[index]
+        and profile["descriptors"][0]["sha256"] == VENDORED[descriptors]  # type: ignore[index]
+        and profile["base"]["sha256"] == VENDORED[base]  # type: ignore[index]
+    )
+    if not pins_agree:
+        message = f"vendored profile pins disagree: {rel}"
+        raise ValueError(message)
+    return {
+        "vendored": VENDOR_REL + rel,
+        "sha256": VENDORED[rel],
+        "descriptorBytes": {"path": VENDOR_REL + descriptors, "sha256": VENDORED[descriptors]},
+        "baseBytes": {"path": VENDOR_REL + base, "sha256": VENDORED[base]},
+    }
+
+
+def _caller_state_matches(case: dict[str, Json]) -> bool:
+    """Return whether the JS caller-state artifact equals the caller-visible inputs."""
+    inputs = {str(a["role"]): a for a in case["inputArtifacts"]}  # type: ignore[union-attr,index]
+    outputs = {str(a["role"]): a for a in case["expectedArtifacts"]}  # type: ignore[union-attr,index]
+    state = outputs["caller-state"]
+    if "text" in state:
+        source = inputs["source"]
+        return (state["text"], state["sha256"]) == (source["text"], source["sha256"])
+    envelope = inputs["envelope"]["json"]
+    if "importedDi" in inputs:
+        return state["json"] == {"envelope": envelope, "importedDi": inputs["importedDi"]["json"]}
+    return state["json"] == envelope
+
+
+def _vendored_expected(cid: str, case: dict[str, Json], operation: str) -> Json:
+    """Return the harness expectation: the JS result artifact (spec §9.2)."""
+    outputs = {str(a["role"]): a for a in case["expectedArtifacts"]}  # type: ignore[union-attr,index]
+    if "caller-state" in outputs and not _caller_state_matches(case):
+        message = f"caller-state differs from the inputs: {cid}"
+        raise ValueError(message)
+    roles = set(outputs) - {"caller-state"}
+    if roles == {"result"}:
+        expected = _vendored_value(outputs["result"])
+        if _status(expected) != case["expectedStatus"]:
+            message = f"expectedStatus differs from the result: {cid}"
+            raise ValueError(message)
+        return expected
+    if operation == "stable-id/1" and roles == {"ids"}:
+        return _vendored_value(outputs["ids"])
+    if operation == "normalize_transport" and roles == TRANSPORT_ROLES:
+        return {
+            "transport": _vendored_value(outputs["transport"]),
+            "transportBytes": _vendored_value(outputs["transport-bytes"]),
+            "hopResults": _vendored_value(outputs["hop-results"]),
+        }
+    message = f"no harness expectation for the artifacts of {cid}"
+    raise ValueError(message)
+
+
+def _vendored_derivation(row: str, rel: str, meta: dict[str, Json], *, fixed: bool) -> str:
+    owner = "(BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC)."
+    fix = RECONCILED.get(rel)
+    if fix is None:
+        text = (
+            f"Vendored unchanged from JS seal {JS_SEAL_SHA256}, case file SHA-256"
+            f" {VENDORED[rel]}; values owned by that seal {owner}"
+        )
+    else:
+        text = (
+            f"Vendored from JS seal {JS_SEAL_SHA256}, case file SHA-256 {VENDORED[rel]},"
+            f" with the parity sync decision {fix['decision']} applied: {fix['change']};"
+            f" committed file SHA-256 {fix['sha256']}; every other value is owned by that"
+            f" seal {owner}"
+        )
+    text += f" Import row {row}: {ROW_NOTES[row]}."
+    if fixed:
+        text += " fixedPoint: DESIGN §7.3 C(C(x)) = C(x), N(N(x)) = N(x) for any accepted x."
+    return text + " Discriminates (JS index): " + str(meta["discriminates"])
+
+
+def vendored_records(vendor: dict[str, bytes]) -> list[dict[str, Json]]:
+    """Return the harness record of every vendored JS case (spec §9.2).
+
+    Values are copied from the vendored case file; only the harness keys,
+    operation names and input keys are re-expressed.
+    """
+    index = json.loads(vendor[VENDOR_DIR + "index.json"])
+    rows = {str(meta["caseId"]): meta for meta in index["cases"]}
+    listed = {f"cases/{cid}.json" for ids in VENDORED_ROWS.values() for cid in ids}
+    if listed != {rel for rel in VENDORED if rel.startswith("cases/")}:
+        message = "VENDORED_ROWS and the vendored case files differ"
+        raise ValueError(message)
+    records = []
+    for row, ids in VENDORED_ROWS.items():
+        for cid in ids:
+            rel = f"cases/{cid}.json"
+            case = json.loads(vendor[VENDOR_DIR + rel])
+            if case["caseId"] != cid:
+                message = f"vendored case id mismatch: {rel}"
+                raise ValueError(message)
+            inputs: dict[str, Json] = {}
+            for artifact in case["inputArtifacts"]:
+                key = VENDORED_INPUT_KEYS.get(artifact["role"], artifact["role"])
+                inputs[key] = _vendored_value(artifact)
+            if case.get("commandArtifact") is not None:
+                inputs["command"] = copy.deepcopy(case["commandArtifact"]["json"])
+            if "transportRoute" in inputs:
+                operation = "normalize_transport"
+            else:
+                operation = VENDORED_OPERATIONS[case["operation"]]
+            expected = _vendored_expected(cid, case, operation)
+            fixed = operation in {"complete", "normalize"} and case["expectedStatus"] == "ok"
+            record: dict[str, Json] = {
+                "case": cid,
+                "clause": _js_clause(rows[cid]),
+                "author": AUTHOR,
+                "operation": operation,
+                "profile": _vendored_profile(case),
+                "derivation": _vendored_derivation(row, rel, rows[cid], fixed=fixed),
+                "input": inputs,
+                "expected": expected,
+            }
+            if fixed:
+                record["fixedPoint"] = True
+            records.append(record)
+    return records
+
+
 # ---------------------------------------------------------------------------
 # Writer
 # ---------------------------------------------------------------------------
@@ -7868,8 +8198,17 @@ def build() -> dict[str, bytes]:
         seen.add(cid)
         records.append(record)
         files[cid + ".json"] = pretty_bytes(record)
-    files.update(corpus_files(records))
-    files.update(vendored_files())
+    vendor = vendored_files()
+    vendored = vendored_records(vendor)
+    for record in vendored:
+        cid = str(record["case"])
+        if cid in seen:
+            message = f"duplicate case id {cid}"
+            raise ValueError(message)
+        seen.add(cid)
+        files[cid + ".json"] = pretty_bytes(record)
+    files.update(corpus_files(records, vendored))
+    files.update(vendor)
     files["derive_helper.py"] = Path(__file__).read_bytes()
     return files
 

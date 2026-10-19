@@ -18,10 +18,12 @@ lot-3 seal: its decisions are cited "PS-nn" and its import rows "PS-Hnn" (each b
 both runtimes); §14.3 lists the values it changed and the cases it vendored.
 
 The sealed expectations live in `tests/profile_cn/expected/` and are pinned by
-`MANIFEST.sha256` (127 harness cases, 5 input artifacts, the derivation helper and
-the profile-parity-corpus/1 projection under `parity/`, §9.1). They are hand-derived
-from the DESIGN text, the H decisions and the vendored contracts in
-`contracts/profile-mechanism/1/`; the standalone stdlib helper `derive_helper.py`
+`MANIFEST.sha256` (196 harness cases: 127 own cases and 69 vendored JS cases; 5 input
+artifacts, the derivation helper, the vendored JS bytes under `vendor/js/` (§9.2) and
+the profile-parity-corpus/1 projection under `parity/`, §9.1). The own cases are
+hand-derived from the DESIGN text, the H decisions and the vendored contracts in
+`contracts/profile-mechanism/1/`; the vendored cases copy the values of the JS seal
+that owns them (§9.2). The standalone stdlib helper `derive_helper.py`
 only computes canonical bytes, SHA-256, `stable-id/1`, content signatures,
 revisions, profile deltas, the DESIGN orderings and the corpus projection. A code job
 implements against them and never edits them: on a disagreement with the DESIGN it
@@ -344,11 +346,19 @@ sha256}` (DESIGN §8.1.1). `command` is the closed migration record (H H9):
 {kind: "id-remap", approved: true, approval: <nonempty string>,
  map: [{sourceId, resultId, domain: "migration"}],
  referenceFreeAttestations: [{property: "<Type>.<member>", referenceFree: true,
-                              descriptor: {id, version, sha256}}]}
+                              descriptor: {id, version, sha256}}],
+ namespaces?: [{prefix, uri}]}
 ```
 
 `map` lists the changed rows (any order, unique `sourceId`); the total map is the
-identity elsewhere.
+identity elsewhere. `namespaces` (parity sync PS-19, DESIGN §5.2 "Resolve QNames using
+captured namespace bindings") is optional: unique `{prefix, uri}` records the import
+adapter captured, validated with the closed command record (§5.5). A
+QName reference value `<prefix>:<local>` whose prefix is bound to the document's own
+namespace (the Definitions `targetNamespace`) resolves to the in-document element
+`<local>` and is rewritten keeping its prefix; one bound to another namespace is an
+external reference: it stays unchanged with one observed `unsupported-namespace`
+entry (§6.6) and the remap succeeds (vendored witness `l3-imp-remap-qname`).
 
 ### 3.8 Import projection (H B15)
 
@@ -362,8 +372,9 @@ def import_projection(
 ```
 
 Shared name `importProjection`. Semantics §6.8. The parity case is the JS-owned
-`l3-imp-projection-out-of-base`, vendored after the JS reseal (§14.2); the Python
-slices declare no out-of-base type, so no Python-native case exists (§12).
+`l3-imp-projection-out-of-base`, vendored by the parity sync with its PS-21 values
+(§9.2); the Python slices declare no out-of-base type, so no Python-native case
+exists (§12).
 
 ### 3.9 Gate table
 
@@ -595,9 +606,10 @@ checks of §4.2 with the carried facts.
 - `remap_ids` (H B14, H9, C20): §5.0 step 1 including the command record (closed;
   `kind` `"id-remap"`; `approved` must be `true` and `approval` a nonempty string,
   else `operation-error`: `cn-remap-not-approved`; closed map rows with unique
-  `sourceId`; closed attestation records) and the `imported_di` record (closed, `sha256
+  `sourceId`; closed attestation records; optional `namespaces` of unique `{prefix,
+  uri}` records, PS-19) and the `imported_di` record (closed, `sha256
   = H({descriptorDigest, diagrams})`, else `snapshot-schema`, Block A bridge code);
-  steps 2–4; `imported_di.descriptorDigest` ≠ the §9.2 digest of
+  steps 2–4; `imported_di.descriptorDigest` ≠ the DESIGN §9.2 digest of
   `compiled.identity.descriptors` → `descriptor-mismatch`; the gate (`edit` →
   `profile-open`, OPEN-ID); repeated element ids → `id-collision`; then each map row in
   UTF-16 `sourceId` order: `sourceId` naming no element → `reference-dangling`;
@@ -606,7 +618,8 @@ checks of §4.2 with the carried facts.
   `id-collision`; then any element member not classified by the descriptor and not
   covered by an attestation whose `property` is `<$type>.<member>` and whose
   `descriptor` pin equals a pin of the compiled identity → `migration-reference-opaque`
-  (DESIGN §5.2). Dangling native references are kept and reported (§6.6, H C2).
+  (DESIGN §5.2). Dangling native references and external QName references are kept
+  and reported (§6.6, H C2, PS-19).
 - `import_projection` (H B15): arguments (`source_format` closed, else
   `operation-error`); parse (`document-not-loaded` for an unparseable source, no
   baseRevision); duplicate ids → `id-collision`; then the §6.8 projection; then the
@@ -716,10 +729,19 @@ reference-free are kept byte for byte, even when their string equals a remapped 
 unchanged and each yields one entry `{code: "reference-dangling", messageKey:
 "reference-dangling", severity: "error", classification: "integrity", stage: "import",
 ruleId: "remap-ids", disposition: "observed"}` with source and result at the written
-location `<element>/<property>` (targetId the referencing element), `property` and
-`before` = `after` = the value; the remap succeeds. A DI `bpmnElement` naming no
+location `<element>/<property>` (targetId the referencing element, result provenance
+`exact`), `property` and `before` = `after` = the value; the remap succeeds (parity sync
+PS-32 makes these coordinates the shared rule for every observed property-level entry
+of `remapIds`). A DI `bpmnElement` naming no
 semantic element is kept unchanged and reported the same way with domain `artifact`
 and pointer `/importedDi/diagrams/...` (no sealed case, §12).
+
+QName references (PS-19, command member `namespaces`, §3.7): a resolved in-document
+QName follows the map with its prefix kept (`tns:Process_sub_old` →
+`tns:Process_sub_new`); an external one (prefix bound to another namespace) stays
+unchanged and yields one entry with the same members and coordinates as a dangling
+reference except `code` and `messageKey` `"unsupported-namespace"`; no target is ever
+fetched (vendored witness `l3-imp-remap-qname`).
 
 Result: `operation` `"remapIds"`, `profileIdentity` the compiled identity,
 `baseRevision` the input envelope revision, `revision` the output one; payload
@@ -746,19 +768,35 @@ transaction.
 Build immutable source pointers, then drop every element whose `$type` the effective
 base does not admit, with its subtree; cascade through SequenceFlows, Associations and
 data associations whose endpoint was dropped (a dropped relation is itself an
-element); remove the dropped ids from retained reference arrays; then run the
+element); remove the dropped ids from retained reference arrays; a containment array
+emptied by the projection stays `[]` (PS-21, H F1); then run the
 retained graph index. Result: `operation` `"importProjection"`, `profileIdentity` the
 compiled identity, `baseRevision` = `H({domain: "profile-import/1", format,
 sourceDigest})` (DESIGN §3.1: `H(parsedSourceTree)` for native JSON, `B(bytes)` for
-XML), `revision` = `baseRevision` (read-only: nothing is committed), payload `{tree}`.
+XML), `revision` = `baseRevision` (PS-21: read-only, nothing is committed), payload
+`{tree}`.
 One report entry per dropped element (cascaded relations included): code
 `import-loss/unsupported-feature`, messageKey `import.loss.unsupported-feature`,
 severity `warn`, classification `loss`, `lossClass` `unsupported-feature`, stage
-`import`, disposition `dropped`, source = the exact input pointer and targetId, result
+`import`, ruleId `adapter` (PS-21; the DESIGN §6.4 adapter convention),
+disposition `dropped`, source = the exact input pointer and targetId, result
 `{domain: "none", pointer: null, targetId: null, provenance: "unavailable"}`,
 `beforePresent: true`, `before` = the dropped subtree, `afterPresent: false`. The
 report omits `sourceIdentity` (an initial import has no input identity) and carries
-`targetIdentity`, `inputRevision` and `outputRevision`.
+`targetIdentity`, `inputRevision` and `outputRevision`, with `outputRevision` =
+`inputRevision` (PS-21; vendored witness `l3-imp-projection-out-of-base`).
+
+### 6.9 `validate` entry of a dangling call reference (PS-20)
+
+The vendored `validate` cases (§9.2) run the Block A `validate` on the JS neutral-cn
+profile. A dangling `calledElement` is reported by the graph index as one entry
+`{code: "reference-dangling", severity: "error", classification: "integrity", stage:
+<the validate phase>, ruleId: "adapter", messageKey: "reference-dangling",
+disposition: "observed", source: {domain: "tree", pointer: <element>/calledElement,
+targetId: <element id>, provenance: "exact"}, result: {domain: "none", pointer: null,
+targetId: null, provenance: "unavailable"}, beforePresent: false, afterPresent:
+false}`; `validate` still succeeds, and the call-target-type rule never traverses a
+dangling reference (DESIGN §4.1, §6.4; vendored witness `l3-call-target-dangling-accept`).
 
 ## 7. Gates (DESIGN §13 with §16; H H1, H2, H3)
 
@@ -802,9 +840,11 @@ entries.
 ## 9. Sealed expectation files
 
 Each `tests/profile_cn/expected/<case>.json` holds `case` (= file stem), `clause`,
-`author: "spec-seal"`, `operation`, `profile` (variant name or null), `derivation`,
-`input`, `expected` and, for accepted complete/normalize cases, `fixedPoint`. How each
-`operation` is run (`compiled` = the built variant, §2.4):
+`author: "spec-seal"`, `operation`, `profile` (variant name, vendored profile record
+of §9.2, or null), `derivation`, `input`, `expected` and, for accepted
+complete/normalize cases, `fixedPoint`. How each `operation` is run (`compiled` = the
+built variant, §2.4, or the loaded vendored profile, §9.2; an absent `activation` means
+`edit`, H H1):
 
 | `operation` | Call | Compared with `expected` |
 | --- | --- | --- |
@@ -818,6 +858,10 @@ Each `tests/profile_cn/expected/<case>.json` holds `case` (= file stem), `clause
 | `remap_ids` | `remap_ids(compiled, input.envelope, input.importedDi, input.command, activation=input.activation)` | `result.to_json()` |
 | `sort_placements` | `sort_placements(input.placements)` | the list |
 | `gates` | `GATES` as plain dicts | the mapping |
+| `validate` (vendored) | Block A `validate(compiled, input.envelope, phase=input.options.phase, readiness_policy=input.options.readinessPolicy)` | `result.to_json()` (§6.9) |
+| `stable-id/1` (vendored) | `stable-id/1` of each `input.allocations` record `{owner, slot, key}`, in order | the id list |
+| `import_projection` (vendored) | `import_projection(compiled, input.source.text.encode("utf-8"), source_format="native-json")` (`input.source.sha256` is the raw digest of those bytes) | `result.to_json()` |
+| `normalize_transport` (vendored) | each hop of `input.transportRoute` whose runtime is `python`: `normalize(compiled, <hop input>, activation=<hop activation>)`, the hop input being `input.envelope` (`"envelope"`) or the parsed `expected.transportBytes.text` (`"hop-<n>-transport-bytes"`, every hop emitting the same sealed bytes) | `expected.hopResults[<hop index>]`; the profile-c14n/2 UTF-8 bytes of `payload.envelope` with `expected.transportBytes` (SHA-256 `expected.transport.hops[<hop index>].outputSha256`); the JS hops and the cross-runtime run are the conductor's joint run (§8) |
 
 Every runner deep-copies `input` before the call and asserts it is unchanged
 afterwards, success or refusal (DESIGN §7.3: the caller tree and bindings are
@@ -826,15 +870,18 @@ preserved; only a successful return exposes a candidate).
 `tests/profile_cn/test_expected_seal.py` verifies the manifest (any one-byte change
 fails), that the helper imports only `__future__`, `copy`, `hashlib`, `json`,
 `pathlib`, `sys` (AST scan, never `bpmn_io`), the required keys of every case, that the
-helper regenerates every sealed byte, that every corpus/1 manifest entry equals the raw
-SHA-256 of its committed file and that the corpus cases are closed projections of the
-harness cases. Comparison tolerance is zero.
+helper regenerates every sealed byte (vendored files included, §9.2), that every
+corpus/1 manifest entry equals the raw SHA-256 of its committed file, that the corpus
+cases are closed projections of the own harness cases (runtime-specific and vendored
+cases excluded), that every vendored case file has its pinned digest and its harness
+record copies its result, and that each alias names a projected twin. Comparison
+tolerance is zero.
 
 ### 9.1 profile-parity-corpus/1 projection (H A1–A6, A8)
 
-`tests/profile_cn/expected/parity/` publishes every parity case (all harness cases
-except the runtime-specific `cn-gates-table` and `cn-c-uncompiled-context`) as one
-closed corpus/1 record `{caseId, operation, phase, profileArtifact, inputArtifacts,
+`tests/profile_cn/expected/parity/` publishes every own parity case (all own harness
+cases except the runtime-specific `cn-gates-table` and `cn-c-uncompiled-context`; the
+vendored JS cases of §9.2 are published by the JS seal) as one closed corpus/1 record `{caseId, operation, phase, profileArtifact, inputArtifacts,
 commandArtifact?, expectedArtifacts, expectedStatus, comparatorIds}` (DESIGN §14.3)
 with the harness values copied verbatim:
 
@@ -870,7 +917,57 @@ with the harness values copied verbatim:
 comparators, the profile load table (`variant`, profile path and digest,
 `descriptorBytes` and `baseBytes` paths and digests) and `files`: the raw SHA-256 of
 every referenced byte sequence (case files, profile files, descriptor and base bytes;
-H A3). Case files are profile-c14n/2 bytes without a trailing newline.
+H A3). Case files are profile-c14n/2 bytes without a trailing newline. It also
+declares `vendoredSeal` (the JS seal the vendored files come from: runtime, seal
+SHA-256, commit, vendored root), `vendored` (one `{caseId, source, sha256}` row per
+vendored JS case, `sha256` the raw digest of the committed file, §9.2) and `aliases`
+(PS-37: one `{caseId, aliasOf, sha256}` row per byte-identical twin; `caseId` the JS
+case, `aliasOf` the projected Python case, `sha256` the JS case file digest; no file is
+copied).
+
+### 9.2 Vendored JS cases (block-B parity sync, harmonization §3)
+
+The parity sync imports 69 JS-owned lot-3 cases (rows PS-H01…PS-H07 and PS-H16,
+§14.3). Their values stay those of the owning JS seal: they are never recomputed.
+
+- Location: `tests/profile_cn/expected/vendor/js/` mirrors the JS expectations root of
+  the JS lot-3 seal `6b807ee2c219f614d0f434cb8568c8d15acc0cc425a11bfdaa5cf027d86e8b06`
+  (commit `babf56df0b4ac1d766879f614de9c0838a09264c`): `cases/<caseId>.json` (the raw
+  corpus/1 case files), `index.json` (the JS case index: clause, citations and
+  discrimination text) and `profile/` (the neutral-cn profile, its `stale`,
+  `conflict` and `coalesce` variants and their descriptor and base packages). The
+  lot-0 schema and assets they load with are the identical
+  `contracts/profile-mechanism/1/` files.
+- Pins: `derive_helper.py` carries the `VENDORED` table (relative path → the raw
+  SHA-256 the JS seal records), checks every file and returns its bytes unchanged from
+  `build()`; `MANIFEST.sha256` lists them.
+- Decisions applied to imported values: a section-1 decision of the parity sync that
+  changes a JS value is applied to the vendored file instead of copying the source
+  value (`RECONCILED` table: decision, committed digest, and the revert patch that gives
+  back the sealed JS bytes exactly). Two cases: `l3-imp-projection-out-of-base`
+  (PS-21: `revision` and `report.outputRevision` equal the `baseRevision`) and
+  `l3-imp-remap-qname` (PS-32: the observed entry's source and result pointers end in
+  `/calledElement`). Both derived files equal the bytes of the JS parity sync value
+  commit `9bf06ae`.
+- Harness record `expected/<caseId>.json`, generated by the helper from the vendored
+  file: `case` (the JS case id), `clause` (`DESIGN R3.3` plus the JS index clause
+  section and line range), `author: "spec-seal"`, `operation` (`validate`,
+  `stable-id/1`, `complete`, `normalize`, `remap_ids`, `import_projection`, or
+  `normalize_transport` for the cross-runtime cases), `profile` (`{vendored, sha256,
+  descriptorBytes, baseBytes}` with repository-relative paths, or null), `derivation`
+  (the vendored statement with the JS seal digest, the case file digest, the import row,
+  any decision applied and the JS discrimination text), `input` (one key per JS input
+  artifact: the JSON value, or `{text, sha256}` for a text artifact; the role
+  `transport-route` becomes `transportRoute`, the command artifact `command`),
+  `expected` (the JS `result` artifact; the `ids` list for `stable-id/1`; `{transport,
+  transportBytes, hopResults}` for `normalize_transport`) and `fixedPoint: true` on
+  complete/normalize successes (DESIGN §7.3).
+- The JS `caller-state` artifact is the caller-visible input after the call; the
+  helper checks it equals the input artifacts, so the runner's unchanged-input
+  assertion (§9) compares it.
+- Aliases (PS-37): `l3-n-place-neutral` ≡ `cn-n-place-neutral` and
+  `l3-n-place-grid-shared-anchor` ≡ `cn-n-place-grid-shared-anchor` (same profile
+  bytes, input and result); no copy, one `aliases` row each (§9.1).
 
 ## 10. Errata against MECH §6
 
@@ -1098,19 +1195,95 @@ discarded and are not evidence; their schema-validity check of the variants is a
 input precondition only. The parity sync changed the wire shape only (PS-25, PS-35,
 §9.1): every status, code and identity value is unchanged.
 
+### 11.4 Vendored JS cases (parity sync, §9.2)
+
+Values owned by the JS lot-3 seal (§9.2); the witness of each case is its JS
+discrimination text, copied into the harness `derivation`. The clause is the JS index
+clause. Generated from the harness records.
+
+| Case | Import row | Operation / JS profile | DESIGN clause | Expected |
+| --- | --- | --- | --- | --- |
+| `l3-call-ambiguous` | PS-H01 | validate / neutral-cn | §4.1 L370 | ok, 1 entry |
+| `l3-call-conflict` | PS-H01 | validate / neutral-cn | §4.1 L373 | ok, 1 entry |
+| `l3-call-conflict-empty` | PS-H01 | validate / neutral-cn | §4.1 L373 | ok, 1 entry |
+| `l3-call-duplicate` | PS-H01 | validate / neutral-cn | §4.1 L371 | ok, 1 entry |
+| `l3-call-external-valid` | PS-H01 | validate / neutral-cn | §4.1 L374 | ok, 0 entries |
+| `l3-call-internal` | PS-H01 | validate / neutral-cn | §4.1 L376 | ok, 0 entries |
+| `l3-call-marker-invalid` | PS-H01 | validate / neutral-cn | §4.1 L372 | ok, 1 entry |
+| `l3-call-source-doc-not-marker` | PS-H01 | validate / neutral-cn | §4.1 L366 | ok, 1 entry |
+| `l3-call-target-dangling-accept` | PS-H01 | validate / neutral-cn | §4.1 L378 | ok, 1 entry |
+| `l3-call-target-empty-accept` | PS-H01 | validate / neutral-cn | §4.1 L375 | ok, 1 entry |
+| `l3-call-target-empty-draft` | PS-H01 | validate / neutral-cn | §4.1 L375 | ok, 1 entry |
+| `l3-call-target-required-accept` | PS-H01 | validate / neutral-cn | §4.1 L379 | ok, 1 entry |
+| `l3-call-target-required-draft` | PS-H01 | validate / neutral-cn | §4.1 L379 | ok, 1 entry |
+| `l3-call-target-type` | PS-H01 | validate / neutral-cn | §4.1 L377 | ok, 1 entry |
+| `l3-io-complete-links-accept` | PS-H01 | validate / neutral-cn | §4.3 L397-L400 | ok, 0 entries |
+| `l3-io-endpoint-type-accept` | PS-H01 | validate / neutral-cn | §4.3 L401 | ok, 1 entry |
+| `l3-io-link-owner-accept` | PS-H01 | validate / neutral-cn | §4.3 L401 | ok, 2 entries |
+| `l3-io-link-owner-draft` | PS-H01 | validate / neutral-cn | §4.3 L401 | ok, 2 entries |
+| `l3-io-missing-links-accept` | PS-H01 | validate / neutral-cn | §4.3 L397-L400 | ok, 4 entries |
+| `l3-io-missing-links-draft` | PS-H01 | validate / neutral-cn | §4.3 L397-L400 | ok, 4 entries |
+| `l3-io-wrong-direction-accept` | PS-H01 | validate / neutral-cn | §4.3 L401 | ok, 2 entries |
+| `l3-io-wrong-direction-draft` | PS-H01 | validate / neutral-cn | §4.3 L401 | ok, 2 entries |
+| `l3-path-cannot-reach-end-accept` | PS-H01 | validate / neutral-cn | §6.3 L501 | ok, 2 entries |
+| `l3-path-cross-container-flow-accept` | PS-H01 | validate / neutral-cn | §4 L347 | ok, 4 entries |
+| `l3-path-disconnected-task-accept` | PS-H01 | validate / neutral-cn | §6.3 L501 | ok, 4 entries |
+| `l3-path-disconnected-task-draft` | PS-H01 | validate / neutral-cn | §6.3 L501 | ok, 4 entries |
+| `l3-path-gateway-without-incoming-accept` | PS-H01 | validate / neutral-cn | §6.3 L501 | ok, 2 entries |
+| `l3-path-incomplete-call-not-exempt-accept` | PS-H01 | validate / neutral-cn | §6.3 L501 | ok, 5 entries |
+| `l3-path-unlinked-external-not-exempt-accept` | PS-H01 | validate / neutral-cn | §6.3 L501 | ok, 4 entries |
+| `l3-path-unreachable-component-accept` | PS-H01 | validate / neutral-cn | §6.3 L501 | ok, 3 entries |
+| `l3-trig-downstream-branch-accept` | PS-H01 | validate / neutral-cn | §4.2 L389 | ok, 0 entries |
+| `l3-trig-no-branch-accept` | PS-H01 | validate / neutral-cn | §4.2 L389 | ok, 1 entry |
+| `l3-trig-no-branch-draft` | PS-H01 | validate / neutral-cn | §4.2 L389 | ok, 1 entry |
+| `l3-trig-parallel-only-accept` | PS-H01 | validate / neutral-cn | §4.2 L389 | ok, 1 entry |
+| `l3-trig-single-trigger-accept` | PS-H01 | validate / neutral-cn | §4.2 L389 | ok, 0 entries |
+| `l3-n-binding-wrong-type` | PS-H02 | normalize / neutral-cn | §5.2 L438-L440 | refused `support-binding-conflict` |
+| `l3-n-empty-process` | PS-H02 | normalize / neutral-cn | §7.2 L558 | ok, 3 entries, fixed point |
+| `l3-n-legacy-marker-ignored` | PS-H02 | normalize / neutral-cn | §4.1 L381-L383 | ok, 3 entries, fixed point |
+| `l3-n-unicode-names` | PS-H02 | normalize / neutral-cn | §4.2 L387 | ok, 4 entries, fixed point |
+| `l3-trig-normalize-no-invention` | PS-H02 | normalize / neutral-cn | §4.2 L389 | ok, 6 entries, fixed point |
+| `l3-id-rename-stable` | PS-H03 | complete / neutral-cn | §3.2 L284 | ok, 0 entries, fixed point |
+| `l3-id-stable-vectors` | PS-H03 | stable-id/1 / - | §3.2 L276-L282 | exact value |
+| `l3-id-two-owners` | PS-H03 | complete / neutral-cn | §3.2 L292 | ok, 6 entries, fixed point |
+| `l3-c-dangling-call` | PS-H04 | complete / neutral-cn | §4.1 L378 | refused `reference-dangling` |
+| `l3-c-gateway-phase-start` | PS-H04 | complete / neutral-cn-stale | §2.4 L176 | refused `normalization-not-fixed` |
+| `l3-c-gateway-stale-topology` | PS-H04 | complete / neutral-cn | §2.5 L252 | ok, 2 entries, fixed point |
+| `l3-c-namespace-defaults` | PS-H04 | complete / neutral-cn | §5.1 L434 | ok, 2 entries, fixed point |
+| `l3-c-preserve` | PS-H04 | complete / neutral-cn | §7.1 L536 | ok, 0 entries, fixed point |
+| `l3-c-sets-single-uncovered` | PS-H04 | complete / neutral-cn | §7.1 L547 | ok, 1 entry, fixed point |
+| `l3-c-write-coalesce` | PS-H04 | complete / neutral-cn-coalesce | §2.4 L176 | ok, 1 entry, fixed point |
+| `l3-c-write-conflict` | PS-H04 | complete / neutral-cn-conflict | §2.4 L176 | refused `profile-write-conflict` |
+| `l3-fp-c-after-n` | PS-H05 | complete / neutral-cn | §7.3 L569 | ok, 0 entries, fixed point |
+| `l3-fp-c-on-n-input` | PS-H05 | complete / neutral-cn | §7.3 L569 | ok, 0 entries, fixed point |
+| `l3-imp-projection-out-of-base` | PS-H06 | import_projection / neutral-cn | §5.3 L450 | ok, 7 entries |
+| `l3-imp-remap-duplicate-result` | PS-H06 | remap_ids / neutral-cn | §5.2 L444 | refused `id-collision` |
+| `l3-imp-remap-nonsubset-id` | PS-H06 | remap_ids / neutral-cn | §3.2 L290 | ok, 0 entries |
+| `l3-imp-remap-opaque-attested` | PS-H06 | remap_ids / neutral-cn | §5.2 L444 | ok, 0 entries |
+| `l3-imp-remap-swap` | PS-H06 | remap_ids / neutral-cn | §5.2 L444 | ok, 0 entries |
+| `l3-mix-n-full-js-py-js` | PS-H07 | normalize_transport / neutral-cn | §7.3 L569 | ok per hop, sealed transport bytes |
+| `l3-mix-n-full-py-js-py` | PS-H07 | normalize_transport / neutral-cn | §7.3 L569 | ok per hop, sealed transport bytes |
+| `l3-mix-n-two-processes-js-py-js` | PS-H07 | normalize_transport / neutral-cn | §7.3 L569 | ok per hop, sealed transport bytes |
+| `l3-mix-n-two-processes-py-js-py` | PS-H07 | normalize_transport / neutral-cn | §7.3 L569 | ok per hop, sealed transport bytes |
+| `l3-mix-n-unicode-names-js-py-js` | PS-H07 | normalize_transport / neutral-cn | §7.3 L569 | ok per hop, sealed transport bytes |
+| `l3-mix-n-unicode-names-py-js-py` | PS-H07 | normalize_transport / neutral-cn | §7.3 L569 | ok per hop, sealed transport bytes |
+| `l3-id-ordinal-missing-only` | PS-H16 | complete / neutral-cn | §3.2 L292 | ok, 8 entries, fixed point |
+| `l3-imp-remap-qname` | PS-H16 | remap_ids / neutral-cn | §5.2 L444 | ok, 1 entry |
+| `l3-n-after-owner-remap` | PS-H16 | normalize / neutral-cn | §7.2 L565 | ok, 0 entries, fixed point |
+| `l3-n-anchor-after-link-removal` | PS-H16 | normalize / neutral-cn | §4.4 L410 | ok, 0 entries, fixed point |
+| `l3-n-business-lane-refusal-edit` | PS-H16 | normalize / neutral-cn | §7.2 L559 | refused `profile-open` |
+
 ## 12. Not covered
 
 | Item | Status | Reason / owner |
 | --- | --- | --- |
-| JS(N_Py(x)) = N_Py(x), Python(N_JS(x)) = N_JS(x), JS→Python→JS and Python→JS→Python transport | not covered | conductor joint run; exchanged bytes fixed in §8 |
-| JS-owned lot-3 cases marked "add to py" (§14.2) | not covered | vendored into the parity run after the JS reseal (values stay those of the owning seal); the Python bindings they need are specified here |
+| JS(N_Py(x)) = N_Py(x), Python(N_JS(x)) = N_JS(x), JS→Python→JS and Python→JS→Python transport | partial | conductor joint run; exchanged bytes fixed in §8; the six JS transport cases are vendored (§9.2) and only their Python hops run in this harness |
 | Undo restores the deleted support and its id (DESIGN §7.2, §7.3 witness "undo") | not covered | history is the lot-5 headless bridge (§8.2). Expected for lot 5: undo after `cn-plan-remove-empty-support` restores exactly the input envelope of that case |
 | DI-only drag, resize, palette drop, reconnect, keyboard, cancellation, reentrancy, callback leaks (OPEN-HOOK) | not covered | canvas session and lot 5 |
 | External creation/migration gating (OPEN-EXTERNAL) | not covered | `profile-mechanism/1` carries no signal telling the library which recipe creates the external marker; the neutral bases admit no `CallActivity.documentation` (OPEN-BASE). The candidate encoding is exercised only in qualification |
-| Python-native import projection case (H B15) | not covered | no Python slice declares a descriptor type outside its base; the JS-owned `l3-imp-projection-out-of-base` is vendored (§14.2) |
+| Python-native import projection case (H B15) | not covered | no Python slice declares a descriptor type outside its base; the JS-owned `l3-imp-projection-out-of-base` is vendored with its PS-21 values (§9.2) |
 | DI descriptor validation of `imported_di.diagrams`, dangling DI `bpmnElement`, `snapshot-schema` and DI `descriptor-mismatch` refusals of `remap_ids` | partial | the lot-3 slices pin no DI/DC descriptor package; rules in §5.5 and §6.6 only |
 | Navigation index and provenance remap | not covered | outside the envelope (Snapshot/1, lot 5) |
-| QName namespace capture during remap | not covered | native JSON references carry no QNames |
 | Acceptance of imported ids outside the authoring subset | not covered | OPEN-ID policy (conductor + both libraries); C/N never normalize ids |
 | Ordinals across several ID-less containers under one owner | partial | rule in §6.2, no neutral slice exercises it |
 | N `reparent` (approved structural support move) | not covered | no approved move exists (DESIGN §2.4.1); explicit edit reparent is sealed |
@@ -1195,21 +1368,26 @@ Review findings applied: the WritePlan descriptive context (E7, §3.2; new
 `-reparent-annotation`, `cn-apply-input-conflict`), the compile-context contract for
 consumers (`cn-c-uncompiled-context`) and the conversion note of §3.4.
 
-### 14.2 JS-owned cases to vendor after the JS reseal (H section 3.1)
+### 14.2 JS-owned cases vendored by the parity sync (H section 3.1)
 
-| JS cases | Python binding used by the parity run |
+Vendored in the parity sync (§9.2, §11.4); the values stay those of the owning JS seal.
+
+| JS cases | Python binding used by the harness and the parity run |
 | --- | --- |
-| `l3-call-*` (13), `l3-path-*` (8), `l3-trig-*` except `l3-trig-normalize-no-invention` (5), `l3-io-*` (4) | Block A `validate` |
+| `l3-call-*` (14), `l3-path-*` (8), `l3-trig-*` except `l3-trig-normalize-no-invention` (5), `l3-io-*` (8) | Block A `validate` (§6.9) |
 | `l3-trig-normalize-no-invention`, `l3-n-legacy-marker-ignored`, `l3-n-empty-process`, `l3-n-unicode-names`, `l3-n-binding-wrong-type` | `normalize` |
 | `l3-id-stable-vectors`, `l3-id-rename-stable`, `l3-id-two-owners` | stable-id/1 vectors, `complete` |
 | `l3-c-gateway-stale-topology`, `l3-c-gateway-phase-start`, `l3-c-sets-single-uncovered`, `l3-c-preserve`, `l3-c-write-conflict`, `l3-c-write-coalesce`, `l3-c-namespace-defaults`, `l3-c-dangling-call`, `l3-fp-c-on-n-input`, `l3-fp-c-after-n` | `complete` |
-| `l3-imp-remap-swap`, `-duplicate-result`, `-opaque-attested`, `-nonsubset-id` | `remap_ids` (§3.7) |
-| `l3-imp-projection-out-of-base` | `import_projection` (§3.8) |
-| `l3-mix-*` (6) | conductor joint run (§8) |
+| `l3-imp-remap-swap`, `-duplicate-result`, `-opaque-attested`, `-nonsubset-id`, `-qname` | `remap_ids` (§3.7, §6.6) |
+| `l3-imp-projection-out-of-base` | `import_projection` (§3.8, §6.8) |
+| `l3-mix-*` (6) | Python hops of the conductor joint run (§8, §9) |
+| `l3-id-ordinal-missing-only` | `complete` |
+| `l3-n-after-owner-remap`, `l3-n-anchor-after-link-removal`, `l3-n-business-lane-refusal-edit` | `normalize` |
 
 The Python runner loads each JS profile with the descriptor and base bytes pinned by
-the JS corpus manifest. Python-native counterparts sealed here with Python-owned values:
-`cn-c-dangling-call`, `cn-remap-swap`, `cn-remap-opaque-attested`.
+the JS seal (§9.2). Python-native counterparts sealed here with Python-owned values:
+`cn-c-dangling-call`, `cn-remap-swap`, `cn-remap-opaque-attested` (two-sided cases:
+each seal keeps its own witness).
 
 ### 14.3 Parity sync (block-B JS/Python reconciliation)
 
@@ -1220,3 +1398,21 @@ and identity; only the wire shape and the parity projection change.
 | --- | --- | --- |
 | PS-25 | a PureResult refusal is exactly `{status: "refused", code, diagnostics}`; a compile refusal carries `diagnostics: []` (§9.1) | `cn-compile-create-identity-mismatch`, `cn-compile-ensure-missing-binding-write`, `cn-compile-ensure-non-support-type`, `cn-compile-port-without-authority` |
 | PS-35 | a compile success is `{status: "ok", payload, diagnostics: []}` with `payload` UNSEALED (CompiledProfile has no wire shape); the compiled §5.1 identity is the separate `compiled-identity` artifact (`compiled-identities` for a list); comparator `compile/lot3` (§9, §9.1) | `cn-compile-support-profile`, `cn-compile-variants` |
+
+Decisions recorded in this binding (rules shared with the JS seal):
+
+| PS row | Effect in this binding | Witness |
+| --- | --- | --- |
+| PS-19 | optional `namespaces` of the `id-remap` command; in-document QNames rewritten keeping their prefix, external ones kept with one observed `unsupported-namespace` entry (§3.7, §5.5, §6.6) | vendored `l3-imp-remap-qname` |
+| PS-20 | the `validate` graph-index entry of a dangling `calledElement` (§6.9) | vendored `l3-call-target-dangling-accept` |
+| PS-21 | `importProjection` is read-only: `revision` = `baseRevision`, `report.outputRevision` = `inputRevision`; loss entries carry ruleId `adapter`; an emptied containment array stays `[]` (§3.8, §6.8) | vendored `l3-imp-projection-out-of-base` (value applied, §9.2) |
+| PS-32 | an observed property-level `remapIds` entry addresses `<element>/<property>`, result provenance `exact` (§6.6) | `cn-remap-internal-call-and-dangling` (already sealed so); vendored `l3-imp-remap-qname` (value applied, §9.2) |
+| PS-37 | byte-identical twins are aliases, not copies (§9.1, §9.2) | `l3-n-place-neutral` → `cn-n-place-neutral`, `l3-n-place-grid-shared-anchor` → `cn-n-place-grid-shared-anchor` |
+
+Imported JS cases (69; values owned by the JS seal, §9.2, §11.4): PS-H01 (35: the
+`validate` call-kind, ordinary-path, trigger-branch and IO-link witnesses), PS-H02 (5
+normalize witnesses), PS-H03 (3 identity vectors), PS-H04 (8 completion witnesses),
+PS-H05 (2 completion fixed points), PS-H06 (5 remap and projection cases), PS-H07 (6
+cross-runtime transport cases) and PS-H16 (5 cases of the JS seal fix round). §12
+rows closed by the import: the JS-owned "add to py" cases and the QName namespace
+capture during remap.

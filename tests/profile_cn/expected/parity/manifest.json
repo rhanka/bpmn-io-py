@@ -426,10 +426,377 @@
     "tests/profile_cn/expected/parity/profiles/support-task-ensure.json": "4d068780912094b6484987e664b1ccdea928720f055a1d7404645def5653cf51",
     "tests/profile_cn/expected/parity/profiles/support.json": "551682f445aede466a1a6e8bcdaa967465b432a11fa6c137578a997a5f7ff470"
   },
+  "vendoredSeal": {
+    "runtime": "js",
+    "sealSha256": "6b807ee2c219f614d0f434cb8568c8d15acc0cc425a11bfdaa5cf027d86e8b06",
+    "commit": "babf56df0b4ac1d766879f614de9c0838a09264c",
+    "root": "tests/profile_cn/expected/vendor/js/"
+  },
+  "vendored": [
+    {
+      "caseId": "l3-c-dangling-call",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-c-dangling-call.json",
+      "sha256": "4bb9d5b9aa140fd7ddfceecbd76f254572c7c4721e677d6ddd054a7d2963b6c5"
+    },
+    {
+      "caseId": "l3-c-gateway-phase-start",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-c-gateway-phase-start.json",
+      "sha256": "5f4c6a4a079287851230be197aab86f84c8c24d0e4d2edd571137d9ff275e0bd"
+    },
+    {
+      "caseId": "l3-c-gateway-stale-topology",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-c-gateway-stale-topology.json",
+      "sha256": "761d7f0e0b9f9015e1a88c29cce83bd6ce9ccc7175f980a60fede9ef733f6e45"
+    },
+    {
+      "caseId": "l3-c-namespace-defaults",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-c-namespace-defaults.json",
+      "sha256": "1503f013c330eb5d3fc267ed098fa4e1403d39f3758d5d0f5f71672cd2976e13"
+    },
+    {
+      "caseId": "l3-c-preserve",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-c-preserve.json",
+      "sha256": "7b0381e47cf676c89c3163c718200032f4c7117dfe71628aadea9f178e416f40"
+    },
+    {
+      "caseId": "l3-c-sets-single-uncovered",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-c-sets-single-uncovered.json",
+      "sha256": "e60386a6a9f6caa417014607b4bdfb7254d14382307b4a35d01f246170839200"
+    },
+    {
+      "caseId": "l3-c-write-coalesce",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-c-write-coalesce.json",
+      "sha256": "14420c31cb9a656a4a4fa2f774efe658e4ea40bbfaa456e226615c7b2639ab54"
+    },
+    {
+      "caseId": "l3-c-write-conflict",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-c-write-conflict.json",
+      "sha256": "89b246d0f6baa9d7cb8bcfcbda7e38c118afd3a4f8adbf477fd74739e29495da"
+    },
+    {
+      "caseId": "l3-call-ambiguous",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-ambiguous.json",
+      "sha256": "49f1630c2cae67b81a1bd66f73ef780b7e2bb7ac80e6ffd2531427f954ee4bc7"
+    },
+    {
+      "caseId": "l3-call-conflict",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-conflict.json",
+      "sha256": "1fafa30b9089484f1dc53e141f646b074e9469045461e324e4f5bbbcdf059f21"
+    },
+    {
+      "caseId": "l3-call-conflict-empty",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-conflict-empty.json",
+      "sha256": "7e074387926f238c3e3ba3a8eeb229952ada61e2da3412f44b381e38abbde6f1"
+    },
+    {
+      "caseId": "l3-call-duplicate",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-duplicate.json",
+      "sha256": "1493db4399aa45f18aa61bc689c35787727a0005bbb2da0cc9011070cdd1fa64"
+    },
+    {
+      "caseId": "l3-call-external-valid",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-external-valid.json",
+      "sha256": "9f63dbe04818c5ef3a83109f1c3beae6938258bd3cd68d338dd8582c59d67489"
+    },
+    {
+      "caseId": "l3-call-internal",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-internal.json",
+      "sha256": "c3e63e6cd35537f06d11b8a3673d9af018d2c6a631407c10e9ff421b72390e20"
+    },
+    {
+      "caseId": "l3-call-marker-invalid",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-marker-invalid.json",
+      "sha256": "f1c6f1f21b453098d52b406945e010a4cc78ab3ce752f9e9cfeec452588b6447"
+    },
+    {
+      "caseId": "l3-call-source-doc-not-marker",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-source-doc-not-marker.json",
+      "sha256": "32f51ac2c2d903d2df7996514e17bec5819bd1e800f297d1f949969c9e55b345"
+    },
+    {
+      "caseId": "l3-call-target-dangling-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-target-dangling-accept.json",
+      "sha256": "15d06957eace1701b0e79a61cc1d9ac767c9dce73005762ac0283cc7af5148b7"
+    },
+    {
+      "caseId": "l3-call-target-empty-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-target-empty-accept.json",
+      "sha256": "f97e07764ee2364a01af9043f60e427158dc852fa18068b5709704e04d89291e"
+    },
+    {
+      "caseId": "l3-call-target-empty-draft",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-target-empty-draft.json",
+      "sha256": "ceacd762fd66ccdaff519d0d14bf8a2d867d37e3e1421f4cd56f7d19c25ec4c9"
+    },
+    {
+      "caseId": "l3-call-target-required-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-target-required-accept.json",
+      "sha256": "a7c441d9c6958c949eeb06be4556945bca5840508cf63b1e06e5501d49709222"
+    },
+    {
+      "caseId": "l3-call-target-required-draft",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-target-required-draft.json",
+      "sha256": "38d3952e28077f9c03a90d875bc4069d87e71b5f8e9501ff52ab56141503307d"
+    },
+    {
+      "caseId": "l3-call-target-type",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-call-target-type.json",
+      "sha256": "6e29f756faf4ab6f8d014d65e9ab67c68a573b9afd94659e6ab3365c02eb112a"
+    },
+    {
+      "caseId": "l3-fp-c-after-n",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-fp-c-after-n.json",
+      "sha256": "a23db4fc8b7ca8b14fe01522905399bc5a8eef217fe69b704281f8c59e6fd494"
+    },
+    {
+      "caseId": "l3-fp-c-on-n-input",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-fp-c-on-n-input.json",
+      "sha256": "ca484579a84c7b9effe5cd061644a6797086763a2324c80393e2eac215013b18"
+    },
+    {
+      "caseId": "l3-id-ordinal-missing-only",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-id-ordinal-missing-only.json",
+      "sha256": "0b5b2395b9a801128aba5511c4f0645c6f5ef7d51b588ff9e6dec8d0e0af4348"
+    },
+    {
+      "caseId": "l3-id-rename-stable",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-id-rename-stable.json",
+      "sha256": "50316254bd7d3572775ae93199a0c88f3459beadbdb7d683a1fb1e5471c5ba22"
+    },
+    {
+      "caseId": "l3-id-stable-vectors",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-id-stable-vectors.json",
+      "sha256": "844f698327b3954d667fd9d3598297320686b80f4320c02f2a8fc973906db7e1"
+    },
+    {
+      "caseId": "l3-id-two-owners",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-id-two-owners.json",
+      "sha256": "52677741df37f24db1fc42da59d7b54ad021355d28d6c2f6ae715d02a64a9a47"
+    },
+    {
+      "caseId": "l3-imp-projection-out-of-base",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-imp-projection-out-of-base.json",
+      "sha256": "eab297a19174d83da4f736defe1b678ce57ba6a10c6c55be2340a40ed37edffa"
+    },
+    {
+      "caseId": "l3-imp-remap-duplicate-result",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-imp-remap-duplicate-result.json",
+      "sha256": "9bcf1d408f6744ca8676e67a31aff207949f59691e6bca7e643893505c66c8e7"
+    },
+    {
+      "caseId": "l3-imp-remap-nonsubset-id",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-imp-remap-nonsubset-id.json",
+      "sha256": "46a18f1e0ecbbd757dc85ccccf32a4801c5e74aa545804ac3cd3fe8205f6cd39"
+    },
+    {
+      "caseId": "l3-imp-remap-opaque-attested",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-imp-remap-opaque-attested.json",
+      "sha256": "85fe933ed3adda30b4a829f99de8d0f3ffa4705db2ef44dc699541a7430173bf"
+    },
+    {
+      "caseId": "l3-imp-remap-qname",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-imp-remap-qname.json",
+      "sha256": "db18d5b7c78c48c3110795d35367bd13e39a0a2aed9310dfd0d6862401cbc4f7"
+    },
+    {
+      "caseId": "l3-imp-remap-swap",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-imp-remap-swap.json",
+      "sha256": "15fc221badc641aeac03c1d2650a0c4353c77c286fa7a204a7365068f05ff1c4"
+    },
+    {
+      "caseId": "l3-io-complete-links-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-io-complete-links-accept.json",
+      "sha256": "3fe52100231f901f7a2514cd66dda8d16e1beb8c5139c713d02d1d287a30eed9"
+    },
+    {
+      "caseId": "l3-io-endpoint-type-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-io-endpoint-type-accept.json",
+      "sha256": "1a2b55675d315a0ec3656211dea3e283758b6af13f96b5368714bced5182b119"
+    },
+    {
+      "caseId": "l3-io-link-owner-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-io-link-owner-accept.json",
+      "sha256": "15ea0281671a902d32b7287c704346f9dfd8dc3b897c2bcf3e14c99ec31ad292"
+    },
+    {
+      "caseId": "l3-io-link-owner-draft",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-io-link-owner-draft.json",
+      "sha256": "4257dced46bbf8e140a76611e016900c32aadf7828b28d7338becaf84e58f0c6"
+    },
+    {
+      "caseId": "l3-io-missing-links-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-io-missing-links-accept.json",
+      "sha256": "fd93b9228d976b3c0f07fc28254de7b5d057d5198b3065486b405dc6db2b863a"
+    },
+    {
+      "caseId": "l3-io-missing-links-draft",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-io-missing-links-draft.json",
+      "sha256": "04561d62526da0dfe107f113ae68536632dd04d14c36efd68430c1f09e8a352a"
+    },
+    {
+      "caseId": "l3-io-wrong-direction-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-io-wrong-direction-accept.json",
+      "sha256": "7b11d51d3632423c4dcf60cec0f96f62625f4813a7cfa038409ff20dc28c581a"
+    },
+    {
+      "caseId": "l3-io-wrong-direction-draft",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-io-wrong-direction-draft.json",
+      "sha256": "7a7a812c4152669594586a723b7f41b3cc45c2950b2cf85053f6b5103a98e17a"
+    },
+    {
+      "caseId": "l3-mix-n-full-js-py-js",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-mix-n-full-js-py-js.json",
+      "sha256": "f8f3a2d5a207ad882401a6829099c16882ce12d17366d9324144f5cc67f58bdc"
+    },
+    {
+      "caseId": "l3-mix-n-full-py-js-py",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-mix-n-full-py-js-py.json",
+      "sha256": "95ba923a5542a766fb96b8b687b87c4689c6229336d0f66ade9de740115bd7d1"
+    },
+    {
+      "caseId": "l3-mix-n-two-processes-js-py-js",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-mix-n-two-processes-js-py-js.json",
+      "sha256": "15be6eb0c7b8ce72c128c9fca0261aee33ace713b22ec210b5a11aa145571127"
+    },
+    {
+      "caseId": "l3-mix-n-two-processes-py-js-py",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-mix-n-two-processes-py-js-py.json",
+      "sha256": "399a1b3c13d8502289c897ef70529377737ce1a80ac9cc9f43143f4edd6255fe"
+    },
+    {
+      "caseId": "l3-mix-n-unicode-names-js-py-js",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-mix-n-unicode-names-js-py-js.json",
+      "sha256": "f80e79a4a5c83db63d46accdc70531d5ef8763261bee9ffe8780522cab1b52b7"
+    },
+    {
+      "caseId": "l3-mix-n-unicode-names-py-js-py",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-mix-n-unicode-names-py-js-py.json",
+      "sha256": "5255fb2d7a50cf47d8af73cd3e3b715361054cfc25997a0d4008490ff91b6ad5"
+    },
+    {
+      "caseId": "l3-n-after-owner-remap",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-n-after-owner-remap.json",
+      "sha256": "00b0a8a707f20a156ac1bd48403fe608eed85807a5b26220ab5788ed98fcbec7"
+    },
+    {
+      "caseId": "l3-n-anchor-after-link-removal",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-n-anchor-after-link-removal.json",
+      "sha256": "15198abeb152f572bf1d0034aa1dace1346877a865352d0e6f5d0d2bfa3d640b"
+    },
+    {
+      "caseId": "l3-n-binding-wrong-type",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-n-binding-wrong-type.json",
+      "sha256": "c3356edafa90b81add28dbc4f914392341c0acc496e7316ce2f0239893b742e9"
+    },
+    {
+      "caseId": "l3-n-business-lane-refusal-edit",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-n-business-lane-refusal-edit.json",
+      "sha256": "2bac4b68a2bab89eb1703c2ffe5d4b68c0cf6c5e43bd3e4ff82a14251ed6090d"
+    },
+    {
+      "caseId": "l3-n-empty-process",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-n-empty-process.json",
+      "sha256": "fa510a6252ba09adacb9fe0a3bcde51c047051068c2720d4117fc3d8edda8e1d"
+    },
+    {
+      "caseId": "l3-n-legacy-marker-ignored",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-n-legacy-marker-ignored.json",
+      "sha256": "8bbbb81cd81986d3b520af0707a43675c1fa577a3c54e3935e9a2ed0694fd580"
+    },
+    {
+      "caseId": "l3-n-unicode-names",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-n-unicode-names.json",
+      "sha256": "ee4fd2776d3637c96ffb2c362917beac9db9093b56fb7d046df3ae5e3c0bcaf9"
+    },
+    {
+      "caseId": "l3-path-cannot-reach-end-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-path-cannot-reach-end-accept.json",
+      "sha256": "fa5056a8c852ec0b43130f495a976f0bf60078f6461766b5be8d98d013a139d5"
+    },
+    {
+      "caseId": "l3-path-cross-container-flow-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-path-cross-container-flow-accept.json",
+      "sha256": "0341b9964ef0c423b1544eaac1d303d48b04cbf14ec8ce0d6e23b4ed552068da"
+    },
+    {
+      "caseId": "l3-path-disconnected-task-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-path-disconnected-task-accept.json",
+      "sha256": "22c65431111213ebe60898b2d4038d938ac8a0eb3dada6bac025d4eb7e59e526"
+    },
+    {
+      "caseId": "l3-path-disconnected-task-draft",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-path-disconnected-task-draft.json",
+      "sha256": "20ce89edd91d0e97a122739a47ff75ecbf6cb70f43777fc3d54be68c958783c5"
+    },
+    {
+      "caseId": "l3-path-gateway-without-incoming-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-path-gateway-without-incoming-accept.json",
+      "sha256": "08bff01ff57577855dced7031ae5b0cc37931c193b2e61a40551718bfca8e1df"
+    },
+    {
+      "caseId": "l3-path-incomplete-call-not-exempt-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-path-incomplete-call-not-exempt-accept.json",
+      "sha256": "75fb1603f4ed093ea1521b58d07496d12f9a2dede62c60c49144f5f0bc809214"
+    },
+    {
+      "caseId": "l3-path-unlinked-external-not-exempt-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-path-unlinked-external-not-exempt-accept.json",
+      "sha256": "a1fd5e2696e39763e353ccbc83c8b7054c5fc82d3b5dffd313fc88adbd8c9758"
+    },
+    {
+      "caseId": "l3-path-unreachable-component-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-path-unreachable-component-accept.json",
+      "sha256": "c37dece95cb0c0f15c7c3b1bd8b6e33297ed687436d05afb1f76995950795c46"
+    },
+    {
+      "caseId": "l3-trig-downstream-branch-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-trig-downstream-branch-accept.json",
+      "sha256": "3b2cdb7bb61aceaa39611b6c649cb1c3fe258afcab75a4e464eff2be74eb0f83"
+    },
+    {
+      "caseId": "l3-trig-no-branch-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-trig-no-branch-accept.json",
+      "sha256": "85052fedeab485c93e22830c5263eb835a3f7a2879a22a28c1834d499519ff1f"
+    },
+    {
+      "caseId": "l3-trig-no-branch-draft",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-trig-no-branch-draft.json",
+      "sha256": "692292480594d7cd0453dea1c1c567a6d3fa026f3f1d129abe072d4fcc7deec1"
+    },
+    {
+      "caseId": "l3-trig-normalize-no-invention",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-trig-normalize-no-invention.json",
+      "sha256": "0c19f395a65011e0e3c9af74ba05a5fdfe94a84c67103526aa6bfe10d7fd0faa"
+    },
+    {
+      "caseId": "l3-trig-parallel-only-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-trig-parallel-only-accept.json",
+      "sha256": "5cf1101647d1bbd6fd283138305ee66a44e4cf791de4d156d888bf2bad8642c9"
+    },
+    {
+      "caseId": "l3-trig-single-trigger-accept",
+      "source": "tests/profile_cn/expected/vendor/js/cases/l3-trig-single-trigger-accept.json",
+      "sha256": "bff4d4ee2b7c65d542148867e905c9394faf129f14574a1c09f251be0b1ae200"
+    }
+  ],
+  "aliases": [
+    {
+      "caseId": "l3-n-place-grid-shared-anchor",
+      "aliasOf": "cn-n-place-grid-shared-anchor",
+      "sha256": "f84cca15574a2ef5e5ae52d60a0fb3a74e31c48f48d2b706cab95b0d033b46b3"
+    },
+    {
+      "caseId": "l3-n-place-neutral",
+      "aliasOf": "cn-n-place-neutral",
+      "sha256": "80ebe7a9d6f74afe770fd3fac4b025f8075aaab9d561718881698f07604db27d"
+    }
+  ],
   "notes": [
     "pathBase is the repository root; every path in this manifest and in the cases is relative to it.",
     "Each case is the corpus/1 projection of tests/profile_cn/expected/<caseId>.json with identical values; the harness file keeps the derivation.",
     "Case files are profile-c14n/2 bytes (no trailing newline); profile files are the composed variant JSON (2-space indent plus LF); sha256 values are raw file digests (H A6), identity sha256 values are H(profile).",
-    "Runtime-specific harness cases (cn-gates-table, cn-c-uncompiled-context) have no projection."
+    "Runtime-specific harness cases (cn-gates-table, cn-c-uncompiled-context) have no projection.",
+    "vendored: JS-owned cases imported by the parity sync, committed under vendoredSeal.root as the JS seal publishes them (two carry a parity sync decision, spec section 9.2); they are not projected here; sha256 is the committed file digest.",
+    "aliases: byte-identical twins (parity sync PS-37); caseId is the JS case, aliasOf the Python case projected here, sha256 the JS case file digest; no file is copied."
   ]
 }

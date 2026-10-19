@@ -2,8 +2,9 @@
 
 Checks the manifest (any one-byte change fails), the derivation helper's
 imports (stdlib only, nothing from ``bpmn_io``), the required keys of every
-expectation file, and that the helper reproduces every sealed byte from its
-hand-authored data. Imports nothing from ``bpmn_io``.
+expectation file, that the helper reproduces every sealed byte from its
+hand-authored data and the vendored JS bytes (spec §9.2), and the corpus/1
+projection with its vendored and alias lists. Imports nothing from ``bpmn_io``.
 """
 
 from __future__ import annotations
@@ -31,11 +32,15 @@ OPERATIONS = {
     "compile_profile",
     "complete",
     "gates",
+    "import_projection",
     "normalize",
+    "normalize_transport",
     "plan_recipe+apply_plan",
     "propose_support_bindings",
     "remap_ids",
     "sort_placements",
+    "stable-id/1",
+    "validate",
 }
 STDLIB_IMPORTS = {"__future__", "copy", "hashlib", "json", "pathlib", "sys"}
 FORBIDDEN_CALLS = {"__import__", "eval", "exec", "compile"}
@@ -136,8 +141,8 @@ def test_expectation_file_shape(path: Path) -> None:
 
 
 def test_case_count_is_sealed() -> None:
-    """The sealed case set is exactly the 127 cases listed in the spec case table."""
-    assert len(_case_files()) == 127
+    """The sealed case set is the 127 own cases plus the 69 vendored JS cases (spec §11)."""
+    assert len(_case_files()) == 196
 
 
 PARITY = EXPECTED / "parity"
@@ -167,8 +172,16 @@ def test_parity_manifest_pins_every_referenced_file() -> None:
     assert cases == listed
 
 
+def _parity_manifest() -> dict[str, object]:
+    return json.loads((PARITY / "manifest.json").read_text(encoding="utf-8"))
+
+
+def _vendored_ids() -> set[str]:
+    return {str(row["caseId"]) for row in _parity_manifest()["vendored"]}  # type: ignore[attr-defined,index]
+
+
 def test_parity_cases_are_closed_projections() -> None:
-    """Each parity case is a closed corpus/1 record projecting one harness case."""
+    """Each parity case is a closed corpus/1 record projecting one own harness case."""
     harness = {p.stem for p in _case_files()}
     for path in sorted((PARITY / "cases").glob("*.json")):
         record = json.loads(path.read_bytes())
@@ -178,7 +191,35 @@ def test_parity_cases_are_closed_projections() -> None:
         status = record["expectedStatus"]
         assert status == "ok" or status.startswith("refused:")
     projected = {p.stem for p in (PARITY / "cases").glob("*.json")}
-    assert projected == harness - RUNTIME_SPECIFIC
+    assert projected == harness - RUNTIME_SPECIFIC - _vendored_ids()
+
+
+def test_vendored_cases_are_pinned_and_copied() -> None:
+    """Every vendored JS case file has its pinned digest and its harness record copies it."""
+    root = EXPECTED.parents[2]
+    rows = _parity_manifest()["vendored"]
+    assert len(rows) == 69  # type: ignore[arg-type]
+    for row in rows:  # type: ignore[attr-defined]
+        data = (root / row["source"]).read_bytes()
+        assert hashlib.sha256(data).hexdigest() == row["sha256"], row["caseId"]
+        case = json.loads(data)
+        assert case["caseId"] == row["caseId"]
+        record = json.loads((EXPECTED / f"{row['caseId']}.json").read_text(encoding="utf-8"))
+        assert record["profile"] is None or isinstance(record["profile"], dict)
+        results = [a["json"] for a in case["expectedArtifacts"] if a["role"] == "result"]
+        if results:
+            assert record["expected"] == results[0]
+
+
+def test_aliases_name_projected_twins() -> None:
+    """A PS-37 alias names a projected own case and copies no file."""
+    projected = {p.stem for p in (PARITY / "cases").glob("*.json")}
+    harness = {p.stem for p in _case_files()}
+    aliases = _parity_manifest()["aliases"]
+    assert len(aliases) == 2  # type: ignore[arg-type]
+    for alias in aliases:  # type: ignore[attr-defined]
+        assert alias["aliasOf"] in projected
+        assert alias["caseId"] not in harness
 
 
 def _load_helper() -> ModuleType:
