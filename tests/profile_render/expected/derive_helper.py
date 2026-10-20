@@ -472,7 +472,7 @@ def synthetic_key(declaration_id: str, owner_id: str, page_id: str) -> str:
 
 # ------------------------------- vendored JS lot-4 cases (block-B parity sync, §17.6)
 
-JS_SEAL_SHA256 = "681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb"
+JS_SEAL_SHA256 = "2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf"
 TREES = {"render": "tests/profile_render/expected", "export": "tests/profile_export/expected"}
 VENDOR = "vendor/js"
 
@@ -1157,8 +1157,8 @@ VENDORED: dict[str, dict[str, str]] = {
         "cases/ticks-004-large-and-integral.json": (
             "d88ac00acee6127a626114c8a7fc1141a3ec67e0d3fdf05c82629263c22869d0"
         ),
-        "manifest.json": "ac3dce5b4fce1810d48437406703d9b28d8bffff556ede42bded9e1a9522eb23",
-        "seal.json": "681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb",
+        "manifest.json": "4f93447358c484a156cb806d56e08629c05066a9fe16fca4d432b9b37a20aef1",
+        "seal.json": "2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf",
     },
     "export": {
         "artifacts/choices-plain.render.json": (
@@ -1522,7 +1522,7 @@ VENDORED: dict[str, dict[str, str]] = {
             "0d5835c210f1669c97c8d3eadda4ca6a62be58d0f6f5d1556b61b8260abf9afc"
         ),
         "cases/idplan-007-utf16-key-order.json": (
-            "4a2b65b33bfbd3aeaa8174295d15b56721cc1abc3ee77c3875632126838b511d"
+            "b9c87243aae5d67b023adb0c3b144ec1dd5f1812627373c92ac94fcbd5f22620"
         ),
         "cases/serialize-001-main-drawio.json": (
             "d6fbcf56b04df732543f3bd1400c91a701746f0a08a49486075b0a4b94a46e8a"
@@ -1548,8 +1548,8 @@ VENDORED: dict[str, dict[str, str]] = {
         "cases/serialize-008-stale-descriptor-digest.json": (
             "8ac04ab429c4235136dab1a714325909aee618dab95e05788fff170909f4289e"
         ),
-        "manifest.json": "ac3dce5b4fce1810d48437406703d9b28d8bffff556ede42bded9e1a9522eb23",
-        "seal.json": "681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb",
+        "manifest.json": "4f93447358c484a156cb806d56e08629c05066a9fe16fca4d432b9b37a20aef1",
+        "seal.json": "2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf",
     },
 }
 

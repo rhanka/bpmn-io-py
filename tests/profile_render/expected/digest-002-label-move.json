@@ -1,7 +1,7 @@
 {
   "case": "digest-002-label-move",
   "clause": "DESIGN R3.3 \u00a79.2 L683\u2013L690",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 2a40621a6f39af1df13f70d37233cf9a24b288789fc17fbd8dfd0f8fbcf60790; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: A DI-only label move of Gateway_Ok changes layoutDigest, the occurrence payload and viewRevision only; semanticRevision is unchanged. Fails against: Changing semanticRevision for a presentation-only move, or not invalidating payloadDigest.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 2a40621a6f39af1df13f70d37233cf9a24b288789fc17fbd8dfd0f8fbcf60790; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: A DI-only label move of Gateway_Ok changes layoutDigest, the occurrence payload and viewRevision only; semanticRevision is unchanged. Fails against: Changing semanticRevision for a presentation-only move, or not invalidating payloadDigest.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

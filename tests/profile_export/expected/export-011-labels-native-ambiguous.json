@@ -1,7 +1,7 @@
 {
   "case": "export-011-labels-native-ambiguous",
   "clause": "DESIGN R3.3 \u00a72.2 L130",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 060a266b4cc3c641c5cf2dd9336e6778abfa7038a4517d64393e4cd9a9b56197; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The variant adds export-edge-labels to the native-ID sparx export; each label would reuse its edge's semantic ID. Full refusal record with echoed identity and revision. Fails against: Silently suffixing label IDs.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 060a266b4cc3c641c5cf2dd9336e6778abfa7038a4517d64393e4cd9a9b56197; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The variant adds export-edge-labels to the native-ID sparx export; each label would reuse its edge's semantic ID. Full refusal record with echoed identity and revision. Fails against: Silently suffixing label IDs.",
   "operation": "mapExport",
   "profile": {
     "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-labels-native.profile.json",

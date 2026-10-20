@@ -1,7 +1,7 @@
 {
   "case": "render-008-sparse-occurrence-override",
   "clause": "DESIGN R3.3 \u00a79.3 L700; \u00a79.2 L692",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 695a20f40d545e9a2116fec1fd1da29bc158d82297e6d71b4973c09330277c18; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: A sparse occurrence override changes only stroke of the View_A occurrence of Task_Check; the View_Z occurrence and all other tokens are unchanged; the Overrides/1 record stays sparse (one token) in overridesDigest. Fails against: Applying the occurrence override to every occurrence of the semantic ID, or materializing all resolved tokens into the override record before hashing.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 695a20f40d545e9a2116fec1fd1da29bc158d82297e6d71b4973c09330277c18; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: A sparse occurrence override changes only stroke of the View_A occurrence of Task_Check; the View_Z occurrence and all other tokens are unchanged; the Overrides/1 record stays sparse (one token) in overridesDigest. Fails against: Applying the occurrence override to every occurrence of the semantic ID, or materializing all resolved tokens into the override record before hashing.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

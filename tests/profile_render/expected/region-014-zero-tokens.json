@@ -1,7 +1,7 @@
 {
   "case": "region-014-zero-tokens",
   "clause": "DESIGN R3.3 \u00a79.4 L721\u2013L723",
-  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 55b6c78eb7ea85d7b8b407ebad9fae949fc0667835aada3e0ce77a11f665e07f, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutRegions output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Zero tokens are real values, not missing ones: items abut at the lane x (30000, 66000) and the row is exactly the tallest block, 64000. Fails against: Substituting hidden defaults for zero-valued tokens.",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 55b6c78eb7ea85d7b8b407ebad9fae949fc0667835aada3e0ce77a11f665e07f, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutRegions output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Zero tokens are real values, not missing ones: items abut at the lane x (30000, 66000) and the row is exactly the tallest block, 64000. Fails against: Substituting hidden defaults for zero-valued tokens.",
   "operation": "layoutRegions",
   "profile": null,
   "input": [

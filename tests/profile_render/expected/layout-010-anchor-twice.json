@@ -1,7 +1,7 @@
 {
   "case": "layout-010-anchor-twice",
   "clause": "DESIGN R3.3 \u00a79.4 L723",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 d5dfc0b0815ec0c67d3348ef462b19d8dbf1c21594a5e2ef26bac4dc2053fc70; values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Task_Check is shown twice on Page_Main, so its anchor is not available (harmonization K4: exactly one record of the anchor activity on the page): Input_Order starts at the content left edge 70000 and StoreRef_Policy at the band content edge 40000 (object x 50000); Output_Receipt keeps its unique Task_Ship anchor (left 469000). Fails against: Anchoring on the first or nearest Task_Check record, or refusing the layout.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 d5dfc0b0815ec0c67d3348ef462b19d8dbf1c21594a5e2ef26bac4dc2053fc70; values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Task_Check is shown twice on Page_Main, so its anchor is not available (harmonization K4: exactly one record of the anchor activity on the page): Input_Order starts at the content left edge 70000 and StoreRef_Policy at the band content edge 40000 (object x 50000); Output_Receipt keeps its unique Task_Ship anchor (left 469000). Fails against: Anchoring on the first or nearest Task_Check record, or refusing the layout.",
   "operation": "layout",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

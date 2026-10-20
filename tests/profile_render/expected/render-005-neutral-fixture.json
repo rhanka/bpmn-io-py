@@ -1,7 +1,7 @@
 {
   "case": "render-005-neutral-fixture",
   "clause": "DESIGN R3.3 \u00a79.1 L669\u2013L673; \u00a79.3 L698\u2013L702",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 a2314d2d192862d7c4452280b2615b2162318e7232ba0071351bc6f339029a94; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Lot-0 neutral fixture completed tree under its own unchanged profile, on a supplied two-page layout: Task_A (empty name) has no label; the aid annotation label strips the declared prefix '[Aid] ' once; Task_B is repeated on two pages; theme region.content.* tokens stay out of style. Fails against: Rendering an empty label box for Task_A, keeping the '[Aid] ' prefix, or copying region tokens into style.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 a2314d2d192862d7c4452280b2615b2162318e7232ba0071351bc6f339029a94; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Lot-0 neutral fixture completed tree under its own unchanged profile, on a supplied two-page layout: Task_A (empty name) has no label; the aid annotation label strips the declared prefix '[Aid] ' once; Task_B is repeated on two pages; theme region.content.* tokens stay out of style. Fails against: Rendering an empty label box for Task_A, keeping the '[Aid] ' prefix, or copying region tokens into style.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "contracts/profile-mechanism/1/neutral-profile.json",

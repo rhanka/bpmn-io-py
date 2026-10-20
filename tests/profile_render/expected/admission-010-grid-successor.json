@@ -1,7 +1,7 @@
 {
   "case": "admission-010-grid-successor",
   "clause": "DESIGN R3.3 \u00a714.3 L961; \u00a72.4 L164",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 262c2c30f9f46bc2145100523452d73ec8a3dc772406b3a5f2c830388c7c9ee2; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The grid successor is the vendored grid profile with the lot-4 package pins, an ensure recipe for a lane bound to role side, and a lane notion/glyph. Fails against: Refusing a region role declared only through an ensure recipe, or requiring the lot-0 base pin.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 262c2c30f9f46bc2145100523452d73ec8a3dc772406b3a5f2c830388c7c9ee2; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The grid successor is the vendored grid profile with the lot-4 package pins, an ensure recipe for a lane bound to role side, and a lane notion/glyph. Fails against: Refusing a region role declared only through an ensure recipe, or requiring the lot-0 base pin.",
   "operation": "compileProfile",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/grid-successor.profile.json",

@@ -1,7 +1,7 @@
 {
   "case": "admission-002-variant-conflict",
   "clause": "DESIGN R3.3 \u00a72.4.1 L194\u2013L196; \u00a710.2 L770\u2013L774",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 6403c646430424b6cb15beaa822fb8b02d4a86405a06faac54602e1d1a677904; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Variant conflict (version 1.1.1) differs from the lot-4 package only as stated in the README variant table; its defect, if any, is a runtime condition and must not be refused at compile time. Fails against: Refusing at compile time a condition the DESIGN assigns to a runtime refusal code.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 6403c646430424b6cb15beaa822fb8b02d4a86405a06faac54602e1d1a677904; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Variant conflict (version 1.1.1) differs from the lot-4 package only as stated in the README variant table; its defect, if any, is a runtime condition and must not be refused at compile time. Fails against: Refusing at compile time a condition the DESIGN assigns to a runtime refusal code.",
   "operation": "compileProfile",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-conflict.profile.json",

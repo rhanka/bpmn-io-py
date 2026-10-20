@@ -1,7 +1,7 @@
 {
   "case": "decision-005-case-operator",
   "clause": "DESIGN R3.3 \u00a72.2 L116; \u00a79.3 L702",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 4621c654ad321d122a9903bd5a5c412d28f79987b011323b24cb80cafa5855f7; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: One PureResult per case value expression with the pinned unicode-case/1 15.0.0 tables, full mappings and Final_Sigma context only for lower; vectors include U+0130 both ways, Final_Sigma, U+0264, expansions and a titlecase digraph. Fails against: toUpperCase/toLowerCase of the host, simple mappings, or sigma without context.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 4621c654ad321d122a9903bd5a5c412d28f79987b011323b24cb80cafa5855f7; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: One PureResult per case value expression with the pinned unicode-case/1 15.0.0 tables, full mappings and Final_Sigma context only for lower; vectors include U+0130 both ways, Final_Sigma, U+0264, expansions and a titlecase digraph. Fails against: toUpperCase/toLowerCase of the host, simple mappings, or sigma without context.",
   "operation": "evaluateValue",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

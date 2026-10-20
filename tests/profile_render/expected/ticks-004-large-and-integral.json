@@ -1,7 +1,7 @@
 {
   "case": "ticks-004-large-and-integral",
   "clause": "DESIGN R3.3 \u00a73.1 L270",
-  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 681b15c01b955c67de4e9e06b21b9b9f5ec87a4dc0ea13c6bac68595ad257beb), case file SHA-256 d88ac00acee6127a626114c8a7fc1141a3ec67e0d3fdf05c82629263c22869d0, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutTicks output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Integral and fractional pt values convert exactly (123456789012.345 pt -> 123456789012345 ticks); -1234567.5 rounds to the even -1234568 and 98765432.5 to the even 98765432. Fails against: Half-up rounding gives -1234567 and 98765433.",
+  "derivation": "Derived from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 d88ac00acee6127a626114c8a7fc1141a3ec67e0d3fdf05c82629263c22869d0, by parity-sync decision PS-33 (DESIGN \u00a710.1 L737: PureResult always wraps output in payload): the sealed layoutTicks output becomes the PureResult {status: ok, payload: <that output>, diagnostics: []}, compared with result-exact/1; no value is recomputed. Values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: Integral and fractional pt values convert exactly (123456789012.345 pt -> 123456789012345 ticks); -1234567.5 rounds to the even -1234568 and 98765432.5 to the even 98765432. Fails against: Half-up rounding gives -1234567 and 98765433.",
   "operation": "layoutTicks",
   "profile": null,
   "input": [
