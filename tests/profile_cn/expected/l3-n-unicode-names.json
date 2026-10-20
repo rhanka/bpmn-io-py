@@ -15,7 +15,7 @@
       "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
     }
   },
-  "derivation": "Vendored unchanged from JS seal 1adc160ccd3c2567c5f45b1a1b92322a21f0dcccaf9676f3a7901b0642259934, case file SHA-256 ee4fd2776d3637c96ffb2c362917beac9db9093b56fb7d046df3ae5e3c0bcaf9; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC). Import row PS-H02: normalize witnesses. fixedPoint: DESIGN §7.3 C(C(x)) = C(x), N(N(x)) = N(x) for any accepted x. Discriminates (JS index): Fails an implementation that NFC-normalizes, trims (NBSP, U+0085, BOM, trailing space) or re-splits the LF/CRLF/U+2028 start situations, rewrites astral or private-use characters, or escapes non-ASCII differently in canonical bytes.",
+  "derivation": "Vendored unchanged from JS seal 91edbbf2956eaf69da63a07b8474c07000fd4dd9bfd28d7a1f9f786ef6569b82, case file SHA-256 86f15f6337f7c8b8c9f328389911465f3f043b658d2464636d7dcb3b8e891145; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC). Import row PS-H02: normalize witnesses. fixedPoint: DESIGN §7.3 C(C(x)) = C(x), N(N(x)) = N(x) for any accepted x. Discriminates (JS index): Fails an implementation that Unicode-normalizes (NFC composes the decomposed e+U+0301, NFD decomposes U+00E9 and U+00F4, NFKC also folds NBSP), trims (NBSP, U+0085, BOM, trailing space) or re-splits the LF/CRLF/U+2028 start situations, rewrites astral (U+10000, U+1F4D8) or private-use (U+E000) characters, or escapes non-ASCII differently in canonical bytes.",
   "input": {
     "envelope": {
       "documentVersion": "1",
@@ -47,13 +47,13 @@
           {
             "$type": "bpmn:Process",
             "id": "Process_A",
-            "name": "Gestion 𐀀 ",
+            "name": "Gestion 𐀀 ",
             "isExecutable": false,
             "flowElements": [
               {
                 "$type": "bpmn:StartEvent",
                 "id": "Start_U",
-                "name": "Situation A\nSituation B\r\nSituation C suite",
+                "name": "Situation A\nSituation B\r\nSituation C suite",
                 "outgoing": [
                   "Flow_U1"
                 ]
@@ -61,7 +61,7 @@
               {
                 "$type": "bpmn:Task",
                 "id": "Task_U",
-                "name": "Contrôle final ",
+                "name": "Contrôle final ",
                 "incoming": [
                   "Flow_U1"
                 ],
@@ -99,7 +99,7 @@
               {
                 "$type": "bpmn:DataStoreReference",
                 "id": "DataStoreReference_U",
-                "name": "Référence 📘",
+                "name": "Référence 📘",
                 "dataStoreRef": "DataStore_U"
               }
             ],
@@ -116,12 +116,12 @@
           {
             "$type": "bpmn:DataStore",
             "id": "DataStore_U",
-            "name": "Registre 𐀀"
+            "name": "Registre 𐀀"
           }
         ]
       },
       "bindings": [],
-      "semanticRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a"
+      "semanticRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282"
     },
     "activation": "qualification"
   },
@@ -147,8 +147,8 @@
         }
       ]
     },
-    "baseRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a",
-    "revision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+    "baseRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+    "revision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
     "report": {
       "reportVersion": "2",
       "operation": "normalize",
@@ -190,8 +190,8 @@
           }
         ]
       },
-      "inputRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a",
-      "outputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+      "inputRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+      "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
       "entries": [
         {
           "code": "normalize/ensure",
@@ -355,13 +355,13 @@
             {
               "$type": "bpmn:Process",
               "id": "Process_A",
-              "name": "Gestion 𐀀 ",
+              "name": "Gestion 𐀀 ",
               "isExecutable": false,
               "flowElements": [
                 {
                   "$type": "bpmn:StartEvent",
                   "id": "Start_U",
-                  "name": "Situation A\nSituation B\r\nSituation C suite",
+                  "name": "Situation A\nSituation B\r\nSituation C suite",
                   "outgoing": [
                     "Flow_U1"
                   ]
@@ -369,7 +369,7 @@
                 {
                   "$type": "bpmn:Task",
                   "id": "Task_U",
-                  "name": "Contrôle final ",
+                  "name": "Contrôle final ",
                   "incoming": [
                     "Flow_U1"
                   ],
@@ -407,7 +407,7 @@
                 {
                   "$type": "bpmn:DataStoreReference",
                   "id": "DataStoreReference_U",
-                  "name": "Référence 📘",
+                  "name": "Référence 📘",
                   "dataStoreRef": "DataStore_U"
                 }
               ],
@@ -424,7 +424,7 @@
             {
               "$type": "bpmn:DataStore",
               "id": "DataStore_U",
-              "name": "Registre 𐀀"
+              "name": "Registre 𐀀"
             },
             {
               "$type": "bpmn:Collaboration",
@@ -463,7 +463,7 @@
             "targetId": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769"
           }
         ],
-        "semanticRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688"
+        "semanticRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c"
       },
       "placements": [
         {
@@ -517,8 +517,8 @@
             }
           ]
         },
-        "inputRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a",
-        "outputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+        "inputRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+        "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
         "entries": [
           {
             "code": "normalize/ensure",

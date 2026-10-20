@@ -39,13 +39,13 @@
             {
               "$type": "bpmn:Process",
               "id": "Process_A",
-              "name": "Gestion 𐀀 ",
+              "name": "Gestion 𐀀 ",
               "isExecutable": false,
               "flowElements": [
                 {
                   "$type": "bpmn:StartEvent",
                   "id": "Start_U",
-                  "name": "Situation A\nSituation B\r\nSituation C suite",
+                  "name": "Situation A\nSituation B\r\nSituation C suite",
                   "outgoing": [
                     "Flow_U1"
                   ]
@@ -53,7 +53,7 @@
                 {
                   "$type": "bpmn:Task",
                   "id": "Task_U",
-                  "name": "Contrôle final ",
+                  "name": "Contrôle final ",
                   "incoming": [
                     "Flow_U1"
                   ],
@@ -91,7 +91,7 @@
                 {
                   "$type": "bpmn:DataStoreReference",
                   "id": "DataStoreReference_U",
-                  "name": "Référence 📘",
+                  "name": "Référence 📘",
                   "dataStoreRef": "DataStore_U"
                 }
               ],
@@ -108,12 +108,12 @@
             {
               "$type": "bpmn:DataStore",
               "id": "DataStore_U",
-              "name": "Registre 𐀀"
+              "name": "Registre 𐀀"
             }
           ]
         },
         "bindings": [],
-        "semanticRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a"
+        "semanticRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282"
       }
     },
     {
@@ -146,8 +146,8 @@
             }
           ]
         },
-        "baseRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a",
-        "revision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+        "baseRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+        "revision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
         "report": {
           "reportVersion": "2",
           "operation": "normalize",
@@ -189,8 +189,8 @@
               }
             ]
           },
-          "inputRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a",
-          "outputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+          "inputRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+          "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
           "entries": [
             {
               "code": "normalize/ensure",
@@ -354,13 +354,13 @@
                 {
                   "$type": "bpmn:Process",
                   "id": "Process_A",
-                  "name": "Gestion 𐀀 ",
+                  "name": "Gestion 𐀀 ",
                   "isExecutable": false,
                   "flowElements": [
                     {
                       "$type": "bpmn:StartEvent",
                       "id": "Start_U",
-                      "name": "Situation A\nSituation B\r\nSituation C suite",
+                      "name": "Situation A\nSituation B\r\nSituation C suite",
                       "outgoing": [
                         "Flow_U1"
                       ]
@@ -368,7 +368,7 @@
                     {
                       "$type": "bpmn:Task",
                       "id": "Task_U",
-                      "name": "Contrôle final ",
+                      "name": "Contrôle final ",
                       "incoming": [
                         "Flow_U1"
                       ],
@@ -406,7 +406,7 @@
                     {
                       "$type": "bpmn:DataStoreReference",
                       "id": "DataStoreReference_U",
-                      "name": "Référence 📘",
+                      "name": "Référence 📘",
                       "dataStoreRef": "DataStore_U"
                     }
                   ],
@@ -423,7 +423,7 @@
                 {
                   "$type": "bpmn:DataStore",
                   "id": "DataStore_U",
-                  "name": "Registre 𐀀"
+                  "name": "Registre 𐀀"
                 },
                 {
                   "$type": "bpmn:Collaboration",
@@ -462,7 +462,7 @@
                 "targetId": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769"
               }
             ],
-            "semanticRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688"
+            "semanticRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c"
           },
           "placements": [
             {
@@ -516,8 +516,8 @@
                 }
               ]
             },
-            "inputRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a",
-            "outputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+            "inputRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+            "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
             "entries": [
               {
                 "code": "normalize/ensure",
@@ -685,13 +685,13 @@
             {
               "$type": "bpmn:Process",
               "id": "Process_A",
-              "name": "Gestion 𐀀 ",
+              "name": "Gestion 𐀀 ",
               "isExecutable": false,
               "flowElements": [
                 {
                   "$type": "bpmn:StartEvent",
                   "id": "Start_U",
-                  "name": "Situation A\nSituation B\r\nSituation C suite",
+                  "name": "Situation A\nSituation B\r\nSituation C suite",
                   "outgoing": [
                     "Flow_U1"
                   ]
@@ -699,7 +699,7 @@
                 {
                   "$type": "bpmn:Task",
                   "id": "Task_U",
-                  "name": "Contrôle final ",
+                  "name": "Contrôle final ",
                   "incoming": [
                     "Flow_U1"
                   ],
@@ -737,7 +737,7 @@
                 {
                   "$type": "bpmn:DataStoreReference",
                   "id": "DataStoreReference_U",
-                  "name": "Référence 📘",
+                  "name": "Référence 📘",
                   "dataStoreRef": "DataStore_U"
                 }
               ],
@@ -754,12 +754,12 @@
             {
               "$type": "bpmn:DataStore",
               "id": "DataStore_U",
-              "name": "Registre 𐀀"
+              "name": "Registre 𐀀"
             }
           ]
         },
         "bindings": [],
-        "semanticRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a"
+        "semanticRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282"
       }
     }
   ],

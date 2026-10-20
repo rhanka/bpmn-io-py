@@ -523,7 +523,7 @@
         "js",
         "python"
       ],
-      "discriminates": "Fails an allocator that trims or NFC-normalizes keys (merging ' padded '/'padded' or NBSP/space), escapes non-ASCII as \\u sequences before hashing, or hashes a tuple other than [\"profile-mechanism/1\",owner,slot,key]."
+      "discriminates": "Fails an allocator that trims keys (merging ' padded '/'padded'), Unicode-normalizes them (NFC or NFD merges the precomposed U+00E9 and decomposed e+U+0301 keys, NFKC also NBSP and space), escapes non-ASCII as \\u sequences before hashing, or hashes a tuple other than [\"profile-mechanism/1\",owner,slot,key]."
     },
     {
       "caseId": "l3-id-root-first",
@@ -754,7 +754,7 @@
         "js",
         "python"
       ],
-      "discriminates": "Fails an implementation that NFC-normalizes, trims (NBSP, trailing space, U+0085) or line-splits names before hashing, escapes U+E000/U+10000 in JCS, or rewrites the stored names."
+      "discriminates": "Fails an implementation that Unicode-normalizes (NFC or NFD merges the precomposed U+00E9 and decomposed e+U+0301 names, NFKC also NBSP and space), trims (NBSP, trailing space, U+0085) or line-splits (U+2028, U+0085) names before hashing, escapes U+E000/U+10000 in JCS, rewrites the stored names, or numbers duplicate ordinals across siblings of different content (the eight signatures differ, so every ordinal is 0 and the eight IDs differ)."
     },
     {
       "caseId": "l3-id-timer-siblings",
@@ -2679,7 +2679,7 @@
         "js",
         "python"
       ],
-      "discriminates": "Fails an implementation that NFC-normalizes, trims (NBSP, U+0085, BOM, trailing space) or re-splits the LF/CRLF/U+2028 start situations, rewrites astral or private-use characters, or escapes non-ASCII differently in canonical bytes."
+      "discriminates": "Fails an implementation that Unicode-normalizes (NFC composes the decomposed e+U+0301, NFD decomposes U+00E9 and U+00F4, NFKC also folds NBSP), trims (NBSP, U+0085, BOM, trailing space) or re-splits the LF/CRLF/U+2028 start situations, rewrites astral (U+10000, U+1F4D8) or private-use (U+E000) characters, or escapes non-ASCII differently in canonical bytes."
     },
     {
       "caseId": "l3-n-deleted-support-stays-absent",

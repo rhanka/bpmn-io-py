@@ -7570,8 +7570,8 @@ def corpus_files(
 
 #: The JS lot-3 seal every vendored file comes from: its seal.json SHA-256 and
 #: commit. The JS expectations root is mirrored under ``vendor/js/``.
-JS_SEAL_SHA256 = "1adc160ccd3c2567c5f45b1a1b92322a21f0dcccaf9676f3a7901b0642259934"
-JS_SEAL_COMMIT = "09de002862658a228399e8d186c43d56c9f209ec"
+JS_SEAL_SHA256 = "91edbbf2956eaf69da63a07b8474c07000fd4dd9bfd28d7a1f9f786ef6569b82"
+JS_SEAL_COMMIT = "ce1162f6007753fb0e1916d80ea840b28318e406"
 VENDOR_DIR = "vendor/js/"
 #: Raw SHA-256 of every vendored file, as pinned by that JS seal.
 VENDORED: dict[str, str] = {
@@ -7588,7 +7588,7 @@ VENDORED: dict[str, str] = {
         "1503f013c330eb5d3fc267ed098fa4e1403d39f3758d5d0f5f71672cd2976e13"
     ),
     "cases/l3-c-preserve.json": (
-        "7b0381e47cf676c89c3163c718200032f4c7117dfe71628aadea9f178e416f40"
+        "5314abac4fa2f264d1204824added97e59f9a2909ee06e65dd8ca8e5e44faf28"
     ),
     "cases/l3-c-sets-single-uncovered.json": (
         "e60386a6a9f6caa417014607b4bdfb7254d14382307b4a35d01f246170839200"
@@ -7654,7 +7654,7 @@ VENDORED: dict[str, str] = {
         "50316254bd7d3572775ae93199a0c88f3459beadbdb7d683a1fb1e5471c5ba22"
     ),
     "cases/l3-id-stable-vectors.json": (
-        "844f698327b3954d667fd9d3598297320686b80f4320c02f2a8fc973906db7e1"
+        "7d8d0b6abb0b6f6758ed58e4cedc1ab366e0f0a5624bd648e925109cb008d867"
     ),
     "cases/l3-id-two-owners.json": (
         "52677741df37f24db1fc42da59d7b54ad021355d28d6c2f6ae715d02a64a9a47"
@@ -7714,10 +7714,10 @@ VENDORED: dict[str, str] = {
         "399a1b3c13d8502289c897ef70529377737ce1a80ac9cc9f43143f4edd6255fe"
     ),
     "cases/l3-mix-n-unicode-names-js-py-js.json": (
-        "f80e79a4a5c83db63d46accdc70531d5ef8763261bee9ffe8780522cab1b52b7"
+        "96d62ec02302158132ce7e3702e0e1b32b140603e323e097dd2c9204460b9348"
     ),
     "cases/l3-mix-n-unicode-names-py-js-py.json": (
-        "5255fb2d7a50cf47d8af73cd3e3b715361054cfc25997a0d4008490ff91b6ad5"
+        "cf411c55c4bd4cdcf5a2685c197d6be612d48bd5a0094edca647246025b390c1"
     ),
     "cases/l3-n-after-owner-remap.json": (
         "00b0a8a707f20a156ac1bd48403fe608eed85807a5b26220ab5788ed98fcbec7"
@@ -7738,7 +7738,7 @@ VENDORED: dict[str, str] = {
         "8bbbb81cd81986d3b520af0707a43675c1fa577a3c54e3935e9a2ed0694fd580"
     ),
     "cases/l3-n-unicode-names.json": (
-        "ee4fd2776d3637c96ffb2c362917beac9db9093b56fb7d046df3ae5e3c0bcaf9"
+        "86f15f6337f7c8b8c9f328389911465f3f043b658d2464636d7dcb3b8e891145"
     ),
     "cases/l3-path-cannot-reach-end-accept.json": (
         "fa5056a8c852ec0b43130f495a976f0bf60078f6461766b5be8d98d013a139d5"
@@ -7782,7 +7782,7 @@ VENDORED: dict[str, str] = {
     "cases/l3-trig-single-trigger-accept.json": (
         "bff4d4ee2b7c65d542148867e905c9394faf129f14574a1c09f251be0b1ae200"
     ),
-    "index.json": "54e42f1f08b223880c565e59d76fd70ada9a7649627b88c13a04e6ce267c0739",
+    "index.json": "0210bd37fc4ee07892bc3bab8a73c69ee3c4888c6d3a07643420986305de8820",
     "profile/neutral-cn-base.json": (
         "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
     ),

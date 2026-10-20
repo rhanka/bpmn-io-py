@@ -4,11 +4,16 @@
   "author": "spec-seal",
   "operation": "stable-id/1",
   "profile": null,
-  "derivation": "Vendored unchanged from JS seal 1adc160ccd3c2567c5f45b1a1b92322a21f0dcccaf9676f3a7901b0642259934, case file SHA-256 844f698327b3954d667fd9d3598297320686b80f4320c02f2a8fc973906db7e1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC). Import row PS-H03: the stable-id/1 pure vector and complete. Discriminates (JS index): Fails an allocator that trims or NFC-normalizes keys (merging ' padded '/'padded' or NBSP/space), escapes non-ASCII as \\u sequences before hashing, or hashes a tuple other than [\"profile-mechanism/1\",owner,slot,key].",
+  "derivation": "Vendored unchanged from JS seal 91edbbf2956eaf69da63a07b8474c07000fd4dd9bfd28d7a1f9f786ef6569b82, case file SHA-256 7d8d0b6abb0b6f6758ed58e4cedc1ab366e0f0a5624bd648e925109cb008d867; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC). Import row PS-H03: the stable-id/1 pure vector and complete. Discriminates (JS index): Fails an allocator that trims keys (merging ' padded '/'padded'), Unicode-normalizes them (NFC or NFD merges the precomposed U+00E9 and decomposed e+U+0301 keys, NFKC also NBSP and space), escapes non-ASCII as \\u sequences before hashing, or hashes a tuple other than [\"profile-mechanism/1\",owner,slot,key].",
   "input": {
     "allocations": [
       {
-        "key": "clé-",
+        "key": "clé-",
+        "owner": "Process_A",
+        "slot": "task"
+      },
+      {
+        "key": "clé-",
         "owner": "Process_A",
         "slot": "task"
       },
@@ -28,7 +33,7 @@
         "slot": "task"
       },
       {
-        "key": "a b",
+        "key": "a b",
         "owner": "Process_A",
         "slot": "task"
       },
@@ -45,11 +50,12 @@
     ]
   },
   "expected": [
-    "g_ce2ab3c4df534f59d41c1993b3eb1580088cb28e7b2e228dc6cc1f147096ee07",
+    "g_e372c0599d4f5be9d47fcbf52c59692f8d8f4ee1b0da768a91bc5d5b0db9f3f0",
+    "g_b040c3522dac749aa73b6263305714d861a51842c2b3d7c4e411eaa617781415",
     "g_344bf647bb3ae35f1f2e8db3ef5fe16035887d0d70c3e874da7a4036611d67bd",
     "g_9531b9aa6fa3c4f9b62fe04a922a3b7cb14805318aec768350d82d1c6eb576c6",
     "g_f773537ad4f07c732b0a5281da100d755df92e10646388c19995b1df30419e7b",
-    "g_d49381818aa39bcfb7b993eaabd91aebe5926d19b9b0778648bcf38872123b5d",
+    "g_a212ef2880a9404bc61fb323329cd23a4197fa53edab477e682634b25ceb0dc3",
     "g_d49381818aa39bcfb7b993eaabd91aebe5926d19b9b0778648bcf38872123b5d",
     "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21"
   ]

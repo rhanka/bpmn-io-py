@@ -1447,7 +1447,7 @@ VENDORED_CORPORA = (
     {
         "cases": "vendor/js/lot3-cn/expectations/cases/",
         "pathBase": "vendor/js/",
-        "seal": "1adc160ccd3c2567c5f45b1a1b92322a21f0dcccaf9676f3a7901b0642259934",
+        "seal": "91edbbf2956eaf69da63a07b8474c07000fd4dd9bfd28d7a1f9f786ef6569b82",
     },
 )
 #: JS operations renamed in the harness record (multi-step scripts are sequences).

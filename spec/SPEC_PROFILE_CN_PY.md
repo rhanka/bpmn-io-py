@@ -936,8 +936,8 @@ The parity sync imports 69 JS-owned lot-3 cases (rows PS-H01…PS-H07 and PS-H16
 §14.3). Their values stay those of the owning JS seal: they are never recomputed.
 
 - Location: `tests/profile_cn/expected/vendor/js/` mirrors the JS expectations root of
-  the JS lot-3 seal `1adc160ccd3c2567c5f45b1a1b92322a21f0dcccaf9676f3a7901b0642259934`
-  (commit `09de002862658a228399e8d186c43d56c9f209ec`): `cases/<caseId>.json` (the raw
+  the JS lot-3 seal `91edbbf2956eaf69da63a07b8474c07000fd4dd9bfd28d7a1f9f786ef6569b82`
+  (commit `ce1162f6007753fb0e1916d80ea840b28318e406`): `cases/<caseId>.json` (the raw
   corpus/1 case files), `index.json` (the JS case index: clause, citations and
   discrimination text) and `profile/` (the neutral-cn profile, its `stale`,
   `conflict` and `coalesce` variants and their descriptor and base packages). The

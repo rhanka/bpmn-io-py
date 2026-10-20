@@ -39,13 +39,13 @@
             {
               "$type": "bpmn:Process",
               "id": "Process_A",
-              "name": "Gestion 𐀀 ",
+              "name": "Gestion 𐀀 ",
               "isExecutable": false,
               "flowElements": [
                 {
                   "$type": "bpmn:StartEvent",
                   "id": "Start_U",
-                  "name": "Situation A\nSituation B\r\nSituation C suite",
+                  "name": "Situation A\nSituation B\r\nSituation C suite",
                   "outgoing": [
                     "Flow_U1"
                   ]
@@ -53,7 +53,7 @@
                 {
                   "$type": "bpmn:Task",
                   "id": "Task_U",
-                  "name": "Contrôle final ",
+                  "name": "Contrôle final ",
                   "incoming": [
                     "Flow_U1"
                   ],
@@ -91,7 +91,7 @@
                 {
                   "$type": "bpmn:DataStoreReference",
                   "id": "DataStoreReference_U",
-                  "name": "Référence 📘",
+                  "name": "Référence 📘",
                   "dataStoreRef": "DataStore_U"
                 }
               ],
@@ -108,12 +108,12 @@
             {
               "$type": "bpmn:DataStore",
               "id": "DataStore_U",
-              "name": "Registre 𐀀"
+              "name": "Registre 𐀀"
             }
           ]
         },
         "bindings": [],
-        "semanticRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a"
+        "semanticRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282"
       }
     },
     {
@@ -148,29 +148,29 @@
             "runtime": "js",
             "activation": "qualification",
             "input": "envelope",
-            "outputSha256": "00c0ec5b74113953880f80fcffcd7dd3f15245f2c13fdfbb0f52f8285eac7522"
+            "outputSha256": "2f85a8727915c6a6d8a2456cdae6bba1525562e3f1677cf42c954d2d5e934761"
           },
           {
             "hop": 2,
             "runtime": "python",
             "activation": "edit",
             "input": "hop-1-transport-bytes",
-            "outputSha256": "00c0ec5b74113953880f80fcffcd7dd3f15245f2c13fdfbb0f52f8285eac7522"
+            "outputSha256": "2f85a8727915c6a6d8a2456cdae6bba1525562e3f1677cf42c954d2d5e934761"
           },
           {
             "hop": 3,
             "runtime": "js",
             "activation": "edit",
             "input": "hop-2-transport-bytes",
-            "outputSha256": "00c0ec5b74113953880f80fcffcd7dd3f15245f2c13fdfbb0f52f8285eac7522"
+            "outputSha256": "2f85a8727915c6a6d8a2456cdae6bba1525562e3f1677cf42c954d2d5e934761"
           }
         ]
       }
     },
     {
       "role": "transport-bytes",
-      "text": "{\"bindings\":[{\"ownerId\":\"Process_A\",\"role\":\"collaboration\",\"targetId\":\"g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1\"},{\"ownerId\":\"Process_A\",\"role\":\"main-participant\",\"targetId\":\"g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999\"},{\"ownerId\":\"Process_A\",\"role\":\"reference-band\",\"targetId\":\"g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769\"}],\"documentVersion\":\"1\",\"profileIdentity\":{\"base\":{\"id\":\"neutral-cn-base/1\",\"sha256\":\"92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a\",\"version\":\"fixture-cn-1\"},\"descriptors\":[{\"id\":\"neutral-cn-descriptors/1\",\"sha256\":\"de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3\",\"version\":\"fixture-cn-1\"}],\"mechanismVersion\":\"1\",\"profile\":\"neutral-cn/1\",\"schemaVersion\":\"1.0.0\",\"sha256\":\"cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845\",\"version\":\"1.1.0\"},\"semanticRevision\":\"c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688\",\"tree\":{\"$type\":\"bpmn:Definitions\",\"exporterVersion\":\"fixture-cn-1\",\"id\":\"Definitions_support\",\"rootElements\":[{\"$type\":\"bpmn:Process\",\"artifacts\":[{\"$type\":\"bpmn:Association\",\"associationDirection\":\"One\",\"id\":\"Assoc_RefU\",\"sourceRef\":\"DataStoreReference_U\",\"targetRef\":\"Task_U\"}],\"flowElements\":[{\"$type\":\"bpmn:StartEvent\",\"id\":\"Start_U\",\"name\":\"Situation A\\nSituation B\\r\\nSituation C suite\",\"outgoing\":[\"Flow_U1\"]},{\"$type\":\"bpmn:Task\",\"documentation\":[{\"$type\":\"bpmn:Documentation\",\"text\":\"﻿sourcetexte\\t \",\"textFormat\":\"text/plain\"}],\"id\":\"Task_U\",\"incoming\":[\"Flow_U1\"],\"name\":\"Contrôle final \",\"outgoing\":[\"Flow_U2\"]},{\"$type\":\"bpmn:EndEvent\",\"id\":\"End_U\",\"incoming\":[\"Flow_U2\"],\"name\":\"Fin\"},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_U1\",\"sourceRef\":\"Start_U\",\"targetRef\":\"Task_U\"},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_U2\",\"sourceRef\":\"Task_U\",\"targetRef\":\"End_U\"},{\"$type\":\"bpmn:DataStoreReference\",\"dataStoreRef\":\"DataStore_U\",\"id\":\"DataStoreReference_U\",\"name\":\"Référence 📘\"}],\"id\":\"Process_A\",\"isExecutable\":false,\"name\":\"Gestion 𐀀 \"},{\"$type\":\"bpmn:DataStore\",\"id\":\"DataStore_U\",\"name\":\"Registre 𐀀\"},{\"$type\":\"bpmn:Collaboration\",\"id\":\"g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1\",\"name\":\"collaboration\",\"participants\":[{\"$type\":\"bpmn:Participant\",\"id\":\"g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999\",\"name\":\"main-participant\",\"processRef\":\"Process_A\"},{\"$type\":\"bpmn:Participant\",\"id\":\"g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769\",\"name\":\"reference-band\"}]}],\"targetNamespace\":\"urn:neutral-cn:1\"}}",
-      "sha256": "00c0ec5b74113953880f80fcffcd7dd3f15245f2c13fdfbb0f52f8285eac7522"
+      "text": "{\"bindings\":[{\"ownerId\":\"Process_A\",\"role\":\"collaboration\",\"targetId\":\"g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1\"},{\"ownerId\":\"Process_A\",\"role\":\"main-participant\",\"targetId\":\"g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999\"},{\"ownerId\":\"Process_A\",\"role\":\"reference-band\",\"targetId\":\"g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769\"}],\"documentVersion\":\"1\",\"profileIdentity\":{\"base\":{\"id\":\"neutral-cn-base/1\",\"sha256\":\"92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a\",\"version\":\"fixture-cn-1\"},\"descriptors\":[{\"id\":\"neutral-cn-descriptors/1\",\"sha256\":\"de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3\",\"version\":\"fixture-cn-1\"}],\"mechanismVersion\":\"1\",\"profile\":\"neutral-cn/1\",\"schemaVersion\":\"1.0.0\",\"sha256\":\"cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845\",\"version\":\"1.1.0\"},\"semanticRevision\":\"21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c\",\"tree\":{\"$type\":\"bpmn:Definitions\",\"exporterVersion\":\"fixture-cn-1\",\"id\":\"Definitions_support\",\"rootElements\":[{\"$type\":\"bpmn:Process\",\"artifacts\":[{\"$type\":\"bpmn:Association\",\"associationDirection\":\"One\",\"id\":\"Assoc_RefU\",\"sourceRef\":\"DataStoreReference_U\",\"targetRef\":\"Task_U\"}],\"flowElements\":[{\"$type\":\"bpmn:StartEvent\",\"id\":\"Start_U\",\"name\":\"Situation A\\nSituation B\\r\\nSituation C suite\",\"outgoing\":[\"Flow_U1\"]},{\"$type\":\"bpmn:Task\",\"documentation\":[{\"$type\":\"bpmn:Documentation\",\"text\":\"﻿sourcetexte\\t \",\"textFormat\":\"text/plain\"}],\"id\":\"Task_U\",\"incoming\":[\"Flow_U1\"],\"name\":\"Contrôle final \",\"outgoing\":[\"Flow_U2\"]},{\"$type\":\"bpmn:EndEvent\",\"id\":\"End_U\",\"incoming\":[\"Flow_U2\"],\"name\":\"Fin\"},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_U1\",\"sourceRef\":\"Start_U\",\"targetRef\":\"Task_U\"},{\"$type\":\"bpmn:SequenceFlow\",\"id\":\"Flow_U2\",\"sourceRef\":\"Task_U\",\"targetRef\":\"End_U\"},{\"$type\":\"bpmn:DataStoreReference\",\"dataStoreRef\":\"DataStore_U\",\"id\":\"DataStoreReference_U\",\"name\":\"Référence 📘\"}],\"id\":\"Process_A\",\"isExecutable\":false,\"name\":\"Gestion 𐀀 \"},{\"$type\":\"bpmn:DataStore\",\"id\":\"DataStore_U\",\"name\":\"Registre 𐀀\"},{\"$type\":\"bpmn:Collaboration\",\"id\":\"g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1\",\"name\":\"collaboration\",\"participants\":[{\"$type\":\"bpmn:Participant\",\"id\":\"g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999\",\"name\":\"main-participant\",\"processRef\":\"Process_A\"},{\"$type\":\"bpmn:Participant\",\"id\":\"g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769\",\"name\":\"reference-band\"}]}],\"targetNamespace\":\"urn:neutral-cn:1\"}}",
+      "sha256": "2f85a8727915c6a6d8a2456cdae6bba1525562e3f1677cf42c954d2d5e934761"
     },
     {
       "role": "hop-results",
@@ -197,8 +197,8 @@
               }
             ]
           },
-          "baseRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a",
-          "revision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+          "baseRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+          "revision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
           "report": {
             "reportVersion": "2",
             "operation": "normalize",
@@ -240,8 +240,8 @@
                 }
               ]
             },
-            "inputRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a",
-            "outputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+            "inputRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+            "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
             "entries": [
               {
                 "code": "normalize/ensure",
@@ -405,13 +405,13 @@
                   {
                     "$type": "bpmn:Process",
                     "id": "Process_A",
-                    "name": "Gestion 𐀀 ",
+                    "name": "Gestion 𐀀 ",
                     "isExecutable": false,
                     "flowElements": [
                       {
                         "$type": "bpmn:StartEvent",
                         "id": "Start_U",
-                        "name": "Situation A\nSituation B\r\nSituation C suite",
+                        "name": "Situation A\nSituation B\r\nSituation C suite",
                         "outgoing": [
                           "Flow_U1"
                         ]
@@ -419,7 +419,7 @@
                       {
                         "$type": "bpmn:Task",
                         "id": "Task_U",
-                        "name": "Contrôle final ",
+                        "name": "Contrôle final ",
                         "incoming": [
                           "Flow_U1"
                         ],
@@ -457,7 +457,7 @@
                       {
                         "$type": "bpmn:DataStoreReference",
                         "id": "DataStoreReference_U",
-                        "name": "Référence 📘",
+                        "name": "Référence 📘",
                         "dataStoreRef": "DataStore_U"
                       }
                     ],
@@ -474,7 +474,7 @@
                   {
                     "$type": "bpmn:DataStore",
                     "id": "DataStore_U",
-                    "name": "Registre 𐀀"
+                    "name": "Registre 𐀀"
                   },
                   {
                     "$type": "bpmn:Collaboration",
@@ -513,7 +513,7 @@
                   "targetId": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769"
                 }
               ],
-              "semanticRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688"
+              "semanticRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c"
             },
             "placements": [
               {
@@ -567,8 +567,8 @@
                   }
                 ]
               },
-              "inputRevision": "2f4b72e4103185c857615e29df196d88f7ebead1061cb5cffe122484bb66f78a",
-              "outputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+              "inputRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+              "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
               "entries": [
                 {
                   "code": "normalize/ensure",
@@ -725,8 +725,8 @@
               }
             ]
           },
-          "baseRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
-          "revision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+          "baseRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
+          "revision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
           "report": {
             "reportVersion": "2",
             "operation": "normalize",
@@ -768,8 +768,8 @@
                 }
               ]
             },
-            "inputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
-            "outputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+            "inputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
+            "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
             "entries": [],
             "rawStandardFindings": [],
             "idMap": [],
@@ -806,13 +806,13 @@
                   {
                     "$type": "bpmn:Process",
                     "id": "Process_A",
-                    "name": "Gestion 𐀀 ",
+                    "name": "Gestion 𐀀 ",
                     "isExecutable": false,
                     "flowElements": [
                       {
                         "$type": "bpmn:StartEvent",
                         "id": "Start_U",
-                        "name": "Situation A\nSituation B\r\nSituation C suite",
+                        "name": "Situation A\nSituation B\r\nSituation C suite",
                         "outgoing": [
                           "Flow_U1"
                         ]
@@ -820,7 +820,7 @@
                       {
                         "$type": "bpmn:Task",
                         "id": "Task_U",
-                        "name": "Contrôle final ",
+                        "name": "Contrôle final ",
                         "incoming": [
                           "Flow_U1"
                         ],
@@ -858,7 +858,7 @@
                       {
                         "$type": "bpmn:DataStoreReference",
                         "id": "DataStoreReference_U",
-                        "name": "Référence 📘",
+                        "name": "Référence 📘",
                         "dataStoreRef": "DataStore_U"
                       }
                     ],
@@ -875,7 +875,7 @@
                   {
                     "$type": "bpmn:DataStore",
                     "id": "DataStore_U",
-                    "name": "Registre 𐀀"
+                    "name": "Registre 𐀀"
                   },
                   {
                     "$type": "bpmn:Collaboration",
@@ -914,7 +914,7 @@
                   "targetId": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769"
                 }
               ],
-              "semanticRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688"
+              "semanticRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c"
             },
             "placements": [
               {
@@ -968,8 +968,8 @@
                   }
                 ]
               },
-              "inputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
-              "outputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+              "inputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
+              "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
               "entries": [],
               "rawStandardFindings": [],
               "idMap": [],
@@ -999,8 +999,8 @@
               }
             ]
           },
-          "baseRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
-          "revision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+          "baseRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
+          "revision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
           "report": {
             "reportVersion": "2",
             "operation": "normalize",
@@ -1042,8 +1042,8 @@
                 }
               ]
             },
-            "inputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
-            "outputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+            "inputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
+            "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
             "entries": [],
             "rawStandardFindings": [],
             "idMap": [],
@@ -1080,13 +1080,13 @@
                   {
                     "$type": "bpmn:Process",
                     "id": "Process_A",
-                    "name": "Gestion 𐀀 ",
+                    "name": "Gestion 𐀀 ",
                     "isExecutable": false,
                     "flowElements": [
                       {
                         "$type": "bpmn:StartEvent",
                         "id": "Start_U",
-                        "name": "Situation A\nSituation B\r\nSituation C suite",
+                        "name": "Situation A\nSituation B\r\nSituation C suite",
                         "outgoing": [
                           "Flow_U1"
                         ]
@@ -1094,7 +1094,7 @@
                       {
                         "$type": "bpmn:Task",
                         "id": "Task_U",
-                        "name": "Contrôle final ",
+                        "name": "Contrôle final ",
                         "incoming": [
                           "Flow_U1"
                         ],
@@ -1132,7 +1132,7 @@
                       {
                         "$type": "bpmn:DataStoreReference",
                         "id": "DataStoreReference_U",
-                        "name": "Référence 📘",
+                        "name": "Référence 📘",
                         "dataStoreRef": "DataStore_U"
                       }
                     ],
@@ -1149,7 +1149,7 @@
                   {
                     "$type": "bpmn:DataStore",
                     "id": "DataStore_U",
-                    "name": "Registre 𐀀"
+                    "name": "Registre 𐀀"
                   },
                   {
                     "$type": "bpmn:Collaboration",
@@ -1188,7 +1188,7 @@
                   "targetId": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769"
                 }
               ],
-              "semanticRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688"
+              "semanticRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c"
             },
             "placements": [
               {
@@ -1242,8 +1242,8 @@
                   }
                 ]
               },
-              "inputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
-              "outputRevision": "c0b1886f9611263daedb10a1ada375a309e3e06a426acdacc6ae742be9480688",
+              "inputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
+              "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
               "entries": [],
               "rawStandardFindings": [],
               "idMap": [],
