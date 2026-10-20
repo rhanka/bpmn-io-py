@@ -799,7 +799,7 @@ One row per sealed harness file (status summary: `ok xN` counts successful steps
 | Case | DESIGN clause | Witness | Expected |
 | --- | --- | --- | --- |
 | `compile-enum-duplicate-records` | §8.3 L655 | identical enum choice records (schema uniqueItems) | compile refused `profile-schema` |
-| `compile-enum-duplicate-values` | §2.4.1 L195 | enum choices share a JSON value under different names | compile refused `profile-ui-parameters` |
+| `compile-enum-duplicate-values` | §2.4.1 L195 | enum choices share a JSON value under different names | compile refused `profile-type` |
 | `compile-enum-empty-choices` | §8.3 L655 | enum widget without choices (schema) | compile refused `profile-schema` |
 | `compile-field-parameter-missing` | §8.3 L655; §2.4.1 L195 | mutable field map incomplete | compile refused `profile-ui-parameters` |
 | `compile-grid-l5-ok` | §2.4.1 L195; §8.3 L655; §10.1 L737 | every CR-10 rule satisfied (grid) | compile ok (payload unsealed); compiled identity |
@@ -814,7 +814,7 @@ One row per sealed harness file (status summary: `ok xN` counts successful steps
 | `compile-ui-label-unknown-message` | §2.4.1 L190 | UI label names an undefined message | compile refused `profile-symbol` |
 | `compile-ui-parameter-duplicate` | §2.4.1 L195; §8.3 L655 | UI map binds a parameter twice | compile refused `profile-ui-parameters` |
 | `compile-ui-parameter-missing` | §2.4.1 L195; §8.3 L655 | UI map omits a required recipe parameter | compile refused `profile-ui-parameters` |
-| `compile-ui-parameter-source-type` | §2.4.1 L195; §8.3 L655 | element parameter bound from source value | compile refused `profile-ui-parameters` |
+| `compile-ui-parameter-source-type` | §2.4.1 L195; §8.3 L655 | element parameter bound from source value | compile refused `profile-type` |
 | `compile-ui-parameter-unknown` | §2.4.1 L195; §8.3 L655 | UI map binds an undeclared parameter | compile refused `profile-ui-parameters` |
 | `compile-upstream-duplicate-across-entries` | §8.3 L659 | one upstream ID mapped by two entries | compile refused `profile-symbol` |
 | `compile-upstream-duplicate-within-entry` | §8.3 L659 | one upstream ID listed twice by one entry | compile refused `profile-symbol` |

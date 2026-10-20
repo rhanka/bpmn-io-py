@@ -1,7 +1,7 @@
 {
   "case": "compile-enum-duplicate-values",
   "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 unique JSON values even when choice names differ",
-  "derivation": "Two choices with different names share the JSON value One; schema uniqueItems accepts the distinct records and the compiler refuses profile-ui-parameters (the code used by the executable design checker for the same negative). Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
+  "derivation": "Two choices with different names share the JSON value One; schema uniqueItems accepts the distinct records and the compiler refuses profile-type. CR-10 arbitration (JS lot-5 commit ef9e781): L195 lists both codes without assigning the enum rule, §8.3 L655 names profile-ui-parameters only for missing or duplicated parameters, and the frozen lot-0 case s2b-cr10-enum-values and block A refuse profile-type. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
   "author": "spec-seal",
   "input": {
     "profile": {
@@ -28,7 +28,7 @@
   "expected": {
     "compile": {
       "status": "refused",
-      "code": "profile-ui-parameters",
+      "code": "profile-type",
       "diagnostics": []
     }
   },
