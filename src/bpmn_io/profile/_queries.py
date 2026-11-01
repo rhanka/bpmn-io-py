@@ -19,9 +19,9 @@ from bpmn_io.profile._commands import (
     build_stage_index,
     canonical_preorder,
     check_field_value,
-    evaluate_when,
     recognized_notions,
     resolve_reference_candidates,
+    when_result,
 )
 from bpmn_io.profile._evaluate import _eval_value, make_read_context
 from bpmn_io.profile._results import PureResult, pure_refused, pure_success
@@ -55,7 +55,7 @@ def _utf16(value: str) -> bytes:
     return value.encode("utf-16-be")
 
 
-def list_entries(
+def list_entries(  # noqa: C901, PLR0911 - one branch per listing outcome
     compiled: CompiledProfile,
     tree: dict[str, object],
     surface: object,
@@ -81,7 +81,10 @@ def list_entries(
     for entry in ui.entries:
         if entry.get("surface") != surface:
             continue
-        if not evaluate_when(compiled, tree, entry.get("when", {"op": "true"}), subject):
+        held = when_result(compiled, tree, entry.get("when", {"op": "true"}), subject)
+        if isinstance(held, str):
+            return pure_refused(held)
+        if not held:
             continue
         label_key = entry.get("label")
         key = label_key if isinstance(label_key, str) else ""
@@ -121,11 +124,16 @@ def _read_field_state(  # noqa: PLR0913, PLR0917 - field record inputs are fixed
     notion_id: str,
     field_entry: dict[str, object],
     locale: str,
-) -> dict[str, object] | None:
-    """Build one field record, or None when the field is hidden."""
-    if not evaluate_when(compiled, tree, field_entry.get("visible", {"op": "true"}), target):
+) -> dict[str, object] | str | None:
+    """Build one field record, None when hidden, or a refusal code string."""
+    shown = when_result(compiled, tree, field_entry.get("visible", {"op": "true"}), target)
+    if isinstance(shown, str):
+        return shown
+    if not shown:
         return None
-    mutable = evaluate_when(compiled, tree, field_entry.get("mutable", {"op": "true"}), target)
+    mutable = when_result(compiled, tree, field_entry.get("mutable", {"op": "true"}), target)
+    if isinstance(mutable, str):
+        return mutable
     path = field_entry.get("path")
     present = False
     stored: object = None
@@ -161,7 +169,10 @@ def _read_field_state(  # noqa: PLR0913, PLR0917 - field record inputs are fixed
         "targetTypes": copy.deepcopy(field_entry.get("targetTypes") or []),
     }
     if present:
-        record["display"] = _display_value(tree, target, field_entry.get("display"), stored)
+        try:
+            record["display"] = _display_value(tree, target, field_entry.get("display"), stored)
+        except CommandError as exc:
+            return exc.code
         record["value"] = copy.deepcopy(stored)
     return record
 
@@ -172,14 +183,24 @@ def _display_value(
     display_ast: object,
     stored: object,
 ) -> object:
-    """Evaluate one field display value, falling back to storage."""
+    """Evaluate one field display value.
+
+    Without a display the display is the raw stored value. A refused
+    evaluation stays refused with the evaluator's original code instead
+    of falling back to the raw value.
+    """
     if display_ast is None:
         return stored
     try:
         context = make_read_context(tree)
         return _eval_value(display_ast, context, {"root": tree, "self": target, "params": {}})
-    except Exception:  # noqa: BLE001 - display falls back to storage
-        return stored
+    except CommandError:
+        raise
+    except (ValueError, TypeError) as exc:
+        raise CommandError(str(exc.args[0]) if exc.args else "profile-type") from exc
+    except Exception as exc:
+        code = "profile-type"
+        raise CommandError(code) from exc
 
 
 def list_fields(
@@ -203,11 +224,12 @@ def list_fields(
         return pure_refused(exc.code)
     fields: list[dict[str, object]] = []
     for notion_id in recognized_notions(compiled, tree, target):
-        records = (
-            _read_field_state(compiled, tree, ui, target, notion_id, field_entry, locale)
-            for field_entry in ui.notion_fields.get(notion_id, ())
-        )
-        fields.extend(record for record in records if record is not None)
+        for field_entry in ui.notion_fields.get(notion_id, ()):
+            record = _read_field_state(compiled, tree, ui, target, notion_id, field_entry, locale)
+            if isinstance(record, str):
+                return pure_refused(record)
+            if record is not None:
+                fields.append(record)
     return pure_success({"targetId": target_id, "fields": fields})
 
 
@@ -280,7 +302,10 @@ def check_field(
         )
     except CommandError as exc:
         return pure_refused(exc.code)
-    if recipe is None or not _field_editable(compiled, tree, target, field_entry):
+    editable = _field_editable(compiled, tree, target, field_entry) if recipe is not None else False
+    if isinstance(editable, str):
+        return _invalid_outcome(field_entry, editable)
+    if recipe is None or not editable:
         return _invalid_outcome(field_entry, "profile-producer")
     try:
         check_field_value(index, field_entry, recipe, target_id, value)
@@ -342,7 +367,10 @@ def query_references(  # noqa: PLR0913, PLR0917 - reference query inputs are fix
         return pure_refused(exc.code)
     if field_entry.get("widget") != "reference":
         return pure_refused("profile-type")
-    if not _field_editable(compiled, tree, target, field_entry):
+    editable = _field_editable(compiled, tree, target, field_entry)
+    if isinstance(editable, str):
+        return pure_refused(editable)
+    if not editable:
         return pure_success({"candidates": []})
     wanted = _string_list(field_entry.get("targetTypes"))
     candidates = resolve_reference_candidates(tree, index, target_str, wanted, query_str)

@@ -235,7 +235,7 @@ def test_b2_inverse_reference_admits_referring_type() -> None:
 
 
 def test_b2_inverse_reference_unknown_property_refuses() -> None:
-    """``inverseReference`` over a property no type declares still refuses (B2)."""
+    """``inverseReference`` over a property no type declares still refuses (B2, G6)."""
     from bpmn_io.profile import compile_profile
 
     def _mutate(rule: dict[str, Any]) -> dict[str, Any]:
@@ -250,7 +250,8 @@ def test_b2_inverse_reference_unknown_property_refuses() -> None:
 
     compiled = compile_profile(_load(_rule_profile(_mutate)), descriptor_context=_neutral_context())
     assert compiled.status == "refused", compiled
-    assert compiled.code == "profile-type"  # type: ignore[union-attr]
+    # G6: a scalar or unknown property is profile-selector-property (DESIGN L119).
+    assert compiled.code == "profile-selector-property"  # type: ignore[union-attr]
 
 
 def _ensure_recipe() -> dict[str, Any]:

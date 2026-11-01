@@ -138,13 +138,27 @@ class _Run:
             self.observer(name)
 
     def refuse(self, code: str) -> ResultRefused:
-        """Refuse with the §3.4 record: lint findings so far, no change entries."""
+        """Refuse with the merged canonical entries accumulated so far.
+
+        Late refusals merge the draft/accept entries with every bucket
+        accumulated before the failure point (complete, lint, normalize,
+        render, map); the merged list is sorted into canonical report
+        order with exact duplicates removed before it is returned.
+        """
         return refused_result(
             _PREPARE_OPERATION,
             code,
             self.echo_identity,
             self.echo_revision,
-            sort_report_entries(self.lint_entries),
+            sort_report_entries(
+                [
+                    *self.c_entries,
+                    *self.lint_entries,
+                    *self.n_entries,
+                    *self.r_entries,
+                    *self.export_entries,
+                ]
+            ),
         )
 
 
@@ -224,6 +238,7 @@ def _run_complete(run: _Run) -> str | None:
     lot3_complete = _lot3_function("_cn_complete", "complete")
     result = lot3_complete(run.compiled, run.staged, "retained", activation="edit")
     if isinstance(result, ResultRefused):
+        run.c_entries = _take_entries(result.report.entries)
         return result.code
     if isinstance(result.payload, dict):
         run.staged = _copy(result.payload)
@@ -378,6 +393,7 @@ def _run_normalize(run: _Run) -> str | None:
     lot3_normalize = _lot3_function("_cn_normalize", "normalize")
     result = lot3_normalize(run.compiled, run.staged, None, activation="edit")
     if isinstance(result, ResultRefused):
+        run.n_entries = _take_entries(result.report.entries)
         return result.code
     payload = result.payload if isinstance(result.payload, dict) else {}
     envelope_value = payload.get("envelope")
@@ -661,6 +677,7 @@ def _run_render(run: _Run) -> str | None:
         _copy(run.options.get("diStyles")) if run.options is not None else {},
     )
     if isinstance(result, ResultRefused):
+        run.r_entries = _take_entries(result.report.entries)
         return result.code
     run.render = _copy(result.payload)
     run.r_entries = _take_entries(result.report.entries)
@@ -672,6 +689,7 @@ def _run_map(run: _Run) -> str | None:
     run.observe("map")
     result = map_export(run.compiled, run.staged, _copy(run.layout), _copy(run.render), run.format)
     if isinstance(result, ResultRefused):
+        run.export_entries = _take_entries(result.report.entries)
         return result.code
     if isinstance(result.payload, dict):
         run.prepared = _copy(result.payload)

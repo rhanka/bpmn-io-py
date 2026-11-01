@@ -207,13 +207,33 @@ restore stored states, DESIGN L641). The `applyCommands` report is composed by
 
 `activate_business_profile` requires a loaded envelope. The descriptor pins of
 the bridge context (`{id, version, sha256}` of each package) must equal the
-compiled profile descriptor pins, otherwise `descriptor-mismatch` (DESIGN L617).
-The envelope `profileIdentity` must equal the compiled identity; a difference
-is decided by the §3.3 matrix (`check_compatibility`) and never migrates
-silently (L615). A non-null `explicit_migration_plan` is the migration lot's
-contract and is refused `operation-error` until that lot binds it. Success runs
-no C/N and no lint, clears history, increments the session-local `historyEpoch`
-(excluded from parity, DESIGN §3.1 L268) and emits no change event.
+compiled profile descriptor pins in order, otherwise `descriptor-mismatch`
+(DESIGN L617; the JS digest is order-sensitive, so a reordered pin list
+refuses). The envelope `profileIdentity` must equal the compiled identity
+exactly, order included; a difference is decided by the §9.1 order
+(`check_compatibility` J1-J21, `src/profile/compatibility.ts:38-76`, with the
+library runtime mechanisms `["1"]` and schemas `["1.0.0"]`, no required
+capabilities or assets), each with its exact code, and never migrates silently
+(L615). The matrix descriptor row compares by canonical equality exactly
+as the JS digest does, so an order-only descriptor difference refuses
+`descriptor-mismatch` at the J13 position before the version rows ever run
+(R1-07, R2-01). A profile compiled without descriptor metadata carries its
+native-domain `(via, property)` traversals; activation qualifies only those
+with the bridge types and the compiled `ref_fields`, mirroring the JS compile
+with those descriptors (`src/profile/compiler-static.ts:151-195`,
+`src/profile/lot5-canvas.ts:282-325`): only a descriptor reference of some
+bridge type or a base-declared ID-valued scalar reference is admitted
+(R2-02; occurrence sites are never recorded, R1-08 stays for native sites).
+Once such an activation succeeds, the stored profile carries the bridge type
+index so runtime contexts apply the same per-handle qualification the JS canvas
+view applies with the canvas descriptor types. Fail-open stays only when
+neither side knows the types. The `explicit_migration_plan` argument is void: the gate code
+refuses even when a plan is supplied, and a plan, token or flag argument alone
+— including `false` — never counts as migration (JS block-B review J1, with H1
+and G1 as context). Success only on exact identity match in every dimension
+runs no C/N and no lint, clears history, increments the session-local
+`historyEpoch` (excluded from parity, DESIGN §3.1 L268) and emits no change
+event.
 
 ### 4.2 Surfaces and authorization (DESIGN §8.3 L649, L659)
 
@@ -221,7 +241,24 @@ no C/N and no lint, clears history, increments the session-local `historyEpoch`
   its `when` predicate is true with bindings `root` and `self` = subject; the
   same evaluation serves both, and a programmatic call of an entry whose `when`
   is false refuses `profile-producer` (harmonization C7; L649 makes this
-  evaluation the security/producer boundary).
+  evaluation the security/producer boundary). A `when` refusal outside notion
+  recognition keeps the evaluator's original code instead: a programmatic call
+  refuses with that code, and `list_entries` refuses the listing with that code
+  rather than skipping the entry (JS block-B review J6: non-match conversion
+  stays only at the recognition sites). A refused notion recognition itself is
+  a non-match shared by lint, UI and export (JS block-B review G4). The
+  outer `recognizes` binding resolves before that boundary: a missing outer
+  binding refuses `profile-symbol`, never a non-match (R1-05). An `id` value
+  with a missing binding likewise refuses `profile-symbol` (R1-06). At every
+  notion-recognition site (layout, theme resolution, UI, lint and export notion
+  matching) the recognition body is evaluated as a whole and any refusal of it,
+  whatever its code, is a non-match; nothing propagates. The outer/inner split
+  exists only for the `recognizes` operator inside another predicate: its binding
+  and notion symbol are outer (`profile-symbol` propagates to the enclosing
+  evaluation), the referenced recognition body is inner (refusal → false); inside
+  a recognition body that outer refusal is itself a non-match at the site
+  (R1-05, R1-09, R2-03; `src/profile/compiler.ts:1085-1103`,
+  `src/profile/lot4-render.ts:547-548`, `src/profile/lot5-eval.ts:83-87`).
 - `list_entries` keeps the entries of one surface (one of the eight schema
   surfaces, otherwise `profile-type`) whose `when` holds, groups them in the
   order of first appearance of each group in the profile `ui` array, omits
@@ -271,12 +308,17 @@ no C/N and no lint, clears history, increments the session-local `historyEpoch`
 - A hidden field (`visible` false), an immutable field (`mutable` false), a
   readonly widget or a field without command refuses `profile-producer` on
   edit (harmonization C7); `check_field` reports the same code with `valid:
-  false`.
+  false`. A `visible`/`mutable` refusal outside notion recognition keeps the
+  evaluator's original code instead, on edit and in `check_field`
+  (`valid: false` with that code); `list_fields` refuses the listing with that
+  code rather than hiding the field (JS block-B review J6).
 - `display` is the field `display` Value when declared (for example
   `stripPrefix`, `case`), otherwise the raw stored value; `value` is always the
-  raw stored value (harmonization B18). Neither writes storage. The edit recipe
-  restores the configured marker exactly once (`concat` of the literal marker
-  and the submitted body).
+  raw stored value (harmonization B18). Neither writes storage. A refused
+  `display` evaluation refuses `list_fields` with the evaluator's original
+  code instead of falling back to the raw value (JS block-B review J6c). The
+  edit recipe restores the configured marker exactly once (`concat` of the
+  literal marker and the submitted body).
 - The empty string is stored as an explicit empty string; omitting `value`
   refuses `profile-ui-parameters`. Clearing an optional single-valued reference
   is an explicit remove-reference command (an entry whose recipe uses `assignRef`
@@ -313,7 +355,9 @@ no C/N and no lint, clears history, increments the session-local `historyEpoch`
 - Arguments: `query` is a string; `offset` and `limit` are safe nonnegative
   integers (not Booleans, not fractional), otherwise `profile-bounds`.
 - The field must be a `reference` widget (`profile-type` otherwise). If it is not
-  visible or not mutable for `target`, `candidates` is empty.
+  visible or not mutable for `target`, `candidates` is empty; a
+  `visible`/`mutable` refusal outside notion recognition refuses the query
+  with the evaluator's original code instead (JS block-B review J6).
 - Candidates are ID-bearing elements whose `$type` is in `targetTypes` and that
   satisfy effective reference ownership: a root element of Definitions is
   admitted for any target; any other candidate must share the nearest Process
@@ -447,7 +491,7 @@ names compare exactly: no case folding, no BCP 47 truncation.
 | --- | --- |
 | every bridge method | disposed → `canvas-disposed`; then (mutating entries) guard held → `transaction-reentrant`; then no envelope → `document-not-loaded` |
 | `apply_commands` | §4.8 steps 1–12; per command (a)–(i) below |
-| `activate_business_profile` | `descriptor-mismatch`; identity → §3.3 code; plan → `operation-error` |
+| `activate_business_profile` | `descriptor-mismatch`; identity → §3.3 code in row order (plan void, never migration) |
 | `undo`, `redo` | stale → `operation-error`; nothing to restore → `operation-error` |
 | `list_entries` | stale → `operation-error`; surface → `profile-type`; subject → `reference-dangling` |
 | `list_fields` | stale → `operation-error`; target → `reference-dangling` |
@@ -470,7 +514,8 @@ Per command of `apply_commands`, first failure wins:
 - (e) handles: non-string → `profile-type`, absent from the stage →
   `reference-dangling`; field target not recognized as the notion → `profile-type`;
 - (f) authorization (`ui.when`, field visibility/mutability/readonly/command) →
-  `profile-producer`;
+  `profile-producer` on denial, or the evaluator's original code when the
+  predicate refuses outside notion recognition;
 - (g) value typing and widget rules → `profile-type` or `reference-dangling`;
 - (h) paste fragment → `profile-type`, `reference-dangling` or `id-collision`;
 - (i) recipe execution on the stage (lot-3 `plan_recipe`/`apply_plan`) → its
@@ -503,6 +548,32 @@ ef9e781).
    (the DESIGN calls missing fallback text a compiler error without a code).
 5. UI labels, field labels and messages, icon themes and glyphs, UI and field
    recipes exist → `profile-symbol` (CR-05).
+6. A `reference`/`inverseReference` traversal property must be a reference
+   traversal property: a descriptor reference property anywhere in the index,
+   or a base-declared ID-valued scalar reference (DESIGN L119, §2.2); a scalar
+   or unknown property refuses `profile-selector-property`, never an empty
+   selection (JS block-B review G6). Compilation admits a property declared
+   on any native type for a heterogeneous base; evaluation then decides per
+   handle type: a handle whose own type declares the property as a scalar
+   without ID-reference qualification refuses `profile-selector-property`,
+   a handle whose type lacks the property is skipped, and only
+   reference-qualified handles resolve (R1-02). Inverse traversal admits
+   descriptor references only: a base-qualified ID scalar refers forward
+   but never counts as a referrer (R1-10). Reference-family typing
+   (`src/profile/compiler-static.ts:156`, `:176-195`): `inverseReference` from
+   a render, page or occurrence binding refuses `profile-type`; a missing,
+   non-string or empty property refuses `profile-selector-property`; `reference`
+   from an occurrence binding is admitted only at export location for
+   `sourceOccurrence`/`targetOccurrence` with order `page-occurrence` (else
+   `profile-selector-property`, then `profile-selector-order`); `reference` from
+   a page or render binding refuses `profile-selector-property`; a native
+   reference/inverseReference is admitted as a descriptor reference or a
+   base-declared ID scalar (then order `id`, else `profile-selector-order`),
+   recording `(via, property)` for activation, and the property check precedes
+   the order check (R2-04). A profile compiled without descriptor metadata
+   carries its native-domain traversals for activation, and the stored profile
+   carries the bridge type index for every later runtime context; fail-open
+   stays only when neither side knows the types (R1-03, R1-08, R2-02).
 
 Writing an existing ID stays a CR-06 `profile-producer` refusal (DESIGN §2.4
 L165, §2.4.1 L206). A compile success is compared as the `PureResult` success
@@ -1084,8 +1155,14 @@ status summary counts the results of the twin, compile outcome or trace).
 - `rawStandardFindings` record shape where standard rules run (unsealed
   `raw-lint-transport`); `repairable` pre-normalize errors continued by N with a
   `corrected` disposition (no fixture rule is classified `repairable`).
-- Activation or load with a different profile identity (§3.3 corpus), the import
-  lint stage at load and explicit migration plans (migration lot).
+- Load with a different profile identity (§3.3 corpus), the import lint stage
+  at load and explicit migration plans (migration lot; the activation plan
+  argument is void, §4.1). Live-canvas gesture predicates
+  (`canConnect`/`canDirectEdit`/implicit delete-paste-cut entry lookup),
+  upstream enablement listings and autosave have no headless surface: the
+  command, field and listing paths of §4.2/§4.4/§4.6 propagate the original
+  refusal code, and no gesture, entry-lookup or autosave helper exists to
+  mirror (JS block-B review J6 family N-A).
 - Internal items with native data associations and ports, reference↔item
   conversion of DataObjectReference, multiple-reference sharing (§8.3 L651,
   §4.4); external-call encoding (OPEN-EXTERNAL).

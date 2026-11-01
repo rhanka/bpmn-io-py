@@ -21,6 +21,7 @@ from bpmn_io.profile._evaluate import (
     evaluate_value,
     is_missing,
     make_read_context,
+    reference_property_names,
     select,
 )
 from bpmn_io.profile._export_ir import _REQUIRED_FIELDS, plan_ids
@@ -37,6 +38,7 @@ from bpmn_io.profile._results import (
     refused_result,
     report_with_header,
     sort_id_map,
+    sort_report_entries,
     worst_capability,
 )
 
@@ -329,7 +331,7 @@ def _eval_step_value(
     """Evaluate one field value (value, refusal code)."""
     result = evaluate_value(ast, run.context, bindings)
     if isinstance(result, PureRefused):
-        return None, "render-stale"
+        return None, str(result.code)
     return result.payload, None
 
 
@@ -487,15 +489,13 @@ def _plan_loss_step(
 
 
 def _plan_iteration(run: _ExportRun, recipe: dict[str, Json], handle: object) -> str | None:
-    """Plan one recipe iteration over its steps (refusal code or None)."""
+    """Plan one recipe iteration over its steps (refusal code or None).
+
+    An export recipe ``when`` is never evaluated (``lot4-export.ts:370-394``;
+    only capability ``when`` gates); the iteration always runs the steps.
+    """
     run.iteration += 1
     bindings = _iteration_bindings(run, handle)
-    when = recipe.get("when", {"op": "true"})
-    decided = evaluate_predicate(when, run.context, bindings)
-    if isinstance(decided, PureRefused):
-        return "render-stale"
-    if decided.payload is not True:
-        return None
     recipe_id = str(recipe.get("id"))
     for step in recipe.get("steps", []):
         code = _plan_step(run, recipe_id, step, bindings, handle)
@@ -531,7 +531,7 @@ def _plan_recipe(run: _ExportRun, recipe: dict[str, Json]) -> str | None:
     """Plan one export recipe over its selector results."""
     result = select(recipe.get("select"), run.context, {"root": run.tree, "render": run.render})
     if isinstance(result, PureRefused):
-        return "render-stale"
+        return str(result.code)
     if not isinstance(result.payload, list):
         return "render-stale"
     for item in result.payload:
@@ -563,12 +563,14 @@ def _resolve_bind(
     return None
 
 
-def _select_bound(
+def _select_bound(  # noqa: PLR0911 - one return per selection outcome
     run: _ExportRun, step: dict[str, Json], bindings: dict[str, object]
 ) -> tuple[list[Any] | None, str | None]:
     """Select one bind's handles with fallbacks (handles, code)."""
     result = select(step.get("select"), run.context, dict(bindings))
-    if isinstance(result, PureRefused) or not isinstance(result.payload, list):
+    if isinstance(result, PureRefused):
+        return None, str(result.code)
+    if not isinstance(result.payload, list):
         return None, "render-stale"
     handles = list(result.payload)
     if handles or step.get("cardinality") != "first":
@@ -578,7 +580,9 @@ def _select_bound(
         return handles, None
     for entry in fallbacks:
         fallback = select(entry, run.context, dict(bindings))
-        if isinstance(fallback, PureRefused) or not isinstance(fallback.payload, list):
+        if isinstance(fallback, PureRefused):
+            return None, str(fallback.code)
+        if not isinstance(fallback.payload, list):
             return None, "render-stale"
         handles = list(fallback.payload)
         if handles:
@@ -593,7 +597,9 @@ def _check_capability(run: _ExportRun) -> tuple[str, str | None]:
         record for record in run.render.get("occurrences", []) if isinstance(record, dict)
     ]
     for occurrence in occurrences:
-        _check_occurrence_capability(run, occurrence, classes)
+        code = _check_occurrence_capability(run, occurrence, classes)
+        if code is not None:
+            return "structural", code
     if any(outcome not in CAPABILITY_ORDER for outcome in classes):
         return "structural", "render-stale"
     capability = worst_capability([*classes, "structural"])
@@ -604,7 +610,7 @@ def _check_capability(run: _ExportRun) -> tuple[str, str | None]:
 
 def _check_occurrence_capability(
     run: _ExportRun, occurrence: dict[str, Json], classes: list[str]
-) -> None:
+) -> str | None:
     """Evaluate capability records for one occurrence, collecting losses."""
     bindings = _iteration_bindings(run, occurrence)
     for record in run.export.get("capabilities", []):
@@ -612,7 +618,10 @@ def _check_occurrence_capability(
             continue
         decided = evaluate_predicate(record.get("when"), run.context, bindings)
         if isinstance(decided, PureRefused):
-            continue
+            # A refused element recognition is already a non-match from the
+            # shared evaluator boundary. Any other evaluation error
+            # propagates to the refusing caller instead of skipping.
+            return str(decided.code)
         if decided.payload is not True:
             continue
         outcome = record.get("class")
@@ -620,6 +629,7 @@ def _check_occurrence_capability(
             continue
         classes.append(outcome)
         _append_capability_losses(run, occurrence, record)
+    return None
 
 
 def _append_capability_losses(
@@ -1023,16 +1033,17 @@ def _map_finished(
     identity = copy.deepcopy(echo_identity) if echo_identity is not None else {}
     revision = echo_revision or ""
     sorted_map = sort_id_map(id_map)
+    merged = sort_report_entries(run.entries)
     artifacts: list[dict[str, Json]] = [
         {
             "format": str(format),
             "capability": capability,
             "digest": digest(ir),
-            "entryIndexes": list(range(len(run.entries))),
+            "entryIndexes": list(range(len(merged))),
         }
     ]
     report = report_with_header(
-        "mapExport", identity, revision, entries=run.entries, id_map=sorted_map, artifacts=artifacts
+        "mapExport", identity, revision, entries=merged, id_map=sorted_map, artifacts=artifacts
     )
     payload: dict[str, Json] = {
         "format": str(format),
@@ -1113,7 +1124,15 @@ def _map_planned(  # noqa: PLR0913, PLR0917 - support threading matches map_expo
         return None, None, "export-format-unsupported"
     run.adapter = adapter
     notions = getattr(compiled, "notions", None)
-    run.context = make_read_context(tree, notions=notions if isinstance(notions, dict) else {})
+    _types = getattr(compiled, "types", None)
+    _refs = getattr(compiled, "ref_fields", None)
+    run.context = make_read_context(
+        tree,
+        notions=notions if isinstance(notions, dict) else {},
+        reference_properties=reference_property_names(_types, _refs),
+        types=_types if isinstance(_types, dict) else None,
+        ref_fields=_refs,
+    )
     # Support bindings drive boundRole recognition (e.g. the band notion);
     # attach the wire bindings like the render read context does.
     support_entries = support if isinstance(support, list) else []

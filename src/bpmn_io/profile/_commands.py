@@ -39,6 +39,7 @@ __all__ = [
     "replacement_rows",
     "resolve_field",
     "resolve_reference_candidates",
+    "when_result",
 ]
 
 #: Surfaces whose subject is each context member (binding spec section 3.1).
@@ -188,12 +189,24 @@ def _notions(compiled: CompiledProfile) -> dict[str, dict[str, object]]:
 
 def _read_context_for(tree: dict[str, object], compiled: CompiledProfile) -> ReadContext:
     """Build one read-only evaluation context over a stage tree."""
+    from bpmn_io.profile._evaluate import (  # noqa: PLC0415 - lazy, keeps import light
+        reference_property_names,
+    )
+
     recognition = {
         notion_id: info.get("recognition")
         for notion_id, info in _notions(compiled).items()
         if isinstance(info, dict)
     }
-    return make_read_context(tree, notions=recognition)
+    types = getattr(compiled, "types", None)
+    ref_fields = getattr(compiled, "ref_fields", None)
+    return make_read_context(
+        tree,
+        notions=recognition,
+        reference_properties=reference_property_names(types, ref_fields),
+        types=types if isinstance(types, dict) else None,
+        ref_fields=ref_fields,
+    )
 
 
 def evaluate_when(
@@ -203,11 +216,29 @@ def evaluate_when(
     subject: dict[str, object],
 ) -> bool:
     """Evaluate one ``ui.when`` predicate with ``root``/``self`` bindings."""
+    held = when_result(compiled, tree, predicate, subject)
+    return held is True
+
+
+def when_result(
+    compiled: CompiledProfile,
+    tree: dict[str, object],
+    predicate: object,
+    subject: dict[str, object],
+) -> bool | str:
+    """Evaluate one predicate without the recognition non-match conversion.
+
+    An absent predicate holds, ``False`` stays false, and a refusal outside
+    notion recognition returns the evaluator's original code so command,
+    field and listing paths propagate it instead of denying.
+    """
+    if predicate is None:
+        return True
     context = _read_context_for(tree, compiled)
     outcome = evaluate_predicate(predicate, context, {"root": tree, "self": subject})
     if isinstance(outcome, PureSuccess):
         return outcome.payload is True
-    return False
+    return str(outcome.code)
 
 
 def recognized_notions(
@@ -582,7 +613,10 @@ def _prepare_surface(
     subject_id = context.get(subject_key)
     if not isinstance(subject_id, str):  # pragma: no cover - checked above
         raise CommandError("profile-type")  # noqa: EM101
-    if not evaluate_when(compiled, tree, entry.get("when", {"op": "true"}), subject):
+    held = when_result(compiled, tree, entry.get("when", {"op": "true"}), subject)
+    if isinstance(held, str):
+        raise CommandError(held)
+    if not held:
         raise CommandError("profile-producer")  # noqa: EM101
     _surface_values(bound, _recipe_param_types(recipe), context)
     if surface == "paste":
@@ -626,7 +660,10 @@ def _prepare_field(
     if notion_id not in recognized_notions(compiled, tree, target):
         raise CommandError("profile-type")  # noqa: EM101
     # Check (f): visible, mutable, commanded, writable widget.
-    if not _field_editable(compiled, tree, target, field_entry):
+    editable = _field_editable(compiled, tree, target, field_entry)
+    if isinstance(editable, str):
+        raise CommandError(editable)
+    if not editable:
         raise CommandError("profile-producer")  # noqa: EM101
     # Check (g): value typing and widget rules, revalidated at commit.
     if "value" not in context:
@@ -648,15 +685,22 @@ def _field_editable(
     tree: dict[str, object],
     target: dict[str, object],
     field_entry: dict[str, object],
-) -> bool:
-    """Return whether one field accepts an edit on a target right now."""
+) -> bool | str:
+    """Return whether one field accepts an edit on a target right now.
+
+    Returns the evaluator's original refusal code when the visibility or
+    mutability predicate refuses outside notion recognition.
+    """
     if field_entry.get("command") is None:
         return False
     if field_entry.get("widget") == "readonly":
         return False
-    if not evaluate_when(compiled, tree, field_entry.get("visible", {"op": "true"}), target):
+    shown = when_result(compiled, tree, field_entry.get("visible", {"op": "true"}), target)
+    if isinstance(shown, str):
+        return shown
+    if not shown:
         return False
-    return evaluate_when(compiled, tree, field_entry.get("mutable", {"op": "true"}), target)
+    return when_result(compiled, tree, field_entry.get("mutable", {"op": "true"}), target)
 
 
 def _bind_params(bound: dict[str, str], context: dict[str, object]) -> dict[str, object]:

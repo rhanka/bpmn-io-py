@@ -183,8 +183,8 @@ def test_ensure_registers_its_alias_for_later_steps() -> None:
     assert result.status == "ok", result.to_json()
 
 
-def test_capability_when_sees_render_page_and_semantic() -> None:
-    """A capability predicate may read the render, page and semantic bindings."""
+def test_capability_when_without_render_bindings_refuses_symbol() -> None:
+    """A capability predicate without render bindings refuses profile-symbol."""
     profile = profile_from_ref({"base": "neutral-profile.json", "patch": []})
     capability = {
         "when": {
@@ -203,4 +203,5 @@ def test_capability_when_sees_render_page_and_semantic() -> None:
     }
     profile["exports"][0]["capabilities"].append(capability)
     result, _, _ = compile_profile_doc(copy.deepcopy(profile))
-    assert result.status == "ok", result.to_json()
+    assert result.status == "refused", result.to_json()
+    assert result.code == "profile-symbol", result.to_json()

@@ -20,7 +20,7 @@ from bpmn_io.profile._envelope import (
     check_envelope_shape,
 )
 from bpmn_io.profile._evaluate import ReadContext as _BaseReadContext
-from bpmn_io.profile._evaluate import make_read_context
+from bpmn_io.profile._evaluate import make_read_context, reference_property_names
 from bpmn_io.profile._results import (
     PureResult,
     Report,
@@ -538,7 +538,15 @@ def context_from_snapshot(  # noqa: PLR0913 - snapshot parts travel together
     if compiled.types is None or compiled.producers is None:
         return "descriptor-mismatch"
     notions: dict[str, object] = {key: dict(value) for key, value in compiled.notions.items()}
-    base = make_read_context(tree, stage=stage, notions=notions)
+    _refs = getattr(compiled, "ref_fields", None)
+    base = make_read_context(
+        tree,
+        stage=stage,
+        notions=notions,
+        reference_properties=reference_property_names(compiled.types, _refs),
+        types=compiled.types,
+        ref_fields=_refs,
+    )
     index = build_tree_index(tree)
     return ReadContext(
         root=base.root,
@@ -548,6 +556,9 @@ def context_from_snapshot(  # noqa: PLR0913 - snapshot parts travel together
         stage=stage,
         notions=dict(base.notions),
         parents=dict(base.parents),
+        reference_properties=base.reference_properties,
+        types=base.types,
+        ref_fields=base.ref_fields,
         compiled=compiled,
         identity=copy.deepcopy(identity),
         descriptor_types=copy.deepcopy(compiled.types),

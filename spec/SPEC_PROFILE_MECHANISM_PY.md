@@ -348,31 +348,35 @@ Identity/graph: `id-collision`, `descriptor-role-unknown`,
 
 ### 9.1 Compatibility decision binding (DESIGN §3.3, R3.3)
 
-`check_compatibility` applies the DESIGN §3.3 rows in order (DESIGN.md R3.3
-lines 294–324, changelog §15.5) before C/N/theme/export or edit, and returns
+`check_compatibility` applies the J1-J21 order (`src/profile/compatibility.ts:38-76`,
+DESIGN §3.3, changelog §15.5) before C/N/theme/export or edit, and returns
 exactly one verdict: `{status: "ok"}` or `{status: "refused", code?}` with `code`
 from the 20-code registry when present. Its inputs carry the envelope
 `document_version` and the host, snapshot and document identities that the
-first rows decide on (lines 302–304), alongside the runtime, the injected and
+first rows decide on, alongside the runtime, the injected and
 document profile identities, source availability, the selected migration, the
-required capabilities/assets and envelope validity. Source-dependent remedies (P1, lines 298–299): at the
-first applicable row whose only remedies need the exact source package or a
-source-validated migration — mechanism-differ, schema-differ,
-base/descriptor-mismatch, business-ID/major-mismatch, patch/minor rows — an
-unknown D version/digest or an unavailable source yields
-`profile-source-unavailable`, never a latest fallback. Schema axis (P2, lines
-305–310): `profile-schema-version` fires only for an injected P schema
-unsupported by R; a D schema unsupported by R refuses with
-`document-schema-unsupported`; supported but unequal P/D schemas require the
-exact source path or an explicit migration
+required capabilities/assets and envelope validity. A present `documentVersion`
+other than `"1"` refuses `document-version-unsupported` (J1); an absent
+`documentVersion` (or an absent document identity) refuses
+`profile-metadata-missing` (J2). J3, J12, J13 and J20 compare by canonical
+(profile-c14n/2) equality. Source-dependent remedies (P1): an unknown P or D
+version (not a release triplet) or digest, or a source package not
+`known-and-available`, yields `profile-source-unavailable` at the first
+applicable source-dependent row (mechanism-differ, schema-differ,
+base/descriptor-mismatch, business-ID/major-mismatch, patch/minor rows);
+either version unknown refuses `profile-source-unavailable` unconditionally
+right after the descriptor row (J14). Schema axis (P2): `profile-schema-version`
+fires only for an injected P schema unsupported by R; a D schema unsupported by
+R refuses with `document-schema-unsupported`; supported but unequal P/D schemas
+require the exact source path or an explicit migration
 (`profile-schema-migration-required`, subject to P1), placed immediately after
 the mechanism-differ row. A known same-version unequal digest refuses
 `profile-digest-mismatch` (no migration waiver, no P1 override); missing
 capability/asset keeps its ordered `profile-capability` /
 `profile-resource-missing` diagnostic. Row order governs every reading: earlier
 identity/version conflicts precede source availability, and an otherwise exact
-but invalid envelope stays a bare refusal with no new code (verdict-schema
-`$comment`).
+but invalid envelope stays a bare refusal with no new code unless the envelope
+is valid **and** `P` equals `D` canonically (J20; verdict-schema `$comment`).
 
 ## 10. Open points for lots 1–2 (not decided here)
 

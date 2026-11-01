@@ -26,6 +26,7 @@ __all__ = [
     "RegistrySet",
     "compile_profile",
     "create_descriptor_context",
+    "reference_admitted",
 ]
 
 _VALUE_OPS = frozenset(
@@ -200,6 +201,9 @@ class CompiledProfile:
     # Lot 5 extension (CR-10): compiled UI/field/message index, attached
     # between CR-09 and CR-11; None when the profile carries no UI section.
     ui: UiIndex | None = None
+    # Block-B R2-02: native-domain (via, property) pairs admitted at compile
+    # time; occurrence sites are never recorded (compiler-static.ts:177-179).
+    native_traversals: frozenset[tuple[str, str]] = frozenset()
 
 
 @dataclass
@@ -214,6 +218,7 @@ class _Scope:
     producers: dict[tuple[str, str], frozenset[str]] | None
     ref_fields: set[tuple[str, str]] | None
     used_families: set[str] = field(default_factory=set)
+    native_traversals: set[tuple[str, str]] = field(default_factory=set)
 
     def child(self) -> _Scope:
         """Fork one scope for a nested ``where`` with its own self type."""
@@ -226,6 +231,7 @@ class _Scope:
             producers=self.producers,
             ref_fields=self.ref_fields,
             used_families=self.used_families,
+            native_traversals=self.native_traversals,
         )
 
 
@@ -855,29 +861,53 @@ def _check_predicate(  # noqa: C901, PLR0911, PLR0912, PLR0915
     return "profile-type"
 
 
+def reference_admitted(
+    types: dict[str, dict[str, object]] | None,
+    ref_fields: set[tuple[str, str]] | frozenset[tuple[str, str]] | None,
+    prop: str,
+) -> bool:
+    """Return whether one property is an admitted reference traversal property.
+
+    Shared by compile-with-metadata and activation (R2-02): a descriptor
+    reference property of some type, or a base-declared ID-valued scalar
+    reference (``compiler-static.ts:181-189``; DESIGN L119).
+    """
+    if types is not None:
+        for spec in types.values():
+            references = spec.get("references", {})
+            if isinstance(references, dict) and prop in references:
+                return True
+    return ref_fields is not None and any(field == prop for (_, field) in ref_fields)
+
+
+def _is_reference_property(scope: _Scope, prop: str) -> bool:
+    """Return whether one property is a reference traversal property.
+
+    A descriptor reference property, or a base-declared ID-valued scalar
+    reference. Reference traversal requires one of the two (DESIGN L119);
+    a scalar or unknown property is profile-selector-property, never an
+    empty selection.
+    """
+    return reference_admitted(scope.types, scope.ref_fields, prop)
+
+
 def _check_reference_property(scope: _Scope, from_name: str, prop: str) -> str | None:
-    """Validate a reference-traversal property against the descriptor index.
+    """Validate a native reference-traversal property (no page/occurrence).
 
     Admits descriptor reference properties and base-declared ID-valued
-    scalar references such as ``calledElement`` (DESIGN §2.2); anything else
-    on a known native type refuses.
+    scalar references such as ``calledElement`` (DESIGN §2.2); a scalar or
+    unknown property refuses ``profile-selector-property``. Heterogeneous
+    candidates lacking this optional reference are skipped per handle at
+    evaluation time; the property itself must still be a reference.
+    Page and occurrence domains are decided in ``_check_reference_selector``
+    (``compiler-static.ts:177-179``); ``from_name`` stays for call symmetry.
     """
-    from_type = scope.btypes.get(from_name, "native")
-    if from_type in ("page", "occurrence"):
-        if prop not in ("sourceOccurrence", "targetOccurrence"):
-            return "profile-selector-property"
+    _ = from_name
+    if scope.types is None and scope.ref_fields is None:
         return None
-    if scope.types is None or from_type not in scope.types:
-        return None
-    spec = scope.types[from_type]
-    references = spec.get("references", {})
-    if isinstance(references, dict) and prop in references:
-        return None
-    scalars = spec.get("scalars", ())
-    is_scalar = isinstance(scalars, (list, tuple)) and prop in scalars
-    if is_scalar and scope.ref_fields is not None and (from_type, prop) in scope.ref_fields:
-        return None
-    return "profile-type"
+    if not _is_reference_property(scope, prop):
+        return "profile-selector-property"
+    return None
 
 
 def _check_inverse_property(scope: _Scope, prop: str) -> str | None:
@@ -888,15 +918,49 @@ def _check_inverse_property(scope: _Scope, prop: str) -> str | None:
     declares it as a reference, or the base declares it as an ID-valued
     scalar reference (DESIGN §2.2).
     """
-    if scope.types is None:
+    if scope.types is None and scope.ref_fields is None:
         return None
-    for spec in scope.types.values():
-        references = spec.get("references", {})
-        if isinstance(references, dict) and prop in references:
-            return None
-    if scope.ref_fields is not None and any(field == prop for (_, field) in scope.ref_fields):
+    if not _is_reference_property(scope, prop):
+        return "profile-selector-property"
+    return None
+
+
+def _check_reference_selector(  # noqa: PLR0911 - reference family has one return per rule
+    node: dict[str, object],
+    scope: _Scope,
+    from_name: str,
+    via: str,
+    context_phase: str,
+) -> str | None:
+    """Validate one reference-family selector (``compiler-static.ts:176-195``).
+
+    Property precedes order (:195). Native sites that pass record
+    ``(via, property)`` for activation (R2-02); occurrence sites never do.
+    """
+    from_type = scope.btypes.get(from_name, "native")
+    if via == "inverseReference" and from_type in {"render", "page", "occurrence"}:
+        return "profile-type"
+    prop = node.get("property")
+    if not isinstance(prop, str) or not prop:
+        return "profile-selector-property"
+    if via == "reference" and from_type == "occurrence":
+        if context_phase != "export" or prop not in ("sourceOccurrence", "targetOccurrence"):
+            return "profile-selector-property"
+        if node.get("order") != "page-occurrence":
+            return "profile-selector-order"
         return None
-    return "profile-type"
+    if via == "reference" and from_type in {"page", "render"}:
+        return "profile-selector-property"
+    if via == "inverseReference":
+        code = _check_inverse_property(scope, prop)
+    else:
+        code = _check_reference_property(scope, from_name, prop)
+    if code is not None:
+        return code
+    scope.native_traversals.add((via, prop))
+    if node.get("order") != "id":
+        return "profile-selector-order"
+    return None
 
 
 def _check_selector(  # noqa: C901, PLR0911, PLR0912
@@ -930,35 +994,31 @@ def _check_selector(  # noqa: C901, PLR0911, PLR0912
     render_via = {"pages", "occurrences", "semantic"}
     if via in render_via:
         scope.used_families.add("render-data/1")
-        if context_phase != "export":
+        if context_phase == "capability":
+            if via in ("pages", "occurrences"):
+                return "profile-type"
+            if via == "semantic":
+                from_btype = scope.btypes.get(from_name, "native")
+                if from_btype in {"render", "page", "occurrence"}:
+                    return "profile-type"
+        elif context_phase != "export":
             return "profile-value-context"
     if via == "self" and order not in ("id", "page-occurrence"):
         return "profile-selector-order"
-    if via in native_via and via != "self" and order != "id":
-        # Lot 4 (DESIGN §2.2): a reference traversal from an occurrence
-        # binding takes page-occurrence order.
-        if (
-            via == "reference"
-            and order == "page-occurrence"
-            and scope.btypes.get(from_name) == "occurrence"
-        ):
-            pass
-        else:
-            return "profile-selector-order"
+    if (
+        via in native_via
+        and via not in ("reference", "inverseReference")
+        and via != "self"
+        and order != "id"
+    ):
+        return "profile-selector-order"
     if via in render_via and via != "semantic" and order != "page-occurrence":
         return "profile-selector-order"
     if via == "semantic" and order != "id":
         return "profile-selector-order"
     has_property = "property" in node
     if via in ("reference", "inverseReference"):
-        if not has_property or not isinstance(node.get("property"), str):
-            return "profile-selector-property"
-        if via == "inverseReference":
-            from_type = scope.btypes.get(from_name, "native")
-            if from_type in ("page", "occurrence"):
-                return "profile-selector-property"
-            return _check_inverse_property(scope, str(node.get("property")))
-        code = _check_reference_property(scope, from_name, str(node.get("property")))
+        code = _check_reference_selector(node, scope, from_name, via, context_phase)
         if code is not None:
             return code
     elif via == "children":
@@ -1898,6 +1958,8 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
     if error is not None:
         return PureRefused(code=error)
 
+    native_traversals: set[tuple[str, str]] = set()
+
     def _new_scope(
         bindings: set[str], btypes: dict[str, str], params: dict[str, str] | None = None
     ) -> _Scope:
@@ -1910,6 +1972,7 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
             producers=producers,
             ref_fields=ref_fields,
             used_families=used_families,
+            native_traversals=native_traversals,
         )
 
     # Typed walks: notions with recognition scope (CR-02/03/05).
@@ -2008,6 +2071,7 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
                 scope.btypes[name] = "native"
         if phase == "export":
             scope.bindings.add("render")
+            scope.btypes["render"] = "render"
         recipe_phase = "export" if phase == "export" else "recipe"
         code = _check_selector(recipe.get("select"), scope, recipe_phase)
         if code is not None:
@@ -2048,13 +2112,13 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
                 continue
             when = capability.get("when")
             if when is not None:
-                # Lot 4 (DESIGN §10.2): capability predicates evaluate per R
-                # occurrence with self, root, render, page and semantic.
+                # Capability predicates compile in baseEnv root/self/bindingOwner
+                # at location capability (compiler-static.ts:54, :372).
                 capability_scope = _new_scope(
-                    {"root", "self", "render", "page", "semantic"},
-                    {"page": "page"},
+                    {"root", "self", "bindingOwner"},
+                    {},
                 )
-                code = _check_predicate(when, capability_scope, "export")
+                code = _check_predicate(when, capability_scope, "capability")
                 if code is not None:
                     return PureRefused(code=code)
     for theme in _as_list(profile.get("themes")):
@@ -2165,6 +2229,7 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
             sorted(str(name) for name in registry.capabilities if isinstance(name, str))
         ),
         ui=ui_index,
+        native_traversals=frozenset(native_traversals),
     )
     return PureSuccess(payload=compiled)
 

@@ -12,7 +12,7 @@ import copy
 import json
 import re
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, cast
 
 from bpmn_io.profile._c14n import digest, digest_bytes
 from bpmn_io.profile._compiler import RegistrySet
@@ -400,7 +400,7 @@ def _finish_resolve(
         "resolveTheme",
         echo_identity or {},
         echo_revision or "",
-        entries=diagnostics,
+        entries=sort_report_entries(diagnostics),
     )
     return ResultSuccess(
         operation="resolveTheme",
@@ -560,13 +560,14 @@ def _semantic_occurrence(
     if not isinstance(element, dict):
         return None, "render-stale", None
     matched = matched_notions(context.compiled, tree, element, bindings)
+    resolved = cast("dict[str, Json]", element)
     glyph_id, code = _notion_glyph_id(matched, context.chain)
     if code is not None:
         return None, code, None
     binding_tokens, code = _binding_token_merge(matched, context.chain)
     if code is not None:
         return None, code, None
-    code = _check_record_text(context, tree, element, bindings, matched, record)
+    code = _check_record_text(context, tree, resolved, bindings, matched, record)
     if code is not None:
         return None, code, None
     role = record.get("role")

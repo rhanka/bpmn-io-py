@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import copy
 from dataclasses import dataclass, field
+from dataclasses import replace as _replace
 from typing import TYPE_CHECKING, cast
 
 from bpmn_io.profile._c14n import digest
@@ -448,28 +449,92 @@ class HeadlessBridge:
             payload=envelope.to_json(),
         )
 
-    def activate_business_profile(
+    def activate_business_profile(  # noqa: PLR0911, C901 - activation gate has one return per refusal
         self,
         compiled: CompiledProfile,
         explicit_migration_plan: object = None,
     ) -> ResultSuccess | ResultRefused:
         """Activate one compiled business profile on the loaded envelope."""
+        from bpmn_io.profile._compat import (  # noqa: PLC0415 - lazy, keeps import light
+            _doc_known,
+            check_compatibility,
+        )
+        from bpmn_io.profile._compiler import (  # noqa: PLC0415 - lazy, shared predicate
+            reference_admitted,
+        )
+
         loaded = self._loaded("activateBusinessProfile")
         if isinstance(loaded, ResultRefused):
             return loaded
-        if explicit_migration_plan is not None:
-            return self._refuse("activateBusinessProfile", "operation-error")
+        # DESIGN §3.3: the gate code refuses even when an explicit migration
+        # plan is supplied. Selecting a migration is intent, never evidence
+        # that a migration was validated and executed, so a token, flag or
+        # argument alone — including false — never counts.
+        _ = explicit_migration_plan
         try:
             identity = compiled_identity(compiled)
         except ValueError:
             return self._refuse("activateBusinessProfile", "operation-error")
         if not self._descriptor_pins_match(identity):
             return self._refuse("activateBusinessProfile", "descriptor-mismatch")
+        # A profile compiled without descriptor metadata carries its
+        # native-domain traversals (R2-02); activation qualifies only those
+        # with the bridge types, mirroring the JS compile with those
+        # descriptors (compiler-static.ts:151-195). Occurrence sites are
+        # never recorded, so a valid occurrence traversal stays activable.
+        # Fail-open stays only when neither side knows the types.
+        compiled_types = getattr(compiled, "types", None)
+        bridge_types = (
+            self.descriptor_context.types if self.descriptor_context is not None else None
+        )
+        if compiled_types is None and isinstance(bridge_types, dict):
+            raw_pairs: object = getattr(compiled, "native_traversals", frozenset())
+            ref_fields = getattr(compiled, "ref_fields", None)
+            items: list[tuple[str, str]] = []
+            if isinstance(raw_pairs, (set, frozenset, list)):
+                items = sorted(raw_pairs)
+            for _, prop in items:
+                if not reference_admitted(bridge_types, ref_fields, str(prop)):
+                    return self._refuse("activateBusinessProfile", "profile-selector-property")
         if loaded.profile_identity != identity:
-            # design-default: identity mismatch -> operation-error (DESIGN §4.1;
-            # the section-3.3 matrix needs runtime/host inputs the bridge owns).
-            return self._refuse("activateBusinessProfile", "operation-error")
-        self.compiled = compiled
+            source = (
+                "known-and-available"
+                if _doc_known(identity) and _doc_known(loaded.profile_identity)
+                else "unknown"
+            )
+            verdict = check_compatibility(
+                {"mechanisms": ["1"], "schemas": ["1.0.0"]},
+                identity,
+                loaded.profile_identity,
+                document_version=loaded.document_version,
+                source_availability=source,
+                selected_migration=False,
+                required_capabilities=[],
+                required_assets=[],
+                envelope_valid=True,
+            )
+            if verdict.get("status") != "ok":
+                code = verdict.get("code")
+                return self._refuse(
+                    "activateBusinessProfile",
+                    str(code) if isinstance(code, str) else "operation-error",
+                )
+            # With the order-sensitive descriptor row the matrix reports
+            # ``ok`` only on exact identity equality in every dimension, so
+            # reaching here means the loaded and compiled identities match.
+            return self._refuse("activateBusinessProfile", "descriptor-mismatch")
+        # Runtime contexts read their G6 index off the stored profile. A
+        # metadata-free compiled profile carries none, so feed it the bridge
+        # index now that activation admitted it: per-handle qualification
+        # keeps working after activation exactly as the JS canvas view keeps
+        # the canvas descriptor types.
+        if compiled_types is None and isinstance(bridge_types, dict):
+            try:
+                self.compiled = _replace(compiled, types=dict(bridge_types))
+            except Exception:  # noqa: BLE001 - a non-dataclass stub stays as is
+                self.compiled = compiled
+        else:
+            self.compiled = compiled
         self.history.clear()
         self.redo_history.clear()
         self.history_epoch += 1
@@ -494,27 +559,23 @@ class HeadlessBridge:
         )
 
     def _descriptor_pins_match(self, identity: dict[str, object]) -> bool:
-        """Compare bridge context pins with compiled descriptor pins."""
+        """Compare bridge context pins with compiled descriptor pins.
+
+        The JS ``H(pins)`` digest is order-sensitive: a reordered pin list
+        is a ``descriptor-mismatch``, never an exact match.
+        """
         packages = self.descriptor_context.packages if self.descriptor_context is not None else []
-        context_pins = sorted(
-            [
-                (str(entry.get("id")), str(entry.get("version")), str(entry.get("sha256")))
-                for entry in packages
-                if isinstance(entry, dict)
-            ],
-            key=lambda triple: triple[0].encode("utf-16-be"),
-        )
+        context_pins = [
+            (str(entry.get("id")), str(entry.get("version")), str(entry.get("sha256")))
+            for entry in packages
+            if isinstance(entry, dict)
+        ]
         compiled_descriptors = identity.get("descriptors")
-        profile_pins = sorted(
-            [
-                (str(entry.get("id")), str(entry.get("version")), str(entry.get("sha256")))
-                for entry in (
-                    compiled_descriptors if isinstance(compiled_descriptors, list) else []
-                )
-                if isinstance(entry, dict)
-            ],
-            key=lambda triple: triple[0].encode("utf-16-be"),
-        )
+        profile_pins = [
+            (str(entry.get("id")), str(entry.get("version")), str(entry.get("sha256")))
+            for entry in (compiled_descriptors if isinstance(compiled_descriptors, list) else [])
+            if isinstance(entry, dict)
+        ]
         return context_pins == profile_pins
 
     def apply_commands(  # noqa: PLR0913, PLR0911 - batch inputs and guards are fixed

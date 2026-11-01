@@ -380,7 +380,19 @@ def _matched_bindings_for_theme(
 
 def _read_context_for(compiled: object, tree: dict[str, Json], support: list[Json]) -> ReadContext:
     """Build one native read context with support bindings attached."""
-    context = make_read_context(tree, notions=getattr(compiled, "notions", {}))
+    from bpmn_io.profile._evaluate import (  # noqa: PLC0415 - lazy, keeps import light
+        reference_property_names,
+    )
+
+    _types = getattr(compiled, "types", None)
+    _refs = getattr(compiled, "ref_fields", None)
+    context = make_read_context(
+        tree,
+        notions=getattr(compiled, "notions", {}),
+        reference_properties=reference_property_names(_types, _refs),
+        types=_types if isinstance(_types, dict) else None,
+        ref_fields=_refs,
+    )
     return dataclasses.replace(
         context, bindings=tuple(entry for entry in support if isinstance(entry, dict))
     )
@@ -392,7 +404,10 @@ def matched_notions(
     element: dict[str, Json],
     support: list[Json] | None = None,
 ) -> list[dict[str, Json]]:
-    """Return every notion matching one native element (facets plus groups)."""
+    """Return every notion matching one native element (facets plus groups).
+
+    Any refusal of a recognition body is a non-match.
+    """
     profile = getattr(compiled, "profile", None)
     notions = profile.get("notions", []) if isinstance(profile, dict) else []
     context = _read_context_for(compiled, tree, support or [])

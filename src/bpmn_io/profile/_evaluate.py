@@ -22,6 +22,7 @@ __all__ = [
     "evaluate_predicate",
     "evaluate_value",
     "is_missing",
+    "reference_property_names",
     "select",
 ]
 
@@ -220,6 +221,9 @@ class ReadContext:
     stage: str = "post-normalize"
     notions: dict[str, object] = field(default_factory=dict)
     parents: dict[int, object] = field(default_factory=dict)
+    reference_properties: frozenset[str] | None = None
+    types: dict[str, dict[str, object]] | None = None
+    ref_fields: frozenset[tuple[str, str]] | None = None
 
 
 def _element_id(element: object) -> str | None:
@@ -346,21 +350,134 @@ def _index_tree(root: object) -> tuple[tuple[object, ...], dict[str, object], di
     return tuple(elements), by_id, parents
 
 
-def make_read_context(
+def reference_property_names(
+    types: dict[str, dict[str, object]] | None,
+    ref_fields: frozenset[tuple[str, str]] | set[tuple[str, str]] | None,
+) -> frozenset[str] | None:
+    """Collect the global reference-traversal property names (DESIGN L119).
+
+    Returns ``None`` when neither input is known (fail-open: the traversal
+    gate stays off rather than refusing everything).
+    """
+    if types is None and ref_fields is None:
+        return None
+    names: set[str] = set()
+    if types is not None:
+        for spec in types.values():
+            references = spec.get("references", {})
+            if isinstance(references, dict):
+                for prop in references:
+                    if isinstance(prop, str):
+                        names.add(prop)
+    if ref_fields is not None:
+        for _, field_name in ref_fields:
+            if isinstance(field_name, str):
+                names.add(field_name)
+    return frozenset(names)
+
+
+def _is_reference_property_global(
+    prop: str,
+    types: dict[str, dict[str, object]] | None,
+    ref_fields: frozenset[tuple[str, str]] | None,
+) -> bool:
+    """Return whether any descriptor type declares ``prop`` as a reference."""
+    if types is not None:
+        for spec in types.values():
+            references = spec.get("references", {})
+            if isinstance(references, dict) and prop in references:
+                return True
+    if ref_fields is not None:
+        for _, field_name in ref_fields:
+            if field_name == prop:
+                return True
+    return False
+
+
+def _reference_status_for_type(
+    type_name: str,
+    prop: str,
+    types: dict[str, dict[str, object]] | None,
+    ref_fields: frozenset[tuple[str, str]] | None,
+) -> str:
+    """Classify ``prop`` for one handle type: ``reference`` | ``scalar`` | ``absent``.
+
+    ``reference`` covers descriptor references and base-declared ID-valued
+    scalar references (DESIGN L119); ``scalar`` covers a declared scalar
+    without that qualification; ``absent`` covers types with no such field.
+    Unknown types report ``absent`` so heterogeneous candidates skip.
+    """
+    if types is not None and type_name in types:
+        spec = types[type_name]
+        references = spec.get("references", {})
+        if isinstance(references, dict) and prop in references:
+            return "reference"
+        scalars = spec.get("scalars", ())
+        is_scalar = isinstance(scalars, (list, tuple)) and prop in scalars
+        if is_scalar and ref_fields is not None and (type_name, prop) in ref_fields:
+            return "reference"
+        if is_scalar:
+            return "scalar"
+        return "absent"
+    if ref_fields is not None and any(field_name == prop for _, field_name in ref_fields):
+        # Type unknown but some type declares it as an ID scalar reference:
+        # treat as potentially referential so the global gate decides.
+        return "reference"
+    return "absent"
+
+
+def _is_descriptor_reference(
+    type_name: str,
+    prop: str,
+    types: dict[str, dict[str, object]] | None,
+) -> bool:
+    """Return whether ``prop`` is a descriptor reference of one type.
+
+    Inverse traversal admits descriptor references only (JS
+    ``inverseReference``): a base-qualified ID scalar never qualifies as a
+    referrer, even though the global gate admits it for forward traversal.
+    """
+    if types is not None and type_name in types:
+        references = types[type_name].get("references", {})
+        if isinstance(references, dict) and prop in references:
+            return True
+    return False
+
+
+def make_read_context(  # noqa: PLR0913, PLR0917 - evaluation context carries the descriptor index
     root: object,
     stage: str = "post-normalize",
     notions: dict[str, object] | None = None,
+    reference_properties: frozenset[str] | None = None,
+    types: dict[str, dict[str, object]] | None = None,
+    ref_fields: frozenset[tuple[str, str]] | set[tuple[str, str]] | None = None,
 ) -> ReadContext:
     """Build one read-only context over ``root``.
 
     ``notions`` maps notion IDs to their recognition tables (compiled
     ``{"recognition": ...}`` records or raw recognition ASTs); the table is
     deep-copied so later caller mutations cannot change evaluation.
+    ``reference_properties`` is the legacy global reference-traversal
+    property set; ``types``/``ref_fields`` carry the per-type descriptor
+    index so ``reference``/``inverseReference`` can decide per handle type.
+    When ``types``/``ref_fields`` are known they drive the gate; otherwise
+    the legacy global set applies, and when neither is known the gate stays
+    off (fail-open).
     """
     elements, by_id, parents = _index_tree(root)
     owned = copy.deepcopy(notions) if notions is not None else {}
+    owned_types = copy.deepcopy(types) if types is not None else None
+    owned_refs = frozenset(ref_fields) if ref_fields is not None else None
     return ReadContext(
-        root=root, elements=elements, by_id=by_id, stage=stage, notions=owned, parents=parents
+        root=root,
+        elements=elements,
+        by_id=by_id,
+        stage=stage,
+        notions=owned,
+        parents=parents,
+        reference_properties=reference_properties,
+        types=owned_types,
+        ref_fields=owned_refs,
     )
 
 
@@ -479,10 +596,10 @@ def _eval_value(  # noqa: C901, PLR0912, PLR0911, PLR0915
     if op == "id":
         binding = node.get("binding")
         if not isinstance(binding, str):
-            raise TypeError("profile-type")  # noqa: EM101
+            raise ValueError("profile-symbol")  # noqa: EM101
         target = bindings.get(binding, _MISSING)
         if target is _MISSING:
-            raise TypeError("profile-type")  # noqa: EM101
+            raise ValueError("profile-symbol")  # noqa: EM101
         element_id = _element_id(target)
         if element_id is None:
             raise TypeError("profile-type")  # noqa: EM101
@@ -685,16 +802,25 @@ def _eval_recognizes(
         raise ValueError("profile-symbol")  # noqa: EM101
     if notion in active:
         raise ValueError("profile-cycle")  # noqa: EM101
+    # The outer binding resolves BEFORE the non-match boundary: a missing
+    # binding is an evaluation error (profile-symbol), never a non-match.
+    # Only refusals raised inside the notion's recognition body convert.
     target = bindings.get(binding, _MISSING)
     if target is _MISSING:
-        return False
+        raise ValueError("profile-symbol")  # noqa: EM101
     record = context.notions[notion]
     recognition = record.get("recognition") if isinstance(record, dict) else record
     if recognition is None:
         return False
     local = dict(bindings)
     local["self"] = target
-    return _eval_predicate(recognition, context, local, active | {notion})
+    try:
+        return _eval_predicate(recognition, context, local, active | {notion})
+    except (ValueError, TypeError):
+        # A refused element recognition is a non-match: the single
+        # recognition boundary shared by lint, UI and export. Errors
+        # raised outside a notion recognition still propagate.
+        return False
 
 
 def _edge_endpoints(element: object, context: ReadContext) -> tuple[list[object], list[object]]:
@@ -839,6 +965,32 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
         prop = node.get("property")
         if not isinstance(prop, str) or not prop:
             raise ValueError("profile-selector-property")  # noqa: EM101
+        # Heterogeneous candidates lacking this optional reference are
+        # skipped per handle below; the property itself must still be a
+        # reference (DESIGN L119). Render-occurrence endpoints are admitted
+        # only for occurrence handles (the compiler page/occurrence
+        # carve-out); a native scalar with the same name refuses like JS.
+        is_occurrence_prop = prop in ("sourceOccurrence", "targetOccurrence")
+        occurrence_admitted = (
+            is_occurrence_prop
+            and via == "reference"
+            and len(base) > 0
+            and all(_is_occurrence_handle(entry) for entry in base)
+        )
+        types = context.types
+        ref_fields = context.ref_fields
+        metadata_known = types is not None or ref_fields is not None
+        if metadata_known:
+            if not occurrence_admitted and not _is_reference_property_global(
+                prop, types, ref_fields
+            ):
+                raise ValueError("profile-selector-property")  # noqa: EM101
+        elif (
+            context.reference_properties is not None
+            and prop not in context.reference_properties
+            and not occurrence_admitted
+        ):
+            raise ValueError("profile-selector-property")  # noqa: EM101
         if via == "reference":
             for entry in base:
                 value = _read_property(entry, prop)
@@ -846,11 +998,28 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
                 if target is not None:
                     candidates.append(target)
                 else:
+                    if metadata_known and not occurrence_admitted:
+                        status = _reference_status_for_type(
+                            _element_type(entry), prop, types, ref_fields
+                        )
+                        if status == "scalar":
+                            raise ValueError("profile-selector-property")  # noqa: EM101
+                        if status == "absent":
+                            continue
                     candidates.extend(_resolve_reference_value(value, context))
         else:
             for entry in base:
                 entry_id = _element_id(entry)
                 for element in context.elements:
+                    # Inverse traversal admits descriptor references only:
+                    # a base-qualified ID scalar refers nobody, even though
+                    # forward traversal resolves through it.
+                    if (
+                        metadata_known
+                        and not occurrence_admitted
+                        and not _is_descriptor_reference(_element_type(element), prop, types)
+                    ):
+                        continue
                     if _references_target(_read_property(element, prop), entry, entry_id):
                         candidates.append(element)
     elif via in ("pages", "occurrences", "semantic"):

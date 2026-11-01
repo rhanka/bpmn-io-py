@@ -209,10 +209,12 @@ baseRevision?, code, diagnostics, report}`. It echoes `profileIdentity` and
 `documentVersion:"1"`, a shape-valid `profileIdentity` and a string
 `semanticRevision`, even if a later envelope check fails (every sealed refusal
 echoes); `serializePrepared` echoes the preparation's `profileIdentity` and
-`semanticRevision`. `report.entries` are the unified findings of the lint stages
-executed before the refusal (`[]` when none ran; never change entries: there is no
-candidate); `diagnostics` equals `report.entries`; `report.idMap` and
-`report.artifacts` are `[]`. PureResult refusals are `{status:"refused", code,
+`semanticRevision`. `report.entries` merge every bucket accumulated before the
+failure point — for `prepareExport` the complete, lint, normalize, render and
+map buckets (§12) — sorted into canonical `profile-report/2` order with exact
+duplicates removed (JS block-B review J5); `diagnostics` equals
+`report.entries`; `report.idMap` and `report.artifacts` are `[]`. PureResult
+refusals are `{status:"refused", code,
 diagnostics:[]}` for every lot-4 helper and for `compileProfile` (load then
 compile; block-B parity sync PS-25: compile refusals carry no diagnostic).
 `compileProfile` success is the PureResult `{status:"ok", payload,
@@ -449,7 +451,12 @@ without `semanticId`: `occurrenceKey = JCS([declaration id, owner id, pageId])`,
 ### 5.2 Bindings, glyph, style
 
 - Recognition (block-A evaluator, immutable tree) gives the matched notions: every
-  matching facet plus at most one notion per exclusive group. For the selected
+  matching facet plus at most one notion per exclusive group. Any refusal of a
+  notion's recognition body is a non-match for that element, so an element
+  matching no rendered notion resolves with a `render-unsupported` diagnostic;
+  recognition never refuses `layout`, `compute_layout` or `resolve_theme`
+  (`src/profile/lot4-render.ts:547-548`, `src/profile/lot5-eval.ts:83-87`; R2-03).
+  For the selected
   theme `T` each matched notion contributes its render binding for the nearest
   theme of the chain `T → … → root` that has one.
 - Glyph: the matched bindings must name one glyph id; unequal glyph ids refuse
@@ -500,7 +507,8 @@ without `semanticId`: `occurrenceKey = JCS([declaration id, owner id, pageId])`,
   provenance:"exact"}, result:{domain:"none", pointer:null, targetId:null,
   provenance:"unavailable"}, beforePresent:false, afterPresent:false, pageId,
   occurrenceKey}`, in `profile-report/2` order. The `resolveTheme` report entries
-  are exactly these diagnostics.
+  are exactly these diagnostics, sorted into canonical order before return
+  (JS block-B review J5).
 - `binding` per §6.1 with `themeId` the resolved theme id.
 
 ## 6. Digests and freshness (DESIGN §9.2)
@@ -628,14 +636,20 @@ harmonization C17).
    re-run `resolve_theme`.
 4. Coverage: any `unsupported` coverage entry refuses `render-unsupported` (an
    unsupported necessary occurrence refuses the entire artifact).
-5. Capability: every capability record is evaluated once per R occurrence with
-   `self` = the occurrence, `root`, `render`, `page` = its PageHandle and `semantic`
-   (absent for synthetic occurrences); applicable classes aggregate by worst outcome
-   together with the adapter ceiling `structural` (OPEN-EXPORT-EVIDENCE: no feature
-   is byte-compatible by declaration; lot 4 has no qualified engine goldens). An
-   `unsupported` outcome refuses `render-unsupported` (DESIGN §9.3 unknown glyph
-   capability, §10.1 unsupported necessary occurrence; `export-format-unsupported`
-   is a format-level code; harmonization C16).
+5. Capability: capability `when` predicates compile in the base environment
+   `root`, `self` (native element domain) and `bindingOwner`
+   (`src/profile/compiler-static.ts:54`, `:372`); `render`, `page` and `semantic`
+   are not bindings (`profile-symbol`); `pages`/`occurrences` refuse `profile-type`;
+   `semantic` is admitted from a native binding. At map time the predicate runs
+   once per R occurrence with `self` = the occurrence. Applicable classes aggregate
+   by worst outcome together with the adapter ceiling `structural`
+   (OPEN-EXPORT-EVIDENCE: no feature is byte-compatible by declaration; lot 4 has
+   no qualified engine goldens). An `unsupported` outcome refuses `render-unsupported`
+   (DESIGN §9.3 unknown glyph capability, §10.1 unsupported necessary occurrence;
+   `export-format-unsupported` is a format-level code; harmonization C16).
+   A refused capability `when` is a refused element recognition (non-match) only
+   inside recognition; any other evaluation error propagates to the refusing caller
+   with its original code (JS block-B review G4, J6).
 6. Planning pass: the export recipes of the record run in order over their selector
    results (page-occurrence order), evaluating every value; each `outputId` request
    `(pageId, occurrenceKey, domain)` is recorded (PageHandle uses the reserved
@@ -644,7 +658,10 @@ harmonization C17).
    `outputId` on a native handle without exactly one occurrence of that element on
    the current page refuses `export-occurrence-ambiguous`; a required field
    evaluating to `MISSING` refuses `export-field-invalid` (an optional field
-   evaluating to `MISSING` is omitted).
+   evaluating to `MISSING` is omitted). An export recipe `when` is not evaluated
+   by `map_export` (`src/profile/lot4-export.ts:370-394`); a refused selector or
+   field value outside recognition keeps the evaluator's original code instead
+   of `render-stale` (JS block-B review J6).
 7. ID allocation (per call, no state across calls):
    - `counter`: requested keys sorted by domain (`page, node, edge, label`), then
      page `order`, then UTF-16 `occurrenceKey`, numbered from `counterOrigin`; `e_` +
@@ -710,7 +727,9 @@ neutral fixtures equals their pinned `expected.exportIR`.
   field without advertising a capability loss"; §21.3).
 - `report = {reportVersion:"2", operation, sourceIdentity, targetIdentity,
   inputRevision, outputRevision, entries, rawStandardFindings:[], idMap, artifacts}`
-  (§3.2).
+  (§3.2). Success `entries` are the merged losses sorted into canonical
+  `profile-report/2` order with exact duplicates removed (§3.3; JS block-B
+  review J5).
 - `idMap` rows `{sourceId, resultId, domain:"export", pageId, occurrenceKey?}`: one
   per emitted record with an `id` whose `self` is a PageHandle (`sourceId = pageId`,
   no `occurrenceKey`) or an occurrence with `semanticId` (`sourceId = semanticId`);
@@ -808,8 +827,10 @@ an unresolved error at the post-normalize stage. A blocked stage refuses with th
 `code` of the first unresolved error entry in `profile-report/2` order
 (harmonization C19). A non-lint stage refusal refuses with that stage's code.
 
-Refusals carry the §3.4 record: `report.entries` and `diagnostics` = the findings
-of the lint stages executed so far (no change entry), no artifact. Success returns
+Refusals carry the §3.4 record: `report.entries` and `diagnostics` = the
+canonical merge of the complete, lint, normalize, render and map buckets
+accumulated before the failure point (each stage banks its sub-report entries
+even when it refuses), no artifact (JS block-B review J5). Success returns
 the PreparedArtifact of `map_export` with `report` replaced by the complete report:
 operation `"prepareExport"`, §3.2 header (read-only, §3.5), entries = C entries,
 lint findings of every stage (with their dispositions), N entries (counted once:
@@ -873,12 +894,13 @@ the other themes of the profile (harmonization K13).
 
 - `layout`, `compute_layout`: compatibility codes, `render-stale`, `profile-open`,
   `render-region-missing`, `render-unsupported`, `render-style-conflict`,
-  `profile-type`, `profile-resource-missing` (metrics bytes absent when a label must
-  be measured).
+  `profile-type`, `profile-resource-missing` (metrics bytes absent when a label
+  must be measured).
 - `layout_regions`: `render-region-missing` (missing token), `operation-error`;
   `layout_ticks`: `operation-error`.
 - `resolve_theme`: compatibility codes, `render-stale`, `profile-open`,
-  `render-token-invalid`, `render-style-conflict`.
+  `render-token-invalid`, `render-style-conflict`, `profile-symbol`
+  (render-binding label value with an unbound binding, R1-06).
 - `check_theme_switch`: `render-stale`, `profile-open`, `theme-geometry-conflict`.
 - `map_export`: compatibility codes, `export-format-unsupported`, `render-stale`,
   `render-unsupported`, `export-occurrence-ambiguous`, `export-field-invalid`,
