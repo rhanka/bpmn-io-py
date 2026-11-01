@@ -1,7 +1,7 @@
 {
   "case": "bpmn-001-main-native",
   "clause": "DESIGN R3.3 \u00a710.2 L790\u2013L793",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 319617533daaf16803092e926eacc85ace56fedefbb34f87466044e61fad3996; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: BPMN XML preserves the native store type and reference, the band Participant without processRef, Process IO in Process.ioSpecification with its sets, activity-owned data associations and the marker text unchanged; no extra annotation appears. Fails against: Remapping the store to a TextAnnotation, giving the band a processRef, moving IO into a lane, or stripping the marker.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 319617533daaf16803092e926eacc85ace56fedefbb34f87466044e61fad3996; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: BPMN XML preserves the native store type and reference, the band Participant without processRef, Process IO in Process.ioSpecification with its sets, activity-owned data associations and the marker text unchanged; no extra annotation appears. Fails against: Remapping the store to a TextAnnotation, giving the band a processRef, moving IO into a lane, or stripping the marker.",
   "operation": "serializeBpmn",
   "profile": null,
   "input": [

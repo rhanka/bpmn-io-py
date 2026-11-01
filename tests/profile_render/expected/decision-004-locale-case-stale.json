@@ -1,7 +1,7 @@
 {
   "case": "decision-004-locale-case-stale",
   "clause": "DESIGN R3.3 \u00a79.3 L702; \u00a72.2 L116",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 e3ed86391466c1e6fa17ec4cb56e03f7e49864eafea867c2e5099464b3b0e506; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: A Turkish-locale upper case (U+0130 for i) is not the locale-free default mapping. Fails against: Locale-dependent case conversion.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 e3ed86391466c1e6fa17ec4cb56e03f7e49864eafea867c2e5099464b3b0e506; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: A Turkish-locale upper case (U+0130 for i) is not the locale-free default mapping. Fails against: Locale-dependent case conversion.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

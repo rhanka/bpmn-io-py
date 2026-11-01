@@ -1,7 +1,7 @@
 {
   "case": "admission-003-variant-labels-native",
   "clause": "DESIGN R3.3 \u00a72.4.1 L194\u2013L196; \u00a710.2 L770\u2013L774",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 6d0aa5eea4ed11608eea0ae51dbd9e7116e449b77393cd7df86c2f42ee25ad2b; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Variant labels-native (version 1.1.2) differs from the lot-4 package only as stated in the README variant table; its defect, if any, is a runtime condition and must not be refused at compile time. Fails against: Refusing at compile time a condition the DESIGN assigns to a runtime refusal code.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 6d0aa5eea4ed11608eea0ae51dbd9e7116e449b77393cd7df86c2f42ee25ad2b; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: Variant labels-native (version 1.1.2) differs from the lot-4 package only as stated in the README variant table; its defect, if any, is a runtime condition and must not be refused at compile time. Fails against: Refusing at compile time a condition the DESIGN assigns to a runtime refusal code.",
   "operation": "compileProfile",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-labels-native.profile.json",

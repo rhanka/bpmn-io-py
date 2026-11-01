@@ -1,7 +1,7 @@
 {
   "case": "digest-006-metric-byte-changed",
   "clause": "DESIGN R3.3 \u00a79.2 L687; \u00a79.2 L694",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 c25ddba919da2720126c26960222e03b09141e65bf6f30fe4be55e3d994001f3; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The neutral metric bytes with one changed byte (spaceAdvance 300 -> 301) under the same resource id: B(raw bytes) changes, hence metricsDigest and viewRevision; every other output equals digest-003. Fails against: Keying the metric digest on the resource id only, or normalizing the metric JSON before hashing.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 c25ddba919da2720126c26960222e03b09141e65bf6f30fe4be55e3d994001f3; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The neutral metric bytes with one changed byte (spaceAdvance 300 -> 301) under the same resource id: B(raw bytes) changes, hence metricsDigest and viewRevision; every other output equals digest-003. Fails against: Keying the metric digest on the resource id only, or normalizing the metric JSON before hashing.",
   "operation": "renderDigests",
   "profile": null,
   "input": [

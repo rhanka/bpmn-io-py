@@ -1,7 +1,7 @@
 {
   "case": "idplan-007-utf16-key-order",
   "clause": "DESIGN R3.3 \u00a710.2 L801; \u00a72.2 L126",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 b9c87243aae5d67b023adb0c3b144ec1dd5f1812627373c92ac94fcbd5f22620; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: Four nonempty node keys of page P, requested as U+E000, U+10000, z, Z, sort by UTF-16 code units: Z (0x005A) e_0, z (0x007A) e_1, U+10000 (surrogate pair 0xD800 0xDC00) e_2, then U+E000 (0xE000) e_3. Code-point order would place U+E000 (e_2) before U+10000 (e_3). Fails against: Code-point or UTF-8 byte order of occurrence keys (U+E000 e_2, U+10000 e_3), locale collation (z before Z), or numbering in request order (U+E000 e_0).",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 b9c87243aae5d67b023adb0c3b144ec1dd5f1812627373c92ac94fcbd5f22620; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: Four nonempty node keys of page P, requested as U+E000, U+10000, z, Z, sort by UTF-16 code units: Z (0x005A) e_0, z (0x007A) e_1, U+10000 (surrogate pair 0xD800 0xDC00) e_2, then U+E000 (0xE000) e_3. Code-point order would place U+E000 (e_2) before U+10000 (e_3). Fails against: Code-point or UTF-8 byte order of occurrence keys (U+E000 e_2, U+10000 e_3), locale collation (z before Z), or numbering in request order (U+E000 e_0).",
   "operation": "exportIdPlan",
   "profile": null,
   "input": [

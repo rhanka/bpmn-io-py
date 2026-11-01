@@ -1,7 +1,7 @@
 {
   "case": "legacy-004-no-alias-data",
   "clause": "DESIGN R3.3 \u00a79.5 L729; \u00a79.2 L690",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 34036d32cec0deaf9684f867791a4186a1141e0c58f6c21a70bab242b61c476e; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The lot-0 neutral profile injects no compatibility aliases; reproducing old behaviour requires caller-supplied data; the unresolved look refuses render-stale (harmonization C17). Fails against: A hidden client default for standard, or legacy-unmapped (reserved for legacy diagnostic codes).",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 34036d32cec0deaf9684f867791a4186a1141e0c58f6c21a70bab242b61c476e; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: The lot-0 neutral profile injects no compatibility aliases; reproducing old behaviour requires caller-supplied data; the unresolved look refuses render-stale (harmonization C17). Fails against: A hidden client default for standard, or legacy-unmapped (reserved for legacy diagnostic codes).",
   "operation": "resolveLegacyTheme",
   "profile": {
     "vendored": "contracts/profile-mechanism/1/neutral-profile.json",

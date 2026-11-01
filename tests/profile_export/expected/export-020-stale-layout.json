@@ -1,7 +1,7 @@
 {
   "case": "export-020-stale-layout",
   "clause": "DESIGN R3.3 \u00a79.2 L690",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 ac6c6f7e7c3a3962e9a6b7b2418507461971e86ec7d8c62bee24b7bebf5f8b92; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: R was resolved for the original page name; the supplied layout renames the page, so layoutDigest no longer matches. Fails against: Repairing or recomputing R inside mapExport instead of refusing.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 ac6c6f7e7c3a3962e9a6b7b2418507461971e86ec7d8c62bee24b7bebf5f8b92; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: R was resolved for the original page name; the supplied layout renames the page, so layoutDigest no longer matches. Fails against: Repairing or recomputing R inside mapExport instead of refusing.",
   "operation": "mapExport",
   "profile": {
     "vendored": "tests/profile_export/expected/vendor/js/artifacts/neutral-lot4-profile.json",

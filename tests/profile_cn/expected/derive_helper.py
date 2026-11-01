@@ -7570,8 +7570,8 @@ def corpus_files(
 
 #: The JS lot-3 seal every vendored file comes from: its seal.json SHA-256 and
 #: commit. The JS expectations root is mirrored under ``vendor/js/``.
-JS_SEAL_SHA256 = "91edbbf2956eaf69da63a07b8474c07000fd4dd9bfd28d7a1f9f786ef6569b82"
-JS_SEAL_COMMIT = "ce1162f6007753fb0e1916d80ea840b28318e406"
+JS_SEAL_SHA256 = "7bd2d206277c123ad027481a42969f013cd91ddc4a2bfaab0e529fbc7120cb3c"
+JS_SEAL_COMMIT = "1aa0d6f5894ea964e93b4e5842ad0378cc2b2419"
 VENDOR_DIR = "vendor/js/"
 #: Raw SHA-256 of every vendored file, as pinned by that JS seal.
 VENDORED: dict[str, str] = {
@@ -7782,7 +7782,7 @@ VENDORED: dict[str, str] = {
     "cases/l3-trig-single-trigger-accept.json": (
         "bff4d4ee2b7c65d542148867e905c9394faf129f14574a1c09f251be0b1ae200"
     ),
-    "index.json": "0210bd37fc4ee07892bc3bab8a73c69ee3c4888c6d3a07643420986305de8820",
+    "index.json": "082eed1d3de8745156e608a7f26fca565ebc26dc65424792e16e021cdef3c0b5",
     "profile/neutral-cn-base.json": (
         "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
     ),

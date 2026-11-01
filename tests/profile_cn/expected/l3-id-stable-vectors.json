@@ -4,7 +4,7 @@
   "author": "spec-seal",
   "operation": "stable-id/1",
   "profile": null,
-  "derivation": "Vendored unchanged from JS seal 91edbbf2956eaf69da63a07b8474c07000fd4dd9bfd28d7a1f9f786ef6569b82, case file SHA-256 7d8d0b6abb0b6f6758ed58e4cedc1ab366e0f0a5624bd648e925109cb008d867; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC). Import row PS-H03: the stable-id/1 pure vector and complete. Discriminates (JS index): Fails an allocator that trims keys (merging ' padded '/'padded'), Unicode-normalizes them (NFC or NFD merges the precomposed U+00E9 and decomposed e+U+0301 keys, NFKC also NBSP and space), escapes non-ASCII as \\u sequences before hashing, or hashes a tuple other than [\"profile-mechanism/1\",owner,slot,key].",
+  "derivation": "Vendored unchanged from JS seal 7bd2d206277c123ad027481a42969f013cd91ddc4a2bfaab0e529fbc7120cb3c, case file SHA-256 7d8d0b6abb0b6f6758ed58e4cedc1ab366e0f0a5624bd648e925109cb008d867; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC). Import row PS-H03: the stable-id/1 pure vector and complete. Discriminates (JS index): Fails an allocator that trims keys (merging ' padded '/'padded'), Unicode-normalizes them (NFC or NFD merges the precomposed U+00E9 and decomposed e+U+0301 keys, NFKC also NBSP and space), escapes non-ASCII as \\u sequences before hashing, or hashes a tuple other than [\"profile-mechanism/1\",owner,slot,key].",
   "input": {
     "allocations": [
       {

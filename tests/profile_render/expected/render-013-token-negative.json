@@ -1,7 +1,7 @@
 {
   "case": "render-013-token-negative",
   "clause": "DESIGN R3.3 \u00a79.3 L700; \u00a79.1 L673",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 6bbb18045bc6ca3722500ab6f7dd005aaac0a60693f77f406778f5dd2e89af40; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: strokeWidth must be a nonnegative finite number; -1 violates the generic render-token/1 signature. Fails against: Accepting CSS colour names, negative widths or non-finite values.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 6bbb18045bc6ca3722500ab6f7dd005aaac0a60693f77f406778f5dd2e89af40; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: strokeWidth must be a nonnegative finite number; -1 violates the generic render-token/1 signature. Fails against: Accepting CSS colour names, negative widths or non-finite values.",
   "operation": "resolveTheme",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

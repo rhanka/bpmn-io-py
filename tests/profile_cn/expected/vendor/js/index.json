@@ -204,10 +204,17 @@
             952,
             952
           ]
+        },
+        {
+          "section": "§8.2",
+          "lines": [
+            635,
+            635
+          ]
         }
       ],
-      "point": "Live pointer and keyboard gesture interception (capture at pointer-down or direct-edit start, preview geometry, interception before the upstream commit or the measured restore fallback) and the browser witnesses DI-only drag, resize, reconnect, palette drop, direct edit, keyboard delete/paste, cancellation during async layout, multi-page rollback, one undo/redo and no callback leak.",
-      "default": "Detached staging, one root profile.transaction command, final-only callbacks; an entry that cannot preserve pointer capture, selection, undo cursor and DI is disabled with transaction-entry-unsupported. No accepted lot-0 prototype or receipt exists at the seal base: only the programmatic contract (l3-tx-*) is sealed, and a gesture's final intent enters through the stageGesture adapter seam."
+      "point": "Live pointer and keyboard gesture interception (capture at pointer-down or direct-edit start, preview geometry, interception before the upstream commit or the measured restore fallback) and the browser witnesses DI-only drag, resize, reconnect, palette drop, direct edit, keyboard delete/paste, cancellation during async layout, multi-page rollback, one undo/redo and no callback leak; and a native modeling command (a command-stack entry such as element.updateLabel) arriving while the root transaction is applying.",
+      "default": "Detached staging, one root profile.transaction command, final-only callbacks; an entry that cannot preserve pointer capture, selection, undo cursor and DI is disabled with transaction-entry-unsupported. No accepted lot-0 prototype or receipt exists at the seal base: only the programmatic contract (l3-tx-*) is sealed, and a gesture's final intent enters through the stageGesture adapter seam. DESIGN L635 refuses any unexpected command entry during applying with transaction-reentrant and disables unadapted mutation commands, but the headless canvas has no native modeling service and no caller-visible outcome of a refused native command is defined before the prototype receipt: l3-tx-reentrant-refused seals the public applyCommands re-entry only."
     },
     {
       "id": "U2",
@@ -5821,7 +5828,7 @@
       "runtimes": [
         "js"
       ],
-      "discriminates": "Fails an adapter that creates more than one history entry per command, recomputes IDs or reruns C/N on undo/redo, returns anything but the exact restored Snapshot/1 (envelope, presentation, selection, viewRevision), emits raw or intermediate change events, refuses incomplete drafts instead of reporting draft lint entries, or omits the C topology entries of each step."
+      "discriminates": "Fails an adapter that creates more than one history entry per command, recomputes IDs or reruns C/N on undo/redo, returns anything but the exact restored Snapshot/1 (envelope, presentation, selection, viewRevision), emits raw or intermediate change events, refuses incomplete drafts instead of reporting draft lint entries, or omits the C topology entries of each step. Each C write carries the coordinates of its own transaction (DESIGN L751, L755): generated for an element created by that transaction, exact for one created by an earlier transaction; fails an adapter that reports the coordinates of its staged tree."
     },
     {
       "caseId": "l3-tx-batch-one-entry",
@@ -5855,7 +5862,7 @@
       "runtimes": [
         "js"
       ],
-      "discriminates": "Fails an adapter that records one history entry per command of a batch, so a single undo would leave the first task behind, emits one callback per command, or runs C/N between the two commands."
+      "discriminates": "Fails an adapter that records one history entry per command of a batch, so a single undo would leave the first task behind, emits one callback per command, or runs C/N between the two commands. The four C topology writes on the two created tasks carry the transaction coordinates (DESIGN L751, L755, L766): generated source and generated result; fails an adapter that reports them at the exact coordinates of its staged tree."
     },
     {
       "caseId": "l3-tx-cancelled",
@@ -5997,14 +6004,28 @@
           "section": "§8.2",
           "lines": [
             632,
-            632
+            633
+          ]
+        },
+        {
+          "section": "§8.1",
+          "lines": [
+            604,
+            604
+          ]
+        },
+        {
+          "section": "§10.1",
+          "lines": [
+            735,
+            735
           ]
         }
       ],
       "runtimes": [
         "js"
       ],
-      "discriminates": "Fails an adapter that executes an external native modeling command arriving while the root transaction is applying (nested stack execution), opens a second transaction, or lets the injected label change into the committed tree."
+      "discriminates": "A public applyCommands call entering while the root transaction is applying, valid against the committed revision: fails an adapter that executes or queues it (task b committed, a second event or history entry), refuses it with a code other than transaction-reentrant, returns anything but the closed Result/1 refusal that echoes the committed identity and revision with an empty report, or records an outcome without a real nested call (a bare {status, code} record). The native modeling command entry is UNSEALED (U1, OPEN-HOOK)."
     },
     {
       "caseId": "l3-tx-guard-recovery",
@@ -6038,7 +6059,7 @@
       "runtimes": [
         "js"
       ],
-      "discriminates": "An internal exception while applying: fails an adapter that rejects instead of returning operation-error after rollback, drops the attempted candidate lint entries from the refusal report, commits part of the stage, or leaves the guard in applying so that the next command refuses transaction-reentrant."
+      "discriminates": "An internal exception thrown by the applying-phase hook after its nested applyCommands call was refused transaction-reentrant (evidence that the guard was applying): fails an adapter that rejects instead of returning operation-error after rollback, drops the attempted candidate lint entries from the refusal report, commits part of the stage, emits an event, leaves the guard in applying so that the retry refuses transaction-reentrant, or returns the refusal without entering applying (no nested outcome)."
     },
     {
       "caseId": "l3-tx-refusal-preserves",
@@ -6094,12 +6115,19 @@
             1154,
             1154
           ]
+        },
+        {
+          "section": "§2.4",
+          "lines": [
+            172,
+            172
+          ]
         }
       ],
       "runtimes": [
         "js"
       ],
-      "discriminates": "Fails an adapter or C that silently appends the new input to the first set when several sets exist; the command refuses with io-set-selection-required, no lint stage ran (empty report) and tree, history and callbacks stay untouched."
+      "discriminates": "Fails an adapter or C that silently appends the new input to the first set when several sets exist; the command refuses with io-set-selection-required, no lint stage ran (empty report) and tree, history and callbacks stay untouched. The refusal is the outcome of the C recipe on two sets: with a single InputSet the same unassigned command succeeds and C appends the input to that set (c-io-input-uncovered-single), so an adapter that refuses by entry name without running C fails the last step."
     },
     {
       "caseId": "l3-tx-io-set-explicit-selection",
@@ -6433,7 +6461,7 @@
           "path": "tests/profile_cn/expected/cn-plan-actor-mismatch.json",
           "sha256": "be6d951088363136fbeab435f39456ff472d413d450c2851a6ddbd2e2e5987ec"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 862d6b15cf59a51bde742a2cae88b366165cdc38e1b74f96be5e07516ce5ba9b; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 862d6b15cf59a51bde742a2cae88b366165cdc38e1b74f96be5e07516ce5ba9b; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -6489,7 +6517,7 @@
           "path": "tests/profile_cn/expected/cn-plan-add-note-containment.json",
           "sha256": "ef19f185d0b362ffa2f54e6fd4febe914ede0c2317019ed40af64ba3ab6a0846"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 6c2e4dba2babab984cd4a146007bdfe92bc0973fe6b1b8acf098b7c1ccaf8918; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 6c2e4dba2babab984cd4a146007bdfe92bc0973fe6b1b8acf098b7c1ccaf8918; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -6545,7 +6573,7 @@
           "path": "tests/profile_cn/expected/cn-plan-ambiguous-binding.json",
           "sha256": "9ebbd158d1fbf68c075a1b372a03c8314c134b9ec9be0f8e17131a2720415c8d"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 9454b1d924ea4a2e346fbf6438785dd56aa156c072e897985c093e0c83381fcd; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 9454b1d924ea4a2e346fbf6438785dd56aa156c072e897985c093e0c83381fcd; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -6601,7 +6629,7 @@
           "path": "tests/profile_cn/expected/cn-plan-append-remove-conflict.json",
           "sha256": "39c312efa5cec27119b146c42be0cd6b800f5b3b3b469d17186682f836ca75c1"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 584f8695b42e540dafb795ba026ee78011e8d9e00b0fc731e2abe4aa03e23e30; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 584f8695b42e540dafb795ba026ee78011e8d9e00b0fc731e2abe4aa03e23e30; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -6657,7 +6685,7 @@
           "path": "tests/profile_cn/expected/cn-plan-create-aid-grid.json",
           "sha256": "6d13575f44b1152768e8e72ae81d00d402d92424aaee004b63891732fc2f46fb"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 80a9c4cce904fee13c03f358bfe13d4413dc5333c692d004db5ed904e57f74d4; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 80a9c4cce904fee13c03f358bfe13d4413dc5333c692d004db5ed904e57f74d4; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -6713,7 +6741,7 @@
           "path": "tests/profile_cn/expected/cn-plan-create-aid-neutral.json",
           "sha256": "be533f90b953512058938d4fb2cd53677364edd28091e528e22aef35313dac9a"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 379ff38fe23d483f42c28574e496c41362ae660d78381e2c3914350a4803f234; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 379ff38fe23d483f42c28574e496c41362ae660d78381e2c3914350a4803f234; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -6769,7 +6797,7 @@
           "path": "tests/profile_cn/expected/cn-plan-create-id-collision.json",
           "sha256": "1b8fc7e8be0a74352be98b2c7513a87209a89be6dab997ce6f8cdfec14cad2d3"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 6be51a5cd5408e9d481df64d84eeca68dd06a76300e2e92845a8a1ee7d9e4ebb; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 6be51a5cd5408e9d481df64d84eeca68dd06a76300e2e92845a8a1ee7d9e4ebb; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -6825,7 +6853,7 @@
           "path": "tests/profile_cn/expected/cn-plan-create-process-input.json",
           "sha256": "7dfb135ffcdc54334edfe433e80df4d9c43fdae0ad96ab658861297fc8feb212"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 b012db29f9785cd2a134ce4bc87d9cdf179accecbfc294d5f688e65156170bfb; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 b012db29f9785cd2a134ce4bc87d9cdf179accecbfc294d5f688e65156170bfb; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -6881,7 +6909,7 @@
           "path": "tests/profile_cn/expected/cn-plan-create-task-grid.json",
           "sha256": "269470fd238aa02c09589059ad28849efd9c7ccc579ee2658c440d93381c5c64"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 14a20fcdc7e01251701c9cda733fd72dbb841b3219dec778711944c90300381e; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 14a20fcdc7e01251701c9cda733fd72dbb841b3219dec778711944c90300381e; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -6937,7 +6965,7 @@
           "path": "tests/profile_cn/expected/cn-plan-create-task-neutral.json",
           "sha256": "8dbae5a1c30b3b182215058da172ebc70551e8f03d26bf10daaa9bf2e8f73bbd"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 1638d4da27ec4b74303986e14a993026ccf82b65a07d8ae67c304e64b0ec68e8; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 1638d4da27ec4b74303986e14a993026ccf82b65a07d8ae67c304e64b0ec68e8; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -6993,7 +7021,7 @@
           "path": "tests/profile_cn/expected/cn-plan-export-phase.json",
           "sha256": "3379d42f1b2524d3fb1fddc6c64c81ccb4e16fd8d499951ac1d38b88e61035bc"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 bd1762caf70b6804a3fac3f1e51d0bac0d0c78b39d0d9f6b2cc17799c6a8563f; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 bd1762caf70b6804a3fac3f1e51d0bac0d0c78b39d0d9f6b2cc17799c6a8563f; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7042,7 +7070,7 @@
           "path": "tests/profile_cn/expected/cn-plan-invalid-authority.json",
           "sha256": "d8e152184d0c0f8a29034f4acf2e18708c2174db453ec9e271ff39e84b0d5a51"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 db907428a7839c23833c664abac94bc6826d17f10e09e0fef464ded7294bee64; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 db907428a7839c23833c664abac94bc6826d17f10e09e0fef464ded7294bee64; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7105,7 +7133,7 @@
           "path": "tests/profile_cn/expected/cn-plan-lane-member-cn.json",
           "sha256": "b8c4956d6342db25eda9f98fc635eedc8bca8f7d4ccb4c9f82a0e8b62d733785"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 d988625da5d3b769c46b767c7e634f61f851f07a2c1d285cbcef6a3c887ed484; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 d988625da5d3b769c46b767c7e634f61f851f07a2c1d285cbcef6a3c887ed484; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7168,7 +7196,7 @@
           "path": "tests/profile_cn/expected/cn-plan-lane-member-support.json",
           "sha256": "e72eacd4ee12fe9081bf5104bd2c37a190630412ee9a7ed59ecdf7409de1e661"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 8cb9c55594274af15a889234a4b157fabf07c6e29b117013c535c02b39881bfd; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 8cb9c55594274af15a889234a4b157fabf07c6e29b117013c535c02b39881bfd; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7224,7 +7252,7 @@
           "path": "tests/profile_cn/expected/cn-plan-link.json",
           "sha256": "9ec8f56818a4e0b9ebc661e25f796b6a86cac746b15cf89ab70cb535f78cf233"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 38929fcfe4359eeec5b0f7b43d5efdd56d2bfcc9d783376c0265c789d14d4b89; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 38929fcfe4359eeec5b0f7b43d5efdd56d2bfcc9d783376c0265c789d14d4b89; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7280,7 +7308,7 @@
           "path": "tests/profile_cn/expected/cn-plan-link-wrong-target-type.json",
           "sha256": "daea60cb8dbbfffbc725559515b2515a4d75e52c36ef511759d792ebaa310359"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 6196aa10b9432b5f226a0c2d4da5f2902943af93d76ca50d68059a3705b79ef5; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 6196aa10b9432b5f226a0c2d4da5f2902943af93d76ca50d68059a3705b79ef5; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7336,7 +7364,7 @@
           "path": "tests/profile_cn/expected/cn-plan-missing-parameter.json",
           "sha256": "2f3423746e11af7869613fe7969fff7e5f8d2060f66f15af4f4daa0a0ffece04"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 8fab8fdf443bd908d995245d5bbf65d3a3fb02be2fc018fb2c91292de2b3e1e0; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 8fab8fdf443bd908d995245d5bbf65d3a3fb02be2fc018fb2c91292de2b3e1e0; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7399,7 +7427,7 @@
           "path": "tests/profile_cn/expected/cn-plan-optional-binding-missing.json",
           "sha256": "0c7ce3c37b001c23a7c346f1bab75ea335ac77ee210ac36c4dcc801f49f244cf"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 bc45e17937b9e2b9dc3079fcf2df6ee01c393598d74f98ce9a12bfce4660e9d9; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 bc45e17937b9e2b9dc3079fcf2df6ee01c393598d74f98ce9a12bfce4660e9d9; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7455,7 +7483,7 @@
           "path": "tests/profile_cn/expected/cn-plan-recipe-not-compiled.json",
           "sha256": "c1b8dc7c611ab4f439e48873db4a672ef5e28ae6d58ce3554b7a6ffcc1f2999f"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 8dc9adb5e050000719b14f86eb3cca7ba29c4780366bbb32c5a30a18afe48f0d; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 8dc9adb5e050000719b14f86eb3cca7ba29c4780366bbb32c5a30a18afe48f0d; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7511,7 +7539,7 @@
           "path": "tests/profile_cn/expected/cn-plan-remove-referenced.json",
           "sha256": "c16b7e6673bb575ecb92eebd8afeb32faffcc63f7bdf31ed9ba446873c8bbc4a"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 ef6d4338fb83012d77b2a1b5c430d34e1f088225bf463e91c80e04300bfb1c87; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 ef6d4338fb83012d77b2a1b5c430d34e1f088225bf463e91c80e04300bfb1c87; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7545,7 +7573,7 @@
           "path": "tests/profile_cn/expected/cn-plan-remove-without-intent.json",
           "sha256": "0d919da463b16d0e2199ea37703b823c80b613d90cb3199e1f9248656c5da19c"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 cb40019ecab99c32f315d8b831bea6ec65dbbe24cc70b2b22a2e949a427a6d25; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 cb40019ecab99c32f315d8b831bea6ec65dbbe24cc70b2b22a2e949a427a6d25; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7601,7 +7629,7 @@
           "path": "tests/profile_cn/expected/cn-plan-reparent-annotation.json",
           "sha256": "3fbc0aba66f7f3fc26e78629769beb62632873f0b29ef81ceab2ceb5b6f0b44d"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 7ac46f8e2e2c4005406bcb81f265fe4b6ce98bbd1a9069113f79e1b83415233b; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 7ac46f8e2e2c4005406bcb81f265fe4b6ce98bbd1a9069113f79e1b83415233b; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7657,7 +7685,7 @@
           "path": "tests/profile_cn/expected/cn-plan-scalar-write-conflict.json",
           "sha256": "bccde523e5678f12cf2bbca4aab1a7b5d38410689a763bdfb5034bd9885e6188"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 905461ecb2e72ebc387a72851f5da77107a3eeb13b13f940c31a25cff19575e1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 905461ecb2e72ebc387a72851f5da77107a3eeb13b13f940c31a25cff19575e1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7713,7 +7741,7 @@
           "path": "tests/profile_cn/expected/cn-plan-undeclared-parameter.json",
           "sha256": "6f5d5cd171d676ce8e9641181db74c62593b75845b595a2379e848fb1da60b22"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 532991857d6e4c67350879dd600fb76c2b66f5b0eab73cff688ea65ad3dadbf1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 532991857d6e4c67350879dd600fb76c2b66f5b0eab73cff688ea65ad3dadbf1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7769,7 +7797,7 @@
           "path": "tests/profile_cn/expected/cn-plan-unknown-element-parameter.json",
           "sha256": "c7c49ee47e1721f418c1259e61f7f464ccfe08e0d86def37839cb3b5495bbc83"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 da03034ddf6ecac77091947bd3323d47f9b1d00bb846796fbc9c262227281d86; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 da03034ddf6ecac77091947bd3323d47f9b1d00bb846796fbc9c262227281d86; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7825,7 +7853,7 @@
           "path": "tests/profile_cn/expected/cn-plan-unset-name.json",
           "sha256": "e2472da2f5f7aeceb29d78009ccbb0b5d7b0eabc1b2c2eca1427b1e2b419a9dc"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 fd04a3130afaeeb746ddbf6d55c31c663b028e5849d961715d836c210b53e6a3; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 fd04a3130afaeeb746ddbf6d55c31c663b028e5849d961715d836c210b53e6a3; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7881,7 +7909,7 @@
           "path": "tests/profile_cn/expected/cn-plan-wrong-parameter-type.json",
           "sha256": "5f8233b1feeaba23322e9a4b6f3cfee88b1747372ffa2c8e71d602ae4c3c8b59"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 49bc912c39db019b46b08b72e27172f1ede4133e3e8e361c77e79a89321c828a; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 49bc912c39db019b46b08b72e27172f1ede4133e3e8e361c77e79a89321c828a; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7923,7 +7951,7 @@
           "path": "tests/profile_cn/expected/cn-apply-stale-plan.json",
           "sha256": "9a1c24e618e63ca854b574c5c66a0c65d7ee7e109d1512a77d1f68f5c34e68b7"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 93bf006a890727b37c8fc87a6013bac3cb95260904d680b29a67c218876a9449; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 93bf006a890727b37c8fc87a6013bac3cb95260904d680b29a67c218876a9449; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -7965,7 +7993,7 @@
           "path": "tests/profile_cn/expected/cn-apply-input-conflict.json",
           "sha256": "d3154da9cef612d17f25ffa8cf974ddc85d8a30cd01e6c70239a543c9f8c90e0"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 3a18ffda6e7bbfe02640c0056ea267129c90b43618cd2eb7e2c4538ff6d3f244; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 3a18ffda6e7bbfe02640c0056ea267129c90b43618cd2eb7e2c4538ff6d3f244; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H08)"
       }
     },
     {
@@ -8007,7 +8035,7 @@
           "path": "tests/profile_cn/expected/cn-c-version-mismatch-first.json",
           "sha256": "ccb44cd494550690538a4674a37a035e1657bba3cf50e717e8a24f05ae3a2481"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 ae0b72bfff5dc71147f2d25d4328f8342455c12affe47bd001d87918e202d3e1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 ae0b72bfff5dc71147f2d25d4328f8342455c12affe47bd001d87918e202d3e1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8049,7 +8077,7 @@
           "path": "tests/profile_cn/expected/cn-c-digest-mismatch-first.json",
           "sha256": "38332877ca2165067b27e0e6dde0e3d6bc77120eaef1d9b15f6354fc81fefe2f"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 7cb3b012ed4faa1a05c670f197db7530eb61f02a3417cb52140f9f9b044a169d; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 7cb3b012ed4faa1a05c670f197db7530eb61f02a3417cb52140f9f9b044a169d; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8098,7 +8126,7 @@
           "path": "tests/profile_cn/expected/cn-c-document-version.json",
           "sha256": "ccf37eb05a537d4e4254c06e620a347dc7f377b565e3d4358917a527d93cb830"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 8012c9eab1f05c6f238649dbbebbbd31f3338a3e7e12314a3d825289bc8b7fdf; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 8012c9eab1f05c6f238649dbbebbbd31f3338a3e7e12314a3d825289bc8b7fdf; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8140,7 +8168,7 @@
           "path": "tests/profile_cn/expected/cn-c-gateway-direction-control.json",
           "sha256": "d9c5aff083dad5d0704529d242f7c85a03b893ae4d275b6cdbfbf1a13a682858"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 3883d0ada612313eded6c5400450cf677d82ac45fb0068e27f8cc46fd53deb12; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 3883d0ada612313eded6c5400450cf677d82ac45fb0068e27f8cc46fd53deb12; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8189,7 +8217,7 @@
           "path": "tests/profile_cn/expected/cn-c-output-port-gated.json",
           "sha256": "738c59cf0825e6c0bb74dd15664afff4be02f3d4d02b0e0efc8aeba7d63c4c64"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 2d4236a059fefce560b9bcc1d072be62191b725671340c9cf87a592fd01bdc1a; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 2d4236a059fefce560b9bcc1d072be62191b725671340c9cf87a592fd01bdc1a; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8238,7 +8266,7 @@
           "path": "tests/profile_cn/expected/cn-c-output-port-qualification.json",
           "sha256": "4cc0551404df94122452282625eb8a8e68c36a5f3c85da9241c03c857f8bf8ff"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 c5cf08001c994c8df5aa5c4d28197aea68809c9c80a302e131e576f2dd687cb1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 c5cf08001c994c8df5aa5c4d28197aea68809c9c80a302e131e576f2dd687cb1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8280,7 +8308,7 @@
           "path": "tests/profile_cn/expected/cn-c-not-fixed.json",
           "sha256": "02bf26b7c289a70dd64d4805b33120cbfb0456da2ff61a923e161c99492c7cd2"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 34cab9538a1be7ccee3a5b38915045e5f6eb399df157f37b36d910cf8194e909; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 34cab9538a1be7ccee3a5b38915045e5f6eb399df157f37b36d910cf8194e909; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8322,7 +8350,7 @@
           "path": "tests/profile_cn/expected/cn-c-extraction-authorized.json",
           "sha256": "5e6bcf3504e3127b8699f7c44118ec918e21b038411e74e0aa491c60fd42a0a6"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 b85a964dc9a15d77f1a3159ff7e0e7558d9627206dfacd8346658795129c7c2d; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 b85a964dc9a15d77f1a3159ff7e0e7558d9627206dfacd8346658795129c7c2d; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8364,7 +8392,7 @@
           "path": "tests/profile_cn/expected/cn-c-extraction-unauthorized.json",
           "sha256": "b5b7a8fa61b2b4acdad7aa5b25f55eb406a1ce3d1a7a7bb95860eae758233382"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 796894529b9d97391c558c7373f56f46ee330cfb67c315456fb1ede98fee05cb; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 796894529b9d97391c558c7373f56f46ee330cfb67c315456fb1ede98fee05cb; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8406,7 +8434,7 @@
           "path": "tests/profile_cn/expected/cn-c-descriptor-role-unknown.json",
           "sha256": "ab2f222fe5896c9f5833ac32eba144fff43045aca4815fdc34e8483039ee23a4"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 c20fcf085bb458a9cc792225a1f10e9df8673fc8afee831f9e9d6491ba05a4be; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 c20fcf085bb458a9cc792225a1f10e9df8673fc8afee831f9e9d6491ba05a4be; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8448,7 +8476,7 @@
           "path": "tests/profile_cn/expected/cn-c-invalid-mode.json",
           "sha256": "0925976cc53ef3809175baad99842fbdebbc837f33a7f71fdaa0a0a83dd7e64a"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 9bca965ec02b7b385273c4c416301ddc0485fe4150aa0a9d98ecb802c9d4a246; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 9bca965ec02b7b385273c4c416301ddc0485fe4150aa0a9d98ecb802c9d4a246; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H09)"
       }
     },
     {
@@ -8511,7 +8539,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-band-process-ref.json",
           "sha256": "daf07d056c0b2df594c299769eeef82430ef2d1dfeb56378b8aac71c279cb506"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 6259f8dea5b9551e3d79508cdeed6266281eccbde29b4aeaf61a81635b9d8968; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 6259f8dea5b9551e3d79508cdeed6266281eccbde29b4aeaf61a81635b9d8968; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -8560,7 +8588,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-creation-gated.json",
           "sha256": "3ab86bf3380c4fc17cbb64df4abb52b2d7de3eb93bfd473dec961b2248a41fc6"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 ecf7278252f96c65751aecad281e304b83117a905cbcd9faad1ee0b4fafa07e4; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 ecf7278252f96c65751aecad281e304b83117a905cbcd9faad1ee0b4fafa07e4; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -8623,7 +8651,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-duplicate-role.json",
           "sha256": "4968bf9da3d113e3f077d81a33e67f7eaa35b250859c27a8742714fbe74d5839"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 e396bcd27de1cf9aaf53ab0955792b15e4f37f701d3e613e446cccb091a8ad46; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 e396bcd27de1cf9aaf53ab0955792b15e4f37f701d3e613e446cccb091a8ad46; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -8686,7 +8714,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-imported-ids.json",
           "sha256": "f0bb9159f5b45eb837978a658a6e591cc81b0034a6fbf7b5ac840d505c204c30"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 c837a5444dc35997b677a1d073cc8c7cde4f5253ae65d690adfd433624210f9b; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 c837a5444dc35997b677a1d073cc8c7cde4f5253ae65d690adfd433624210f9b; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -8749,7 +8777,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-imported-ids-edit.json",
           "sha256": "970c78a7713bf4d5cfc86da4db9c974f6c8da6ee4e9aebef994ad0d9576b993e"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 35ca9d4838f03a382eb1a5c94f47c6c937855144c58321ed881224c520d807be; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 35ca9d4838f03a382eb1a5c94f47c6c937855144c58321ed881224c520d807be; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -8812,7 +8840,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-late-band-collision.json",
           "sha256": "d8f56582f87f2b4db9e430d539a05e19eea582d28f42bbc3519db6584c589d42"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 8440d1f1a9765d42e419c65a8a57880deac759dc777e4a9941de07c7b376eef5; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 8440d1f1a9765d42e419c65a8a57880deac759dc777e4a9941de07c7b376eef5; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -8861,7 +8889,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-late-band-collision-edit.json",
           "sha256": "6b37838ee42468a60cf226e8b52f8b4de21ed31cec0f7f88da8bd3d53297abf3"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 70775f7522145d9fb4f654a73ccc9bf95bec901a485c6984ee16a012f2f9a5df; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 70775f7522145d9fb4f654a73ccc9bf95bec901a485c6984ee16a012f2f9a5df; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -8917,7 +8945,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-one-process.json",
           "sha256": "fccdc8770ad20b363036e276dfba82ae8533ac9869f817d49df7496f096b3934"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 e1d70cc0085fd26ecf4c98e9ec71f0c956fa07f5cabf33c27bc18427b9eb6254; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 e1d70cc0085fd26ecf4c98e9ec71f0c956fa07f5cabf33c27bc18427b9eb6254; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -8959,7 +8987,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-refusal-after-five-ensures.json",
           "sha256": "f18d521753ac8e82691a2358c182eace1da89d5340eb56fbfee5ce078720ecca"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 b8261ad586d41eac8be6fefb91861250f4a0b091a59dc147454021021caa06b2; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 b8261ad586d41eac8be6fefb91861250f4a0b091a59dc147454021021caa06b2; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -9015,7 +9043,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-two-processes.json",
           "sha256": "9381edb5133456c69022823b74b477ef01033ecd4f24b29dade43d87e88c27b3"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 527015b1131dc166aba7a677f48a617a503e1b958ec7659adf7738050cbc2c04; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 527015b1131dc166aba7a677f48a617a503e1b958ec7659adf7738050cbc2c04; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -9078,7 +9106,7 @@
           "path": "tests/profile_cn/expected/cn-n-support-wrong-parent.json",
           "sha256": "1756cad6053b874067212cd4ede22e9b20b1f3b1be4bb9ef9b5a501f30eb3e6d"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 1ab4862b54573362389ca53fc272180d606b1f47bb821e093c83174f24c94f22; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 1ab4862b54573362389ca53fc272180d606b1f47bb821e093c83174f24c94f22; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H10)"
       }
     },
     {
@@ -9134,7 +9162,7 @@
           "path": "tests/profile_cn/expected/cn-n-place-grid-deleted-association.json",
           "sha256": "eae19e23e15bece3553a86d63819a1abe26ac82dcbf1bdb1d6867ee728c6de28"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 cbd9083e98e63304daa0937a18b6b4789f1bcbdcf6379c17e08c9ba45d93ce75; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 cbd9083e98e63304daa0937a18b6b4789f1bcbdcf6379c17e08c9ba45d93ce75; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
       }
     },
     {
@@ -9190,7 +9218,7 @@
           "path": "tests/profile_cn/expected/cn-n-place-grid-inserted-association.json",
           "sha256": "1bb16ec157577f14025ddd145b893dba478b03a431f040c5d940125d42f38c1d"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 18c2e1706f90ee0319abfba8faacf160d3eae5bb17841f57275ecdd9e0c5b8e9; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 18c2e1706f90ee0319abfba8faacf160d3eae5bb17841f57275ecdd9e0c5b8e9; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
       }
     },
     {
@@ -9232,7 +9260,7 @@
           "path": "tests/profile_cn/expected/cn-sort-placements.json",
           "sha256": "7a65e56410557f1f223be32d2afc0165217553685da5aea4583a19ef067b5eb6"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 0145bc9b19388289eb8cd08bf8131754fdc7529414abf0f792bbbe5be621ac7c; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 0145bc9b19388289eb8cd08bf8131754fdc7529414abf0f792bbbe5be621ac7c; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
       }
     },
     {
@@ -9274,7 +9302,7 @@
           "path": "tests/profile_cn/expected/cn-n-placement-intent-di-only.json",
           "sha256": "72b3a702ef9ca68fd42dcf3814b44c9adee9b7544181b2334d32f4fdef31481a"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 b74bc1895f88d02a3695f3af01b9949d71fdb381dcb28d8712750b50fee4a093; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 b74bc1895f88d02a3695f3af01b9949d71fdb381dcb28d8712750b50fee4a093; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
       }
     },
     {
@@ -9308,7 +9336,7 @@
           "path": "tests/profile_cn/expected/cn-n-placement-intent-unknown.json",
           "sha256": "4c722839681cc05dcb6a9da8e11c9a8b67b1313f50b0ae404706aae4e55395d7"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 6f96584436fdd74418277497169c394ff8ed8c835ce841c77a9b1cdd7dea0db2; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 6f96584436fdd74418277497169c394ff8ed8c835ce841c77a9b1cdd7dea0db2; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
       }
     },
     {
@@ -9357,7 +9385,7 @@
           "path": "tests/profile_cn/expected/cn-plan-remove-empty-support.json",
           "sha256": "059545e8ad9ce15a2f456447f657519b2c10bf20970f99f5e18124399a41673f"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 cb946b9eba47f1023832d59a03bd2547d1bc05cbefecf2414decd3dc2785742d; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 cb946b9eba47f1023832d59a03bd2547d1bc05cbefecf2414decd3dc2785742d; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
       }
     },
     {
@@ -9399,7 +9427,7 @@
           "path": "tests/profile_cn/expected/cn-n-deleted-support-stays-absent.json",
           "sha256": "ca00f759fb7dded219d1957b2bca28da6238a847c88e7d75a3c9a59d4813a03e"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 4aee9b5ea9d18c462cde885af403f94080621ed779a97da7e3c9b6e6ee5640bc; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 4aee9b5ea9d18c462cde885af403f94080621ed779a97da7e3c9b6e6ee5640bc; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
       }
     },
     {
@@ -9441,7 +9469,7 @@
           "path": "tests/profile_cn/expected/cn-n-recreate-after-remap.json",
           "sha256": "71752c4ee731890306fc5dd802b8d4b0f317486e5fc802a88cd5a0e744e0be0a"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 583b98607d98ab3c03271d6c24ee2e6d7840904205f460ae58a419bafae8d1e5; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 583b98607d98ab3c03271d6c24ee2e6d7840904205f460ae58a419bafae8d1e5; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H11)"
       }
     },
     {
@@ -9490,7 +9518,7 @@
           "path": "tests/profile_cn/expected/cn-n-reference-region-edit.json",
           "sha256": "2b38e2bbacb5aa4ec166f3cf0d9474fdb016d1bc554d016ee568cabe89e98943"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 bc8dc1a4f416d9a5ff2ad323bb8be6426d776d9cc2146a0e599647f07cc5e197; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 bc8dc1a4f416d9a5ff2ad323bb8be6426d776d9cc2146a0e599647f07cc5e197; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
       }
     },
     {
@@ -9553,7 +9581,7 @@
           "path": "tests/profile_cn/expected/cn-n-external-membership-edit.json",
           "sha256": "1c974db30884df5b4dd17c1edadfc364237e0183b899e552c633a177a596d452"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 a26589fa9eb0ff0731e5cebc31f407f48e203aa511b5b6dbb5bb91d6b607b6ef; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 a26589fa9eb0ff0731e5cebc31f407f48e203aa511b5b6dbb5bb91d6b607b6ef; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
       }
     },
     {
@@ -9602,7 +9630,7 @@
           "path": "tests/profile_cn/expected/cn-n-recreate-after-remap-edit.json",
           "sha256": "56db6d6eb04c8922bb60144cd7065cb4dfa8a6a111c53cd3dcadee111cc60dae"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 191b0ee0ccb4421985763a8d5117333016abbe36421770d4c2664120df72c4c3; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 191b0ee0ccb4421985763a8d5117333016abbe36421770d4c2664120df72c4c3; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
       }
     },
     {
@@ -9644,7 +9672,7 @@
           "path": "tests/profile_cn/expected/cn-n-relation-direction-conflict.json",
           "sha256": "b55c7523e67be06cbd1589ef6c27afef6b43fb20ec59f3d7718280fa7eaf1373"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 114a611804bb934b9331e3b63ea7ac317e74ba6d7137c2fa8488e88d3a91595a; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 114a611804bb934b9331e3b63ea7ac317e74ba6d7137c2fa8488e88d3a91595a; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
       }
     },
     {
@@ -9686,7 +9714,7 @@
           "path": "tests/profile_cn/expected/cn-n-ensure-conflicting-definition.json",
           "sha256": "df5e7aeb88b482b59d7052ad35a92b691574f97bf46ee01a99569ac05fa4f0b0"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 34836ced5f0820ae95d351bda4673fadcd7f3419c612d4f458e883dabf8e7815; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 34836ced5f0820ae95d351bda4673fadcd7f3419c612d4f458e883dabf8e7815; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
       }
     },
     {
@@ -9728,7 +9756,7 @@
           "path": "tests/profile_cn/expected/cn-n-not-fixed.json",
           "sha256": "b657ffa963764a54fce2aae882b7fd11ffb9577df5903027e7c6a4d190d44074"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 0f57d358e95bfb0229f6b0c2067aae240354cb8c0c6851d1c32485c62fac4335; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 0f57d358e95bfb0229f6b0c2067aae240354cb8c0c6851d1c32485c62fac4335; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
       }
     },
     {
@@ -9777,7 +9805,7 @@
           "path": "tests/profile_cn/expected/cn-n-reserved-lane-renamed.json",
           "sha256": "c260070f023a3fd5c68928d67c9534edbeb68c23a73a4c1ad9a83052286a1e37"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 617a3423e037f9d6afddc04ddeedc99cfa9b50c710d12cccb4591362eb1ebac0; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 617a3423e037f9d6afddc04ddeedc99cfa9b50c710d12cccb4591362eb1ebac0; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H12)"
       }
     },
     {
@@ -9826,7 +9854,7 @@
           "path": "tests/profile_cn/expected/cn-remap-owner.json",
           "sha256": "ccbecad259835021dca2e072f89c2bdd4e1e411f2855db05f13e03bdc5690e0f"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 7c5f4ce8b9e647b9d8bef78a054970f5a92a6c3a93fe6cfeca19b36939c78212; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 7c5f4ce8b9e647b9d8bef78a054970f5a92a6c3a93fe6cfeca19b36939c78212; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -9868,7 +9896,7 @@
           "path": "tests/profile_cn/expected/cn-remap-gated.json",
           "sha256": "1fb0d0075cdff8010b5fbc3710f50fea40f048afc49154693035a9fd0f85b41e"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 a47a7da62767f568059cb253bfc37d89238825a651404cdbaee54c40aaee97e6; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 a47a7da62767f568059cb253bfc37d89238825a651404cdbaee54c40aaee97e6; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -9910,7 +9938,7 @@
           "path": "tests/profile_cn/expected/cn-remap-unknown-source.json",
           "sha256": "d7a2ff3d2ee4341cc20305a79e150fbbe8549b146f4a5a7c319151539efa902e"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 5162fa3c8f83f2fad6ce922d5136ad73c55ad2cc8afcba806798335c370edf65; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 5162fa3c8f83f2fad6ce922d5136ad73c55ad2cc8afcba806798335c370edf65; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -9959,7 +9987,7 @@
           "path": "tests/profile_cn/expected/cn-remap-target-grammar.json",
           "sha256": "788b8df158dc93abeb375d0cbe93a17dafa039701970dd7a86c8a68b4ca34b24"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 b12de715981409cbbdcf2c2f6ef6118ca0bc9be33e2760459a22b05864aa5781; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 b12de715981409cbbdcf2c2f6ef6118ca0bc9be33e2760459a22b05864aa5781; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -10008,7 +10036,7 @@
           "path": "tests/profile_cn/expected/cn-propose-recovery-partial-provenance.json",
           "sha256": "e5c2602cc6f263946f7f62e077fefd40f458f72b6df8c3329a875b3d66a77719"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 df3c054a54713d9795b68f31dfbab0c941c875c0d53b27ed60bd8d509bffb179; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 df3c054a54713d9795b68f31dfbab0c941c875c0d53b27ed60bd8d509bffb179; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -10057,7 +10085,7 @@
           "path": "tests/profile_cn/expected/cn-propose-recovery-with-provenance.json",
           "sha256": "790fd217b232b2597820f051c458d9cf0f1f91e515dbf71181b0f795ab864ea4"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 debf90fa3a9087483b7e6efcc281c3f531bf09116b1a4bd0f835460d9e08d6a2; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 debf90fa3a9087483b7e6efcc281c3f531bf09116b1a4bd0f835460d9e08d6a2; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -10106,7 +10134,7 @@
           "path": "tests/profile_cn/expected/cn-propose-recovery-without-provenance.json",
           "sha256": "5908805194d3906ecbe6840a688ee397233da659f3152c92a96b9b367dd7b58a"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 50547ae3b6fa762f4794e510ed086e5642354ddedadf7cc971d3b83b3f8007da; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 50547ae3b6fa762f4794e510ed086e5642354ddedadf7cc971d3b83b3f8007da; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -10155,7 +10183,7 @@
           "path": "tests/profile_cn/expected/cn-propose-black-box-pool.json",
           "sha256": "c47e4459fad6cce6e280a75c0d1ab1493617e4a190e92d39648b3bbc4f5abbed"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 bc25e91dbe3f52a1d36c7bae384a23ea51d7990677597a26682874c70e953ebc; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 bc25e91dbe3f52a1d36c7bae384a23ea51d7990677597a26682874c70e953ebc; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -10211,7 +10239,7 @@
           "path": "tests/profile_cn/expected/cn-bind-supports-conflict.json",
           "sha256": "58ee204f780032718af2ce1587870889d6f99890d38446f5acfcf95af239185d"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 b93bc52f7b739a6d9a1edf885cbf152fba235026ca13a6dfe1ad9b0bdc74ffcc; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 b93bc52f7b739a6d9a1edf885cbf152fba235026ca13a6dfe1ad9b0bdc74ffcc; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -10260,7 +10288,7 @@
           "path": "tests/profile_cn/expected/cn-bind-supports-explicit-selection.json",
           "sha256": "9eded28a13610921f34d48df8b29e48b2fb502f9f50d172fed8a3d80f98eade2"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 ecc6866535548e79f00df8e37e628ed72edabed4f36ccf56c732c5186bf81e11; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 ecc6866535548e79f00df8e37e628ed72edabed4f36ccf56c732c5186bf81e11; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -10309,7 +10337,7 @@
           "path": "tests/profile_cn/expected/cn-bind-supports-gated.json",
           "sha256": "3f90754ff23c66f5bcc325e62a9be36eaecf2678e3db8628f40d2d968235fb05"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 de9cb6d6d64e837e66a58b614eb896a85d3ab1fa958e77520b700a681d37c999; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 de9cb6d6d64e837e66a58b614eb896a85d3ab1fa958e77520b700a681d37c999; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -10365,7 +10393,7 @@
           "path": "tests/profile_cn/expected/cn-n-after-explicit-selection.json",
           "sha256": "f9e167239c54a102997489e1e90f1ee5677c1227b6ad577f2c62821c32b94d86"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 461b79f09b313d394403eed8443095d712f12da552f86eb5d300a399973487b1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 461b79f09b313d394403eed8443095d712f12da552f86eb5d300a399973487b1; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H13)"
       }
     },
     {
@@ -10407,7 +10435,7 @@
           "path": "tests/profile_cn/expected/cn-compile-create-identity-mismatch.json",
           "sha256": "d071074cb6f24bb8e36b2e4cf1e463dd25def7fb097186701763bb38cc438439"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 29c0ea04bbcd27e69d12a980d7780445148745f1ef567b599b9c36ba5d5ddda4; values owned by that seal, which applied the parity-sync decision PS-25 (a compile refusal is exactly {status, code, diagnostics: []}) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 29c0ea04bbcd27e69d12a980d7780445148745f1ef567b599b9c36ba5d5ddda4; values owned by that seal, which applied the parity-sync decision PS-25 (a compile refusal is exactly {status, code, diagnostics: []}) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
       }
     },
     {
@@ -10449,7 +10477,7 @@
           "path": "tests/profile_cn/expected/cn-compile-ensure-missing-binding-write.json",
           "sha256": "191ca70638a9eb8aa899c4644082767f25fe6898c9e9f8183401b215c6dd8238"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 e741482a798e91fafdc75acc259f2b55e447f4954cfdb136be1436d84bfaa513; values owned by that seal, which applied the parity-sync decision PS-25 (a compile refusal is exactly {status, code, diagnostics: []}) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 e741482a798e91fafdc75acc259f2b55e447f4954cfdb136be1436d84bfaa513; values owned by that seal, which applied the parity-sync decision PS-25 (a compile refusal is exactly {status, code, diagnostics: []}) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
       }
     },
     {
@@ -10491,7 +10519,7 @@
           "path": "tests/profile_cn/expected/cn-compile-ensure-non-support-type.json",
           "sha256": "594f1a4511bb23361882fdee55fc887ad535d93a248a51aa7e8af00a19ac7c2c"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 1d905c1d14d98ca4169e0f1984b08a03b5d41592f0be1641032aa9a29541dcba; values owned by that seal, which applied the parity-sync decision PS-25 (a compile refusal is exactly {status, code, diagnostics: []}) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 1d905c1d14d98ca4169e0f1984b08a03b5d41592f0be1641032aa9a29541dcba; values owned by that seal, which applied the parity-sync decision PS-25 (a compile refusal is exactly {status, code, diagnostics: []}) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
       }
     },
     {
@@ -10547,7 +10575,7 @@
           "path": "tests/profile_cn/expected/cn-compile-port-without-authority.json",
           "sha256": "c5116ff8c7604e78310ee7f145decbd7ffd59c5927fa9c90208c1879ec0b3ee7"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 ef205d7c5fcbe97334a9e8e8a1815f952d4407f7d03c4251936582914260ef11; values owned by that seal, which applied the parity-sync decision PS-25 (a compile refusal is exactly {status, code, diagnostics: []}) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 ef205d7c5fcbe97334a9e8e8a1815f952d4407f7d03c4251936582914260ef11; values owned by that seal, which applied the parity-sync decision PS-25 (a compile refusal is exactly {status, code, diagnostics: []}) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
       }
     },
     {
@@ -10589,7 +10617,7 @@
           "path": "tests/profile_cn/expected/cn-compile-support-profile.json",
           "sha256": "5a474e58ec46614307ed24ed0bd4f7b2c3fd4981a249fdcc63a9b46d3aaa2558"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 395dcfa98b0d35dadc13d0690b358a89c6f1e895b391c9829b14e4509858e0a1; values owned by that seal, which applied the parity-sync decision PS-35 (success payload UNSEALED by the marker {\"$unsealed\": reason}, identity in compiled-identity) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 395dcfa98b0d35dadc13d0690b358a89c6f1e895b391c9829b14e4509858e0a1; values owned by that seal, which applied the parity-sync decision PS-35 (success payload UNSEALED by the marker {\"$unsealed\": reason}, identity in compiled-identity) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
       }
     },
     {
@@ -10638,7 +10666,7 @@
           "path": "tests/profile_cn/expected/cn-compile-variants.json",
           "sha256": "7162d49e7791ca3c59066cf8e155ae20f01437388688603dac15db6b2fd3fe77"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 cdcea7d4cd15ebc10e790b345603606903cee9a91e8c891a5ad069d24fa50fc7; values owned by that seal, which applied the parity-sync decision PS-35 (one success PureResult per input profile with payload UNSEALED by the marker {\"$unsealed\": reason}, identities in compiled-identities {identity, variant}) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 cdcea7d4cd15ebc10e790b345603606903cee9a91e8c891a5ad069d24fa50fc7; values owned by that seal, which applied the parity-sync decision PS-35 (one success PureResult per input profile with payload UNSEALED by the marker {\"$unsealed\": reason}, identities in compiled-identities {identity, variant}) to this record (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H14)"
       }
     },
     {
@@ -10680,7 +10708,7 @@
           "path": "tests/profile_cn/expected/cn-c-empty-called-element.json",
           "sha256": "419b5853a49aba0d0cd70130644b2f998122bee9d29f4f812ec508d13f0729ff"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 010f355db4fbc16e4d1a0bc0ac042f8d072dac6d87d6111fd0a33d137c081df7; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 010f355db4fbc16e4d1a0bc0ac042f8d072dac6d87d6111fd0a33d137c081df7; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
       }
     },
     {
@@ -10722,7 +10750,7 @@
           "path": "tests/profile_cn/expected/cn-c-second-pass-refused.json",
           "sha256": "96d08d4fa28bfc50c3b348edc86797535777082528143444d3d4a3a7bbc6cda1"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 b906b7acd9fcd29d6192d2ad6ad20bac8ce0975a55bd0af30de49e8bc5e2c7ae; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 b906b7acd9fcd29d6192d2ad6ad20bac8ce0975a55bd0af30de49e8bc5e2c7ae; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
       }
     },
     {
@@ -10756,7 +10784,7 @@
           "path": "tests/profile_cn/expected/cn-c-wrong-type-reference.json",
           "sha256": "bc86a48c291d28145581ad3981e5c7a65d9fe9728c84586747edcd419c02f0b6"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 52248b38ddc3e6068eac85b9ebea1b10c9df7ad4b3e057f7ee78aed9a8038fb8; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 52248b38ddc3e6068eac85b9ebea1b10c9df7ad4b3e057f7ee78aed9a8038fb8; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
       }
     },
     {
@@ -10805,7 +10833,7 @@
           "path": "tests/profile_cn/expected/cn-n-compat-before-integrity.json",
           "sha256": "4b34c916603bd53fc77301720da7fb696730517272b8453082710b3543244ab2"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 7764ca39610a7e5ae0b5b09f259389e1b42d790881fb9eb2b59191a38fb897b3; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 7764ca39610a7e5ae0b5b09f259389e1b42d790881fb9eb2b59191a38fb897b3; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
       }
     },
     {
@@ -10847,7 +10875,7 @@
           "path": "tests/profile_cn/expected/cn-n-dangling-reference.json",
           "sha256": "14e146f68c11c762d43a2e77d0bf840e6214f00877d279872e08b15581e20a08"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 4032592cb2005362ba4f6a6144f921fabafe3106fedc5aea89e832869bb08299; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 4032592cb2005362ba4f6a6144f921fabafe3106fedc5aea89e832869bb08299; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
       }
     },
     {
@@ -10889,7 +10917,7 @@
           "path": "tests/profile_cn/expected/cn-n-second-pass-refused.json",
           "sha256": "c47d23201a33f8f731ad621ac0871ef2b5e5333dcd80fe200706244ee7686e9a"
         },
-        "derivation": "vendored unchanged from the Python seal 9fdebab94e28c02ec2511d155350c5e1a9ca4cfe90d25d61455a7d280e863ba7 (MANIFEST.sha256 at 7fc64828cc0fb2d8b9c48c71dab80e6fab6b6672), case file SHA-256 2e22b736117a274aee724c61113577677a2ef8a85acd7882a73476e13638abc7; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
+        "derivation": "vendored unchanged from the Python seal 0d3922f74fb71e19d305307a3153989dcdf4ba3685e8a6df06c28046cf15ad8e (MANIFEST.sha256 at 1c2df3166480fe62a233fe91c3ae19bf8839cd2a), case file SHA-256 2e22b736117a274aee724c61113577677a2ef8a85acd7882a73476e13638abc7; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC PS-H15)"
       }
     }
   ]

@@ -15,7 +15,7 @@
       "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
     }
   },
-  "derivation": "Vendored unchanged from JS seal 91edbbf2956eaf69da63a07b8474c07000fd4dd9bfd28d7a1f9f786ef6569b82, case file SHA-256 86f15f6337f7c8b8c9f328389911465f3f043b658d2464636d7dcb3b8e891145; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC). Import row PS-H02: normalize witnesses. fixedPoint: DESIGN §7.3 C(C(x)) = C(x), N(N(x)) = N(x) for any accepted x. Discriminates (JS index): Fails an implementation that Unicode-normalizes (NFC composes the decomposed e+U+0301, NFD decomposes U+00E9 and U+00F4, NFKC also folds NBSP), trims (NBSP, U+0085, BOM, trailing space) or re-splits the LF/CRLF/U+2028 start situations, rewrites astral (U+10000, U+1F4D8) or private-use (U+E000) characters, or escapes non-ASCII differently in canonical bytes.",
+  "derivation": "Vendored unchanged from JS seal 7bd2d206277c123ad027481a42969f013cd91ddc4a2bfaab0e529fbc7120cb3c, case file SHA-256 86f15f6337f7c8b8c9f328389911465f3f043b658d2464636d7dcb3b8e891145; values owned by that seal (BLOCKB-HARMONIZATION §3, BLOCKB-PARITY-SYNC). Import row PS-H02: normalize witnesses. fixedPoint: DESIGN §7.3 C(C(x)) = C(x), N(N(x)) = N(x) for any accepted x. Discriminates (JS index): Fails an implementation that Unicode-normalizes (NFC composes the decomposed e+U+0301, NFD decomposes U+00E9 and U+00F4, NFKC also folds NBSP), trims (NBSP, U+0085, BOM, trailing space) or re-splits the LF/CRLF/U+2028 start situations, rewrites astral (U+10000, U+1F4D8) or private-use (U+E000) characters, or escapes non-ASCII differently in canonical bytes.",
   "input": {
     "envelope": {
       "documentVersion": "1",

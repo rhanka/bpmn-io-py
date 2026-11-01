@@ -1040,7 +1040,7 @@ The JS lot-4 seal owns the values of the 155 lot-4 cases the harmonization (§3)
 assigns to the Python parity run (block-B parity sync PS-H17, PS-H18, PS-H19). They
 are vendored, never re-authored, from the JS corpus
 `bpmn-canvas:tests/fixtures/lot4-layout-export/expectations` whose `seal.json`
-SHA-256 is `2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf`.
+SHA-256 is `538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b`.
 
 - Files: the JS case files, every artifact file they reference, the package inputs
   of their profiles, `seal.json` and `manifest.json` are committed raw, in the JS
@@ -1304,7 +1304,7 @@ bind `content` and `side` without an ensure recipe).
 | PS-H19 | `export-001…028`, `idplan-001…007`, `serialize-001…008`, `bpmn-001…003` (46) | export |
 
 155 ids: 153 harness records (25 carry a JS-applied decision: 19 PS-33, 6 PS-06) and 2 twins,
-from the JS seal `2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf`.
+from the JS seal `538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b`.
 After the sync the render tree holds 194 Python cases and 107 vendored records, the
 export tree 83 and 46, and the parity corpus publishes 224 records and lists 153
 vendored cases and 2 aliases (Appendices C and D).

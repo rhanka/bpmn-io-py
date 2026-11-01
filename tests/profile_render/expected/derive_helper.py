@@ -472,7 +472,7 @@ def synthetic_key(declaration_id: str, owner_id: str, page_id: str) -> str:
 
 # ------------------------------- vendored JS lot-4 cases (block-B parity sync, §17.6)
 
-JS_SEAL_SHA256 = "2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf"
+JS_SEAL_SHA256 = "538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b"
 TREES = {"render": "tests/profile_render/expected", "export": "tests/profile_export/expected"}
 VENDOR = "vendor/js"
 
@@ -1158,7 +1158,7 @@ VENDORED: dict[str, dict[str, str]] = {
             "d88ac00acee6127a626114c8a7fc1141a3ec67e0d3fdf05c82629263c22869d0"
         ),
         "manifest.json": "4f93447358c484a156cb806d56e08629c05066a9fe16fca4d432b9b37a20aef1",
-        "seal.json": "2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf",
+        "seal.json": "538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b",
     },
     "export": {
         "artifacts/choices-plain.render.json": (
@@ -1549,7 +1549,7 @@ VENDORED: dict[str, dict[str, str]] = {
             "8ac04ab429c4235136dab1a714325909aee618dab95e05788fff170909f4289e"
         ),
         "manifest.json": "4f93447358c484a156cb806d56e08629c05066a9fe16fca4d432b9b37a20aef1",
-        "seal.json": "2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf",
+        "seal.json": "538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b",
     },
 }
 

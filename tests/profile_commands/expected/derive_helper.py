@@ -904,7 +904,7 @@ def check_parity() -> list[str]:
 #: and the lot-3 ``seal.json`` ``inputs`` for the lot-0 metrics asset.
 VENDORED: dict[str, str] = {
     "vendor/js/lot3-cn/expectations/cases/l3-tx-incremental-draft.json": (
-        "b6d947ff17000c1af7d6faeffe7e886cae8bb6fa2b2b92e3f39c4683200243ea"
+        "810f461261879b3381e99fa04d428d96399bbda6543caaeea3aede0d55536035"
     ),
     "vendor/js/lot3-cn/expectations/profile/neutral-cn-base.json": (
         "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
@@ -1447,7 +1447,7 @@ VENDORED_CORPORA = (
     {
         "cases": "vendor/js/lot3-cn/expectations/cases/",
         "pathBase": "vendor/js/",
-        "seal": "91edbbf2956eaf69da63a07b8474c07000fd4dd9bfd28d7a1f9f786ef6569b82",
+        "seal": "7bd2d206277c123ad027481a42969f013cd91ddc4a2bfaab0e529fbc7120cb3c",
     },
 )
 #: JS operations renamed in the harness record (multi-step scripts are sequences).

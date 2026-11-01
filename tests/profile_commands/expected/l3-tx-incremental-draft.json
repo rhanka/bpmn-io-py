@@ -1,7 +1,7 @@
 {
   "case": "l3-tx-incremental-draft",
   "clause": "DESIGN R3.3 \u00a78.2 L632-L641; \u00a76.2 L474; \u00a716 L1144; \u00a77.1 L544; \u00a78.1 L595-L596",
-  "derivation": "Vendored unchanged from the JS lot-3 seal (seal.json SHA-256 91edbbf2956eaf69da63a07b8474c07000fd4dd9bfd28d7a1f9f786ef6569b82), case file lot3-cn/expectations/cases/l3-tx-incremental-draft.json SHA-256 b6d947ff17000c1af7d6faeffe7e886cae8bb6fa2b2b92e3f39c4683200243ea; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H24, a headless sequence after harmonization J1). No value was recomputed or obtained from an implementation. Expected: the JS trace artifact with its UNSEALED pointer list. JS discrimination: Fails an adapter that creates more than one history entry per command, recomputes IDs or reruns C/N on undo/redo, returns anything but the exact restored Snapshot/1 (envelope, presentation, selection, viewRevision), emits raw or intermediate change events, refuses incomplete drafts instead of reporting draft lint entries, or omits the C topology entries of each step. Section-1 decisions checked against the sealed values: PS-08 (bare profile-subrule ruleId), PS-09 (unavailable result coordinate of observed lint entries), PS-10 (empty rawStandardFindings with every standard rule off), PS-15 (archived importedDi descriptorDigest = H(descriptor pins sorted by id), recomputed) and PS-16 (undo/redo baseRevision = the revision before the restoration) hold; the undo/redo reports and event transactionIds stay unsealed as in the source, which PS-29 does not contradict. No value changes.",
+  "derivation": "Vendored unchanged from the JS lot-3 seal (seal.json SHA-256 7bd2d206277c123ad027481a42969f013cd91ddc4a2bfaab0e529fbc7120cb3c), case file lot3-cn/expectations/cases/l3-tx-incremental-draft.json SHA-256 810f461261879b3381e99fa04d428d96399bbda6543caaeea3aede0d55536035; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H24, a headless sequence after harmonization J1). No value was recomputed or obtained from an implementation. Expected: the JS trace artifact with its UNSEALED pointer list. JS discrimination: Fails an adapter that creates more than one history entry per command, recomputes IDs or reruns C/N on undo/redo, returns anything but the exact restored Snapshot/1 (envelope, presentation, selection, viewRevision), emits raw or intermediate change events, refuses incomplete drafts instead of reporting draft lint entries, or omits the C topology entries of each step. Section-1 decisions checked against the sealed values: PS-08 (bare profile-subrule ruleId), PS-09 (unavailable result coordinate of observed lint entries), PS-10 (empty rawStandardFindings with every standard rule off), PS-15 (archived importedDi descriptorDigest = H(descriptor pins sorted by id), recomputed) and PS-16 (undo/redo baseRevision = the revision before the restoration) hold; the undo/redo reports and event transactionIds stay unsealed as in the source, which PS-29 does not contradict. No value changes.",
   "author": "spec-seal",
   "operation": "sequence",
   "profile": {
@@ -11,7 +11,7 @@
   "input": {
     "source": {
       "vendored": "vendor/js/lot3-cn/expectations/cases/l3-tx-incremental-draft.json",
-      "sha256": "b6d947ff17000c1af7d6faeffe7e886cae8bb6fa2b2b92e3f39c4683200243ea"
+      "sha256": "810f461261879b3381e99fa04d428d96399bbda6543caaeea3aede0d55536035"
     },
     "pathBase": "vendor/js/",
     "inputArtifacts": [
@@ -467,7 +467,12 @@
               },
               "transactionId": "unsealed",
               "origin": "load",
-              "report": "unsealed"
+              "report": {
+                "$same": {
+                  "step": 2,
+                  "pointer": "/result/report"
+                }
+              }
             }
           ]
         }
@@ -2600,7 +2605,11 @@
               "semanticRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63"
             },
             "presentation": {
-              "layout": "unsealed",
+              "layout": {
+                "layoutVersion": "1",
+                "pages": "unsealed",
+                "geometry": "unsealed"
+              },
               "themeId": "plain",
               "overrides": {
                 "semantic": [],
@@ -3284,7 +3293,11 @@
               "semanticRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f"
             },
             "presentation": {
-              "layout": "unsealed",
+              "layout": {
+                "layoutVersion": "1",
+                "pages": "unsealed",
+                "geometry": "unsealed"
+              },
               "themeId": "plain",
               "overrides": {
                 "semantic": [],
@@ -3457,7 +3470,12 @@
               },
               "transactionId": "unsealed",
               "origin": "undo",
-              "report": "unsealed"
+              "report": {
+                "$same": {
+                  "step": 10,
+                  "pointer": "/result/report"
+                }
+              }
             }
           ]
         }
@@ -3615,7 +3633,12 @@
               },
               "transactionId": "unsealed",
               "origin": "redo",
-              "report": "unsealed"
+              "report": {
+                "$same": {
+                  "step": 11,
+                  "pointer": "/result/report"
+                }
+              }
             }
           ]
         }
@@ -3630,7 +3653,7 @@
       {
         "artifact": "trace",
         "pointer": "/1/result/report",
-        "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap)."
+        "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap); the change event of the step carries this same report (L606, L633) and is compared with it by relation."
       },
       {
         "artifact": "trace",
@@ -3644,13 +3667,13 @@
       },
       {
         "artifact": "trace",
-        "pointer": "/1/events/L1/0/report",
-        "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap)."
+        "pointer": "/6/result/payload/presentation/layout/pages",
+        "reason": "Pages of a canvas-computed layout are lot-4 outputs (DESIGN L667, L723); the record is Layout/1 (L610, L667), so its layoutVersion is compared."
       },
       {
         "artifact": "trace",
-        "pointer": "/6/result/payload/presentation/layout",
-        "reason": "Layout geometry and occurrence keys of a canvas-computed layout are lot-4 outputs; restoring them is compared by relation."
+        "pointer": "/6/result/payload/presentation/layout/geometry",
+        "reason": "Geometry and occurrence keys of a canvas-computed layout are lot-4 outputs (DESIGN L667, L723); restoring them is compared by relation."
       },
       {
         "artifact": "trace",
@@ -3664,8 +3687,13 @@
       },
       {
         "artifact": "trace",
-        "pointer": "/8/result/payload/presentation/layout",
-        "reason": "Layout geometry and occurrence keys of a canvas-computed layout are lot-4 outputs; restoring them is compared by relation."
+        "pointer": "/8/result/payload/presentation/layout/pages",
+        "reason": "Pages of a canvas-computed layout are lot-4 outputs (DESIGN L667, L723); the record is Layout/1 (L610, L667), so its layoutVersion is compared."
+      },
+      {
+        "artifact": "trace",
+        "pointer": "/8/result/payload/presentation/layout/geometry",
+        "reason": "Geometry and occurrence keys of a canvas-computed layout are lot-4 outputs (DESIGN L667, L723); restoring them is compared by relation."
       },
       {
         "artifact": "trace",
@@ -3680,7 +3708,7 @@
       {
         "artifact": "trace",
         "pointer": "/9/result/report",
-        "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap)."
+        "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap); the change event of the step carries this same report (L606, L633) and is compared with it by relation."
       },
       {
         "artifact": "trace",
@@ -3689,23 +3717,13 @@
       },
       {
         "artifact": "trace",
-        "pointer": "/9/events/L1/0/report",
-        "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap)."
-      },
-      {
-        "artifact": "trace",
         "pointer": "/10/result/report",
-        "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap)."
+        "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap); the change event of the step carries this same report (L606, L633) and is compared with it by relation."
       },
       {
         "artifact": "trace",
         "pointer": "/10/events/L1/0/transactionId",
         "reason": "DESIGN L606 names transactionId in every change event but defines no value for load, snapshot, theme, undo or redo origins (source gap)."
-      },
-      {
-        "artifact": "trace",
-        "pointer": "/10/events/L1/0/report",
-        "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap)."
       }
     ]
   }

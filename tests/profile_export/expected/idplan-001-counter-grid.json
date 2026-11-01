@@ -1,7 +1,7 @@
 {
   "case": "idplan-001-counter-grid",
   "clause": "DESIGN R3.3 \u00a710.2 L801",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 f04e1c49e357242866f61f1555fe89d063ccafb2bf40ae05baba75a022a9d274; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The lot-0 grid recipes request page keys, export-nodes keys and the nested node with its container: allocation e_10 Z-page, e_11 A-page, e_12 a-first, e_13 z-last, e_14 a-last-page, exactly the lot-0 grid exportIR numbering, although z-last is emitted last; the repeated container request reuses e_12. Fails against: Numbering in emission order (z-last would be e_14) or allocating the repeated request twice.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 f04e1c49e357242866f61f1555fe89d063ccafb2bf40ae05baba75a022a9d274; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: The lot-0 grid recipes request page keys, export-nodes keys and the nested node with its container: allocation e_10 Z-page, e_11 A-page, e_12 a-first, e_13 z-last, e_14 a-last-page, exactly the lot-0 grid exportIR numbering, although z-last is emitted last; the repeated container request reuses e_12. Fails against: Numbering in emission order (z-last would be e_14) or allocating the repeated request twice.",
   "operation": "exportIdPlan",
   "profile": null,
   "input": [

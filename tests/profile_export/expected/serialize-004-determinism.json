@@ -1,7 +1,7 @@
 {
   "case": "serialize-004-determinism",
   "clause": "DESIGN R3.3 \u00a710.2 L801; \u00a714.3 L963",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 51ed5aaacddf8b24a4c8e0a0c55795dda8403f2a8793583c69142dd5aa96f4b0; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: A pure terminal serializer returns identical bytes for identical input, including after serializing another artifact (A->A->B->A); no clock, counter or cache leaks between calls. Fails against: Timestamps, call counters or a shared ID table across calls.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 51ed5aaacddf8b24a4c8e0a0c55795dda8403f2a8793583c69142dd5aa96f4b0; values owned by that seal (harmonization \u00a73; parity sync PS-H19). JS derivation: A pure terminal serializer returns identical bytes for identical input, including after serializing another artifact (A->A->B->A); no clock, counter or cache leaks between calls. Fails against: Timestamps, call counters or a shared ID table across calls.",
   "operation": "serializePrepared-sequence",
   "profile": null,
   "input": [

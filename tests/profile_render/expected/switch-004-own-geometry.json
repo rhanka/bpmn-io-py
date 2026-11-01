@@ -1,7 +1,7 @@
 {
   "case": "switch-004-own-geometry",
   "clause": "DESIGN R3.3 \u00a79.4 L721; \u00a713 L928; \u00a716 L1150",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 ae61a8a213172ada9b07f668acd75a576857f997b77145415c3beb8c84b6ba3d; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: wide-own declares geometry theme; per-theme geometry is not approved (OPEN-DI/OPEN-LOOK owner default shared geometry), so the switch refuses profile-open (harmonization H5). Fails against: Allowing the geometry:theme policy without approval, or reporting theme-geometry-conflict.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 ae61a8a213172ada9b07f668acd75a576857f997b77145415c3beb8c84b6ba3d; values owned by that seal (harmonization \u00a73; parity sync PS-H18). JS derivation: wide-own declares geometry theme; per-theme geometry is not approved (OPEN-DI/OPEN-LOOK owner default shared geometry), so the switch refuses profile-open (harmonization H5). Fails against: Allowing the geometry:theme policy without approval, or reporting theme-geometry-conflict.",
   "operation": "checkThemeSwitch",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",

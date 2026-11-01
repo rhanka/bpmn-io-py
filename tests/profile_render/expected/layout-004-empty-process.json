@@ -1,7 +1,7 @@
 {
   "case": "layout-004-empty-process",
   "clause": "DESIGN R3.3 \u00a79.4 L725",
-  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 2182fdfa57e862f50e2c07261dc2864c3e475cd33c249db6d28dd957b76ccddf), case file SHA-256 84fc78bd7ad5d1f8886f525cdd086aa382d20d9ef4c30be7f67be5eb0cafd5ea; values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: An empty process without IO needs no IO row; the pool passes through unchanged. Fails against: Inventing an IO row, a lane or a band for an empty process.",
+  "derivation": "Vendored unchanged from the JS lot-4 seal (seal.json SHA-256 538ad9c207c13e2d2dee665717a2efed49f171cd6daedc3f09aa7654d332e35b), case file SHA-256 84fc78bd7ad5d1f8886f525cdd086aa382d20d9ef4c30be7f67be5eb0cafd5ea; values owned by that seal (harmonization \u00a73; parity sync PS-H17). JS derivation: An empty process without IO needs no IO row; the pool passes through unchanged. Fails against: Inventing an IO row, a lane or a band for an empty process.",
   "operation": "layout",
   "profile": {
     "vendored": "tests/profile_render/expected/vendor/js/artifacts/neutral-lot4-profile.json",
