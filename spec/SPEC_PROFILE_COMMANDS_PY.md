@@ -479,14 +479,23 @@ Per command of `apply_commands`, first failure wins:
 ## 6. Compile rules added to `compile_profile` (CR-10 and §8.3)
 
 1. Each UI entry and each field with `command`: parameter names unique, declared
-   by the recipe, type-compatible with their source (`owner`/`target`/`source` →
-   `element`, `value` → `string`/`number`/`boolean`, `key` → `string`), and every
-   required recipe parameter bound → otherwise `profile-ui-parameters`.
-2. Enum choices: unique JSON values even when names differ →
-   `profile-ui-parameters` (the executable design checker's code). Empty
-   choices, empty reference `targetTypes`, a readonly widget with `command` and a
+   by the recipe, and every required recipe parameter bound → otherwise
+   `profile-ui-parameters` (DESIGN R3.3 §8.3 L655). A binding whose source
+   cannot feed its declared parameter type (`owner`/`target`/`source` →
+   `element`, `value` → `string`/`number`/`boolean`, `key` → `string`) is
+   ill-typed content → `profile-type` (§2.1 L81; CR-10 arbitration, JS lot-5
+   commit ef9e781).
+2. Enum choices of a field whose widget is `enum`: unique JSON values even
+   when names differ → `profile-type` (CR-10 arbitration, JS lot-5 commit
+   ef9e781); the choices of any other widget are not checked. Empty choices, empty
+   reference `targetTypes`, a readonly widget with `command` and a
    mutable field without `command`/`parameters` are rejected by the pinned
    schema → `profile-schema`.
+
+Subjects are visited notion fields first (notion order, field order), then UI
+entries; per subject enum choice uniqueness runs before the whole parameter
+map structure, which runs before per-binding source types (JS lot-5 commit
+ef9e781).
 3. An upstream entry ID appears at most once across all UI entries →
    `profile-symbol` (the DESIGN calls duplicate mappings a compile error without
    a code; CR-05 namespace uniqueness).

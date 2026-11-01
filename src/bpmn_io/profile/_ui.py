@@ -119,44 +119,46 @@ def _source_compatible(source: object, param_type: str) -> bool:
     return source == "key" and param_type == "string"
 
 
-def _check_one_binding(
-    binding: object,
-    params: dict[str, tuple[str, bool]],
-    seen: set[str],
-) -> str | None:
-    """Check one parameter binding against its recipe (refusal or None)."""
-    if not isinstance(binding, dict):
-        return "profile-ui-parameters"
-    name = binding.get("name")
-    source = binding.get("source")
-    if not isinstance(name, str) or not isinstance(source, str):
-        return "profile-ui-parameters"
-    if name in seen:
-        return "profile-ui-parameters"
-    seen.add(name)
-    declared = params.get(name)
-    if declared is None:
-        return "profile-ui-parameters"
-    if not _source_compatible(source, declared[0]):
-        return "profile-ui-parameters"
-    return None
-
-
-def _check_parameter_map(
+def _check_map_structure(
     bindings: object,
     params: dict[str, tuple[str, bool]],
-) -> str | None:
-    """Check one UI/field parameter map against its recipe (refusal or None)."""
+) -> tuple[str | None, list[tuple[str, str]]]:
+    """Check one parameter map's shape whole before any source type check.
+
+    Return the ``profile-ui-parameters`` refusal with no bindings when the
+    map is malformed, binds a name twice, names an undeclared parameter, or
+    omits a required one; otherwise return no refusal with the validated
+    ``(name, source)`` pairs for the source type check.
+    """
     if not isinstance(bindings, list):
-        return "profile-ui-parameters"
+        return "profile-ui-parameters", []
+    typed: list[tuple[str, str]] = []
     seen: set[str] = set()
     for binding in bindings:
-        code = _check_one_binding(binding, params, seen)
-        if code is not None:
-            return code
+        if not isinstance(binding, dict):
+            return "profile-ui-parameters", []
+        name = binding.get("name")
+        source = binding.get("source")
+        if not isinstance(name, str) or not isinstance(source, str):
+            return "profile-ui-parameters", []
+        if name in seen or name not in params:
+            return "profile-ui-parameters", []
+        seen.add(name)
+        typed.append((name, source))
     for name, (_, required) in params.items():
         if required and name not in seen:
-            return "profile-ui-parameters"
+            return "profile-ui-parameters", []
+    return None, typed
+
+
+def _check_map_source_types(
+    typed: list[tuple[str, str]],
+    params: dict[str, tuple[str, bool]],
+) -> str | None:
+    """Check validated bindings' sources against declared types (refusal or None)."""
+    for name, source in typed:
+        if not _source_compatible(source, params[name][0]):
+            return "profile-type"
     return None
 
 
@@ -184,54 +186,69 @@ def _notion_fields(profile: dict[str, object]) -> list[dict[str, object]]:
     return found
 
 
-def _check_map_against(
+def _check_enum_choices(field_entry: dict[str, object]) -> str | None:
+    """Check one enum field's choice values are unique as JSON (refusal or None).
+
+    Only the enum widget is checked, as in the JS CR-10 rule; the choices of
+    any other widget carry no uniqueness constraint.
+    """
+    if field_entry.get("widget") != "enum":
+        return None
+    choices = field_entry.get("choices")
+    if not isinstance(choices, list):
+        return None
+    seen_values: set[str] = set()
+    for choice in choices:
+        if not isinstance(choice, dict):
+            continue
+        wire = jcs(choice.get("value"))
+        if wire in seen_values:
+            return "profile-type"
+        seen_values.add(wire)
+    return None
+
+
+def _check_subject_params(
     bindings: object, recipe_name: object, recipes: dict[str, dict[str, object]]
 ) -> str | None:
-    """Check one parameter map against its named recipe (refusal or None)."""
+    """Check one subject's parameter map: whole-map structure, then source types."""
     recipe = recipes.get(str(recipe_name))
     if recipe is None:
         return "profile-symbol"
     params = _recipe_params(recipe)
     if params is None:
         return "profile-ui-parameters"
-    return _check_parameter_map(bindings, params)
+    code, typed = _check_map_structure(bindings, params)
+    if code is not None:
+        return code
+    return _check_map_source_types(typed, params)
 
 
-def _check_item1(
+def _check_cr10_subjects(
     entries: list[dict[str, object]],
     fields: list[dict[str, object]],
     recipes: dict[str, dict[str, object]],
 ) -> str | None:
-    """Check parameter maps of entries and commanded fields (item 1)."""
-    for entry in entries:
-        code = _check_map_against(entry.get("parameters"), entry.get("recipe"), recipes)
+    """Check CR-10 items 1-2 in JS visit order: notion fields, then UI entries.
+
+    Per subject enum choice uniqueness runs first, then the whole parameter
+    map structure, then per-binding source types (JS lot-5 commit ef9e781).
+    """
+    for field_entry in fields:
+        code = _check_enum_choices(field_entry)
         if code is not None:
             return code
-    for field_entry in fields:
         if field_entry.get("command") is None:
             continue
-        code = _check_map_against(
+        code = _check_subject_params(
             field_entry.get("parameters"), field_entry.get("command"), recipes
         )
         if code is not None:
             return code
-    return None
-
-
-def _check_item2(fields: list[dict[str, object]]) -> str | None:
-    """Check enum choice value uniqueness as JSON (item 2)."""
-    for field_entry in fields:
-        choices = field_entry.get("choices")
-        if not isinstance(choices, list):
-            continue
-        seen_values: set[str] = set()
-        for choice in choices:
-            if not isinstance(choice, dict):
-                continue
-            wire = jcs(choice.get("value"))
-            if wire in seen_values:
-                return "profile-ui-parameters"
-            seen_values.add(wire)
+    for entry in entries:
+        code = _check_subject_params(entry.get("parameters"), entry.get("recipe"), recipes)
+        if code is not None:
+            return code
     return None
 
 
@@ -377,8 +394,7 @@ def check_ui_rules(
     theme_ids, glyph_ids = _theme_glyph_ids(profile)
     symbols = (_message_ids(profile), theme_ids, glyph_ids, recipes)
     for code in (
-        _check_item1(entries, fields, recipes),
-        _check_item2(fields),
+        _check_cr10_subjects(entries, fields, recipes),
         _check_item3(entries),
         _check_item4(profile),
         _check_item5(entries, fields, symbols),
