@@ -226,13 +226,17 @@ coordinates, support bindings, stage and validated command inputs, plus
 immutable layout/R bindings for theme/export evaluation.
 
 Compiler-static occurrence-domain family (`src/profile/compiler-static.ts`,
-`src/profile/lot4-query.ts`): a narrowed `from` domain checks the narrowed
-types only (`:181-189`, O-2); render vias outside `export`/`capability` refuse
-`profile-type` (`:158-166`, O-4); `bindingOwner` is bound in every environment
-built from `baseEnv` (`:54`, `:240`, `:369`, O-5); a nested occurrence `where`
-sees an occurrence `self` (`:179`, `:197`, R3-01); an occurrence-scope
-`id`/`read` of an unbound name is `MISSING`, not a refusal
-(`lot4-query.ts:116-120`, `:189-194`, O-6).
+`src/profile/lot4-query.ts`), transcribed 1:1 into `bpmn_io.profile._static`
+(the only typing, identity and producer authority; the legacy `_compiler` walk
+keeps family recording, demands and descriptor-independent checks): a narrowed
+`from` domain checks the narrowed types only (`:181-189`, O-2); render vias
+outside `export`/`capability` refuse `profile-type` (`:158-166`, O-4);
+`bindingOwner` is bound in every environment built from `baseEnv` (`:54`,
+`:240`, `:369`, O-5); a nested occurrence `where` sees an occurrence `self`
+(`:179`, `:197`, R3-01). The native evaluator refuses an unbound `read`/`id`
+/`typeIs` with `profile-symbol` (R4-02); only the export occurrence evaluator
+(`bpmn_io.profile._occurrence`, driving `map_export`) reads an unbound name as
+`MISSING`, not a refusal (`lot4-query.ts:116-120`, `:189-194`, O-6).
 
 `Report/2` entries carry exactly `code, severity, classification, stage, ruleId,
 messageKey, disposition`, `source`/`result` coordinates

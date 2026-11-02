@@ -214,7 +214,7 @@ def test_b2_inverse_reference_admits_referring_type() -> None:
     """``inverseReference`` is admitted when some descriptor type declares it (B2)."""
     from bpmn_io.profile import compile_profile
 
-    def _mutate(rule: dict[str, Any]) -> dict[str, Any]:
+    def _mutate(rule: dict[str, Any], assert_ast: dict[str, Any]) -> dict[str, Any]:
         rule["select"] = {
             "from": "self",
             "via": "inverseReference",
@@ -222,16 +222,30 @@ def test_b2_inverse_reference_admits_referring_type() -> None:
             "where": {"op": "true"},
             "order": "id",
         }
+        rule["assert"] = assert_ast
         return rule
 
-    # ``bpmn:Process`` declares no reference, but ``bpmn:SequenceFlow`` (and
-    # ``bpmn:Association``) declare ``sourceRef``: the traversal is admitted.
+    def _profile(assert_ast: dict[str, Any]) -> ValidatedProfile:
+        return _load(_rule_profile(lambda rule: _mutate(rule, assert_ast)))
+
+    # Reading the admitted reference on the referring union compiles.
+    source_ref = {"op": "present", "value": {"op": "read", "binding": "self", "path": "/sourceRef"}}
     compiled = compile_profile(
-        _load(_rule_profile(_mutate)),
+        _profile(source_ref),
         descriptor_context=_neutral_context(),
         base=_neutral_base(),
     )
     assert compiled.status == "ok", compiled
+
+    # Reading ``/name`` on the same union refuses: ``Association`` lacks it.
+    name = {"op": "present", "value": {"op": "read", "binding": "self", "path": "/name"}}
+    refused = compile_profile(
+        _profile(name),
+        descriptor_context=_neutral_context(),
+        base=_neutral_base(),
+    )
+    assert refused.status == "refused", refused
+    assert refused.code == "profile-type", refused
 
 
 def test_b2_inverse_reference_unknown_property_refuses() -> None:

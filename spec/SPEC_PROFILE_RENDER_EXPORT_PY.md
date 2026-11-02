@@ -638,14 +638,22 @@ harmonization C17).
    unsupported necessary occurrence refuses the entire artifact).
 5. Capability: capability `when` predicates compile in the base environment
    `root`, `self` (native element domain) and `bindingOwner`
-   (`src/profile/compiler-static.ts:54`, `:372`); `render`, `page` and `semantic`
+   (`src/profile/compiler-static.ts:54`, `:372`), under the static walk
+   (`bpmn_io.profile._static`), which also owns every export/occurrence
+   position: `pages` from an occurrence handle and `occurrences` from a
+   non-render, non-page domain refuse `profile-type` (R4-04); a narrowed
+   native reference re-checks the reference on the result domain (R4-05);
+   occurrence and page domains never bear an id (R4-06); `render` admits no
+   `read` (O-3); an `OccurrenceHandle` admits `/bounds/x` but not
+   `/label/lines` (C-1). `render`, `page` and `semantic`
    are not bindings (`profile-symbol`); `pages`/`occurrences` refuse `profile-type`;
    `semantic` is admitted from a native binding at `capability` location, and in
    `export` only from an occurrence binding (`:158-166`, O-4). At map time the
-   predicate runs once per R occurrence with `self` = the occurrence. An
+   predicate runs once per R occurrence with `self` = the occurrence, through
+   the occurrence evaluator (`bpmn_io.profile._occurrence`). An
    occurrence-scope `id`/`read` of an unbound name is `MISSING`, not a refusal:
    `present` is false and `equal` is false (`src/profile/lot4-query.ts:116-120`,
-   `:189-194`, O-6). Applicable classes aggregate
+   `:189-194`, O-6, R4-03). Applicable classes aggregate
    by worst outcome together with the adapter ceiling `structural`
    (OPEN-EXPORT-EVIDENCE: no feature is byte-compatible by declaration; lot 4 has
    no qualified engine goldens). An `unsupported` outcome refuses `render-unsupported`
@@ -654,8 +662,10 @@ harmonization C17).
    A refused capability `when` is a refused element recognition (non-match) only
    inside recognition; any other evaluation error propagates to the refusing caller
    with its original code (JS block-B review G4, J6).
-6. Planning pass: the export recipes of the record run in order over their selector
-   results (page-occurrence order), evaluating every value; each `outputId` request
+6. Planning pass: the export recipes of the record run in order over their
+   occurrence-selector results (page-occurrence order), every value evaluated
+   in occurrence scope with bound `{self, aliases}` (`bpmn_io.profile._occurrence`,
+   `src/profile/lot4-export.ts:391`, `:565`); each `outputId` request
    `(pageId, occurrenceKey, domain)` is recorded (PageHandle uses the reserved
    empty key; implicit page parents request the page key). `refuse` actions refuse
    with their code; `bind` cardinality errors refuse `profile-ambiguous-binding`;

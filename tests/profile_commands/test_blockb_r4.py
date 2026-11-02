@@ -245,8 +245,13 @@ def test_o5_binding_owner_bound_in_ui_and_recipes() -> None:
     assert emitted.status == "ok", emitted.to_json()
 
 
-def test_o6_unbound_occurrence_scope_name_is_missing() -> None:
-    """JS lot4-query.ts:116-120, :189-194: unbound name gives MISSING."""
+def test_o6_unbound_native_evaluator_name_is_symbol() -> None:
+    """Unbound native evaluator names refuse ``profile-symbol`` (R4-02 fix).
+
+    The occurrence-scope MISSING rule this used to witness moved to the
+    export map flow: ``test_blockb_r5.py`` exercises it through
+    ``map_export`` (R4-03 rows).
+    """
     from bpmn_io.profile import evaluate_predicate
     from bpmn_io.profile._evaluate import make_read_context
 
@@ -274,5 +279,5 @@ def test_o6_unbound_occurrence_scope_name_is_missing() -> None:
         {"op": "read", "binding": "bindingOwner", "path": "/id"},
     ):
         result = evaluate_predicate({"op": "present", "value": value}, ctx, bindings)
-        assert result.status == "ok", result.to_json()
-        assert result.payload is False
+        assert result.status == "refused", result.to_json()
+        assert result.code == "profile-symbol", result.to_json()

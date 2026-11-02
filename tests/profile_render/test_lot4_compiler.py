@@ -110,12 +110,13 @@ def test_count_reads_select_like_schema_and_evaluator() -> None:
 
 
 def test_ensure_registers_its_alias_for_later_steps() -> None:
-    """An `ensure ... as:` alias scopes later steps (lot-3 B3/B4).
+    """`bpmn:Collaboration` is not a neutral-lot4 descriptor type (R5).
 
-    The neutral-lot4 `ensure-supports` recipe binds `main` in an
-    `ensure` step and writes it in a later `assignRef`; the compiler
-    must scope the alias instead of refusing `profile-symbol`. Full
-    `ensure` field checks stay with lot 3.
+    The neutral-lot4 `ensure-supports` recipe ensures a type outside the
+    neutral descriptors, so the compiler refuses `profile-type`: JS
+    lot4-ensure refuses the same input (obtained with x02). The alias
+    rule itself stays witnessed by
+    `test_b3_ensure_compiles_with_demands_and_alias` (JS ok).
     """
     profile = profile_from_ref({"base": "neutral-profile.json", "patch": []})
     recipe = {
@@ -180,7 +181,8 @@ def test_ensure_registers_its_alias_for_later_steps() -> None:
     }
     profile["recipes"].append(recipe)
     result, _, _ = compile_profile_doc(copy.deepcopy(profile))
-    assert result.status == "ok", result.to_json()
+    assert result.status == "refused", result.to_json()
+    assert result.code == "profile-type", result.to_json()
 
 
 def test_capability_when_without_render_bindings_refuses_symbol() -> None:

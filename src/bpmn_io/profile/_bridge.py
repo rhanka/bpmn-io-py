@@ -460,7 +460,7 @@ class HeadlessBridge:
             check_compatibility,
         )
         from bpmn_io.profile._compiler import (  # noqa: PLC0415 - lazy, shared predicate
-            reference_admitted,
+            _static_typing,
         )
 
         loaded = self._loaded("activateBusinessProfile")
@@ -477,25 +477,27 @@ class HeadlessBridge:
             return self._refuse("activateBusinessProfile", "operation-error")
         if not self._descriptor_pins_match(identity):
             return self._refuse("activateBusinessProfile", "descriptor-mismatch")
-        # A profile compiled without descriptor metadata carries its
-        # native-domain traversals (R2-02); activation qualifies only those
-        # with the bridge types, mirroring the JS compile with those
-        # descriptors (compiler-static.ts:151-195). Occurrence sites are
-        # never recorded, so a valid occurrence traversal stays activable.
-        # Fail-open stays only when neither side knows the types.
+        # A profile compiled without descriptor metadata is re-checked now
+        # with the bridge descriptors (C-3): the activation verdict equals
+        # the JS compile verdict with those descriptors. Without a base
+        # there are no grants, and allocation is taken equal to the
+        # declared identity (``_static``).
         compiled_types = getattr(compiled, "types", None)
         bridge_types = (
             self.descriptor_context.types if self.descriptor_context is not None else None
         )
         if compiled_types is None and isinstance(bridge_types, dict):
-            raw_pairs: object = getattr(compiled, "native_traversals", frozenset())
-            ref_fields = getattr(compiled, "ref_fields", None)
-            items: list[tuple[str, str]] = []
-            if isinstance(raw_pairs, (set, frozenset, list)):
-                items = sorted(raw_pairs)
-            for _, prop in items:
-                if not reference_admitted(bridge_types, ref_fields, str(prop)):
-                    return self._refuse("activateBusinessProfile", "profile-selector-property")
+            from bpmn_io.profile import _static  # noqa: PLC0415 - lazy, shared predicate
+
+            profile_doc = getattr(compiled, "profile", None)
+            if isinstance(profile_doc, dict):
+                typing = _static_typing(
+                    profile_doc, dict(bridge_types), self.descriptor_context, None, None
+                )
+                try:
+                    _static.static_walk(profile_doc, typing)
+                except _static.StaticRefusal as refusal:
+                    return self._refuse("activateBusinessProfile", refusal.code)
         if loaded.profile_identity != identity:
             source = (
                 "known-and-available"

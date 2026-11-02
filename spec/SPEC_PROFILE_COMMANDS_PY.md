@@ -217,17 +217,15 @@ capabilities or assets), each with its exact code, and never migrates silently
 (L615). The matrix descriptor row compares by canonical equality exactly
 as the JS digest does, so an order-only descriptor difference refuses
 `descriptor-mismatch` at the J13 position before the version rows ever run
-(R1-07, R2-01). A profile compiled without descriptor metadata carries its
-native-domain `(via, property)` traversals; activation qualifies only those
-with the bridge types and the compiled `ref_fields`, mirroring the JS compile
-with those descriptors (`src/profile/compiler-static.ts:151-195`,
-`src/profile/lot5-canvas.ts:282-325`): only a descriptor reference of some
-bridge type or a base-declared ID-valued scalar reference is admitted
-(R2-02; occurrence sites are never recorded, R1-08 stays for native sites).
-Once such an activation succeeds, the stored profile carries the bridge type
-index so runtime contexts apply the same per-handle qualification the JS canvas
-view applies with the canvas descriptor types. Fail-open stays only when
-neither side knows the types. The `explicit_migration_plan` argument is void: the gate code
+(R1-07, R2-01). A profile compiled without descriptor metadata is re-checked at
+activation: the static walk (`bpmn_io.profile._static`) runs again over the
+compiled profile with the bridge type index (own `extends` chains, empty
+`idRefScalars`, no grants), mirroring the JS compile with those descriptors
+(`src/profile/compiler-static.ts:151-195`,
+`src/profile/lot5-canvas.ts:282-325`); the activation verdict equals the JS
+compile verdict with the bridge descriptors (C-3, R2-02; R1-08 stays for
+native sites). Fail-open stays only when neither side knows the types.
+The `explicit_migration_plan` argument is void: the gate code
 refuses even when a plan is supplied, and a plan, token or flag argument alone
 — including `false` — never counts as migration (JS block-B review J1, with H1
 and G1 as context). Success only on exact identity match in every dimension
@@ -559,8 +557,9 @@ ef9e781).
    a handle whose type lacks the property is skipped, and only
    reference-qualified handles resolve (R1-02). Inverse traversal admits
    descriptor references only: a base-qualified ID scalar refers forward
-   but never counts as a referrer (R1-10). Reference-family typing
-   (`src/profile/compiler-static.ts:156`, `:176-195`): `inverseReference` from
+   but never counts as a referrer (R1-10). Reference-family typing is owned by
+   the static walk (`bpmn_io.profile._static`,
+   `src/profile/compiler-static.ts:156`, `:176-195`): `inverseReference` from
    a render, page or occurrence binding refuses `profile-type`; a missing,
    non-string or empty property refuses `profile-selector-property`; `reference`
    from an occurrence binding is admitted only at export location for
@@ -569,18 +568,20 @@ ef9e781).
    a page or render binding refuses `profile-selector-property`; a native
    reference/inverseReference is admitted as a descriptor reference or a
    base-declared ID scalar (then order `id`, else `profile-selector-order`),
-   recording `(via, property)` for activation, and the property check precedes
-   the order check (R2-04). A narrowed `from` domain checks the narrowed types
-   only: an exact `typeIs` in the same `all` refines sibling `reference` checks
-   to that type (`:181-189`, O-2). A nested occurrence `where` sees an occurrence
-   `self`: an occurrence endpoint `reference` keeps the `OccurrenceHandle`
-   domain for its `where` (`:179`, `:197`, R3-01). Render vias outside `export`/`capability`
-   refuse `profile-type` (`:158-166`, O-4). `bindingOwner` is bound in every
+   and the property check precedes the order check (R2-04). A narrowed `from`
+   domain checks the narrowed types only: an exact `typeIs` in the same `all`
+   refines sibling `reference` checks to that type (`:181-189`, O-2, R4-01). A
+   nested occurrence `where` sees an occurrence `self`: an occurrence endpoint
+   `reference` keeps the `OccurrenceHandle` domain for its `where` (`:179`,
+   `:197`, R3-01). Render vias outside `export`/`capability` refuse
+   `profile-type` (`:158-166`, O-4). `bindingOwner` is bound in every
    environment built from `baseEnv`, including UI entries and recipes (`:54`,
-   `:240`, `:369`, O-5). A profile compiled without descriptor metadata
-   carries its native-domain traversals for activation, and the stored profile
-   carries the bridge type index for every later runtime context; fail-open
-   stays only when neither side knows the types (R1-03, R1-08, R2-02).
+   `:240`, `:369`, O-5). At runtime the native evaluator refuses an unbound
+   name with `profile-symbol`; only the export occurrence evaluator reads it
+   as `MISSING` (R4-02, R4-03). A profile compiled without descriptor metadata
+   records no traversals: activation re-runs the static walk with the bridge
+   type index (C-3); fail-open stays only when neither side knows the types
+   (R1-03, R1-08, R2-02).
 
 Writing an existing ID stays a CR-06 `profile-producer` refusal (DESIGN §2.4
 L165, §2.4.1 L206). A compile success is compared as the `PureResult` success

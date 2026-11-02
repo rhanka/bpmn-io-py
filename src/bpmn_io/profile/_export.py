@@ -12,17 +12,18 @@ from __future__ import annotations
 import copy
 import dataclasses
 from dataclasses import dataclass, field
-from typing import Any
+from functools import partial
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from bpmn_io.profile._occurrence import OccurrenceScope
 
 from bpmn_io.profile._c14n import digest
 from bpmn_io.profile._evaluate import (
     _is_occurrence_handle,
-    evaluate_predicate,
-    evaluate_value,
     is_missing,
     make_read_context,
     reference_property_names,
-    select,
 )
 from bpmn_io.profile._export_ir import _REQUIRED_FIELDS, plan_ids
 from bpmn_io.profile._layout import _begin_operation, index_tree
@@ -310,29 +311,38 @@ _UNAVAILABLE: dict[str, Json] = {
 }
 
 
-def _iteration_bindings(run: _ExportRun, handle: object) -> dict[str, object]:
-    """Build the evaluation bindings of one recipe iteration."""
-    bindings: dict[str, object] = {"root": run.tree, "render": run.render, "self": handle}
-    if isinstance(handle, dict) and "occurrenceKey" in handle:
-        page = run.pages.get(str(handle.get("pageId")))
-        if page is not None:
-            bindings["page"] = page
-        semantic_id = handle.get("semanticId")
-        if isinstance(semantic_id, str) and semantic_id in run.by_id:
-            bindings["semantic"] = run.by_id[semantic_id]
-    elif isinstance(handle, dict) and isinstance(handle.get("pageId"), str):
-        bindings["page"] = handle
-    return bindings
+def _occ_scope(run: _ExportRun, bound: dict[str, object]) -> OccurrenceScope:
+    """Build the occurrence scope of one export evaluation."""
+    from bpmn_io.profile._occurrence import OccurrenceScope  # noqa: PLC0415
+
+    return OccurrenceScope(
+        occurrences=[
+            occurrence
+            for occurrence in run.render.get("occurrences", [])
+            if isinstance(occurrence, dict)
+        ],
+        pages=[page for page in run.render.get("pages", []) if isinstance(page, dict)],
+        by_id=run.by_id,
+        context=run.context,
+        bound=dict(bound),
+    )
+
+
+def _iteration_bindings(handle: object) -> dict[str, object]:
+    """Build the evaluation bindings of one recipe iteration (lot4-export.ts:391)."""
+    return {"self": handle}
 
 
 def _eval_step_value(
     run: _ExportRun, ast: object, bindings: dict[str, object]
 ) -> tuple[object, str | None]:
-    """Evaluate one field value (value, refusal code)."""
-    result = evaluate_value(ast, run.context, bindings)
-    if isinstance(result, PureRefused):
-        return None, str(result.code)
-    return result.payload, None
+    """Evaluate one field value in occurrence scope (lot4-export.ts:565)."""
+    from bpmn_io.profile._occurrence import evaluate_occurrence_value  # noqa: PLC0415
+
+    try:
+        return evaluate_occurrence_value(ast, _occ_scope(run, bindings)), None
+    except (ValueError, TypeError) as exc:
+        return None, str(exc.args[0]) if exc.args else "operation-error"
 
 
 #: Marker for an outputId over an absent binding (the value is MISSING).
@@ -347,7 +357,7 @@ def _request_for_output_id(
     domain = node.get("domain")
     if not isinstance(binding, str) or not isinstance(domain, str):
         return None, "render-stale"
-    if binding not in bindings:
+    if binding not in bindings or is_missing(bindings[binding]):
         return _OUTPUT_MISSING, None
     handle = bindings[binding]
     if isinstance(handle, _PlanEmit):
@@ -441,7 +451,12 @@ def _plan_emit_step(
     has_parent = False
     if step.get("parent") is not None:
         has_parent = True
-        parent, code = _plan_field_value(run, step.get("parent"), bindings)
+        parent_ast = step.get("parent")
+        # lot4-export.ts:591-595: an outputId parent resolves over the bound
+        # aliases; any other parent value is evaluated with bound {self} only.
+        is_output_id = isinstance(parent_ast, dict) and parent_ast.get("op") == "outputId"
+        parent_bindings = bindings if is_output_id else {"self": bindings.get("self")}
+        parent, code = _plan_field_value(run, parent_ast, parent_bindings)
         if code is not None:
             return code
     page_id, occurrence_key, emitted_type, source = _self_coordinates(run, handle)
@@ -482,6 +497,8 @@ def _plan_loss_step(
     if not isinstance(target, str) or target not in bindings:
         return "render-stale"
     resolved = bindings[target]
+    if is_missing(resolved):
+        return None
     page_id, occurrence_key, emitted_type, source = _target_source(run, resolved, handle)
     planned = _PlanLoss(recipe_id, code, page_id, occurrence_key, emitted_type, source)
     run.actions.append(("loss", planned, run.iteration))
@@ -495,7 +512,7 @@ def _plan_iteration(run: _ExportRun, recipe: dict[str, Json], handle: object) ->
     only capability ``when`` gates); the iteration always runs the steps.
     """
     run.iteration += 1
-    bindings = _iteration_bindings(run, handle)
+    bindings = _iteration_bindings(handle)
     recipe_id = str(recipe.get("id"))
     for step in recipe.get("steps", []):
         code = _plan_step(run, recipe_id, step, bindings, handle)
@@ -527,15 +544,48 @@ def _plan_step(
     return "render-stale"
 
 
+def _page_sort_key(index: dict[object, int], item: object) -> int:
+    """Order one page handle by its page position (lot4-export.ts:380-385)."""
+    if isinstance(item, dict):
+        position = index.get(item.get("pageId"), -1)
+        return position if isinstance(position, int) else -1
+    return -1
+
+
+def _occurrence_sort_key(order: dict[object, object], item: object) -> tuple[int, bytes]:
+    """Order one occurrence handle by page order then UTF-16 key."""
+    if isinstance(item, dict):
+        rank = order.get(item.get("pageId"), 0)
+        return (
+            rank if isinstance(rank, int) else 0,
+            str(item.get("occurrenceKey")).encode("utf-16-be"),
+        )
+    return (0, b"")
+
+
 def _plan_recipe(run: _ExportRun, recipe: dict[str, Json]) -> str | None:
-    """Plan one export recipe over its selector results."""
-    result = select(recipe.get("select"), run.context, {"root": run.tree, "render": run.render})
-    if isinstance(result, PureRefused):
-        return str(result.code)
-    if not isinstance(result.payload, list):
-        return "render-stale"
-    for item in result.payload:
-        code = _plan_iteration(run, recipe, item.element)
+    """Plan one export recipe over its occurrence selector results."""
+    from bpmn_io.profile._occurrence import run_occurrence_select  # noqa: PLC0415
+
+    try:
+        matched = run_occurrence_select(recipe.get("select"), _occ_scope(run, {"self": None}))
+    except (ValueError, TypeError) as exc:
+        return str(exc.args[0]) if exc.args else "operation-error"
+    pages = [page for page in run.render.get("pages", []) if isinstance(page, dict)]
+    page_index = {page.get("pageId"): index for index, page in enumerate(pages)}
+    page_order = {page.get("pageId"): page.get("order", 0) for page in pages}
+    select_node = recipe.get("select")
+    if isinstance(select_node, dict) and select_node.get("via") == "pages":
+        matched = sorted(matched, key=partial(_page_sort_key, page_index))
+    elif all(
+        isinstance(item, dict)
+        and isinstance(item.get("pageId"), str)
+        and isinstance(item.get("occurrenceKey"), str)
+        for item in matched
+    ):
+        matched = sorted(matched, key=partial(_occurrence_sort_key, page_order))
+    for item in matched:
+        code = _plan_iteration(run, recipe, item)
         if code is not None:
             return code
     return None
@@ -545,49 +595,22 @@ def _resolve_bind(
     run: _ExportRun, step: dict[str, Json], bindings: dict[str, object]
 ) -> str | None:
     """Run one bind step, storing its alias (refusal code or None)."""
+    from bpmn_io.profile._occurrence import MISSING, run_occurrence_select  # noqa: PLC0415
+
     alias = step.get("as")
     cardinality = step.get("cardinality")
     if not isinstance(alias, str) or cardinality not in ("one", "zeroOrOne", "first"):
         return "render-stale"
-    handles, code = _select_bound(run, step, bindings)
-    if code is not None or handles is None:
-        return code or "render-stale"
-    if cardinality == "first":
-        handles = handles[:1]
-    if len(handles) != 1:
-        if cardinality == "zeroOrOne" and not handles:
-            bindings.pop(alias, None)
-            return None
+    try:
+        found = run_occurrence_select(step.get("select"), _occ_scope(run, bindings))
+    except (ValueError, TypeError) as exc:
+        return str(exc.args[0]) if exc.args else "operation-error"
+    if cardinality == "one" and len(found) != 1:
         return "profile-ambiguous-binding"
-    bindings[alias] = handles[0].element
+    if cardinality in ("first", "zeroOrOne") and len(found) > 1:
+        return "profile-ambiguous-binding"
+    bindings[alias] = found[0] if found else MISSING
     return None
-
-
-def _select_bound(  # noqa: PLR0911 - one return per selection outcome
-    run: _ExportRun, step: dict[str, Json], bindings: dict[str, object]
-) -> tuple[list[Any] | None, str | None]:
-    """Select one bind's handles with fallbacks (handles, code)."""
-    result = select(step.get("select"), run.context, dict(bindings))
-    if isinstance(result, PureRefused):
-        return None, str(result.code)
-    if not isinstance(result.payload, list):
-        return None, "render-stale"
-    handles = list(result.payload)
-    if handles or step.get("cardinality") != "first":
-        return handles, None
-    fallbacks = step.get("fallbacks")
-    if not isinstance(fallbacks, list):
-        return handles, None
-    for entry in fallbacks:
-        fallback = select(entry, run.context, dict(bindings))
-        if isinstance(fallback, PureRefused):
-            return None, str(fallback.code)
-        if not isinstance(fallback.payload, list):
-            return None, "render-stale"
-        handles = list(fallback.payload)
-        if handles:
-            break
-    return handles, None
 
 
 def _check_capability(run: _ExportRun) -> tuple[str, str | None]:
@@ -612,17 +635,18 @@ def _check_occurrence_capability(
     run: _ExportRun, occurrence: dict[str, Json], classes: list[str]
 ) -> str | None:
     """Evaluate capability records for one occurrence, collecting losses."""
-    bindings = _iteration_bindings(run, occurrence)
+    from bpmn_io.profile._occurrence import test_occurrence_predicate  # noqa: PLC0415
+
     for record in run.export.get("capabilities", []):
         if not isinstance(record, dict):
             continue
-        decided = evaluate_predicate(record.get("when"), run.context, bindings)
-        if isinstance(decided, PureRefused):
-            # A refused element recognition is already a non-match from the
-            # shared evaluator boundary. Any other evaluation error
-            # propagates to the refusing caller instead of skipping.
-            return str(decided.code)
-        if decided.payload is not True:
+        try:
+            held = test_occurrence_predicate(
+                record.get("when"), _occ_scope(run, {"self": occurrence})
+            )
+        except (ValueError, TypeError) as exc:
+            return str(exc.args[0]) if exc.args else "operation-error"
+        if held is not True:
             continue
         outcome = record.get("class")
         if not isinstance(outcome, str):
