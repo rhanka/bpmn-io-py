@@ -294,12 +294,38 @@ def _record_path_type(record: object, segments: list[str]) -> str | None:
     return current if isinstance(current, str) else None
 
 
-def _check_read_path(scope: _Scope, binding: str, path: object) -> str | None:
-    """Validate one ``read`` path against the binding type (refusal or None)."""
+def _split_read_segments(path: object) -> list[str] | None:
+    """Split one ``read`` path into segments (None when malformed)."""
     if not isinstance(path, str) or not path.startswith("/") or "//" in path:
-        return "profile-type"
+        return None
     segments = path[1:].split("/")
     if any(not part for part in segments):
+        return None
+    return segments
+
+
+def _specific_first_code(scope: _Scope, btype: str, first: str) -> str | None:
+    """Refuse an unknown first segment on one specific native type."""
+    spec = (scope.types or {}).get(btype)
+    if not isinstance(spec, dict):
+        return None
+    facets: set[str] = set()
+    scalars = spec.get("scalars", ())
+    if isinstance(scalars, (list, tuple)):
+        facets.update(item for item in scalars if isinstance(item, str))
+    for role in ("containment", "references"):
+        role_map = spec.get(role, {})
+        if isinstance(role_map, dict):
+            facets.update(key for key in role_map if isinstance(key, str))
+    if first not in facets:
+        return "profile-type"
+    return None
+
+
+def _check_read_path(scope: _Scope, binding: str, path: object) -> str | None:
+    """Validate one ``read`` path against the binding type (refusal or None)."""
+    segments = _split_read_segments(path)
+    if segments is None:
         return "profile-type"
     btype = scope.btypes.get(binding, "native")
     record = _RECORD_FIELDS.get(btype)
@@ -307,17 +333,9 @@ def _check_read_path(scope: _Scope, binding: str, path: object) -> str | None:
         resolved = _record_path_type(record, segments)
         return None if isinstance(resolved, str) else "profile-type"
     if scope.types is not None and btype in scope.types:
-        spec = scope.types[btype]
-        facets: set[str] = set()
-        scalars = spec.get("scalars", ())
-        if isinstance(scalars, (list, tuple)):
-            facets.update(item for item in scalars if isinstance(item, str))
-        for role in ("containment", "references"):
-            role_map = spec.get(role, {})
-            if isinstance(role_map, dict):
-                facets.update(key for key in role_map if isinstance(key, str))
-        if segments[0] not in facets:
-            return "profile-type"
+        code = _specific_first_code(scope, btype, segments[0])
+        if code is not None:
+            return code
     return None
 
 
@@ -364,14 +382,23 @@ def _value_type(node: object, scope: _Scope) -> str:  # noqa: C901, PLR0911
 
 
 def _infer_selector_type(selector: object, scope: _Scope) -> str:
-    """Infer the native type bound by one selector (``native`` when unknown)."""
+    """Infer the native type bound by one selector (``native`` when unknown).
+
+    Occurrence endpoint references keep the occurrence domain
+    (``compiler-static.ts:179``) so a nested ``where`` sees an occurrence
+    ``self`` (``:197``).
+    """
     if not isinstance(selector, dict):
         return "native"
     via = selector.get("via")
-    if via == "pages":
-        return "page"
-    if via == "occurrences":
-        return "occurrence"
+    if via in ("pages", "occurrences"):
+        return "page" if via == "pages" else "occurrence"
+    if via == "reference":
+        from_name = selector.get("from")
+        if isinstance(from_name, str) and scope.btypes.get(from_name, "native") == "occurrence":
+            prop = selector.get("property")
+            if prop in ("sourceOccurrence", "targetOccurrence"):
+                return "occurrence"
     where = selector.get("where")
     if isinstance(where, dict) and where.get("op") == "typeIs":
         candidate = where.get("type")
@@ -754,6 +781,25 @@ def _check_value(  # noqa: C901, PLR0911, PLR0912
     return "profile-type"
 
 
+def _collect_exact_narrowings(node: object, into: list[tuple[str, str]]) -> None:
+    """Collect exact ``typeIs`` narrowings under one predicate (bounded).
+
+    Mirrors ``compiler-static.ts:111-123`` for the ``all`` conjunction: an
+    exact ``typeIs`` refines the sibling ``self`` domain so a ``reference``
+    checks the narrowed types only (``:181-189``).
+    """
+    if not isinstance(node, dict):
+        return
+    if node.get("op") == "typeIs" and node.get("mode") == "exact":
+        binding = node.get("binding")
+        type_name = node.get("type")
+        if isinstance(binding, str) and isinstance(type_name, str):
+            into.append((binding, type_name))
+    elif node.get("op") == "all":
+        for sub in node.get("args", []):
+            _collect_exact_narrowings(sub, into)
+
+
 def _check_predicate(  # noqa: C901, PLR0911, PLR0912, PLR0915
     node: object, scope: _Scope, context_phase: str = "rule"
 ) -> str | None:
@@ -769,6 +815,20 @@ def _check_predicate(  # noqa: C901, PLR0911, PLR0912, PLR0915
         args = node.get("args")
         if not isinstance(args, list) or not args:
             return "profile-type"
+        if op == "all":
+            narrowings: list[tuple[str, str]] = []
+            for entry in args:
+                _collect_exact_narrowings(entry, narrowings)
+            if narrowings:
+                refined = scope.child()
+                for narrow_binding, narrow_type in narrowings:
+                    if narrow_binding in refined.bindings:
+                        refined.btypes[narrow_binding] = narrow_type
+                for entry in args:
+                    code = _check_predicate(entry, refined, context_phase)
+                    if code is not None:
+                        return code
+                return None
         for entry in args:
             code = _check_predicate(entry, scope, context_phase)
             if code is not None:
@@ -880,6 +940,33 @@ def reference_admitted(
     return ref_fields is not None and any(field == prop for (_, field) in ref_fields)
 
 
+def _reference_admitted_for(
+    scope: _Scope,
+    from_type: str,
+    prop: str,
+) -> bool:
+    """Return whether ``prop`` is admitted from one narrowed ``from`` domain.
+
+    A narrowed ``reference`` checks the narrowed types only
+    (``compiler-static.ts:181-189``): a specific native type admits only its
+    own descriptor references and its own base ID-valued scalars; the generic
+    ``native`` domain keeps the any-type rule.
+    """
+    if scope.types is None and scope.ref_fields is None:
+        return True
+    if from_type != "native" and scope.types is not None and from_type in scope.types:
+        spec = scope.types[from_type]
+        references = spec.get("references", {})
+        if isinstance(references, dict) and prop in references:
+            return True
+        if scope.ref_fields is not None:
+            for owner, field_name in scope.ref_fields:
+                if owner == from_type and field_name == prop:
+                    return True
+        return False
+    return reference_admitted(scope.types, scope.ref_fields, prop)
+
+
 def _is_reference_property(scope: _Scope, prop: str) -> bool:
     """Return whether one property is a reference traversal property.
 
@@ -898,14 +985,16 @@ def _check_reference_property(scope: _Scope, from_name: str, prop: str) -> str |
     scalar references such as ``calledElement`` (DESIGN §2.2); a scalar or
     unknown property refuses ``profile-selector-property``. Heterogeneous
     candidates lacking this optional reference are skipped per handle at
-    evaluation time; the property itself must still be a reference.
+    evaluation time; the property itself must still be a reference. A narrowed
+    ``from`` domain checks the narrowed types only
+    (``compiler-static.ts:181-189``).
     Page and occurrence domains are decided in ``_check_reference_selector``
-    (``compiler-static.ts:177-179``); ``from_name`` stays for call symmetry.
+    (``compiler-static.ts:177-179``).
     """
-    _ = from_name
     if scope.types is None and scope.ref_fields is None:
         return None
-    if not _is_reference_property(scope, prop):
+    from_type = scope.btypes.get(from_name, "native")
+    if not _reference_admitted_for(scope, from_type, prop):
         return "profile-selector-property"
     return None
 
@@ -1001,8 +1090,13 @@ def _check_selector(  # noqa: C901, PLR0911, PLR0912
                 from_btype = scope.btypes.get(from_name, "native")
                 if from_btype in {"render", "page", "occurrence"}:
                     return "profile-type"
-        elif context_phase != "export":
-            return "profile-value-context"
+        elif context_phase == "export":
+            if via == "semantic":
+                from_btype = scope.btypes.get(from_name, "native")
+                if from_btype != "occurrence":
+                    return "profile-type"
+        else:
+            return "profile-type"
     if via == "self" and order not in ("id", "page-occurrence"):
         return "profile-selector-order"
     if (
@@ -2064,7 +2158,7 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
                 return PureRefused(code="profile-symbol")
             param_type = param.get("type")
             recipe_params[name] = param_type if isinstance(param_type, str) else "unknown"
-        scope = _new_scope({"root", "self"}, {}, recipe_params)
+        scope = _new_scope({"root", "self", "bindingOwner"}, {}, recipe_params)
         for name, param_type in recipe_params.items():
             if param_type == "element":
                 scope.bindings.add(name)
@@ -2095,7 +2189,9 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
             demands[recipe_id] = recipe_demands
 
     # Secondary AST positions with minimal scope (ui/exports gates, themes).
-    plain_scope = _new_scope({"root", "self"}, {})
+    # Every environment built from baseEnv binds bindingOwner, including UI
+    # entries and recipes (compiler-static.ts:54, :240, :369).
+    plain_scope = _new_scope({"root", "self", "bindingOwner"}, {})
     for ui_entry in _as_list(profile.get("ui")):
         if not isinstance(ui_entry, dict):
             continue

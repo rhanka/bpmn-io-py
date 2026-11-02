@@ -599,9 +599,26 @@ def _eval_value(  # noqa: C901, PLR0912, PLR0911, PLR0915
             raise ValueError("profile-symbol")  # noqa: EM101
         target = bindings.get(binding, _MISSING)
         if target is _MISSING:
+            # Occurrence scope: an unbound name reads MISSING, not a refusal
+            # (lot4-query.ts:116-120).
+            maybe_self = bindings.get("self", _MISSING)
+            if (
+                isinstance(maybe_self, dict)
+                and isinstance(maybe_self.get("pageId"), str)
+                and isinstance(maybe_self.get("occurrenceKey"), str)
+            ):
+                return _MISSING
             raise ValueError("profile-symbol")  # noqa: EM101
         element_id = _element_id(target)
         if element_id is None:
+            # An occurrence handle carries no id member: MISSING
+            # (lot4-query.ts:189-194).
+            if (
+                isinstance(target, dict)
+                and isinstance(target.get("pageId"), str)
+                and isinstance(target.get("occurrenceKey"), str)
+            ):
+                return _MISSING
             raise TypeError("profile-type")  # noqa: EM101
         return element_id
     if op == "param":

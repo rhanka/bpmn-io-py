@@ -570,7 +570,14 @@ ef9e781).
    reference/inverseReference is admitted as a descriptor reference or a
    base-declared ID scalar (then order `id`, else `profile-selector-order`),
    recording `(via, property)` for activation, and the property check precedes
-   the order check (R2-04). A profile compiled without descriptor metadata
+   the order check (R2-04). A narrowed `from` domain checks the narrowed types
+   only: an exact `typeIs` in the same `all` refines sibling `reference` checks
+   to that type (`:181-189`, O-2). A nested occurrence `where` sees an occurrence
+   `self`: an occurrence endpoint `reference` keeps the `OccurrenceHandle`
+   domain for its `where` (`:179`, `:197`, R3-01). Render vias outside `export`/`capability`
+   refuse `profile-type` (`:158-166`, O-4). `bindingOwner` is bound in every
+   environment built from `baseEnv`, including UI entries and recipes (`:54`,
+   `:240`, `:369`, O-5). A profile compiled without descriptor metadata
    carries its native-domain traversals for activation, and the stored profile
    carries the bridge type index for every later runtime context; fail-open
    stays only when neither side knows the types (R1-03, R1-08, R2-02).

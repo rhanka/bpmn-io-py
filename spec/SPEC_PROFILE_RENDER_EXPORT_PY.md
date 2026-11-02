@@ -640,8 +640,12 @@ harmonization C17).
    `root`, `self` (native element domain) and `bindingOwner`
    (`src/profile/compiler-static.ts:54`, `:372`); `render`, `page` and `semantic`
    are not bindings (`profile-symbol`); `pages`/`occurrences` refuse `profile-type`;
-   `semantic` is admitted from a native binding. At map time the predicate runs
-   once per R occurrence with `self` = the occurrence. Applicable classes aggregate
+   `semantic` is admitted from a native binding at `capability` location, and in
+   `export` only from an occurrence binding (`:158-166`, O-4). At map time the
+   predicate runs once per R occurrence with `self` = the occurrence. An
+   occurrence-scope `id`/`read` of an unbound name is `MISSING`, not a refusal:
+   `present` is false and `equal` is false (`src/profile/lot4-query.ts:116-120`,
+   `:189-194`, O-6). Applicable classes aggregate
    by worst outcome together with the adapter ceiling `structural`
    (OPEN-EXPORT-EVIDENCE: no feature is byte-compatible by declaration; lot 4 has
    no qualified engine goldens). An `unsupported` outcome refuses `render-unsupported`

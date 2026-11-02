@@ -225,6 +225,15 @@ effective-base index, immutable native tree/index, immutable source
 coordinates, support bindings, stage and validated command inputs, plus
 immutable layout/R bindings for theme/export evaluation.
 
+Compiler-static occurrence-domain family (`src/profile/compiler-static.ts`,
+`src/profile/lot4-query.ts`): a narrowed `from` domain checks the narrowed
+types only (`:181-189`, O-2); render vias outside `export`/`capability` refuse
+`profile-type` (`:158-166`, O-4); `bindingOwner` is bound in every environment
+built from `baseEnv` (`:54`, `:240`, `:369`, O-5); a nested occurrence `where`
+sees an occurrence `self` (`:179`, `:197`, R3-01); an occurrence-scope
+`id`/`read` of an unbound name is `MISSING`, not a refusal
+(`lot4-query.ts:116-120`, `:189-194`, O-6).
+
 `Report/2` entries carry exactly `code, severity, classification, stage, ruleId,
 messageKey, disposition`, `source`/`result` coordinates
 (`domain, pointer, targetId, provenance`), required `beforePresent,
