@@ -983,7 +983,31 @@ def _list(value: object) -> list[object]:
     return value if isinstance(value, list) else []
 
 
-def static_walk(profile: dict[str, object], t: Typing) -> None:  # noqa: C901, PLR0912
+def _unique_by_key(items: object, key: str) -> bool:
+    """JS unique helper (compiler-static.ts:16-21): True when unique.
+
+    Two entries with the same key value (including two missing keys)
+    make the list non-unique; callers refuse ``profile-symbol``.
+    """
+    if not isinstance(items, list):
+        return True
+    seen: set[object] = set()
+    for entry in items:
+        value = entry.get(key) if isinstance(entry, dict) else None
+        try:
+            hash(value)
+            marker: object = value
+        except Exception:  # noqa: BLE001 - unhashable keys compare by repr
+            marker = repr(value)
+        if marker in seen:
+            return False
+        seen.add(marker)
+    return True
+
+
+def static_walk(  # noqa: C901, PLR0912, PLR0915 - JS admission order transcribed
+    profile: dict[str, object], t: Typing
+) -> None:
     """CheckWholeProfile typing, JS order (binding domains and locations)."""
 
     def notion_self(n: dict[str, object]) -> Domain:
@@ -1001,6 +1025,11 @@ def static_walk(profile: dict[str, object], t: Typing) -> None:  # noqa: C901, P
         env = t.base_env()
         env["self"] = notion_self(n)
         t.predicate(n.get("recognition"), env, {}, "recognition")
+        # compiler-static.ts:227: nested notion uniqueness, profile-symbol.
+        if not _unique_by_key(n.get("labels"), "name"):
+            fail("profile-symbol")
+        if not _unique_by_key(n.get("fields"), "id"):
+            fail("profile-symbol")
     for r in (x for x in _list(profile.get("rules")) if isinstance(x, dict)):
         env = t.base_env()
         params: dict[str, str] = {}
@@ -1028,6 +1057,18 @@ def static_walk(profile: dict[str, object], t: Typing) -> None:  # noqa: C901, P
             b = _record(w).get("binding")
             if b not in ("envelope", "artifact"):
                 t.binding(env, b)
+    # compiler-static.ts:322: nested theme uniqueness, profile-symbol.
+    for theme in (x for x in _list(profile.get("themes")) if isinstance(x, dict)):
+        if not _unique_by_key(theme.get("tokens"), "name"):
+            fail("profile-symbol")
+        if not _unique_by_key(theme.get("glyphs"), "id"):
+            fail("profile-symbol")
+        if not _unique_by_key(theme.get("syntheticOccurrences"), "id"):
+            fail("profile-symbol")
+    # compiler-static.ts:375: nested label-text uniqueness, profile-symbol.
+    for message in (x for x in _list(profile.get("messages")) if isinstance(x, dict)):
+        if not _unique_by_key(message.get("texts"), "name"):
+            fail("profile-symbol")
     for n in notions:
         env = t.base_env()
         env["self"] = notion_self(n)

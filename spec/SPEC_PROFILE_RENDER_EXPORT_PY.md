@@ -674,28 +674,19 @@ harmonization C17).
    `OccurrenceHandle` the paths `/sourceOccurrence/occurrenceKey`,
    `/targetOccurrence/occurrenceKey` and `/glyphId` with type `string` (JS
    `profile-type`; forced by 19 `export.map.*` cases; owner item O-7).
-6. Planning pass: the export recipes of the record run in order over their
-   occurrence-selector results (page-occurrence order). Planning records only
-   the `outputId` requests `(pageId, occurrenceKey, domain)` (PageHandle uses
-   the reserved empty key; implicit page parents request the page key); every
-   other emit value stays unevaluated until emission, where field values
-   evaluate in occurrence scope with bound `{self, aliases}`
-   (`src/profile/lot4-export.ts:565`). A non-`outputId` emit
-   `parent` is evaluated with bound `{self}` only, while an `outputId` parent
-   resolves over the bound aliases (`src/profile/lot4-export.ts:591-595`).
-   `refuse` actions refuse with their code; `bind` cardinality errors refuse
-   `profile-ambiguous-binding`; `outputId` on a native handle without exactly
-   one occurrence of that element on the current page refuses
-   `export-occurrence-ambiguous`. Emission then resolves each record in JS
-   order (`src/profile/lot4-export.ts:560-608`): the `id`, then the parent
-   value resolved and checked (planned id, self, order, page/node), then the
-   remaining fields, so a parent refusal precedes any optional-field refusal
-   (R5-05). A required field evaluating to `MISSING` refuses
-   `export-field-invalid` (an optional field evaluating to `MISSING` is
-   omitted). An export recipe `when` is not evaluated by `map_export`
-   (`src/profile/lot4-export.ts:370-394`); a refused selector or field value
-   outside recognition keeps the evaluator's original code instead of
-   `render-stale` (JS block-B review J6).
+6. Interpretation pass: the export recipes of the record run in order over
+   their occurrence-selector results (page-occurrence order) without resolving
+   any `outputId` (`src/profile/lot4-export.ts:370-437`). Each step keeps its
+   raw AST; `emit.as` never becomes a binding; a self `loss` attaches to the
+   one `lossAfter` slot of the same-`self` record of the same iteration when
+   that record has no loss yet, otherwise it stands alone
+   (`src/profile/lot4-export.ts:402-423`). `refuse` actions refuse with their
+   code; `bind` cardinality errors refuse `profile-ambiguous-binding`. Key
+   collection (`src/profile/lot4-export.ts:440-479`) records exactly the
+   emit's own key (the `id` field domain when present, else the emit kind; the
+   page key for `page`), the `source`/`target` endpoint keys only for `edge`
+   emits, and an explicit `outputId`-parent key; arbitrary optional-field
+   `outputId` values collect nothing. An absent binding contributes no key.
 7. ID allocation (per call, no state across calls):
    - `counter`: requested keys sorted by domain (`page, node, edge, label`), then
      page `order`, then UTF-16 `occurrenceKey`, numbered from `counterOrigin`; `e_` +
@@ -705,17 +696,40 @@ harmonization C17).
      when the resulting ID is unique among all requested keys of the call; a
      synthetic or anonymous occurrence, or a duplicate, refuses
      `export-id-ambiguous`.
-8. Emission pass with a symbol table that lasts for exactly this call (discarded on
-   refusal; nothing survives A→B→A). `page` emits at the root. For
-   `node|edge|label` an omitted parent is the id emitted for the current page;
-   `metadata` without parent is artifact-global. Parent and edge endpoints
-   (`source`, `target`) must be earlier emitted `page|node` ids (endpoints: node
-   ids): a value emitted later in the same call refuses `export-parent-order`; the
-   record's own id, an id never emitted in this call (cross-call handle), an
-   incompatible kind, or an id emitted twice refuse `export-parent-invalid`.
-9. Losses: a `loss` action appends one entry (§10.3); capability records append one
-   entry per applicable record, occurrence and loss class; the adapter appends one
-   entry per emitted record kind it does not serialize (§10.3, §11).
+8. Assembly pass with a symbol table that lasts for exactly this call
+   (discarded on refusal; nothing survives A→B→A). `outputId` values resolve
+   here, at their JS assembly position, never prematurely
+   (`src/profile/lot4-export.ts:506-534`): a missing binding refuses
+   `export-field-invalid`; a native target without exactly one occurrence of
+   that element on the current page refuses `export-occurrence-ambiguous`; a
+   planned key without an id refuses `profile-ambiguous-binding`. Per-kind
+   order (`src/profile/lot4-export.ts:560-660`): the `id` first
+   (`:570-582`), with a duplicate id refusing `export-parent-invalid`; then
+   the parent (`:591-605`), where an omitted parent is the planned page-ID key
+   (not the emitted page id) and explicit parents keep the R5-05 `{self}`
+   scope for non-`outputId` values (`:591-595`). A parent that is not a string,
+   equals the record id, was never planned, or names a non-`page|node`
+   record refuses `export-parent-invalid`; a planned but not yet emitted
+   parent refuses `export-parent-order`. Then `page` resolves `name`
+   (`:584-586`); `node` resolves `name` and then the remaining fields
+   (`:606-619`); `edge` resolves `source`/`target` (`:620-626`) before any
+   optional field, and endpoints that are not yet emitted refuse
+   `export-parent-order` with no kind or planned check (`:623-625`);
+   `label` resolves `text` and refuses `export-field-invalid` when the
+   occurrence has no label geometry (`:635-640`); `metadata` resolves
+   `name`/`value` and attaches an explicit parent without validation
+   (`:643-654`). An `outputId` over an absent binding is `MISSING` at
+   collection and refuses `export-field-invalid` when resolved. A required
+   field evaluating to `MISSING` refuses `export-field-invalid`; an optional
+   field evaluating to `MISSING` is omitted. A `metadata` emit on a semantic
+   occurrence that carries an idMap row is an open owner/spec decision
+   (R6-09): the JS `sortIdMap` operation-errors while this twin omits the row.
+9. Losses: a self `loss` fills the one `lossAfter` slot of its iteration
+   record with artifact coordinates, otherwise it stands alone with an
+   unavailable result (`:549-557, :657-660`); standalone losses keep target
+   identity, one slot per record. Capability records append one entry per
+   applicable record, occurrence and loss class; the adapter appends one entry
+   per emitted record kind it does not serialize (§10.3, §11).
 
 ### 10.2 export-ir/1 records
 

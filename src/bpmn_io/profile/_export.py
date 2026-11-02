@@ -25,7 +25,7 @@ from bpmn_io.profile._evaluate import (
     make_read_context,
     reference_property_names,
 )
-from bpmn_io.profile._export_ir import _REQUIRED_FIELDS, plan_ids
+from bpmn_io.profile._export_ir import plan_ids
 from bpmn_io.profile._layout import _begin_operation, index_tree
 from bpmn_io.profile._render import _escape_segment, native_preorder
 from bpmn_io.profile._render_digest import check_render_freshness, view_revision
@@ -69,39 +69,33 @@ _R_COPY_KEYS: dict[str, tuple[str, ...]] = {
 
 
 @dataclass
-class _DeferredValue:
-    """One emit field or parent value kept as AST for emission evaluation."""
-
-    ast: object
-
-
-@dataclass
 class _PlanEmit:
-    """One planned emit with fields and self coordinates."""
+    """One interpreted emit with raw field/parent ASTs (lot4-export.ts:425-432).
+
+    Values stay unevaluated until assembly; ``lossAfter`` holds the single
+    attached self-loss class of the same iteration, if any.
+    """
 
     recipe_id: str
     kind: str
     fields: list[tuple[str, object]]
-    parent: object
+    parent_ast: object | None
     has_parent: bool
-    page_id: str | None
-    occurrence_key: str | None
-    emitted_type: str | None
-    semantic_id: str | None
-    source: dict[str, Json]
+    self: object
+    self_page_id: str
     bound: dict[str, object] = field(default_factory=dict)
+    loss_after: str | None = None
 
 
 @dataclass
 class _PlanLoss:
-    """One planned loss action with resolved target coordinates."""
+    """One standalone loss emission (lot4-export.ts:402-423)."""
 
     recipe_id: str
     code: str
-    page_id: str | None
-    occurrence_key: str | None
-    emitted_type: str | None
-    source: dict[str, Json]
+    self: object
+    self_page_id: str
+    target: object
 
 
 @dataclass
@@ -118,11 +112,9 @@ class _ExportRun:
     export: dict[str, Json] = field(default_factory=dict)
     adapter: dict[str, object] = field(default_factory=dict)
     context: Any = None
-    requests: list[dict[str, object]] = field(default_factory=list)
-    actions: list[tuple[str, object, int]] = field(default_factory=list)
+    emissions: list[object] = field(default_factory=list)
     entries: list[ReportEntry] = field(default_factory=list)
     code: str | None = None
-    iteration: int = 0
 
 
 def _pointer_map(tree: dict[str, Json]) -> dict[str, str]:
@@ -277,18 +269,29 @@ def _self_coordinates(
 
 def _loss_entry(
     rule_id: str,
-    loss: _PlanLoss,
+    code: str,
+    self_obj: object,
     result: dict[str, Json],
+    source: dict[str, Json],
 ) -> ReportEntry:
-    """Build one export loss entry (spec §10.3)."""
-    source = loss.source
+    """Build one export loss entry (lot4-export.ts:537-546, spec §10.3)."""
+    page_id: str | None = None
+    occurrence_key: str | None = None
+    emitted_type: str | None = None
+    if isinstance(self_obj, dict):
+        raw_page = self_obj.get("pageId")
+        raw_key = self_obj.get("occurrenceKey")
+        raw_type = self_obj.get("emittedType")
+        page_id = raw_page if isinstance(raw_page, str) else None
+        occurrence_key = raw_key if isinstance(raw_key, str) else None
+        emitted_type = raw_type if isinstance(raw_type, str) else None
     return ReportEntry(
-        code=f"export-loss/{loss.code}",
+        code=f"export-loss/{code}",
         severity="warn",
         classification="loss",
         stage="export",
         rule_id=rule_id,
-        message_key=f"export.loss.{loss.code}",
+        message_key=f"export.loss.{code}",
         disposition="mapped",
         source=make_coordinate(
             str(source.get("domain", "none")),
@@ -304,10 +307,10 @@ def _loss_entry(
         ),
         before_present=False,
         after_present=False,
-        page_id=loss.page_id,
-        occurrence_key=loss.occurrence_key,
-        emitted_type=loss.emitted_type,
-        loss_class=loss.code,
+        page_id=page_id,
+        occurrence_key=occurrence_key,
+        emitted_type=emitted_type,
+        loss_class=code,
     )
 
 
@@ -353,208 +356,254 @@ def _eval_step_value(
         return None, str(exc.args[0]) if exc.args else "operation-error"
 
 
-#: Marker for an outputId over an absent binding (the value is MISSING).
-_OUTPUT_MISSING: object = object()
+def _key_string(page_id: str, occurrence_key: str, domain: str) -> str:
+    """One ID-plan key string (lot4-export.ts:56-57)."""
+    return f"{page_id} {occurrence_key} {domain}"
 
 
-def _request_for_output_id(
-    run: _ExportRun, node: dict[str, Json], bindings: dict[str, object]
-) -> tuple[object, str | None]:
-    """Build one outputId request (request, refusal code)."""
-    binding = node.get("binding")
-    domain = node.get("domain")
-    if not isinstance(binding, str) or not isinstance(domain, str):
-        return None, "render-stale"
-    if binding not in bindings or is_missing(bindings[binding]):
-        return _OUTPUT_MISSING, None
-    handle = bindings[binding]
-    if isinstance(handle, _PlanEmit):
-        return {
-            "pageId": handle.page_id or "",
-            "occurrenceKey": handle.occurrence_key or "",
-            "domain": domain,
-            "semanticId": handle.semantic_id,
-        }, None
-    if _is_occurrence_handle(handle) or (
-        isinstance(handle, dict) and isinstance(handle.get("pageId"), str)
-    ):
-        semantic = handle.get("semanticId")
-        return {
-            "pageId": str(handle.get("pageId")),
-            "occurrenceKey": str(handle.get("occurrenceKey", "")),
-            "domain": domain,
-            "semanticId": semantic if isinstance(semantic, str) else None,
-        }, None
-    if isinstance(handle, dict):
-        return _native_request(run, handle, domain, bindings)
-    return None, "render-stale"
+def _collect_add(
+    keys: list[tuple[str, str, str]], page_id: str, occurrence_key: str, domain: str
+) -> None:
+    """Append one key unless its string already occurs (lot4-export.ts:442-443)."""
+    key = (page_id, occurrence_key, domain)
+    needle = _key_string(page_id, occurrence_key, domain)
+    for existing in keys:
+        if _key_string(*existing) == needle:
+            return
+    keys.append(key)
 
 
-def _native_request(
-    run: _ExportRun, handle: dict[str, Json], domain: str, bindings: dict[str, object]
-) -> tuple[object, str | None]:
-    """Build one outputId request over a native handle (request, code)."""
-    element_id = handle.get("id")
-    current = bindings.get("self")
-    page_id = current.get("pageId") if isinstance(current, dict) else None
-    if not isinstance(element_id, str) or not isinstance(page_id, str):
-        return None, "export-occurrence-ambiguous"
-    matches = [
-        record
-        for record in run.render.get("occurrences", [])
-        if isinstance(record, dict)
-        and record.get("semanticId") == element_id
-        and record.get("pageId") == page_id
-    ]
-    if len(matches) != 1:
-        return None, "export-occurrence-ambiguous"
-    match = matches[0]
-    return {
-        "pageId": str(match.get("pageId")),
-        "occurrenceKey": str(match.get("occurrenceKey")),
-        "domain": domain,
-        "semanticId": element_id,
-    }, None
+def _collect_add_item(keys: list[tuple[str, str, str]], item: object, domain: str) -> None:
+    """Collect one outputId binding target key (lot4-export.ts:445-451)."""
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    if item is None or not isinstance(item, dict) or item is _OCC_MISSING:
+        return
+    if is_missing(item):
+        return
+    page_id = item.get("pageId")
+    occurrence_key = item.get("occurrenceKey")
+    if not isinstance(page_id, str):
+        return
+    if occurrence_key is None:
+        _collect_add(keys, page_id, "", "page")
+    elif isinstance(occurrence_key, str) and isinstance(domain, str) and domain:
+        _collect_add(keys, page_id, occurrence_key, domain)
 
 
-def _plan_field_value(
-    run: _ExportRun, ast: object, bindings: dict[str, object]
-) -> tuple[object, str | None]:
-    """Record one emit outputId request; other values stay deferred.
+def _collect_keys(  # noqa: C901, PLR0912 - JS key cases transcribed one by one
+    run: _ExportRun,
+) -> list[tuple[str, str, str]]:
+    """Collect the ID-plan keys of interpreted emissions (lot4-export.ts:440-479).
 
-    Only ``outputId`` values resolve during planning (their requests feed id
-    allocation). Every other value is evaluated at emission in JS order
-    (``lot4-export.ts:560-608``), so a parent refusal precedes any
-    optional-field refusal.
+    The emit's own key, edge endpoint keys only for edges, and an explicit
+    outputId-parent key; never arbitrary optional-field requests.
     """
-    if isinstance(ast, dict) and ast.get("op") == "outputId":
-        request, code = _request_for_output_id(run, ast, bindings)
-        if code is not None:
-            return None, code
-        if request is _OUTPUT_MISSING:
-            return request, None
-        if not isinstance(request, dict):
-            return None, "render-stale"
-        run.requests.append(request)
-        return ("output-id", len(run.requests) - 1), None
-    return _DeferredValue(ast), None
+    keys: list[tuple[str, str, str]] = []
+    for emission in run.emissions:
+        if isinstance(emission, _PlanLoss):
+            continue
+        if not isinstance(emission, _PlanEmit) or emission.kind == "metadata":
+            continue
+        self_obj = emission.self if isinstance(emission.self, dict) else {}
+        self_page = emission.self_page_id
+        id_ast = next((value for name, value in emission.fields if name == "id"), None)
+        id_domain = emission.kind
+        if isinstance(id_ast, dict) and isinstance(id_ast.get("domain"), str):
+            id_domain = str(id_ast.get("domain"))
+        if emission.kind == "page":
+            if isinstance(self_page, str):
+                _collect_add(keys, self_page, "", "page")
+        else:
+            occ_key = self_obj.get("occurrenceKey") if isinstance(self_obj, dict) else None
+            if isinstance(self_page, str) and isinstance(occ_key, str):
+                _collect_add(keys, self_page, occ_key, id_domain)
+        if emission.kind == "edge":
+            for endpoint in ("source", "target"):
+                field_ast = next(
+                    (value for name, value in emission.fields if name == endpoint), None
+                )
+                if isinstance(field_ast, dict) and field_ast.get("op") == "outputId":
+                    binding = field_ast.get("binding")
+                    item = (
+                        emission.self
+                        if binding == "self"
+                        else emission.bound.get(binding)
+                        if isinstance(binding, str)
+                        else None
+                    )
+                    _collect_add_item(keys, item, "node")
+        parent_ast = emission.parent_ast
+        if isinstance(parent_ast, dict) and parent_ast.get("op") == "outputId":
+            binding = parent_ast.get("binding")
+            item = (
+                emission.self
+                if binding == "self"
+                else emission.bound.get(binding)
+                if isinstance(binding, str)
+                else None
+            )
+            domain = parent_ast.get("domain")
+            if isinstance(domain, str) and domain:
+                _collect_add_item(keys, item, domain)
+    return keys
 
 
-def _plan_emit_step(
+def _interpret_emit_step(  # noqa: PLR0913, PLR0917 - interpret threading matches JS scope
     run: _ExportRun,
     recipe_id: str,
     step: dict[str, Json],
     bindings: dict[str, object],
     handle: object,
+    self_page_id: str,
 ) -> str | None:
-    """Plan one emit step (refusal code or None)."""
+    """Interpret one emit step, keeping raw ASTs (lot4-export.ts:425-432).
+
+    No outputId is resolved here; keys are collected after interpretation
+    and outputIds resolve at assembly. ``emit.as`` never becomes a binding.
+    """
     kind = step.get("kind")
     alias = step.get("as")
     fields = step.get("fields")
     if kind not in _IR_KINDS or not isinstance(alias, str) or not isinstance(fields, list):
         return "render-stale"
-    evaluated: list[tuple[str, object]] = []
+    kept: list[tuple[str, object]] = []
     for entry in fields:
         if not isinstance(entry, dict) or not isinstance(entry.get("name"), str):
             return "render-stale"
-        value, code = _plan_field_value(run, entry.get("value"), bindings)
-        if code is not None:
-            return code
-        evaluated.append((str(entry.get("name")), value))
-    parent: object = None
-    has_parent = False
-    if step.get("parent") is not None:
-        has_parent = True
-        parent_ast = step.get("parent")
-        # lot4-export.ts:591-595: an outputId parent resolves over the bound
-        # aliases; any other parent value is evaluated at emission with bound
-        # {self} only.
-        if isinstance(parent_ast, dict) and parent_ast.get("op") == "outputId":
-            parent, code = _plan_field_value(run, parent_ast, bindings)
-            if code is not None:
-                return code
-        else:
-            parent = _DeferredValue(parent_ast)
-    page_id, occurrence_key, emitted_type, source = _self_coordinates(run, handle)
-    if kind in ("node", "edge", "label") and step.get("parent") is None and page_id is None:
-        return "render-stale"
-    semantic_id = handle.get("semanticId") if isinstance(handle, dict) else None
-    record = _PlanEmit(
-        recipe_id=recipe_id,
-        kind=str(kind),
-        fields=evaluated,
-        parent=parent,
-        has_parent=has_parent,
-        page_id=page_id,
-        occurrence_key=occurrence_key,
-        emitted_type=emitted_type,
-        semantic_id=semantic_id if isinstance(semantic_id, str) else None,
-        source=source,
-        bound=dict(bindings),
+        kept.append((str(entry.get("name")), entry.get("value")))
+    has_parent = step.get("parent") is not None
+    parent_ast = step.get("parent") if has_parent else None
+    run.emissions.append(
+        _PlanEmit(
+            recipe_id=recipe_id,
+            kind=str(kind),
+            fields=kept,
+            parent_ast=parent_ast,
+            has_parent=has_parent,
+            self=handle,
+            self_page_id=self_page_id,
+            bound=dict(bindings),
+        )
     )
-    run.actions.append(("emit", record, run.iteration))
-    bindings[alias] = record
     return None
 
 
-def _plan_loss_step(
+def _interpret_loss_step(  # noqa: C901, PLR0911, PLR0913, PLR0917 - JS attach cases
     run: _ExportRun,
     recipe_id: str,
     step: dict[str, Json],
     bindings: dict[str, object],
     handle: object,
+    self_page_id: str,
+    mark: int,
 ) -> str | None:
-    """Plan one loss action (refusal code or None)."""
+    """Interpret one loss step (lot4-export.ts:402-423).
+
+    A self loss in an iteration that already emitted a record for the same
+    self attaches to that record's one ``lossAfter`` slot; otherwise it
+    stands alone with an unavailable result. Target identity decides.
+    """
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    del self_page_id
     code = step.get("code")
     if not isinstance(code, str) or not code:
         return "render-stale"
-    target = step.get("target", "self")
-    if target is None:
-        target = "self"
-    if not isinstance(target, str) or target not in bindings:
-        return "render-stale"
-    resolved = bindings[target]
-    if is_missing(resolved):
+    raw_target = step.get("target")
+    if raw_target == "self":
+        target: object = handle
+    elif isinstance(raw_target, str):
+        target = bindings.get(raw_target)
+        if target is None:
+            return None
+    else:
         return None
-    page_id, occurrence_key, emitted_type, source = _target_source(run, resolved, handle)
-    planned = _PlanLoss(recipe_id, code, page_id, occurrence_key, emitted_type, source)
-    run.actions.append(("loss", planned, run.iteration))
+    if target is _OCC_MISSING or is_missing(target):
+        return None
+    if target is handle:
+        for index in range(len(run.emissions) - 1, mark - 1, -1):
+            prior = run.emissions[index]
+            if not isinstance(prior, _PlanEmit):
+                if isinstance(prior, _PlanLoss) and prior.self is not handle:
+                    break
+                continue
+            if prior.self is not handle:
+                break
+            if prior.loss_after is None:
+                prior.loss_after = code
+                return None
+        run.emissions.append(
+            _PlanLoss(
+                recipe_id=recipe_id,
+                code=code,
+                self=handle,
+                self_page_id=(
+                    str(handle.get("pageId"))
+                    if isinstance(handle, dict) and isinstance(handle.get("pageId"), str)
+                    else ""
+                ),
+                target=target,
+            )
+        )
+        return None
+    run.emissions.append(
+        _PlanLoss(
+            recipe_id=recipe_id,
+            code=code,
+            self=handle,
+            self_page_id=(
+                str(handle.get("pageId"))
+                if isinstance(handle, dict) and isinstance(handle.get("pageId"), str)
+                else ""
+            ),
+            target=target,
+        )
+    )
     return None
 
 
-def _plan_iteration(run: _ExportRun, recipe: dict[str, Json], handle: object) -> str | None:
-    """Plan one recipe iteration over its steps (refusal code or None).
+def _interpret_iteration(run: _ExportRun, recipe: dict[str, Json], handle: object) -> str | None:
+    """Interpret one recipe iteration over its steps (refusal code or None).
 
     An export recipe ``when`` is never evaluated (``lot4-export.ts:370-394``;
     only capability ``when`` gates); the iteration always runs the steps.
+    Output IDs stay unresolved until the ID plan exists.
     """
-    run.iteration += 1
+    mark = len(run.emissions)
     bindings = _iteration_bindings(handle)
     recipe_id = str(recipe.get("id"))
+    self_page_id = (
+        str(handle.get("pageId"))
+        if isinstance(handle, dict) and isinstance(handle.get("pageId"), str)
+        else ""
+    )
     for step in recipe.get("steps", []):
-        code = _plan_step(run, recipe_id, step, bindings, handle)
+        code = _interpret_step(run, recipe_id, step, bindings, handle, self_page_id, mark)
         if code is not None:
             return code
     return None
 
 
-def _plan_step(
+def _interpret_step(  # noqa: PLR0913, PLR0917 - interpret threading matches JS scope
     run: _ExportRun,
     recipe_id: str,
     step: object,
     bindings: dict[str, object],
     handle: object,
+    self_page_id: str,
+    mark: int,
 ) -> str | None:
-    """Plan one recipe step (refusal code or None)."""
+    """Interpret one recipe step (refusal code or None)."""
     if not isinstance(step, dict):
         return "render-stale"
     op = step.get("op")
     if op == "bind":
         return _resolve_bind(run, step, bindings)
     if op == "emit":
-        return _plan_emit_step(run, recipe_id, step, bindings, handle)
+        return _interpret_emit_step(run, recipe_id, step, bindings, handle, self_page_id)
     if op == "loss":
-        return _plan_loss_step(run, recipe_id, step, bindings, handle)
+        return _interpret_loss_step(run, recipe_id, step, bindings, handle, self_page_id, mark)
     if op == "refuse":
         refused = step.get("code")
         return refused if isinstance(refused, str) and refused else "render-stale"
@@ -581,7 +630,7 @@ def _occurrence_sort_key(order: dict[object, object], item: object) -> tuple[int
 
 
 def _plan_recipe(run: _ExportRun, recipe: dict[str, Json]) -> str | None:
-    """Plan one export recipe over its occurrence selector results."""
+    """Interpret one export recipe over its occurrence selector results."""
     from bpmn_io.profile._occurrence import run_occurrence_select  # noqa: PLC0415
 
     try:
@@ -602,7 +651,7 @@ def _plan_recipe(run: _ExportRun, recipe: dict[str, Json]) -> str | None:
     ):
         matched = sorted(matched, key=partial(_occurrence_sort_key, page_order))
     for item in matched:
-        code = _plan_iteration(run, recipe, item)
+        code = _interpret_iteration(run, recipe, item)
         if code is not None:
             return code
     return None
@@ -677,289 +726,443 @@ def _append_capability_losses(
     run: _ExportRun, occurrence: dict[str, Json], record: dict[str, Json]
 ) -> None:
     """Append one applicable capability record's loss entries."""
-    page_id, occurrence_key, emitted_type, source = _self_coordinates(run, occurrence)
+    _, _, _, source = _self_coordinates(run, occurrence)
     for loss_class in record.get("losses", []):
         if not isinstance(loss_class, str):
             continue
-        planned = _PlanLoss(
-            str(run.export.get("id")), loss_class, page_id, occurrence_key, emitted_type, source
+        run.entries.append(
+            _loss_entry(
+                str(run.export.get("id")), loss_class, occurrence, dict(_UNAVAILABLE), source
+            )
         )
-        run.entries.append(_loss_entry(str(run.export.get("id")), planned, dict(_UNAVAILABLE)))
 
 
-def _substitute_ids(value: object, allocated: dict[int, str]) -> object:
-    """Replace output-id placeholders with allocated ids (MISSING kept)."""
-    if isinstance(value, tuple) and len(value) == 2 and value[0] == "output-id":
-        return allocated[value[1]]
-    return value
+def _resolve_output_id_target(  # noqa: PLR0911 - JS resolve branches transcribed
+    run: _ExportRun,
+    ids: dict[str, str],
+    value: dict[str, Json],
+    self_page_id: str,
+    emit: _PlanEmit,
+) -> tuple[str | None, str | None]:
+    """Resolve one outputId value AST against the ID plan (lot4-export.ts:506-528).
+
+    Returns the allocated id or a refusal code. Mirrors the JS assembly
+    position: missing/MISSING bindings refuse ``export-field-invalid``,
+    native candidates that are not unique refuse
+    ``export-occurrence-ambiguous``, and a planned key without an id refuses
+    ``profile-ambiguous-binding``.
+    """
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    binding = value.get("binding")
+    domain = value.get("domain")
+    if not isinstance(binding, str) or not isinstance(domain, str) or not domain:
+        return None, "export-field-invalid"
+    item = emit.self if binding == "self" else emit.bound.get(binding)
+    if item is None or item is _OCC_MISSING or is_missing(item):
+        return None, "export-field-invalid"
+    if not isinstance(item, dict):
+        return None, "export-field-invalid"
+    page_id = item.get("pageId")
+    occurrence_key = item.get("occurrenceKey")
+    element_id = item.get("id")
+    if isinstance(page_id, str) and occurrence_key is None:
+        key = _key_string(page_id, "", "page")
+    elif isinstance(page_id, str) and isinstance(occurrence_key, str):
+        key = _key_string(page_id, occurrence_key, domain)
+    elif isinstance(element_id, str):
+        matches = [
+            record
+            for record in run.render.get("occurrences", [])
+            if isinstance(record, dict)
+            and record.get("semanticId") == element_id
+            and record.get("pageId") == self_page_id
+        ]
+        if len(matches) != 1:
+            return None, "export-occurrence-ambiguous"
+        found = matches[0]
+        found_page = found.get("pageId")
+        found_key = found.get("occurrenceKey")
+        if not isinstance(found_page, str) or not isinstance(found_key, str):
+            return None, "export-field-invalid"
+        key = _key_string(found_page, found_key, domain)
+    else:
+        return None, "export-field-invalid"
+    resolved = ids.get(key)
+    if resolved is None:
+        return None, "profile-ambiguous-binding"
+    return resolved, None
 
 
-def _reference_check(
-    table: dict[str, tuple[str, int]],
-    planned: dict[str, str],
-    own_id: str,
-    value: object,
-    allowed: frozenset[str],
-) -> str | None:
-    """Check one parent/endpoint reference (refusal code or None)."""
-    if not isinstance(value, str) or not value:
-        return "export-parent-invalid"
-    if value == own_id:
-        return "export-parent-invalid"
-    known = table.get(value)
-    if known is not None:
-        return None if known[0] in allowed else "export-parent-invalid"
-    planned_kind = planned.get(value)
-    if planned_kind is None:
-        return "export-parent-invalid"
-    if planned_kind not in allowed:
-        return "export-parent-invalid"
-    return "export-parent-order"
+def _assemble_field_value(  # noqa: PLR0911 - JS field branches transcribed
+    run: _ExportRun,
+    emit: _PlanEmit,
+    ids: dict[str, str],
+    name: str,
+) -> tuple[object, str | None]:
+    """Evaluate one named field at its JS assembly position (value, code).
+
+    Missing fields read as MISSING; outputIds resolve against the ID plan
+    at this position, never prematurely.
+    """
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    ast: object = _OCC_MISSING
+    found = False
+    for entry_name, entry_value in emit.fields:
+        if entry_name == name:
+            ast = entry_value
+            found = True
+            break
+    if not found:
+        return _OCC_MISSING, None
+    if isinstance(ast, dict) and ast.get("op") == "outputId":
+        resolved, code = _resolve_output_id_target(run, ids, ast, emit.self_page_id, emit)
+        if code is not None:
+            return None, code
+        return resolved, None
+    if not isinstance(ast, dict) and not isinstance(ast, (str, int, float, bool)):
+        return _OCC_MISSING, None
+    if isinstance(ast, str):
+        return ast, None
+    value, code = _eval_step_value(run, ast, dict(emit.bound))
+    if code is not None:
+        return None, code
+    return value, None
 
 
 @dataclass
-class _Emission:
-    """Mutable per-call emission state (symbol table and outputs)."""
+class _Assembled:
+    """Mutable per-call assembly state (symbol table and outputs)."""
 
-    allocated: dict[int, str] = field(default_factory=dict)
-    planned: dict[str, str] = field(default_factory=dict)
+    ids: dict[str, str] = field(default_factory=dict)
+    planned: set[str] = field(default_factory=set)
     table: dict[str, tuple[str, int]] = field(default_factory=dict)
-    emitted_pages: dict[str, str] = field(default_factory=dict)
     ir: list[dict[str, Json]] = field(default_factory=list)
     id_map: list[dict[str, Json]] = field(default_factory=list)
 
 
-def _emit_fields(
-    emit: _PlanEmit, allocated: dict[int, str]
-) -> tuple[dict[str, Json] | None, str | None]:
-    """Substitute ids into one emit's fields (fields, refusal code)."""
-    fields: dict[str, Json] = {}
-    for name, value in emit.fields:
-        if value is _OUTPUT_MISSING:
-            continue
-        resolved = _substitute_ids(value, allocated)
-        if is_missing(resolved) or resolved is None:
-            if name in _REQUIRED_FIELDS[emit.kind]:
-                return None, "export-field-invalid"
-            continue
-        fields[name] = resolved
-    for name in _REQUIRED_FIELDS[emit.kind]:
-        if name not in fields:
+def _assemble_id(  # noqa: PLR0911 - JS id branches transcribed
+    run: _ExportRun, emit: _PlanEmit, ids: dict[str, str]
+) -> tuple[str | None, str | None]:
+    """Resolve one emit's record id in JS order (lot4-export.ts:570-582)."""
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    has_id = any(name == "id" for name, _ in emit.fields)
+    if has_id:
+        value, code = _assemble_field_value(run, emit, ids, "id")
+        if code is not None:
+            return None, code
+        if value is _OCC_MISSING or not isinstance(value, str):
             return None, "export-field-invalid"
-    return fields, None
+        return value, None
+    if emit.kind == "page":
+        resolved = ids.get(_key_string(emit.self_page_id, "", "page"))
+        if resolved is None:
+            return None, "profile-ambiguous-binding"
+        return resolved, None
+    if emit.kind in ("node", "edge", "label"):
+        self_obj = emit.self if isinstance(emit.self, dict) else {}
+        occ_key = self_obj.get("occurrenceKey")
+        if not isinstance(occ_key, str):
+            return None, "profile-ambiguous-binding"
+        resolved = ids.get(_key_string(emit.self_page_id, occ_key, emit.kind))
+        if resolved is None:
+            return None, "profile-ambiguous-binding"
+        return resolved, None
+    return None, None
 
 
-def _parent_value(emit: _PlanEmit, out: _Emission) -> tuple[object, str | None]:
-    """Evaluate one emit's raw parent value (value, refusal code)."""
+def _assemble_parent(  # noqa: PLR0911 - JS parent branches transcribed
+    run: _ExportRun, emit: _PlanEmit, ids: dict[str, str]
+) -> tuple[object, str | None]:
+    """Resolve one emit's parent value (lot4-export.ts:591-597, :647-653).
+
+    An explicit outputId resolves over the bound aliases; any other parent
+    value evaluates with bound ``{self}`` only (R5-05). Implicit parents
+    use the planned page-ID key, not the emitted page id (R6-03).
+    """
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
     if emit.has_parent:
-        if emit.parent is _OUTPUT_MISSING:
-            value: object = _OUTPUT_MISSING
-        else:
-            value = _substitute_ids(emit.parent, out.allocated)
-        if value is _OUTPUT_MISSING or is_missing(value) or value is None:
+        ast = emit.parent_ast
+        if isinstance(ast, dict) and ast.get("op") == "outputId":
+            resolved, code = _resolve_output_id_target(run, ids, ast, emit.self_page_id, emit)
+            if code is not None:
+                return None, code
+            return resolved, None
+        value, code = _eval_step_value(run, ast, {"self": emit.self})
+        if code is not None:
+            return None, code
+        if value is _OCC_MISSING or value is None or is_missing(value):
             if emit.kind == "metadata":
                 return None, None
             return None, "export-field-invalid"
         if not isinstance(value, str):
+            if emit.kind == "metadata":
+                return None, None
             return None, "export-parent-invalid"
         return value, None
     if emit.kind in ("node", "edge", "label"):
-        return ("implicit-page", emit.page_id or ""), None
+        return ids.get(_key_string(emit.self_page_id, "", "page")), None
     return None, None
 
 
-def _emit_parent(emit: _PlanEmit, out: _Emission, record_id: object) -> tuple[object, str | None]:
-    """Resolve one emit's parent with order checks (parent, code)."""
-    parent, code = _parent_value(emit, out)
+def _check_parent(parent: object, record_id: str | None, out: _Assembled) -> str | None:
+    """Apply the JS planned/emitted parent checks (lot4-export.ts:599-605)."""
+    if not isinstance(parent, str):
+        return "export-field-invalid"
+    if record_id is not None and parent == record_id:
+        return "export-parent-invalid"
+    if parent not in out.planned:
+        return "export-parent-invalid"
+    if parent not in out.table:
+        return "export-parent-order"
+    if out.table[parent][0] not in ("page", "node"):
+        return "export-parent-invalid"
+    return None
+
+
+def _assemble_edge_endpoints(
+    run: _ExportRun, emit: _PlanEmit, ids: dict[str, str]
+) -> tuple[object, object, str | None]:
+    """Resolve one edge's source/target in JS order (lot4-export.ts:620-630).
+
+    Missing endpoints refuse ``export-field-invalid``; endpoints not yet
+    emitted refuse ``export-parent-order`` with no kind or planned checks.
+    """
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    source, code = _assemble_field_value(run, emit, ids, "source")
+    if code is not None:
+        return None, None, code
+    target, code = _assemble_field_value(run, emit, ids, "target")
+    if code is not None:
+        return None, None, code
+    if source is _OCC_MISSING or target is _OCC_MISSING:
+        return None, None, "export-field-invalid"
+    return source, target, None
+
+
+def _assemble_one_page(
+    run: _ExportRun, emit: _PlanEmit, ids: dict[str, str], record_id: str
+) -> tuple[dict[str, Json] | None, str | None]:
+    """Assemble one page record in JS order (lot4-export.ts:584-587)."""
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    name, code = _assemble_field_value(run, emit, ids, "name")
     if code is not None:
         return None, code
-    if isinstance(parent, tuple) and parent[0] == "implicit-page":
-        page_id = out.emitted_pages.get(parent[1])
-        if page_id is None:
-            return None, "export-parent-order"
-        parent = page_id
-    if isinstance(parent, str):
-        own = record_id if isinstance(record_id, str) else ""
-        code = _reference_check(out.table, out.planned, own, parent, _PARENT_KINDS)
+    if name is _OCC_MISSING:
+        return None, "export-field-invalid"
+    record: dict[str, Json] = {"kind": "page", "id": record_id, "name": name}
+    record.update(_render_copies(run, emit))
+    return record, None
+
+
+def _assemble_one_node(  # noqa: C901 - JS node branches transcribed
+    run: _ExportRun, emit: _PlanEmit, ids: dict[str, str], record_id: str, parent: object
+) -> tuple[dict[str, Json] | None, str | None]:
+    """Assemble one node record in JS order (lot4-export.ts:606-619)."""
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    record: dict[str, Json] = {"kind": "node", "id": record_id}
+    name, code = _assemble_field_value(run, emit, ids, "name")
+    if code is not None:
+        return None, code
+    if name is not _OCC_MISSING:
+        record["name"] = name
+    record["parent"] = parent
+    record.update(_render_copies(run, emit))
+    occurrence = emit.self if isinstance(emit.self, dict) else {}
+    label = occurrence.get("label") if isinstance(occurrence, dict) else None
+    if isinstance(label, dict):
+        if record.get("name") is None:
+            text = label.get("text")
+            if isinstance(text, str):
+                record["name"] = text
+        bounds = label.get("bounds")
+        lines = label.get("lines")
+        if isinstance(bounds, dict) and isinstance(lines, list):
+            record["label"] = {"bounds": copy.deepcopy(bounds), "lines": copy.deepcopy(lines)}
+    for field_name, _ in emit.fields:
+        if field_name in ("id", "name", "parent"):
+            continue
+        value, code = _assemble_field_value(run, emit, ids, field_name)
         if code is not None:
             return None, code
-    return parent, None
+        if value is not _OCC_MISSING:
+            record[field_name] = value
+    return record, None
 
 
-def _check_endpoints(
-    emit: _PlanEmit, out: _Emission, fields: dict[str, Json], record_id: str
-) -> str | None:
-    """Check one edge's source/target endpoints (refusal code or None)."""
-    if emit.kind != "edge":
-        return None
-    for endpoint in ("source", "target"):
-        code = _reference_check(
-            out.table, out.planned, record_id, fields.get(endpoint), frozenset({"node"})
-        )
-        if code is not None:
-            return code
-    return None
-
-
-def _resolve_planned_value(
-    run: _ExportRun, value: object, out: _Emission, bindings: dict[str, object]
-) -> tuple[object, str | None]:
-    """Resolve one planned field value with allocated ids (value, code)."""
-    if isinstance(value, _DeferredValue):
-        return _eval_step_value(run, value.ast, bindings)
-    return _substitute_ids(value, out.allocated), None
-
-
-def _first_field_names(kind: str) -> list[str]:
-    """Return the field names resolved before the parent (lot4-export.ts:560-608)."""
-    return ["name", "value"] if kind == "metadata" else ["id"]
-
-
-def _resolve_named_field(  # noqa: PLR0913, PLR0917 - emission order threading
-    run: _ExportRun,
-    entries: list[tuple[str, object]],
-    taken: dict[int, object],
-    out: _Emission,
-    scope: dict[str, object],
-    name: str,
-) -> str | None:
-    """Resolve the first untaken field with one name (refusal code or None)."""
-    for index, (entry_name, raw) in enumerate(entries):
-        if entry_name == name and index not in taken:
-            value, code = _resolve_planned_value(run, raw, out, scope)
-            if code is not None:
-                return code
-            taken[index] = value
-            return None
-    return None
-
-
-def _planned_record_id(entries: list[tuple[str, object]], taken: dict[int, object]) -> object:
-    """Return the first taken id value (None when absent)."""
-    for index, (entry_name, _) in enumerate(entries):
-        if entry_name == "id" and index in taken:
-            return taken[index]
-    return None
-
-
-def _resolve_emit_parent(  # noqa: PLR0913, PLR0917 - emission order threading
+def _assemble_one_edge(  # noqa: PLR0913, PLR0917 - edge threading matches JS scope
     run: _ExportRun,
     emit: _PlanEmit,
-    out: _Emission,
-    scope: dict[str, object],
-    entries: list[tuple[str, object]],
-    taken: dict[int, object],
-) -> tuple[object, str | None]:
-    """Resolve and check one emit's parent before its fields (value, code)."""
-    parent = emit.parent
-    code: str | None = None
-    if emit.has_parent and isinstance(parent, _DeferredValue):
-        # lot4-export.ts:591-595: a non-outputId parent sees {self} only.
-        parent, code = _eval_step_value(run, parent.ast, {"self": scope.get("self")})
-    if code is None and emit.kind != "metadata":
-        record_id = _planned_record_id(entries, taken)
-        if not isinstance(record_id, str) or not record_id:
-            code = "export-field-invalid"
-        elif record_id in out.table:
-            code = "export-parent-invalid"
-        else:
-            _, code = _emit_parent(
-                dataclasses.replace(emit, fields=[], parent=parent), out, record_id
-            )
+    ids: dict[str, str],
+    record_id: str,
+    parent: object,
+    out: _Assembled,
+) -> tuple[dict[str, Json] | None, str | None]:
+    """Assemble one edge record in JS order (lot4-export.ts:620-633).
+
+    Endpoints resolve and order-check before any optional field, so an
+    endpoint order refusal precedes an optional-field refusal.
+    """
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    source, target, code = _assemble_edge_endpoints(run, emit, ids)
     if code is not None:
         return None, code
-    return parent, None
-
-
-def _resolve_emit_order(
-    run: _ExportRun, emit: _PlanEmit, out: _Emission
-) -> tuple[_PlanEmit | None, str | None]:
-    """Resolve one emit's values in JS emission order (resolved emit, code)."""
-    scope = dict(emit.bound)
-    entries = list(emit.fields)
-    taken: dict[int, object] = {}
-    for name in _first_field_names(emit.kind):
-        code = _resolve_named_field(run, entries, taken, out, scope, name)
-        if code is not None:
-            return None, code
-    parent, code = _resolve_emit_parent(run, emit, out, scope, entries, taken)
-    if code is not None:
-        return None, code
-    for index in range(len(entries)):
-        if index not in taken:
-            value, code = _resolve_planned_value(run, entries[index][1], out, scope)
-            if code is not None:
-                return None, code
-            taken[index] = value
-    ordered = [(entries[index][0], taken[index]) for index in range(len(entries))]
-    return dataclasses.replace(emit, fields=ordered, parent=parent), None
-
-
-def _emit_record(run: _ExportRun, emit: _PlanEmit, out: _Emission) -> str | None:
-    """Emit one planned record with R copies (refusal code or None)."""
-    # lot4-export.ts:560-608 order: the id, then the parent value resolved
-    # and checked (planned id, self, order, page/node), then the remaining
-    # fields; a parent refusal precedes any optional-field refusal.
-    resolved, code = _resolve_emit_order(run, emit, out)
-    if code is not None or resolved is None:
-        return code or "export-field-invalid"
-    return _emit_resolved_record(run, resolved, out)
-
-
-def _emit_resolved_record(run: _ExportRun, emit: _PlanEmit, out: _Emission) -> str | None:
-    """Emit one resolved record with R copies (refusal code or None)."""
-    fields, code = _emit_fields(emit, out.allocated)
-    if code is not None or fields is None:
-        return code or "export-field-invalid"
-    record_id = fields.get("id")
-    if emit.kind != "metadata" and (not isinstance(record_id, str) or not record_id):
-        return "export-field-invalid"
-    if isinstance(record_id, str) and record_id in out.table:
-        return "export-parent-invalid"
-    parent, code = _emit_parent(emit, out, record_id)
-    if code is not None:
-        return code
-    if isinstance(record_id, str):
-        code = _check_endpoints(emit, out, fields, record_id)
-        if code is not None:
-            return code
-    record: dict[str, Json] = {"kind": emit.kind}
-    record.update(fields)
-    if parent is not None:
-        record["parent"] = parent
+    if not isinstance(source, str) or not isinstance(target, str):
+        return None, "export-field-invalid"
+    if source not in out.table or target not in out.table:
+        return None, "export-parent-order"
+    record: dict[str, Json] = {"kind": "edge", "id": record_id, "source": source, "target": target}
+    for field_name, _ in emit.fields:
+        if field_name in ("id", "source", "target", "parent"):
+            continue
+        value, fcode = _assemble_field_value(run, emit, ids, field_name)
+        if fcode is not None:
+            return None, fcode
+        if value is not _OCC_MISSING:
+            record[field_name] = value
+    record["parent"] = parent
     record.update(_render_copies(run, emit))
-    if isinstance(record_id, str):
-        out.table[record_id] = (emit.kind, len(out.ir))
-    if emit.kind == "page" and isinstance(record_id, str) and emit.page_id is not None:
-        out.emitted_pages[emit.page_id] = record_id
-    index = len(out.ir)
-    out.ir.append(record)
-    _append_id_map(out, emit, record_id)
-    _append_adapter_loss(run, emit, index)
-    return None
+    return record, None
 
 
-def _append_id_map(out: _Emission, emit: _PlanEmit, record_id: object) -> None:
-    """Append one emit's idMap row when it carries a source identity."""
+def _assemble_one_label(
+    run: _ExportRun, emit: _PlanEmit, ids: dict[str, str], record_id: str, parent: object
+) -> tuple[dict[str, Json] | None, str | None]:
+    """Assemble one label record in JS order (lot4-export.ts:634-642)."""
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    text, code = _assemble_field_value(run, emit, ids, "text")
+    if code is not None:
+        return None, code
+    if text is _OCC_MISSING:
+        return None, "export-field-invalid"
+    occurrence = emit.self if isinstance(emit.self, dict) else {}
+    label = occurrence.get("label") if isinstance(occurrence, dict) else None
+    if not isinstance(label, dict):
+        return None, "export-field-invalid"
+    record: dict[str, Json] = {
+        "kind": "label",
+        "id": record_id,
+        "text": text,
+        "parent": parent,
+        "bounds": copy.deepcopy(label.get("bounds")),
+        "lines": copy.deepcopy(label.get("lines")),
+    }
+    return record, None
+
+
+def _assemble_one_metadata(
+    run: _ExportRun, emit: _PlanEmit, ids: dict[str, str]
+) -> tuple[dict[str, Json] | None, str | None]:
+    """Assemble one metadata record in JS order (lot4-export.ts:643-654)."""
+    from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
+
+    name, code = _assemble_field_value(run, emit, ids, "name")
+    if code is not None:
+        return None, code
+    value, code = _assemble_field_value(run, emit, ids, "value")
+    if code is not None:
+        return None, code
+    if name is _OCC_MISSING or value is _OCC_MISSING:
+        return None, "export-field-invalid"
+    record: dict[str, Json] = {"kind": "metadata", "name": name, "value": value}
+    if emit.has_parent and emit.parent_ast is not None:
+        ast = emit.parent_ast
+        if isinstance(ast, dict) and ast.get("op") == "outputId":
+            out_parent, pcode = _resolve_output_id_target(run, ids, ast, emit.self_page_id, emit)
+            if pcode is not None:
+                return None, pcode
+            if isinstance(out_parent, str):
+                record["parent"] = out_parent
+        else:
+            eval_parent, pcode = _eval_step_value(run, ast, {"self": emit.self})
+            if pcode is not None:
+                return None, pcode
+            if isinstance(eval_parent, str):
+                record["parent"] = eval_parent
+    return record, None
+
+
+def _assemble_one_emit(  # noqa: C901, PLR0911, PLR0912 - JS per-kind order transcribed
+    run: _ExportRun, emit: _PlanEmit, ids: dict[str, str], out: _Assembled
+) -> tuple[dict[str, Json] | None, str | None, str | None]:
+    """Assemble one emit in JS per-kind order (record, record_id, code)."""
+    record_id, code = _assemble_id(run, emit, ids)
+    if code is not None:
+        return None, None, code
+    if isinstance(record_id, str) and record_id in out.table:
+        return None, None, "export-parent-invalid"
+    if emit.kind == "page":
+        if not isinstance(record_id, str):
+            return None, None, "export-field-invalid"
+        record, code = _assemble_one_page(run, emit, ids, record_id)
+        if code is not None or record is None:
+            return None, None, code or "export-field-invalid"
+        return record, record_id, None
+    if emit.kind in ("node", "edge", "label"):
+        if not isinstance(record_id, str):
+            return None, None, "export-field-invalid"
+        parent, code = _assemble_parent(run, emit, ids)
+        if code is not None:
+            return None, None, code
+        pcode = _check_parent(parent, record_id, out)
+        if pcode is not None:
+            return None, None, pcode
+        if emit.kind == "node":
+            record, code = _assemble_one_node(run, emit, ids, record_id, parent)
+        elif emit.kind == "edge":
+            # Endpoints resolve after the parent checks, before optional fields.
+            record, code = _assemble_one_edge(run, emit, ids, record_id, parent, out)
+            if code is None and record is not None:
+                src = record.get("source")
+                tgt = record.get("target")
+                if not isinstance(src, str) or not isinstance(tgt, str):
+                    return None, None, "export-field-invalid"
+                if src not in out.table or tgt not in out.table:
+                    return None, None, "export-parent-order"
+        else:
+            record, code = _assemble_one_label(run, emit, ids, record_id, parent)
+        if code is not None or record is None:
+            return None, None, code or "export-field-invalid"
+        return record, record_id, None
+    record, code = _assemble_one_metadata(run, emit, ids)
+    if code is not None or record is None:
+        return None, None, code or "export-field-invalid"
+    return record, None, None
+
+
+def _append_id_map(out: _Assembled, emit: _PlanEmit, record_id: object) -> None:
+    """Append one emit's idMap row (lot4-export.ts:662-669)."""
     if emit.kind == "page" and isinstance(record_id, str):
         out.id_map.append(
             {
-                "sourceId": emit.page_id,
+                "sourceId": emit.self_page_id,
                 "resultId": record_id,
                 "domain": "export",
-                "pageId": emit.page_id,
+                "pageId": emit.self_page_id,
             }
         )
-    elif emit.semantic_id is not None and isinstance(record_id, str):
-        out.id_map.append(
-            {
-                "sourceId": emit.semantic_id,
-                "resultId": record_id,
-                "domain": "export",
-                "pageId": emit.page_id,
-                "occurrenceKey": emit.occurrence_key,
-            }
-        )
+    elif isinstance(record_id, str):
+        self_obj = emit.self if isinstance(emit.self, dict) else {}
+        semantic_id = self_obj.get("semanticId")
+        occurrence_key = self_obj.get("occurrenceKey")
+        if isinstance(semantic_id, str) and isinstance(occurrence_key, str):
+            out.id_map.append(
+                {
+                    "sourceId": semantic_id,
+                    "resultId": record_id,
+                    "domain": "export",
+                    "pageId": emit.self_page_id,
+                    "occurrenceKey": occurrence_key,
+                }
+            )
 
 
 def _append_adapter_loss(run: _ExportRun, emit: _PlanEmit, index: int) -> None:
@@ -967,45 +1170,64 @@ def _append_adapter_loss(run: _ExportRun, emit: _PlanEmit, index: int) -> None:
     drops = run.adapter.get("drops")
     if not isinstance(drops, frozenset) or emit.kind not in drops:
         return
-    planned = _PlanLoss(
-        "adapter",
-        emit.kind,
-        emit.page_id,
-        emit.occurrence_key,
-        emit.emitted_type,
-        emit.source,
-    )
     run.entries.append(
         _loss_entry(
             "adapter",
-            planned,
+            emit.kind,
+            emit.self,
             {
                 "domain": "artifact",
                 "pointer": f"/ir/{index}",
                 "targetId": None,
                 "provenance": "exact",
             },
+            _metadata_self_source(run, emit),
         )
     )
+
+
+def _metadata_self_source(run: _ExportRun, emit: _PlanEmit) -> dict[str, Json]:
+    """Build the adapter-loss source of one emitted record (lot4-export.ts:698-708)."""
+    self_obj = emit.self
+    if isinstance(self_obj, dict) and self_obj.get("$type") == "bpmn:Definitions":
+        element_id = self_obj.get("id")
+        return {
+            "domain": "tree",
+            "pointer": "",
+            "targetId": element_id if isinstance(element_id, str) else None,
+            "provenance": "exact",
+        }
+    if isinstance(self_obj, dict) and isinstance(self_obj.get("pageId"), str):
+        if self_obj.get("occurrenceKey") is None:
+            return dict(_UNAVAILABLE)
+        _, _, _, source = _self_coordinates(run, self_obj)
+        return source
+    if isinstance(self_obj, dict):
+        return _native_source(run, self_obj)
+    return dict(_UNAVAILABLE)
 
 
 def _render_copies(run: _ExportRun, emit: _PlanEmit) -> dict[str, Json]:
     """Copy R geometry, style and label lines into one IR record."""
     copies: dict[str, Json] = {}
     if emit.kind == "page":
-        page = run.pages.get(emit.page_id or "")
+        page = run.pages.get(emit.self_page_id or "")
         if page is not None and isinstance(page.get("bounds"), dict):
             copies["bounds"] = copy.deepcopy(page.get("bounds"))
         return copies
+    self_obj = emit.self if isinstance(emit.self, dict) else {}
+    occurrence_key = self_obj.get("occurrenceKey")
     occurrence = None
     for record in run.render.get("occurrences", []):
         if (
             isinstance(record, dict)
-            and record.get("pageId") == emit.page_id
-            and record.get("occurrenceKey") == emit.occurrence_key
+            and record.get("pageId") == emit.self_page_id
+            and record.get("occurrenceKey") == occurrence_key
         ):
             occurrence = record
             break
+    if occurrence is None and isinstance(emit.self, dict):
+        occurrence = emit.self if isinstance(emit.self.get("pageId"), str) else None
     if occurrence is None:
         return copies
     for key in _R_COPY_KEYS.get(emit.kind, ()):
@@ -1048,67 +1270,80 @@ def _plan_static_metadata(run: _ExportRun) -> str | None:
             or not isinstance(entry.get("value"), str)
         ):
             return "render-stale"
-        run.actions.append(
-            (
-                "emit",
-                _PlanEmit(
-                    recipe_id=str(run.export.get("id")),
-                    kind="metadata",
-                    fields=[("name", entry["name"]), ("value", entry["value"])],
-                    parent=None,
-                    has_parent=False,
-                    page_id=None,
-                    occurrence_key=None,
-                    emitted_type=None,
-                    semantic_id=None,
-                    source=dict(_UNAVAILABLE),
-                ),
-                run.iteration,
+        run.emissions.append(
+            _PlanEmit(
+                recipe_id=str(run.export.get("id")),
+                kind="metadata",
+                fields=[
+                    ("name", {"op": "literal", "value": entry["name"]}),
+                    ("value", {"op": "literal", "value": entry["value"]}),
+                ],
+                parent_ast=None,
+                has_parent=False,
+                self={},
+                self_page_id="",
+                bound={},
             )
         )
     return None
 
 
+def _standalone_loss_source(run: _ExportRun, item: _PlanLoss) -> dict[str, Json]:
+    """Build the source of one standalone loss (lot4-export.ts:549-557)."""
+    target = item.target
+    if isinstance(target, dict) and isinstance(target.get("$type"), str):
+        return _native_source(run, target)
+    _, _, _, source = _self_coordinates(run, item.self)
+    return source
+
+
 def _run_emission(
-    run: _ExportRun, allocated: dict[int, str]
+    run: _ExportRun, ids: dict[str, str]
 ) -> tuple[list[dict[str, Json]], list[dict[str, Json]], str | None]:
-    """Emit every planned action with symbol checks (ir, idMap, code)."""
-    out = _Emission(allocated=allocated)
-    for action, item, _ in run.actions:
-        if action != "emit" or not isinstance(item, _PlanEmit):
+    """Assemble interpreted emissions in JS order (ir, idMap, code).
+
+    Standalone losses keep an unavailable result; attached self losses use
+    the record's one ``lossAfter`` slot with artifact coordinates
+    (lot4-export.ts:402-423, :549-661).
+    """
+    out = _Assembled(ids=dict(ids), planned=set(ids.values()))
+    for emission in run.emissions:
+        if isinstance(emission, _PlanLoss):
+            source = _standalone_loss_source(run, emission)
+            run.entries.append(
+                _loss_entry(
+                    emission.recipe_id, emission.code, emission.self, dict(_UNAVAILABLE), source
+                )
+            )
             continue
-        for name, value in item.fields:
-            if name == "id" and isinstance(value, tuple) and value[0] == "output-id":
-                out.planned[allocated[value[1]]] = item.kind
-    last_emit: dict[int, int] = {}
-    for action, item, iteration in run.actions:
-        if action == "emit" and isinstance(item, _PlanEmit):
-            before = len(out.ir)
-            code = _emit_record(run, item, out)
-            if code is not None:
-                return [], [], code
-            if len(out.ir) > before:
-                last_emit[iteration] = len(out.ir) - 1
-        elif action == "loss" and isinstance(item, _PlanLoss):
-            _run_loss_action(run, out, item, last_emit.get(iteration))
-        else:
+        if not isinstance(emission, _PlanEmit):
             return [], [], "render-stale"
+        record, record_id, code = _assemble_one_emit(run, emission, ids, out)
+        if code is not None or record is None:
+            return [], [], code or "export-field-invalid"
+        if isinstance(record_id, str):
+            out.table[record_id] = (emission.kind, len(out.ir))
+        index = len(out.ir)
+        out.ir.append(record)
+        _append_id_map(out, emission, record_id)
+        _append_adapter_loss(run, emission, index)
+        if emission.loss_after is not None:
+            _, _, _, attached_source = _self_coordinates(run, emission.self)
+            run.entries.append(
+                _loss_entry(
+                    emission.recipe_id,
+                    emission.loss_after,
+                    emission.self,
+                    {
+                        "domain": "artifact",
+                        "pointer": f"/ir/{index}",
+                        "targetId": record_id if isinstance(record_id, str) else None,
+                        "provenance": "exact",
+                    },
+                    attached_source,
+                )
+            )
     return out.ir, out.id_map, None
-
-
-def _run_loss_action(run: _ExportRun, out: _Emission, item: _PlanLoss, last: int | None) -> None:
-    """Append one loss action with iteration-local result coordinates."""
-    if last is None:
-        result: dict[str, Json] = dict(_UNAVAILABLE)
-    else:
-        record_id = out.ir[last].get("id")
-        result = {
-            "domain": "artifact",
-            "pointer": f"/ir/{last}",
-            "targetId": record_id if isinstance(record_id, str) else None,
-            "provenance": "exact",
-        }
-    run.entries.append(_loss_entry(item.recipe_id, item, result))
 
 
 def _select_export(
@@ -1164,12 +1399,12 @@ def _map_finished(
 ) -> ResultSuccess | ResultRefused:
     """Allocate, emit and assemble one planned run (DESIGN §10.1 steps 7-9)."""
     echo_identity, echo_revision = echo
-    request_ids, code = _map_allocated(run)
-    if code is not None or request_ids is None:
+    allocated, code = _map_allocated(run)
+    if code is not None or allocated is None:
         return refused_result(
             "mapExport", code or "export-id-ambiguous", echo_identity, echo_revision
         )
-    ir, id_map, code = _run_emission(run, request_ids)
+    ir, id_map, code = _run_emission(run, allocated)
     if code is not None:
         return refused_result("mapExport", code, echo_identity, echo_revision)
     binding = copy.deepcopy(candidate.get("binding"))
@@ -1303,12 +1538,51 @@ def _map_planned(  # noqa: PLR0913, PLR0917 - support threading matches map_expo
     return run, capability, None
 
 
-def _map_allocated(run: _ExportRun) -> tuple[dict[int, str] | None, str | None]:
-    """Allocate one run's call-local ids (request ids, refusal code)."""
+def _map_allocated(  # noqa: C901, PLR0911 - JS key branches transcribed
+    run: _ExportRun,
+) -> tuple[dict[str, str] | None, str | None]:
+    """Allocate one run's call-local ids (id map, refusal code).
+
+    Keys come from ``_collect_keys`` (lot4-export.ts:440-479): the emit's
+    own key, edge endpoint keys only for edges, and an explicit
+    outputId-parent key. OutputIds resolve at assembly, never prematurely.
+    """
     policy = run.export.get("idPolicy")
     origin = run.export.get("counterOrigin")
     if policy not in ("counter", "digest", "native") or type(origin) is not int:
         return None, "render-stale"
+    keys = _collect_keys(run)
+    requests: list[dict[str, object]] = []
+    for page_id, occurrence_key, domain in keys:
+        if domain == "page":
+            requests.append(
+                {
+                    "pageId": page_id,
+                    "occurrenceKey": occurrence_key,
+                    "domain": domain,
+                    "semanticId": None,
+                }
+            )
+            continue
+        semantic: str | None = None
+        for record in run.render.get("occurrences", []):
+            if (
+                isinstance(record, dict)
+                and record.get("pageId") == page_id
+                and record.get("occurrenceKey") == occurrence_key
+            ):
+                sid = record.get("semanticId")
+                if isinstance(sid, str):
+                    semantic = sid
+                break
+        requests.append(
+            {
+                "pageId": page_id,
+                "occurrenceKey": occurrence_key,
+                "domain": domain,
+                "semanticId": semantic,
+            }
+        )
     plan = plan_ids(
         {
             "policy": policy,
@@ -1320,41 +1594,30 @@ def _map_allocated(run: _ExportRun) -> tuple[dict[int, str] | None, str | None]:
                 }
                 for page_id, page in run.pages.items()
             ],
-            "requests": run.requests,
+            "requests": requests,
         }
     )
     if isinstance(plan, PureRefused):
         return None, plan.code
     if not isinstance(plan.payload, dict):
         return None, "render-stale"
-    request_ids = _map_request_ids(run.requests, plan.payload.get("ids"))
-    if request_ids is None:
-        return None, "export-id-ambiguous"
-    return request_ids, None
-
-
-def _map_request_ids(requests: list[dict[str, object]], ids: object) -> dict[int, str] | None:
-    """Map every request index to its allocated id (None when missing)."""
-    if not isinstance(ids, list):
-        return None
-    by_key: dict[tuple[str, str, str], str] = {}
-    for row in ids:
+    rows = plan.payload.get("ids")
+    if not isinstance(rows, list):
+        return None, "render-stale"
+    ids: dict[str, str] = {}
+    for row in rows:
         if not isinstance(row, dict):
-            return None
-        key = (
-            str(row.get("pageId")),
-            str(row.get("occurrenceKey")),
-            str(row.get("domain")),
-        )
-        by_key.setdefault(key, str(row.get("id")))
-    allocated: dict[int, str] = {}
-    for index, request in enumerate(requests):
-        lookup = (
-            str(request.get("pageId")),
-            str(request.get("occurrenceKey")),
-            str(request.get("domain")),
-        )
-        if lookup not in by_key:
-            return None
-        allocated[index] = by_key[lookup]
-    return allocated
+            return None, "render-stale"
+        page = row.get("pageId")
+        key = row.get("occurrenceKey")
+        row_domain = row.get("domain")
+        allocated = row.get("id")
+        if (
+            not isinstance(page, str)
+            or not isinstance(key, str)
+            or not isinstance(row_domain, str)
+            or not isinstance(allocated, str)
+        ):
+            return None, "render-stale"
+        ids[_key_string(page, key, row_domain)] = allocated
+    return ids, None

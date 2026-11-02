@@ -264,8 +264,15 @@ def _element_type(element: object) -> str:
     return ""
 
 
-def _read_path(element: object, path: str) -> object:
-    """Read one RFC 6901 path from an element (MISSING when absent)."""
+def _read_path(  # noqa: PLR0911 - clone branch keeps JS copy semantics
+    element: object, path: str
+) -> object:
+    """Read one RFC 6901 path from an element (MISSING when absent).
+
+    compiler.ts:904, :991: the native read clones each returned JSON value,
+    so two reads of the same path yield distinct objects for identity
+    comparison. Occurrence ``read_path`` keeps member identity (R5-04).
+    """
     if not path.startswith("/"):
         return _MISSING
     current: object = element
@@ -287,6 +294,8 @@ def _read_path(element: object, path: str) -> object:
             if value is UNDEFINED:
                 return _MISSING
             current = value
+    if isinstance(current, (dict, list)):
+        return copy.deepcopy(current)
     return current
 
 
@@ -713,6 +722,10 @@ def _eval_predicate(  # noqa: C901, PLR0912, PLR0911, PLR0915
         right = _eval_value(node.get("right"), context, bindings)
         if left is _MISSING or right is _MISSING:
             return False
+        # compiler.ts:1037-1040: strict identity; cloned structured reads
+        # are never identical, even for the same path.
+        if isinstance(left, (dict, list)) or isinstance(right, (dict, list)):
+            return left is right
         if isinstance(left, bool) or isinstance(right, bool):
             return isinstance(left, bool) and isinstance(right, bool) and left == right
         if isinstance(left, (int, float)) and isinstance(right, (int, float)):
@@ -834,44 +847,66 @@ def _edge_endpoints(element: object, context: ReadContext) -> tuple[list[object]
     return sources, targets
 
 
-def _reachability_graph(context: ReadContext, wanted: set[str]) -> dict[int, list[int]]:
-    """Build the resolved sourceRef to targetRef adjacency over edge elements."""
-    adjacency: dict[int, list[int]] = {}
+def _reachability_graph(context: ReadContext, wanted: set[str]) -> dict[str, list[str]]:
+    """Build the sourceRef to targetRef adjacency over edge elements.
+
+    compiler.ts:1115-1124: edges key string IDs, only when both endpoints
+    resolve in the index; a non-string endpoint selects nothing for plain
+    JSON trees. Moddle object references resolve to their string IDs so
+    shared validation paths keep working.
+    """
+    adjacency: dict[str, list[str]] = {}
     for element in context.elements:
         if _element_type(element) not in wanted:
             continue
-        origins, ends = _edge_endpoints(element, context)
-        if not origins or not ends:
+        origin_raw = _read_property(element, "sourceRef")
+        end_raw = _read_property(element, "targetRef")
+        if isinstance(origin_raw, str) and isinstance(end_raw, str):
+            if origin_raw not in context.by_id or end_raw not in context.by_id:
+                continue
+            adjacency.setdefault(origin_raw, []).append(end_raw)
             continue
-        for origin in origins:
-            adjacency.setdefault(id(origin), []).extend(id(end) for end in ends)
+        for origin_obj in _resolve_reference_value(origin_raw, context):
+            origin_id = _element_id(origin_obj)
+            if not isinstance(origin_id, str):
+                continue
+            for end_obj in _resolve_reference_value(end_raw, context):
+                end_id = _element_id(end_obj)
+                if not isinstance(end_id, str):
+                    continue
+                if origin_id not in context.by_id or end_id not in context.by_id:
+                    continue
+                adjacency.setdefault(origin_id, []).append(end_id)
     return adjacency
 
 
 def _bfs_reachable(
-    adjacency: dict[int, list[int]],
-    starts: set[int],
-    wanted_ids: set[int],
+    adjacency: dict[str, list[str]],
+    starts: set[str],
+    wanted_ids: set[str],
     min_hops: int,
     max_hops: int,
 ) -> bool:
-    """Walk breadth-first layers with a visited set (DESIGN §2.2 reachable)."""
-    if min_hops == 0 and starts & wanted_ids:
-        return True
-    visited = set(starts)
-    frontier = set(starts)
-    for depth in range(1, max_hops + 1):
-        reached: set[int] = set()
-        for handle_id in frontier:
-            for end_id in adjacency.get(handle_id, ()):
-                if end_id not in visited:
-                    visited.add(end_id)
-                    reached.add(end_id)
-        if depth >= min_hops and reached & wanted_ids:
+    """Walk breadth-first over (id, hops) pairs (compiler.ts:1127-1142).
+
+    A vertex may be revisited at a later hop; only the pair is marked
+    visited, so bounded cycles that return to the source are reachable.
+    """
+    queue: list[tuple[str, int]] = [(start, 0) for start in starts]
+    seen: set[tuple[str, int]] = {(start, 0) for start in starts}
+    cursor = 0
+    while cursor < len(queue):
+        current, hops = queue[cursor]
+        cursor += 1
+        if current in wanted_ids and hops >= min_hops and hops <= max_hops:
             return True
-        frontier = reached
-        if not frontier:
-            return False
+        if hops >= max_hops:
+            continue
+        for end_id in adjacency.get(current, ()):
+            key = (end_id, hops + 1)
+            if key not in seen:
+                seen.add(key)
+                queue.append(key)
     return False
 
 
@@ -899,11 +934,18 @@ def _eval_reachable(
         return False
     # compiler.ts:1114,1126: only handles with a string id take part in the
     # graph; an id-less handle (such as an occurrence without id) is neither
-    # a start nor a target.
+    # a start nor a target. Traversal keys string IDs with (id, hops)
+    # visited pairs (:1127-1142).
     wanted_ids = {
-        id(handle.element) for handle in targets if _element_id(handle.element) is not None
+        str(_element_id(handle.element))
+        for handle in targets
+        if _element_id(handle.element) is not None
     }
-    starts = {id(handle.element) for handle in sources if _element_id(handle.element) is not None}
+    starts = {
+        str(_element_id(handle.element))
+        for handle in sources
+        if _element_id(handle.element) is not None
+    }
     if not wanted_ids or not starts:
         return False
     return _bfs_reachable(
