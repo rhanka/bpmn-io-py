@@ -1,0 +1,52 @@
+{
+  "caseId": "render-021-neutral-successor",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-successor.profile.json",
+    "sha256": "31387224e72609c153fc49e26c29e33de18fda7ab1fbabed55d25ba0bb21e658"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-successor.envelope.json",
+      "sha256": "399b75f2b82beea753d64661b504bcc7637d8ae45c85db6fee6c6c6829704ac9"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-successor.layout.json",
+      "sha256": "ae975f82fa1e046ee0dd95af7904be58c7f0f2e714aedecdd83589d01dfb66ed"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [],
+        "bioc": []
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-successor-plain.resolve-result.json",
+      "sha256": "10c09ff30d09286e5577b9d2e9203a996b2121d4f56ebc39fb20245c6d7e5b6b"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

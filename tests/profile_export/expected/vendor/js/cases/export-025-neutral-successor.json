@@ -1,0 +1,43 @@
+{
+  "caseId": "export-025-neutral-successor",
+  "operation": "mapExport",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-successor.profile.json",
+    "sha256": "31387224e72609c153fc49e26c29e33de18fda7ab1fbabed55d25ba0bb21e658"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-successor.envelope.json",
+      "sha256": "399b75f2b82beea753d64661b504bcc7637d8ae45c85db6fee6c6c6829704ac9"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-successor.layout.json",
+      "sha256": "ae975f82fa1e046ee0dd95af7904be58c7f0f2e714aedecdd83589d01dfb66ed"
+    },
+    {
+      "role": "render",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-successor-plain.render.json",
+      "sha256": "83f3c488c149155b6fa8ae5c2f1d5d7f7b9e3badb866518396bf2bda1d47e591"
+    },
+    {
+      "role": "format",
+      "json": "drawio"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/export-025-neutral-successor.map-result.json",
+      "sha256": "80719a075829082f489dc3ef4fe2993582504be1287fa2fac7a7ac8704215fc4"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

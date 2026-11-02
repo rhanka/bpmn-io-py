@@ -1,0 +1,46 @@
+{
+  "case": "compile-mutable-without-parameters",
+  "clause": "DESIGN R3.3 \u00a78.3 L655 mutable fields require a complete parameter map; schema else->required parameters",
+  "derivation": "The mutable task name field loses its parameters array; the schema refuses profile-schema. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "remove",
+          "path": "/notions/0/fields/0/parameters"
+        }
+      ],
+      "artifact": "artifacts/profiles/compile-mutable-without-parameters.json"
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-schema",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "8b0c5a4a54fc979174966e79a88a522b9f29c84a1093683dbd1115656fec69d7",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

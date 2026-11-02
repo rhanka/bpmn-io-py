@@ -1,0 +1,115 @@
+{
+  "snapshotVersion": "1",
+  "envelope": {
+    "documentVersion": "1",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "ui-neutral/1",
+      "version": "1.1.0",
+      "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+      "base": {
+        "id": "ui-neutral-base/1",
+        "version": "lot5-2",
+        "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb"
+      },
+      "descriptors": [
+        {
+          "id": "ui-neutral-descriptors/1",
+          "version": "lot5-2",
+          "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032"
+        }
+      ]
+    },
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Defs_demo",
+      "targetNamespace": "urn:example:lot5-demo",
+      "exporterVersion": "ui-neutral-base/1",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Proc_demo",
+          "name": "Demo request",
+          "isExecutable": false,
+          "flowElements": [
+            {
+              "$type": "bpmn:StartEvent",
+              "id": "Start_d",
+              "name": "Request received"
+            },
+            {
+              "$type": "bpmn:EndEvent",
+              "id": "End_d",
+              "name": "Request closed"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "semanticRevision": "ffe28e29ee288104b07533a6ca51c58323881fae4a7bc4cb57a50c567008265e"
+  },
+  "presentation": {
+    "layout": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "page-demo",
+          "name": "Demo request",
+          "order": 0,
+          "semanticRootId": "Proc_demo",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1200000,
+            "height": 600000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "page-demo",
+          "occurrenceKey": "occ:End_d",
+          "semanticId": "End_d",
+          "role": "content",
+          "bounds": {
+            "x": 900000,
+            "y": 200000,
+            "width": 36000,
+            "height": 36000
+          }
+        },
+        {
+          "pageId": "page-demo",
+          "occurrenceKey": "occ:Start_d",
+          "semanticId": "Start_d",
+          "role": "content",
+          "bounds": {
+            "x": 100000,
+            "y": 200000,
+            "width": 36000,
+            "height": 36000
+          }
+        }
+      ]
+    },
+    "themeId": "plain",
+    "overrides": {
+      "semantic": [],
+      "occurrence": []
+    },
+    "diStyles": {
+      "native": [],
+      "bioc": []
+    },
+    "importedDi": {
+      "descriptorDigest": "93b334bc67d76f4b26eb3d501871cc2dadcafab09c484d2d2b0f7a0d01a1a6e6",
+      "diagrams": [],
+      "sha256": "86227d990ce21f749bf18cf2062993e79f8b0012e612bf33d5891d3dc3076a52"
+    },
+    "selection": [],
+    "activePageId": "page-demo"
+  },
+  "viewRevision": "6284fc127177de754c0cd055947d146410f20da9fb0fce335b76f42e392c14f9"
+}

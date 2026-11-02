@@ -1,0 +1,55 @@
+{
+  "case": "compile-message-missing-fallback",
+  "clause": "DESIGN R3.3 \u00a78.3 L659 missing fallback text is a compiler error",
+  "derivation": "A message with only an fr text is added while policies.localeFallback is en; the DESIGN names no code, so the lot-5 binding uses the CR-05 missing-symbol code profile-symbol (DESIGN L190). Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "add",
+          "path": "/messages/-",
+          "value": {
+            "id": "label.extra",
+            "texts": [
+              {
+                "name": "fr",
+                "value": "Extra"
+              }
+            ]
+          }
+        }
+      ],
+      "artifact": "artifacts/profiles/compile-message-missing-fallback.json"
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-symbol",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "4cc60c09f9b779334ee70d939bd034f93f96c24a45d3c20267e7ae53702179d6",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

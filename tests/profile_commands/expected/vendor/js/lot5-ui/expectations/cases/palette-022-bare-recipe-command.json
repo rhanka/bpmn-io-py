@@ -1,0 +1,141 @@
+{
+  "caseId": "lot5-palette-022-bare-recipe-command",
+  "commandArtifact": {
+    "json": {
+      "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+      "commands": [
+        {
+          "parameters": {"key":"k-palette-bare","name":"","owner":"Proc_main"},
+          "recipe": "create-task"
+        }
+      ],
+      "expectedViewRevision": "097d7205eaf7fd73c5ef93e83b261f82ebfc66656bfed674655908f529c43254",
+      "transactionId": "tx-palette-bare"
+    },
+    "role": "transaction"
+  },
+  "comparatorIds": [
+    "lot5/result",
+    "lot5/snapshot",
+    "lot5/events",
+    "lot5/history",
+    "lot5/twin"
+  ],
+  "expectedArtifacts": [
+    {
+      "json": {
+        "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+        "code": "transaction-entry-unsupported",
+        "diagnostics": [],
+        "operation": "applyCommands",
+        "profileIdentity": {
+          "base": {"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},
+          "descriptors": [{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],
+          "mechanismVersion": "1",
+          "profile": "ui-neutral/1",
+          "schemaVersion": "1.0.0",
+          "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+          "version": "1.1.0"
+        },
+        "report": {
+          "artifacts": [],
+          "entries": [],
+          "idMap": [],
+          "inputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "operation": "applyCommands",
+          "rawStandardFindings": [],
+          "reportVersion": "2",
+          "sourceIdentity": {"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}
+        },
+        "status": "refused"
+      },
+      "role": "result"
+    },
+    {
+      "json": {
+        "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+        "operation": "getSnapshot",
+        "payload": {
+          "$equals": {"input":"snapshot","pointer":""}
+        },
+        "profileIdentity": {
+          "base": {"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},
+          "descriptors": [{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],
+          "mechanismVersion": "1",
+          "profile": "ui-neutral/1",
+          "schemaVersion": "1.0.0",
+          "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+          "version": "1.1.0"
+        },
+        "report": {
+          "artifacts": [],
+          "entries": [],
+          "idMap": [],
+          "inputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "operation": "getSnapshot",
+          "outputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "rawStandardFindings": [],
+          "reportVersion": "2",
+          "sourceIdentity": {"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},
+          "targetIdentity": {"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}
+        },
+        "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+        "status": "ok"
+      },
+      "role": "snapshot"
+    },
+    {
+      "json": [],
+      "role": "events"
+    },
+    {
+      "json": {
+        "probe": {
+          "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "code": "operation-error",
+          "diagnostics": [],
+          "operation": "undo",
+          "profileIdentity": {"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},
+          "report": {"artifacts":[],"entries":[],"idMap":[],"inputRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","operation":"undo","rawStandardFindings":[],"reportVersion":"2","sourceIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}},
+          "status": "refused"
+        },
+        "probeEvents": [],
+        "rootTransactions": 0
+      },
+      "role": "history"
+    },
+    {
+      "json": {
+        "events": [],
+        "history": {
+          "probe": {"baseRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","code":"operation-error","diagnostics":[],"operation":"undo","profileIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"report":{"artifacts":[],"entries":[],"idMap":[],"inputRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","operation":"undo","rawStandardFindings":[],"reportVersion":"2","sourceIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}},"status":"refused"},
+          "probeEvents": []
+        },
+        "result": {
+          "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "code": "transaction-entry-unsupported",
+          "diagnostics": [],
+          "operation": "applyCommands",
+          "profileIdentity": {"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},
+          "report": {"artifacts":[],"entries":[],"idMap":[],"inputRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","operation":"applyCommands","rawStandardFindings":[],"reportVersion":"2","sourceIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}},
+          "status": "refused"
+        }
+      },
+      "role": "twin"
+    }
+  ],
+  "expectedStatus": "refused:transaction-entry-unsupported",
+  "inputArtifacts": [
+    {
+      "path": "fixtures/documents/basic.snapshot.json",
+      "role": "snapshot",
+      "sha256": "e72fb51afb484918ca2c3aef4eff2a84502cbbd3c6e7aafd1a2f9baa8c8e7ce9"
+    }
+  ],
+  "operation": "applyCommands",
+  "phase": "create",
+  "profileArtifact": {
+    "path": "fixtures/ui-neutral-profile.json",
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
+  }
+}

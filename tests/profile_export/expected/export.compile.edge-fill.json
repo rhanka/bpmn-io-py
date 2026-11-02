@@ -1,0 +1,94 @@
+{
+  "case": "export.compile.edge-fill",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
+  "witness": "fill is a node field, not an edge field",
+  "derivation": "Added edge recipe with id, source, target and fill: profile-export-field. Parity sync PS-25: a compileProfile refusal is the PureResult record {status, code, diagnostics: []} (DESIGN \u00a710.1 L737); compile refusals carry no diagnostic.",
+  "operation": "compileProfile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "export-edges",
+            "phase": "export",
+            "parameters": [],
+            "select": {
+              "from": "render",
+              "via": "occurrences",
+              "where": {
+                "op": "equal",
+                "left": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/emittedType"
+                },
+                "right": {
+                  "op": "literal",
+                  "value": "edge"
+                }
+              },
+              "order": "page-occurrence"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "artifact"
+              }
+            ],
+            "steps": [
+              {
+                "op": "emit",
+                "as": "out",
+                "kind": "edge",
+                "fields": [
+                  {
+                    "name": "id",
+                    "value": {
+                      "op": "outputId",
+                      "binding": "self",
+                      "domain": "edge"
+                    }
+                  },
+                  {
+                    "name": "source",
+                    "value": {
+                      "op": "literal",
+                      "value": "e_1"
+                    }
+                  },
+                  {
+                    "name": "target",
+                    "value": {
+                      "op": "literal",
+                      "value": "e_2"
+                    }
+                  },
+                  {
+                    "name": "fill",
+                    "value": {
+                      "op": "literal",
+                      "value": "#ffffff"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-export-field",
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

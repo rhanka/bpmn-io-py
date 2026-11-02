@@ -131,13 +131,7 @@ def _is_at_or_under(pointer: str, base: str) -> bool:
     return pointer.startswith(f"{base}/")
 
 
-def _exists_in_index(pointer: str, index: dict[str, str]) -> bool:
-    """Check existence against the ID index alone (``""`` is the live root)."""
-    return pointer == "" or pointer in set(index.values())
-
-
 def _resolve_generic_pointer(
-    index: dict[str, str],
     path: str,
     *,
     base: str | None,
@@ -145,17 +139,14 @@ def _resolve_generic_pointer(
     known_pointers: Collection[str] | None,
 ) -> tuple[str | None, str]:
     """Validate one generic absolute pointer (syntax, scope, existence)."""
+    if known_pointers is None:
+        msg = "known_pointers is required"
+        raise TypeError(msg)
     if not _is_valid_absolute_pointer(path):
         return None, "unavailable"
     if has_id and (base is None or not _is_at_or_under(path, base)):
         return None, "unavailable"
-    if known_pointers is not None and path not in known_pointers:
-        return None, "unavailable"
-    if (
-        known_pointers is None
-        and not _exists_in_index(path, index)
-        and not (has_id and base is not None and _is_at_or_under(path, base))
-    ):
+    if path not in known_pointers:
         return None, "unavailable"
     return path, "exact"
 
@@ -173,7 +164,7 @@ def resolve_pointer(
     index: dict[str, str],
     reported_id: Any,  # noqa: ANN401 - upstream report content
     path: Any,  # noqa: ANN401 - upstream report content
-    known_pointers: Collection[str] | None = None,
+    known_pointers: Collection[str] | None,
 ) -> tuple[str | None, str]:
     """Resolve ``(reported_id, path)`` to ``(pointer, provenance)``.
 
@@ -183,10 +174,11 @@ def resolve_pointer(
     pointer (``[]`` points at the node itself). A verbatim absolute
     pointer (``""`` or a string starting with ``/``) is accepted as
     ``exact`` only when it is syntactically valid RFC 6901, resolves in
-    the immutable input (the ``known_pointers`` walk set when supplied,
-    else the ID index with any at-or-under-base pointer read as an
-    ID-less child), and lies at or under the absolute source pointer of
-    the reported ID — so ID-less children of that node are accepted.
+    the immutable input via the ``known_pointers`` walk set, and lies at
+    or under the absolute source pointer of the reported ID when
+    supplied. ``known_pointers`` is mandatory: resolving a generic
+    absolute pointer without the walk set raises ``TypeError`` instead of
+    silently producing ``unavailable``.
     Anything else yields ``(None, "unavailable")``; the adapter never
     fabricates the root pointer.
     """
@@ -195,7 +187,7 @@ def resolve_pointer(
     if isinstance(path, str):
         if path == "" or path.startswith("/"):
             return _resolve_generic_pointer(
-                index, path, base=base, has_id=has_id, known_pointers=known_pointers
+                path, base=base, has_id=has_id, known_pointers=known_pointers
             )
         if has_id and base is not None and path:
             return f"{base}/{escape_segment(path)}", "exact"

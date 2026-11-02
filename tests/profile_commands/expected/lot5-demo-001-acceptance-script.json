@@ -1,0 +1,2110 @@
+{
+  "case": "lot5-demo-001-acceptance-script",
+  "clause": "DESIGN R3.3 \u00a714.2 L954; \u00a78.3 L649; \u00a78.3 L651; \u00a78.3 L653; \u00a78.2 L632; \u00a78.2 L641; \u00a710.2 L803; \u00a72.4 L163",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/demo-001-acceptance-script.json SHA-256 3714bbc5eca060ca354904e2e43ed56c68da73cec333518f984d2061c78e4d1b; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same sequence steps, one {step, result, events?} record per step. Presentation members stay unsealed (twin-presentation). JS discrimination: Any upstream shortcut in the demo path: random IDs, DataInputAssociation for the reference link, an in-place retype keeping the task ID, more than one history entry per gesture, intermediate reports, or a download of a non-final state (the stale name Review request). Parity sync PS-28: the Python twin replays steps 1-11 in the JS step order (the task is replaced while still unconnected, then connected; no implicit re-pointing). The headless input keeps steps 1-11: each gesture step 1-9 becomes an applyCommands request carrying the staged command record and the baseRevision sealed for that step by the JS seal, and step 12 (the workshop export) is canvas-only and not replayed. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "sequence",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/demo-001-acceptance-script.json",
+      "sha256": "3714bbc5eca060ca354904e2e43ed56c68da73cec333518f984d2061c78e4d1b"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/demo.snapshot.json",
+        "role": "snapshot",
+        "sha256": "6010c128428ede2bb011f32da535c89237816d51beb6058b205a18a9fd4e1111"
+      }
+    ],
+    "commandArtifact": {
+      "json": {
+        "sequenceVersion": "1",
+        "steps": [
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "ffe28e29ee288104b07533a6ca51c58323881fae4a7bc4cb57a50c567008265e",
+              "commands": [
+                {
+                  "command": "surface",
+                  "context": {
+                    "key": "demo-task",
+                    "owner": "Proc_demo",
+                    "value": ""
+                  },
+                  "entry": "task-create"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-demo-01"
+            },
+            "step": 1
+          },
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "c91aff99e73ee137d5ca872823135a56c05c7eb007567eff681b6597877b6353",
+              "commands": [
+                {
+                  "command": "surface",
+                  "context": {
+                    "target": "g_4e776b14bfbca570e642c5c945d264bce6a14ef5a18f7eb305803764341bcfbf",
+                    "value": "Review request"
+                  },
+                  "entry": "rename-direct"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-demo-02"
+            },
+            "step": 2
+          },
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "ab7db65293b77f57a4562b487e85130f13bef52c4ad042fc396eedd1bd1dce8a",
+              "commands": [
+                {
+                  "command": "surface",
+                  "context": {
+                    "key": "demo-replace",
+                    "target": "g_4e776b14bfbca570e642c5c945d264bce6a14ef5a18f7eb305803764341bcfbf"
+                  },
+                  "entry": "to-user-task"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-demo-03"
+            },
+            "step": 3
+          },
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "2ad11ba1a5a1695ad60420764c073d5d03dd6d6de0efee498820909d62ee4e50",
+              "commands": [
+                {
+                  "command": "surface",
+                  "context": {
+                    "key": "demo-flow-1",
+                    "owner": "Proc_demo",
+                    "source": "Start_d",
+                    "target": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0"
+                  },
+                  "entry": "connect-flow"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-demo-04"
+            },
+            "step": 4
+          },
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "c82b9a77c4bd86967e669b5c3d78d448d2e7f93a159423bbfb2b3864ebdf4a25",
+              "commands": [
+                {
+                  "command": "surface",
+                  "context": {
+                    "key": "demo-flow-2",
+                    "owner": "Proc_demo",
+                    "source": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                    "target": "End_d"
+                  },
+                  "entry": "connect-flow"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-demo-05"
+            },
+            "step": 5
+          },
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "3819130174e7cdcac0f425e2656ff68b62e1c8cc61b8c944349d1b64001956eb",
+              "commands": [
+                {
+                  "command": "surface",
+                  "context": {
+                    "key": "demo-ref",
+                    "owner": "Proc_demo",
+                    "value": ""
+                  },
+                  "entry": "reference-create"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-demo-06"
+            },
+            "step": 6
+          },
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "a17ad251e63e4d0404e7b4a73a9f09b360c8be00faf10e43d96365723e43bd6a",
+              "commands": [
+                {
+                  "command": "field",
+                  "context": {
+                    "target": "g_82fcfa8f884f559c3186f805fca8ab93acca5b3d366d6d2b1131e21ae9d4a163",
+                    "value": "Request policy"
+                  },
+                  "field": "title",
+                  "notion": "store"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-demo-07"
+            },
+            "step": 7
+          },
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "6f2abe4ae69d0fb9747aab435c5ab943910ae540649bc0384b298d4eb1ca37f2",
+              "commands": [
+                {
+                  "command": "surface",
+                  "context": {
+                    "key": "demo-link",
+                    "owner": "Proc_demo",
+                    "source": "g_bc7794ebb350303c2f672e732c631091755dbbe563a72edffb0210d23acda6aa",
+                    "target": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0"
+                  },
+                  "entry": "connect-reference-link"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-demo-08"
+            },
+            "step": 8
+          },
+          {
+            "action": "applyCommands",
+            "request": {
+              "baseRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+              "commands": [
+                {
+                  "command": "field",
+                  "context": {
+                    "target": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                    "value": "Review and approve request"
+                  },
+                  "field": "name",
+                  "notion": "user-task"
+                }
+              ],
+              "expectedViewRevision": "@current",
+              "transactionId": "tx-demo-09"
+            },
+            "step": 9
+          },
+          {
+            "action": "undo",
+            "request": {
+              "expectedRevision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+              "expectedViewRevision": "@current"
+            },
+            "step": 10
+          },
+          {
+            "action": "redo",
+            "request": {
+              "expectedRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+              "expectedViewRevision": "@current"
+            },
+            "step": 11
+          }
+        ]
+      },
+      "role": "sequence"
+    }
+  },
+  "expected": {
+    "steps": [
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/0/result/payload/envelope"
+              }
+            },
+            "origin": "command",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/0/result/report"
+              }
+            },
+            "semanticRevision": "c91aff99e73ee137d5ca872823135a56c05c7eb007567eff681b6597877b6353",
+            "transactionId": "tx-demo-01",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "ffe28e29ee288104b07533a6ca51c58323881fae4a7bc4cb57a50c567008265e",
+          "operation": "applyCommands",
+          "payload": {
+            "changed": true,
+            "envelope": {
+              "bindings": [],
+              "documentVersion": "1",
+              "profileIdentity": {
+                "base": {
+                  "id": "ui-neutral-base/1",
+                  "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                  "version": "lot5-2"
+                },
+                "descriptors": [
+                  {
+                    "id": "ui-neutral-descriptors/1",
+                    "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                    "version": "lot5-2"
+                  }
+                ],
+                "mechanismVersion": "1",
+                "profile": "ui-neutral/1",
+                "schemaVersion": "1.0.0",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+                "version": "1.1.0"
+              },
+              "semanticRevision": "c91aff99e73ee137d5ca872823135a56c05c7eb007567eff681b6597877b6353",
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "exporterVersion": "ui-neutral-base/1",
+                "id": "Defs_demo",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_d",
+                        "name": "Request received"
+                      },
+                      {
+                        "$type": "bpmn:EndEvent",
+                        "id": "End_d",
+                        "name": "Request closed"
+                      },
+                      {
+                        "$type": "bpmn:Task",
+                        "id": "g_4e776b14bfbca570e642c5c945d264bce6a14ef5a18f7eb305803764341bcfbf",
+                        "name": ""
+                      }
+                    ],
+                    "id": "Proc_demo",
+                    "isExecutable": false,
+                    "name": "Demo request"
+                  }
+                ],
+                "targetNamespace": "urn:example:lot5-demo"
+              }
+            },
+            "semanticRevision": "c91aff99e73ee137d5ca872823135a56c05c7eb007567eff681b6597877b6353",
+            "transactionId": "tx-demo-01",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [
+              {
+                "afterPresent": false,
+                "beforePresent": false,
+                "classification": "readiness",
+                "code": "activity-name-missing-pre-normalize",
+                "disposition": "observed",
+                "messageKey": "rule.activity-name",
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "provenance": "unavailable",
+                  "targetId": null
+                },
+                "ruleId": "activity-named-pre-normalize",
+                "severity": "warn",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/2",
+                  "provenance": "exact",
+                  "targetId": "g_4e776b14bfbca570e642c5c945d264bce6a14ef5a18f7eb305803764341bcfbf"
+                },
+                "stage": "pre-normalize"
+              },
+              {
+                "afterPresent": false,
+                "beforePresent": false,
+                "classification": "readiness",
+                "code": "activity-name-missing",
+                "disposition": "observed",
+                "messageKey": "rule.activity-name",
+                "result": {
+                  "domain": "none",
+                  "pointer": null,
+                  "provenance": "unavailable",
+                  "targetId": null
+                },
+                "ruleId": "activity-named",
+                "severity": "warn",
+                "source": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/0/flowElements/2",
+                  "provenance": "exact",
+                  "targetId": "g_4e776b14bfbca570e642c5c945d264bce6a14ef5a18f7eb305803764341bcfbf"
+                },
+                "stage": "post-normalize"
+              }
+            ],
+            "idMap": [],
+            "inputRevision": "ffe28e29ee288104b07533a6ca51c58323881fae4a7bc4cb57a50c567008265e",
+            "operation": "applyCommands",
+            "outputRevision": "c91aff99e73ee137d5ca872823135a56c05c7eb007567eff681b6597877b6353",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "c91aff99e73ee137d5ca872823135a56c05c7eb007567eff681b6597877b6353",
+          "status": "ok"
+        },
+        "step": 1
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/1/result/payload/envelope"
+              }
+            },
+            "origin": "command",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/1/result/report"
+              }
+            },
+            "semanticRevision": "ab7db65293b77f57a4562b487e85130f13bef52c4ad042fc396eedd1bd1dce8a",
+            "transactionId": "tx-demo-02",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "c91aff99e73ee137d5ca872823135a56c05c7eb007567eff681b6597877b6353",
+          "operation": "applyCommands",
+          "payload": {
+            "changed": true,
+            "envelope": {
+              "bindings": [],
+              "documentVersion": "1",
+              "profileIdentity": {
+                "base": {
+                  "id": "ui-neutral-base/1",
+                  "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                  "version": "lot5-2"
+                },
+                "descriptors": [
+                  {
+                    "id": "ui-neutral-descriptors/1",
+                    "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                    "version": "lot5-2"
+                  }
+                ],
+                "mechanismVersion": "1",
+                "profile": "ui-neutral/1",
+                "schemaVersion": "1.0.0",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+                "version": "1.1.0"
+              },
+              "semanticRevision": "ab7db65293b77f57a4562b487e85130f13bef52c4ad042fc396eedd1bd1dce8a",
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "exporterVersion": "ui-neutral-base/1",
+                "id": "Defs_demo",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_d",
+                        "name": "Request received"
+                      },
+                      {
+                        "$type": "bpmn:EndEvent",
+                        "id": "End_d",
+                        "name": "Request closed"
+                      },
+                      {
+                        "$type": "bpmn:Task",
+                        "id": "g_4e776b14bfbca570e642c5c945d264bce6a14ef5a18f7eb305803764341bcfbf",
+                        "name": "Review request"
+                      }
+                    ],
+                    "id": "Proc_demo",
+                    "isExecutable": false,
+                    "name": "Demo request"
+                  }
+                ],
+                "targetNamespace": "urn:example:lot5-demo"
+              }
+            },
+            "semanticRevision": "ab7db65293b77f57a4562b487e85130f13bef52c4ad042fc396eedd1bd1dce8a",
+            "transactionId": "tx-demo-02",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "c91aff99e73ee137d5ca872823135a56c05c7eb007567eff681b6597877b6353",
+            "operation": "applyCommands",
+            "outputRevision": "ab7db65293b77f57a4562b487e85130f13bef52c4ad042fc396eedd1bd1dce8a",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "ab7db65293b77f57a4562b487e85130f13bef52c4ad042fc396eedd1bd1dce8a",
+          "status": "ok"
+        },
+        "step": 2
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/2/result/payload/envelope"
+              }
+            },
+            "origin": "command",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/2/result/report"
+              }
+            },
+            "semanticRevision": "2ad11ba1a5a1695ad60420764c073d5d03dd6d6de0efee498820909d62ee4e50",
+            "transactionId": "tx-demo-03",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "ab7db65293b77f57a4562b487e85130f13bef52c4ad042fc396eedd1bd1dce8a",
+          "operation": "applyCommands",
+          "payload": {
+            "changed": true,
+            "envelope": {
+              "bindings": [],
+              "documentVersion": "1",
+              "profileIdentity": {
+                "base": {
+                  "id": "ui-neutral-base/1",
+                  "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                  "version": "lot5-2"
+                },
+                "descriptors": [
+                  {
+                    "id": "ui-neutral-descriptors/1",
+                    "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                    "version": "lot5-2"
+                  }
+                ],
+                "mechanismVersion": "1",
+                "profile": "ui-neutral/1",
+                "schemaVersion": "1.0.0",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+                "version": "1.1.0"
+              },
+              "semanticRevision": "2ad11ba1a5a1695ad60420764c073d5d03dd6d6de0efee498820909d62ee4e50",
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "exporterVersion": "ui-neutral-base/1",
+                "id": "Defs_demo",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_d",
+                        "name": "Request received"
+                      },
+                      {
+                        "$type": "bpmn:EndEvent",
+                        "id": "End_d",
+                        "name": "Request closed"
+                      },
+                      {
+                        "$type": "bpmn:UserTask",
+                        "id": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "name": "Review request"
+                      }
+                    ],
+                    "id": "Proc_demo",
+                    "isExecutable": false,
+                    "name": "Demo request"
+                  }
+                ],
+                "targetNamespace": "urn:example:lot5-demo"
+              }
+            },
+            "semanticRevision": "2ad11ba1a5a1695ad60420764c073d5d03dd6d6de0efee498820909d62ee4e50",
+            "transactionId": "tx-demo-03",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [
+              {
+                "domain": "migration",
+                "resultId": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                "sourceId": "g_4e776b14bfbca570e642c5c945d264bce6a14ef5a18f7eb305803764341bcfbf"
+              }
+            ],
+            "inputRevision": "ab7db65293b77f57a4562b487e85130f13bef52c4ad042fc396eedd1bd1dce8a",
+            "operation": "applyCommands",
+            "outputRevision": "2ad11ba1a5a1695ad60420764c073d5d03dd6d6de0efee498820909d62ee4e50",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "2ad11ba1a5a1695ad60420764c073d5d03dd6d6de0efee498820909d62ee4e50",
+          "status": "ok"
+        },
+        "step": 3
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/3/result/payload/envelope"
+              }
+            },
+            "origin": "command",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/3/result/report"
+              }
+            },
+            "semanticRevision": "c82b9a77c4bd86967e669b5c3d78d448d2e7f93a159423bbfb2b3864ebdf4a25",
+            "transactionId": "tx-demo-04",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "2ad11ba1a5a1695ad60420764c073d5d03dd6d6de0efee498820909d62ee4e50",
+          "operation": "applyCommands",
+          "payload": {
+            "changed": true,
+            "envelope": {
+              "bindings": [],
+              "documentVersion": "1",
+              "profileIdentity": {
+                "base": {
+                  "id": "ui-neutral-base/1",
+                  "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                  "version": "lot5-2"
+                },
+                "descriptors": [
+                  {
+                    "id": "ui-neutral-descriptors/1",
+                    "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                    "version": "lot5-2"
+                  }
+                ],
+                "mechanismVersion": "1",
+                "profile": "ui-neutral/1",
+                "schemaVersion": "1.0.0",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+                "version": "1.1.0"
+              },
+              "semanticRevision": "c82b9a77c4bd86967e669b5c3d78d448d2e7f93a159423bbfb2b3864ebdf4a25",
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "exporterVersion": "ui-neutral-base/1",
+                "id": "Defs_demo",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_d",
+                        "name": "Request received"
+                      },
+                      {
+                        "$type": "bpmn:EndEvent",
+                        "id": "End_d",
+                        "name": "Request closed"
+                      },
+                      {
+                        "$type": "bpmn:UserTask",
+                        "id": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "name": "Review request"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_25d1bc9d6579fea7c4609ba9116b58637f0faf66c7fb3635ff3b6c16b75d906d",
+                        "sourceRef": "Start_d",
+                        "targetRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0"
+                      }
+                    ],
+                    "id": "Proc_demo",
+                    "isExecutable": false,
+                    "name": "Demo request"
+                  }
+                ],
+                "targetNamespace": "urn:example:lot5-demo"
+              }
+            },
+            "semanticRevision": "c82b9a77c4bd86967e669b5c3d78d448d2e7f93a159423bbfb2b3864ebdf4a25",
+            "transactionId": "tx-demo-04",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "2ad11ba1a5a1695ad60420764c073d5d03dd6d6de0efee498820909d62ee4e50",
+            "operation": "applyCommands",
+            "outputRevision": "c82b9a77c4bd86967e669b5c3d78d448d2e7f93a159423bbfb2b3864ebdf4a25",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "c82b9a77c4bd86967e669b5c3d78d448d2e7f93a159423bbfb2b3864ebdf4a25",
+          "status": "ok"
+        },
+        "step": 4
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/4/result/payload/envelope"
+              }
+            },
+            "origin": "command",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/4/result/report"
+              }
+            },
+            "semanticRevision": "3819130174e7cdcac0f425e2656ff68b62e1c8cc61b8c944349d1b64001956eb",
+            "transactionId": "tx-demo-05",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "c82b9a77c4bd86967e669b5c3d78d448d2e7f93a159423bbfb2b3864ebdf4a25",
+          "operation": "applyCommands",
+          "payload": {
+            "changed": true,
+            "envelope": {
+              "bindings": [],
+              "documentVersion": "1",
+              "profileIdentity": {
+                "base": {
+                  "id": "ui-neutral-base/1",
+                  "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                  "version": "lot5-2"
+                },
+                "descriptors": [
+                  {
+                    "id": "ui-neutral-descriptors/1",
+                    "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                    "version": "lot5-2"
+                  }
+                ],
+                "mechanismVersion": "1",
+                "profile": "ui-neutral/1",
+                "schemaVersion": "1.0.0",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+                "version": "1.1.0"
+              },
+              "semanticRevision": "3819130174e7cdcac0f425e2656ff68b62e1c8cc61b8c944349d1b64001956eb",
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "exporterVersion": "ui-neutral-base/1",
+                "id": "Defs_demo",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_d",
+                        "name": "Request received"
+                      },
+                      {
+                        "$type": "bpmn:EndEvent",
+                        "id": "End_d",
+                        "name": "Request closed"
+                      },
+                      {
+                        "$type": "bpmn:UserTask",
+                        "id": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "name": "Review request"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_25d1bc9d6579fea7c4609ba9116b58637f0faf66c7fb3635ff3b6c16b75d906d",
+                        "sourceRef": "Start_d",
+                        "targetRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_8521dd7357d4378eaf9669895ab3b985be82f6a9af33d9dc1e74d5c839149345",
+                        "sourceRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "targetRef": "End_d"
+                      }
+                    ],
+                    "id": "Proc_demo",
+                    "isExecutable": false,
+                    "name": "Demo request"
+                  }
+                ],
+                "targetNamespace": "urn:example:lot5-demo"
+              }
+            },
+            "semanticRevision": "3819130174e7cdcac0f425e2656ff68b62e1c8cc61b8c944349d1b64001956eb",
+            "transactionId": "tx-demo-05",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "c82b9a77c4bd86967e669b5c3d78d448d2e7f93a159423bbfb2b3864ebdf4a25",
+            "operation": "applyCommands",
+            "outputRevision": "3819130174e7cdcac0f425e2656ff68b62e1c8cc61b8c944349d1b64001956eb",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "3819130174e7cdcac0f425e2656ff68b62e1c8cc61b8c944349d1b64001956eb",
+          "status": "ok"
+        },
+        "step": 5
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/5/result/payload/envelope"
+              }
+            },
+            "origin": "command",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/5/result/report"
+              }
+            },
+            "semanticRevision": "a17ad251e63e4d0404e7b4a73a9f09b360c8be00faf10e43d96365723e43bd6a",
+            "transactionId": "tx-demo-06",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "3819130174e7cdcac0f425e2656ff68b62e1c8cc61b8c944349d1b64001956eb",
+          "operation": "applyCommands",
+          "payload": {
+            "changed": true,
+            "envelope": {
+              "bindings": [],
+              "documentVersion": "1",
+              "profileIdentity": {
+                "base": {
+                  "id": "ui-neutral-base/1",
+                  "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                  "version": "lot5-2"
+                },
+                "descriptors": [
+                  {
+                    "id": "ui-neutral-descriptors/1",
+                    "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                    "version": "lot5-2"
+                  }
+                ],
+                "mechanismVersion": "1",
+                "profile": "ui-neutral/1",
+                "schemaVersion": "1.0.0",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+                "version": "1.1.0"
+              },
+              "semanticRevision": "a17ad251e63e4d0404e7b4a73a9f09b360c8be00faf10e43d96365723e43bd6a",
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "exporterVersion": "ui-neutral-base/1",
+                "id": "Defs_demo",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_d",
+                        "name": "Request received"
+                      },
+                      {
+                        "$type": "bpmn:EndEvent",
+                        "id": "End_d",
+                        "name": "Request closed"
+                      },
+                      {
+                        "$type": "bpmn:UserTask",
+                        "id": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "name": "Review request"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_25d1bc9d6579fea7c4609ba9116b58637f0faf66c7fb3635ff3b6c16b75d906d",
+                        "sourceRef": "Start_d",
+                        "targetRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_8521dd7357d4378eaf9669895ab3b985be82f6a9af33d9dc1e74d5c839149345",
+                        "sourceRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "targetRef": "End_d"
+                      },
+                      {
+                        "$type": "bpmn:DataStoreReference",
+                        "dataStoreRef": "g_82fcfa8f884f559c3186f805fca8ab93acca5b3d366d6d2b1131e21ae9d4a163",
+                        "id": "g_bc7794ebb350303c2f672e732c631091755dbbe563a72edffb0210d23acda6aa"
+                      }
+                    ],
+                    "id": "Proc_demo",
+                    "isExecutable": false,
+                    "name": "Demo request"
+                  },
+                  {
+                    "$type": "bpmn:DataStore",
+                    "id": "g_82fcfa8f884f559c3186f805fca8ab93acca5b3d366d6d2b1131e21ae9d4a163",
+                    "name": ""
+                  }
+                ],
+                "targetNamespace": "urn:example:lot5-demo"
+              }
+            },
+            "semanticRevision": "a17ad251e63e4d0404e7b4a73a9f09b360c8be00faf10e43d96365723e43bd6a",
+            "transactionId": "tx-demo-06",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "3819130174e7cdcac0f425e2656ff68b62e1c8cc61b8c944349d1b64001956eb",
+            "operation": "applyCommands",
+            "outputRevision": "a17ad251e63e4d0404e7b4a73a9f09b360c8be00faf10e43d96365723e43bd6a",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "a17ad251e63e4d0404e7b4a73a9f09b360c8be00faf10e43d96365723e43bd6a",
+          "status": "ok"
+        },
+        "step": 6
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/6/result/payload/envelope"
+              }
+            },
+            "origin": "command",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/6/result/report"
+              }
+            },
+            "semanticRevision": "6f2abe4ae69d0fb9747aab435c5ab943910ae540649bc0384b298d4eb1ca37f2",
+            "transactionId": "tx-demo-07",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "a17ad251e63e4d0404e7b4a73a9f09b360c8be00faf10e43d96365723e43bd6a",
+          "operation": "applyCommands",
+          "payload": {
+            "changed": true,
+            "envelope": {
+              "bindings": [],
+              "documentVersion": "1",
+              "profileIdentity": {
+                "base": {
+                  "id": "ui-neutral-base/1",
+                  "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                  "version": "lot5-2"
+                },
+                "descriptors": [
+                  {
+                    "id": "ui-neutral-descriptors/1",
+                    "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                    "version": "lot5-2"
+                  }
+                ],
+                "mechanismVersion": "1",
+                "profile": "ui-neutral/1",
+                "schemaVersion": "1.0.0",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+                "version": "1.1.0"
+              },
+              "semanticRevision": "6f2abe4ae69d0fb9747aab435c5ab943910ae540649bc0384b298d4eb1ca37f2",
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "exporterVersion": "ui-neutral-base/1",
+                "id": "Defs_demo",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_d",
+                        "name": "Request received"
+                      },
+                      {
+                        "$type": "bpmn:EndEvent",
+                        "id": "End_d",
+                        "name": "Request closed"
+                      },
+                      {
+                        "$type": "bpmn:UserTask",
+                        "id": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "name": "Review request"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_25d1bc9d6579fea7c4609ba9116b58637f0faf66c7fb3635ff3b6c16b75d906d",
+                        "sourceRef": "Start_d",
+                        "targetRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_8521dd7357d4378eaf9669895ab3b985be82f6a9af33d9dc1e74d5c839149345",
+                        "sourceRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "targetRef": "End_d"
+                      },
+                      {
+                        "$type": "bpmn:DataStoreReference",
+                        "dataStoreRef": "g_82fcfa8f884f559c3186f805fca8ab93acca5b3d366d6d2b1131e21ae9d4a163",
+                        "id": "g_bc7794ebb350303c2f672e732c631091755dbbe563a72edffb0210d23acda6aa"
+                      }
+                    ],
+                    "id": "Proc_demo",
+                    "isExecutable": false,
+                    "name": "Demo request"
+                  },
+                  {
+                    "$type": "bpmn:DataStore",
+                    "id": "g_82fcfa8f884f559c3186f805fca8ab93acca5b3d366d6d2b1131e21ae9d4a163",
+                    "name": "Request policy"
+                  }
+                ],
+                "targetNamespace": "urn:example:lot5-demo"
+              }
+            },
+            "semanticRevision": "6f2abe4ae69d0fb9747aab435c5ab943910ae540649bc0384b298d4eb1ca37f2",
+            "transactionId": "tx-demo-07",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "a17ad251e63e4d0404e7b4a73a9f09b360c8be00faf10e43d96365723e43bd6a",
+            "operation": "applyCommands",
+            "outputRevision": "6f2abe4ae69d0fb9747aab435c5ab943910ae540649bc0384b298d4eb1ca37f2",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "6f2abe4ae69d0fb9747aab435c5ab943910ae540649bc0384b298d4eb1ca37f2",
+          "status": "ok"
+        },
+        "step": 7
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/7/result/payload/envelope"
+              }
+            },
+            "origin": "command",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/7/result/report"
+              }
+            },
+            "semanticRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+            "transactionId": "tx-demo-08",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "6f2abe4ae69d0fb9747aab435c5ab943910ae540649bc0384b298d4eb1ca37f2",
+          "operation": "applyCommands",
+          "payload": {
+            "changed": true,
+            "envelope": {
+              "bindings": [],
+              "documentVersion": "1",
+              "profileIdentity": {
+                "base": {
+                  "id": "ui-neutral-base/1",
+                  "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                  "version": "lot5-2"
+                },
+                "descriptors": [
+                  {
+                    "id": "ui-neutral-descriptors/1",
+                    "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                    "version": "lot5-2"
+                  }
+                ],
+                "mechanismVersion": "1",
+                "profile": "ui-neutral/1",
+                "schemaVersion": "1.0.0",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+                "version": "1.1.0"
+              },
+              "semanticRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "exporterVersion": "ui-neutral-base/1",
+                "id": "Defs_demo",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "artifacts": [
+                      {
+                        "$type": "bpmn:Association",
+                        "associationDirection": "One",
+                        "id": "g_fc2c135b5dad715450b589d820790e0ddd4dea07929de88268dbe9aeb760ff62",
+                        "sourceRef": "g_bc7794ebb350303c2f672e732c631091755dbbe563a72edffb0210d23acda6aa",
+                        "targetRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0"
+                      }
+                    ],
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_d",
+                        "name": "Request received"
+                      },
+                      {
+                        "$type": "bpmn:EndEvent",
+                        "id": "End_d",
+                        "name": "Request closed"
+                      },
+                      {
+                        "$type": "bpmn:UserTask",
+                        "id": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "name": "Review request"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_25d1bc9d6579fea7c4609ba9116b58637f0faf66c7fb3635ff3b6c16b75d906d",
+                        "sourceRef": "Start_d",
+                        "targetRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_8521dd7357d4378eaf9669895ab3b985be82f6a9af33d9dc1e74d5c839149345",
+                        "sourceRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "targetRef": "End_d"
+                      },
+                      {
+                        "$type": "bpmn:DataStoreReference",
+                        "dataStoreRef": "g_82fcfa8f884f559c3186f805fca8ab93acca5b3d366d6d2b1131e21ae9d4a163",
+                        "id": "g_bc7794ebb350303c2f672e732c631091755dbbe563a72edffb0210d23acda6aa"
+                      }
+                    ],
+                    "id": "Proc_demo",
+                    "isExecutable": false,
+                    "name": "Demo request"
+                  },
+                  {
+                    "$type": "bpmn:DataStore",
+                    "id": "g_82fcfa8f884f559c3186f805fca8ab93acca5b3d366d6d2b1131e21ae9d4a163",
+                    "name": "Request policy"
+                  }
+                ],
+                "targetNamespace": "urn:example:lot5-demo"
+              }
+            },
+            "semanticRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+            "transactionId": "tx-demo-08",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "6f2abe4ae69d0fb9747aab435c5ab943910ae540649bc0384b298d4eb1ca37f2",
+            "operation": "applyCommands",
+            "outputRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+          "status": "ok"
+        },
+        "step": 8
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/8/result/payload/envelope"
+              }
+            },
+            "origin": "command",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/8/result/report"
+              }
+            },
+            "semanticRevision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+            "transactionId": "tx-demo-09",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+          "operation": "applyCommands",
+          "payload": {
+            "changed": true,
+            "envelope": {
+              "bindings": [],
+              "documentVersion": "1",
+              "profileIdentity": {
+                "base": {
+                  "id": "ui-neutral-base/1",
+                  "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                  "version": "lot5-2"
+                },
+                "descriptors": [
+                  {
+                    "id": "ui-neutral-descriptors/1",
+                    "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                    "version": "lot5-2"
+                  }
+                ],
+                "mechanismVersion": "1",
+                "profile": "ui-neutral/1",
+                "schemaVersion": "1.0.0",
+                "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+                "version": "1.1.0"
+              },
+              "semanticRevision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+              "tree": {
+                "$type": "bpmn:Definitions",
+                "exporterVersion": "ui-neutral-base/1",
+                "id": "Defs_demo",
+                "rootElements": [
+                  {
+                    "$type": "bpmn:Process",
+                    "artifacts": [
+                      {
+                        "$type": "bpmn:Association",
+                        "associationDirection": "One",
+                        "id": "g_fc2c135b5dad715450b589d820790e0ddd4dea07929de88268dbe9aeb760ff62",
+                        "sourceRef": "g_bc7794ebb350303c2f672e732c631091755dbbe563a72edffb0210d23acda6aa",
+                        "targetRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0"
+                      }
+                    ],
+                    "flowElements": [
+                      {
+                        "$type": "bpmn:StartEvent",
+                        "id": "Start_d",
+                        "name": "Request received"
+                      },
+                      {
+                        "$type": "bpmn:EndEvent",
+                        "id": "End_d",
+                        "name": "Request closed"
+                      },
+                      {
+                        "$type": "bpmn:UserTask",
+                        "id": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "name": "Review and approve request"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_25d1bc9d6579fea7c4609ba9116b58637f0faf66c7fb3635ff3b6c16b75d906d",
+                        "sourceRef": "Start_d",
+                        "targetRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0"
+                      },
+                      {
+                        "$type": "bpmn:SequenceFlow",
+                        "id": "g_8521dd7357d4378eaf9669895ab3b985be82f6a9af33d9dc1e74d5c839149345",
+                        "sourceRef": "g_22dd0b15feee3223ce8f5cfcbfd5b544b9d8138af5e2143ae5fbc966bfc353d0",
+                        "targetRef": "End_d"
+                      },
+                      {
+                        "$type": "bpmn:DataStoreReference",
+                        "dataStoreRef": "g_82fcfa8f884f559c3186f805fca8ab93acca5b3d366d6d2b1131e21ae9d4a163",
+                        "id": "g_bc7794ebb350303c2f672e732c631091755dbbe563a72edffb0210d23acda6aa"
+                      }
+                    ],
+                    "id": "Proc_demo",
+                    "isExecutable": false,
+                    "name": "Demo request"
+                  },
+                  {
+                    "$type": "bpmn:DataStore",
+                    "id": "g_82fcfa8f884f559c3186f805fca8ab93acca5b3d366d6d2b1131e21ae9d4a163",
+                    "name": "Request policy"
+                  }
+                ],
+                "targetNamespace": "urn:example:lot5-demo"
+              }
+            },
+            "semanticRevision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+            "transactionId": "tx-demo-09",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+            "operation": "applyCommands",
+            "outputRevision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+          "status": "ok"
+        },
+        "step": 9
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/9/result/payload/envelope"
+              }
+            },
+            "origin": "undo",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/9/result/report"
+              }
+            },
+            "semanticRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+            "transactionId": "tx-demo-09",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+          "operation": "undo",
+          "payload": {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/7/result/payload/envelope"
+              }
+            },
+            "presentation": {
+              "$unsealed": "twin-presentation",
+              "type": "object"
+            },
+            "snapshotVersion": "1",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+            "operation": "undo",
+            "outputRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+          "status": "ok"
+        },
+        "step": 10
+      },
+      {
+        "events": [
+          {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/10/result/payload/envelope"
+              }
+            },
+            "origin": "redo",
+            "report": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/10/result/report"
+              }
+            },
+            "semanticRevision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+            "transactionId": "tx-demo-09",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          }
+        ],
+        "result": {
+          "baseRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+          "operation": "redo",
+          "payload": {
+            "envelope": {
+              "$equals": {
+                "member": "twin",
+                "pointer": "/steps/8/result/payload/envelope"
+              }
+            },
+            "presentation": {
+              "$unsealed": "twin-presentation",
+              "type": "object"
+            },
+            "snapshotVersion": "1",
+            "viewRevision": {
+              "$unsealed": "twin-presentation",
+              "type": "string"
+            }
+          },
+          "profileIdentity": {
+            "base": {
+              "id": "ui-neutral-base/1",
+              "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+              "version": "lot5-2"
+            },
+            "descriptors": [
+              {
+                "id": "ui-neutral-descriptors/1",
+                "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                "version": "lot5-2"
+              }
+            ],
+            "mechanismVersion": "1",
+            "profile": "ui-neutral/1",
+            "schemaVersion": "1.0.0",
+            "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+            "version": "1.1.0"
+          },
+          "report": {
+            "artifacts": [],
+            "entries": [],
+            "idMap": [],
+            "inputRevision": "87839694682559e1764a5918cf24677fd482b034924fe758e94fd9bb60743090",
+            "operation": "redo",
+            "outputRevision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+            "rawStandardFindings": [],
+            "reportVersion": "2",
+            "sourceIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            },
+            "targetIdentity": {
+              "base": {
+                "id": "ui-neutral-base/1",
+                "sha256": "eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb",
+                "version": "lot5-2"
+              },
+              "descriptors": [
+                {
+                  "id": "ui-neutral-descriptors/1",
+                  "sha256": "59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032",
+                  "version": "lot5-2"
+                }
+              ],
+              "mechanismVersion": "1",
+              "profile": "ui-neutral/1",
+              "schemaVersion": "1.0.0",
+              "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+              "version": "1.1.0"
+            }
+          },
+          "revision": "9b7cd45424ae91a6b1e2a0bf8a8816252fbce0fe227b363d857a51ec80e69fb9",
+          "status": "ok"
+        },
+        "step": 11
+      }
+    ]
+  }
+}

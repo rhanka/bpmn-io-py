@@ -1,0 +1,311 @@
+{
+  "documentVersion": "1",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "tree": {
+    "$type": "bpmn:Definitions",
+    "id": "Definitions_Main",
+    "targetNamespace": "urn:neutral-lot4",
+    "rootElements": [
+      {
+        "$type": "bpmn:DataStore",
+        "id": "Store_Policy",
+        "name": "Policy archive"
+      },
+      {
+        "$type": "bpmn:Process",
+        "id": "Process_Main",
+        "name": "Main process",
+        "isExecutable": false,
+        "ioSpecification": {
+          "$type": "bpmn:InputOutputSpecification",
+          "dataInputs": [
+            {
+              "$type": "bpmn:DataInput",
+              "id": "Input_Order",
+              "name": "Order"
+            }
+          ],
+          "dataOutputs": [
+            {
+              "$type": "bpmn:DataOutput",
+              "id": "Output_Receipt",
+              "name": "Receipt"
+            }
+          ],
+          "inputSets": [
+            {
+              "$type": "bpmn:InputSet",
+              "id": "InputSet_Main",
+              "dataInputRefs": [
+                "Input_Order"
+              ]
+            }
+          ],
+          "outputSets": [
+            {
+              "$type": "bpmn:OutputSet",
+              "id": "OutputSet_Main",
+              "dataOutputRefs": [
+                "Output_Receipt"
+              ]
+            }
+          ]
+        },
+        "laneSets": [
+          {
+            "$type": "bpmn:LaneSet",
+            "id": "LaneSet_Main",
+            "lanes": [
+              {
+                "$type": "bpmn:Lane",
+                "id": "Lane_External",
+                "name": "External",
+                "flowNodeRef": []
+              },
+              {
+                "$type": "bpmn:Lane",
+                "id": "Lane_Work",
+                "name": "Work",
+                "flowNodeRef": [
+                  "Start_Main",
+                  "Task_Check",
+                  "Gateway_Ok",
+                  "Task_Ship",
+                  "Task_Fix",
+                  "End_Done"
+                ]
+              }
+            ]
+          }
+        ],
+        "flowElements": [
+          {
+            "$type": "bpmn:StartEvent",
+            "id": "Start_Main",
+            "name": "Order received",
+            "outgoing": [
+              "Flow_Start"
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_Check",
+            "name": "Check order",
+            "incoming": [
+              "Flow_Start",
+              "Flow_Back"
+            ],
+            "outgoing": [
+              "Flow_Check"
+            ],
+            "properties": [
+              {
+                "$type": "bpmn:Property",
+                "id": "Port_Check_In",
+                "name": "order"
+              }
+            ],
+            "dataInputAssociations": [
+              {
+                "$type": "bpmn:DataInputAssociation",
+                "id": "Input_Link",
+                "sourceRef": [
+                  "Input_Order"
+                ],
+                "targetRef": "Port_Check_In"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:ExclusiveGateway",
+            "id": "Gateway_Ok",
+            "name": "Approved?",
+            "gatewayDirection": "Diverging",
+            "incoming": [
+              "Flow_Check"
+            ],
+            "outgoing": [
+              "Flow_Yes",
+              "Flow_No"
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_Ship",
+            "name": "Ship order",
+            "incoming": [
+              "Flow_Yes"
+            ],
+            "outgoing": [
+              "Flow_Ship"
+            ],
+            "properties": [
+              {
+                "$type": "bpmn:Property",
+                "id": "Port_Ship_Out",
+                "name": "receipt"
+              }
+            ],
+            "dataOutputAssociations": [
+              {
+                "$type": "bpmn:DataOutputAssociation",
+                "id": "Output_Link",
+                "sourceRef": [
+                  "Port_Ship_Out"
+                ],
+                "targetRef": "Output_Receipt"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_Fix",
+            "name": "Fix order",
+            "incoming": [
+              "Flow_No"
+            ],
+            "outgoing": [
+              "Flow_Back"
+            ]
+          },
+          {
+            "$type": "bpmn:EndEvent",
+            "id": "End_Done",
+            "name": "Order shipped",
+            "incoming": [
+              "Flow_Ship"
+            ]
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_Start",
+            "sourceRef": "Start_Main",
+            "targetRef": "Task_Check"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_Check",
+            "sourceRef": "Task_Check",
+            "targetRef": "Gateway_Ok"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_Yes",
+            "name": "yes",
+            "sourceRef": "Gateway_Ok",
+            "targetRef": "Task_Ship"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_No",
+            "name": "no",
+            "sourceRef": "Gateway_Ok",
+            "targetRef": "Task_Fix"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_Ship",
+            "sourceRef": "Task_Ship",
+            "targetRef": "End_Done"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_Back",
+            "sourceRef": "Task_Fix",
+            "targetRef": "Task_Check"
+          },
+          {
+            "$type": "bpmn:DataStoreReference",
+            "id": "StoreRef_Policy",
+            "name": "Policy archive",
+            "dataStoreRef": "Store_Policy"
+          }
+        ],
+        "artifacts": [
+          {
+            "$type": "bpmn:Association",
+            "id": "Assoc_Policy",
+            "sourceRef": "StoreRef_Policy",
+            "targetRef": "Task_Check",
+            "associationDirection": "One"
+          },
+          {
+            "$type": "bpmn:TextAnnotation",
+            "id": "Aid_Scanner",
+            "text": "[Aid] Scanner"
+          },
+          {
+            "$type": "bpmn:Association",
+            "id": "Assoc_Aid",
+            "sourceRef": "Aid_Scanner",
+            "targetRef": "Task_Check",
+            "associationDirection": "None"
+          }
+        ]
+      },
+      {
+        "$type": "bpmn:Collaboration",
+        "id": "Collab_Main",
+        "participants": [
+          {
+            "$type": "bpmn:Participant",
+            "id": "Pool_Main",
+            "name": "Main process",
+            "processRef": "Process_Main"
+          },
+          {
+            "$type": "bpmn:Participant",
+            "id": "Band_Main",
+            "name": "References"
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "ownerId": "Process_Main",
+      "role": "collaboration",
+      "targetId": "Collab_Main"
+    },
+    {
+      "ownerId": "Process_Main",
+      "role": "external-lane",
+      "targetId": "Lane_External"
+    },
+    {
+      "ownerId": "Process_Main",
+      "role": "lane-set",
+      "targetId": "LaneSet_Main"
+    },
+    {
+      "ownerId": "Process_Main",
+      "role": "main-participant",
+      "targetId": "Pool_Main"
+    },
+    {
+      "ownerId": "Process_Main",
+      "role": "reference-band",
+      "targetId": "Band_Main"
+    }
+  ],
+  "semanticRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c"
+}

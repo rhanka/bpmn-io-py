@@ -1,0 +1,1059 @@
+{
+  "status": "ok",
+  "operation": "mapExport",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "baseRevision": "cf0e3cb1c524a6384779c929b9478c362983860e1bfa419422fa9c0c25c8add7",
+  "revision": "cf0e3cb1c524a6384779c929b9478c362983860e1bfa419422fa9c0c25c8add7",
+  "report": {
+    "reportVersion": "2",
+    "operation": "mapExport",
+    "sourceIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "targetIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "inputRevision": "cf0e3cb1c524a6384779c929b9478c362983860e1bfa419422fa9c0c25c8add7",
+    "outputRevision": "cf0e3cb1c524a6384779c929b9478c362983860e1bfa419422fa9c0c25c8add7",
+    "entries": [
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "ea",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/0/flowElements/1",
+          "targetId": "Service_V",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Service_V_di",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/appearance",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "ea",
+        "messageKey": "export.loss.appearance",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/0/flowElements/3",
+          "targetId": "End_V",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Variety",
+        "occurrenceKey": "End_V_di",
+        "emittedType": "node",
+        "lossClass": "appearance"
+      },
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "ea",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/0/flowElements/3",
+          "targetId": "End_V",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Variety",
+        "occurrenceKey": "End_V_di",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/navigation",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "export-calls",
+        "messageKey": "export.loss.navigation",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/0/flowElements/2",
+          "targetId": "Call_V",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "artifact",
+          "pointer": "/ir/5",
+          "targetId": "Call_V",
+          "provenance": "exact"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Call_V_di",
+        "emittedType": "node",
+        "lossClass": "navigation"
+      }
+    ],
+    "rawStandardFindings": [],
+    "idMap": [
+      {
+        "sourceId": "Page_Variety",
+        "resultId": "Page_Variety",
+        "domain": "export",
+        "pageId": "Page_Variety"
+      },
+      {
+        "sourceId": "Call_V",
+        "resultId": "Call_V",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Call_V_di"
+      },
+      {
+        "sourceId": "End_V",
+        "resultId": "End_V",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "End_V_di"
+      },
+      {
+        "sourceId": "Flow_V1",
+        "resultId": "Flow_V1",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Flow_V1_di"
+      },
+      {
+        "sourceId": "Flow_V2",
+        "resultId": "Flow_V2",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Flow_V2_di"
+      },
+      {
+        "sourceId": "Flow_V3",
+        "resultId": "Flow_V3",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Flow_V3_di"
+      },
+      {
+        "sourceId": "Pool_Variety",
+        "resultId": "Pool_Variety",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Pool_Variety_di"
+      },
+      {
+        "sourceId": "Service_V",
+        "resultId": "Service_V",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Service_V_di"
+      },
+      {
+        "sourceId": "Start_V",
+        "resultId": "Start_V",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Start_V_di"
+      }
+    ],
+    "artifacts": [
+      {
+        "format": "sparx",
+        "capability": "structural",
+        "digest": "4fe09ca22959c1830aace6aa45120a728ca957f5b81ce2475f7d4731280daa53",
+        "entryIndexes": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    ]
+  },
+  "payload": {
+    "format": "sparx",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "semanticRevision": "cf0e3cb1c524a6384779c929b9478c362983860e1bfa419422fa9c0c25c8add7",
+    "viewRevision": "4c907c0b0d606f7df757ad3a2deee7c548f2c4509255c674e70d6b62d5d8fdf1",
+    "ir": [
+      {
+        "kind": "page",
+        "id": "Page_Variety",
+        "name": "Variety sheet",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1000000,
+          "height": 400000
+        }
+      },
+      {
+        "kind": "node",
+        "id": "End_V",
+        "name": "Stopped",
+        "parent": "Page_Variety",
+        "bounds": {
+          "x": 500000,
+          "y": 132000,
+          "width": 36000,
+          "height": 36000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 3
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 483000,
+            "y": 173000,
+            "width": 70000,
+            "height": 14000
+          },
+          "lines": [
+            "Stopped"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "Pool_Variety",
+        "name": "Variety process",
+        "parent": "Page_Variety",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 900000,
+          "height": 300000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 30000,
+            "height": 300000
+          },
+          "lines": [
+            "Variety process"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "Service_V",
+        "name": "Run check",
+        "parent": "Page_Variety",
+        "bounds": {
+          "x": 180000,
+          "y": 110000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 180000,
+            "y": 110000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Run check"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "Start_V",
+        "name": "Request",
+        "parent": "Page_Variety",
+        "bounds": {
+          "x": 80000,
+          "y": 132000,
+          "width": 36000,
+          "height": 36000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 63000,
+            "y": 173000,
+            "width": 70000,
+            "height": 14000
+          },
+          "lines": [
+            "Request"
+          ]
+        }
+      },
+      {
+        "kind": "node",
+        "id": "Call_V",
+        "name": "Call review",
+        "parent": "Page_Variety",
+        "bounds": {
+          "x": 340000,
+          "y": 110000,
+          "width": 100000,
+          "height": 80000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 2
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 340000,
+            "y": 110000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Call review"
+          ]
+        }
+      },
+      {
+        "kind": "edge",
+        "id": "Flow_V1",
+        "source": "Start_V",
+        "target": "Service_V",
+        "parent": "Page_Variety",
+        "bounds": {
+          "x": 116000,
+          "y": 150000,
+          "width": 64000,
+          "height": 0
+        },
+        "waypoints": [
+          {
+            "x": 116000,
+            "y": 150000
+          },
+          {
+            "x": 180000,
+            "y": 150000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ]
+      },
+      {
+        "kind": "edge",
+        "id": "Flow_V2",
+        "source": "Service_V",
+        "target": "Call_V",
+        "parent": "Page_Variety",
+        "bounds": {
+          "x": 280000,
+          "y": 150000,
+          "width": 60000,
+          "height": 0
+        },
+        "waypoints": [
+          {
+            "x": 280000,
+            "y": 150000
+          },
+          {
+            "x": 340000,
+            "y": 150000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ]
+      },
+      {
+        "kind": "edge",
+        "id": "Flow_V3",
+        "source": "Call_V",
+        "target": "End_V",
+        "parent": "Page_Variety",
+        "bounds": {
+          "x": 440000,
+          "y": 150000,
+          "width": 60000,
+          "height": 0
+        },
+        "waypoints": [
+          {
+            "x": 440000,
+            "y": 150000
+          },
+          {
+            "x": 500000,
+            "y": 150000
+          }
+        ],
+        "style": [
+          {
+            "name": "arrow",
+            "value": "filled"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ]
+      }
+    ],
+    "renderBinding": {
+      "semanticRevision": "cf0e3cb1c524a6384779c929b9478c362983860e1bfa419422fa9c0c25c8add7",
+      "profileDigest": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "descriptorDigest": "8cb3013f19489ae7b9eee46d790186ef3c8c4b5df17a63f397de1e066ad74719",
+      "layoutDigest": "d4e69abb364c376d147d680336a7bb29045041a4f127cf82a29ad4fff247c504",
+      "themeId": "plain",
+      "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+      "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+      "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+      "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+      "payloadDigest": "a49c8c50fd7ce21ffbddf6bb9be03566aff9a370a02ba750cd51f1296faaa5b2"
+    },
+    "report": {
+      "reportVersion": "2",
+      "operation": "mapExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-lot4/1",
+        "version": "1.1.0",
+        "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-lot4/1",
+        "version": "1.1.0",
+        "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "inputRevision": "cf0e3cb1c524a6384779c929b9478c362983860e1bfa419422fa9c0c25c8add7",
+      "outputRevision": "cf0e3cb1c524a6384779c929b9478c362983860e1bfa419422fa9c0c25c8add7",
+      "entries": [
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "ea",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1",
+            "targetId": "Service_V",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Service_V_di",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/appearance",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "ea",
+          "messageKey": "export.loss.appearance",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3",
+            "targetId": "End_V",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Page_Variety",
+          "occurrenceKey": "End_V_di",
+          "emittedType": "node",
+          "lossClass": "appearance"
+        },
+        {
+          "code": "export-loss/semantic-type",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "ea",
+          "messageKey": "export.loss.semantic-type",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3",
+            "targetId": "End_V",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "unavailable"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Page_Variety",
+          "occurrenceKey": "End_V_di",
+          "emittedType": "node",
+          "lossClass": "semantic-type"
+        },
+        {
+          "code": "export-loss/navigation",
+          "severity": "warn",
+          "classification": "loss",
+          "stage": "export",
+          "ruleId": "export-calls",
+          "messageKey": "export.loss.navigation",
+          "disposition": "mapped",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2",
+            "targetId": "Call_V",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "artifact",
+            "pointer": "/ir/5",
+            "targetId": "Call_V",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": false,
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Call_V_di",
+          "emittedType": "node",
+          "lossClass": "navigation"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [
+        {
+          "sourceId": "Page_Variety",
+          "resultId": "Page_Variety",
+          "domain": "export",
+          "pageId": "Page_Variety"
+        },
+        {
+          "sourceId": "Call_V",
+          "resultId": "Call_V",
+          "domain": "export",
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Call_V_di"
+        },
+        {
+          "sourceId": "End_V",
+          "resultId": "End_V",
+          "domain": "export",
+          "pageId": "Page_Variety",
+          "occurrenceKey": "End_V_di"
+        },
+        {
+          "sourceId": "Flow_V1",
+          "resultId": "Flow_V1",
+          "domain": "export",
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Flow_V1_di"
+        },
+        {
+          "sourceId": "Flow_V2",
+          "resultId": "Flow_V2",
+          "domain": "export",
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Flow_V2_di"
+        },
+        {
+          "sourceId": "Flow_V3",
+          "resultId": "Flow_V3",
+          "domain": "export",
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Flow_V3_di"
+        },
+        {
+          "sourceId": "Pool_Variety",
+          "resultId": "Pool_Variety",
+          "domain": "export",
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Pool_Variety_di"
+        },
+        {
+          "sourceId": "Service_V",
+          "resultId": "Service_V",
+          "domain": "export",
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Service_V_di"
+        },
+        {
+          "sourceId": "Start_V",
+          "resultId": "Start_V",
+          "domain": "export",
+          "pageId": "Page_Variety",
+          "occurrenceKey": "Start_V_di"
+        }
+      ],
+      "artifacts": [
+        {
+          "format": "sparx",
+          "capability": "structural",
+          "digest": "4fe09ca22959c1830aace6aa45120a728ca957f5b81ce2475f7d4731280daa53",
+          "entryIndexes": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    "capability": "structural",
+    "idMap": [
+      {
+        "sourceId": "Page_Variety",
+        "resultId": "Page_Variety",
+        "domain": "export",
+        "pageId": "Page_Variety"
+      },
+      {
+        "sourceId": "Call_V",
+        "resultId": "Call_V",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Call_V_di"
+      },
+      {
+        "sourceId": "End_V",
+        "resultId": "End_V",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "End_V_di"
+      },
+      {
+        "sourceId": "Flow_V1",
+        "resultId": "Flow_V1",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Flow_V1_di"
+      },
+      {
+        "sourceId": "Flow_V2",
+        "resultId": "Flow_V2",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Flow_V2_di"
+      },
+      {
+        "sourceId": "Flow_V3",
+        "resultId": "Flow_V3",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Flow_V3_di"
+      },
+      {
+        "sourceId": "Pool_Variety",
+        "resultId": "Pool_Variety",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Pool_Variety_di"
+      },
+      {
+        "sourceId": "Service_V",
+        "resultId": "Service_V",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Service_V_di"
+      },
+      {
+        "sourceId": "Start_V",
+        "resultId": "Start_V",
+        "domain": "export",
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Start_V_di"
+      }
+    ]
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "semanticTree": {
+    "$type": "bpmn:Definitions",
+    "id": "Definitions_D",
+    "rootElements": [
+      {
+        "$type": "bpmn:Process",
+        "id": "Process_D",
+        "name": "Digest"
+      }
+    ]
+  },
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "bindings": [],
+  "descriptorPins": [
+    {
+      "id": "a-descriptors/1",
+      "version": "1",
+      "sha256": "398f4563f36a69cbfd1d6225dd634d091ec721b54f89c22e6734abf426b38426"
+    },
+    {
+      "id": "z-descriptors/1",
+      "version": "1",
+      "sha256": "2aa4a0e99afcc448739e3652bb43e5d86db5c04366cce1c4d62fb34ea070226a"
+    }
+  ],
+  "layout": {
+    "layoutVersion": "1",
+    "pages": [
+      {
+        "pageId": "Z-page",
+        "name": "First sheet",
+        "order": 0,
+        "semanticRootId": "Process_D",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1000,
+          "height": 800
+        }
+      }
+    ],
+    "geometry": []
+  },
+  "themeId": "plain",
+  "themes": [
+    {
+      "id": "plain",
+      "aliases": [],
+      "tokens": [
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        }
+      ],
+      "glyphs": [],
+      "metricsResource": "neutral-metrics",
+      "geometry": "shared",
+      "syntheticOccurrences": []
+    }
+  ],
+  "overrides": {
+    "semantic": [
+      {
+        "semanticId": "Process_D",
+        "tokens": [
+          {
+            "name": "fill",
+            "value": "#eeeeee"
+          },
+          {
+            "name": "stroke",
+            "value": "#111111"
+          }
+        ]
+      },
+      {
+        "semanticId": "Task_D",
+        "tokens": [
+          {
+            "name": "fill",
+            "value": "#dddddd"
+          }
+        ]
+      }
+    ],
+    "occurrence": [
+      {
+        "pageId": "A-page",
+        "occurrenceKey": "k-1",
+        "tokens": [
+          {
+            "name": "strokeWidth",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "pageId": "Z-page",
+        "occurrenceKey": "k-1",
+        "tokens": [
+          {
+            "name": "dash",
+            "value": "dashed"
+          }
+        ]
+      }
+    ]
+  },
+  "diStyles": {
+    "native": [
+      {
+        "pageId": "Z-page",
+        "occurrenceKey": "a",
+        "tokens": [
+          {
+            "name": "fill",
+            "value": "#123456"
+          }
+        ]
+      },
+      {
+        "pageId": "Z-page",
+        "occurrenceKey": "b",
+        "tokens": [
+          {
+            "name": "stroke",
+            "value": "#654321"
+          }
+        ]
+      }
+    ],
+    "bioc": [
+      {
+        "pageId": "A-page",
+        "occurrenceKey": "z",
+        "tokens": [
+          {
+            "name": "fill",
+            "value": "#abcdef"
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ]
+      },
+      {
+        "pageId": "Z-page",
+        "occurrenceKey": "a",
+        "tokens": [
+          {
+            "name": "stroke",
+            "value": "#fedcba"
+          }
+        ]
+      }
+    ]
+  },
+  "metrics": [
+    {
+      "id": "neutral-metrics",
+      "utf8": "{\n  \"id\": \"neutral-metrics/1\",\n  \"textPolicy\": \"engine-scalar-A/1\",\n  \"unicode\": \"15.0.0\",\n  \"unit\": \"micro-point\",\n  \"defaultAdvance\": 600,\n  \"spaceAdvance\": 300,\n  \"ascent\": 800,\n  \"descent\": 200\n}\n"
+    }
+  ],
+  "payload": {
+    "pages": [
+      {
+        "pageId": "Z-page",
+        "name": "First sheet",
+        "order": 0,
+        "semanticRootId": "Process_D",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1000,
+          "height": 800
+        }
+      }
+    ],
+    "occurrences": [],
+    "coverage": [],
+    "diagnostics": []
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "caseId": "layout-002-repeated-views",
+  "operation": "layout",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "placements",
+      "path": "lot4-layout-export/expectations/artifacts/main.placements.json",
+      "sha256": "4cf87df1d2bd304b8a014c3c3fc4370325b49496ee8f39ee1eb388958d88a4a4"
+    },
+    {
+      "role": "base-geometry",
+      "path": "lot4-layout-export/expectations/artifacts/repeated.base-geometry.json",
+      "sha256": "b375f4263aee517efd257c662bb06031b0bb3100130709d74e24911db82e6562"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/layout-002-repeated-views.result.json",
+      "sha256": "3cc09f2fb86f78a6d2111088789216ded845f5fce4c1841969a37b33d3f408e6"
+    },
+    {
+      "role": "unsealed",
+      "json": [
+        {
+          "pointer": "/payload/geometry/12/waypoints",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/12/bounds",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/16/waypoints",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/16/bounds",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/2/waypoints",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/2/bounds",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/26/waypoints",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/26/bounds",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/24/waypoints",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/24/bounds",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        }
+      ]
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "layout-route/1",
+    "source-immutability/1"
+  ]
+}

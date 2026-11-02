@@ -1,0 +1,910 @@
+{
+  "status": "ok",
+  "operation": "serializePrepared",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "baseRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+  "revision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+  "report": {
+    "reportVersion": "2",
+    "operation": "serializePrepared",
+    "sourceIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "targetIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "inputRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+    "outputRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+    "entries": [
+      {
+        "code": "export-loss/relation-kind",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.relation-kind",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/flowElements/1/dataInputAssociations/0",
+          "targetId": "Input_Link",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_A",
+        "occurrenceKey": "d-Input_Link",
+        "emittedType": "edge",
+        "lossClass": "relation-kind"
+      },
+      {
+        "code": "export-loss/relation-kind",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.relation-kind",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/flowElements/1/dataInputAssociations/0",
+          "targetId": "Input_Link",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_Z",
+        "occurrenceKey": "Input_Link_di",
+        "emittedType": "edge",
+        "lossClass": "relation-kind"
+      },
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/flowElements/12",
+          "targetId": "StoreRef_Policy",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_A",
+        "occurrenceKey": "d-StoreRef_Policy",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/flowElements/12",
+          "targetId": "StoreRef_Policy",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_Z",
+        "occurrenceKey": "StoreRef_Policy_di",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/relation-kind",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.relation-kind",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/flowElements/3/dataOutputAssociations/0",
+          "targetId": "Output_Link",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_Z",
+        "occurrenceKey": "Output_Link_di",
+        "emittedType": "edge",
+        "lossClass": "relation-kind"
+      },
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/ioSpecification/dataInputs/0",
+          "targetId": "Input_Order",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_A",
+        "occurrenceKey": "d-Input_Order",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/ioSpecification/dataInputs/0",
+          "targetId": "Input_Order",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_Z",
+        "occurrenceKey": "Input_Order_di",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/ioSpecification/dataOutputs/0",
+          "targetId": "Output_Receipt",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_Z",
+        "occurrenceKey": "Output_Receipt_di",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/metadata",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.metadata",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/2/participants/1",
+          "targetId": "Band_Main",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_A",
+        "occurrenceKey": "d-Band_Main",
+        "emittedType": "node",
+        "lossClass": "metadata"
+      },
+      {
+        "code": "export-loss/metadata",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.metadata",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/2/participants/1",
+          "targetId": "Band_Main",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_Z",
+        "occurrenceKey": "Band_Main_di",
+        "emittedType": "node",
+        "lossClass": "metadata"
+      },
+      {
+        "code": "export-loss/metadata",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "export-aid-marker",
+        "messageKey": "export.loss.metadata",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/artifacts/1",
+          "targetId": "Aid_Scanner",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "View_Z",
+        "occurrenceKey": "Aid_Scanner_di",
+        "emittedType": "node",
+        "lossClass": "metadata"
+      }
+    ],
+    "rawStandardFindings": [],
+    "idMap": [
+      {
+        "sourceId": "View_A",
+        "resultId": "e_2",
+        "domain": "export",
+        "pageId": "View_A"
+      },
+      {
+        "sourceId": "Assoc_Policy",
+        "resultId": "e_34",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Assoc_Policy"
+      },
+      {
+        "sourceId": "Band_Main",
+        "resultId": "e_17",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Band_Main"
+      },
+      {
+        "sourceId": "Input_Link",
+        "resultId": "e_35",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Input_Link"
+      },
+      {
+        "sourceId": "Input_Order",
+        "resultId": "e_18",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Input_Order"
+      },
+      {
+        "sourceId": "Lane_External",
+        "resultId": "e_19",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Lane_External"
+      },
+      {
+        "sourceId": "Lane_Work",
+        "resultId": "e_20",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Lane_Work"
+      },
+      {
+        "sourceId": "Pool_Main",
+        "resultId": "e_21",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Pool_Main"
+      },
+      {
+        "sourceId": "StoreRef_Policy",
+        "resultId": "e_22",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-StoreRef_Policy"
+      },
+      {
+        "sourceId": "Task_Check",
+        "resultId": "e_23",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Task_Check"
+      },
+      {
+        "sourceId": "View_Z",
+        "resultId": "e_1",
+        "domain": "export",
+        "pageId": "View_Z"
+      },
+      {
+        "sourceId": "Aid_Scanner",
+        "resultId": "e_3",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Aid_Scanner_di"
+      },
+      {
+        "sourceId": "Assoc_Aid",
+        "resultId": "e_24",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Assoc_Aid_di"
+      },
+      {
+        "sourceId": "Assoc_Policy",
+        "resultId": "e_25",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Assoc_Policy_di"
+      },
+      {
+        "sourceId": "Band_Main",
+        "resultId": "e_4",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Band_Main_di"
+      },
+      {
+        "sourceId": "End_Done",
+        "resultId": "e_5",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "End_Done_di"
+      },
+      {
+        "sourceId": "Flow_Back",
+        "resultId": "e_26",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Back_di"
+      },
+      {
+        "sourceId": "Flow_Check",
+        "resultId": "e_27",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Check_di"
+      },
+      {
+        "sourceId": "Flow_No",
+        "resultId": "e_28",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_No_di"
+      },
+      {
+        "sourceId": "Flow_No",
+        "resultId": "e_36",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_No_di"
+      },
+      {
+        "sourceId": "Flow_Ship",
+        "resultId": "e_29",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Ship_di"
+      },
+      {
+        "sourceId": "Flow_Start",
+        "resultId": "e_30",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Start_di"
+      },
+      {
+        "sourceId": "Flow_Yes",
+        "resultId": "e_31",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Yes_di"
+      },
+      {
+        "sourceId": "Flow_Yes",
+        "resultId": "e_37",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Yes_di"
+      },
+      {
+        "sourceId": "Gateway_Ok",
+        "resultId": "e_6",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Gateway_Ok_di"
+      },
+      {
+        "sourceId": "Input_Link",
+        "resultId": "e_32",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Input_Link_di"
+      },
+      {
+        "sourceId": "Input_Order",
+        "resultId": "e_7",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Input_Order_di"
+      },
+      {
+        "sourceId": "Lane_External",
+        "resultId": "e_8",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Lane_External_di"
+      },
+      {
+        "sourceId": "Lane_Work",
+        "resultId": "e_9",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Lane_Work_di"
+      },
+      {
+        "sourceId": "Output_Link",
+        "resultId": "e_33",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Output_Link_di"
+      },
+      {
+        "sourceId": "Output_Receipt",
+        "resultId": "e_10",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Output_Receipt_di"
+      },
+      {
+        "sourceId": "Pool_Main",
+        "resultId": "e_11",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Pool_Main_di"
+      },
+      {
+        "sourceId": "Start_Main",
+        "resultId": "e_12",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Start_Main_di"
+      },
+      {
+        "sourceId": "StoreRef_Policy",
+        "resultId": "e_13",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "StoreRef_Policy_di"
+      },
+      {
+        "sourceId": "Task_Check",
+        "resultId": "e_14",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Task_Check_di"
+      },
+      {
+        "sourceId": "Task_Fix",
+        "resultId": "e_15",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Task_Fix_di"
+      },
+      {
+        "sourceId": "Task_Ship",
+        "resultId": "e_16",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Task_Ship_di"
+      }
+    ],
+    "artifacts": [
+      {
+        "format": "drawio",
+        "capability": "structural",
+        "entryIndexes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      }
+    ]
+  },
+  "payload": {
+    "format": "drawio",
+    "idMap": [
+      {
+        "sourceId": "View_A",
+        "resultId": "e_2",
+        "domain": "export",
+        "pageId": "View_A"
+      },
+      {
+        "sourceId": "Assoc_Policy",
+        "resultId": "e_34",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Assoc_Policy"
+      },
+      {
+        "sourceId": "Band_Main",
+        "resultId": "e_17",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Band_Main"
+      },
+      {
+        "sourceId": "Input_Link",
+        "resultId": "e_35",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Input_Link"
+      },
+      {
+        "sourceId": "Input_Order",
+        "resultId": "e_18",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Input_Order"
+      },
+      {
+        "sourceId": "Lane_External",
+        "resultId": "e_19",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Lane_External"
+      },
+      {
+        "sourceId": "Lane_Work",
+        "resultId": "e_20",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Lane_Work"
+      },
+      {
+        "sourceId": "Pool_Main",
+        "resultId": "e_21",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Pool_Main"
+      },
+      {
+        "sourceId": "StoreRef_Policy",
+        "resultId": "e_22",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-StoreRef_Policy"
+      },
+      {
+        "sourceId": "Task_Check",
+        "resultId": "e_23",
+        "domain": "export",
+        "pageId": "View_A",
+        "occurrenceKey": "d-Task_Check"
+      },
+      {
+        "sourceId": "View_Z",
+        "resultId": "e_1",
+        "domain": "export",
+        "pageId": "View_Z"
+      },
+      {
+        "sourceId": "Aid_Scanner",
+        "resultId": "e_3",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Aid_Scanner_di"
+      },
+      {
+        "sourceId": "Assoc_Aid",
+        "resultId": "e_24",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Assoc_Aid_di"
+      },
+      {
+        "sourceId": "Assoc_Policy",
+        "resultId": "e_25",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Assoc_Policy_di"
+      },
+      {
+        "sourceId": "Band_Main",
+        "resultId": "e_4",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Band_Main_di"
+      },
+      {
+        "sourceId": "End_Done",
+        "resultId": "e_5",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "End_Done_di"
+      },
+      {
+        "sourceId": "Flow_Back",
+        "resultId": "e_26",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Back_di"
+      },
+      {
+        "sourceId": "Flow_Check",
+        "resultId": "e_27",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Check_di"
+      },
+      {
+        "sourceId": "Flow_No",
+        "resultId": "e_28",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_No_di"
+      },
+      {
+        "sourceId": "Flow_No",
+        "resultId": "e_36",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_No_di"
+      },
+      {
+        "sourceId": "Flow_Ship",
+        "resultId": "e_29",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Ship_di"
+      },
+      {
+        "sourceId": "Flow_Start",
+        "resultId": "e_30",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Start_di"
+      },
+      {
+        "sourceId": "Flow_Yes",
+        "resultId": "e_31",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Yes_di"
+      },
+      {
+        "sourceId": "Flow_Yes",
+        "resultId": "e_37",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Flow_Yes_di"
+      },
+      {
+        "sourceId": "Gateway_Ok",
+        "resultId": "e_6",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Gateway_Ok_di"
+      },
+      {
+        "sourceId": "Input_Link",
+        "resultId": "e_32",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Input_Link_di"
+      },
+      {
+        "sourceId": "Input_Order",
+        "resultId": "e_7",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Input_Order_di"
+      },
+      {
+        "sourceId": "Lane_External",
+        "resultId": "e_8",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Lane_External_di"
+      },
+      {
+        "sourceId": "Lane_Work",
+        "resultId": "e_9",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Lane_Work_di"
+      },
+      {
+        "sourceId": "Output_Link",
+        "resultId": "e_33",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Output_Link_di"
+      },
+      {
+        "sourceId": "Output_Receipt",
+        "resultId": "e_10",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Output_Receipt_di"
+      },
+      {
+        "sourceId": "Pool_Main",
+        "resultId": "e_11",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Pool_Main_di"
+      },
+      {
+        "sourceId": "Start_Main",
+        "resultId": "e_12",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Start_Main_di"
+      },
+      {
+        "sourceId": "StoreRef_Policy",
+        "resultId": "e_13",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "StoreRef_Policy_di"
+      },
+      {
+        "sourceId": "Task_Check",
+        "resultId": "e_14",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Task_Check_di"
+      },
+      {
+        "sourceId": "Task_Fix",
+        "resultId": "e_15",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Task_Fix_di"
+      },
+      {
+        "sourceId": "Task_Ship",
+        "resultId": "e_16",
+        "domain": "export",
+        "pageId": "View_Z",
+        "occurrenceKey": "Task_Ship_di"
+      }
+    ],
+    "capability": "structural"
+  }
+}

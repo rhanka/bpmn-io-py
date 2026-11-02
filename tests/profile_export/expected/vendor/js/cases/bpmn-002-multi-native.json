@@ -1,0 +1,79 @@
+{
+  "caseId": "bpmn-002-multi-native",
+  "operation": "serializeBpmn",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/multi.envelope.json",
+      "sha256": "d2a0ebf7ec84fd68fc39e362b41c5895cba75d40701026aa029d868b7c2c8940"
+    },
+    {
+      "role": "writerOptions",
+      "json": {
+        "format": true,
+        "preamble": true
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "output",
+      "json": [
+        {
+          "element": "dataStore",
+          "id": "Store_Shared",
+          "parent": "definitions"
+        },
+        {
+          "element": "dataStoreReference",
+          "id": "StoreRef_A",
+          "parent": "process:Process_A",
+          "attributes": {
+            "dataStoreRef": "Store_Shared",
+            "name": "Shared register"
+          }
+        },
+        {
+          "element": "dataStoreReference",
+          "id": "StoreRef_B",
+          "parent": "process:Process_B",
+          "attributes": {
+            "dataStoreRef": "Store_Shared",
+            "name": "Register copy"
+          }
+        },
+        {
+          "element": "participant",
+          "id": "Band_A",
+          "parent": "collaboration:Collab_A",
+          "absent": [
+            "processRef"
+          ]
+        },
+        {
+          "element": "participant",
+          "id": "Band_B",
+          "parent": "collaboration:Collab_B",
+          "absent": [
+            "processRef"
+          ]
+        },
+        {
+          "element": "collaboration",
+          "count": 2
+        },
+        {
+          "element": "dataStore",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "bpmn-structure/1",
+    "source-immutability/1"
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "caseId": "l3-imp-remap-nonsubset-id",
+  "operation": "remapIds",
+  "phase": "import",
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_ids",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_I",
+              "name": "Identifiers",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_I",
+                  "name": "Start",
+                  "outgoing": [
+                    "Flow_I1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "1-intake",
+                  "name": "Intake",
+                  "incoming": [
+                    "Flow_I1"
+                  ],
+                  "outgoing": []
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_I1",
+                  "sourceRef": "Start_I",
+                  "targetRef": "1-intake"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "436e93efd67c48d79eb3a4f5adae4006e5d8cdd4774b7171c03fb02742b6cca4"
+      }
+    },
+    {
+      "role": "importedDi",
+      "json": {
+        "descriptorDigest": "06cd02b4d67d07bd3b81f54d4226f845764438a8f0eb794dc51fb91c4210ae94",
+        "diagrams": [],
+        "sha256": "7a30edb9b6b46876012e8dbec94e08dd93aae72621198d66f31434f10ec5cd5a"
+      }
+    },
+    {
+      "role": "activation",
+      "json": "qualification"
+    }
+  ],
+  "commandArtifact": {
+    "role": "migration",
+    "json": {
+      "kind": "id-remap",
+      "approved": true,
+      "approval": "technical",
+      "map": [
+        {
+          "sourceId": "1-intake",
+          "resultId": "Task_intake",
+          "domain": "migration"
+        }
+      ],
+      "referenceFreeAttestations": []
+    }
+  },
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "operation": "remapIds",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "baseRevision": "436e93efd67c48d79eb3a4f5adae4006e5d8cdd4774b7171c03fb02742b6cca4",
+        "revision": "984a7dd60dd687fd180ecc4ca3b2bde2bb30bc4a97c1159f84ca5a681a7506ef",
+        "report": {
+          "reportVersion": "2",
+          "operation": "remapIds",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "inputRevision": "436e93efd67c48d79eb3a4f5adae4006e5d8cdd4774b7171c03fb02742b6cca4",
+          "outputRevision": "984a7dd60dd687fd180ecc4ca3b2bde2bb30bc4a97c1159f84ca5a681a7506ef",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [
+            {
+              "sourceId": "1-intake",
+              "resultId": "Task_intake",
+              "domain": "migration"
+            },
+            {
+              "sourceId": "Definitions_ids",
+              "resultId": "Definitions_ids",
+              "domain": "migration"
+            },
+            {
+              "sourceId": "Flow_I1",
+              "resultId": "Flow_I1",
+              "domain": "migration"
+            },
+            {
+              "sourceId": "Process_I",
+              "resultId": "Process_I",
+              "domain": "migration"
+            },
+            {
+              "sourceId": "Start_I",
+              "resultId": "Start_I",
+              "domain": "migration"
+            }
+          ],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_ids",
+              "targetNamespace": "urn:neutral-cn:1",
+              "exporterVersion": "fixture-cn-1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_I",
+                  "name": "Identifiers",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:StartEvent",
+                      "id": "Start_I",
+                      "name": "Start",
+                      "outgoing": [
+                        "Flow_I1"
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_intake",
+                      "name": "Intake",
+                      "incoming": [
+                        "Flow_I1"
+                      ],
+                      "outgoing": []
+                    },
+                    {
+                      "$type": "bpmn:SequenceFlow",
+                      "id": "Flow_I1",
+                      "sourceRef": "Start_I",
+                      "targetRef": "Task_intake"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [],
+            "semanticRevision": "984a7dd60dd687fd180ecc4ca3b2bde2bb30bc4a97c1159f84ca5a681a7506ef"
+          },
+          "importedDi": {
+            "descriptorDigest": "06cd02b4d67d07bd3b81f54d4226f845764438a8f0eb794dc51fb91c4210ae94",
+            "diagrams": [],
+            "sha256": "7a30edb9b6b46876012e8dbec94e08dd93aae72621198d66f31434f10ec5cd5a"
+          }
+        }
+      }
+    },
+    {
+      "role": "caller-state",
+      "json": {
+        "envelope": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_ids",
+            "targetNamespace": "urn:neutral-cn:1",
+            "exporterVersion": "fixture-cn-1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_I",
+                "name": "Identifiers",
+                "isExecutable": false,
+                "flowElements": [
+                  {
+                    "$type": "bpmn:StartEvent",
+                    "id": "Start_I",
+                    "name": "Start",
+                    "outgoing": [
+                      "Flow_I1"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:Task",
+                    "id": "1-intake",
+                    "name": "Intake",
+                    "incoming": [
+                      "Flow_I1"
+                    ],
+                    "outgoing": []
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_I1",
+                    "sourceRef": "Start_I",
+                    "targetRef": "1-intake"
+                  }
+                ]
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "436e93efd67c48d79eb3a4f5adae4006e5d8cdd4774b7171c03fb02742b6cca4"
+        },
+        "importedDi": {
+          "descriptorDigest": "06cd02b4d67d07bd3b81f54d4226f845764438a8f0eb794dc51fb91c4210ae94",
+          "diagrams": [],
+          "sha256": "7a30edb9b6b46876012e8dbec94e08dd93aae72621198d66f31434f10ec5cd5a"
+        }
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-1/lot3",
+    "source-preservation/lot3",
+    "profile-c14n/2"
+  ]
+}

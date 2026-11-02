@@ -1,0 +1,773 @@
+{
+  "caseId": "l3-n-unicode-names",
+  "operation": "normalize",
+  "phase": "normalize",
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_support",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Gestion 𐀀 ",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_U",
+                  "name": "Situation A\nSituation B\r\nSituation C suite",
+                  "outgoing": [
+                    "Flow_U1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_U",
+                  "name": "Contrôle final ",
+                  "incoming": [
+                    "Flow_U1"
+                  ],
+                  "outgoing": [
+                    "Flow_U2"
+                  ],
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "﻿sourcetexte\t ",
+                      "textFormat": "text/plain"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_U",
+                  "name": "Fin",
+                  "incoming": [
+                    "Flow_U2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_U1",
+                  "sourceRef": "Start_U",
+                  "targetRef": "Task_U"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_U2",
+                  "sourceRef": "Task_U",
+                  "targetRef": "End_U"
+                },
+                {
+                  "$type": "bpmn:DataStoreReference",
+                  "id": "DataStoreReference_U",
+                  "name": "Référence 📘",
+                  "dataStoreRef": "DataStore_U"
+                }
+              ],
+              "artifacts": [
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_RefU",
+                  "sourceRef": "DataStoreReference_U",
+                  "targetRef": "Task_U",
+                  "associationDirection": "One"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:DataStore",
+              "id": "DataStore_U",
+              "name": "Registre 𐀀"
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282"
+      }
+    },
+    {
+      "role": "activation",
+      "json": "qualification"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "operation": "normalize",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "baseRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+        "revision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
+        "report": {
+          "reportVersion": "2",
+          "operation": "normalize",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "inputRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+          "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
+          "entries": [
+            {
+              "code": "normalize/ensure",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "normalize",
+              "ruleId": "n-reference-band",
+              "messageKey": "normalize.ensure",
+              "disposition": "corrected",
+              "source": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "generated"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/2/participants/1",
+                "targetId": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769",
+                "provenance": "generated"
+              },
+              "property": "participants",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": {
+                "$type": "bpmn:Participant",
+                "id": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769",
+                "name": "reference-band"
+              }
+            },
+            {
+              "code": "normalize/assignRef",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "normalize",
+              "ruleId": "n-structure",
+              "messageKey": "normalize.assignRef",
+              "disposition": "corrected",
+              "source": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "generated"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/2/participants/0/processRef",
+                "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                "provenance": "generated"
+              },
+              "property": "processRef",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": "Process_A"
+            },
+            {
+              "code": "normalize/ensure",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "normalize",
+              "ruleId": "n-structure",
+              "messageKey": "normalize.ensure",
+              "disposition": "corrected",
+              "source": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "generated"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/2",
+                "targetId": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1",
+                "provenance": "generated"
+              },
+              "property": "rootElements",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": {
+                "$type": "bpmn:Collaboration",
+                "id": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1",
+                "name": "collaboration",
+                "participants": [
+                  {
+                    "$type": "bpmn:Participant",
+                    "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                    "name": "main-participant",
+                    "processRef": "Process_A"
+                  },
+                  {
+                    "$type": "bpmn:Participant",
+                    "id": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769",
+                    "name": "reference-band"
+                  }
+                ]
+              }
+            },
+            {
+              "code": "normalize/ensure",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "normalize",
+              "ruleId": "n-structure",
+              "messageKey": "normalize.ensure",
+              "disposition": "corrected",
+              "source": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "generated"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/2/participants/0",
+                "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                "provenance": "generated"
+              },
+              "property": "participants",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": {
+                "$type": "bpmn:Participant",
+                "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                "name": "main-participant",
+                "processRef": "Process_A"
+              }
+            }
+          ],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_support",
+              "targetNamespace": "urn:neutral-cn:1",
+              "exporterVersion": "fixture-cn-1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "name": "Gestion 𐀀 ",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:StartEvent",
+                      "id": "Start_U",
+                      "name": "Situation A\nSituation B\r\nSituation C suite",
+                      "outgoing": [
+                        "Flow_U1"
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_U",
+                      "name": "Contrôle final ",
+                      "incoming": [
+                        "Flow_U1"
+                      ],
+                      "outgoing": [
+                        "Flow_U2"
+                      ],
+                      "documentation": [
+                        {
+                          "$type": "bpmn:Documentation",
+                          "text": "﻿sourcetexte\t ",
+                          "textFormat": "text/plain"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:EndEvent",
+                      "id": "End_U",
+                      "name": "Fin",
+                      "incoming": [
+                        "Flow_U2"
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:SequenceFlow",
+                      "id": "Flow_U1",
+                      "sourceRef": "Start_U",
+                      "targetRef": "Task_U"
+                    },
+                    {
+                      "$type": "bpmn:SequenceFlow",
+                      "id": "Flow_U2",
+                      "sourceRef": "Task_U",
+                      "targetRef": "End_U"
+                    },
+                    {
+                      "$type": "bpmn:DataStoreReference",
+                      "id": "DataStoreReference_U",
+                      "name": "Référence 📘",
+                      "dataStoreRef": "DataStore_U"
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "Assoc_RefU",
+                      "sourceRef": "DataStoreReference_U",
+                      "targetRef": "Task_U",
+                      "associationDirection": "One"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:DataStore",
+                  "id": "DataStore_U",
+                  "name": "Registre 𐀀"
+                },
+                {
+                  "$type": "bpmn:Collaboration",
+                  "id": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1",
+                  "name": "collaboration",
+                  "participants": [
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                      "name": "main-participant",
+                      "processRef": "Process_A"
+                    },
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769",
+                      "name": "reference-band"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [
+              {
+                "ownerId": "Process_A",
+                "role": "collaboration",
+                "targetId": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "main-participant",
+                "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "reference-band",
+                "targetId": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769"
+              }
+            ],
+            "semanticRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c"
+          },
+          "placements": [
+            {
+              "elementId": "DataStoreReference_U",
+              "ownerProcessId": "Process_A",
+              "regionKey": "reference-band",
+              "anchorAssociationId": "Assoc_RefU",
+              "relatedAssociationIds": [
+                "Assoc_RefU"
+              ]
+            }
+          ],
+          "report": {
+            "reportVersion": "2",
+            "operation": "normalize",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "inputRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282",
+            "outputRevision": "21a99561ee89e3791a4efafdac1b164f643e3bab28d57b1f169937adc1b7819c",
+            "entries": [
+              {
+                "code": "normalize/ensure",
+                "severity": "info",
+                "classification": "repairable",
+                "stage": "normalize",
+                "ruleId": "n-reference-band",
+                "messageKey": "normalize.ensure",
+                "disposition": "corrected",
+                "source": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "generated"
+                },
+                "result": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/2/participants/1",
+                  "targetId": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769",
+                  "provenance": "generated"
+                },
+                "property": "participants",
+                "beforePresent": false,
+                "afterPresent": true,
+                "after": {
+                  "$type": "bpmn:Participant",
+                  "id": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769",
+                  "name": "reference-band"
+                }
+              },
+              {
+                "code": "normalize/assignRef",
+                "severity": "info",
+                "classification": "repairable",
+                "stage": "normalize",
+                "ruleId": "n-structure",
+                "messageKey": "normalize.assignRef",
+                "disposition": "corrected",
+                "source": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "generated"
+                },
+                "result": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/2/participants/0/processRef",
+                  "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                  "provenance": "generated"
+                },
+                "property": "processRef",
+                "beforePresent": false,
+                "afterPresent": true,
+                "after": "Process_A"
+              },
+              {
+                "code": "normalize/ensure",
+                "severity": "info",
+                "classification": "repairable",
+                "stage": "normalize",
+                "ruleId": "n-structure",
+                "messageKey": "normalize.ensure",
+                "disposition": "corrected",
+                "source": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "generated"
+                },
+                "result": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/2",
+                  "targetId": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1",
+                  "provenance": "generated"
+                },
+                "property": "rootElements",
+                "beforePresent": false,
+                "afterPresent": true,
+                "after": {
+                  "$type": "bpmn:Collaboration",
+                  "id": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1",
+                  "name": "collaboration",
+                  "participants": [
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                      "name": "main-participant",
+                      "processRef": "Process_A"
+                    },
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "g_11a2781ef2229f47d2ae48d7b4cc3ad823a7f013eac7fa12d7cefd30f412d769",
+                      "name": "reference-band"
+                    }
+                  ]
+                }
+              },
+              {
+                "code": "normalize/ensure",
+                "severity": "info",
+                "classification": "repairable",
+                "stage": "normalize",
+                "ruleId": "n-structure",
+                "messageKey": "normalize.ensure",
+                "disposition": "corrected",
+                "source": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "generated"
+                },
+                "result": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/2/participants/0",
+                  "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                  "provenance": "generated"
+                },
+                "property": "participants",
+                "beforePresent": false,
+                "afterPresent": true,
+                "after": {
+                  "$type": "bpmn:Participant",
+                  "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                  "name": "main-participant",
+                  "processRef": "Process_A"
+                }
+              }
+            ],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          }
+        }
+      }
+    },
+    {
+      "role": "caller-state",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_support",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Gestion 𐀀 ",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_U",
+                  "name": "Situation A\nSituation B\r\nSituation C suite",
+                  "outgoing": [
+                    "Flow_U1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_U",
+                  "name": "Contrôle final ",
+                  "incoming": [
+                    "Flow_U1"
+                  ],
+                  "outgoing": [
+                    "Flow_U2"
+                  ],
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "﻿sourcetexte\t ",
+                      "textFormat": "text/plain"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_U",
+                  "name": "Fin",
+                  "incoming": [
+                    "Flow_U2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_U1",
+                  "sourceRef": "Start_U",
+                  "targetRef": "Task_U"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_U2",
+                  "sourceRef": "Task_U",
+                  "targetRef": "End_U"
+                },
+                {
+                  "$type": "bpmn:DataStoreReference",
+                  "id": "DataStoreReference_U",
+                  "name": "Référence 📘",
+                  "dataStoreRef": "DataStore_U"
+                }
+              ],
+              "artifacts": [
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_RefU",
+                  "sourceRef": "DataStoreReference_U",
+                  "targetRef": "Task_U",
+                  "associationDirection": "One"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:DataStore",
+              "id": "DataStore_U",
+              "name": "Registre 𐀀"
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "ab2a056d9d354219d21d6fc02d2c5853f767953bda678a2fb98e54c81ccb4282"
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-1/lot3",
+    "source-preservation/lot3",
+    "profile-c14n/2",
+    "placements-order/lot3"
+  ]
+}

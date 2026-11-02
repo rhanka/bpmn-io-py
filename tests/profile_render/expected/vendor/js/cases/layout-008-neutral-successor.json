@@ -1,0 +1,43 @@
+{
+  "caseId": "layout-008-neutral-successor",
+  "operation": "layout",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-successor.profile.json",
+    "sha256": "31387224e72609c153fc49e26c29e33de18fda7ab1fbabed55d25ba0bb21e658"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-successor.envelope.json",
+      "sha256": "399b75f2b82beea753d64661b504bcc7637d8ae45c85db6fee6c6c6829704ac9"
+    },
+    {
+      "role": "placements",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-fixture.placements.json",
+      "sha256": "5c17530cc39f63084c06e97fb5462ffb1c00e5b413ffe423090ad2e0a2a2fc4d"
+    },
+    {
+      "role": "base-geometry",
+      "path": "lot4-layout-export/expectations/artifacts/neutral-successor.base-geometry.json",
+      "sha256": "ee11fbe1e3fb06cc157a799060d04e9f7b6279b0de8be3914e4c567af1218839"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/layout-008-neutral-successor.result.json",
+      "sha256": "ee1ea1ec3b7686fc6f6d7d459caf758b871e40ffbf793e4c19bf5accfc0077cb"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

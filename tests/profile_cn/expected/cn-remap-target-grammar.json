@@ -1,0 +1,142 @@
+{
+  "case": "cn-remap-target-grammar",
+  "clause": "DESIGN R3.3 §5.2 ID remapping (separate approved import migration); §13 OPEN-ID; §3.2 authoring subset",
+  "author": "spec-seal",
+  "operation": "remap_ids",
+  "profile": "cn-n",
+  "derivation": "Result ids must satisfy the authoring subset ^[A-Za-z_][A-Za-z0-9_.-]{0,255}$; '9-bad' starts with a digit, so remap refuses profile-schema (H C20). Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_map",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_main",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_in",
+                "name": "Call child",
+                "calledElement": "Process_sub"
+              },
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_out",
+                "name": "Call outside",
+                "calledElement": "Process_external"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_m",
+                "name": "Main work"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_sub",
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "b82ad8b0820f10ecf11e942cd21bf6a9d9916c42b64816abda6a023f7302f47e"
+    },
+    "importedDi": {
+      "descriptorDigest": "e3acf62669c4c0dbd5e9ed8990fe82fa3da9fd418926c8fe4171dd7147ec900c",
+      "diagrams": [],
+      "sha256": "36eb07f4ba7b03c6eac800d8ef1c14c526d870c2ecfbb6f455b8a292ede8ad62"
+    },
+    "command": {
+      "kind": "id-remap",
+      "approved": true,
+      "approval": "technical",
+      "map": [
+        {
+          "sourceId": "Task_m",
+          "resultId": "9-bad",
+          "domain": "migration"
+        }
+      ],
+      "referenceFreeAttestations": []
+    },
+    "activation": "qualification"
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "remapIds",
+    "code": "profile-schema",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "remapIds",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "b82ad8b0820f10ecf11e942cd21bf6a9d9916c42b64816abda6a023f7302f47e"
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n/1",
+      "version": "1.0.0",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "b82ad8b0820f10ecf11e942cd21bf6a9d9916c42b64816abda6a023f7302f47e"
+  }
+}

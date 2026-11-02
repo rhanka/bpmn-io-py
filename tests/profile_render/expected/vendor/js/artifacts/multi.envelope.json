@@ -1,0 +1,157 @@
+{
+  "documentVersion": "1",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "tree": {
+    "$type": "bpmn:Definitions",
+    "id": "Definitions_Multi",
+    "targetNamespace": "urn:neutral-lot4",
+    "rootElements": [
+      {
+        "$type": "bpmn:DataStore",
+        "id": "Store_Shared",
+        "name": "Shared register"
+      },
+      {
+        "$type": "bpmn:Process",
+        "id": "Process_A",
+        "name": "Process A",
+        "isExecutable": false,
+        "flowElements": [
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_A1",
+            "name": "Prepare"
+          },
+          {
+            "$type": "bpmn:DataStoreReference",
+            "id": "StoreRef_A",
+            "name": "Shared register",
+            "dataStoreRef": "Store_Shared"
+          }
+        ],
+        "artifacts": [
+          {
+            "$type": "bpmn:Association",
+            "id": "Assoc_A",
+            "sourceRef": "StoreRef_A",
+            "targetRef": "Task_A1",
+            "associationDirection": "One"
+          }
+        ]
+      },
+      {
+        "$type": "bpmn:Process",
+        "id": "Process_B",
+        "name": "Process B",
+        "isExecutable": false,
+        "flowElements": [
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_B1",
+            "name": "Review"
+          },
+          {
+            "$type": "bpmn:DataStoreReference",
+            "id": "StoreRef_B",
+            "name": "Register copy",
+            "dataStoreRef": "Store_Shared"
+          }
+        ],
+        "artifacts": [
+          {
+            "$type": "bpmn:Association",
+            "id": "Assoc_B",
+            "sourceRef": "StoreRef_B",
+            "targetRef": "Task_B1",
+            "associationDirection": "One"
+          }
+        ]
+      },
+      {
+        "$type": "bpmn:Collaboration",
+        "id": "Collab_A",
+        "participants": [
+          {
+            "$type": "bpmn:Participant",
+            "id": "Pool_A",
+            "name": "Process A",
+            "processRef": "Process_A"
+          },
+          {
+            "$type": "bpmn:Participant",
+            "id": "Band_A",
+            "name": "References A"
+          }
+        ]
+      },
+      {
+        "$type": "bpmn:Collaboration",
+        "id": "Collab_B",
+        "participants": [
+          {
+            "$type": "bpmn:Participant",
+            "id": "Pool_B",
+            "name": "Process B",
+            "processRef": "Process_B"
+          },
+          {
+            "$type": "bpmn:Participant",
+            "id": "Band_B",
+            "name": "References B"
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "ownerId": "Process_A",
+      "role": "collaboration",
+      "targetId": "Collab_A"
+    },
+    {
+      "ownerId": "Process_A",
+      "role": "main-participant",
+      "targetId": "Pool_A"
+    },
+    {
+      "ownerId": "Process_A",
+      "role": "reference-band",
+      "targetId": "Band_A"
+    },
+    {
+      "ownerId": "Process_B",
+      "role": "collaboration",
+      "targetId": "Collab_B"
+    },
+    {
+      "ownerId": "Process_B",
+      "role": "main-participant",
+      "targetId": "Pool_B"
+    },
+    {
+      "ownerId": "Process_B",
+      "role": "reference-band",
+      "targetId": "Band_B"
+    }
+  ],
+  "semanticRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f"
+}

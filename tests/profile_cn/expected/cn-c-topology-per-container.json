@@ -1,0 +1,641 @@
+{
+  "case": "cn-c-topology-per-container",
+  "clause": "DESIGN R3.3 §7.1 Completion C (Topology); §2.2 ids; §2.4 assignRef",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "cn-c",
+  "derivation": "F_X lives in Process_B but connects T_A1 to T_A2 of Process_A: it is an invalid cross-container flow (its endpoints exist with admitted types, so it is not a dangling reference). Derived arrays keep only flows owned by the node's own container, so F_X leaves T_A1.outgoing and T_A2.incoming, which become [] (an emptied array stays [], H F1), T_B1.outgoing becomes [F_B1], and every task without a same-container flow on one side receives [] (absent -> [] is a change: T_A2.outgoing, T_B1.incoming, T_B2.outgoing). F_X itself keeps its sourceRef/targetRef (never retargeted, moved or deleted). G_A has one inverse flow each way -> Unspecified. 12 entries. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_top",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:StartEvent",
+                "id": "S_A"
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_A",
+                "outgoing": [
+                  "F_A1",
+                  "F_A2"
+                ]
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_A1",
+                "name": "First",
+                "outgoing": [
+                  "F_X"
+                ]
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_A2",
+                "name": "Second",
+                "incoming": [
+                  "F_X"
+                ]
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F_A1",
+                "sourceRef": "S_A",
+                "targetRef": "G_A"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F_A2",
+                "sourceRef": "G_A",
+                "targetRef": "T_A1"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_B",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "T_B1",
+                "name": "Third",
+                "outgoing": [
+                  "F_X"
+                ]
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_B2",
+                "name": "Fourth"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F_B1",
+                "sourceRef": "T_B1",
+                "targetRef": "T_B2"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F_X",
+                "sourceRef": "T_A1",
+                "targetRef": "T_A2"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "9067cf292addb5de0c2edeedc8e2a1959eb729ce89bd98e02866aadc368fb64b"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-c/1",
+      "version": "1.0.0",
+      "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "9067cf292addb5de0c2edeedc8e2a1959eb729ce89bd98e02866aadc368fb64b",
+    "revision": "9bb61ba859c766513d3274122f6b09f0af05c6e5702f3f20f8f49577f061fa61",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/incoming",
+            "targetId": "G_A",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/incoming",
+            "targetId": "G_A",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F_A1"
+          ],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-gateway-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/outgoing",
+            "targetId": "G_A",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/outgoing",
+            "targetId": "G_A",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": [
+            "F_A1",
+            "F_A2"
+          ],
+          "after": [
+            "F_A2"
+          ],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-start-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
+            "targetId": "S_A",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
+            "targetId": "S_A",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F_A1"
+          ],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
+            "targetId": "T_A1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
+            "targetId": "T_A1",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F_A2"
+          ],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
+            "targetId": "T_A1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
+            "targetId": "T_A1",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": [
+            "F_X"
+          ],
+          "after": [],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/incoming",
+            "targetId": "T_A2",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/incoming",
+            "targetId": "T_A2",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": [
+            "F_X"
+          ],
+          "after": [],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/outgoing",
+            "targetId": "T_A2",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/3/outgoing",
+            "targetId": "T_A2",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/flowElements/0/incoming",
+            "targetId": "T_B1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/flowElements/0/incoming",
+            "targetId": "T_B1",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/flowElements/0/outgoing",
+            "targetId": "T_B1",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/flowElements/0/outgoing",
+            "targetId": "T_B1",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": [
+            "F_X"
+          ],
+          "after": [
+            "F_B1"
+          ],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/flowElements/1/incoming",
+            "targetId": "T_B2",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/flowElements/1/incoming",
+            "targetId": "T_B2",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [
+            "F_B1"
+          ],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/flowElements/1/outgoing",
+            "targetId": "T_B2",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/flowElements/1/outgoing",
+            "targetId": "T_B2",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "gateway-direction-unspecified",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/gatewayDirection",
+            "targetId": "G_A",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/gatewayDirection",
+            "targetId": "G_A",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "Unspecified",
+          "property": "gatewayDirection"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "9067cf292addb5de0c2edeedc8e2a1959eb729ce89bd98e02866aadc368fb64b",
+      "outputRevision": "9bb61ba859c766513d3274122f6b09f0af05c6e5702f3f20f8f49577f061fa61"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_top",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:StartEvent",
+                "id": "S_A",
+                "outgoing": [
+                  "F_A1"
+                ]
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_A",
+                "outgoing": [
+                  "F_A2"
+                ],
+                "incoming": [
+                  "F_A1"
+                ],
+                "gatewayDirection": "Unspecified"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_A1",
+                "name": "First",
+                "outgoing": [],
+                "incoming": [
+                  "F_A2"
+                ]
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_A2",
+                "name": "Second",
+                "incoming": [],
+                "outgoing": []
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F_A1",
+                "sourceRef": "S_A",
+                "targetRef": "G_A"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F_A2",
+                "sourceRef": "G_A",
+                "targetRef": "T_A1"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_B",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "T_B1",
+                "name": "Third",
+                "outgoing": [
+                  "F_B1"
+                ],
+                "incoming": []
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_B2",
+                "name": "Fourth",
+                "incoming": [
+                  "F_B1"
+                ],
+                "outgoing": []
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F_B1",
+                "sourceRef": "T_B1",
+                "targetRef": "T_B2"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F_X",
+                "sourceRef": "T_A1",
+                "targetRef": "T_A2"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "9bb61ba859c766513d3274122f6b09f0af05c6e5702f3f20f8f49577f061fa61"
+    }
+  },
+  "fixedPoint": true
+}

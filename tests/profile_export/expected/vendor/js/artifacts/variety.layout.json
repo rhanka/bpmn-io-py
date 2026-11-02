@@ -1,0 +1,229 @@
+{
+  "layoutVersion": "1",
+  "pages": [
+    {
+      "pageId": "Page_Variety",
+      "name": "Variety sheet",
+      "order": 0,
+      "semanticRootId": "Process_Variety",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1000000,
+        "height": 400000
+      }
+    }
+  ],
+  "geometry": [
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Call_V_di",
+      "semanticId": "Call_V",
+      "role": "content",
+      "bounds": {
+        "x": 340000,
+        "y": 110000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Call review",
+        "bounds": {
+          "x": 340000,
+          "y": 110000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Call review"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "End_V_di",
+      "semanticId": "End_V",
+      "role": "content",
+      "bounds": {
+        "x": 500000,
+        "y": 132000,
+        "width": 36000,
+        "height": 36000
+      },
+      "label": {
+        "text": "Stopped",
+        "bounds": {
+          "x": 483000,
+          "y": 173000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Stopped"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Flow_V1_di",
+      "semanticId": "Flow_V1",
+      "role": "content",
+      "bounds": {
+        "x": 116000,
+        "y": 150000,
+        "width": 64000,
+        "height": 0
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Start_V_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Service_V_di"
+      },
+      "waypoints": [
+        {
+          "x": 116000,
+          "y": 150000
+        },
+        {
+          "x": 180000,
+          "y": 150000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Flow_V2_di",
+      "semanticId": "Flow_V2",
+      "role": "content",
+      "bounds": {
+        "x": 280000,
+        "y": 150000,
+        "width": 60000,
+        "height": 0
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Service_V_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Call_V_di"
+      },
+      "waypoints": [
+        {
+          "x": 280000,
+          "y": 150000
+        },
+        {
+          "x": 340000,
+          "y": 150000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Flow_V3_di",
+      "semanticId": "Flow_V3",
+      "role": "content",
+      "bounds": {
+        "x": 440000,
+        "y": 150000,
+        "width": 60000,
+        "height": 0
+      },
+      "sourceOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "Call_V_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_Variety",
+        "occurrenceKey": "End_V_di"
+      },
+      "waypoints": [
+        {
+          "x": 440000,
+          "y": 150000
+        },
+        {
+          "x": 500000,
+          "y": 150000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Pool_Variety_di",
+      "semanticId": "Pool_Variety",
+      "role": "support",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 900000,
+        "height": 300000
+      },
+      "label": {
+        "text": "Variety process",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 30000,
+          "height": 300000
+        },
+        "lines": [
+          "Variety process"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Service_V_di",
+      "semanticId": "Service_V",
+      "role": "content",
+      "bounds": {
+        "x": 180000,
+        "y": 110000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Run check",
+        "bounds": {
+          "x": 180000,
+          "y": 110000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Run check"
+        ]
+      }
+    },
+    {
+      "pageId": "Page_Variety",
+      "occurrenceKey": "Start_V_di",
+      "semanticId": "Start_V",
+      "role": "content",
+      "bounds": {
+        "x": 80000,
+        "y": 132000,
+        "width": 36000,
+        "height": 36000
+      },
+      "label": {
+        "text": "Request",
+        "bounds": {
+          "x": 63000,
+          "y": 173000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Request"
+        ]
+      }
+    }
+  ]
+}

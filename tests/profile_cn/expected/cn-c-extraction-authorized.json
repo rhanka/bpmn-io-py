@@ -1,0 +1,267 @@
+{
+  "case": "cn-c-extraction-authorized",
+  "clause": "DESIGN R3.3 §7.1 (extraction actor schema); §2.4.1 actor matrix",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "grid-extraction",
+  "derivation": "The grid-extraction delta moves rootElements, flowElements and ServiceTask.name from import to ai, so every field present in the AI extraction is admitted to actor ai (spec §6.1). C then allocates the three missing ids and the grid default isExecutable=true. The fixed-point rerun uses mode retained (the output is retained content). Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "4a00d1ecbf2eb1a96e3fe12e8d920fa8b7e4e7191bb6375db01f186db5c53cca",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "flowElements": [
+              {
+                "$type": "bpmn:ServiceTask",
+                "name": "Extracted step"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "df6737790c341934da61cc37aaa4fdaf0949f049633caf8e5ef713ac43ac4a2e"
+    },
+    "mode": "extraction",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-grid/1",
+      "version": "2.0.0",
+      "sha256": "4a00d1ecbf2eb1a96e3fe12e8d920fa8b7e4e7191bb6375db01f186db5c53cca",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "df6737790c341934da61cc37aaa4fdaf0949f049633caf8e5ef713ac43ac4a2e",
+    "revision": "ddf6d044b68a036d072a2914abd18eb133ed177bef1a2cd30588aef095c8ca03",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-process",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": "g_ca5e9f8a0059b8590c017c6bfb02efcce6c875788c6efcbe1841f0e33091c5a0",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": true,
+          "property": "isExecutable"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/id",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/id",
+            "targetId": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/id",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/id",
+            "targetId": "g_472cdbd80d2d53cb1791c34294c41bf70f588de2c03b2e8f39aaa5f86e98721d",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_472cdbd80d2d53cb1791c34294c41bf70f588de2c03b2e8f39aaa5f86e98721d",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/id",
+            "targetId": null,
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/id",
+            "targetId": "g_ca5e9f8a0059b8590c017c6bfb02efcce6c875788c6efcbe1841f0e33091c5a0",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_ca5e9f8a0059b8590c017c6bfb02efcce6c875788c6efcbe1841f0e33091c5a0",
+          "property": "id"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "4a00d1ecbf2eb1a96e3fe12e8d920fa8b7e4e7191bb6375db01f186db5c53cca",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "4a00d1ecbf2eb1a96e3fe12e8d920fa8b7e4e7191bb6375db01f186db5c53cca",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "df6737790c341934da61cc37aaa4fdaf0949f049633caf8e5ef713ac43ac4a2e",
+      "outputRevision": "ddf6d044b68a036d072a2914abd18eb133ed177bef1a2cd30588aef095c8ca03"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "4a00d1ecbf2eb1a96e3fe12e8d920fa8b7e4e7191bb6375db01f186db5c53cca",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "flowElements": [
+              {
+                "$type": "bpmn:ServiceTask",
+                "name": "Extracted step",
+                "id": "g_472cdbd80d2d53cb1791c34294c41bf70f588de2c03b2e8f39aaa5f86e98721d"
+              }
+            ],
+            "id": "g_ca5e9f8a0059b8590c017c6bfb02efcce6c875788c6efcbe1841f0e33091c5a0",
+            "isExecutable": true
+          }
+        ],
+        "id": "g_ef5c144fe3bd7d1e6005468ef00b592d7bd71807c23675349a8c7d6fb228ba21"
+      },
+      "bindings": [],
+      "semanticRevision": "ddf6d044b68a036d072a2914abd18eb133ed177bef1a2cd30588aef095c8ca03"
+    }
+  },
+  "fixedPoint": true
+}

@@ -1,0 +1,3732 @@
+{
+  "caseId": "l3-tx-incremental-draft",
+  "operation": "transaction-script",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "session",
+      "json": {
+        "profile": {
+          "path": "lot3-cn/expectations/profile/neutral-cn.json",
+          "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+        },
+        "descriptors": {
+          "path": "lot3-cn/expectations/profile/neutral-cn-descriptors.json",
+          "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+        },
+        "metrics": {
+          "path": "profile-parity-corpus/profile-mechanism/1/neutral-metrics.json",
+          "sha256": "151d1a1fac1cbcab8ca53f155c3210437f4a2c285f6b68721973d1da6c362ee0"
+        },
+        "mode": "business-profile",
+        "readiness": "draft",
+        "theme": "plain"
+      }
+    }
+  ],
+  "commandArtifact": {
+    "role": "script",
+    "json": {
+      "format": "lot3-transaction-script/2",
+      "steps": [
+        {
+          "step": 1,
+          "call": "onChange",
+          "listener": "L1"
+        },
+        {
+          "step": 2,
+          "call": "setDefinitions",
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_tx",
+              "targetNamespace": "urn:neutral-cn:1",
+              "exporterVersion": "fixture-cn-1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_T",
+                  "name": "Draft",
+                  "isExecutable": false
+                },
+                {
+                  "$type": "bpmn:Collaboration",
+                  "id": "Collaboration_T",
+                  "name": "Pool collaboration",
+                  "participants": [
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "Participant_T",
+                      "name": "Draft pool",
+                      "processRef": "Process_T"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [
+              {
+                "ownerId": "Process_T",
+                "role": "collaboration",
+                "targetId": "Collaboration_T"
+              },
+              {
+                "ownerId": "Process_T",
+                "role": "main-participant",
+                "targetId": "Participant_T"
+              }
+            ],
+            "semanticRevision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5"
+          },
+          "options": {
+            "mode": "draft"
+          }
+        },
+        {
+          "step": 3,
+          "call": "applyCommands",
+          "request": {
+            "baseRevision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5",
+            "expectedViewRevision": {
+              "$ref": {
+                "step": 2,
+                "pointer": "/result/payload/viewRevision"
+              }
+            },
+            "transactionId": "tx-start",
+            "commands": [
+              {
+                "command": "surface",
+                "entry": "start-create",
+                "context": {
+                  "owner": "Process_T",
+                  "key": "start",
+                  "value": "Request received"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 4,
+          "call": "applyCommands",
+          "request": {
+            "baseRevision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476",
+            "expectedViewRevision": {
+              "$ref": {
+                "step": 3,
+                "pointer": "/result/payload/viewRevision"
+              }
+            },
+            "transactionId": "tx-task",
+            "commands": [
+              {
+                "command": "surface",
+                "entry": "task-create",
+                "context": {
+                  "owner": "Process_T",
+                  "key": "review",
+                  "value": "Review request"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 5,
+          "call": "applyCommands",
+          "request": {
+            "baseRevision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24",
+            "expectedViewRevision": {
+              "$ref": {
+                "step": 4,
+                "pointer": "/result/payload/viewRevision"
+              }
+            },
+            "transactionId": "tx-flow-1",
+            "commands": [
+              {
+                "command": "surface",
+                "entry": "flow-connect",
+                "context": {
+                  "owner": "Process_T",
+                  "source": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                  "target": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                  "key": "start-review"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 6,
+          "call": "applyCommands",
+          "request": {
+            "baseRevision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61",
+            "expectedViewRevision": {
+              "$ref": {
+                "step": 5,
+                "pointer": "/result/payload/viewRevision"
+              }
+            },
+            "transactionId": "tx-end",
+            "commands": [
+              {
+                "command": "surface",
+                "entry": "end-create",
+                "context": {
+                  "owner": "Process_T",
+                  "key": "done",
+                  "value": "Request closed"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 7,
+          "call": "getSnapshot"
+        },
+        {
+          "step": 8,
+          "call": "applyCommands",
+          "request": {
+            "baseRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+            "expectedViewRevision": {
+              "$ref": {
+                "step": 7,
+                "pointer": "/result/payload/viewRevision"
+              }
+            },
+            "transactionId": "tx-flow-2",
+            "commands": [
+              {
+                "command": "surface",
+                "entry": "flow-connect",
+                "context": {
+                  "owner": "Process_T",
+                  "source": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                  "target": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                  "key": "review-done"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 9,
+          "call": "getSnapshot"
+        },
+        {
+          "step": 10,
+          "call": "undo",
+          "options": {
+            "expectedRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+            "expectedViewRevision": {
+              "$ref": {
+                "step": 9,
+                "pointer": "/result/payload/viewRevision"
+              }
+            }
+          }
+        },
+        {
+          "step": 11,
+          "call": "redo",
+          "options": {
+            "expectedRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+            "expectedViewRevision": {
+              "$ref": {
+                "step": 10,
+                "pointer": "/result/payload/viewRevision"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "expectedArtifacts": [
+    {
+      "role": "trace",
+      "json": [
+        {
+          "step": 1,
+          "result": {
+            "status": "ok",
+            "payload": {
+              "subscriptionId": "unsealed"
+            },
+            "diagnostics": []
+          },
+          "events": {
+            "L1": []
+          }
+        },
+        {
+          "step": 2,
+          "result": {
+            "status": "ok",
+            "operation": "setDefinitions",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "baseRevision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5",
+            "revision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5",
+            "report": "unsealed",
+            "payload": {
+              "envelope": {
+                "documentVersion": "1",
+                "profileIdentity": {
+                  "mechanismVersion": "1",
+                  "schemaVersion": "1.0.0",
+                  "profile": "neutral-cn/1",
+                  "version": "1.1.0",
+                  "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                  "base": {
+                    "id": "neutral-cn-base/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                  },
+                  "descriptors": [
+                    {
+                      "id": "neutral-cn-descriptors/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                    }
+                  ]
+                },
+                "tree": {
+                  "$type": "bpmn:Definitions",
+                  "id": "Definitions_tx",
+                  "targetNamespace": "urn:neutral-cn:1",
+                  "exporterVersion": "fixture-cn-1",
+                  "rootElements": [
+                    {
+                      "$type": "bpmn:Process",
+                      "id": "Process_T",
+                      "name": "Draft",
+                      "isExecutable": false
+                    },
+                    {
+                      "$type": "bpmn:Collaboration",
+                      "id": "Collaboration_T",
+                      "name": "Pool collaboration",
+                      "participants": [
+                        {
+                          "$type": "bpmn:Participant",
+                          "id": "Participant_T",
+                          "name": "Draft pool",
+                          "processRef": "Process_T"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "bindings": [
+                  {
+                    "ownerId": "Process_T",
+                    "role": "collaboration",
+                    "targetId": "Collaboration_T"
+                  },
+                  {
+                    "ownerId": "Process_T",
+                    "role": "main-participant",
+                    "targetId": "Participant_T"
+                  }
+                ],
+                "semanticRevision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5"
+              },
+              "semanticRevision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5",
+              "viewRevision": "unsealed"
+            }
+          },
+          "history": {
+            "past": 0,
+            "future": 0
+          },
+          "events": {
+            "L1": [
+              {
+                "envelope": {
+                  "documentVersion": "1",
+                  "profileIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "tree": {
+                    "$type": "bpmn:Definitions",
+                    "id": "Definitions_tx",
+                    "targetNamespace": "urn:neutral-cn:1",
+                    "exporterVersion": "fixture-cn-1",
+                    "rootElements": [
+                      {
+                        "$type": "bpmn:Process",
+                        "id": "Process_T",
+                        "name": "Draft",
+                        "isExecutable": false
+                      },
+                      {
+                        "$type": "bpmn:Collaboration",
+                        "id": "Collaboration_T",
+                        "name": "Pool collaboration",
+                        "participants": [
+                          {
+                            "$type": "bpmn:Participant",
+                            "id": "Participant_T",
+                            "name": "Draft pool",
+                            "processRef": "Process_T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "bindings": [
+                    {
+                      "ownerId": "Process_T",
+                      "role": "collaboration",
+                      "targetId": "Collaboration_T"
+                    },
+                    {
+                      "ownerId": "Process_T",
+                      "role": "main-participant",
+                      "targetId": "Participant_T"
+                    }
+                  ],
+                  "semanticRevision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5"
+                },
+                "semanticRevision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5",
+                "viewRevision": {
+                  "$same": {
+                    "step": 2,
+                    "pointer": "/result/payload/viewRevision"
+                  }
+                },
+                "transactionId": "unsealed",
+                "origin": "load",
+                "report": {
+                  "$same": {
+                    "step": 2,
+                    "pointer": "/result/report"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "result": {
+            "status": "ok",
+            "operation": "applyCommands",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "baseRevision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5",
+            "revision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476",
+            "report": {
+              "reportVersion": "2",
+              "operation": "applyCommands",
+              "sourceIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "targetIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "inputRevision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5",
+              "outputRevision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476",
+              "entries": [
+                {
+                  "code": "complete/assignRef",
+                  "severity": "info",
+                  "classification": "repairable",
+                  "stage": "complete",
+                  "ruleId": "c-topology-outgoing",
+                  "messageKey": "complete.assignRef",
+                  "disposition": "corrected",
+                  "source": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "generated"
+                  },
+                  "result": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/0/outgoing",
+                    "targetId": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                    "provenance": "generated"
+                  },
+                  "property": "outgoing",
+                  "beforePresent": false,
+                  "afterPresent": true,
+                  "after": []
+                }
+              ],
+              "rawStandardFindings": [],
+              "idMap": [],
+              "artifacts": []
+            },
+            "payload": {
+              "envelope": {
+                "documentVersion": "1",
+                "profileIdentity": {
+                  "mechanismVersion": "1",
+                  "schemaVersion": "1.0.0",
+                  "profile": "neutral-cn/1",
+                  "version": "1.1.0",
+                  "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                  "base": {
+                    "id": "neutral-cn-base/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                  },
+                  "descriptors": [
+                    {
+                      "id": "neutral-cn-descriptors/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                    }
+                  ]
+                },
+                "tree": {
+                  "$type": "bpmn:Definitions",
+                  "id": "Definitions_tx",
+                  "targetNamespace": "urn:neutral-cn:1",
+                  "exporterVersion": "fixture-cn-1",
+                  "rootElements": [
+                    {
+                      "$type": "bpmn:Process",
+                      "id": "Process_T",
+                      "name": "Draft",
+                      "isExecutable": false,
+                      "flowElements": [
+                        {
+                          "$type": "bpmn:StartEvent",
+                          "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "name": "Request received",
+                          "outgoing": []
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Collaboration",
+                      "id": "Collaboration_T",
+                      "name": "Pool collaboration",
+                      "participants": [
+                        {
+                          "$type": "bpmn:Participant",
+                          "id": "Participant_T",
+                          "name": "Draft pool",
+                          "processRef": "Process_T"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "bindings": [
+                  {
+                    "ownerId": "Process_T",
+                    "role": "collaboration",
+                    "targetId": "Collaboration_T"
+                  },
+                  {
+                    "ownerId": "Process_T",
+                    "role": "main-participant",
+                    "targetId": "Participant_T"
+                  }
+                ],
+                "semanticRevision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476"
+              },
+              "semanticRevision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476",
+              "viewRevision": {
+                "$differs": {
+                  "step": 2,
+                  "pointer": "/result/payload/viewRevision"
+                }
+              },
+              "transactionId": "tx-start",
+              "changed": true
+            }
+          },
+          "history": {
+            "past": 1,
+            "future": 0
+          },
+          "events": {
+            "L1": [
+              {
+                "envelope": {
+                  "documentVersion": "1",
+                  "profileIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "tree": {
+                    "$type": "bpmn:Definitions",
+                    "id": "Definitions_tx",
+                    "targetNamespace": "urn:neutral-cn:1",
+                    "exporterVersion": "fixture-cn-1",
+                    "rootElements": [
+                      {
+                        "$type": "bpmn:Process",
+                        "id": "Process_T",
+                        "name": "Draft",
+                        "isExecutable": false,
+                        "flowElements": [
+                          {
+                            "$type": "bpmn:StartEvent",
+                            "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "name": "Request received",
+                            "outgoing": []
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:Collaboration",
+                        "id": "Collaboration_T",
+                        "name": "Pool collaboration",
+                        "participants": [
+                          {
+                            "$type": "bpmn:Participant",
+                            "id": "Participant_T",
+                            "name": "Draft pool",
+                            "processRef": "Process_T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "bindings": [
+                    {
+                      "ownerId": "Process_T",
+                      "role": "collaboration",
+                      "targetId": "Collaboration_T"
+                    },
+                    {
+                      "ownerId": "Process_T",
+                      "role": "main-participant",
+                      "targetId": "Participant_T"
+                    }
+                  ],
+                  "semanticRevision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476"
+                },
+                "semanticRevision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476",
+                "viewRevision": {
+                  "$same": {
+                    "step": 3,
+                    "pointer": "/result/payload/viewRevision"
+                  }
+                },
+                "transactionId": "tx-start",
+                "origin": "command",
+                "report": {
+                  "reportVersion": "2",
+                  "operation": "applyCommands",
+                  "sourceIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "targetIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "inputRevision": "4c0dfb55a1d44babf7faee13e771be6a780138a55f1b566098dcc34a0aba16c5",
+                  "outputRevision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476",
+                  "entries": [
+                    {
+                      "code": "complete/assignRef",
+                      "severity": "info",
+                      "classification": "repairable",
+                      "stage": "complete",
+                      "ruleId": "c-topology-outgoing",
+                      "messageKey": "complete.assignRef",
+                      "disposition": "corrected",
+                      "source": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "generated"
+                      },
+                      "result": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/0/outgoing",
+                        "targetId": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                        "provenance": "generated"
+                      },
+                      "property": "outgoing",
+                      "beforePresent": false,
+                      "afterPresent": true,
+                      "after": []
+                    }
+                  ],
+                  "rawStandardFindings": [],
+                  "idMap": [],
+                  "artifacts": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 4,
+          "result": {
+            "status": "ok",
+            "operation": "applyCommands",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "baseRevision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476",
+            "revision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24",
+            "report": {
+              "reportVersion": "2",
+              "operation": "applyCommands",
+              "sourceIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "targetIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "inputRevision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476",
+              "outputRevision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24",
+              "entries": [
+                {
+                  "code": "complete/assignRef",
+                  "severity": "info",
+                  "classification": "repairable",
+                  "stage": "complete",
+                  "ruleId": "c-topology-incoming",
+                  "messageKey": "complete.assignRef",
+                  "disposition": "corrected",
+                  "source": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "generated"
+                  },
+                  "result": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1/incoming",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "generated"
+                  },
+                  "property": "incoming",
+                  "beforePresent": false,
+                  "afterPresent": true,
+                  "after": []
+                },
+                {
+                  "code": "complete/assignRef",
+                  "severity": "info",
+                  "classification": "repairable",
+                  "stage": "complete",
+                  "ruleId": "c-topology-outgoing",
+                  "messageKey": "complete.assignRef",
+                  "disposition": "corrected",
+                  "source": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "generated"
+                  },
+                  "result": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1/outgoing",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "generated"
+                  },
+                  "property": "outgoing",
+                  "beforePresent": false,
+                  "afterPresent": true,
+                  "after": []
+                },
+                {
+                  "code": "ordinary-start-unreachable",
+                  "severity": "warn",
+                  "classification": "readiness",
+                  "stage": "post-normalize",
+                  "ruleId": "ordinary-from-start",
+                  "messageKey": "ordinary-start-unreachable",
+                  "disposition": "observed",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "unavailable"
+                  },
+                  "beforePresent": false,
+                  "afterPresent": false
+                },
+                {
+                  "code": "ordinary-incoming-required",
+                  "severity": "warn",
+                  "classification": "readiness",
+                  "stage": "post-normalize",
+                  "ruleId": "ordinary-incoming",
+                  "messageKey": "ordinary-incoming-required",
+                  "disposition": "observed",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "unavailable"
+                  },
+                  "beforePresent": false,
+                  "afterPresent": false
+                },
+                {
+                  "code": "ordinary-outgoing-required",
+                  "severity": "warn",
+                  "classification": "readiness",
+                  "stage": "post-normalize",
+                  "ruleId": "ordinary-outgoing",
+                  "messageKey": "ordinary-outgoing-required",
+                  "disposition": "observed",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "unavailable"
+                  },
+                  "beforePresent": false,
+                  "afterPresent": false
+                },
+                {
+                  "code": "ordinary-end-unreachable",
+                  "severity": "warn",
+                  "classification": "readiness",
+                  "stage": "post-normalize",
+                  "ruleId": "ordinary-to-end",
+                  "messageKey": "ordinary-end-unreachable",
+                  "disposition": "observed",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "unavailable"
+                  },
+                  "beforePresent": false,
+                  "afterPresent": false
+                }
+              ],
+              "rawStandardFindings": [],
+              "idMap": [],
+              "artifacts": []
+            },
+            "payload": {
+              "envelope": {
+                "documentVersion": "1",
+                "profileIdentity": {
+                  "mechanismVersion": "1",
+                  "schemaVersion": "1.0.0",
+                  "profile": "neutral-cn/1",
+                  "version": "1.1.0",
+                  "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                  "base": {
+                    "id": "neutral-cn-base/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                  },
+                  "descriptors": [
+                    {
+                      "id": "neutral-cn-descriptors/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                    }
+                  ]
+                },
+                "tree": {
+                  "$type": "bpmn:Definitions",
+                  "id": "Definitions_tx",
+                  "targetNamespace": "urn:neutral-cn:1",
+                  "exporterVersion": "fixture-cn-1",
+                  "rootElements": [
+                    {
+                      "$type": "bpmn:Process",
+                      "id": "Process_T",
+                      "name": "Draft",
+                      "isExecutable": false,
+                      "flowElements": [
+                        {
+                          "$type": "bpmn:StartEvent",
+                          "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "name": "Request received",
+                          "outgoing": []
+                        },
+                        {
+                          "$type": "bpmn:Task",
+                          "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                          "name": "Review request",
+                          "incoming": [],
+                          "outgoing": []
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Collaboration",
+                      "id": "Collaboration_T",
+                      "name": "Pool collaboration",
+                      "participants": [
+                        {
+                          "$type": "bpmn:Participant",
+                          "id": "Participant_T",
+                          "name": "Draft pool",
+                          "processRef": "Process_T"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "bindings": [
+                  {
+                    "ownerId": "Process_T",
+                    "role": "collaboration",
+                    "targetId": "Collaboration_T"
+                  },
+                  {
+                    "ownerId": "Process_T",
+                    "role": "main-participant",
+                    "targetId": "Participant_T"
+                  }
+                ],
+                "semanticRevision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24"
+              },
+              "semanticRevision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24",
+              "viewRevision": {
+                "$differs": {
+                  "step": 3,
+                  "pointer": "/result/payload/viewRevision"
+                }
+              },
+              "transactionId": "tx-task",
+              "changed": true
+            }
+          },
+          "history": {
+            "past": 2,
+            "future": 0
+          },
+          "events": {
+            "L1": [
+              {
+                "envelope": {
+                  "documentVersion": "1",
+                  "profileIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "tree": {
+                    "$type": "bpmn:Definitions",
+                    "id": "Definitions_tx",
+                    "targetNamespace": "urn:neutral-cn:1",
+                    "exporterVersion": "fixture-cn-1",
+                    "rootElements": [
+                      {
+                        "$type": "bpmn:Process",
+                        "id": "Process_T",
+                        "name": "Draft",
+                        "isExecutable": false,
+                        "flowElements": [
+                          {
+                            "$type": "bpmn:StartEvent",
+                            "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "name": "Request received",
+                            "outgoing": []
+                          },
+                          {
+                            "$type": "bpmn:Task",
+                            "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                            "name": "Review request",
+                            "incoming": [],
+                            "outgoing": []
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:Collaboration",
+                        "id": "Collaboration_T",
+                        "name": "Pool collaboration",
+                        "participants": [
+                          {
+                            "$type": "bpmn:Participant",
+                            "id": "Participant_T",
+                            "name": "Draft pool",
+                            "processRef": "Process_T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "bindings": [
+                    {
+                      "ownerId": "Process_T",
+                      "role": "collaboration",
+                      "targetId": "Collaboration_T"
+                    },
+                    {
+                      "ownerId": "Process_T",
+                      "role": "main-participant",
+                      "targetId": "Participant_T"
+                    }
+                  ],
+                  "semanticRevision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24"
+                },
+                "semanticRevision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24",
+                "viewRevision": {
+                  "$same": {
+                    "step": 4,
+                    "pointer": "/result/payload/viewRevision"
+                  }
+                },
+                "transactionId": "tx-task",
+                "origin": "command",
+                "report": {
+                  "reportVersion": "2",
+                  "operation": "applyCommands",
+                  "sourceIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "targetIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "inputRevision": "9599bf986b39c92ced9e0f44de7283b2b58ecc65f241d820d96309315fecc476",
+                  "outputRevision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24",
+                  "entries": [
+                    {
+                      "code": "complete/assignRef",
+                      "severity": "info",
+                      "classification": "repairable",
+                      "stage": "complete",
+                      "ruleId": "c-topology-incoming",
+                      "messageKey": "complete.assignRef",
+                      "disposition": "corrected",
+                      "source": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "generated"
+                      },
+                      "result": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1/incoming",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "generated"
+                      },
+                      "property": "incoming",
+                      "beforePresent": false,
+                      "afterPresent": true,
+                      "after": []
+                    },
+                    {
+                      "code": "complete/assignRef",
+                      "severity": "info",
+                      "classification": "repairable",
+                      "stage": "complete",
+                      "ruleId": "c-topology-outgoing",
+                      "messageKey": "complete.assignRef",
+                      "disposition": "corrected",
+                      "source": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "generated"
+                      },
+                      "result": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1/outgoing",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "generated"
+                      },
+                      "property": "outgoing",
+                      "beforePresent": false,
+                      "afterPresent": true,
+                      "after": []
+                    },
+                    {
+                      "code": "ordinary-start-unreachable",
+                      "severity": "warn",
+                      "classification": "readiness",
+                      "stage": "post-normalize",
+                      "ruleId": "ordinary-from-start",
+                      "messageKey": "ordinary-start-unreachable",
+                      "disposition": "observed",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "unavailable"
+                      },
+                      "beforePresent": false,
+                      "afterPresent": false
+                    },
+                    {
+                      "code": "ordinary-incoming-required",
+                      "severity": "warn",
+                      "classification": "readiness",
+                      "stage": "post-normalize",
+                      "ruleId": "ordinary-incoming",
+                      "messageKey": "ordinary-incoming-required",
+                      "disposition": "observed",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "unavailable"
+                      },
+                      "beforePresent": false,
+                      "afterPresent": false
+                    },
+                    {
+                      "code": "ordinary-outgoing-required",
+                      "severity": "warn",
+                      "classification": "readiness",
+                      "stage": "post-normalize",
+                      "ruleId": "ordinary-outgoing",
+                      "messageKey": "ordinary-outgoing-required",
+                      "disposition": "observed",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "unavailable"
+                      },
+                      "beforePresent": false,
+                      "afterPresent": false
+                    },
+                    {
+                      "code": "ordinary-end-unreachable",
+                      "severity": "warn",
+                      "classification": "readiness",
+                      "stage": "post-normalize",
+                      "ruleId": "ordinary-to-end",
+                      "messageKey": "ordinary-end-unreachable",
+                      "disposition": "observed",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "unavailable"
+                      },
+                      "beforePresent": false,
+                      "afterPresent": false
+                    }
+                  ],
+                  "rawStandardFindings": [],
+                  "idMap": [],
+                  "artifacts": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 5,
+          "result": {
+            "status": "ok",
+            "operation": "applyCommands",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "baseRevision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24",
+            "revision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61",
+            "report": {
+              "reportVersion": "2",
+              "operation": "applyCommands",
+              "sourceIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "targetIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "inputRevision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24",
+              "outputRevision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61",
+              "entries": [
+                {
+                  "code": "complete/assignRef",
+                  "severity": "info",
+                  "classification": "repairable",
+                  "stage": "complete",
+                  "ruleId": "c-topology-incoming",
+                  "messageKey": "complete.assignRef",
+                  "disposition": "corrected",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1/incoming",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1/incoming",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "property": "incoming",
+                  "beforePresent": true,
+                  "before": [],
+                  "afterPresent": true,
+                  "after": [
+                    "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                  ]
+                },
+                {
+                  "code": "complete/assignRef",
+                  "severity": "info",
+                  "classification": "repairable",
+                  "stage": "complete",
+                  "ruleId": "c-topology-outgoing",
+                  "messageKey": "complete.assignRef",
+                  "disposition": "corrected",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/0/outgoing",
+                    "targetId": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/0/outgoing",
+                    "targetId": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                    "provenance": "exact"
+                  },
+                  "property": "outgoing",
+                  "beforePresent": true,
+                  "before": [],
+                  "afterPresent": true,
+                  "after": [
+                    "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                  ]
+                },
+                {
+                  "code": "ordinary-outgoing-required",
+                  "severity": "warn",
+                  "classification": "readiness",
+                  "stage": "post-normalize",
+                  "ruleId": "ordinary-outgoing",
+                  "messageKey": "ordinary-outgoing-required",
+                  "disposition": "observed",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "unavailable"
+                  },
+                  "beforePresent": false,
+                  "afterPresent": false
+                },
+                {
+                  "code": "ordinary-end-unreachable",
+                  "severity": "warn",
+                  "classification": "readiness",
+                  "stage": "post-normalize",
+                  "ruleId": "ordinary-to-end",
+                  "messageKey": "ordinary-end-unreachable",
+                  "disposition": "observed",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "unavailable"
+                  },
+                  "beforePresent": false,
+                  "afterPresent": false
+                }
+              ],
+              "rawStandardFindings": [],
+              "idMap": [],
+              "artifacts": []
+            },
+            "payload": {
+              "envelope": {
+                "documentVersion": "1",
+                "profileIdentity": {
+                  "mechanismVersion": "1",
+                  "schemaVersion": "1.0.0",
+                  "profile": "neutral-cn/1",
+                  "version": "1.1.0",
+                  "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                  "base": {
+                    "id": "neutral-cn-base/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                  },
+                  "descriptors": [
+                    {
+                      "id": "neutral-cn-descriptors/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                    }
+                  ]
+                },
+                "tree": {
+                  "$type": "bpmn:Definitions",
+                  "id": "Definitions_tx",
+                  "targetNamespace": "urn:neutral-cn:1",
+                  "exporterVersion": "fixture-cn-1",
+                  "rootElements": [
+                    {
+                      "$type": "bpmn:Process",
+                      "id": "Process_T",
+                      "name": "Draft",
+                      "isExecutable": false,
+                      "flowElements": [
+                        {
+                          "$type": "bpmn:StartEvent",
+                          "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "name": "Request received",
+                          "outgoing": [
+                            "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:Task",
+                          "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                          "name": "Review request",
+                          "incoming": [
+                            "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                          ],
+                          "outgoing": []
+                        },
+                        {
+                          "$type": "bpmn:SequenceFlow",
+                          "id": "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb",
+                          "sourceRef": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "targetRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Collaboration",
+                      "id": "Collaboration_T",
+                      "name": "Pool collaboration",
+                      "participants": [
+                        {
+                          "$type": "bpmn:Participant",
+                          "id": "Participant_T",
+                          "name": "Draft pool",
+                          "processRef": "Process_T"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "bindings": [
+                  {
+                    "ownerId": "Process_T",
+                    "role": "collaboration",
+                    "targetId": "Collaboration_T"
+                  },
+                  {
+                    "ownerId": "Process_T",
+                    "role": "main-participant",
+                    "targetId": "Participant_T"
+                  }
+                ],
+                "semanticRevision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61"
+              },
+              "semanticRevision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61",
+              "viewRevision": {
+                "$differs": {
+                  "step": 4,
+                  "pointer": "/result/payload/viewRevision"
+                }
+              },
+              "transactionId": "tx-flow-1",
+              "changed": true
+            }
+          },
+          "history": {
+            "past": 3,
+            "future": 0
+          },
+          "events": {
+            "L1": [
+              {
+                "envelope": {
+                  "documentVersion": "1",
+                  "profileIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "tree": {
+                    "$type": "bpmn:Definitions",
+                    "id": "Definitions_tx",
+                    "targetNamespace": "urn:neutral-cn:1",
+                    "exporterVersion": "fixture-cn-1",
+                    "rootElements": [
+                      {
+                        "$type": "bpmn:Process",
+                        "id": "Process_T",
+                        "name": "Draft",
+                        "isExecutable": false,
+                        "flowElements": [
+                          {
+                            "$type": "bpmn:StartEvent",
+                            "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "name": "Request received",
+                            "outgoing": [
+                              "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                            ]
+                          },
+                          {
+                            "$type": "bpmn:Task",
+                            "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                            "name": "Review request",
+                            "incoming": [
+                              "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                            ],
+                            "outgoing": []
+                          },
+                          {
+                            "$type": "bpmn:SequenceFlow",
+                            "id": "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb",
+                            "sourceRef": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "targetRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1"
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:Collaboration",
+                        "id": "Collaboration_T",
+                        "name": "Pool collaboration",
+                        "participants": [
+                          {
+                            "$type": "bpmn:Participant",
+                            "id": "Participant_T",
+                            "name": "Draft pool",
+                            "processRef": "Process_T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "bindings": [
+                    {
+                      "ownerId": "Process_T",
+                      "role": "collaboration",
+                      "targetId": "Collaboration_T"
+                    },
+                    {
+                      "ownerId": "Process_T",
+                      "role": "main-participant",
+                      "targetId": "Participant_T"
+                    }
+                  ],
+                  "semanticRevision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61"
+                },
+                "semanticRevision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61",
+                "viewRevision": {
+                  "$same": {
+                    "step": 5,
+                    "pointer": "/result/payload/viewRevision"
+                  }
+                },
+                "transactionId": "tx-flow-1",
+                "origin": "command",
+                "report": {
+                  "reportVersion": "2",
+                  "operation": "applyCommands",
+                  "sourceIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "targetIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "inputRevision": "c0b942b7bfc5abc00c4687dd36255a05c73c1ab1fff9c1e3d071beaf3c9a8e24",
+                  "outputRevision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61",
+                  "entries": [
+                    {
+                      "code": "complete/assignRef",
+                      "severity": "info",
+                      "classification": "repairable",
+                      "stage": "complete",
+                      "ruleId": "c-topology-incoming",
+                      "messageKey": "complete.assignRef",
+                      "disposition": "corrected",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1/incoming",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1/incoming",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "property": "incoming",
+                      "beforePresent": true,
+                      "before": [],
+                      "afterPresent": true,
+                      "after": [
+                        "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                      ]
+                    },
+                    {
+                      "code": "complete/assignRef",
+                      "severity": "info",
+                      "classification": "repairable",
+                      "stage": "complete",
+                      "ruleId": "c-topology-outgoing",
+                      "messageKey": "complete.assignRef",
+                      "disposition": "corrected",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/0/outgoing",
+                        "targetId": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/0/outgoing",
+                        "targetId": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                        "provenance": "exact"
+                      },
+                      "property": "outgoing",
+                      "beforePresent": true,
+                      "before": [],
+                      "afterPresent": true,
+                      "after": [
+                        "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                      ]
+                    },
+                    {
+                      "code": "ordinary-outgoing-required",
+                      "severity": "warn",
+                      "classification": "readiness",
+                      "stage": "post-normalize",
+                      "ruleId": "ordinary-outgoing",
+                      "messageKey": "ordinary-outgoing-required",
+                      "disposition": "observed",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "unavailable"
+                      },
+                      "beforePresent": false,
+                      "afterPresent": false
+                    },
+                    {
+                      "code": "ordinary-end-unreachable",
+                      "severity": "warn",
+                      "classification": "readiness",
+                      "stage": "post-normalize",
+                      "ruleId": "ordinary-to-end",
+                      "messageKey": "ordinary-end-unreachable",
+                      "disposition": "observed",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "unavailable"
+                      },
+                      "beforePresent": false,
+                      "afterPresent": false
+                    }
+                  ],
+                  "rawStandardFindings": [],
+                  "idMap": [],
+                  "artifacts": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 6,
+          "result": {
+            "status": "ok",
+            "operation": "applyCommands",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "baseRevision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61",
+            "revision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+            "report": {
+              "reportVersion": "2",
+              "operation": "applyCommands",
+              "sourceIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "targetIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "inputRevision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61",
+              "outputRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+              "entries": [
+                {
+                  "code": "complete/assignRef",
+                  "severity": "info",
+                  "classification": "repairable",
+                  "stage": "complete",
+                  "ruleId": "c-topology-incoming",
+                  "messageKey": "complete.assignRef",
+                  "disposition": "corrected",
+                  "source": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "generated"
+                  },
+                  "result": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/3/incoming",
+                    "targetId": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                    "provenance": "generated"
+                  },
+                  "property": "incoming",
+                  "beforePresent": false,
+                  "afterPresent": true,
+                  "after": []
+                },
+                {
+                  "code": "ordinary-outgoing-required",
+                  "severity": "warn",
+                  "classification": "readiness",
+                  "stage": "post-normalize",
+                  "ruleId": "ordinary-outgoing",
+                  "messageKey": "ordinary-outgoing-required",
+                  "disposition": "observed",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "unavailable"
+                  },
+                  "beforePresent": false,
+                  "afterPresent": false
+                },
+                {
+                  "code": "ordinary-end-unreachable",
+                  "severity": "warn",
+                  "classification": "readiness",
+                  "stage": "post-normalize",
+                  "ruleId": "ordinary-to-end",
+                  "messageKey": "ordinary-end-unreachable",
+                  "disposition": "observed",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "none",
+                    "pointer": null,
+                    "targetId": null,
+                    "provenance": "unavailable"
+                  },
+                  "beforePresent": false,
+                  "afterPresent": false
+                }
+              ],
+              "rawStandardFindings": [],
+              "idMap": [],
+              "artifacts": []
+            },
+            "payload": {
+              "envelope": {
+                "documentVersion": "1",
+                "profileIdentity": {
+                  "mechanismVersion": "1",
+                  "schemaVersion": "1.0.0",
+                  "profile": "neutral-cn/1",
+                  "version": "1.1.0",
+                  "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                  "base": {
+                    "id": "neutral-cn-base/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                  },
+                  "descriptors": [
+                    {
+                      "id": "neutral-cn-descriptors/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                    }
+                  ]
+                },
+                "tree": {
+                  "$type": "bpmn:Definitions",
+                  "id": "Definitions_tx",
+                  "targetNamespace": "urn:neutral-cn:1",
+                  "exporterVersion": "fixture-cn-1",
+                  "rootElements": [
+                    {
+                      "$type": "bpmn:Process",
+                      "id": "Process_T",
+                      "name": "Draft",
+                      "isExecutable": false,
+                      "flowElements": [
+                        {
+                          "$type": "bpmn:StartEvent",
+                          "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "name": "Request received",
+                          "outgoing": [
+                            "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:Task",
+                          "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                          "name": "Review request",
+                          "incoming": [
+                            "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                          ],
+                          "outgoing": []
+                        },
+                        {
+                          "$type": "bpmn:SequenceFlow",
+                          "id": "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb",
+                          "sourceRef": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "targetRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1"
+                        },
+                        {
+                          "$type": "bpmn:EndEvent",
+                          "id": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                          "name": "Request closed",
+                          "incoming": []
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Collaboration",
+                      "id": "Collaboration_T",
+                      "name": "Pool collaboration",
+                      "participants": [
+                        {
+                          "$type": "bpmn:Participant",
+                          "id": "Participant_T",
+                          "name": "Draft pool",
+                          "processRef": "Process_T"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "bindings": [
+                  {
+                    "ownerId": "Process_T",
+                    "role": "collaboration",
+                    "targetId": "Collaboration_T"
+                  },
+                  {
+                    "ownerId": "Process_T",
+                    "role": "main-participant",
+                    "targetId": "Participant_T"
+                  }
+                ],
+                "semanticRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63"
+              },
+              "semanticRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+              "viewRevision": {
+                "$differs": {
+                  "step": 5,
+                  "pointer": "/result/payload/viewRevision"
+                }
+              },
+              "transactionId": "tx-end",
+              "changed": true
+            }
+          },
+          "history": {
+            "past": 4,
+            "future": 0
+          },
+          "events": {
+            "L1": [
+              {
+                "envelope": {
+                  "documentVersion": "1",
+                  "profileIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "tree": {
+                    "$type": "bpmn:Definitions",
+                    "id": "Definitions_tx",
+                    "targetNamespace": "urn:neutral-cn:1",
+                    "exporterVersion": "fixture-cn-1",
+                    "rootElements": [
+                      {
+                        "$type": "bpmn:Process",
+                        "id": "Process_T",
+                        "name": "Draft",
+                        "isExecutable": false,
+                        "flowElements": [
+                          {
+                            "$type": "bpmn:StartEvent",
+                            "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "name": "Request received",
+                            "outgoing": [
+                              "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                            ]
+                          },
+                          {
+                            "$type": "bpmn:Task",
+                            "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                            "name": "Review request",
+                            "incoming": [
+                              "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                            ],
+                            "outgoing": []
+                          },
+                          {
+                            "$type": "bpmn:SequenceFlow",
+                            "id": "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb",
+                            "sourceRef": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "targetRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1"
+                          },
+                          {
+                            "$type": "bpmn:EndEvent",
+                            "id": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                            "name": "Request closed",
+                            "incoming": []
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:Collaboration",
+                        "id": "Collaboration_T",
+                        "name": "Pool collaboration",
+                        "participants": [
+                          {
+                            "$type": "bpmn:Participant",
+                            "id": "Participant_T",
+                            "name": "Draft pool",
+                            "processRef": "Process_T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "bindings": [
+                    {
+                      "ownerId": "Process_T",
+                      "role": "collaboration",
+                      "targetId": "Collaboration_T"
+                    },
+                    {
+                      "ownerId": "Process_T",
+                      "role": "main-participant",
+                      "targetId": "Participant_T"
+                    }
+                  ],
+                  "semanticRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63"
+                },
+                "semanticRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+                "viewRevision": {
+                  "$same": {
+                    "step": 6,
+                    "pointer": "/result/payload/viewRevision"
+                  }
+                },
+                "transactionId": "tx-end",
+                "origin": "command",
+                "report": {
+                  "reportVersion": "2",
+                  "operation": "applyCommands",
+                  "sourceIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "targetIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "inputRevision": "55a218ef180da41223f48a3507e01cf51114bb4bb99493fa07e30de852ff0a61",
+                  "outputRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+                  "entries": [
+                    {
+                      "code": "complete/assignRef",
+                      "severity": "info",
+                      "classification": "repairable",
+                      "stage": "complete",
+                      "ruleId": "c-topology-incoming",
+                      "messageKey": "complete.assignRef",
+                      "disposition": "corrected",
+                      "source": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "generated"
+                      },
+                      "result": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/3/incoming",
+                        "targetId": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                        "provenance": "generated"
+                      },
+                      "property": "incoming",
+                      "beforePresent": false,
+                      "afterPresent": true,
+                      "after": []
+                    },
+                    {
+                      "code": "ordinary-outgoing-required",
+                      "severity": "warn",
+                      "classification": "readiness",
+                      "stage": "post-normalize",
+                      "ruleId": "ordinary-outgoing",
+                      "messageKey": "ordinary-outgoing-required",
+                      "disposition": "observed",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "unavailable"
+                      },
+                      "beforePresent": false,
+                      "afterPresent": false
+                    },
+                    {
+                      "code": "ordinary-end-unreachable",
+                      "severity": "warn",
+                      "classification": "readiness",
+                      "stage": "post-normalize",
+                      "ruleId": "ordinary-to-end",
+                      "messageKey": "ordinary-end-unreachable",
+                      "disposition": "observed",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "none",
+                        "pointer": null,
+                        "targetId": null,
+                        "provenance": "unavailable"
+                      },
+                      "beforePresent": false,
+                      "afterPresent": false
+                    }
+                  ],
+                  "rawStandardFindings": [],
+                  "idMap": [],
+                  "artifacts": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 7,
+          "result": {
+            "status": "ok",
+            "operation": "getSnapshot",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "baseRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+            "revision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+            "report": {
+              "reportVersion": "2",
+              "operation": "getSnapshot",
+              "sourceIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "targetIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "inputRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+              "outputRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+              "entries": [],
+              "rawStandardFindings": [],
+              "idMap": [],
+              "artifacts": []
+            },
+            "payload": {
+              "snapshotVersion": "1",
+              "envelope": {
+                "documentVersion": "1",
+                "profileIdentity": {
+                  "mechanismVersion": "1",
+                  "schemaVersion": "1.0.0",
+                  "profile": "neutral-cn/1",
+                  "version": "1.1.0",
+                  "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                  "base": {
+                    "id": "neutral-cn-base/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                  },
+                  "descriptors": [
+                    {
+                      "id": "neutral-cn-descriptors/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                    }
+                  ]
+                },
+                "tree": {
+                  "$type": "bpmn:Definitions",
+                  "id": "Definitions_tx",
+                  "targetNamespace": "urn:neutral-cn:1",
+                  "exporterVersion": "fixture-cn-1",
+                  "rootElements": [
+                    {
+                      "$type": "bpmn:Process",
+                      "id": "Process_T",
+                      "name": "Draft",
+                      "isExecutable": false,
+                      "flowElements": [
+                        {
+                          "$type": "bpmn:StartEvent",
+                          "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "name": "Request received",
+                          "outgoing": [
+                            "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:Task",
+                          "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                          "name": "Review request",
+                          "incoming": [
+                            "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                          ],
+                          "outgoing": []
+                        },
+                        {
+                          "$type": "bpmn:SequenceFlow",
+                          "id": "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb",
+                          "sourceRef": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "targetRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1"
+                        },
+                        {
+                          "$type": "bpmn:EndEvent",
+                          "id": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                          "name": "Request closed",
+                          "incoming": []
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Collaboration",
+                      "id": "Collaboration_T",
+                      "name": "Pool collaboration",
+                      "participants": [
+                        {
+                          "$type": "bpmn:Participant",
+                          "id": "Participant_T",
+                          "name": "Draft pool",
+                          "processRef": "Process_T"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "bindings": [
+                  {
+                    "ownerId": "Process_T",
+                    "role": "collaboration",
+                    "targetId": "Collaboration_T"
+                  },
+                  {
+                    "ownerId": "Process_T",
+                    "role": "main-participant",
+                    "targetId": "Participant_T"
+                  }
+                ],
+                "semanticRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63"
+              },
+              "presentation": {
+                "layout": {
+                  "layoutVersion": "1",
+                  "pages": "unsealed",
+                  "geometry": "unsealed"
+                },
+                "themeId": "plain",
+                "overrides": {
+                  "semantic": [],
+                  "occurrence": []
+                },
+                "diStyles": {
+                  "native": [],
+                  "bioc": []
+                },
+                "importedDi": {
+                  "descriptorDigest": "06cd02b4d67d07bd3b81f54d4226f845764438a8f0eb794dc51fb91c4210ae94",
+                  "diagrams": [],
+                  "sha256": "7a30edb9b6b46876012e8dbec94e08dd93aae72621198d66f31434f10ec5cd5a"
+                },
+                "selection": "unsealed",
+                "activePageId": "unsealed"
+              },
+              "viewRevision": {
+                "$same": {
+                  "step": 6,
+                  "pointer": "/result/payload/viewRevision"
+                }
+              }
+            }
+          },
+          "events": {
+            "L1": []
+          }
+        },
+        {
+          "step": 8,
+          "result": {
+            "status": "ok",
+            "operation": "applyCommands",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "baseRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+            "revision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+            "report": {
+              "reportVersion": "2",
+              "operation": "applyCommands",
+              "sourceIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "targetIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "inputRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+              "outputRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+              "entries": [
+                {
+                  "code": "complete/assignRef",
+                  "severity": "info",
+                  "classification": "repairable",
+                  "stage": "complete",
+                  "ruleId": "c-topology-incoming",
+                  "messageKey": "complete.assignRef",
+                  "disposition": "corrected",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/3/incoming",
+                    "targetId": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/3/incoming",
+                    "targetId": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                    "provenance": "exact"
+                  },
+                  "property": "incoming",
+                  "beforePresent": true,
+                  "before": [],
+                  "afterPresent": true,
+                  "after": [
+                    "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                  ]
+                },
+                {
+                  "code": "complete/assignRef",
+                  "severity": "info",
+                  "classification": "repairable",
+                  "stage": "complete",
+                  "ruleId": "c-topology-outgoing",
+                  "messageKey": "complete.assignRef",
+                  "disposition": "corrected",
+                  "source": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1/outgoing",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "result": {
+                    "domain": "tree",
+                    "pointer": "/rootElements/0/flowElements/1/outgoing",
+                    "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                    "provenance": "exact"
+                  },
+                  "property": "outgoing",
+                  "beforePresent": true,
+                  "before": [],
+                  "afterPresent": true,
+                  "after": [
+                    "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                  ]
+                }
+              ],
+              "rawStandardFindings": [],
+              "idMap": [],
+              "artifacts": []
+            },
+            "payload": {
+              "envelope": {
+                "documentVersion": "1",
+                "profileIdentity": {
+                  "mechanismVersion": "1",
+                  "schemaVersion": "1.0.0",
+                  "profile": "neutral-cn/1",
+                  "version": "1.1.0",
+                  "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                  "base": {
+                    "id": "neutral-cn-base/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                  },
+                  "descriptors": [
+                    {
+                      "id": "neutral-cn-descriptors/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                    }
+                  ]
+                },
+                "tree": {
+                  "$type": "bpmn:Definitions",
+                  "id": "Definitions_tx",
+                  "targetNamespace": "urn:neutral-cn:1",
+                  "exporterVersion": "fixture-cn-1",
+                  "rootElements": [
+                    {
+                      "$type": "bpmn:Process",
+                      "id": "Process_T",
+                      "name": "Draft",
+                      "isExecutable": false,
+                      "flowElements": [
+                        {
+                          "$type": "bpmn:StartEvent",
+                          "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "name": "Request received",
+                          "outgoing": [
+                            "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:Task",
+                          "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                          "name": "Review request",
+                          "incoming": [
+                            "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                          ],
+                          "outgoing": [
+                            "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:SequenceFlow",
+                          "id": "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb",
+                          "sourceRef": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "targetRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1"
+                        },
+                        {
+                          "$type": "bpmn:EndEvent",
+                          "id": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                          "name": "Request closed",
+                          "incoming": [
+                            "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:SequenceFlow",
+                          "id": "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069",
+                          "sourceRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                          "targetRef": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Collaboration",
+                      "id": "Collaboration_T",
+                      "name": "Pool collaboration",
+                      "participants": [
+                        {
+                          "$type": "bpmn:Participant",
+                          "id": "Participant_T",
+                          "name": "Draft pool",
+                          "processRef": "Process_T"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "bindings": [
+                  {
+                    "ownerId": "Process_T",
+                    "role": "collaboration",
+                    "targetId": "Collaboration_T"
+                  },
+                  {
+                    "ownerId": "Process_T",
+                    "role": "main-participant",
+                    "targetId": "Participant_T"
+                  }
+                ],
+                "semanticRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f"
+              },
+              "semanticRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+              "viewRevision": {
+                "$differs": {
+                  "step": 7,
+                  "pointer": "/result/payload/viewRevision"
+                }
+              },
+              "transactionId": "tx-flow-2",
+              "changed": true
+            }
+          },
+          "history": {
+            "past": 5,
+            "future": 0
+          },
+          "events": {
+            "L1": [
+              {
+                "envelope": {
+                  "documentVersion": "1",
+                  "profileIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "tree": {
+                    "$type": "bpmn:Definitions",
+                    "id": "Definitions_tx",
+                    "targetNamespace": "urn:neutral-cn:1",
+                    "exporterVersion": "fixture-cn-1",
+                    "rootElements": [
+                      {
+                        "$type": "bpmn:Process",
+                        "id": "Process_T",
+                        "name": "Draft",
+                        "isExecutable": false,
+                        "flowElements": [
+                          {
+                            "$type": "bpmn:StartEvent",
+                            "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "name": "Request received",
+                            "outgoing": [
+                              "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                            ]
+                          },
+                          {
+                            "$type": "bpmn:Task",
+                            "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                            "name": "Review request",
+                            "incoming": [
+                              "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                            ],
+                            "outgoing": [
+                              "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                            ]
+                          },
+                          {
+                            "$type": "bpmn:SequenceFlow",
+                            "id": "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb",
+                            "sourceRef": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "targetRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1"
+                          },
+                          {
+                            "$type": "bpmn:EndEvent",
+                            "id": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                            "name": "Request closed",
+                            "incoming": [
+                              "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                            ]
+                          },
+                          {
+                            "$type": "bpmn:SequenceFlow",
+                            "id": "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069",
+                            "sourceRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                            "targetRef": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3"
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:Collaboration",
+                        "id": "Collaboration_T",
+                        "name": "Pool collaboration",
+                        "participants": [
+                          {
+                            "$type": "bpmn:Participant",
+                            "id": "Participant_T",
+                            "name": "Draft pool",
+                            "processRef": "Process_T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "bindings": [
+                    {
+                      "ownerId": "Process_T",
+                      "role": "collaboration",
+                      "targetId": "Collaboration_T"
+                    },
+                    {
+                      "ownerId": "Process_T",
+                      "role": "main-participant",
+                      "targetId": "Participant_T"
+                    }
+                  ],
+                  "semanticRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f"
+                },
+                "semanticRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+                "viewRevision": {
+                  "$same": {
+                    "step": 8,
+                    "pointer": "/result/payload/viewRevision"
+                  }
+                },
+                "transactionId": "tx-flow-2",
+                "origin": "command",
+                "report": {
+                  "reportVersion": "2",
+                  "operation": "applyCommands",
+                  "sourceIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "targetIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "inputRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+                  "outputRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+                  "entries": [
+                    {
+                      "code": "complete/assignRef",
+                      "severity": "info",
+                      "classification": "repairable",
+                      "stage": "complete",
+                      "ruleId": "c-topology-incoming",
+                      "messageKey": "complete.assignRef",
+                      "disposition": "corrected",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/3/incoming",
+                        "targetId": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/3/incoming",
+                        "targetId": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                        "provenance": "exact"
+                      },
+                      "property": "incoming",
+                      "beforePresent": true,
+                      "before": [],
+                      "afterPresent": true,
+                      "after": [
+                        "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                      ]
+                    },
+                    {
+                      "code": "complete/assignRef",
+                      "severity": "info",
+                      "classification": "repairable",
+                      "stage": "complete",
+                      "ruleId": "c-topology-outgoing",
+                      "messageKey": "complete.assignRef",
+                      "disposition": "corrected",
+                      "source": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1/outgoing",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "result": {
+                        "domain": "tree",
+                        "pointer": "/rootElements/0/flowElements/1/outgoing",
+                        "targetId": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                        "provenance": "exact"
+                      },
+                      "property": "outgoing",
+                      "beforePresent": true,
+                      "before": [],
+                      "afterPresent": true,
+                      "after": [
+                        "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                      ]
+                    }
+                  ],
+                  "rawStandardFindings": [],
+                  "idMap": [],
+                  "artifacts": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 9,
+          "result": {
+            "status": "ok",
+            "operation": "getSnapshot",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "baseRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+            "revision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+            "report": {
+              "reportVersion": "2",
+              "operation": "getSnapshot",
+              "sourceIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "targetIdentity": {
+                "mechanismVersion": "1",
+                "schemaVersion": "1.0.0",
+                "profile": "neutral-cn/1",
+                "version": "1.1.0",
+                "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                "base": {
+                  "id": "neutral-cn-base/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                },
+                "descriptors": [
+                  {
+                    "id": "neutral-cn-descriptors/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                  }
+                ]
+              },
+              "inputRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+              "outputRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+              "entries": [],
+              "rawStandardFindings": [],
+              "idMap": [],
+              "artifacts": []
+            },
+            "payload": {
+              "snapshotVersion": "1",
+              "envelope": {
+                "documentVersion": "1",
+                "profileIdentity": {
+                  "mechanismVersion": "1",
+                  "schemaVersion": "1.0.0",
+                  "profile": "neutral-cn/1",
+                  "version": "1.1.0",
+                  "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                  "base": {
+                    "id": "neutral-cn-base/1",
+                    "version": "fixture-cn-1",
+                    "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                  },
+                  "descriptors": [
+                    {
+                      "id": "neutral-cn-descriptors/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                    }
+                  ]
+                },
+                "tree": {
+                  "$type": "bpmn:Definitions",
+                  "id": "Definitions_tx",
+                  "targetNamespace": "urn:neutral-cn:1",
+                  "exporterVersion": "fixture-cn-1",
+                  "rootElements": [
+                    {
+                      "$type": "bpmn:Process",
+                      "id": "Process_T",
+                      "name": "Draft",
+                      "isExecutable": false,
+                      "flowElements": [
+                        {
+                          "$type": "bpmn:StartEvent",
+                          "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "name": "Request received",
+                          "outgoing": [
+                            "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:Task",
+                          "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                          "name": "Review request",
+                          "incoming": [
+                            "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                          ],
+                          "outgoing": [
+                            "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:SequenceFlow",
+                          "id": "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb",
+                          "sourceRef": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                          "targetRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1"
+                        },
+                        {
+                          "$type": "bpmn:EndEvent",
+                          "id": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                          "name": "Request closed",
+                          "incoming": [
+                            "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                          ]
+                        },
+                        {
+                          "$type": "bpmn:SequenceFlow",
+                          "id": "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069",
+                          "sourceRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                          "targetRef": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Collaboration",
+                      "id": "Collaboration_T",
+                      "name": "Pool collaboration",
+                      "participants": [
+                        {
+                          "$type": "bpmn:Participant",
+                          "id": "Participant_T",
+                          "name": "Draft pool",
+                          "processRef": "Process_T"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "bindings": [
+                  {
+                    "ownerId": "Process_T",
+                    "role": "collaboration",
+                    "targetId": "Collaboration_T"
+                  },
+                  {
+                    "ownerId": "Process_T",
+                    "role": "main-participant",
+                    "targetId": "Participant_T"
+                  }
+                ],
+                "semanticRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f"
+              },
+              "presentation": {
+                "layout": {
+                  "layoutVersion": "1",
+                  "pages": "unsealed",
+                  "geometry": "unsealed"
+                },
+                "themeId": "plain",
+                "overrides": {
+                  "semantic": [],
+                  "occurrence": []
+                },
+                "diStyles": {
+                  "native": [],
+                  "bioc": []
+                },
+                "importedDi": {
+                  "descriptorDigest": "06cd02b4d67d07bd3b81f54d4226f845764438a8f0eb794dc51fb91c4210ae94",
+                  "diagrams": [],
+                  "sha256": "7a30edb9b6b46876012e8dbec94e08dd93aae72621198d66f31434f10ec5cd5a"
+                },
+                "selection": "unsealed",
+                "activePageId": "unsealed"
+              },
+              "viewRevision": {
+                "$same": {
+                  "step": 8,
+                  "pointer": "/result/payload/viewRevision"
+                }
+              }
+            }
+          },
+          "events": {
+            "L1": []
+          }
+        },
+        {
+          "step": 10,
+          "result": {
+            "status": "ok",
+            "operation": "undo",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "baseRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+            "revision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+            "report": "unsealed",
+            "payload": {
+              "$same": {
+                "step": 7,
+                "pointer": "/result/payload"
+              }
+            }
+          },
+          "history": {
+            "past": 4,
+            "future": 1
+          },
+          "events": {
+            "L1": [
+              {
+                "envelope": {
+                  "documentVersion": "1",
+                  "profileIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "tree": {
+                    "$type": "bpmn:Definitions",
+                    "id": "Definitions_tx",
+                    "targetNamespace": "urn:neutral-cn:1",
+                    "exporterVersion": "fixture-cn-1",
+                    "rootElements": [
+                      {
+                        "$type": "bpmn:Process",
+                        "id": "Process_T",
+                        "name": "Draft",
+                        "isExecutable": false,
+                        "flowElements": [
+                          {
+                            "$type": "bpmn:StartEvent",
+                            "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "name": "Request received",
+                            "outgoing": [
+                              "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                            ]
+                          },
+                          {
+                            "$type": "bpmn:Task",
+                            "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                            "name": "Review request",
+                            "incoming": [
+                              "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                            ],
+                            "outgoing": []
+                          },
+                          {
+                            "$type": "bpmn:SequenceFlow",
+                            "id": "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb",
+                            "sourceRef": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "targetRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1"
+                          },
+                          {
+                            "$type": "bpmn:EndEvent",
+                            "id": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                            "name": "Request closed",
+                            "incoming": []
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:Collaboration",
+                        "id": "Collaboration_T",
+                        "name": "Pool collaboration",
+                        "participants": [
+                          {
+                            "$type": "bpmn:Participant",
+                            "id": "Participant_T",
+                            "name": "Draft pool",
+                            "processRef": "Process_T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "bindings": [
+                    {
+                      "ownerId": "Process_T",
+                      "role": "collaboration",
+                      "targetId": "Collaboration_T"
+                    },
+                    {
+                      "ownerId": "Process_T",
+                      "role": "main-participant",
+                      "targetId": "Participant_T"
+                    }
+                  ],
+                  "semanticRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63"
+                },
+                "semanticRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+                "viewRevision": {
+                  "$same": {
+                    "step": 10,
+                    "pointer": "/result/payload/viewRevision"
+                  }
+                },
+                "transactionId": "unsealed",
+                "origin": "undo",
+                "report": {
+                  "$same": {
+                    "step": 10,
+                    "pointer": "/result/report"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "step": 11,
+          "result": {
+            "status": "ok",
+            "operation": "redo",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "baseRevision": "783444432c3511c57446fa88271c9bd55eec5e4f502bafa2c3037a71de96db63",
+            "revision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+            "report": "unsealed",
+            "payload": {
+              "$same": {
+                "step": 9,
+                "pointer": "/result/payload"
+              }
+            }
+          },
+          "history": {
+            "past": 5,
+            "future": 0
+          },
+          "events": {
+            "L1": [
+              {
+                "envelope": {
+                  "documentVersion": "1",
+                  "profileIdentity": {
+                    "mechanismVersion": "1",
+                    "schemaVersion": "1.0.0",
+                    "profile": "neutral-cn/1",
+                    "version": "1.1.0",
+                    "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+                    "base": {
+                      "id": "neutral-cn-base/1",
+                      "version": "fixture-cn-1",
+                      "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+                    },
+                    "descriptors": [
+                      {
+                        "id": "neutral-cn-descriptors/1",
+                        "version": "fixture-cn-1",
+                        "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                      }
+                    ]
+                  },
+                  "tree": {
+                    "$type": "bpmn:Definitions",
+                    "id": "Definitions_tx",
+                    "targetNamespace": "urn:neutral-cn:1",
+                    "exporterVersion": "fixture-cn-1",
+                    "rootElements": [
+                      {
+                        "$type": "bpmn:Process",
+                        "id": "Process_T",
+                        "name": "Draft",
+                        "isExecutable": false,
+                        "flowElements": [
+                          {
+                            "$type": "bpmn:StartEvent",
+                            "id": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "name": "Request received",
+                            "outgoing": [
+                              "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                            ]
+                          },
+                          {
+                            "$type": "bpmn:Task",
+                            "id": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                            "name": "Review request",
+                            "incoming": [
+                              "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb"
+                            ],
+                            "outgoing": [
+                              "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                            ]
+                          },
+                          {
+                            "$type": "bpmn:SequenceFlow",
+                            "id": "g_9a859c3c4645636e789b4c09ea1afbbe28085e2efa565e2a326333f1f71afbcb",
+                            "sourceRef": "g_262d6a2ae1719befd5d49889212c31ac3ff797c71f9171edd1535d4f4ec5c858",
+                            "targetRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1"
+                          },
+                          {
+                            "$type": "bpmn:EndEvent",
+                            "id": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3",
+                            "name": "Request closed",
+                            "incoming": [
+                              "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069"
+                            ]
+                          },
+                          {
+                            "$type": "bpmn:SequenceFlow",
+                            "id": "g_6799acb6f1e3e3b98e0f4727564fc67046a6e320278b0147fe75178f40f64069",
+                            "sourceRef": "g_67606c655c2f6feab8f83ad937afcded97982272771e80e9fc7c36bc2c58e0e1",
+                            "targetRef": "g_d47ce7a7a9df44ebd3fad128bea6d0b374a1768360c5214ba8d2845a41d6c3d3"
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "bpmn:Collaboration",
+                        "id": "Collaboration_T",
+                        "name": "Pool collaboration",
+                        "participants": [
+                          {
+                            "$type": "bpmn:Participant",
+                            "id": "Participant_T",
+                            "name": "Draft pool",
+                            "processRef": "Process_T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "bindings": [
+                    {
+                      "ownerId": "Process_T",
+                      "role": "collaboration",
+                      "targetId": "Collaboration_T"
+                    },
+                    {
+                      "ownerId": "Process_T",
+                      "role": "main-participant",
+                      "targetId": "Participant_T"
+                    }
+                  ],
+                  "semanticRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f"
+                },
+                "semanticRevision": "d7775934a1e201f9023c8c5506533eb01f8670840bbb6df6f6062b756990659f",
+                "viewRevision": {
+                  "$same": {
+                    "step": 11,
+                    "pointer": "/result/payload/viewRevision"
+                  }
+                },
+                "transactionId": "unsealed",
+                "origin": "redo",
+                "report": {
+                  "$same": {
+                    "step": 11,
+                    "pointer": "/result/report"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "role": "unsealed",
+      "json": [
+        {
+          "artifact": "trace",
+          "pointer": "/0/result/payload/subscriptionId",
+          "reason": "Subscription IDs are session-local and excluded from parity (DESIGN L606)."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/1/result/report",
+          "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap); the change event of the step carries this same report (L606, L633) and is compared with it by relation."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/1/result/payload/viewRevision",
+          "reason": "The first viewRevision of a canvas-laid-out document depends on lot-4 layout geometry; later steps compare to it by relation only."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/1/events/L1/0/transactionId",
+          "reason": "DESIGN L606 names transactionId in every change event but defines no value for load, snapshot, theme, undo or redo origins (source gap)."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/6/result/payload/presentation/layout/pages",
+          "reason": "Pages of a canvas-computed layout are lot-4 outputs (DESIGN L667, L723); the record is Layout/1 (L610, L667), so its layoutVersion is compared."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/6/result/payload/presentation/layout/geometry",
+          "reason": "Geometry and occurrence keys of a canvas-computed layout are lot-4 outputs (DESIGN L667, L723); restoring them is compared by relation."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/6/result/payload/presentation/selection",
+          "reason": "Selection after a creation or deletion is not defined by DESIGN L629-L633 beyond preservation on refusal and no-op."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/6/result/payload/presentation/activePageId",
+          "reason": "The active page ID of a canvas-computed layout is a lot-4 output."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/8/result/payload/presentation/layout/pages",
+          "reason": "Pages of a canvas-computed layout are lot-4 outputs (DESIGN L667, L723); the record is Layout/1 (L610, L667), so its layoutVersion is compared."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/8/result/payload/presentation/layout/geometry",
+          "reason": "Geometry and occurrence keys of a canvas-computed layout are lot-4 outputs (DESIGN L667, L723); restoring them is compared by relation."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/8/result/payload/presentation/selection",
+          "reason": "Selection after a creation or deletion is not defined by DESIGN L629-L633 beyond preservation on refusal and no-op."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/8/result/payload/presentation/activePageId",
+          "reason": "The active page ID of a canvas-computed layout is a lot-4 output."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/9/result/report",
+          "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap); the change event of the step carries this same report (L606, L633) and is compared with it by relation."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/9/events/L1/0/transactionId",
+          "reason": "DESIGN L606 names transactionId in every change event but defines no value for load, snapshot, theme, undo or redo origins (source gap)."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/10/result/report",
+          "reason": "DESIGN L584-L599 and L641 define no report content for load, snapshot restore, theme, undo or redo results (source gap); the change event of the step carries this same report (L606, L633) and is compared with it by relation."
+        },
+        {
+          "artifact": "trace",
+          "pointer": "/10/events/L1/0/transactionId",
+          "reason": "DESIGN L606 names transactionId in every change event but defines no value for load, snapshot, theme, undo or redo origins (source gap)."
+        }
+      ]
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "transaction-trace/lot3",
+    "profile-c14n/2"
+  ]
+}

@@ -202,8 +202,8 @@ def test_reachable_follows_resolved_edges() -> None:
     bindings = {"one": tasks["T1"], "two": tasks["T2"]}
     predicate = {
         "op": "reachable",
-        "source": {"from": "one", "via": "self", "order": "id"},
-        "target": {"from": "two", "via": "self", "order": "id"},
+        "from": {"from": "one", "via": "self", "order": "id"},
+        "to": {"from": "two", "via": "self", "order": "id"},
         "edgeTypes": ["bpmn:SequenceFlow"],
         "minHops": 1,
     }
@@ -222,8 +222,8 @@ def test_reachable_reports_direction_and_bounds() -> None:
     tasks = {element["id"]: element for element in graph["rootElements"]}
     backward = {
         "op": "reachable",
-        "source": {"from": "two", "via": "self", "order": "id"},
-        "target": {"from": "one", "via": "self", "order": "id"},
+        "from": {"from": "two", "via": "self", "order": "id"},
+        "to": {"from": "one", "via": "self", "order": "id"},
         "edgeTypes": ["bpmn:SequenceFlow"],
         "minHops": 1,
     }
@@ -231,8 +231,8 @@ def test_reachable_reports_direction_and_bounds() -> None:
     assert evaluate_predicate(backward, context, bindings).payload is False  # type: ignore[union-attr]
     too_far = {
         "op": "reachable",
-        "source": {"from": "one", "via": "self", "order": "id"},
-        "target": {"from": "two", "via": "self", "order": "id"},
+        "from": {"from": "one", "via": "self", "order": "id"},
+        "to": {"from": "two", "via": "self", "order": "id"},
         "edgeTypes": ["bpmn:SequenceFlow"],
         "minHops": 2,
     }
@@ -244,11 +244,12 @@ def test_render_traversal_refuses_outside_export() -> None:
     from bpmn_io.profile import select
     from bpmn_io.profile._evaluate import make_read_context
 
-    context = make_read_context(_native_link())
+    link = _native_link()
+    context = make_read_context(link)
     for via in ("pages", "occurrences", "semantic"):
         selector = {"from": "root", "via": via, "order": "page-occurrence"}
         if via == "semantic":
             selector["order"] = "id"
-        result = select(selector, context, {})
+        result = select(selector, context, {"root": link})
         assert result.status == "refused", via
         assert result.code == "profile-value-context"  # type: ignore[union-attr]

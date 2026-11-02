@@ -1,0 +1,50 @@
+{
+  "case": "compile-upstream-duplicate-within-entry",
+  "clause": "DESIGN R3.3 \u00a78.3 L659 duplicate mappings are a compile error",
+  "derivation": "task-create lists create.task twice; the same upstream ID maps twice, which is a duplicate mapping (schema upstreamEntries has no uniqueItems, so the compiler refuses with profile-symbol). Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/ui/1/upstreamEntries",
+          "value": [
+            "create.task",
+            "create.task"
+          ]
+        }
+      ],
+      "artifact": "artifacts/profiles/compile-upstream-duplicate-within-entry.json"
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-symbol",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "af75fc5c8070b5e42aeb5d7d99fe8b32c9ca000cf34023b9f88fb38bed5ad447",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "case": "render.layout.neutral-fixture-content-unbound",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry (no matching region refuses render-region-missing); \u00a79.3",
+  "witness": "N->layout passage on the lot-0 neutral fixture: content placements without a bound support refuse",
+  "derivation": "Tree = neutral-fixture.json#/expected/completed, placements = #/expected/placements (Task_A, Task_B in region content, lot-0 N output). The completed tree has no support and no binding role content, so the layout primitive has no matching region and never treats the page or plane as a hidden default region: render-region-missing (harmonization C13, K1).",
+  "operation": "computeLayout",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": []
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_1",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_B",
+              "name": "Ready",
+              "documentation": [
+                {
+                  "$type": "bpmn:Documentation",
+                  "text": "Preserved source",
+                  "textFormat": "text/plain"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_A",
+              "name": ""
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+              "text": "[Aid] helper"
+            }
+          ],
+          "isExecutable": false
+        }
+      ]
+    },
+    "bindings": [],
+    "placements": [
+      {
+        "elementId": "Task_A",
+        "ownerProcessId": "Process_1",
+        "regionKey": "content",
+        "relatedAssociationIds": []
+      },
+      {
+        "elementId": "Task_B",
+        "ownerProcessId": "Process_1",
+        "regionKey": "content",
+        "relatedAssociationIds": []
+      }
+    ],
+    "diagrams": [
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "P1",
+        "name": "Main",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "P1-plane",
+          "bpmnElement": "Process_1",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "s-task-a",
+              "bpmnElement": "Task_A",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 100,
+                "y": 100,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "s-task-b",
+              "bpmnElement": "Task_B",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 300,
+                "y": 100,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "s-aid",
+              "bpmnElement": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 100,
+                "y": 240,
+                "width": 120,
+                "height": 40
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7",
+    "code": "render-region-missing",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "eca8f043f7a6036cd88147237ec7a315b6f2d6a63fd77b20947d152f41bd31b7",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
+  },
+  "author": "spec-seal"
+}

@@ -1,0 +1,60 @@
+{
+  "caseId": "digest-004-descriptor-pins-reversed",
+  "operation": "renderDigests",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "record",
+      "path": "lot4-layout-export/expectations/artifacts/digest-004-descriptor-pins-reversed.record.json",
+      "sha256": "c0cebef3a537a219dbd4598ad386ae2583f490c1658a7bd88e66c195b8421b3e"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": {
+          "semanticRevision": "5a2e66696a9b950a3c6ba7e3892e0141bb0eb5bd58c2b5b03188a8a1ec545c9f",
+          "descriptorDigest": "be7ab95ecc2e92e7e6942ccb6fb58800564bf3480b3ba3a9ed7e3cd1c4494e38",
+          "layoutDigest": "3a1b1563aae91dfde9d7ed2066b2c601f265a80a46e1dd4e4491d248b6691cde",
+          "themeDigest": "aaab60a455be57e4a89a71db722fd6776a7f28eca2863e8a0c51c3a9b4e42cb6",
+          "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+          "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+          "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+          "viewRevision": "d4bc25e873d0a9c7cda38ac179f520061b6c83ac05f81d8ccacbc54fccbfefc5",
+          "payloadDigest": "50c73c23bb9f08152603f0d04acaa01d810fc7c2043617b0002987350344c690"
+        },
+        "diagnostics": []
+      }
+    },
+    {
+      "role": "relations",
+      "json": {
+        "sameAs": {
+          "case": "digest-003-baseline",
+          "fields": [
+            "semanticRevision",
+            "descriptorDigest",
+            "layoutDigest",
+            "themeDigest",
+            "overridesDigest",
+            "diStylesDigest",
+            "metricsDigest",
+            "viewRevision",
+            "payloadDigest"
+          ]
+        },
+        "differsFrom": {
+          "case": "digest-003-baseline",
+          "fields": []
+        }
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

@@ -1,0 +1,285 @@
+{
+  "status": "ok",
+  "operation": "mapExport",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "baseRevision": "9d2ef495bb974e38bc5f2fed67d1cc9c187c5bebe5ce0212d9b778f086cd62f5",
+  "revision": "9d2ef495bb974e38bc5f2fed67d1cc9c187c5bebe5ce0212d9b778f086cd62f5",
+  "report": {
+    "reportVersion": "2",
+    "operation": "mapExport",
+    "sourceIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "targetIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "inputRevision": "9d2ef495bb974e38bc5f2fed67d1cc9c187c5bebe5ce0212d9b778f086cd62f5",
+    "outputRevision": "9d2ef495bb974e38bc5f2fed67d1cc9c187c5bebe5ce0212d9b778f086cd62f5",
+    "entries": [],
+    "rawStandardFindings": [],
+    "idMap": [
+      {
+        "sourceId": "Page_Empty",
+        "resultId": "e_1",
+        "domain": "export",
+        "pageId": "Page_Empty"
+      },
+      {
+        "sourceId": "Pool_Empty",
+        "resultId": "e_2",
+        "domain": "export",
+        "pageId": "Page_Empty",
+        "occurrenceKey": "Pool_Empty_di"
+      }
+    ],
+    "artifacts": [
+      {
+        "format": "drawio",
+        "capability": "structural",
+        "digest": "e8b7d0d335bf6691be777493118ae86bd9ab3e14f6e823a3d5c09785a8703342",
+        "entryIndexes": []
+      }
+    ]
+  },
+  "payload": {
+    "format": "drawio",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "semanticRevision": "9d2ef495bb974e38bc5f2fed67d1cc9c187c5bebe5ce0212d9b778f086cd62f5",
+    "viewRevision": "f654342bf2852c9afd87970ce9c5fc40a061c48595dd335f0ba3f162e9d709ec",
+    "ir": [
+      {
+        "kind": "page",
+        "id": "e_1",
+        "name": "Empty sheet",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 700000,
+          "height": 300000
+        }
+      },
+      {
+        "kind": "node",
+        "id": "e_2",
+        "name": "Empty process",
+        "parent": "e_1",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 600000,
+          "height": 200000
+        },
+        "style": [
+          {
+            "name": "arrow",
+            "value": "none"
+          },
+          {
+            "name": "fill",
+            "value": "#ffffff"
+          },
+          {
+            "name": "fontFamily",
+            "value": "fixture-sans"
+          },
+          {
+            "name": "fontSize",
+            "value": 10
+          },
+          {
+            "name": "fontWeight",
+            "value": "normal"
+          },
+          {
+            "name": "stroke",
+            "value": "#000000"
+          },
+          {
+            "name": "strokeWidth",
+            "value": 1
+          },
+          {
+            "name": "textColor",
+            "value": "#000000"
+          }
+        ],
+        "label": {
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 30000,
+            "height": 200000
+          },
+          "lines": [
+            "Empty process"
+          ]
+        }
+      }
+    ],
+    "renderBinding": {
+      "semanticRevision": "9d2ef495bb974e38bc5f2fed67d1cc9c187c5bebe5ce0212d9b778f086cd62f5",
+      "profileDigest": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "descriptorDigest": "8cb3013f19489ae7b9eee46d790186ef3c8c4b5df17a63f397de1e066ad74719",
+      "layoutDigest": "a15c5025af83891f1a3dcda82c08dde3161dbf1d95576ca1910c7da0100414ae",
+      "themeId": "plain",
+      "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+      "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+      "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+      "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+      "payloadDigest": "546be6db38d0aa235fe500aff4a5064834ae57b85071d762d46b034ceb162729"
+    },
+    "report": {
+      "reportVersion": "2",
+      "operation": "mapExport",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-lot4/1",
+        "version": "1.1.0",
+        "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-lot4/1",
+        "version": "1.1.0",
+        "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+        "base": {
+          "id": "neutral-lot4-base/1",
+          "version": "lot4-2",
+          "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-lot4-descriptors/1",
+            "version": "lot4-2",
+            "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+          }
+        ]
+      },
+      "inputRevision": "9d2ef495bb974e38bc5f2fed67d1cc9c187c5bebe5ce0212d9b778f086cd62f5",
+      "outputRevision": "9d2ef495bb974e38bc5f2fed67d1cc9c187c5bebe5ce0212d9b778f086cd62f5",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [
+        {
+          "sourceId": "Page_Empty",
+          "resultId": "e_1",
+          "domain": "export",
+          "pageId": "Page_Empty"
+        },
+        {
+          "sourceId": "Pool_Empty",
+          "resultId": "e_2",
+          "domain": "export",
+          "pageId": "Page_Empty",
+          "occurrenceKey": "Pool_Empty_di"
+        }
+      ],
+      "artifacts": [
+        {
+          "format": "drawio",
+          "capability": "structural",
+          "digest": "e8b7d0d335bf6691be777493118ae86bd9ab3e14f6e823a3d5c09785a8703342",
+          "entryIndexes": []
+        }
+      ]
+    },
+    "capability": "structural",
+    "idMap": [
+      {
+        "sourceId": "Page_Empty",
+        "resultId": "e_1",
+        "domain": "export",
+        "pageId": "Page_Empty"
+      },
+      {
+        "sourceId": "Pool_Empty",
+        "resultId": "e_2",
+        "domain": "export",
+        "pageId": "Page_Empty",
+        "occurrenceKey": "Pool_Empty_di"
+      }
+    ]
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "caseId": "idplan-002-counter-domains",
+  "operation": "exportIdPlan",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "plan-input",
+      "json": {
+        "policy": "counter",
+        "counterOrigin": 0,
+        "pages": [
+          {
+            "pageId": "P1",
+            "order": 5
+          },
+          {
+            "pageId": "P2",
+            "order": 2
+          }
+        ],
+        "requests": [
+          {
+            "pageId": "P2",
+            "occurrenceKey": "b",
+            "domain": "label"
+          },
+          {
+            "pageId": "P2",
+            "occurrenceKey": "b",
+            "domain": "edge"
+          },
+          {
+            "pageId": "P1",
+            "occurrenceKey": "z",
+            "domain": "node"
+          },
+          {
+            "pageId": "P2",
+            "occurrenceKey": "a",
+            "domain": "node"
+          },
+          {
+            "pageId": "P1",
+            "occurrenceKey": "",
+            "domain": "page"
+          },
+          {
+            "pageId": "P1",
+            "occurrenceKey": "B",
+            "domain": "node"
+          },
+          {
+            "pageId": "P2",
+            "occurrenceKey": "",
+            "domain": "page"
+          },
+          {
+            "pageId": "P1",
+            "occurrenceKey": "z",
+            "domain": "node"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": {
+          "ids": [
+            {
+              "pageId": "P2",
+              "occurrenceKey": "",
+              "domain": "page",
+              "id": "e_0"
+            },
+            {
+              "pageId": "P1",
+              "occurrenceKey": "",
+              "domain": "page",
+              "id": "e_1"
+            },
+            {
+              "pageId": "P2",
+              "occurrenceKey": "a",
+              "domain": "node",
+              "id": "e_2"
+            },
+            {
+              "pageId": "P1",
+              "occurrenceKey": "B",
+              "domain": "node",
+              "id": "e_3"
+            },
+            {
+              "pageId": "P1",
+              "occurrenceKey": "z",
+              "domain": "node",
+              "id": "e_4"
+            },
+            {
+              "pageId": "P2",
+              "occurrenceKey": "b",
+              "domain": "edge",
+              "id": "e_5"
+            },
+            {
+              "pageId": "P2",
+              "occurrenceKey": "b",
+              "domain": "label",
+              "id": "e_6"
+            }
+          ]
+        },
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "case": "export.compile.digest-zero-origin",
+  "clause": "DESIGN R3.3 \u00a72.4.1 CR-11; \u00a710.2 export-ir/1",
+  "witness": "a non-counter policy with counterOrigin 0 compiles",
+  "derivation": "idPolicy digest with counterOrigin 0: valid. Parity sync PS-35: compileProfile success is the PureResult {status: ok, payload, diagnostics: []} (DESIGN \u00a710.1 L737); the CompiledProfile payload has no closed wire shape and is UNSEALED (/payload); no compiled identity is sealed here.",
+  "operation": "compileProfile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/exports/0/idPolicy",
+          "value": "digest"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "diagnostics": [],
+    "unsealed": [
+      "/payload"
+    ]
+  },
+  "author": "spec-seal"
+}

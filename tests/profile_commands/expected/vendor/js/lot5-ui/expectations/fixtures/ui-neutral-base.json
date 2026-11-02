@@ -1,0 +1,847 @@
+{
+  "id": "ui-neutral-base/1",
+  "version": "lot5-2",
+  "descriptor": "ui-neutral-descriptors/1",
+  "types": [
+    "bpmn:Definitions",
+    "bpmn:Collaboration",
+    "bpmn:Participant",
+    "bpmn:Process",
+    "bpmn:Task",
+    "bpmn:UserTask",
+    "bpmn:StartEvent",
+    "bpmn:EndEvent",
+    "bpmn:ExclusiveGateway",
+    "bpmn:SequenceFlow",
+    "bpmn:CallActivity",
+    "bpmn:DataStore",
+    "bpmn:DataStoreReference",
+    "bpmn:DataObject",
+    "bpmn:DataObjectReference",
+    "bpmn:Property",
+    "bpmn:DataInputAssociation",
+    "bpmn:DataOutputAssociation",
+    "bpmn:TextAnnotation",
+    "bpmn:Association",
+    "bpmn:InputOutputSpecification",
+    "bpmn:DataInput",
+    "bpmn:InputSet",
+    "bpmn:Documentation"
+  ],
+  "producerPolicy": "fixture-explicit",
+  "idRefScalars": [
+    "bpmn:CallActivity.calledElement"
+  ],
+  "fields": [
+    {
+      "type": "bpmn:Definitions",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Definitions",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Definitions",
+      "field": "targetNamespace",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Definitions",
+      "field": "exporterVersion",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Definitions",
+      "field": "rootElements",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:Collaboration",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Collaboration",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Collaboration",
+      "field": "participants",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:Participant",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Participant",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Participant",
+      "field": "processRef",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:Process",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Process",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Process",
+      "field": "isExecutable",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Process",
+      "field": "processType",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Process",
+      "field": "flowElements",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:Process",
+      "field": "artifacts",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:Process",
+      "field": "ioSpecification",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:Process",
+      "field": "documentation",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:Task",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Task",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Task",
+      "field": "documentation",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:Task",
+      "field": "properties",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:Task",
+      "field": "dataInputAssociations",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:Task",
+      "field": "dataOutputAssociations",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:UserTask",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:UserTask",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:UserTask",
+      "field": "documentation",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:UserTask",
+      "field": "properties",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:UserTask",
+      "field": "dataInputAssociations",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:UserTask",
+      "field": "dataOutputAssociations",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:StartEvent",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:StartEvent",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:StartEvent",
+      "field": "documentation",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:EndEvent",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:EndEvent",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:EndEvent",
+      "field": "documentation",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:ExclusiveGateway",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:ExclusiveGateway",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:ExclusiveGateway",
+      "field": "documentation",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:SequenceFlow",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:SequenceFlow",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:SequenceFlow",
+      "field": "sourceRef",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:SequenceFlow",
+      "field": "targetRef",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:CallActivity",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:CallActivity",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:CallActivity",
+      "field": "calledElement",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:CallActivity",
+      "field": "documentation",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:DataStore",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataStore",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataStoreReference",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataStoreReference",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataStoreReference",
+      "field": "dataStoreRef",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:DataObject",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataObject",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataObjectReference",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataObjectReference",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataObjectReference",
+      "field": "dataObjectRef",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:Property",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Property",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataInputAssociation",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataInputAssociation",
+      "field": "sourceRef",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:DataInputAssociation",
+      "field": "targetRef",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:DataOutputAssociation",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataOutputAssociation",
+      "field": "targetRef",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:TextAnnotation",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:TextAnnotation",
+      "field": "text",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:TextAnnotation",
+      "field": "documentation",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:Association",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Association",
+      "field": "associationDirection",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Association",
+      "field": "sourceRef",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:Association",
+      "field": "targetRef",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:InputOutputSpecification",
+      "field": "dataInputs",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:InputOutputSpecification",
+      "field": "inputSets",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "containment"
+    },
+    {
+      "type": "bpmn:DataInput",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:DataInput",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:InputSet",
+      "field": "id",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:InputSet",
+      "field": "name",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:InputSet",
+      "field": "dataInputRefs",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "reference"
+    },
+    {
+      "type": "bpmn:Documentation",
+      "field": "text",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    },
+    {
+      "type": "bpmn:Documentation",
+      "field": "textFormat",
+      "producers": [
+        "code",
+        "editor",
+        "import"
+      ],
+      "kind": "scalar"
+    }
+  ]
+}

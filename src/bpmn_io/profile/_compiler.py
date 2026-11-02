@@ -15,9 +15,11 @@ from typing import TYPE_CHECKING
 
 from bpmn_io.profile._c14n import digest, digest_bytes, jcs
 from bpmn_io.profile._results import PureRefused, PureResult, PureSuccess
+from bpmn_io.profile._ui import UiIndex, build_ui_index, check_ui_rules
 
 if TYPE_CHECKING:
     from bpmn_io.profile._loader import ValidatedProfile
+    from bpmn_io.profile._static import Typing
 
 __all__ = [
     "CompiledProfile",
@@ -59,22 +61,7 @@ _PREDICATE_OPS = frozenset(
     }
 )
 
-_SELECTOR_VIA = frozenset(
-    {
-        "self",
-        "root",
-        "owner",
-        "children",
-        "descendants",
-        "reference",
-        "inverseReference",
-        "all",
-        "pages",
-        "occurrences",
-        "semantic",
-    }
-)
-
+#: Selector admission lives in ``_static`` (``compiler-static.ts:151-200``).
 _ACTION_OPS = frozenset(
     {
         "bind",
@@ -130,7 +117,7 @@ _ACTION_PHASES: dict[str, frozenset[str]] = {
     "assignRef": frozenset(
         {"create", "edit", "reference", "complete", "normalize", "convert", "migrate"}
     ),
-    "reparent": frozenset({"edit", "convert", "migrate"}),
+    "reparent": frozenset({"edit", "convert", "migrate", "normalize"}),
     "place": frozenset({"normalize"}),
     "emit": frozenset({"export"}),
     "loss": frozenset({"export"}),
@@ -153,6 +140,11 @@ class RegistrySet:
 
     capabilities: tuple[str, ...]
     signatures: dict[str, str]
+    # Lot 4: render-token signatures (token name to JSON Schema),
+    # the region-token pattern and the region-token schema.
+    render_tokens: dict[str, dict[str, object]] = field(default_factory=dict)
+    region_token_pattern: str | None = None
+    region_token_schema: dict[str, object] | list[str] | None = None
 
 
 @dataclass(frozen=True)
@@ -161,7 +153,13 @@ class CompiledProfile:
 
     ``validation`` retains the raw profile validation records verbatim so the
     lint lane can derive its stage transport; record shape is validated there,
-    not here.
+    not here. ``identity`` is the §5.1 record, ``types`` the descriptor index
+    with facets, ``producers`` the effective producer matrix,
+    ``ref_fields`` the base-declared reference-kind fields (including
+    ID-valued scalars) and ``base_types`` the effective-base admitted type
+    names; the latter four stay ``None`` unless the profile was compiled
+    with its descriptor context and effective base (C/N refuse
+    ``descriptor-mismatch`` otherwise).
     """
 
     profile_digest: str
@@ -171,6 +169,23 @@ class CompiledProfile:
     descriptor_digest: str
     registry_digest: str
     validation: tuple[object, ...] = ()
+    # Lot 4 extension: the complete validated profile JSON, the closed
+    # §5.1 profileIdentity record, verified resource bytes by resource id
+    # and the render-token signatures active at compile time.
+    profile: dict[str, object] = field(default_factory=dict)
+    identity: dict[str, object] = field(default_factory=dict)
+    assets: dict[str, bytes] = field(default_factory=dict)
+    render_registry: dict[str, dict[str, object]] = field(default_factory=dict)
+    # Lot 3 extension (B7): descriptor types and producers for C/N, the
+    # effective-base type names and the sorted capability names.
+    types: dict[str, dict[str, object]] | None = None
+    producers: dict[tuple[str, str], frozenset[str]] | None = None
+    ref_fields: frozenset[tuple[str, str]] | None = None
+    base_types: frozenset[str] | None = None
+    capabilities: tuple[str, ...] = ()
+    # Lot 5 extension (CR-10): compiled UI/field/message index, attached
+    # between CR-09 and CR-11; None when the profile carries no UI section.
+    ui: UiIndex | None = None
 
 
 @dataclass
@@ -210,36 +225,10 @@ _FAMILY_OF_OP: dict[str, str] = {
 #: Render traversals and value positions needing the render capability.
 _RENDER_VIA = frozenset({"pages", "occurrences", "semantic"})
 
-#: Typed page/occurrence record fields for read-path checks (DESIGN §2.5).
-_RECORD_FIELDS: dict[str, object] = {
-    "page": {
-        "pageId": "string",
-        "name": "string",
-        "semanticRootId": "string",
-        "order": "number",
-        "bounds": {"x": "number", "y": "number", "width": "number", "height": "number"},
-    },
-    "occurrence": {
-        "pageId": "string",
-        "occurrenceKey": "string",
-        "semanticId": "string",
-        "role": "string",
-        "emittedType": "string",
-        "glyphId": "string",
-        "order": "number",
-        "label": {
-            "text": "string",
-            "lines": "array",
-            "bounds": {"x": "number", "y": "number", "width": "number", "height": "number"},
-        },
-        "waypoints": "array",
-        "style": "array",
-        "sourceOccurrence": {"pageId": "string", "occurrenceKey": "string"},
-        "targetOccurrence": {"pageId": "string", "occurrenceKey": "string"},
-    },
-}
 
-
+#: Render record typing lives in ``_static`` (``compiler-static.ts:10-15``);
+#: the legacy walk below only records families, demands and
+#: descriptor-independent checks.
 def _as_list(value: object) -> list[object]:
     """Return ``value`` when it is a list, else an empty list (mypy-safe iteration)."""
     return value if isinstance(value, list) else []
@@ -247,106 +236,6 @@ def _as_list(value: object) -> list[object]:
 
 #: Bounded generic walk size (DESIGN §2.5 host resource limit).
 _MAX_COMPILE_NODES: int = 4000000
-
-
-def _record_path_type(record: object, segments: list[str]) -> str | None:
-    """Resolve path ``segments`` in one typed record (None when invalid)."""
-    current = record
-    for part in segments:
-        if not isinstance(current, dict) or part not in current:
-            return None
-        current = current[part]
-    return current if isinstance(current, str) else None
-
-
-def _check_read_path(scope: _Scope, binding: str, path: object) -> str | None:
-    """Validate one ``read`` path against the binding type (refusal or None)."""
-    if not isinstance(path, str) or not path.startswith("/") or "//" in path:
-        return "profile-type"
-    segments = path[1:].split("/")
-    if any(not part for part in segments):
-        return "profile-type"
-    btype = scope.btypes.get(binding, "native")
-    record = _RECORD_FIELDS.get(btype)
-    if record is not None:
-        resolved = _record_path_type(record, segments)
-        return None if isinstance(resolved, str) else "profile-type"
-    if scope.types is not None and btype in scope.types:
-        spec = scope.types[btype]
-        facets: set[str] = set()
-        scalars = spec.get("scalars", ())
-        if isinstance(scalars, (list, tuple)):
-            facets.update(item for item in scalars if isinstance(item, str))
-        for role in ("containment", "references"):
-            role_map = spec.get(role, {})
-            if isinstance(role_map, dict):
-                facets.update(key for key in role_map if isinstance(key, str))
-        if segments[0] not in facets:
-            return "profile-type"
-    return None
-
-
-def _read_value_type(node: dict[str, object], scope: _Scope) -> str:
-    """Classify one ``read`` AST against its binding type (``unknown`` when open)."""
-    binding = node.get("binding")
-    path = node.get("path")
-    if not isinstance(binding, str) or not isinstance(path, str):
-        return "unknown"
-    btype = scope.btypes.get(binding, "native")
-    record = _RECORD_FIELDS.get(btype)
-    if record is None:
-        return "unknown"
-    resolved = _record_path_type(record, path[1:].split("/"))
-    return resolved if isinstance(resolved, str) else "unknown"
-
-
-def _value_type(node: object, scope: _Scope) -> str:  # noqa: C901, PLR0911
-    """Classify one value AST (``string``/``number``/``boolean``/``array``/``unknown``)."""
-    if not isinstance(node, dict):
-        return "unknown"
-    op = node.get("op")
-    if op == "literal":
-        value = node.get("value")
-        if isinstance(value, bool):
-            return "boolean"
-        if isinstance(value, str):
-            return "string"
-        if isinstance(value, (int, float)):
-            return "number"
-        return "unknown"
-    if op in ("id", "outputId", "concat", "stripPrefix", "case"):
-        return "string"
-    if op == "ids":
-        return "array"
-    if op == "param":
-        declared = scope.params.get(str(node.get("name")))
-        if declared in ("string", "number", "boolean", "array"):
-            return declared
-        return "unknown"
-    if op == "read":
-        return _read_value_type(node, scope)
-    return "unknown"
-
-
-def _infer_selector_type(selector: object, scope: _Scope) -> str:
-    """Infer the native type bound by one selector (``native`` when unknown)."""
-    if not isinstance(selector, dict):
-        return "native"
-    via = selector.get("via")
-    if via == "pages":
-        return "page"
-    if via == "occurrences":
-        return "occurrence"
-    where = selector.get("where")
-    if isinstance(where, dict) and where.get("op") == "typeIs":
-        candidate = where.get("type")
-        if isinstance(candidate, str) and candidate:
-            return candidate
-    if via == "self":
-        source = selector.get("from")
-        if isinstance(source, str):
-            return scope.btypes.get(source, "native")
-    return "native"
 
 
 def _check_op_signatures(profile: object, registry: RegistrySet, used: set[str]) -> str | None:
@@ -428,11 +317,15 @@ def _normalize_producer_fields(value: object) -> dict[str, tuple[str, ...]] | No
     return producers
 
 
-def _normalize_type_record(name: object, record: object) -> dict[str, object] | None:
+def _normalize_type_record(  # noqa: PLR0911 - one return per facet failure
+    name: object, record: object
+) -> dict[str, object] | None:
     """Normalize one descriptor type to its closed facets (None when malformed).
 
     Keeps ``scalars``, ``containment`` and ``references`` plus the ``id``
-    admission flag and optional ``producerFields``; every facet defaults to
+    admission flag, the optional ``many`` (multi-valued reference
+    properties) and ``single`` (single-valued containment properties)
+    facets, and optional ``producerFields``; every facet defaults to
     empty when absent (an absent ``id`` flag defaults to admitted). The
     normalized form is freshly built, so the context owns its index.
     """
@@ -442,10 +335,22 @@ def _normalize_type_record(name: object, record: object) -> dict[str, object] | 
     admitted = _normalize_string_map(record.get("containment", {}))
     linked = _normalize_string_map(record.get("references", {}))
     producers = _normalize_producer_fields(record.get("producerFields", []))
+    many = _normalize_string_list(record.get("many", []))
+    single = _normalize_string_list(record.get("single", []))
     id_flag = record.get("id", True)
+    scalar_types = record.get("scalarTypes", {})
+    bases = record.get("extends", [])
     if scalars is None or admitted is None or linked is None or producers is None:
         return None
+    if many is None or single is None:
+        return None
     if not isinstance(id_flag, bool):
+        return None
+    if not isinstance(scalar_types, dict) or not all(
+        isinstance(value, str) for value in scalar_types.values()
+    ):
+        return None
+    if not isinstance(bases, list) or not all(isinstance(base, str) for base in bases):
         return None
     return {
         "scalars": scalars,
@@ -453,6 +358,10 @@ def _normalize_type_record(name: object, record: object) -> dict[str, object] | 
         "references": linked,
         "id": id_flag,
         "producerFields": producers,
+        "many": many,
+        "single": single,
+        "scalarTypes": dict(scalar_types),
+        "extends": tuple(bases),
     }
 
 
@@ -467,8 +376,16 @@ def _package_bytes(raw: object) -> bytes | None:
     return None
 
 
-def _index_package_types(descriptor: object, types: dict[str, dict[str, object]]) -> str | None:
-    """Merge one package's type document into the index (refusal or None)."""
+def _index_package_types(
+    descriptor: object,
+    types: dict[str, dict[str, object]],
+    extends: dict[str, list[str]],
+) -> str | None:
+    """Merge one package's type document into the index (refusal or None).
+
+    ``extends`` collects each type's raw supertype list for the post-pass
+    inheritance resolution.
+    """
     if not isinstance(descriptor, dict) or not isinstance(descriptor.get("types"), dict):
         return "descriptor-mismatch"
     for type_name, record in descriptor["types"].items():
@@ -478,10 +395,100 @@ def _index_package_types(descriptor: object, types: dict[str, dict[str, object]]
         if normalized is None:
             return "descriptor-mismatch"
         types[type_name] = normalized
+        if isinstance(record, dict):
+            bases = record.get("extends", [])
+            if bases:
+                if not isinstance(bases, list) or not all(isinstance(base, str) for base in bases):
+                    return "descriptor-mismatch"
+                extends[type_name] = list(bases)
     return None
 
 
-def create_descriptor_context(
+def _merge_supertype(merged: dict[str, object], parent: dict[str, object]) -> bool:
+    """Merge one supertype's facets under the subtype's (False when malformed).
+
+    List facets union with the subtype's items first; map facets keep the
+    subtype's entry on conflict.
+    """
+    for key in ("scalars", "many", "single"):
+        ours = merged.get(key)
+        theirs = parent.get(key)
+        if not isinstance(ours, list) or not isinstance(theirs, (list, tuple)):
+            return False
+        ours.extend(item for item in theirs if item not in ours)
+    for key in ("containment", "references", "producerFields", "scalarTypes"):
+        ours_map = merged.get(key)
+        theirs_map = parent.get(key)
+        if not isinstance(ours_map, dict) or not isinstance(theirs_map, dict):
+            return False
+        for prop, admitted in theirs_map.items():
+            ours_map.setdefault(prop, admitted)
+    return True
+
+
+def _fresh_facets(own: dict[str, object]) -> dict[str, object] | None:
+    """Copy one normalized type's facets (None when malformed)."""
+    merged: dict[str, object] = {}
+    for key in ("scalars", "many", "single"):
+        facet = own.get(key, ())
+        if not isinstance(facet, (list, tuple)):
+            return None
+        merged[key] = list(facet)
+    bases = own.get("extends", ())
+    merged["extends"] = tuple(bases) if isinstance(bases, (list, tuple)) else ()
+    for key in ("containment", "references", "producerFields", "scalarTypes"):
+        facet = own.get(key, {})
+        if not isinstance(facet, dict):
+            return None
+        merged[key] = dict(facet)
+    merged["id"] = own.get("id", True)
+    return merged
+
+
+def _freeze_lists(merged: dict[str, object]) -> None:
+    """Freeze merged list facets back to the index tuple convention."""
+    for key in ("scalars", "many", "single"):
+        facet = merged.get(key)
+        if isinstance(facet, list):
+            merged[key] = tuple(facet)
+
+
+def _inherit_facets(
+    types: dict[str, dict[str, object]], extends: dict[str, list[str]]
+) -> str | None:
+    """Resolve descriptor ``extends`` inheritance (refusal or None).
+
+    Each subtype merges its supertypes' facets under its own declarations
+    (own containment/reference/producer entries win); unknown supertypes
+    and inheritance cycles refuse ``descriptor-mismatch``.
+    """
+    resolved: dict[str, dict[str, object]] = {}
+
+    def _resolve(name: str, stack: tuple[str, ...]) -> dict[str, object] | None:
+        cached = resolved.get(name)
+        if cached is not None:
+            return cached
+        if name in stack or name not in types:
+            return None
+        merged = _fresh_facets(types[name])
+        if merged is None:
+            return None
+        for base in extends.get(name, []):
+            parent = _resolve(base, (*stack, name))
+            if parent is None or not _merge_supertype(merged, parent):
+                return None
+        _freeze_lists(merged)
+        resolved[name] = merged
+        return merged
+
+    for type_name in extends:
+        if _resolve(type_name, ()) is None:
+            return "descriptor-mismatch"
+        types[type_name] = resolved[type_name]
+    return None
+
+
+def create_descriptor_context(  # noqa: PLR0911 - one return per pin failure
     packages: list[dict[str, object]],
 ) -> PureResult:
     """Build one descriptor context from pinned packages.
@@ -489,15 +496,22 @@ def create_descriptor_context(
     Each package carries ``id``, ``version``, ``sha256`` and immutable UTF-8
     ``descriptorBytes`` whose raw SHA-256 must match. IDs stay unique, and
     the ``types`` document inside the bytes builds the normalized
-    descriptor index (scalars, containment, references, id admission).
-    Duplicate package or type definitions refuse ``descriptor-mismatch``.
+    descriptor index (scalars, containment, references, id admission,
+    ``many``/``single`` facets). Duplicate package or type definitions
+    refuse ``descriptor-mismatch``. The context digest is the DESIGN §9.2
+    formula over the descriptor pins sorted by id.
     """
     seen: set[str] = set()
     types: dict[str, dict[str, object]] = {}
+    extends: dict[str, list[str]] = {}
+    pins: list[dict[str, object]] = []
     for entry in packages:
         package_id = entry.get("id")
         want = entry.get("sha256")
+        version = entry.get("version", "")
         if not isinstance(package_id, str) or not isinstance(want, str):
+            return PureRefused(code="descriptor-mismatch")
+        if not isinstance(version, str):
             return PureRefused(code="descriptor-mismatch")
         if package_id in seen:
             return PureRefused(code="descriptor-mismatch")
@@ -509,301 +523,59 @@ def create_descriptor_context(
             descriptor = json.loads(raw_bytes.decode("utf-8"))
         except (UnicodeDecodeError, ValueError):
             return PureRefused(code="descriptor-mismatch")
-        code = _index_package_types(descriptor, types)
+        code = _index_package_types(descriptor, types, extends)
         if code is not None:
             return PureRefused(code=code)
-    context_digest = digest(sorted(seen))
+        pins.append({"id": package_id, "version": version, "sha256": want})
+    code = _inherit_facets(types, extends)
+    if code is not None:
+        return PureRefused(code=code)
+    pins.sort(key=lambda pin: str(pin["id"]).encode("utf-16-be"))
+    context_digest = digest(pins)
     owned = tuple(copy.deepcopy(entry) for entry in packages)
     context = DescriptorContext(packages=owned, types=types, digest=context_digest)
     return PureSuccess(payload=context)
 
 
-def _check_value(  # noqa: C901, PLR0911, PLR0912
-    node: object, context: str, scope: _Scope, phase: str | None = None
-) -> str | None:
-    """Validate one value AST; return a refusal code or ``None``."""
-    _ = phase
-    if not isinstance(node, dict):
-        return "profile-type"
-    op = node.get("op")
-    if not isinstance(op, str) or op not in _VALUE_OPS:
-        return "profile-symbol"
-    if op == "literal":
-        if "value" not in node or not isinstance(node["value"], (str, int, float, bool)):
-            return "profile-type"
-        if isinstance(node["value"], bool):
-            return None
-        return None
-    if op == "read":
-        binding = node.get("binding")
-        if not isinstance(binding, str) or not isinstance(node.get("path"), str):
-            return "profile-type"
-        if binding not in scope.bindings:
-            return "profile-symbol"
-        return _check_read_path(scope, binding, node.get("path"))
-    if op == "id":
-        binding = node.get("binding")
-        if not isinstance(binding, str):
-            return "profile-type"
-        if binding not in scope.bindings:
-            return "profile-symbol"
-        return None
-    if op == "ids":
-        if context != "assignRef-values":
-            return "profile-value-context"
-        return None
-    if op == "param":
-        name = node.get("name")
-        if not isinstance(name, str):
-            return "profile-type"
-        if name not in scope.params:
-            return "profile-symbol"
-        return None
-    if op == "concat":
-        values = node.get("values")
-        if not isinstance(values, list) or not values:
-            return "profile-type"
-        for entry in values:
-            code = _check_value(entry, "concat", scope, phase)
-            if code is not None:
-                return code
-            if _value_type(entry, scope) not in ("string", "unknown"):
-                return "profile-type"
-        return None
-    if op == "stripPrefix":
-        if not isinstance(node.get("prefix"), str):
-            return "profile-type"
-        code = _check_value(node.get("value"), context, scope, phase)
-        if code is not None:
-            return code
-        if _value_type(node.get("value"), scope) not in ("string", "unknown"):
-            return "profile-type"
-        return None
-    if op == "case":
-        if node.get("mode") not in ("upper", "lower"):
-            return "profile-type"
-        if node.get("unicode", "15.0.0") != "15.0.0":
-            return "profile-type"
-        code = _check_value(node.get("value"), context, scope, phase)
-        if code is not None:
-            return code
-        if _value_type(node.get("value"), scope) not in ("string", "unknown"):
-            return "profile-type"
-        return None
-    if op == "outputId":
-        if context not in ("emit-fields", "emit-parent"):
-            return "profile-value-context"
-        binding = node.get("binding")
-        if not isinstance(binding, str) or not isinstance(node.get("domain"), str):
-            return "profile-type"
-        if binding not in scope.bindings:
-            return "profile-symbol"
-        scope.used_families.add("render-data/1")
-        return None
-    return "profile-type"
+def _check_value(node: object, context: str, scope: _Scope, phase: str | None = None) -> str | None:
+    """Record value families (typing lives in ``_static``)."""
+    _ = context, phase
+    _record_families(node, scope.used_families)
+    return None
 
 
-def _check_predicate(  # noqa: C901, PLR0911, PLR0912, PLR0915
-    node: object, scope: _Scope, context_phase: str = "rule"
-) -> str | None:
-    """Validate one predicate AST; return a refusal code or ``None``."""
-    if not isinstance(node, dict):
-        return "profile-type"
-    op = node.get("op")
-    if not isinstance(op, str) or op not in _PREDICATE_OPS:
-        return "profile-symbol"
-    if op in ("true", "false"):
-        return None
-    if op in ("all", "any"):
-        args = node.get("args")
-        if not isinstance(args, list) or not args:
-            return "profile-type"
-        for entry in args:
-            code = _check_predicate(entry, scope, context_phase)
-            if code is not None:
-                return code
-        return None
-    if op == "not":
-        if "arg" not in node or "args" in node:
-            return "profile-type"
-        return _check_predicate(node.get("arg"), scope, context_phase)
-    if op == "typeIs":
-        binding = node.get("binding")
-        type_name = node.get("type")
-        if not isinstance(binding, str) or not isinstance(type_name, str):
-            return "profile-type"
-        if node.get("mode") not in ("exact", "assignable"):
-            return "profile-type"
-        if binding not in scope.bindings:
-            return "profile-symbol"
-        if ":" in type_name and scope.types is not None and type_name not in scope.types:
-            return "profile-type"
-        return None
-    if op == "present":
-        return _check_value(node.get("value"), "predicate", scope, None)
-    if op == "equal":
-        for key in ("left", "right"):
-            code = _check_value(node.get(key), "predicate", scope, None)
-            if code is not None:
-                return code
-        return None
-    if op == "textPrefix":
-        if not isinstance(node.get("prefix"), str) or not node.get("prefix"):
-            return "profile-type"
-        if node.get("trim") not in ("none", "ecma262-2024-start"):
-            return "profile-type"
-        return _check_value(node.get("value"), "predicate", scope, None)
-    if op == "count":
-        selector = node.get("selector")
-        code = _check_selector(selector, scope, context_phase)
-        if code is not None:
-            return code
-        minimum = node.get("min")
-        maximum = node.get("max")
-        if not isinstance(minimum, int) or isinstance(minimum, bool) or minimum < 0:
-            return "profile-bounds"
-        if maximum is not None and (
-            not isinstance(maximum, int) or isinstance(maximum, bool) or maximum < minimum
-        ):
-            return "profile-bounds"
-        return None
-    if op == "boundRole":
-        binding = node.get("binding")
-        owner = node.get("owner")
-        if not isinstance(binding, str) or not isinstance(owner, str):
-            return "profile-type"
-        if binding not in scope.bindings or owner not in scope.bindings:
-            return "profile-symbol"
-        return None
-    if op == "recognizes":
-        binding = node.get("binding")
-        notion = node.get("notion")
-        if not isinstance(binding, str) or not isinstance(notion, str):
-            return "profile-type"
-        if binding not in scope.bindings:
-            return "profile-symbol"
-        if notion not in scope.notions:
-            return "profile-symbol"
-        return None
-    if op == "reachable":
-        for key in ("source", "target"):
-            code = _check_selector(node.get(key), scope, context_phase)
-            if code is not None:
-                return code
-        edge_types = node.get("edgeTypes")
-        if not isinstance(edge_types, list) or not edge_types:
-            return "profile-type"
-        if scope.types is not None:
-            for edge in edge_types:
-                if isinstance(edge, str) and ":" in edge and edge not in scope.types:
-                    return "profile-type"
-        min_hops = node.get("minHops")
-        max_hops = node.get("maxHops")
-        if not isinstance(min_hops, int) or isinstance(min_hops, bool) or min_hops < 0:
-            return "profile-bounds"
-        if max_hops is not None and (
-            not isinstance(max_hops, int) or isinstance(max_hops, bool) or max_hops < min_hops
-        ):
-            return "profile-bounds"
-        return None
-    return "profile-type"
+def _record_families(node: object, used: set[str]) -> None:
+    """Record selector/render families of one AST (old visit points)."""
+    stack = [node]
+    while stack:
+        current = stack.pop()
+        if isinstance(current, dict):
+            if isinstance(current.get("via"), str) and "from" in current:
+                used.add("selectors/1")
+                if current.get("via") in _RENDER_VIA:
+                    used.add("render-data/1")
+            if current.get("op") == "outputId":
+                used.add("render-data/1")
+            stack.extend(current.values())
+        elif isinstance(current, list):
+            stack.extend(current)
 
 
-def _check_reference_property(scope: _Scope, from_name: str, prop: str) -> str | None:
-    """Validate a reference-traversal property against the descriptor index.
-
-    Admits descriptor reference properties and base-declared ID-valued
-    scalar references such as ``calledElement`` (DESIGN §2.2); anything else
-    on a known native type refuses.
-    """
-    from_type = scope.btypes.get(from_name, "native")
-    if from_type in ("page", "occurrence"):
-        if prop not in ("sourceOccurrence", "targetOccurrence"):
-            return "profile-selector-property"
-        return None
-    if scope.types is None or from_type not in scope.types:
-        return None
-    spec = scope.types[from_type]
-    references = spec.get("references", {})
-    if isinstance(references, dict) and prop in references:
-        return None
-    scalars = spec.get("scalars", ())
-    is_scalar = isinstance(scalars, (list, tuple)) and prop in scalars
-    if is_scalar and scope.ref_fields is not None and (from_type, prop) in scope.ref_fields:
-        return None
-    return "profile-type"
+def _check_predicate(node: object, scope: _Scope, context_phase: str = "rule") -> str | None:
+    """Record predicate families (typing lives in ``_static``)."""
+    _ = context_phase
+    _record_families(node, scope.used_families)
+    return None
 
 
-def _check_selector(  # noqa: C901, PLR0911, PLR0912
+def _check_selector(
     node: object,
     scope: _Scope,
     context_phase: str = "rule",
 ) -> str | None:
-    """Validate one selector AST; return a refusal code or ``None``."""
-    if not isinstance(node, dict):
-        return "profile-type"
-    from_name = node.get("from")
-    via = node.get("via")
-    order = node.get("order")
-    if not isinstance(from_name, str) or not isinstance(via, str):
-        return "profile-type"
-    if from_name not in scope.bindings:
-        return "profile-symbol"
-    if via not in _SELECTOR_VIA:
-        return "profile-symbol"
-    scope.used_families.add("selectors/1")
-    native_via = {
-        "self",
-        "root",
-        "owner",
-        "children",
-        "descendants",
-        "reference",
-        "inverseReference",
-        "all",
-    }
-    render_via = {"pages", "occurrences", "semantic"}
-    if via in render_via:
-        scope.used_families.add("render-data/1")
-        if context_phase != "export":
-            return "profile-value-context"
-    if via == "self" and order not in ("id", "page-occurrence"):
-        return "profile-selector-order"
-    if via in native_via and via != "self" and order != "id":
-        return "profile-selector-order"
-    if via in render_via and via != "semantic" and order != "page-occurrence":
-        return "profile-selector-order"
-    if via == "semantic" and order != "id":
-        return "profile-selector-order"
-    has_property = "property" in node
-    if via in ("reference", "inverseReference"):
-        if not has_property or not isinstance(node.get("property"), str):
-            return "profile-selector-property"
-        if via == "inverseReference":
-            from_type = scope.btypes.get(from_name, "native")
-            if from_type in ("page", "occurrence"):
-                return "profile-selector-property"
-        code = _check_reference_property(scope, from_name, str(node.get("property")))
-        if code is not None:
-            return code
-    elif via == "children":
-        if has_property and not isinstance(node.get("property"), str):
-            return "profile-selector-property"
-        from_type = scope.btypes.get(from_name, "native")
-        if has_property and scope.types is not None and from_type in scope.types:
-            spec = scope.types[from_type]
-            containment = spec.get("containment", {})
-            if isinstance(containment, dict) and node.get("property") not in containment:
-                return "profile-type"
-    elif has_property:
-        return "profile-selector-property"
-    where = node.get("where")
-    if where is not None:
-        inner = scope.child()
-        inner.btypes["self"] = _infer_selector_type(node, scope)
-        code = _check_predicate(where, inner, context_phase)
-        if code is not None:
-            return code
+    """Record selector families (typing lives in ``_static``)."""
+    _ = context_phase
+    _record_families(node, scope.used_families)
     return None
 
 
@@ -813,21 +585,28 @@ def _authorize(scope: _Scope, btype: str, field_name: str, phase: str) -> str | 
     The phase actor is ``code`` for complete/normalize and ``editor``
     otherwise; export has no native write authority. A known native type
     checks its own producers; an unknown binding checks every admitted
-    target type supporting the field (DESIGN §2.4.1 CR-06).
+    target type supporting the field (DESIGN §2.4.1 CR-06). A candidate
+    with no producer row is not an admitted write target for the field
+    and is skipped.
     """
-    if scope.producers is None or scope.types is None or not field_name:
+    if (
+        scope.producers is None
+        or scope.types is None
+        or not field_name
+        or _support_unindexed(scope, btype)
+    ):
         return None
     actor = "code" if phase in ("complete", "normalize") else "editor"
     if btype in scope.types:
-        candidates = [btype]
-    else:
-        candidates = [
-            name for name, spec in scope.types.items() if _type_has_field(spec, field_name)
-        ]
-        if not candidates:
-            return "profile-type"
+        if actor not in scope.producers.get((btype, field_name), frozenset()):
+            return "profile-producer"
+        return None
+    candidates = [name for name, spec in scope.types.items() if _type_has_field(spec, field_name)]
+    if not candidates:
+        return "profile-type"
     for candidate in candidates:
-        if actor not in scope.producers.get((candidate, field_name), frozenset()):
+        rights = scope.producers.get((candidate, field_name))
+        if rights is not None and actor not in rights:
             return "profile-producer"
     return None
 
@@ -876,15 +655,7 @@ def _check_action(  # noqa: C901, PLR0911, PLR0912, PLR0915
         if prop is not None:
             if not isinstance(prop, str):
                 return "profile-type"
-            parent_type = scope.btypes.get(parent, "native")
-            if scope.types is not None and parent_type in scope.types:
-                containment = scope.types[parent_type].get("containment", {})
-                if isinstance(containment, dict) and prop not in containment:
-                    return "profile-type"
             demands.append({"binding": parent, "path": "/" + prop, "mode": "reparent"})
-            code = _authorize(scope, parent_type, prop, phase)
-            if code is not None:
-                return code
         demands.append({"binding": target, "path": "", "mode": "reparent"})
         return None
     if op == "place":
@@ -901,9 +672,7 @@ def _check_action(  # noqa: C901, PLR0911, PLR0912, PLR0915
                 return "profile-symbol"
         related = step.get("related")
         if related is not None:
-            code = _check_selector(related, scope, context_phase)
-            if code is not None:
-                return code
+            _check_selector(related, scope, context_phase)
         demands.append({"binding": target, "path": "", "mode": "placement"})
         return None
     if op == "emit":
@@ -913,14 +682,10 @@ def _check_action(  # noqa: C901, PLR0911, PLR0912, PLR0915
         for entry in fields:
             if not isinstance(entry, dict) or not isinstance(entry.get("name"), str):
                 return "profile-export-field"
-            code = _check_value(entry.get("value"), "emit-fields", scope, phase)
-            if code is not None:
-                return code
+            _check_value(entry.get("value"), "emit-fields", scope, phase)
         parent = step.get("parent")
         if parent is not None:
-            code = _check_value(parent, "emit-parent", scope, phase)
-            if code is not None:
-                return code
+            _check_value(parent, "emit-parent", scope, phase)
         scope.used_families.add("export-ir/1")
         demands.append({"binding": "self", "path": "", "mode": "artifact"})
         return None
@@ -943,7 +708,8 @@ def _check_action(  # noqa: C901, PLR0911, PLR0912, PLR0915
         demands.append({"binding": target, "path": "", "mode": "remove"})
         return None
     if op == "ensure":
-        return None
+        # B3: full ensure checking (as-alias registration included).
+        return _check_ensure(step, phase, scope, demands)
     if op == "refuse":
         if not isinstance(step.get("code"), str):
             return "profile-type"
@@ -957,12 +723,76 @@ def _check_action(  # noqa: C901, PLR0911, PLR0912, PLR0915
     return "profile-type"
 
 
+#: Native types an ``ensure`` step may allocate (DESIGN §5.2 support objects).
+_SUPPORT_ENSURE_TYPES: frozenset[str] = frozenset(
+    {"bpmn:Collaboration", "bpmn:Participant", "bpmn:LaneSet", "bpmn:Lane"}
+)
+
+
+def _support_unindexed(scope: _Scope, native_type: str) -> bool:
+    """Return whether one support-ensure type lacks a descriptor entry.
+
+    Support objects (§5.2) are native-managed: a profile may ensure them
+    without declaring them, in which case descriptor-bound checks degrade
+    instead of refusing.
+    """
+    return (
+        native_type in _SUPPORT_ENSURE_TYPES
+        and scope.types is not None
+        and native_type not in scope.types
+    )
+
+
+def _check_ensure_identity(
+    step: dict[str, object], native_type: str, phase: str, scope: _Scope
+) -> str | None:
+    """Validate one ensure's identity parts and creation fields (CR-07)."""
+    for key in ("ownerId", "key"):
+        if key not in step:
+            return "profile-type"
+        _check_value(step.get(key), "create-field", scope, phase)
+    if not isinstance(step.get("slot"), str) or not step.get("slot"):
+        return "profile-type"
+    code = _check_create_fields(step, native_type, phase, scope)
+    if code is not None:
+        return code
+    return None
+
+
+def _check_ensure(  # noqa: PLR0911 - one return per ensure failure
+    step: dict[str, object], phase: str, scope: _Scope, demands: list[dict[str, object]]
+) -> str | None:
+    """Validate one ensure step with support restriction and demands (CR-05/06/07)."""
+    native_type = step.get("type")
+    if not isinstance(native_type, str) or not native_type:
+        return "profile-type"
+    if native_type not in _SUPPORT_ENSURE_TYPES:
+        return "profile-producer"
+    owner = step.get("owner")
+    parent = step.get("parent")
+    if not isinstance(owner, str) or not isinstance(parent, str):
+        return "profile-type"
+    if owner not in scope.bindings or parent not in scope.bindings:
+        return "profile-symbol"
+    code = _check_ensure_identity(step, native_type, phase, scope)
+    if code is not None:
+        return code
+    code = _check_create_parent(step, native_type, phase, scope, demands)
+    if code is not None:
+        return code
+    demands.append({"binding": "envelope", "path": "/bindings", "mode": "binding"})
+    alias = step.get("as")
+    if not isinstance(alias, str) or not alias:
+        return "profile-type"
+    scope.bindings.add(alias)
+    scope.btypes[alias] = native_type
+    return None
+
+
 def _check_bind(step: dict[str, object], scope: _Scope, context_phase: str) -> str | None:
     """Validate one bind step and register its alias (CR-05/CR-13)."""
     selector = step.get("select")
-    code = _check_selector(selector, scope, context_phase)
-    if code is not None:
-        return code
+    _check_selector(selector, scope, context_phase)
     alias = step.get("as")
     cardinality = step.get("cardinality")
     if not isinstance(alias, str) or not alias:
@@ -974,11 +804,9 @@ def _check_bind(step: dict[str, object], scope: _Scope, context_phase: str) -> s
         return "profile-bind-fallbacks"
     if isinstance(fallbacks, list):
         for entry in fallbacks:
-            code = _check_selector(entry, scope, context_phase)
-            if code is not None:
-                return code
+            _check_selector(entry, scope, context_phase)
     scope.bindings.add(alias)
-    scope.btypes[alias] = _infer_selector_type(selector, scope)
+    scope.btypes[alias] = "native"
     return None
 
 
@@ -989,7 +817,8 @@ def _check_create_parent(
     scope: _Scope,
     demands: list[dict[str, object]],
 ) -> str | None:
-    """Validate one create parent/property with containment admission (CR-06)."""
+    """Record one create parent/property demand (typing lives in ``_static``)."""
+    _ = native_type, phase
     parent = step.get("parent")
     prop = step.get("property")
     if parent is None and prop is None:
@@ -998,18 +827,8 @@ def _check_create_parent(
         return "profile-type"
     if parent not in scope.bindings:
         return "profile-symbol"
-    parent_type = scope.btypes.get(parent, "native")
-    if scope.types is not None and parent_type in scope.types:
-        containment = scope.types[parent_type].get("containment", {})
-        admitted_types: tuple[str, ...] | list[str] | None = None
-        if isinstance(containment, dict):
-            maybe = containment.get(prop)
-            if isinstance(maybe, (list, tuple)):
-                admitted_types = maybe
-        if admitted_types is None or native_type not in admitted_types:
-            return "profile-type"
     demands.append({"binding": parent, "path": "/" + prop, "mode": "create"})
-    return _authorize(scope, parent_type, prop, phase)
+    return None
 
 
 def _check_create_field(
@@ -1018,20 +837,12 @@ def _check_create_field(
     phase: str,
     scope: _Scope,
 ) -> str | None:
-    """Validate one create field with scalar admission and producers."""
+    """Record one create field value family (typing lives in ``_static``)."""
+    _ = native_type
     if not isinstance(entry, dict) or not isinstance(entry.get("name"), str):
         return "profile-type"
-    field_name = str(entry.get("name"))
-    if scope.types is not None and native_type in scope.types:
-        scalars = scope.types[native_type].get("scalars", ())
-        if not isinstance(scalars, (list, tuple)) or field_name not in scalars:
-            return "profile-type"
-        if field_name == "id":
-            return "profile-type"
-    code = _check_value(entry.get("value"), "create-field", scope, phase)
-    if code is not None:
-        return code
-    return _authorize(scope, native_type, field_name, phase)
+    _check_value(entry.get("value"), "create-field", scope, phase)
+    return None
 
 
 def _check_create_fields(
@@ -1054,7 +865,7 @@ def _check_create_fields(
 def _check_create(  # noqa: C901, PLR0911, PLR0912
     step: dict[str, object], phase: str, scope: _Scope, demands: list[dict[str, object]]
 ) -> str | None:
-    """Validate one create step with identity, admission and producers (CR-06/07)."""
+    """Validate one create step shape and record demands (typing in ``_static``)."""
     identity = step.get("identity")
     if identity not in ("allocated", "containment"):
         return "profile-create-identity"
@@ -1069,24 +880,12 @@ def _check_create(  # noqa: C901, PLR0911, PLR0912
     native_type = step.get("type")
     if not isinstance(native_type, str) or not native_type:
         return "profile-type"
-    if ":" in native_type and scope.types is not None and native_type not in scope.types:
-        return "profile-type"
-    if scope.types is not None and native_type in scope.types:
-        admitted = scope.types[native_type].get("id", True) is True
-        if admitted != (identity == "allocated"):
-            return "profile-create-identity"
     for key in ("ownerId", "key"):
         if key in step:
-            code = _check_value(step.get(key), "create-field", scope, phase)
-            if code is not None:
-                return code
+            _check_value(step.get(key), "create-field", scope, phase)
     code = _check_create_fields(step, native_type, phase, scope)
     if code is not None:
         return code
-    if identity == "allocated":
-        code = _authorize(scope, native_type, "id", phase)
-        if code is not None:
-            return code
     alias = step.get("as")
     if alias is not None:
         if not isinstance(alias, str) or not alias:
@@ -1121,21 +920,15 @@ def _check_set(
     scope: _Scope,
     demands: list[dict[str, object]],
 ) -> str | None:
-    """Validate one set/unset step with path admission and producers (CR-06)."""
+    """Validate one set/unset step shape and record its demand (CR-06)."""
     target, path, head, error = _write_target(step, scope)
     if error is not None:
         return error
-    target_type = scope.btypes.get(target, "native")
-    if scope.types is not None and target_type in scope.types:
-        scalars = scope.types[target_type].get("scalars", ())
-        if not isinstance(scalars, (list, tuple)) or head not in scalars:
-            return "profile-type"
+    _ = head
     if op == "set":
-        code = _check_value(step.get("value"), "set", scope, phase)
-        if code is not None:
-            return code
+        _check_value(step.get("value"), "set", scope, phase)
     demands.append({"binding": target, "path": path, "mode": op})
-    return _authorize(scope, target_type, head, phase)
+    return None
 
 
 def _check_assign_ref(
@@ -1144,26 +937,20 @@ def _check_assign_ref(
     scope: _Scope,
     demands: list[dict[str, object]],
 ) -> str | None:
-    """Validate one assignRef step with reference admission and producers."""
+    """Validate one assignRef step shape and record its demand (CR-06)."""
     target, path, head, error = _write_target(step, scope)
     if error is not None:
         return error
-    target_type = scope.btypes.get(target, "native")
-    if scope.types is not None and target_type in scope.types:
-        references = scope.types[target_type].get("references", {})
-        if not isinstance(references, dict) or head not in references:
-            return "profile-type"
+    _ = head
     values = step.get("values")
     if not isinstance(values, list):
         return "profile-type"
     for entry in values:
-        code = _check_value(entry, "assignRef-values", scope, phase)
-        if code is not None:
-            return code
+        _check_value(entry, "assignRef-values", scope, phase)
     if step.get("mode") not in ("replace", "appendUnique", "remove"):
         return "profile-type"
     demands.append({"binding": target, "path": path, "mode": "reference"})
-    return _authorize(scope, target_type, head, phase)
+    return None
 
 
 def _collect_recognizes(node: object, edges: set[str]) -> None:
@@ -1219,7 +1006,17 @@ def _recognition_cycle(notions_raw: list[object]) -> str | None:  # noqa: C901
     return None
 
 
-def _base_producers(
+def _base_type_names(base: dict[str, object] | None) -> frozenset[str] | None:
+    """Return the effective-base admitted type names (None without a base)."""
+    if base is None:
+        return None
+    declared = base.get("types")
+    if not isinstance(declared, list):
+        return frozenset()
+    return frozenset(item for item in declared if isinstance(item, str))
+
+
+def _base_producers(  # noqa: PLR0911 - one return per base failure
     base: dict[str, object],
     producers: dict[tuple[str, str], frozenset[str]],
     ref_fields: set[tuple[str, str]],
@@ -1244,6 +1041,16 @@ def _base_producers(
         producers[(type_name, field_name)] = frozenset(actors)
         if entry.get("kind") == "reference":
             ref_fields.add((type_name, field_name))
+    scalars = base.get("idRefScalars", [])
+    if not isinstance(scalars, list):
+        return "profile-producer"
+    for item in scalars:
+        if not isinstance(item, str) or "." not in item:
+            return "profile-producer"
+        owner, _, member = item.rpartition(".")
+        if not owner or not member:
+            return "profile-producer"
+        ref_fields.add((owner, member))
     return None
 
 
@@ -1458,6 +1265,59 @@ def _check_closed_refs(
     return _check_rule_ui_refs(profile, recipe_ids, messages)
 
 
+def _check_lot4_records(  # noqa: C901, PLR0911, PLR0912
+    profile: dict[str, object],
+    notions_raw: object,
+    recipes_raw: object,
+    registry: RegistrySet,
+) -> str | None:
+    """Run the lot-4 glyph, token and export checks (CR-09/CR-11, spec §8.1)."""
+    from bpmn_io.profile._export_ir import check_emit, check_export_record  # noqa: PLC0415
+    from bpmn_io.profile._render_tokens import validate_token_list  # noqa: PLC0415
+    from bpmn_io.profile._templates import check_glyph  # noqa: PLC0415
+
+    for theme in _as_list(profile.get("themes")):
+        if not isinstance(theme, dict):
+            continue
+        for glyph in _as_list(theme.get("glyphs")):
+            if check_glyph(glyph) is not None:
+                return "profile-glyph-shape"
+        code = validate_token_list(theme.get("tokens", []), registry)
+        if code is not None:
+            return code
+        for occurrence in _as_list(theme.get("syntheticOccurrences")):
+            if not isinstance(occurrence, dict):
+                continue
+            code = validate_token_list(occurrence.get("tokens", []), registry)
+            if code is not None:
+                return code
+    for notion in _as_list(notions_raw):
+        if not isinstance(notion, dict):
+            continue
+        for binding in _as_list(notion.get("renderBindings")):
+            if not isinstance(binding, dict):
+                continue
+            code = validate_token_list(binding.get("tokens", []), registry)
+            if code is not None:
+                return code
+    for recipe in _as_list(recipes_raw):
+        if not isinstance(recipe, dict) or recipe.get("phase") != "export":
+            continue
+        for step in _as_list(recipe.get("steps")):
+            if not isinstance(step, dict) or step.get("op") != "emit":
+                continue
+            code = check_emit(step)
+            if code is not None:
+                return code
+    for export in _as_list(profile.get("exports")):
+        if not isinstance(export, dict):
+            continue
+        code = check_export_record(export)
+        if code is not None:
+            return code
+    return None
+
+
 def _check_export_migration_phases(
     profile: dict[str, object], recipes: dict[str, dict[str, object]]
 ) -> str | None:
@@ -1479,6 +1339,70 @@ def _check_export_migration_phases(
             if known.get("phase") != "migrate":
                 return "profile-type"
     return None
+
+
+def _supertypes(descriptor_context: DescriptorContext | None) -> dict[str, tuple[str, ...]]:
+    """Return the own ``extends`` lists of every descriptor type (JS descriptorIndex)."""
+    found: dict[str, tuple[str, ...]] = {}
+    if descriptor_context is None:
+        return found
+    for type_name, record in descriptor_context.types.items():
+        bases = record.get("extends", ()) if isinstance(record, dict) else ()
+        if not isinstance(bases, (list, tuple)):
+            continue
+        found[type_name] = tuple(base for base in bases if isinstance(base, str))
+    return found
+
+
+def _static_typing(
+    profile: dict[str, object],
+    types: dict[str, dict[str, object]] | None,
+    descriptor_context: DescriptorContext | None,
+    base: dict[str, object] | None,
+    producers: dict[tuple[str, str], frozenset[str]] | None,
+) -> Typing:
+    """Build the ``_static.Typing`` authority of one compilation."""
+    from bpmn_io.profile import _static  # noqa: PLC0415 - typing core stays lazily bound
+
+    notions = {
+        str(entry.get("id")): entry
+        for entry in _as_list(profile.get("notions"))
+        if isinstance(entry, dict)
+    }
+    if types is None:
+        return _static.Typing(descriptors=None, native_types=(), notions=notions)
+    declared = base.get("types") if base is not None else None
+    if isinstance(declared, list):
+        native = tuple(item for item in declared if isinstance(item, str))
+    else:
+        native = tuple(types)
+    id_refs = frozenset(
+        item
+        for item in _as_list(base.get("idRefScalars") if base is not None else None)
+        if isinstance(item, str)
+    )
+    grants: dict[tuple[str, str, str], frozenset[str]] | None = None
+    if base is not None and producers is not None:
+        grants = {}
+        for entry in _as_list(base.get("fields")):
+            if isinstance(entry, dict):
+                key = (str(entry.get("type")), str(entry.get("field")))
+                grants[(key[0], key[1], str(entry.get("kind")))] = producers.get(key, frozenset())
+    return _static.Typing(
+        descriptors=types,
+        native_types=native,
+        id_ref_scalars=id_refs,
+        notions=notions,
+        grants=grants,
+        supertypes=_supertypes(descriptor_context),
+        base_fields=frozenset(
+            (str(entry.get("type")), str(entry.get("field")))
+            for entry in _as_list(base.get("fields") if base is not None else None)
+            if isinstance(entry, dict)
+        )
+        if base is not None
+        else None,
+    )
 
 
 def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
@@ -1570,72 +1494,79 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
     if error is not None:
         return PureRefused(code=error)
 
+    # Static admission (``compiler-static.ts``): the structural pre-pass then
+    # the whole-profile walk, the only typing authority of this compilation.
+    from bpmn_io.profile import _static  # noqa: PLC0415 - typing core stays lazily bound
+
+    typing = _static_typing(profile, types, descriptor_context, base, producers)
+    try:
+        for _notion in notions_raw:
+            if isinstance(_notion, dict):
+                _static.structure_predicate(_notion.get("recognition"))
+        for _rule in rules_raw:
+            if isinstance(_rule, dict):
+                _static.structure_selector(_rule.get("select"))
+                _static.structure_predicate(_rule.get("assert"))
+                for _bind in _as_list(_rule.get("bindings")):
+                    if isinstance(_bind, dict):
+                        _static.structure_bind(_bind)
+        for _recipe in recipes_raw:
+            if isinstance(_recipe, dict):
+                _static.structure_recipe(_recipe)
+        _static.static_walk(profile, typing)
+    except _static.StaticRefusal as refusal:
+        return PureRefused(code=refusal.code)
+
     def _new_scope(
         bindings: set[str], btypes: dict[str, str], params: dict[str, str] | None = None
     ) -> _Scope:
+        # The legacy walk below records families and demands only: no
+        # descriptor index, no producers, no reference fields.
         return _Scope(
             notions=set(notions),
             bindings=set(bindings),
             btypes=dict(btypes),
             params=dict(params or {}),
-            types=types,
-            producers=producers,
-            ref_fields=ref_fields,
+            types=None,
+            producers=None,
+            ref_fields=None,
             used_families=used_families,
         )
 
-    # Typed walks: notions with recognition scope (CR-02/03/05).
+    # Family/demand walks: notions with recognition scope (CR-02/03/05).
     for notion in notions_raw:
         if not isinstance(notion, dict):
             continue
-        native_types = notion.get("nativeTypes", [])
-        self_type = "native"
-        if (
-            isinstance(native_types, list)
-            and len(native_types) == 1
-            and isinstance(native_types[0], str)
-        ):
-            self_type = native_types[0]
-        scope = _new_scope({"root", "self", "bindingOwner"}, {"self": self_type})
+        scope = _new_scope({"root", "self", "bindingOwner"}, {})
         for key in ("recognition",):
             predicate = notion.get(key)
             if predicate is not None:
-                code = _check_predicate(predicate, scope)
-                if code is not None:
-                    return PureRefused(code=code)
+                _check_predicate(predicate, scope)
         for field_entry in _as_list(notion.get("fields")):
             if not isinstance(field_entry, dict):
                 continue
             for key in ("visible", "mutable"):
                 predicate = field_entry.get(key)
                 if predicate is not None:
-                    code = _check_predicate(predicate, scope)
-                    if code is not None:
-                        return PureRefused(code=code)
+                    _check_predicate(predicate, scope)
         for binding in _as_list(notion.get("renderBindings")):
             if not isinstance(binding, dict):
                 continue
             label = binding.get("label")
             if label is not None:
-                code = _check_value(label, "predicate", scope, None)
-                if code is not None:
-                    return PureRefused(code=code)
+                _check_value(label, "predicate", scope, None)
 
-    # Typed walks: rules with rule scope.
+    # Family/demand walks: rules with rule scope.
     for rule in rules_raw:
         if not isinstance(rule, dict):
             continue
         scope = _new_scope({"root", "self", "bindingOwner"}, {})
-        code = _check_selector(rule.get("select"), scope)
-        if code is not None:
-            return PureRefused(code=code)
-        scope.btypes["self"] = _infer_selector_type(rule.get("select"), scope)
+        _check_selector(rule.get("select"), scope)
+        scope.btypes["self"] = "native"
         for binding in _as_list(rule.get("bindings")):
             if not isinstance(binding, dict):
                 return PureRefused(code="profile-type")
-            code = _check_selector(binding.get("select"), scope)
-            if code is not None:
-                return PureRefused(code=code)
+            _check_selector(binding.get("select"), scope)
             alias = binding.get("as")
             cardinality = binding.get("cardinality")
             if not isinstance(alias, str) or not alias:
@@ -1647,16 +1578,12 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
                 return PureRefused(code="profile-bind-fallbacks")
             if isinstance(fallbacks, list):
                 for entry in fallbacks:
-                    code = _check_selector(entry, scope)
-                    if code is not None:
-                        return PureRefused(code=code)
+                    _check_selector(entry, scope)
             scope.bindings.add(alias)
-            scope.btypes[alias] = _infer_selector_type(binding.get("select"), scope)
-        code = _check_predicate(rule.get("assert"), scope)
-        if code is not None:
-            return PureRefused(code=code)
+            scope.btypes[alias] = "native"
+        _check_predicate(rule.get("assert"), scope)
 
-    # Typed walks: recipes with recipe scope, collecting write demands.
+    # Family/demand walks: recipes with recipe scope, collecting write demands.
     demands: dict[str, list[dict[str, object]]] = {}
     for recipe in recipes_raw:
         if not isinstance(recipe, dict):
@@ -1673,23 +1600,20 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
                 return PureRefused(code="profile-symbol")
             param_type = param.get("type")
             recipe_params[name] = param_type if isinstance(param_type, str) else "unknown"
-        scope = _new_scope({"root", "self"}, {}, recipe_params)
+        scope = _new_scope({"root", "self", "bindingOwner"}, {}, recipe_params)
         for name, param_type in recipe_params.items():
             if param_type == "element":
                 scope.bindings.add(name)
                 scope.btypes[name] = "native"
         if phase == "export":
             scope.bindings.add("render")
+            scope.btypes["render"] = "render"
         recipe_phase = "export" if phase == "export" else "recipe"
-        code = _check_selector(recipe.get("select"), scope, recipe_phase)
-        if code is not None:
-            return PureRefused(code=code)
-        scope.btypes["self"] = _infer_selector_type(recipe.get("select"), scope)
+        _check_selector(recipe.get("select"), scope, recipe_phase)
+        scope.btypes["self"] = "native"
         when = recipe.get("when")
         if when is not None:
-            code = _check_predicate(when, scope, recipe_phase)
-            if code is not None:
-                return PureRefused(code=code)
+            _check_predicate(when, scope, recipe_phase)
         steps = recipe.get("steps")
         if not isinstance(steps, list) or not steps:
             return PureRefused(code="profile-type")
@@ -1702,16 +1626,16 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         if isinstance(recipe_id, str):
             demands[recipe_id] = recipe_demands
 
-    # Secondary AST positions with minimal scope (ui/exports gates, themes).
-    plain_scope = _new_scope({"root", "self"}, {})
+    # Secondary family positions with minimal scope (ui/exports gates, themes).
+    # Every environment built from baseEnv binds bindingOwner, including UI
+    # entries and recipes (compiler-static.ts:54, :240, :369).
+    plain_scope = _new_scope({"root", "self", "bindingOwner"}, {})
     for ui_entry in _as_list(profile.get("ui")):
         if not isinstance(ui_entry, dict):
             continue
         when = ui_entry.get("when")
         if when is not None:
-            code = _check_predicate(when, plain_scope)
-            if code is not None:
-                return PureRefused(code=code)
+            _check_predicate(when, plain_scope)
     for export in _as_list(profile.get("exports")):
         if not isinstance(export, dict):
             continue
@@ -1720,23 +1644,24 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
                 continue
             when = capability.get("when")
             if when is not None:
-                code = _check_predicate(when, plain_scope)
-                if code is not None:
-                    return PureRefused(code=code)
+                # Capability predicates visit baseEnv root/self/bindingOwner
+                # for family recording (typing lives in ``_static``).
+                _check_predicate(when, plain_scope, "capability")
     for theme in _as_list(profile.get("themes")):
         if not isinstance(theme, dict):
             continue
         for occurrence in _as_list(theme.get("syntheticOccurrences")):
             if not isinstance(occurrence, dict):
                 continue
-            code = _check_selector(occurrence.get("select"), plain_scope)
-            if code is not None:
-                return PureRefused(code=code)
+            _check_selector(occurrence.get("select"), plain_scope)
             label = occurrence.get("label")
             if label is not None:
-                code = _check_value(label, "predicate", plain_scope, None)
-                if code is not None:
-                    return PureRefused(code=code)
+                _check_value(label, "predicate", plain_scope, None)
+
+    # Lot 4 glyph, token and export checks (CR-09/CR-11, spec §8.1).
+    code = _check_lot4_records(profile, notions_raw, recipes_raw, registry)
+    if code is not None:
+        return PureRefused(code=code)
 
     # CR-01 family capabilities for every used consumer.
     if rules_raw or profile.get("validation"):
@@ -1762,8 +1687,13 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         if not isinstance(declared, list) or not isinstance(recipe_id, str):
             return PureRefused(code="profile-write-set")
         required = demands.get(recipe_id, [])
-        if sorted(jcs(entry) for entry in required) != sorted(jcs(entry) for entry in declared):
+        if {jcs(entry) for entry in required} != {jcs(entry) for entry in declared}:
             return PureRefused(code="profile-write-set")
+
+    # CR-10 UI/field rules (lot 5), between CR-09 and CR-11.
+    code = check_ui_rules(profile, recipes)
+    if code is not None:
+        return PureRefused(code=code)
 
     # CR-11/CR-12 recipe phase admission for exports and migrations.
     code = _check_export_migration_phases(profile, recipes)
@@ -1787,6 +1717,11 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
 
     validation_raw = profile.get("validation")
     validation_entries = tuple(validation_raw) if isinstance(validation_raw, list) else ()
+    owned_profile = copy.deepcopy(profile)
+    # B7 identity: closed §5.1 pin record; sha256 is validated.digest
+    # (== digest(profile) since profile is validated.profile).
+    identity = _profile_identity(profile, validated.digest)
+    ui_index = build_ui_index(profile)
     compiled = CompiledProfile(
         profile_digest=validated.digest,
         notions={
@@ -1804,5 +1739,42 @@ def compile_profile(  # noqa: C901, PLR0912, PLR0911, PLR0915
         ),
         registry_digest=digest(sorted(registry.capabilities)),
         validation=copy.deepcopy(validation_entries),
+        profile=owned_profile,
+        identity=identity,
+        assets=dict(validated.assets),
+        render_registry=copy.deepcopy(registry.render_tokens),
+        types=copy.deepcopy(types) if descriptor_context is not None else None,
+        producers=dict(producers) if base is not None and producers is not None else None,
+        ref_fields=frozenset(ref_fields) if base is not None and ref_fields is not None else None,
+        base_types=_base_type_names(base),
+        capabilities=tuple(
+            sorted(str(name) for name in registry.capabilities if isinstance(name, str))
+        ),
+        ui=ui_index,
     )
     return PureSuccess(payload=compiled)
+
+
+def _profile_identity(profile: dict[str, object], profile_digest: str) -> dict[str, object]:
+    """Build the §5.1 identity record of one schema-valid profile."""
+    base_pin = profile.get("base")
+    base_record: dict[str, object] = {}
+    if isinstance(base_pin, dict):
+        base_record = {key: base_pin.get(key) for key in ("id", "version", "sha256")}
+    descriptors_pin = profile.get("descriptors")
+    descriptor_records: list[dict[str, object]] = []
+    if isinstance(descriptors_pin, list):
+        descriptor_records.extend(
+            {key: entry.get(key) for key in ("id", "version", "sha256")}
+            for entry in descriptors_pin
+            if isinstance(entry, dict)
+        )
+    return {
+        "mechanismVersion": profile.get("mechanismVersion"),
+        "schemaVersion": profile.get("schemaVersion"),
+        "profile": profile.get("profile"),
+        "version": profile.get("version"),
+        "sha256": profile_digest,
+        "base": base_record,
+        "descriptors": descriptor_records,
+    }

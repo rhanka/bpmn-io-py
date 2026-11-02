@@ -1,0 +1,52 @@
+{
+  "caseId": "decision-001-question-and-choices",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/choices.envelope.json",
+      "sha256": "38d28f627fb5e0b6f739ef218db7ac74a249fe3f7ec34640bb436dc2f390432d"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/choices-upper.layout.json",
+      "sha256": "7bd3025f8326ed634ab5bf8db830860543ee8f15d756bfae5f9d359074a2b3b5"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [],
+        "bioc": []
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/choices-plain.resolve-result.json",
+      "sha256": "3cc15d217e1dd22418dd0a9bfaf097352b0923ff399f934019e4d337e08361b6"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

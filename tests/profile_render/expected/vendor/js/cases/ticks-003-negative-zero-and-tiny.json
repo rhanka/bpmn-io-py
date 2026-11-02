@@ -1,0 +1,38 @@
+{
+  "caseId": "ticks-003-negative-zero-and-tiny",
+  "operation": "layoutTicks",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "points",
+      "json": [
+        0,
+        0,
+        -0.0004,
+        1e-7,
+        0.0025
+      ]
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": [
+          0,
+          0,
+          0,
+          0,
+          2
+        ],
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

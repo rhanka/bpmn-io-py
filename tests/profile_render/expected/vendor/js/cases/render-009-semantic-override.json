@@ -1,0 +1,62 @@
+{
+  "caseId": "render-009-semantic-override",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/repeated.layout.json",
+      "sha256": "1eb7c1be5ac25ec87328fe8c95ac5f9bb5ea50920429801d108961a0bafc21a4"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [
+          {
+            "semanticId": "Task_Check",
+            "tokens": [
+              {
+                "name": "stroke",
+                "value": "#00aa00"
+              }
+            ]
+          }
+        ],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [],
+        "bioc": []
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/repeated-semantic.resolve-result.json",
+      "sha256": "8f897bf193d5060700d45b086c1e9074b4eeeb496ebb0c421ec6211d78009d07"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

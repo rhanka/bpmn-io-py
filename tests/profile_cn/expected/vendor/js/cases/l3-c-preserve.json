@@ -1,0 +1,594 @@
+{
+  "caseId": "l3-c-preserve",
+  "operation": "complete",
+  "phase": "complete",
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_P",
+              "name": "Preserve",
+              "isExecutable": false,
+              "ioSpecification": {
+                "$type": "bpmn:InputOutputSpecification",
+                "dataInputs": [
+                  {
+                    "$type": "bpmn:DataInput",
+                    "id": "DataInput_P",
+                    "name": "Request"
+                  }
+                ],
+                "dataOutputs": [
+                  {
+                    "$type": "bpmn:DataOutput",
+                    "id": "DataOutput_P",
+                    "name": "Decision"
+                  }
+                ],
+                "inputSets": [
+                  {
+                    "$type": "bpmn:InputSet",
+                    "id": "InputSet_P1",
+                    "dataInputRefs": [
+                      "DataInput_P"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:InputSet",
+                    "id": "InputSet_P2",
+                    "dataInputRefs": [
+                      "DataInput_P"
+                    ]
+                  }
+                ],
+                "outputSets": [
+                  {
+                    "$type": "bpmn:OutputSet",
+                    "id": "OutputSet_P",
+                    "dataOutputRefs": [
+                      "DataOutput_P"
+                    ]
+                  }
+                ]
+              },
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_P",
+                  "name": "Start",
+                  "outgoing": [
+                    "Flow_P1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:UserTask",
+                  "id": "UserTask_Review",
+                  "name": "Review",
+                  "incoming": [
+                    "Flow_P1"
+                  ],
+                  "outgoing": [
+                    "Flow_P2"
+                  ],
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "  Source bytes\r\n\tkept  ",
+                      "textFormat": "text/plain"
+                    },
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "{\"looks\":\"json\"}",
+                      "textFormat": "text/plain"
+                    }
+                  ],
+                  "properties": [
+                    {
+                      "$type": "bpmn:Property",
+                      "id": "Property_R"
+                    }
+                  ],
+                  "dataInputAssociations": [
+                    {
+                      "$type": "bpmn:DataInputAssociation",
+                      "id": "DIA_R",
+                      "sourceRef": [
+                        "DataObjectReference_R"
+                      ],
+                      "targetRef": "Property_R"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_P",
+                  "name": "Done",
+                  "incoming": [
+                    "Flow_P2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_P1",
+                  "sourceRef": "Start_P",
+                  "targetRef": "UserTask_Review"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_P2",
+                  "sourceRef": "UserTask_Review",
+                  "targetRef": "End_P",
+                  "conditionExpression": {
+                    "$type": "bpmn:FormalExpression",
+                    "body": "amount > 100",
+                    "language": "text/x-expression"
+                  }
+                },
+                {
+                  "$type": "bpmn:DataObjectReference",
+                  "id": "DataObjectReference_R",
+                  "dataObjectRef": "DataObject_R"
+                },
+                {
+                  "$type": "bpmn:DataObject",
+                  "id": "DataObject_R"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "c6c05f1bcae3bd29a1ef5726154b8513817b9e85aa53ad7d538d6b3bf63203f2"
+      }
+    },
+    {
+      "role": "mode",
+      "json": "retained"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "operation": "complete",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "baseRevision": "c6c05f1bcae3bd29a1ef5726154b8513817b9e85aa53ad7d538d6b3bf63203f2",
+        "revision": "c6c05f1bcae3bd29a1ef5726154b8513817b9e85aa53ad7d538d6b3bf63203f2",
+        "report": {
+          "reportVersion": "2",
+          "operation": "complete",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "inputRevision": "c6c05f1bcae3bd29a1ef5726154b8513817b9e85aa53ad7d538d6b3bf63203f2",
+          "outputRevision": "c6c05f1bcae3bd29a1ef5726154b8513817b9e85aa53ad7d538d6b3bf63203f2",
+          "entries": [],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "documentVersion": "1",
+          "profileIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "tree": {
+            "$type": "bpmn:Definitions",
+            "id": "Definitions_cn",
+            "targetNamespace": "urn:neutral-cn:1",
+            "exporterVersion": "fixture-cn-1",
+            "rootElements": [
+              {
+                "$type": "bpmn:Process",
+                "id": "Process_P",
+                "name": "Preserve",
+                "isExecutable": false,
+                "ioSpecification": {
+                  "$type": "bpmn:InputOutputSpecification",
+                  "dataInputs": [
+                    {
+                      "$type": "bpmn:DataInput",
+                      "id": "DataInput_P",
+                      "name": "Request"
+                    }
+                  ],
+                  "dataOutputs": [
+                    {
+                      "$type": "bpmn:DataOutput",
+                      "id": "DataOutput_P",
+                      "name": "Decision"
+                    }
+                  ],
+                  "inputSets": [
+                    {
+                      "$type": "bpmn:InputSet",
+                      "id": "InputSet_P1",
+                      "dataInputRefs": [
+                        "DataInput_P"
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:InputSet",
+                      "id": "InputSet_P2",
+                      "dataInputRefs": [
+                        "DataInput_P"
+                      ]
+                    }
+                  ],
+                  "outputSets": [
+                    {
+                      "$type": "bpmn:OutputSet",
+                      "id": "OutputSet_P",
+                      "dataOutputRefs": [
+                        "DataOutput_P"
+                      ]
+                    }
+                  ]
+                },
+                "flowElements": [
+                  {
+                    "$type": "bpmn:StartEvent",
+                    "id": "Start_P",
+                    "name": "Start",
+                    "outgoing": [
+                      "Flow_P1"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:UserTask",
+                    "id": "UserTask_Review",
+                    "name": "Review",
+                    "incoming": [
+                      "Flow_P1"
+                    ],
+                    "outgoing": [
+                      "Flow_P2"
+                    ],
+                    "documentation": [
+                      {
+                        "$type": "bpmn:Documentation",
+                        "text": "  Source bytes\r\n\tkept  ",
+                        "textFormat": "text/plain"
+                      },
+                      {
+                        "$type": "bpmn:Documentation",
+                        "text": "{\"looks\":\"json\"}",
+                        "textFormat": "text/plain"
+                      }
+                    ],
+                    "properties": [
+                      {
+                        "$type": "bpmn:Property",
+                        "id": "Property_R"
+                      }
+                    ],
+                    "dataInputAssociations": [
+                      {
+                        "$type": "bpmn:DataInputAssociation",
+                        "id": "DIA_R",
+                        "sourceRef": [
+                          "DataObjectReference_R"
+                        ],
+                        "targetRef": "Property_R"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:EndEvent",
+                    "id": "End_P",
+                    "name": "Done",
+                    "incoming": [
+                      "Flow_P2"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_P1",
+                    "sourceRef": "Start_P",
+                    "targetRef": "UserTask_Review"
+                  },
+                  {
+                    "$type": "bpmn:SequenceFlow",
+                    "id": "Flow_P2",
+                    "sourceRef": "UserTask_Review",
+                    "targetRef": "End_P",
+                    "conditionExpression": {
+                      "$type": "bpmn:FormalExpression",
+                      "body": "amount > 100",
+                      "language": "text/x-expression"
+                    }
+                  },
+                  {
+                    "$type": "bpmn:DataObjectReference",
+                    "id": "DataObjectReference_R",
+                    "dataObjectRef": "DataObject_R"
+                  },
+                  {
+                    "$type": "bpmn:DataObject",
+                    "id": "DataObject_R"
+                  }
+                ]
+              }
+            ]
+          },
+          "bindings": [],
+          "semanticRevision": "c6c05f1bcae3bd29a1ef5726154b8513817b9e85aa53ad7d538d6b3bf63203f2"
+        }
+      }
+    },
+    {
+      "role": "caller-state",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_cn",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_P",
+              "name": "Preserve",
+              "isExecutable": false,
+              "ioSpecification": {
+                "$type": "bpmn:InputOutputSpecification",
+                "dataInputs": [
+                  {
+                    "$type": "bpmn:DataInput",
+                    "id": "DataInput_P",
+                    "name": "Request"
+                  }
+                ],
+                "dataOutputs": [
+                  {
+                    "$type": "bpmn:DataOutput",
+                    "id": "DataOutput_P",
+                    "name": "Decision"
+                  }
+                ],
+                "inputSets": [
+                  {
+                    "$type": "bpmn:InputSet",
+                    "id": "InputSet_P1",
+                    "dataInputRefs": [
+                      "DataInput_P"
+                    ]
+                  },
+                  {
+                    "$type": "bpmn:InputSet",
+                    "id": "InputSet_P2",
+                    "dataInputRefs": [
+                      "DataInput_P"
+                    ]
+                  }
+                ],
+                "outputSets": [
+                  {
+                    "$type": "bpmn:OutputSet",
+                    "id": "OutputSet_P",
+                    "dataOutputRefs": [
+                      "DataOutput_P"
+                    ]
+                  }
+                ]
+              },
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_P",
+                  "name": "Start",
+                  "outgoing": [
+                    "Flow_P1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:UserTask",
+                  "id": "UserTask_Review",
+                  "name": "Review",
+                  "incoming": [
+                    "Flow_P1"
+                  ],
+                  "outgoing": [
+                    "Flow_P2"
+                  ],
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "  Source bytes\r\n\tkept  ",
+                      "textFormat": "text/plain"
+                    },
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "{\"looks\":\"json\"}",
+                      "textFormat": "text/plain"
+                    }
+                  ],
+                  "properties": [
+                    {
+                      "$type": "bpmn:Property",
+                      "id": "Property_R"
+                    }
+                  ],
+                  "dataInputAssociations": [
+                    {
+                      "$type": "bpmn:DataInputAssociation",
+                      "id": "DIA_R",
+                      "sourceRef": [
+                        "DataObjectReference_R"
+                      ],
+                      "targetRef": "Property_R"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_P",
+                  "name": "Done",
+                  "incoming": [
+                    "Flow_P2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_P1",
+                  "sourceRef": "Start_P",
+                  "targetRef": "UserTask_Review"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_P2",
+                  "sourceRef": "UserTask_Review",
+                  "targetRef": "End_P",
+                  "conditionExpression": {
+                    "$type": "bpmn:FormalExpression",
+                    "body": "amount > 100",
+                    "language": "text/x-expression"
+                  }
+                },
+                {
+                  "$type": "bpmn:DataObjectReference",
+                  "id": "DataObjectReference_R",
+                  "dataObjectRef": "DataObject_R"
+                },
+                {
+                  "$type": "bpmn:DataObject",
+                  "id": "DataObject_R"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "c6c05f1bcae3bd29a1ef5726154b8513817b9e85aa53ad7d538d6b3bf63203f2"
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-1/lot3",
+    "source-preservation/lot3",
+    "profile-c14n/2"
+  ]
+}

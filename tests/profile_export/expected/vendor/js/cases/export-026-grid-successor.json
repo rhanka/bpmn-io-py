@@ -1,0 +1,43 @@
+{
+  "caseId": "export-026-grid-successor",
+  "operation": "mapExport",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/grid-successor.profile.json",
+    "sha256": "e39fbd775d1538c825cdefe9c7d3a5cd179c7553cd2b243a23ead5a3c122f8d8"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/grid-successor.envelope.json",
+      "sha256": "28ed484a6e23de6e4117e0f13aae43bb97df262698b9e6bcacd0f2ef0425cb50"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/grid-successor.layout.json",
+      "sha256": "38e5487934bc7e951f9cc2e737d111d1931e2fa31c6d60d1cfcad5045f50573a"
+    },
+    {
+      "role": "render",
+      "path": "lot4-layout-export/expectations/artifacts/grid-successor-plain.render.json",
+      "sha256": "8bda5168f3071ef72f759e757303c2675711a2ac337050cd755e913be1b059ec"
+    },
+    {
+      "role": "format",
+      "json": "drawio"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/export-026-grid-successor.map-result.json",
+      "sha256": "f23bb6e80029d3ce50c2127dc8e876bed6dff59b33521bffa87528f158d2a093"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

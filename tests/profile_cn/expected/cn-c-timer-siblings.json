@@ -1,0 +1,431 @@
+{
+  "case": "cn-c-timer-siblings",
+  "clause": "DESIGN R3.3 §3.2 duplicateOrdinal; §14.3 ID collisions/reorders/timers",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "cn-c",
+  "derivation": "The two identical ID-less StartEvents share one contentSignature (raw input subtree, no generated default) in Process_T under slot bpmn:Process.flowElements (H D1): ordinals 0 and 1 give distinct ids. Each TimerEventDefinition is then identified under its own new StartEvent id (slot bpmn:StartEvent.eventDefinitions, ordinal 0); the ID-less FormalExpression body stays ID-less. The topology recipes then write empty outgoing arrays on both flowless starts and empty incoming/outgoing on Task_T (absent -> [], H F1); the starts' entries carry generated result provenance and the original ancestor Process_T as source targetId. 8 entries. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_timer",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_T",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:StartEvent",
+                "name": "Every hour",
+                "eventDefinitions": [
+                  {
+                    "$type": "bpmn:TimerEventDefinition",
+                    "timeDuration": {
+                      "$type": "bpmn:FormalExpression",
+                      "body": "PT1H"
+                    }
+                  }
+                ]
+              },
+              {
+                "$type": "bpmn:StartEvent",
+                "name": "Every hour",
+                "eventDefinitions": [
+                  {
+                    "$type": "bpmn:TimerEventDefinition",
+                    "timeDuration": {
+                      "$type": "bpmn:FormalExpression",
+                      "body": "PT1H"
+                    }
+                  }
+                ]
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_T",
+                "name": "Hourly"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "2a4e331f9fd21e8dbdbfb254bc1add788ae727c6aa5e1b523af7b6204b8fad48"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-c/1",
+      "version": "1.0.0",
+      "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "2a4e331f9fd21e8dbdbfb254bc1add788ae727c6aa5e1b523af7b6204b8fad48",
+    "revision": "523de41a4738fca8553efee11c8494eee268a1e469e3a6ee3906811fc7f6024a",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-start-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
+            "targetId": "Process_T",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/outgoing",
+            "targetId": "g_360bf5993fbaca3953545ee145422f98a18322db9f4f1b1d16a41b9386cf1797",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-start-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/outgoing",
+            "targetId": "Process_T",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/outgoing",
+            "targetId": "g_19346fbdcd16d391cb5e78174245803d31d2ce799d8b4fac0d55a18fe4f8c053",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
+            "targetId": "Task_T",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
+            "targetId": "Task_T",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
+            "targetId": "Task_T",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
+            "targetId": "Task_T",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/eventDefinitions/0/id",
+            "targetId": "Process_T",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/eventDefinitions/0/id",
+            "targetId": "g_06d51ef04908f36d0d2f21381d6b845568ada7d6825f1857f2de87662395218a",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_06d51ef04908f36d0d2f21381d6b845568ada7d6825f1857f2de87662395218a",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/id",
+            "targetId": "Process_T",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/0/id",
+            "targetId": "g_360bf5993fbaca3953545ee145422f98a18322db9f4f1b1d16a41b9386cf1797",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_360bf5993fbaca3953545ee145422f98a18322db9f4f1b1d16a41b9386cf1797",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/eventDefinitions/0/id",
+            "targetId": "Process_T",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/eventDefinitions/0/id",
+            "targetId": "g_c4723a191520330bd9401ded7077428d8675324e4fafea47a7c09c8f6b6c408d",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_c4723a191520330bd9401ded7077428d8675324e4fafea47a7c09c8f6b6c408d",
+          "property": "id"
+        },
+        {
+          "code": "complete/allocate-id",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "stable-id/1",
+          "messageKey": "complete.allocate-id",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/id",
+            "targetId": "Process_T",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/id",
+            "targetId": "g_19346fbdcd16d391cb5e78174245803d31d2ce799d8b4fac0d55a18fe4f8c053",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_19346fbdcd16d391cb5e78174245803d31d2ce799d8b4fac0d55a18fe4f8c053",
+          "property": "id"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "2a4e331f9fd21e8dbdbfb254bc1add788ae727c6aa5e1b523af7b6204b8fad48",
+      "outputRevision": "523de41a4738fca8553efee11c8494eee268a1e469e3a6ee3906811fc7f6024a"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_timer",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_T",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:StartEvent",
+                "name": "Every hour",
+                "eventDefinitions": [
+                  {
+                    "$type": "bpmn:TimerEventDefinition",
+                    "timeDuration": {
+                      "$type": "bpmn:FormalExpression",
+                      "body": "PT1H"
+                    },
+                    "id": "g_06d51ef04908f36d0d2f21381d6b845568ada7d6825f1857f2de87662395218a"
+                  }
+                ],
+                "id": "g_360bf5993fbaca3953545ee145422f98a18322db9f4f1b1d16a41b9386cf1797",
+                "outgoing": []
+              },
+              {
+                "$type": "bpmn:StartEvent",
+                "name": "Every hour",
+                "eventDefinitions": [
+                  {
+                    "$type": "bpmn:TimerEventDefinition",
+                    "timeDuration": {
+                      "$type": "bpmn:FormalExpression",
+                      "body": "PT1H"
+                    },
+                    "id": "g_c4723a191520330bd9401ded7077428d8675324e4fafea47a7c09c8f6b6c408d"
+                  }
+                ],
+                "id": "g_19346fbdcd16d391cb5e78174245803d31d2ce799d8b4fac0d55a18fe4f8c053",
+                "outgoing": []
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_T",
+                "name": "Hourly",
+                "incoming": [],
+                "outgoing": []
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "523de41a4738fca8553efee11c8494eee268a1e469e3a6ee3906811fc7f6024a"
+    }
+  },
+  "fixedPoint": true
+}

@@ -1,0 +1,86 @@
+{
+  "documentVersion": "1",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral/1",
+    "version": "1.2.0",
+    "sha256": "721234408bbf9ad62eb050836407f076b54bd35043db613da1119591cdedfc9f",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "tree": {
+    "$type": "bpmn:Definitions",
+    "id": "Definitions_1",
+    "rootElements": [
+      {
+        "$type": "bpmn:Process",
+        "id": "Process_1",
+        "flowElements": [
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_B",
+            "name": "Ready",
+            "documentation": [
+              {
+                "$type": "bpmn:Documentation",
+                "text": "Preserved source",
+                "textFormat": "text/plain"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_A",
+            "name": ""
+          }
+        ],
+        "artifacts": [
+          {
+            "$type": "bpmn:TextAnnotation",
+            "id": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+            "text": "[Aid] helper"
+          }
+        ],
+        "isExecutable": false,
+        "laneSets": [
+          {
+            "$type": "bpmn:LaneSet",
+            "id": "LaneSet_1",
+            "name": "lane-set",
+            "lanes": [
+              {
+                "$type": "bpmn:Lane",
+                "id": "Lane_content",
+                "name": "content"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "ownerId": "Process_1",
+      "role": "content",
+      "targetId": "Lane_content"
+    },
+    {
+      "ownerId": "Process_1",
+      "role": "lane-set",
+      "targetId": "LaneSet_1"
+    }
+  ],
+  "semanticRevision": "be9b5ed1ce9e742a1651efe820e65f2807a3878b49fc01d35a0777f2643ad285"
+}

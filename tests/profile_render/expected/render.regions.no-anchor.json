@@ -1,0 +1,106 @@
+{
+  "case": "render.regions.no-anchor",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
+  "witness": "items without an available anchor follow contentLeft then previous right + gap",
+  "derivation": "render.layout.io-no-anchor re-expressed: no anchor member; lefts 40000, 96000, 152000; objects at y 15000. Row rule (spec \u00a74.3): items in \u00a77.2 placement order; footprint max(object, label) width; left = anchor centre - footprint/2 when the anchor is shown, else contentLeft or previous right + gap; clamp to contentLeft; collision shifts right; one row at the top of the support body [Ly, Ly+RH], RH = max(minHeight, max(object+label) + 2 padding) (harmonization K2); every object centre lies on one line cy = Ly + max(A, (RH + A - B)/2), A = max h/2, B = max(h/2 + label height), so the union of the stacks is centred in the row (DESIGN \u00a79.4 'align centers on one IO row'); exact rationals, one roundEven per output coordinate.",
+  "operation": "layoutRegions",
+  "input": {
+    "region": {
+      "page": {
+        "x": 0,
+        "y": 0,
+        "width": 600000,
+        "height": 300000
+      },
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 600000,
+        "height": 100000
+      },
+      "tokens": {
+        "headerWidth": 30000,
+        "padding": 10000,
+        "gap": 20000,
+        "minHeight": 80000
+      },
+      "items": [
+        {
+          "elementId": "In_A",
+          "occurrenceKey": "In_A_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          }
+        },
+        {
+          "elementId": "In_B",
+          "occurrenceKey": "In_B_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          }
+        },
+        {
+          "elementId": "Out_C",
+          "occurrenceKey": "Out_C_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "pageBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 600000,
+        "height": 300000
+      },
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 600000,
+        "height": 100000
+      },
+      "items": [
+        {
+          "elementId": "In_A",
+          "occurrenceKey": "In_A_di",
+          "bounds": {
+            "x": 40000,
+            "y": 15000,
+            "width": 36000,
+            "height": 50000
+          }
+        },
+        {
+          "elementId": "In_B",
+          "occurrenceKey": "In_B_di",
+          "bounds": {
+            "x": 96000,
+            "y": 15000,
+            "width": 36000,
+            "height": 50000
+          }
+        },
+        {
+          "elementId": "Out_C",
+          "occurrenceKey": "Out_C_di",
+          "bounds": {
+            "x": 152000,
+            "y": 15000,
+            "width": 36000,
+            "height": 50000
+          }
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

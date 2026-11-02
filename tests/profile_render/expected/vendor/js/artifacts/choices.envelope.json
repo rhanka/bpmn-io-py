@@ -1,0 +1,198 @@
+{
+  "documentVersion": "1",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "tree": {
+    "$type": "bpmn:Definitions",
+    "id": "Definitions_Choices",
+    "targetNamespace": "urn:neutral-lot4",
+    "rootElements": [
+      {
+        "$type": "bpmn:Process",
+        "id": "Process_Choices",
+        "name": "Routing",
+        "isExecutable": false,
+        "flowElements": [
+          {
+            "$type": "bpmn:StartEvent",
+            "id": "Start_Choices",
+            "name": "Request",
+            "outgoing": [
+              "Flow_C0"
+            ]
+          },
+          {
+            "$type": "bpmn:ExclusiveGateway",
+            "id": "Gateway_Route",
+            "name": "Which route?",
+            "gatewayDirection": "Diverging",
+            "incoming": [
+              "Flow_C0"
+            ],
+            "outgoing": [
+              "Flow_C1",
+              "Flow_C2",
+              "Flow_C3",
+              "Flow_C4",
+              "Flow_C5",
+              "Flow_C6",
+              "Flow_C7"
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_East",
+            "name": "East",
+            "incoming": [
+              "Flow_C1"
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_West",
+            "name": "West",
+            "incoming": [
+              "Flow_C2"
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_North",
+            "name": "North",
+            "incoming": [
+              "Flow_C3"
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_South",
+            "name": "South",
+            "incoming": [
+              "Flow_C4"
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_Up",
+            "name": "Up",
+            "incoming": [
+              "Flow_C5"
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_Down",
+            "name": "Down",
+            "incoming": [
+              "Flow_C6"
+            ]
+          },
+          {
+            "$type": "bpmn:Task",
+            "id": "Task_Other",
+            "name": "Other",
+            "incoming": [
+              "Flow_C7"
+            ]
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_C0",
+            "sourceRef": "Start_Choices",
+            "targetRef": "Gateway_Route"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_C1",
+            "name": "istanbul",
+            "sourceRef": "Gateway_Route",
+            "targetRef": "Task_East"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_C2",
+            "name": "İzmir",
+            "sourceRef": "Gateway_Route",
+            "targetRef": "Task_West"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_C3",
+            "name": "straße ﬆop",
+            "sourceRef": "Gateway_Route",
+            "targetRef": "Task_North"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_C4",
+            "name": "σοφός ΟΔΟΣ Σ",
+            "sourceRef": "Gateway_Route",
+            "targetRef": "Task_South"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_C5",
+            "name": "ɤ-shape",
+            "sourceRef": "Gateway_Route",
+            "targetRef": "Task_Up"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_C6",
+            "name": "ŉ ǅ",
+            "sourceRef": "Gateway_Route",
+            "targetRef": "Task_Down"
+          },
+          {
+            "$type": "bpmn:SequenceFlow",
+            "id": "Flow_C7",
+            "sourceRef": "Gateway_Route",
+            "targetRef": "Task_Other"
+          }
+        ]
+      },
+      {
+        "$type": "bpmn:Collaboration",
+        "id": "Collab_Choices",
+        "participants": [
+          {
+            "$type": "bpmn:Participant",
+            "id": "Pool_Choices",
+            "name": "Routing",
+            "processRef": "Process_Choices"
+          }
+        ]
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "ownerId": "Process_Choices",
+      "role": "collaboration",
+      "targetId": "Collab_Choices"
+    },
+    {
+      "ownerId": "Process_Choices",
+      "role": "main-participant",
+      "targetId": "Pool_Choices"
+    }
+  ],
+  "semanticRevision": "530b7932cd57b2da866c06d66b60ff45ce1f1ff14d40e7f38eef484825ede6e7"
+}

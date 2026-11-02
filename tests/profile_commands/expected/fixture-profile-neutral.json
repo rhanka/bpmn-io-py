@@ -1,0 +1,3902 @@
+{
+  "case": "fixture-profile-neutral",
+  "clause": "DESIGN R3.3 \u00a78.3 L649-L659 surfaces and fields; \u00a76.2 L468 validation records author disabled checks",
+  "derivation": "Vendored neutral profile with version 1.6.0, the lot-5 base/descriptor pins, the aid body field, five synthetic notions, seventeen added recipes (twenty-seven in total, delete-lane included), two glyphs, twenty-one UI entries over all eight surfaces (lane-delete included) and five messages. Its ten validation records set every one of the 26 standard bpmnlint settings to off (a disabled check authored in profile data, DESIGN L468; identical in draft and accept, so not a draft downgrade of an integrity rule, L481) and keep the five profile subrules task-named* unchanged (warn in draft, error in accept). Reason: the vendored descriptor slice admits no FlowNode incoming/outgoing reference and no EndEvent, so bpmnlint no-disconnected, no-implicit-start and no-implicit-end (error, integrity) flag every Task of every lot-5 document; the vendored validation records are exercised by fixture-profile-neutral-lint and the lint-draft-* witnesses. profileSha256 = H(composed profile); the committed profile bytes (expected.artifact) are its profile-c14n/2 bytes.",
+  "author": "spec-seal",
+  "input": {
+    "source": {
+      "file": "contracts/profile-mechanism/1/neutral-profile.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/version",
+          "value": "1.6.0"
+        },
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-base/1",
+            "version": "lot5-1",
+            "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-descriptors/1",
+              "version": "lot5-1",
+              "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/notions/1/fields",
+          "value": [
+            {
+              "id": "body",
+              "path": "/text",
+              "widget": "multiline",
+              "label": "label.aid",
+              "visible": {
+                "op": "true"
+              },
+              "mutable": {
+                "op": "not",
+                "arg": {
+                  "op": "equal",
+                  "left": {
+                    "op": "read",
+                    "binding": "self",
+                    "path": "/text"
+                  },
+                  "right": {
+                    "op": "literal",
+                    "value": "[Aid] locked"
+                  }
+                }
+              },
+              "command": "edit-aid",
+              "choices": [],
+              "targetTypes": [],
+              "message": "invalid",
+              "parameters": [
+                {
+                  "name": "target",
+                  "source": "target"
+                },
+                {
+                  "name": "body",
+                  "source": "value"
+                }
+              ],
+              "display": {
+                "op": "stripPrefix",
+                "value": {
+                  "op": "read",
+                  "binding": "self",
+                  "path": "/text"
+                },
+                "prefix": "[Aid] ",
+                "trim": "none"
+              }
+            }
+          ]
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "note",
+            "labels": [
+              {
+                "name": "en",
+                "value": "note"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:TextAnnotation"
+            ],
+            "recognition": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "typeIs",
+                  "binding": "self",
+                  "type": "bpmn:TextAnnotation",
+                  "mode": "exact"
+                },
+                {
+                  "op": "not",
+                  "arg": {
+                    "op": "textPrefix",
+                    "value": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/text"
+                    },
+                    "prefix": "[Aid]",
+                    "trim": "none"
+                  }
+                }
+              ]
+            },
+            "exclusiveGroup": "primary",
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [
+              "link"
+            ],
+            "renderBindings": [],
+            "fields": [
+              {
+                "id": "text",
+                "path": "/text",
+                "widget": "readonly",
+                "label": "label.note",
+                "visible": {
+                  "op": "true"
+                },
+                "mutable": {
+                  "op": "true"
+                },
+                "choices": [],
+                "targetTypes": [],
+                "message": "invalid"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "reference",
+            "labels": [
+              {
+                "name": "en",
+                "value": "reference"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:DataStoreReference"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:DataStoreReference",
+              "mode": "exact"
+            },
+            "exclusiveGroup": "primary",
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "createRecipe": "create-reference",
+            "referenceRecipes": [
+              "link"
+            ],
+            "renderBindings": [],
+            "fields": [
+              {
+                "id": "store",
+                "path": "/dataStoreRef",
+                "widget": "reference",
+                "label": "label.store",
+                "visible": {
+                  "op": "true"
+                },
+                "mutable": {
+                  "op": "true"
+                },
+                "command": "set-store",
+                "choices": [],
+                "targetTypes": [
+                  "bpmn:DataStore"
+                ],
+                "message": "invalid",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "source": "target"
+                  },
+                  {
+                    "name": "store",
+                    "source": "value"
+                  }
+                ]
+              },
+              {
+                "id": "store-view",
+                "path": "/dataStoreRef",
+                "widget": "reference",
+                "label": "label.store",
+                "visible": {
+                  "op": "true"
+                },
+                "mutable": {
+                  "op": "false"
+                },
+                "choices": [],
+                "targetTypes": [
+                  "bpmn:DataStore"
+                ],
+                "message": "invalid"
+              },
+              {
+                "id": "store-hint",
+                "path": "/name",
+                "widget": "text",
+                "label": "label.store",
+                "visible": {
+                  "op": "present",
+                  "value": {
+                    "op": "read",
+                    "binding": "self",
+                    "path": "/name"
+                  }
+                },
+                "mutable": {
+                  "op": "true"
+                },
+                "command": "rename",
+                "choices": [],
+                "targetTypes": [],
+                "message": "invalid",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "source": "target"
+                  },
+                  {
+                    "name": "name",
+                    "source": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "store",
+            "labels": [
+              {
+                "name": "en",
+                "value": "store"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:DataStore"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:DataStore",
+              "mode": "exact"
+            },
+            "exclusiveGroup": "primary",
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [],
+            "fields": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "input-set",
+            "labels": [
+              {
+                "name": "en",
+                "value": "input-set"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:InputSet"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:InputSet",
+              "mode": "exact"
+            },
+            "exclusiveGroup": "primary",
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [],
+            "fields": [
+              {
+                "id": "inputs",
+                "path": "/dataInputRefs",
+                "widget": "reference",
+                "label": "label.input",
+                "visible": {
+                  "op": "true"
+                },
+                "mutable": {
+                  "op": "true"
+                },
+                "command": "add-input-ref",
+                "choices": [],
+                "targetTypes": [
+                  "bpmn:DataInput"
+                ],
+                "message": "invalid",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "source": "target"
+                  },
+                  {
+                    "name": "input",
+                    "source": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/notions/-",
+          "value": {
+            "id": "link",
+            "labels": [
+              {
+                "name": "en",
+                "value": "link"
+              }
+            ],
+            "citations": [],
+            "nativeTypes": [
+              "bpmn:Association"
+            ],
+            "recognition": {
+              "op": "typeIs",
+              "binding": "self",
+              "type": "bpmn:Association",
+              "mode": "exact"
+            },
+            "exclusiveGroup": "primary",
+            "ai": {
+              "description": "Synthetic profile example for schema review; no customer vocabulary.",
+              "examples": [],
+              "counterexamples": [],
+              "producers": [
+                "editor",
+                "import"
+              ],
+              "evidenceRequired": false
+            },
+            "referenceRecipes": [],
+            "renderBindings": [],
+            "fields": [
+              {
+                "id": "direction",
+                "path": "/associationDirection",
+                "widget": "enum",
+                "label": "label.direction",
+                "visible": {
+                  "op": "true"
+                },
+                "mutable": {
+                  "op": "true"
+                },
+                "command": "set-direction",
+                "choices": [
+                  {
+                    "name": "none",
+                    "value": "None"
+                  },
+                  {
+                    "name": "one",
+                    "value": "One"
+                  },
+                  {
+                    "name": "both",
+                    "value": "Both"
+                  }
+                ],
+                "targetTypes": [],
+                "message": "invalid",
+                "parameters": [
+                  {
+                    "name": "target",
+                    "source": "target"
+                  },
+                  {
+                    "name": "direction",
+                    "source": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "edit-aid",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "body",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/text",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/text",
+                "value": {
+                  "op": "concat",
+                  "values": [
+                    {
+                      "op": "literal",
+                      "value": "[Aid] "
+                    },
+                    {
+                      "op": "param",
+                      "name": "body"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "create-reference",
+            "phase": "create",
+            "parameters": [
+              {
+                "name": "owner",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "owner",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "root",
+                "path": "/rootElements",
+                "mode": "create"
+              },
+              {
+                "binding": "owner",
+                "path": "/flowElements",
+                "mode": "create"
+              },
+              {
+                "binding": "ref",
+                "path": "/dataStoreRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "create",
+                "as": "store",
+                "type": "bpmn:DataStore",
+                "parent": "root",
+                "property": "rootElements",
+                "slot": "store",
+                "key": {
+                  "op": "param",
+                  "name": "key"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "param",
+                      "name": "name"
+                    }
+                  }
+                ],
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "root"
+                }
+              },
+              {
+                "op": "create",
+                "as": "ref",
+                "type": "bpmn:DataStoreReference",
+                "parent": "owner",
+                "property": "flowElements",
+                "slot": "reference",
+                "key": {
+                  "op": "param",
+                  "name": "key"
+                },
+                "fields": [],
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "owner"
+                }
+              },
+              {
+                "op": "assignRef",
+                "target": "ref",
+                "path": "/dataStoreRef",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "store"
+                  }
+                ],
+                "mode": "replace"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "set-store",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "store",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/dataStoreRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/dataStoreRef",
+                "values": [
+                  {
+                    "op": "param",
+                    "name": "store"
+                  }
+                ],
+                "mode": "replace"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "clear-store",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/dataStoreRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "current",
+                "select": {
+                  "from": "self",
+                  "via": "reference",
+                  "property": "dataStoreRef",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/dataStoreRef",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "current"
+                  }
+                ],
+                "mode": "remove"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "set-direction",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "direction",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/associationDirection",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/associationDirection",
+                "value": {
+                  "op": "param",
+                  "name": "direction"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "add-input-ref",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "input",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/dataInputRefs",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/dataInputRefs",
+                "values": [
+                  {
+                    "op": "param",
+                    "name": "input"
+                  }
+                ],
+                "mode": "appendUnique"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "create-input",
+            "phase": "create",
+            "parameters": [
+              {
+                "name": "owner",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "owner",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "spec",
+                "path": "/dataInputs",
+                "mode": "create"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "spec",
+                "select": {
+                  "from": "owner",
+                  "via": "children",
+                  "property": "ioSpecification",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "create",
+                "as": "input",
+                "type": "bpmn:DataInput",
+                "parent": "spec",
+                "property": "dataInputs",
+                "slot": "input",
+                "key": {
+                  "op": "param",
+                  "name": "key"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "param",
+                      "name": "name"
+                    }
+                  }
+                ],
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "owner"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "select-input-set",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "source",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/dataInputRefs",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "assignRef",
+                "target": "self",
+                "path": "/dataInputRefs",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "source"
+                  }
+                ],
+                "mode": "appendUnique"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "complete-io-selection",
+            "phase": "complete",
+            "parameters": [],
+            "select": {
+              "from": "root",
+              "via": "all",
+              "where": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:DataInput",
+                "mode": "exact"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "all",
+              "args": [
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "self",
+                    "via": "inverseReference",
+                    "property": "dataInputRefs",
+                    "where": {
+                      "op": "true"
+                    },
+                    "order": "id"
+                  },
+                  "min": 0,
+                  "max": 0
+                },
+                {
+                  "op": "count",
+                  "select": {
+                    "from": "root",
+                    "via": "all",
+                    "where": {
+                      "op": "typeIs",
+                      "binding": "self",
+                      "type": "bpmn:InputSet",
+                      "mode": "exact"
+                    },
+                    "order": "id"
+                  },
+                  "min": 2
+                }
+              ]
+            },
+            "writes": [],
+            "steps": [
+              {
+                "op": "refuse",
+                "code": "io-set-selection-required",
+                "target": "self"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "convert-note-to-aid",
+            "phase": "convert",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "/text",
+                "mode": "set"
+              }
+            ],
+            "steps": [
+              {
+                "op": "set",
+                "target": "self",
+                "path": "/text",
+                "value": {
+                  "op": "concat",
+                  "values": [
+                    {
+                      "op": "literal",
+                      "value": "[Aid] "
+                    },
+                    {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/text"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "convert-task-to-service",
+            "phase": "convert",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "owner",
+                "path": "/flowElements",
+                "mode": "create"
+              },
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "remove"
+              }
+            ],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "owner",
+                "select": {
+                  "from": "self",
+                  "via": "owner",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              },
+              {
+                "op": "create",
+                "as": "service",
+                "type": "bpmn:ServiceTask",
+                "parent": "owner",
+                "property": "flowElements",
+                "slot": "service",
+                "key": {
+                  "op": "param",
+                  "name": "key"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/name"
+                    }
+                  }
+                ],
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "owner"
+                }
+              },
+              {
+                "op": "remove",
+                "target": "self",
+                "dependents": {
+                  "from": "root",
+                  "via": "all",
+                  "where": {
+                    "op": "false"
+                  },
+                  "order": "id"
+                },
+                "policy": "refuseIfReferenced"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "append-task",
+            "phase": "create",
+            "parameters": [
+              {
+                "name": "owner",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "source",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "owner",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "owner",
+                "path": "/flowElements",
+                "mode": "create"
+              },
+              {
+                "binding": "owner",
+                "path": "/artifacts",
+                "mode": "create"
+              },
+              {
+                "binding": "edge",
+                "path": "/sourceRef",
+                "mode": "reference"
+              },
+              {
+                "binding": "edge",
+                "path": "/targetRef",
+                "mode": "reference"
+              }
+            ],
+            "steps": [
+              {
+                "op": "create",
+                "as": "task",
+                "type": "bpmn:Task",
+                "parent": "owner",
+                "property": "flowElements",
+                "slot": "task",
+                "key": {
+                  "op": "param",
+                  "name": "key"
+                },
+                "fields": [
+                  {
+                    "name": "name",
+                    "value": {
+                      "op": "param",
+                      "name": "name"
+                    }
+                  }
+                ],
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "owner"
+                }
+              },
+              {
+                "op": "create",
+                "as": "edge",
+                "type": "bpmn:Association",
+                "parent": "owner",
+                "property": "artifacts",
+                "slot": "append-link",
+                "key": {
+                  "op": "param",
+                  "name": "key"
+                },
+                "fields": [
+                  {
+                    "name": "associationDirection",
+                    "value": {
+                      "op": "literal",
+                      "value": "One"
+                    }
+                  }
+                ],
+                "identity": "allocated",
+                "ownerId": {
+                  "op": "id",
+                  "binding": "owner"
+                }
+              },
+              {
+                "op": "assignRef",
+                "target": "edge",
+                "path": "/sourceRef",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "source"
+                  }
+                ],
+                "mode": "replace"
+              },
+              {
+                "op": "assignRef",
+                "target": "edge",
+                "path": "/targetRef",
+                "values": [
+                  {
+                    "op": "id",
+                    "binding": "task"
+                  }
+                ],
+                "mode": "replace"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "delete-task",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "remove"
+              }
+            ],
+            "steps": [
+              {
+                "op": "remove",
+                "target": "self",
+                "dependents": {
+                  "from": "root",
+                  "via": "all",
+                  "where": {
+                    "op": "false"
+                  },
+                  "order": "id"
+                },
+                "policy": "refuseIfReferenced"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "delete-aid",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "remove"
+              }
+            ],
+            "steps": [
+              {
+                "op": "remove",
+                "target": "self",
+                "policy": "includeDeclared",
+                "dependents": {
+                  "from": "root",
+                  "via": "all",
+                  "where": {
+                    "op": "all",
+                    "args": [
+                      {
+                        "op": "typeIs",
+                        "binding": "self",
+                        "type": "bpmn:Association",
+                        "mode": "exact"
+                      },
+                      {
+                        "op": "any",
+                        "args": [
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/sourceRef"
+                            },
+                            "right": {
+                              "op": "id",
+                              "binding": "target"
+                            }
+                          },
+                          {
+                            "op": "equal",
+                            "left": {
+                              "op": "read",
+                              "binding": "self",
+                              "path": "/targetRef"
+                            },
+                            "right": {
+                              "op": "id",
+                              "binding": "target"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "order": "id"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "paste-into",
+            "phase": "create",
+            "parameters": [
+              {
+                "name": "owner",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "owner",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [],
+            "steps": [
+              {
+                "op": "bind",
+                "as": "destination",
+                "select": {
+                  "from": "owner",
+                  "via": "self",
+                  "where": {
+                    "op": "true"
+                  },
+                  "order": "id"
+                },
+                "cardinality": "one"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "create-external-call",
+            "phase": "create",
+            "parameters": [
+              {
+                "name": "owner",
+                "type": "element",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "owner",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [],
+            "steps": [
+              {
+                "op": "refuse",
+                "code": "profile-open",
+                "target": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/recipes/-",
+          "value": {
+            "id": "delete-lane",
+            "phase": "edit",
+            "parameters": [
+              {
+                "name": "target",
+                "type": "element",
+                "required": true
+              }
+            ],
+            "select": {
+              "from": "target",
+              "via": "self",
+              "where": {
+                "op": "true"
+              },
+              "order": "id"
+            },
+            "when": {
+              "op": "true"
+            },
+            "writes": [
+              {
+                "binding": "self",
+                "path": "",
+                "mode": "remove"
+              }
+            ],
+            "steps": [
+              {
+                "op": "remove",
+                "target": "self",
+                "dependents": {
+                  "from": "root",
+                  "via": "all",
+                  "where": {
+                    "op": "false"
+                  },
+                  "order": "id"
+                },
+                "policy": "refuseIfReferenced"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "store",
+            "kind": "native",
+            "nativeType": "bpmn:DataStoreReference",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "input",
+            "kind": "native",
+            "nativeType": "bpmn:DataInput",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": []
+          }
+        },
+        {
+          "op": "test",
+          "path": "/ui/0",
+          "value": {
+            "id": "task-create",
+            "surface": "palette",
+            "group": "basic",
+            "order": 0,
+            "upstreamEntries": [
+              "create.task"
+            ],
+            "label": "label",
+            "when": {
+              "op": "true"
+            },
+            "recipe": "create-task",
+            "parameters": [
+              {
+                "name": "owner",
+                "source": "owner"
+              },
+              {
+                "name": "key",
+                "source": "key"
+              },
+              {
+                "name": "name",
+                "source": "value"
+              }
+            ],
+            "icon": {
+              "theme": "plain",
+              "glyph": "task"
+            }
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/ui",
+          "value": [
+            {
+              "id": "tool-note",
+              "surface": "palette",
+              "group": "tools",
+              "order": 3,
+              "upstreamEntries": [
+                "create.text-annotation"
+              ],
+              "label": "label.note",
+              "when": {
+                "op": "true"
+              },
+              "recipe": "create-aid",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                },
+                {
+                  "name": "body",
+                  "source": "value"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "aid"
+              }
+            },
+            {
+              "id": "task-create",
+              "surface": "palette",
+              "group": "basic",
+              "order": 0,
+              "upstreamEntries": [
+                "create.task"
+              ],
+              "label": "label",
+              "when": {
+                "op": "true"
+              },
+              "recipe": "create-task",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                },
+                {
+                  "name": "name",
+                  "source": "value"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            },
+            {
+              "id": "Zeta-task",
+              "surface": "palette",
+              "group": "basic",
+              "order": 0,
+              "upstreamEntries": [
+                "create.zeta-task"
+              ],
+              "label": "label",
+              "when": {
+                "op": "true"
+              },
+              "recipe": "create-task",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                },
+                {
+                  "name": "name",
+                  "source": "value"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            },
+            {
+              "id": "hidden-task",
+              "surface": "palette",
+              "group": "basic",
+              "order": 0,
+              "upstreamEntries": [
+                "create.hidden-task"
+              ],
+              "label": "label",
+              "when": {
+                "op": "false"
+              },
+              "recipe": "create-task",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                },
+                {
+                  "name": "name",
+                  "source": "value"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            },
+            {
+              "id": "store-create",
+              "surface": "palette",
+              "group": "data",
+              "order": 9,
+              "upstreamEntries": [
+                "create.data-store"
+              ],
+              "label": "label.store",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "recipe": "create-reference",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                },
+                {
+                  "name": "name",
+                  "source": "value"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "store"
+              }
+            },
+            {
+              "id": "input-create",
+              "surface": "palette",
+              "group": "data",
+              "order": 10,
+              "upstreamEntries": [
+                "create.data-input"
+              ],
+              "label": "label.input",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "recipe": "create-input",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                },
+                {
+                  "name": "name",
+                  "source": "value"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "input"
+              }
+            },
+            {
+              "id": "aid-create",
+              "surface": "palette",
+              "group": "basic",
+              "order": 0,
+              "upstreamEntries": [
+                "create.aid"
+              ],
+              "label": "label.aid",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "recipe": "create-aid",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                },
+                {
+                  "name": "body",
+                  "source": "value"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "aid"
+              }
+            },
+            {
+              "id": "external-create",
+              "surface": "palette",
+              "group": "data",
+              "order": 20,
+              "upstreamEntries": [
+                "create.external-call"
+              ],
+              "label": "label",
+              "when": {
+                "op": "true"
+              },
+              "recipe": "create-external-call",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            },
+            {
+              "id": "task-note",
+              "surface": "context",
+              "group": "edit",
+              "order": 0,
+              "upstreamEntries": [
+                "context.add-note"
+              ],
+              "label": "label.note",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Task",
+                "mode": "exact"
+              },
+              "recipe": "add-note",
+              "parameters": [
+                {
+                  "name": "target",
+                  "source": "target"
+                },
+                {
+                  "name": "body",
+                  "source": "value"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "aid"
+              }
+            },
+            {
+              "id": "store-clear",
+              "surface": "context",
+              "group": "edit",
+              "order": 1,
+              "upstreamEntries": [
+                "context.clear-store"
+              ],
+              "label": "label.store",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:DataStoreReference",
+                "mode": "exact"
+              },
+              "recipe": "clear-store",
+              "parameters": [
+                {
+                  "name": "target",
+                  "source": "target"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "store"
+              }
+            },
+            {
+              "id": "input-select-set",
+              "surface": "context",
+              "group": "data",
+              "order": 0,
+              "upstreamEntries": [
+                "context.select-input-set"
+              ],
+              "label": "label.input",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:InputSet",
+                "mode": "exact"
+              },
+              "recipe": "select-input-set",
+              "parameters": [
+                {
+                  "name": "target",
+                  "source": "target"
+                },
+                {
+                  "name": "source",
+                  "source": "source"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "input"
+              }
+            },
+            {
+              "id": "task-append",
+              "surface": "append",
+              "group": "basic",
+              "order": 0,
+              "upstreamEntries": [
+                "append.task"
+              ],
+              "label": "label",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Task",
+                "mode": "exact"
+              },
+              "recipe": "append-task",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "source",
+                  "source": "source"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                },
+                {
+                  "name": "name",
+                  "source": "value"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            },
+            {
+              "id": "reference-link",
+              "surface": "connect",
+              "group": "data",
+              "order": 0,
+              "upstreamEntries": [
+                "connect"
+              ],
+              "label": "label.store",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:DataStoreReference",
+                "mode": "exact"
+              },
+              "recipe": "link",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "source",
+                  "source": "source"
+                },
+                {
+                  "name": "target",
+                  "source": "target"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "store"
+              }
+            },
+            {
+              "id": "note-to-aid",
+              "surface": "replace",
+              "group": "edit",
+              "order": 0,
+              "upstreamEntries": [
+                "replace.note-to-aid"
+              ],
+              "label": "label.aid",
+              "when": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:TextAnnotation",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "not",
+                    "arg": {
+                      "op": "textPrefix",
+                      "value": {
+                        "op": "read",
+                        "binding": "self",
+                        "path": "/text"
+                      },
+                      "prefix": "[Aid]",
+                      "trim": "none"
+                    }
+                  }
+                ]
+              },
+              "recipe": "convert-note-to-aid",
+              "parameters": [
+                {
+                  "name": "target",
+                  "source": "target"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "aid"
+              }
+            },
+            {
+              "id": "task-to-service",
+              "surface": "replace",
+              "group": "edit",
+              "order": 1,
+              "upstreamEntries": [
+                "replace.task-to-service"
+              ],
+              "label": "label",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Task",
+                "mode": "exact"
+              },
+              "recipe": "convert-task-to-service",
+              "parameters": [
+                {
+                  "name": "target",
+                  "source": "target"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            },
+            {
+              "id": "paste-here",
+              "surface": "paste",
+              "group": "edit",
+              "order": 0,
+              "upstreamEntries": [
+                "paste"
+              ],
+              "label": "label",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Process",
+                "mode": "exact"
+              },
+              "recipe": "paste-into",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            },
+            {
+              "id": "paste-locked",
+              "surface": "paste",
+              "group": "edit",
+              "order": 1,
+              "upstreamEntries": [
+                "paste.locked"
+              ],
+              "label": "label",
+              "when": {
+                "op": "false"
+              },
+              "recipe": "paste-into",
+              "parameters": [
+                {
+                  "name": "owner",
+                  "source": "owner"
+                },
+                {
+                  "name": "key",
+                  "source": "key"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            },
+            {
+              "id": "task-delete",
+              "surface": "delete",
+              "group": "edit",
+              "order": 0,
+              "upstreamEntries": [
+                "delete.task"
+              ],
+              "label": "label",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Task",
+                "mode": "exact"
+              },
+              "recipe": "delete-task",
+              "parameters": [
+                {
+                  "name": "target",
+                  "source": "target"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            },
+            {
+              "id": "aid-delete",
+              "surface": "delete",
+              "group": "edit",
+              "order": 1,
+              "upstreamEntries": [
+                "delete.aid"
+              ],
+              "label": "label.aid",
+              "when": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:TextAnnotation",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "textPrefix",
+                    "value": {
+                      "op": "read",
+                      "binding": "self",
+                      "path": "/text"
+                    },
+                    "prefix": "[Aid]",
+                    "trim": "none"
+                  }
+                ]
+              },
+              "recipe": "delete-aid",
+              "parameters": [
+                {
+                  "name": "target",
+                  "source": "target"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "aid"
+              }
+            },
+            {
+              "id": "task-label",
+              "surface": "direct-edit",
+              "group": "edit",
+              "order": 0,
+              "upstreamEntries": [
+                "direct-edit.label"
+              ],
+              "label": "label",
+              "when": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "typeIs",
+                    "binding": "self",
+                    "type": "bpmn:Task",
+                    "mode": "exact"
+                  },
+                  {
+                    "op": "not",
+                    "arg": {
+                      "op": "equal",
+                      "left": {
+                        "op": "read",
+                        "binding": "self",
+                        "path": "/name"
+                      },
+                      "right": {
+                        "op": "literal",
+                        "value": "Fixed"
+                      }
+                    }
+                  }
+                ]
+              },
+              "recipe": "rename",
+              "parameters": [
+                {
+                  "name": "target",
+                  "source": "target"
+                },
+                {
+                  "name": "name",
+                  "source": "value"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            },
+            {
+              "id": "lane-delete",
+              "surface": "delete",
+              "group": "edit",
+              "order": 2,
+              "upstreamEntries": [
+                "delete.lane"
+              ],
+              "label": "label",
+              "when": {
+                "op": "typeIs",
+                "binding": "self",
+                "type": "bpmn:Lane",
+                "mode": "exact"
+              },
+              "recipe": "delete-lane",
+              "parameters": [
+                {
+                  "name": "target",
+                  "source": "target"
+                }
+              ],
+              "icon": {
+                "theme": "plain",
+                "glyph": "task"
+              }
+            }
+          ]
+        },
+        {
+          "op": "add",
+          "path": "/messages/-",
+          "value": {
+            "id": "label.note",
+            "texts": [
+              {
+                "name": "en",
+                "value": "Note"
+              },
+              {
+                "name": "de",
+                "value": "Notiz"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/messages/-",
+          "value": {
+            "id": "label.store",
+            "texts": [
+              {
+                "name": "en",
+                "value": "Store"
+              },
+              {
+                "name": "fr",
+                "value": "D\u00e9p\u00f4t"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/messages/-",
+          "value": {
+            "id": "label.aid",
+            "texts": [
+              {
+                "name": "en",
+                "value": "Aid"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/messages/-",
+          "value": {
+            "id": "label.input",
+            "texts": [
+              {
+                "name": "en",
+                "value": "Input"
+              },
+              {
+                "name": "fr",
+                "value": "Entr\u00e9e"
+              }
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/messages/-",
+          "value": {
+            "id": "label.direction",
+            "texts": [
+              {
+                "name": "en",
+                "value": "Direction"
+              },
+              {
+                "name": "fr",
+                "value": "Sens"
+              }
+            ]
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/validation/0/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-import",
+              "severity": "warn",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/1/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-import",
+              "severity": "error",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/2/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-pre-normalize",
+              "severity": "warn",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/3/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-pre-normalize",
+              "severity": "error",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/4/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named",
+              "severity": "warn",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/5/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named",
+              "severity": "error",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/6/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-post-layout",
+              "severity": "warn",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/7/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-post-layout",
+              "severity": "error",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/8/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-release",
+              "severity": "warn",
+              "classification": "readiness"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/validation/9/settings",
+          "value": [
+            {
+              "rule": "ad-hoc-sub-process",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "conditional-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "end-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "event-based-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "event-sub-process-typed-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "fake-join",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "global",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "label-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "link-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-bpmndi",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-complex-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-disconnected",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-duplicate-sequence-flows",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-gateway-join-fork",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-split",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-end",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-implicit-start",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-inclusive-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "no-overlapping-elements",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "single-event-definition",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "start-event-required",
+              "severity": "off",
+              "classification": "readiness"
+            },
+            {
+              "rule": "sub-process-blank-start-event",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-gateway",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-label",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "superfluous-termination",
+              "severity": "off",
+              "classification": "integrity"
+            },
+            {
+              "rule": "profile:task-named-release",
+              "severity": "error",
+              "classification": "readiness"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "profileSha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "e9368b586c77cefd2e7cdde875317d8b434e348ba8672d675ae020cb8fcb60ce",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    },
+    "artifact": "artifacts/profiles/neutral-lot5.json"
+  }
+}

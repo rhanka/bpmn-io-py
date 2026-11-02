@@ -1,0 +1,207 @@
+{
+  "case": "lot5-surfaces-008-element-reference",
+  "clause": "DESIGN R3.3 \u00a78.3 L649; \u00a78.3 L651; \u00a78.3 L659; \u00a710.1 L737",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/surfaces-008-element-reference.json SHA-256 e93612e6ee02bfb1f44feedfa7d23189f8320c391c59af4ee4a7f8137ecd1119; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Offers the upstream DataStoreReference connect (data input association) or upstream append.text-annotation instead of the profile reference-link entry. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "listEntries",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/surfaces-008-element-reference.json",
+      "sha256": "e93612e6ee02bfb1f44feedfa7d23189f8320c391c59af4ee4a7f8137ecd1119"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/basic.snapshot.json",
+        "role": "snapshot",
+        "sha256": "e72fb51afb484918ca2c3aef4eff2a84502cbbd3c6e7aafd1a2f9baa8c8e7ce9"
+      },
+      {
+        "json": [
+          {
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+            "locale": "en",
+            "subject": "Ref_1",
+            "surface": "context"
+          },
+          {
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+            "locale": "en",
+            "subject": "Ref_1",
+            "surface": "append"
+          },
+          {
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+            "locale": "en",
+            "subject": "Ref_1",
+            "surface": "connect"
+          },
+          {
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+            "locale": "en",
+            "subject": "Ref_1",
+            "surface": "replace"
+          },
+          {
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+            "locale": "en",
+            "subject": "Ref_1",
+            "surface": "delete"
+          },
+          {
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+            "locale": "en",
+            "subject": "Ref_1",
+            "surface": "direct-edit"
+          }
+        ],
+        "role": "queries"
+      }
+    ]
+  },
+  "expected": {
+    "result": [
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [],
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "surface": "context"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [],
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "surface": "append"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "link",
+                    "theme": "plain"
+                  },
+                  "id": "connect-reference-link",
+                  "label": {
+                    "key": "entry.connect-reference-link",
+                    "text": "Use reference"
+                  },
+                  "order": 10,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "connect"
+            }
+          ],
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "surface": "connect"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "item",
+                    "theme": "plain"
+                  },
+                  "id": "reference-to-item",
+                  "label": {
+                    "key": "entry.reference-to-item",
+                    "text": "Convert to item"
+                  },
+                  "order": 20,
+                  "upstreamEntries": [
+                    "replace-with-data-object-reference"
+                  ]
+                }
+              ],
+              "group": "replace"
+            }
+          ],
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "surface": "replace"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "note",
+                    "theme": "plain"
+                  },
+                  "id": "delete-element",
+                  "label": {
+                    "key": "entry.delete-element",
+                    "text": "Delete"
+                  },
+                  "order": 10,
+                  "upstreamEntries": [
+                    "delete",
+                    "removeSelection"
+                  ]
+                }
+              ],
+              "group": "edit"
+            }
+          ],
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "surface": "delete"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "task",
+                    "theme": "plain"
+                  },
+                  "id": "rename-direct",
+                  "label": {
+                    "key": "entry.rename-direct",
+                    "text": "Rename"
+                  },
+                  "order": 30,
+                  "upstreamEntries": [
+                    "directEditing"
+                  ]
+                }
+              ],
+              "group": "edit"
+            }
+          ],
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "surface": "direct-edit"
+        },
+        "status": "ok"
+      }
+    ]
+  }
+}
