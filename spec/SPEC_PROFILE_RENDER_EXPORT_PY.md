@@ -665,7 +665,17 @@ harmonization C17).
    inside recognition; any other evaluation error propagates to the refusing caller
    with its original code (JS block-B review G4, J6). Normative: PY-R4 ruling
    `.h2a/r5/PY-R4-RULING.md` §2 (static admission, JS lines cited inline),
-   §2.13 (metadata-free activation) and §3 (evaluator scope). Two
+   §2.13 (metadata-free activation) and §3 (evaluator scope); PY-R6 ruling
+   `.h2a/r8/PY-R6-RULING.md` §2 (export emitter transcription, JS
+   `src/profile/lot4-export.ts` lines cited inline: interpretation
+   `:370-437`, key collection `:440-479`, planners `:476-503`, assembly
+   `:506-660`, losses `:537-546`, idMap `:662-669`, adapter `:678-694`,
+   finalization `:695-753`, serializer `:1024-1159`, layout order
+   `lot4-render.ts:246-260`, entry order `lot4-result.ts:36-56`). Owner
+   items: O-8 (final validations transcribed, no special case), O-9
+   (`exports[].metadata` inert, no static record), O-10 (writer bytes differ
+   by construction; only status, code and the structure projection are
+   gated). Two
    sealed-forced deviations live in `read` only (ruling §6): SF-1 admits, on a
    generic domain, a `read` whose first segment no domain type declares, with
    value type `scalar` (JS `profile-type`; forced by

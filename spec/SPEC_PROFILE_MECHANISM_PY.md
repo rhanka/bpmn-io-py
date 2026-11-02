@@ -242,7 +242,9 @@ Normative transcription: PY-R4 ruling `.h2a/r5/PY-R4-RULING.md` §2 (static
 admission), §2.13 (metadata-free activation: activation re-runs the static walk
 with the bridge type index, so the activation verdict equals the JS compile
 verdict with the bridge descriptors, C-3) and §3 (evaluator scope: the evaluator
-is fixed by the call site and retained through `semantic`). Two sealed-forced
+is fixed by the call site and retained through `semantic`); PY-R6 ruling
+`.h2a/r8/PY-R6-RULING.md` §2 (export emitter), §6.1 (parity gate `e07-gate.sh`)
+and §6.4 (corpus-first, no special cases). Two sealed-forced
 deviations live in `read` only (ruling §6, named constants of `_static.py` so
 one owner decision removes them): SF-1 admits, on a generic domain, a `read`
 whose first segment no domain type declares, with value type `scalar` (JS

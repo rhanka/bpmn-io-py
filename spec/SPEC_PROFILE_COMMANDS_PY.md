@@ -234,7 +234,9 @@ and G1 as context). Success only on exact identity match in every dimension
 runs no C/N and no lint, clears history, increments the session-local
 `historyEpoch` (excluded from parity, DESIGN §3.1 L268) and emits no change
 event. Normative: PY-R4 ruling `.h2a/r5/PY-R4-RULING.md` §2.13; the activation
-verdict equals the JS compile verdict with the bridge descriptors.
+verdict equals the JS compile verdict with the bridge descriptors. Export
+parity gate: PY-R6 ruling `.h2a/r8/PY-R6-RULING.md` §6.1 (`e07-gate.sh` over
+the E, IDP, N, D and S corpora; corpus-first per §6.4, no special cases).
 
 ### 4.2 Surfaces and authorization (DESIGN §8.3 L649, L659)
 

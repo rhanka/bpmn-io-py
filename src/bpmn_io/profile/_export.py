@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import copy
 import dataclasses
+import math
 from dataclasses import dataclass, field
 from functools import partial
 from typing import TYPE_CHECKING, Any
@@ -18,28 +19,23 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from bpmn_io.profile._occurrence import OccurrenceScope
 
-from bpmn_io.profile._c14n import digest
+from bpmn_io.profile._c14n import digest, jcs
 from bpmn_io.profile._evaluate import (
     _is_occurrence_handle,
     is_missing,
     make_read_context,
     reference_property_names,
 )
-from bpmn_io.profile._export_ir import plan_ids
 from bpmn_io.profile._layout import _begin_operation, index_tree
 from bpmn_io.profile._render import _escape_segment, native_preorder
 from bpmn_io.profile._render_digest import check_render_freshness, view_revision
 from bpmn_io.profile._results import (
     CAPABILITY_ORDER,
-    PureRefused,
     ReportEntry,
     ResultRefused,
     ResultSuccess,
     make_coordinate,
     refused_result,
-    report_with_header,
-    sort_id_map,
-    sort_report_entries,
     worst_capability,
 )
 
@@ -59,13 +55,42 @@ _IR_KINDS = ("page", "node", "edge", "label", "metadata")
 #: Parent-compatible record kinds (DESIGN §10.2 emission order).
 _PARENT_KINDS = frozenset({"page", "node"})
 
-#: R occurrence members copied into export-ir/1 records (harmonization B21).
-_R_COPY_KEYS: dict[str, tuple[str, ...]] = {
-    "page": ("bounds",),
-    "node": ("bounds", "style", "label"),
-    "edge": ("bounds", "waypoints", "style", "label"),
-    "label": ("label",),
-}
+#: JS ``undefined`` sentinel (lot4-export.ts:217, §2.1). Distinct from None
+#: (JSON null) and from MISSING; any IR/entry member holding it refuses
+#: ``profile-json`` at finalization, and idMap rows holding it refuse
+#: ``operation-error`` at ``sortIdMap`` validation.
+_UNDEFINED: Any = object()
+
+#: ID-plan domain order (lot4-export.ts:55).
+_DOMAIN_ORDER = ("page", "node", "edge", "label")
+
+
+def _js_key_string(page_id: object, occurrence_key: object, domain: str) -> str:
+    """Build one key string (lot4-export.ts:56-57).
+
+    ``pageId`` formats via JS template (None/undefined becomes "undefined");
+    ``occurrenceKey`` uses ``?? ""`` (None becomes "").
+    """
+    if isinstance(page_id, str):
+        page_text = page_id
+    elif page_id is None:
+        # Missing means JS undefined (null would be "null", but pageId is
+        # never null in the corpora; treat None as undefined for keys).
+        page_text = "undefined"
+    else:
+        page_text = str(page_id)
+    if isinstance(occurrence_key, str):
+        key_text = occurrence_key
+    elif occurrence_key is None:
+        key_text = ""
+    else:
+        key_text = str(occurrence_key)
+    return f"{page_text} {key_text} {domain}"
+
+
+def _utf16(text: str) -> bytes:
+    """Encode one string in UTF-16 code-unit order (lot4-query.ts:24-26)."""
+    return text.encode("utf-16-be")
 
 
 @dataclass
@@ -285,6 +310,20 @@ def _loss_entry(
         page_id = raw_page if isinstance(raw_page, str) else None
         occurrence_key = raw_key if isinstance(raw_key, str) else None
         emitted_type = raw_type if isinstance(raw_type, str) else None
+    # Preserve _UNDEFINED result members for finalization (profile-json).
+    result_target = result.get("targetId")
+    if result_target is _UNDEFINED:
+        kept_target: object = _UNDEFINED
+    elif isinstance(result_target, str):
+        kept_target = result_target
+    else:
+        kept_target = None
+    result_pointer = result.get("pointer")
+    kept_pointer = result_pointer if isinstance(result_pointer, str) else None
+    source_target = source.get("targetId")
+    kept_source_target = source_target if isinstance(source_target, str) else None
+    source_pointer = source.get("pointer")
+    kept_source_pointer = source_pointer if isinstance(source_pointer, str) else None
     return ReportEntry(
         code=f"export-loss/{code}",
         severity="warn",
@@ -295,14 +334,14 @@ def _loss_entry(
         disposition="mapped",
         source=make_coordinate(
             str(source.get("domain", "none")),
-            source.get("pointer") if isinstance(source.get("pointer"), str) else None,
-            source.get("targetId") if isinstance(source.get("targetId"), str) else None,
+            kept_source_pointer,
+            kept_source_target,
             str(source.get("provenance", "unavailable")),
         ),
         result=make_coordinate(
             str(result.get("domain", "none")),
-            result.get("pointer") if isinstance(result.get("pointer"), str) else None,
-            result.get("targetId") if isinstance(result.get("targetId"), str) else None,
+            kept_pointer,
+            kept_target,  # type: ignore[arg-type]
             str(result.get("provenance", "unavailable")),
         ),
         before_present=False,
@@ -311,6 +350,52 @@ def _loss_entry(
         occurrence_key=occurrence_key,
         emitted_type=emitted_type,
         loss_class=code,
+    )
+
+
+def _adapter_loss_entry(
+    self_obj: object,
+    result_index: int,
+    source: dict[str, Json],
+) -> ReportEntry:
+    """Build one adapter metadata loss (lot4-export.ts:686-693, §2.8).
+
+    Only ``pageId`` is present (no ``occurrenceKey``/``emittedType``);
+    source is the ``metadataSelf`` source; result is the artifact pointer
+    with null targetId.
+    """
+    page_id: str | None = None
+    if isinstance(self_obj, dict):
+        raw_page = self_obj.get("pageId")
+        page_id = raw_page if isinstance(raw_page, str) else None
+    kept_source_pointer = source.get("pointer") if isinstance(source.get("pointer"), str) else None
+    kept_source_target = source.get("targetId") if isinstance(source.get("targetId"), str) else None
+    return ReportEntry(
+        code="export-loss/metadata",
+        severity="warn",
+        classification="loss",
+        stage="export",
+        rule_id="adapter",
+        message_key="export.loss.metadata",
+        disposition="mapped",
+        source=make_coordinate(
+            str(source.get("domain", "none")),
+            kept_source_pointer,
+            kept_source_target,
+            str(source.get("provenance", "unavailable")),
+        ),
+        result=make_coordinate(
+            "artifact",
+            f"/ir/{result_index}",
+            None,
+            "exact",
+        ),
+        before_present=False,
+        after_present=False,
+        page_id=page_id,
+        occurrence_key=None,
+        emitted_type=None,
+        loss_class="metadata",
     )
 
 
@@ -358,22 +443,22 @@ def _eval_step_value(
 
 def _key_string(page_id: str, occurrence_key: str, domain: str) -> str:
     """One ID-plan key string (lot4-export.ts:56-57)."""
-    return f"{page_id} {occurrence_key} {domain}"
+    return _js_key_string(page_id, occurrence_key, domain)
 
 
 def _collect_add(
-    keys: list[tuple[str, str, str]], page_id: str, occurrence_key: str, domain: str
+    keys: list[tuple[object, object, str]], page_id: object, occurrence_key: object, domain: str
 ) -> None:
     """Append one key unless its string already occurs (lot4-export.ts:442-443)."""
     key = (page_id, occurrence_key, domain)
-    needle = _key_string(page_id, occurrence_key, domain)
+    needle = _js_key_string(page_id, occurrence_key, domain)
     for existing in keys:
-        if _key_string(*existing) == needle:
+        if _js_key_string(*existing) == needle:
             return
     keys.append(key)
 
 
-def _collect_add_item(keys: list[tuple[str, str, str]], item: object, domain: str) -> None:
+def _collect_add_item(keys: list[tuple[object, object, str]], item: object, domain: str) -> None:
     """Collect one outputId binding target key (lot4-export.ts:445-451)."""
     from bpmn_io.profile._occurrence import MISSING as _OCC_MISSING  # noqa: PLC0415
 
@@ -391,33 +476,37 @@ def _collect_add_item(keys: list[tuple[str, str, str]], item: object, domain: st
         _collect_add(keys, page_id, occurrence_key, domain)
 
 
-def _collect_keys(  # noqa: C901, PLR0912 - JS key cases transcribed one by one
+def _collect_keys(  # noqa: C901 - JS key cases transcribed one by one
     run: _ExportRun,
-) -> list[tuple[str, str, str]]:
+) -> list[tuple[object, object, str]]:
     """Collect the ID-plan keys of interpreted emissions (lot4-export.ts:440-479).
 
     The emit's own key, edge endpoint keys only for edges, and an explicit
     outputId-parent key; never arbitrary optional-field requests.
     """
-    keys: list[tuple[str, str, str]] = []
+    keys: list[tuple[object, object, str]] = []
     for emission in run.emissions:
         if isinstance(emission, _PlanLoss):
             continue
         if not isinstance(emission, _PlanEmit) or emission.kind == "metadata":
             continue
-        self_obj = emission.self if isinstance(emission.self, dict) else {}
-        self_page = emission.self_page_id
+        self_obj = emission.self if isinstance(emission.self, dict) else None
+        # JS always adds the own key, whatever the id value (lot4-export.ts:454-457):
+        # page -> keyOfPage(self.pageId); other kinds -> keyOfOccurrence
+        # (self.pageId, self.occurrenceKey, idDomain). Missing members stay
+        # None and format as JS undefined/"" in the key string.
         id_ast = next((value for name, value in emission.fields if name == "id"), None)
         id_domain = emission.kind
         if isinstance(id_ast, dict) and isinstance(id_ast.get("domain"), str):
             id_domain = str(id_ast.get("domain"))
         if emission.kind == "page":
-            if isinstance(self_page, str):
-                _collect_add(keys, self_page, "", "page")
+            raw_page = self_obj.get("pageId") if isinstance(self_obj, dict) else None
+            # keyOfPage(undefined) -> pageId undefined; keep None for keyString.
+            _collect_add(keys, raw_page, "", "page")
         else:
-            occ_key = self_obj.get("occurrenceKey") if isinstance(self_obj, dict) else None
-            if isinstance(self_page, str) and isinstance(occ_key, str):
-                _collect_add(keys, self_page, occ_key, id_domain)
+            raw_page = self_obj.get("pageId") if isinstance(self_obj, dict) else None
+            raw_key = self_obj.get("occurrenceKey") if isinstance(self_obj, dict) else None
+            _collect_add(keys, raw_page, raw_key, id_domain)
         if emission.kind == "edge":
             for endpoint in ("source", "target"):
                 field_ast = next(
@@ -568,16 +657,21 @@ def _interpret_iteration(run: _ExportRun, recipe: dict[str, Json], handle: objec
 
     An export recipe ``when`` is never evaluated (``lot4-export.ts:370-394``;
     only capability ``when`` gates); the iteration always runs the steps.
-    Output IDs stay unresolved until the ID plan exists.
+    Output IDs stay unresolved until the ID plan exists. Property access on
+    a non-object self throws non-contract ``TypeError`` in JS
+    (``:389``); ``mapExport`` turns it into ``operation-error`` (N4).
     """
+    # JS: const selfPageId = self.pageId — throws on undefined/null self.
+    if not isinstance(handle, dict):
+        return "operation-error"
+    try:
+        raw_page = handle.get("pageId")
+    except AttributeError:
+        return "operation-error"
     mark = len(run.emissions)
     bindings = _iteration_bindings(handle)
     recipe_id = str(recipe.get("id"))
-    self_page_id = (
-        str(handle.get("pageId"))
-        if isinstance(handle, dict) and isinstance(handle.get("pageId"), str)
-        else ""
-    )
+    self_page_id = raw_page if isinstance(raw_page, str) else ""
     for step in recipe.get("steps", []):
         code = _interpret_step(run, recipe_id, step, bindings, handle, self_page_id, mark)
         if code is not None:
@@ -680,15 +774,23 @@ def _resolve_bind(
 
 
 def _check_capability(run: _ExportRun) -> tuple[str, str | None]:
-    """Evaluate capability records once per occurrence (class, code)."""
+    """Evaluate capability records per occurrence (lot4-export.ts:304-306).
+
+    For each render occurrence in order, evaluate every capability record's
+    ``when``; refusals propagate at once. Rank is the max class rank for
+    that occurrence; if rank >= 2, refuse ``render-unsupported`` immediately
+    before evaluating later occurrences (N6).
+    """
     classes: list[str] = []
     occurrences = [
         record for record in run.render.get("occurrences", []) if isinstance(record, dict)
     ]
     for occurrence in occurrences:
-        code = _check_occurrence_capability(run, occurrence, classes)
+        code, rank = _check_occurrence_capability(run, occurrence, classes)
         if code is not None:
             return "structural", code
+        if rank >= 2:
+            return "unsupported", "render-unsupported"
     if any(outcome not in CAPABILITY_ORDER for outcome in classes):
         return "structural", "render-stale"
     capability = worst_capability([*classes, "structural"])
@@ -699,10 +801,16 @@ def _check_capability(run: _ExportRun) -> tuple[str, str | None]:
 
 def _check_occurrence_capability(
     run: _ExportRun, occurrence: dict[str, Json], classes: list[str]
-) -> str | None:
-    """Evaluate capability records for one occurrence, collecting losses."""
+) -> tuple[str | None, int]:
+    """Evaluate capability records for one occurrence (rank, code).
+
+    Returns the refusal code (if any) and the max class rank for this
+    occurrence (lot4-export.ts:223-232). Losses are collected for matching
+    records; unknown classes are kept for the caller's render-stale check.
+    """
     from bpmn_io.profile._occurrence import test_occurrence_predicate  # noqa: PLC0415
 
+    rank = 0
     for record in run.export.get("capabilities", []):
         if not isinstance(record, dict):
             continue
@@ -711,15 +819,18 @@ def _check_occurrence_capability(
                 record.get("when"), _occ_scope(run, {"self": occurrence})
             )
         except (ValueError, TypeError) as exc:
-            return str(exc.args[0]) if exc.args else "operation-error"
+            return str(exc.args[0]) if exc.args else "operation-error", 0
         if held is not True:
             continue
         outcome = record.get("class")
         if not isinstance(outcome, str):
             continue
         classes.append(outcome)
+        if outcome in CAPABILITY_ORDER:
+            rank = max(rank, CAPABILITY_ORDER.index(outcome))
+        # Unknown class: keep for the caller's render-stale check.
         _append_capability_losses(run, occurrence, record)
-    return None
+    return None, rank
 
 
 def _append_capability_losses(
@@ -825,9 +936,13 @@ def _assemble_field_value(  # noqa: PLR0911 - JS field branches transcribed
         return _OCC_MISSING, None
     if isinstance(ast, str):
         return ast, None
-    value, code = _eval_step_value(run, ast, dict(emit.bound))
+    # JS field values evaluate with bound {self, ...aliases} (lot4-export.ts:565).
+    value, code = _eval_step_value(run, ast, {"self": emit.self, **emit.bound})
     if code is not None:
         return None, code
+    if value is None:
+        # JS undefined normalizes to MISSING (lot4-export.ts:566).
+        return _OCC_MISSING, None
     return value, None
 
 
@@ -857,16 +972,17 @@ def _assemble_id(  # noqa: PLR0911 - JS id branches transcribed
             return None, "export-field-invalid"
         return value, None
     if emit.kind == "page":
-        resolved = ids.get(_key_string(emit.self_page_id, "", "page"))
+        # JS: ids.get(keyString(keyOfPage(selfPageId))) — selfPageId may be
+        # undefined; use the raw self.pageId for key consistency.
+        raw_page = emit.self.get("pageId") if isinstance(emit.self, dict) else None
+        resolved = ids.get(_js_key_string(raw_page, "", "page"))
         if resolved is None:
             return None, "profile-ambiguous-binding"
         return resolved, None
     if emit.kind in ("node", "edge", "label"):
-        self_obj = emit.self if isinstance(emit.self, dict) else {}
-        occ_key = self_obj.get("occurrenceKey")
-        if not isinstance(occ_key, str):
-            return None, "profile-ambiguous-binding"
-        resolved = ids.get(_key_string(emit.self_page_id, occ_key, emit.kind))
+        raw_page = emit.self.get("pageId") if isinstance(emit.self, dict) else None
+        raw_key = emit.self.get("occurrenceKey") if isinstance(emit.self, dict) else None
+        resolved = ids.get(_js_key_string(raw_page, raw_key, emit.kind))
         if resolved is None:
             return None, "profile-ambiguous-binding"
         return resolved, None
@@ -904,7 +1020,8 @@ def _assemble_parent(  # noqa: PLR0911 - JS parent branches transcribed
             return None, "export-parent-invalid"
         return value, None
     if emit.kind in ("node", "edge", "label"):
-        return ids.get(_key_string(emit.self_page_id, "", "page")), None
+        raw_page = emit.self.get("pageId") if isinstance(emit.self, dict) else None
+        return ids.get(_js_key_string(raw_page, "", "page")), None
     return None, None
 
 
@@ -944,6 +1061,13 @@ def _assemble_edge_endpoints(
     return source, target, None
 
 
+def _self_member(self_obj: object, name: str) -> object:
+    """Return one emission-self member, ``_UNDEFINED`` when absent (lot4-export.ts:587)."""
+    if isinstance(self_obj, dict):
+        return self_obj.get(name, _UNDEFINED)
+    return _UNDEFINED
+
+
 def _assemble_one_page(
     run: _ExportRun, emit: _PlanEmit, ids: dict[str, str], record_id: str
 ) -> tuple[dict[str, Json] | None, str | None]:
@@ -955,12 +1079,17 @@ def _assemble_one_page(
         return None, code
     if name is _OCC_MISSING:
         return None, "export-field-invalid"
-    record: dict[str, Json] = {"kind": "page", "id": record_id, "name": name}
-    record.update(_render_copies(run, emit))
+    # JS reads members from the emission self, never from the render again (N13).
+    record: dict[str, Json] = {
+        "kind": "page",
+        "id": record_id,
+        "name": name,
+        "bounds": _self_member(emit.self, "bounds"),
+    }
     return record, None
 
 
-def _assemble_one_node(  # noqa: C901 - JS node branches transcribed
+def _assemble_one_node(
     run: _ExportRun, emit: _PlanEmit, ids: dict[str, str], record_id: str, parent: object
 ) -> tuple[dict[str, Json] | None, str | None]:
     """Assemble one node record in JS order (lot4-export.ts:606-619)."""
@@ -972,19 +1101,20 @@ def _assemble_one_node(  # noqa: C901 - JS node branches transcribed
         return None, code
     if name is not _OCC_MISSING:
         record["name"] = name
+    # JS order: parent, bounds, style from the emission self (N13, §2.7).
     record["parent"] = parent
-    record.update(_render_copies(run, emit))
+    record["bounds"] = _self_member(emit.self, "bounds")
+    record["style"] = _self_member(emit.self, "style")
     occurrence = emit.self if isinstance(emit.self, dict) else {}
     label = occurrence.get("label") if isinstance(occurrence, dict) else None
     if isinstance(label, dict):
-        if record.get("name") is None:
-            text = label.get("text")
-            if isinstance(text, str):
-                record["name"] = text
-        bounds = label.get("bounds")
-        lines = label.get("lines")
-        if isinstance(bounds, dict) and isinstance(lines, list):
-            record["label"] = {"bounds": copy.deepcopy(bounds), "lines": copy.deepcopy(lines)}
+        # N11: node name defaults to the occurrence label text when unset.
+        if "name" not in record:
+            record["name"] = label.get("text", _UNDEFINED)
+        record["label"] = {
+            "bounds": label.get("bounds", _UNDEFINED),
+            "lines": label.get("lines", _UNDEFINED),
+        }
     for field_name, _ in emit.fields:
         if field_name in ("id", "name", "parent"):
             continue
@@ -1027,8 +1157,18 @@ def _assemble_one_edge(  # noqa: PLR0913, PLR0917 - edge threading matches JS sc
             return None, fcode
         if value is not _OCC_MISSING:
             record[field_name] = value
+    # JS order: parent, bounds, waypoints, style from the emission self (N13).
     record["parent"] = parent
-    record.update(_render_copies(run, emit))
+    record["bounds"] = _self_member(emit.self, "bounds")
+    record["waypoints"] = _self_member(emit.self, "waypoints")
+    record["style"] = _self_member(emit.self, "style")
+    occurrence = emit.self if isinstance(emit.self, dict) else {}
+    label = occurrence.get("label") if isinstance(occurrence, dict) else None
+    if isinstance(label, dict):
+        record["label"] = {
+            "bounds": label.get("bounds", _UNDEFINED),
+            "lines": label.get("lines", _UNDEFINED),
+        }
     return record, None
 
 
@@ -1052,8 +1192,8 @@ def _assemble_one_label(
         "id": record_id,
         "text": text,
         "parent": parent,
-        "bounds": copy.deepcopy(label.get("bounds")),
-        "lines": copy.deepcopy(label.get("lines")),
+        "bounds": label.get("bounds", _UNDEFINED),
+        "lines": label.get("lines", _UNDEFINED),
     }
     return record, None
 
@@ -1092,7 +1232,7 @@ def _assemble_one_metadata(
 
 def _assemble_one_emit(  # noqa: C901, PLR0911, PLR0912 - JS per-kind order transcribed
     run: _ExportRun, emit: _PlanEmit, ids: dict[str, str], out: _Assembled
-) -> tuple[dict[str, Json] | None, str | None, str | None]:
+) -> tuple[dict[str, Json] | None, object, str | None]:
     """Assemble one emit in JS per-kind order (record, record_id, code)."""
     record_id, code = _assemble_id(run, emit, ids)
     if code is not None:
@@ -1135,55 +1275,55 @@ def _assemble_one_emit(  # noqa: C901, PLR0911, PLR0912 - JS per-kind order tran
     record, code = _assemble_one_metadata(run, emit, ids)
     if code is not None or record is None:
         return None, None, code or "export-field-invalid"
-    return record, None, None
+    # Metadata has no id; JS keeps resultId undefined for the idMap row (R6-09).
+    return record, _UNDEFINED, None
 
 
 def _append_id_map(out: _Assembled, emit: _PlanEmit, record_id: object) -> None:
-    """Append one emit's idMap row (lot4-export.ts:662-669)."""
-    if emit.kind == "page" and isinstance(record_id, str):
+    """Append one emit's idMap row (lot4-export.ts:662-669, R6-09).
+
+    Page rows always; other kinds when the self carries a defined
+    ``semanticId`` (``!== undefined``) — including metadata, whose id is
+    undefined and whose row fails ``sortIdMap`` validation with
+    ``operation-error`` by transcription.
+    """
+    raw_page = emit.self.get("pageId") if isinstance(emit.self, dict) else None
+    # JS undefined for missing members; None stands for undefined here
+    # (render JSON has no undefined literal).
+    if emit.kind == "page":
         out.id_map.append(
             {
-                "sourceId": emit.self_page_id,
+                "sourceId": raw_page,
                 "resultId": record_id,
                 "domain": "export",
-                "pageId": emit.self_page_id,
+                "pageId": raw_page,
             }
         )
-    elif isinstance(record_id, str):
-        self_obj = emit.self if isinstance(emit.self, dict) else {}
+        return
+    self_obj = emit.self if isinstance(emit.self, dict) else {}
+    if isinstance(self_obj, dict) and "semanticId" in self_obj:
         semantic_id = self_obj.get("semanticId")
-        occurrence_key = self_obj.get("occurrenceKey")
-        if isinstance(semantic_id, str) and isinstance(occurrence_key, str):
-            out.id_map.append(
-                {
-                    "sourceId": semantic_id,
-                    "resultId": record_id,
-                    "domain": "export",
-                    "pageId": emit.self_page_id,
-                    "occurrenceKey": occurrence_key,
-                }
-            )
+        raw_key = self_obj.get("occurrenceKey") if isinstance(self_obj, dict) else None
+        out.id_map.append(
+            {
+                "sourceId": semantic_id,
+                "resultId": record_id,
+                "domain": "export",
+                "pageId": raw_page,
+                "occurrenceKey": raw_key,
+            }
+        )
 
 
 def _append_adapter_loss(run: _ExportRun, emit: _PlanEmit, index: int) -> None:
-    """Append one adapter loss for an undropped emitted record kind."""
-    drops = run.adapter.get("drops")
-    if not isinstance(drops, frozenset) or emit.kind not in drops:
+    """Append one adapter metadata loss (lot4-export.ts:678-694, §2.8).
+
+    Every metadata record gets the entry (the ``writtenMetadata`` set holds
+    objects, so membership never holds); only ``pageId`` is present.
+    """
+    if emit.kind != "metadata":
         return
-    run.entries.append(
-        _loss_entry(
-            "adapter",
-            emit.kind,
-            emit.self,
-            {
-                "domain": "artifact",
-                "pointer": f"/ir/{index}",
-                "targetId": None,
-                "provenance": "exact",
-            },
-            _metadata_self_source(run, emit),
-        )
-    )
+    run.entries.append(_adapter_loss_entry(emit.self, index, _metadata_self_source(run, emit)))
 
 
 def _metadata_self_source(run: _ExportRun, emit: _PlanEmit) -> dict[str, Json]:
@@ -1205,87 +1345,6 @@ def _metadata_self_source(run: _ExportRun, emit: _PlanEmit) -> dict[str, Json]:
     if isinstance(self_obj, dict):
         return _native_source(run, self_obj)
     return dict(_UNAVAILABLE)
-
-
-def _render_copies(run: _ExportRun, emit: _PlanEmit) -> dict[str, Json]:
-    """Copy R geometry, style and label lines into one IR record."""
-    copies: dict[str, Json] = {}
-    if emit.kind == "page":
-        page = run.pages.get(emit.self_page_id or "")
-        if page is not None and isinstance(page.get("bounds"), dict):
-            copies["bounds"] = copy.deepcopy(page.get("bounds"))
-        return copies
-    self_obj = emit.self if isinstance(emit.self, dict) else {}
-    occurrence_key = self_obj.get("occurrenceKey")
-    occurrence = None
-    for record in run.render.get("occurrences", []):
-        if (
-            isinstance(record, dict)
-            and record.get("pageId") == emit.self_page_id
-            and record.get("occurrenceKey") == occurrence_key
-        ):
-            occurrence = record
-            break
-    if occurrence is None and isinstance(emit.self, dict):
-        occurrence = emit.self if isinstance(emit.self.get("pageId"), str) else None
-    if occurrence is None:
-        return copies
-    for key in _R_COPY_KEYS.get(emit.kind, ()):
-        if key == "label":
-            _copy_label(occurrence, copies, flat=emit.kind == "label")
-        elif occurrence.get(key) is not None:
-            copies[key] = copy.deepcopy(occurrence.get(key))
-    return copies
-
-
-def _copy_label(occurrence: dict[str, Json], copies: dict[str, Json], *, flat: bool) -> None:
-    """Copy one occurrence label into an IR record (flat for labels)."""
-    label = occurrence.get("label")
-    if not isinstance(label, dict):
-        return
-    if flat:
-        if isinstance(label.get("bounds"), dict):
-            copies["bounds"] = copy.deepcopy(label.get("bounds"))
-        if isinstance(label.get("lines"), list):
-            copies["lines"] = copy.deepcopy(label.get("lines"))
-        return
-    nested: dict[str, Json] = {}
-    if isinstance(label.get("bounds"), dict):
-        nested["bounds"] = copy.deepcopy(label.get("bounds"))
-    if isinstance(label.get("lines"), list):
-        nested["lines"] = copy.deepcopy(label.get("lines"))
-    if nested:
-        copies["label"] = nested
-
-
-def _plan_static_metadata(run: _ExportRun) -> str | None:
-    """Plan artifact-global metadata of the exports[] record (code or None)."""
-    metadata = run.export.get("metadata", [])
-    if not isinstance(metadata, list):
-        return "render-stale"
-    for entry in metadata:
-        if (
-            not isinstance(entry, dict)
-            or not isinstance(entry.get("name"), str)
-            or not isinstance(entry.get("value"), str)
-        ):
-            return "render-stale"
-        run.emissions.append(
-            _PlanEmit(
-                recipe_id=str(run.export.get("id")),
-                kind="metadata",
-                fields=[
-                    ("name", {"op": "literal", "value": entry["name"]}),
-                    ("value", {"op": "literal", "value": entry["value"]}),
-                ],
-                parent_ast=None,
-                has_parent=False,
-                self={},
-                self_page_id="",
-                bound={},
-            )
-        )
-    return None
 
 
 def _standalone_loss_source(run: _ExportRun, item: _PlanLoss) -> dict[str, Json]:
@@ -1337,7 +1396,7 @@ def _run_emission(
                     {
                         "domain": "artifact",
                         "pointer": f"/ir/{index}",
-                        "targetId": record_id if isinstance(record_id, str) else None,
+                        "targetId": record_id if isinstance(record_id, str) else _UNDEFINED,
                         "provenance": "exact",
                     },
                     attached_source,
@@ -1390,14 +1449,228 @@ def map_export(
     return _map_finished(run, candidate, format, capability, (echo_identity, echo_revision))
 
 
-def _map_finished(
+def _validate_id_map(
+    rows: list[dict[str, Json]],
+) -> tuple[list[dict[str, Json]] | None, str | None]:
+    """Validate and sort one idMap (report.ts:72-80, §2.9 step 2).
+
+    Every row must have ``sourceId``, ``resultId``, ``domain``, optional
+    ``pageId``/``occurrenceKey``; every present member among those four must
+    be a non-empty string, else ``operation-error`` (failContract without a
+    code). Order is domain, pageId, occurrenceKey, sourceId, resultId with
+    absent first in UTF-16.
+    """
+    for row in rows:
+        allowed = ("sourceId", "resultId", "domain", "pageId", "occurrenceKey")
+        if (
+            "sourceId" not in row
+            or "resultId" not in row
+            or "domain" not in row
+            or any(k not in allowed for k in row)
+        ):
+            return None, "operation-error"
+        if row.get("domain") not in ("migration", "export"):
+            return None, "operation-error"
+        for key in ("sourceId", "resultId", "pageId", "occurrenceKey"):
+            if key in row:
+                value = row[key]
+                if not isinstance(value, str) or value == "":
+                    return None, "operation-error"
+
+    def _opt(value: object) -> tuple[bytes, bytes]:
+        if value is None:
+            return (b"\x00", b"")
+        return (b"\x01", str(value).encode("utf-16-be"))
+
+    def _key(row: dict[str, Json]) -> tuple[bytes, ...]:
+        return (
+            str(row.get("domain")).encode("utf-16-be"),
+            *_opt(row.get("pageId")),
+            *_opt(row.get("occurrenceKey")),
+            str(row.get("sourceId")).encode("utf-16-be"),
+            str(row.get("resultId")).encode("utf-16-be"),
+        )
+
+    return sorted(rows, key=_key), None
+
+
+def _digest_ir(ir: list[dict[str, Json]]) -> tuple[str | None, str | None]:
+    """Digest one IR (canonical.ts:36, §2.9 step 3).
+
+    An ``_UNDEFINED`` member anywhere refuses ``profile-json``; lone
+    surrogates refuse ``profile-unicode``; non-finite numbers refuse
+    ``profile-number``.
+    """
+    try:
+        return digest(ir), None
+    except ValueError as exc:
+        message = str(exc)
+        if "lone surrogates" in message:
+            return None, "profile-unicode"
+        if "non-finite" in message:
+            return None, "profile-number"
+        return None, "profile-json"
+    except Exception:  # noqa: BLE001 - canonicalization failure -> profile-json
+        return None, "profile-json"
+
+
+def _map_entry_sort_key(
+    entry: ReportEntry,
+) -> tuple[object, ...]:
+    """Return the lot4-result.ts:36-56 sort key for one entry (§2.9 step 5)."""
+
+    def _opt(value: object) -> tuple[bytes, bytes]:
+        if value is None:
+            return (b"\x00", b"")
+        return (b"\x01", str(value).encode("utf-16-be"))
+
+    if entry.before_present:
+        before = (b"\x01", jcs(entry.before).encode("utf-8"))
+    else:
+        before = (b"\x00", b"")
+    if entry.after_present:  # noqa: SIM108
+        after = (b"\x01", jcs(entry.after).encode("utf-8"))
+    else:
+        after = (b"\x00", b"")
+    stage_rank = {
+        "load": 0,
+        "import": 1,
+        "complete": 2,
+        "pre-normalize": 3,
+        "normalize": 4,
+        "post-normalize": 5,
+        "layout": 6,
+        "post-layout": 7,
+        "release": 8,
+        "render": 9,
+        "export": 10,
+    }.get(entry.stage, 99)
+    return (
+        stage_rank,
+        _utf16(entry.rule_id),
+        _utf16(entry.source.domain),
+        _opt(entry.source.pointer),
+        _opt(entry.source.target_id),
+        _utf16(entry.code),
+        _opt(entry.page_id),
+        _opt(entry.occurrence_key),
+        before,
+        after,
+        _opt(entry.result.domain),
+        _opt(entry.result.pointer),
+        _opt(entry.result.target_id),
+        _opt(entry.property),
+    )
+
+
+def _short_entry_sort_key(
+    entry: ReportEntry,
+) -> tuple[object, ...]:
+    """Return the report.ts:64-70 sort key (buildReport stable order)."""
+
+    def _opt(value: object) -> tuple[bytes, bytes]:
+        if value is None:
+            return (b"\x00", b"")
+        return (b"\x01", str(value).encode("utf-16-be"))
+
+    if entry.before_present:
+        before = (b"\x01", jcs(entry.before).encode("utf-8"))
+    else:
+        before = (b"\x00", b"")
+    if entry.after_present:  # noqa: SIM108
+        after = (b"\x01", jcs(entry.after).encode("utf-8"))
+    else:
+        after = (b"\x00", b"")
+    stage_rank = {
+        "load": 0,
+        "import": 1,
+        "complete": 2,
+        "pre-normalize": 3,
+        "normalize": 4,
+        "post-normalize": 5,
+        "layout": 6,
+        "post-layout": 7,
+        "release": 8,
+        "render": 9,
+        "export": 10,
+    }.get(entry.stage, 99)
+    return (
+        stage_rank,
+        _utf16(entry.rule_id),
+        _utf16(entry.source.domain),
+        _opt(entry.source.pointer),
+        _opt(entry.source.target_id),
+        _utf16(entry.code),
+        _opt(entry.page_id),
+        _opt(entry.occurrence_key),
+        before,
+        after,
+    )
+
+
+def _validate_and_sort_entries(  # noqa: C901, PLR0911
+    entries: list[ReportEntry],
+) -> tuple[list[ReportEntry] | None, str | None]:
+    """Validate and order map entries (§2.9 steps 4-5, N12).
+
+    Canonical form first (``_UNDEFINED`` → ``profile-json``), then the
+    empty-string coordinate rule (→ ``operation-error``). Order is the
+    lot4-result full key, then the stable ``compareEntries`` order, with
+    canonical-duplicate removal (first kept).
+    """
+    for entry in entries:
+        wire = entry.to_json()
+        try:
+            jcs(wire)
+        except ValueError as exc:
+            message = str(exc)
+            if "lone surrogates" in message:
+                return None, "profile-unicode"
+            if "non-finite" in message:
+                return None, "profile-number"
+            return None, "profile-json"
+        except Exception:  # noqa: BLE001 - _UNDEFINED or shape -> profile-json
+            return None, "profile-json"
+        # Empty-string members refuse operation-error (boundary text()).
+        for coord in (wire.get("source"), wire.get("result")):
+            if isinstance(coord, dict) and coord.get("targetId") == "":
+                return None, "operation-error"
+        for key in (
+            "code",
+            "ruleId",
+            "messageKey",
+            "pageId",
+            "occurrenceKey",
+            "emittedType",
+            "property",
+        ):
+            if key in wire and wire[key] == "":
+                return None, "operation-error"
+    # Full-key sort, then stable short-key sort (both stable in Python).
+    by_full = sorted(entries, key=_map_entry_sort_key)
+    by_short = sorted(by_full, key=_short_entry_sort_key)
+    seen: set[str] = set()
+    merged: list[ReportEntry] = []
+    for entry in by_short:
+        try:
+            text = jcs(entry.to_json())
+        except Exception:  # noqa: BLE001 - already validated; keep profile-json
+            return None, "profile-json"
+        if text in seen:
+            continue
+        seen.add(text)
+        merged.append(entry)
+    return merged, None
+
+
+def _map_finished(  # noqa: PLR0911
     run: _ExportRun,
     candidate: dict[str, Json],
     format: object,  # noqa: A002 - format is the exports[] member name
     capability: str,
     echo: tuple[dict[str, object] | None, str | None],
 ) -> ResultSuccess | ResultRefused:
-    """Allocate, emit and assemble one planned run (DESIGN §10.1 steps 7-9)."""
+    """Allocate, emit, assemble and finalize one planned run (§2.9)."""
     echo_identity, echo_revision = echo
     allocated, code = _map_allocated(run)
     if code is not None or allocated is None:
@@ -1413,18 +1686,41 @@ def _map_finished(
     view = view_revision(binding)
     identity = copy.deepcopy(echo_identity) if echo_identity is not None else {}
     revision = echo_revision or ""
-    sorted_map = sort_id_map(id_map)
-    merged = sort_report_entries(run.entries)
+    sorted_map, code = _validate_id_map(id_map)
+    if code is not None or sorted_map is None:
+        return refused_result("mapExport", code or "operation-error", echo_identity, echo_revision)
+    ir_digest, code = _digest_ir(ir)
+    if code is not None or ir_digest is None:
+        return refused_result("mapExport", code or "profile-json", echo_identity, echo_revision)
+    merged, code = _validate_and_sort_entries(list(run.entries))
+    if code is not None or merged is None:
+        return refused_result("mapExport", code or "operation-error", echo_identity, echo_revision)
     artifacts: list[dict[str, Json]] = [
         {
             "format": str(format),
             "capability": capability,
-            "digest": digest(ir),
+            "digest": ir_digest,
             "entryIndexes": list(range(len(merged))),
         }
     ]
-    report = report_with_header(
-        "mapExport", identity, revision, entries=merged, id_map=sorted_map, artifacts=artifacts
+    # Build the report without re-sorting (entries already in final order).
+    # report_with_header sorts via shared keys; construct directly to keep
+    # the transcribed map order, then validate through to_json order?
+    # Use report_with_header but with pre-sorted entries; Report.to_json
+    # re-sorts with the shared key, so build the payload manually to keep
+    # the map order while reusing the header validation.
+    from bpmn_io.profile._results import Report  # noqa: PLC0415
+
+    report = Report(
+        operation="mapExport",
+        entries=tuple(merged),
+        raw_standard_findings=(),
+        id_map=tuple(sorted_map),
+        artifacts=tuple(artifacts),
+        source_identity=copy.deepcopy(identity),
+        target_identity=copy.deepcopy(identity),
+        input_revision=revision,
+        output_revision=revision,
     )
     payload: dict[str, Json] = {
         "format": str(format),
@@ -1433,7 +1729,18 @@ def _map_finished(
         "viewRevision": view,
         "ir": ir,
         "renderBinding": binding,
-        "report": report.to_json(),
+        "report": {
+            "reportVersion": "2",
+            "operation": "mapExport",
+            "entries": [e.to_json() for e in merged],
+            "rawStandardFindings": [],
+            "idMap": sorted_map,
+            "artifacts": artifacts,
+            "sourceIdentity": copy.deepcopy(identity),
+            "targetIdentity": copy.deepcopy(identity),
+            "inputRevision": revision,
+            "outputRevision": revision,
+        },
         "capability": capability,
         "idMap": sorted_map,
     }
@@ -1528,96 +1835,153 @@ def _map_planned(  # noqa: PLR0913, PLR0917 - support threading matches map_expo
     for recipe_id in export.get("recipes", []):
         recipe = recipes.get(recipe_id) if isinstance(recipes, dict) else None
         if not isinstance(recipe, dict):
-            return None, None, "render-stale"
+            return None, None, "export-format-unsupported"
         code = _plan_recipe(run, recipe)
         if code is not None:
             return None, None, code
-    code = _plan_static_metadata(run)
-    if code is not None:
-        return None, None, code
+    # N7: exports[].metadata is inert in JS (no static metadata records).
     return run, capability, None
 
 
-def _map_allocated(  # noqa: C901, PLR0911 - JS key branches transcribed
+def _is_safe_integer(value: object) -> bool:
+    """Return whether one value is a JS safe integer (lot4-export.ts:477)."""
+    if isinstance(value, bool):
+        return False
+    if isinstance(value, int):
+        return -(2**53 - 1) <= value <= 2**53 - 1
+    if isinstance(value, float):
+        return value.is_integer() and -(2**53 - 1) <= value <= 2**53 - 1
+    return False
+
+
+def _plan_counter_ids(  # noqa: C901
+    keys: list[tuple[object, object, str]],
+    pages: list[dict[str, object]],
+    origin: object,
+) -> tuple[dict[str, str] | None, str | None]:
+    """Plan counter ids (lot4-export.ts:476-484, §2.5).
+
+    Deduplicated keys stably sorted by domain, numeric page order, UTF-16
+    occurrenceKey. Numeric page order uses first-match render order.
+    """
+    if not _is_safe_integer(origin):
+        return None, "export-id-ambiguous"
+    origin_int = int(origin)  # type: ignore[call-overload]
+    unique: list[tuple[object, object, str]] = []
+    seen: set[str] = set()
+    for key in keys:
+        text = _js_key_string(*key)
+        if text not in seen:
+            seen.add(text)
+            unique.append(key)
+    order_list = [(p.get("pageId"), p.get("order")) for p in pages if isinstance(p, dict)]
+
+    def _order_of(page_id: object) -> float:
+        for pid, order in order_list:
+            if pid == page_id:
+                if isinstance(order, bool):
+                    return 0.0
+                if isinstance(order, (int, float)):
+                    try:
+                        number = float(order)
+                    except (ValueError, OverflowError):
+                        return 0.0
+                    if math.isnan(number):
+                        return 0.0
+                    return number
+                return 0.0
+        return 0.0
+
+    decorated = list(enumerate(unique))
+    decorated.sort(
+        key=lambda pair: (
+            _DOMAIN_ORDER.index(pair[1][2]),
+            _order_of(pair[1][0]),
+            _utf16(pair[1][1] if isinstance(pair[1][1], str) else ""),
+            pair[0],
+        )
+    )
+    ids: dict[str, str] = {}
+    for index, (_, key) in enumerate(decorated):
+        ids[_js_key_string(*key)] = f"e_{origin_int + index}"
+    return ids, None
+
+
+def _plan_digest_ids(
+    keys: list[tuple[object, object, str]],
+) -> tuple[dict[str, str] | None, str | None]:
+    """Plan digest ids (lot4-export.ts:312, §2.5).
+
+    An undefined member makes canonicalization throw ``profile-json`` (N5).
+    """
+    ids: dict[str, str] = {}
+    for key in keys:
+        page_id, occurrence_key, domain = key
+        # JS H([pageId, occurrenceKey, domain]) with undefined members throws.
+        if page_id is None or occurrence_key is None:
+            return None, "profile-json"
+        # JSON null would hash, but keys never carry null (None = undefined).
+        try:
+            allocated = f"e_{digest([page_id, occurrence_key, domain])}"
+        except Exception:  # noqa: BLE001 - canonicalization failure -> profile-json
+            return None, "profile-json"
+        ids[_js_key_string(page_id, occurrence_key, domain)] = allocated
+    return ids, None
+
+
+def _plan_native_ids(
+    keys: list[tuple[object, object, str]],
+    occurrences: list[object],
+) -> tuple[dict[str, str] | None, str | None]:
+    """Plan native ids (lot4-export.ts:486-503, §2.5)."""
+    ids: dict[str, str] = {}
+    used: dict[str, str] = {}
+    for key in keys:
+        text = _js_key_string(*key)
+        if text in ids:
+            continue
+        page_id, occurrence_key, domain = key
+        if domain == "page":
+            # JS keeps undefined pageId as undefined (no refusal here);
+            # a later lookup or validation refuses with its own code.
+            allocated: object = page_id
+        else:
+            found = None
+            for record in occurrences:
+                if (
+                    isinstance(record, dict)
+                    and record.get("pageId") == page_id
+                    and record.get("occurrenceKey") == occurrence_key
+                ):
+                    found = record
+                    break
+            if not isinstance(found, dict):
+                return None, "export-id-ambiguous"
+            semantic_id = found.get("semanticId")
+            if not isinstance(semantic_id, str):
+                return None, "export-id-ambiguous"
+            allocated = semantic_id
+        if allocated in used and used[allocated] != text:
+            return None, "export-id-ambiguous"
+        used[allocated] = text  # type: ignore[index]
+        ids[text] = allocated  # type: ignore[assignment]
+    return ids, None
+
+
+def _map_allocated(
     run: _ExportRun,
 ) -> tuple[dict[str, str] | None, str | None]:
-    """Allocate one run's call-local ids (id map, refusal code).
+    """Allocate one run's call-local ids (lot4-export.ts:309-317, §2.5).
 
-    Keys come from ``_collect_keys`` (lot4-export.ts:440-479): the emit's
-    own key, edge endpoint keys only for edges, and an explicit
-    outputId-parent key. OutputIds resolve at assembly, never prematurely.
+    The map planners are transcribed separately from the ``exportIdPlan``
+    seam; an unknown ``idPolicy`` falls through to native (JS else branch).
     """
-    policy = run.export.get("idPolicy")
-    origin = run.export.get("counterOrigin")
-    if policy not in ("counter", "digest", "native") or type(origin) is not int:
-        return None, "render-stale"
     keys = _collect_keys(run)
-    requests: list[dict[str, object]] = []
-    for page_id, occurrence_key, domain in keys:
-        if domain == "page":
-            requests.append(
-                {
-                    "pageId": page_id,
-                    "occurrenceKey": occurrence_key,
-                    "domain": domain,
-                    "semanticId": None,
-                }
-            )
-            continue
-        semantic: str | None = None
-        for record in run.render.get("occurrences", []):
-            if (
-                isinstance(record, dict)
-                and record.get("pageId") == page_id
-                and record.get("occurrenceKey") == occurrence_key
-            ):
-                sid = record.get("semanticId")
-                if isinstance(sid, str):
-                    semantic = sid
-                break
-        requests.append(
-            {
-                "pageId": page_id,
-                "occurrenceKey": occurrence_key,
-                "domain": domain,
-                "semanticId": semantic,
-            }
-        )
-    plan = plan_ids(
-        {
-            "policy": policy,
-            "counterOrigin": origin,
-            "pages": [
-                {
-                    "pageId": page_id,
-                    "order": page.get("order") if type(page.get("order")) is int else 0,
-                }
-                for page_id, page in run.pages.items()
-            ],
-            "requests": requests,
-        }
-    )
-    if isinstance(plan, PureRefused):
-        return None, plan.code
-    if not isinstance(plan.payload, dict):
-        return None, "render-stale"
-    rows = plan.payload.get("ids")
-    if not isinstance(rows, list):
-        return None, "render-stale"
-    ids: dict[str, str] = {}
-    for row in rows:
-        if not isinstance(row, dict):
-            return None, "render-stale"
-        page = row.get("pageId")
-        key = row.get("occurrenceKey")
-        row_domain = row.get("domain")
-        allocated = row.get("id")
-        if (
-            not isinstance(page, str)
-            or not isinstance(key, str)
-            or not isinstance(row_domain, str)
-            or not isinstance(allocated, str)
-        ):
-            return None, "render-stale"
-        ids[_key_string(page, key, row_domain)] = allocated
-    return ids, None
+    policy = run.export.get("idPolicy")
+    pages = [p for p in run.render.get("pages", []) if isinstance(p, dict)]
+    if policy == "counter":
+        return _plan_counter_ids(keys, pages, run.export.get("counterOrigin"))
+    if policy == "digest":
+        return _plan_digest_ids(keys)
+    occurrences = [o for o in run.render.get("occurrences", []) if isinstance(o, dict)]
+    return _plan_native_ids(keys, occurrences)  # type: ignore[arg-type]

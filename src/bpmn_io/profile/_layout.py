@@ -298,36 +298,55 @@ def _check_page_record(page: object) -> bool:
     return _check_bounds_record(page.get("bounds"))
 
 
-def _check_layout_pages(pages: object) -> dict[str, int] | None:
-    """Index closed pages by id in order (None when malformed)."""
+def _check_layout_pages(  # noqa: PLR0911
+    pages: object,
+) -> dict[str, int] | None:
+    """Index closed pages by id in order (None when malformed).
+
+    Ordering transcribes ``layoutSorted`` (lot4-render.ts:246-252): pages
+    non-decreasing by numeric ``order``; equal orders strictly increasing
+    by UTF-16 ``pageId``. Duplicate page ids stay malformed (shape check).
+    """
     if not isinstance(pages, list):
         return None
-    seen_orders: set[int] = set()
     page_ids: set[str] = set()
     page_order: dict[str, int] = {}
     for page in pages:
         if not isinstance(page, dict) or not _check_page_record(page):
             return None
-        if page["order"] in seen_orders or page["pageId"] in page_ids:
+        if page["pageId"] in page_ids:
             return None
-        seen_orders.add(page["order"])
         page_ids.add(str(page["pageId"]))
         page_order[str(page["pageId"])] = int(page["order"])
-    if sorted(seen_orders) != sorted(page_order.values()):
-        return None
-    if [page["order"] for page in pages if isinstance(page, dict)] != sorted(seen_orders):
-        return None
+    for index in range(1, len(pages)):
+        prev = pages[index - 1]
+        cur = pages[index]
+        if not isinstance(prev, dict) or not isinstance(cur, dict):
+            return None
+        if int(prev["order"]) > int(cur["order"]):
+            return None
+        if int(prev["order"]) == int(cur["order"]):
+            prev_id = str(prev["pageId"])
+            cur_id = str(cur["pageId"])
+            if prev_id.encode("utf-16-be") >= cur_id.encode("utf-16-be"):
+                return None
     return page_order
 
 
 def _check_layout_geometry(
     geometry: object, page_ids: set[str], page_order: dict[str, int]
 ) -> bool:
-    """Return whether geometry records are closed, known and ordered."""
+    """Return whether geometry records are closed, known and ordered.
+
+    Ordering transcribes ``layoutSorted`` (lot4-render.ts:253-260): numeric
+    page order (unknown pages read as 0); a positive rank refuses; rank 0
+    (same page or tied orders) requires a strictly increasing UTF-16
+    ``occurrenceKey``.
+    """
     if not isinstance(geometry, list):
         return False
     seen_keys: set[tuple[str, str]] = set()
-    last_key: tuple[bytes, bytes] | None = None
+    previous: dict[str, object] | None = None
     for record in geometry:
         if not isinstance(record, dict) or not _check_geometry_record(record):
             return False
@@ -335,13 +354,18 @@ def _check_layout_geometry(
         if key in seen_keys or record["pageId"] not in page_ids:
             return False
         seen_keys.add(key)
-        order_key = (
-            str(page_order[key[0]]).encode("utf-16-be"),
-            key[1].encode("utf-16-be"),
-        )
-        if last_key is not None and order_key < last_key:
-            return False
-        last_key = order_key
+        if previous is not None:
+            prev_order = int(page_order.get(str(previous["pageId"]), 0))
+            cur_order = int(page_order.get(str(record["pageId"]), 0))
+            rank = prev_order - cur_order
+            if rank > 0:
+                return False
+            if rank == 0:
+                prev_key = str(previous["occurrenceKey"]).encode("utf-16-be")
+                cur_key = str(record["occurrenceKey"]).encode("utf-16-be")
+                if prev_key >= cur_key:
+                    return False
+        previous = record
     return True
 
 
@@ -1007,7 +1031,7 @@ def _transcribe_imported_di(
     order_of = {str(page.get("pageId")): int(page.get("order")) for page in pages}  # type: ignore[arg-type]
     geometry.sort(
         key=lambda record: (
-            str(order_of.get(str(record.get("pageId")), 0)).encode("utf-16-be"),
+            int(order_of.get(str(record.get("pageId")), 0)),
             str(record.get("occurrenceKey")).encode("utf-16-be"),
         )
     )
@@ -1812,7 +1836,7 @@ def _finish_layout(
     """Sort, grow and assemble one staged layout."""
     staged.geometry.sort(
         key=lambda record: (
-            str(order_of.get(str(record.get("pageId")), 0)).encode("utf-16-be"),
+            int(order_of.get(str(record.get("pageId")), 0)),
             str(record.get("occurrenceKey")).encode("utf-16-be"),
         )
     )

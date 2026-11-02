@@ -28,12 +28,6 @@ __all__ = ["serialize_prepared"]
 
 Json = Any
 
-#: Canonical writer attribute order (a reordered sequence is invalid).
-_ATTRIBUTE_ORDER = ("id", "value", "style", "parent", "vertex", "edge", "source", "target")
-
-#: Admitted writer versions (all three write the same structural bytes).
-_WRITER_VERSIONS = ("1.0", "fixture-1", "lot4-2")
-
 #: Layer cell id (mapped to `$layer` by the structure projection).
 _LAYER_ID = "layer"
 
@@ -116,10 +110,18 @@ def _entry_from_json(record: object) -> ReportEntry | None:
     )
 
 
-def _check_writer_options(options: object) -> str | None:
-    """Validate pinned writer options (refusal code or None, spec §11)."""
+def _check_writer_options(  # noqa: C901, PLR0911, PLR0912
+    options: object,
+) -> str | None:
+    """Validate writer options (lot4-export.ts:1024-1046, §2.10).
+
+    Every violation refuses ``export-format-unsupported``: object, version
+    non-empty string, encoding ``UTF-8``, newline ``LF``/``CRLF``, indent 0,
+    compression ``none``, attributeOrder array of strings, emptyElement
+    ``short``.
+    """
     if not isinstance(options, dict):
-        return "serialize-options-invalid"
+        return "export-format-unsupported"
     version = options.get("version")
     encoding = options.get("encoding")
     newline = options.get("newline")
@@ -127,68 +129,97 @@ def _check_writer_options(options: object) -> str | None:
     compression = options.get("compression")
     attribute_order = options.get("attributeOrder")
     empty_element = options.get("emptyElement")
-    if (
-        not isinstance(version, str)
-        or version not in _WRITER_VERSIONS
-        or encoding != "UTF-8"
-        or newline != "LF"
-        or type(indent) is not int
-        or indent != 0
-        or compression != "none"
-        or not isinstance(attribute_order, list)
-        or any(not isinstance(entry, str) for entry in attribute_order)
-        or (len(attribute_order) > 0 and list(attribute_order) != list(_ATTRIBUTE_ORDER))
-        or empty_element != "short"
+    if not isinstance(version, str) or version == "":
+        return "export-format-unsupported"
+    if encoding != "UTF-8":
+        return "export-format-unsupported"
+    if newline not in ("LF", "CRLF"):
+        return "export-format-unsupported"
+    # JS indent !== 0 (strict); allow int 0 and float 0.0, reject bool.
+    if isinstance(indent, bool):
+        return "export-format-unsupported"
+    if isinstance(indent, int):
+        if indent != 0:
+            return "export-format-unsupported"
+    elif isinstance(indent, float):
+        if indent != 0.0:
+            return "export-format-unsupported"
+    else:
+        return "export-format-unsupported"
+    if compression != "none":
+        return "export-format-unsupported"
+    if not isinstance(attribute_order, list) or any(
+        not isinstance(entry, str) for entry in attribute_order
     ):
-        return "serialize-options-invalid"
-    known = {
-        "version",
-        "encoding",
-        "newline",
-        "indent",
-        "compression",
-        "attributeOrder",
-        "emptyElement",
-    }
-    if any(key not in known or options.get(key) is None for key in options):
-        return "serialize-options-invalid"
+        return "export-format-unsupported"
+    if empty_element != "short":
+        return "export-format-unsupported"
     return None
 
 
+def _writer_newline(writer_options: object) -> str:
+    """Return the writer newline string (LF/CRLF)."""
+    if isinstance(writer_options, dict) and writer_options.get("newline") == "CRLF":
+        return "\r\n"
+    return "\n"
+
+
+def _order_attributes(
+    attributes: list[tuple[str, str]], order: list[str] | None
+) -> list[tuple[str, str]]:
+    """Order one cell's attributes (lot4-export.ts:1048-1054)."""
+    if not order:
+        return attributes
+    ranked: list[tuple[int, int, tuple[str, str]]] = []
+    for index, (name, value) in enumerate(attributes):
+        rank = order.index(name) if name in order else len(order) + index
+        ranked.append((rank, index, (name, value)))
+    ranked.sort(key=lambda item: (item[0], item[1]))
+    return [item[2] for item in ranked]
+
+
 def _escape_attribute(value: str) -> str:
-    """Escape one XML attribute value (minimal well-formed set)."""
+    """Escape one XML attribute value (lot4-export.ts:951-953)."""
     return (
-        value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+        value.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("\t", "&#9;")
+        .replace("\n", "&#10;")
+        .replace("\r", "&#13;")
     )
 
 
-def _cell_attributes(record: dict[str, Json], page_ids: set[str]) -> list[tuple[str, str]]:
-    """Build one mxCell's ordered attributes (id first, canonical order)."""
+def _cell_attributes(
+    record: dict[str, Json], page_ids: set[str], attribute_order: list[str] | None = None
+) -> list[tuple[str, str]]:
+    """Build one mxCell's attributes, honouring the writer order (§2.10)."""
     kind = record.get("kind")
-    attributes: dict[str, str] = {}
+    attributes: list[tuple[str, str]] = []
     record_id = record.get("id")
     if isinstance(record_id, str):
-        attributes["id"] = record_id
+        attributes.append(("id", record_id))
     if (kind == "node" and isinstance(record.get("name"), str)) or (
         kind == "edge" and isinstance(record.get("name"), str)
     ):
-        attributes["value"] = record["name"]
+        attributes.append(("value", str(record["name"])))
     elif kind == "label" and isinstance(record.get("text"), str):
-        attributes["value"] = record["text"]
+        attributes.append(("value", str(record["text"])))
     parent = record.get("parent")
     if isinstance(parent, str):
-        attributes["parent"] = _LAYER_ID if parent in page_ids else parent
+        attributes.append(("parent", _LAYER_ID if parent in page_ids else parent))
     if kind in ("node", "label"):
-        attributes["vertex"] = "1"
+        attributes.append(("vertex", "1"))
     elif kind == "edge":
-        attributes["edge"] = "1"
+        attributes.append(("edge", "1"))
         source = record.get("source")
         target = record.get("target")
         if isinstance(source, str):
-            attributes["source"] = source
+            attributes.append(("source", source))
         if isinstance(target, str):
-            attributes["target"] = target
-    return [(name, attributes[name]) for name in _ATTRIBUTE_ORDER if name in attributes]
+            attributes.append(("target", target))
+    return _order_attributes(attributes, attribute_order)
 
 
 def _geometry_attributes(record: dict[str, Json]) -> list[tuple[str, str]]:
@@ -204,10 +235,16 @@ def _geometry_attributes(record: dict[str, Json]) -> list[tuple[str, str]]:
     return attributes
 
 
-def _write_cell(record: dict[str, Json], page_ids: set[str], lines: list[str]) -> None:
+def _write_cell(
+    record: dict[str, Json],
+    page_ids: set[str],
+    lines: list[str],
+    attribute_order: list[str] | None = None,
+) -> None:
     """Write one mxCell with its mxGeometry child."""
     parts = [
-        f'{name}="{_escape_attribute(value)}"' for name, value in _cell_attributes(record, page_ids)
+        f'{name}="{_escape_attribute(value)}"'
+        for name, value in _cell_attributes(record, page_ids, attribute_order)
     ]
     geometry = _geometry_attributes(record)
     if geometry:
@@ -243,10 +280,28 @@ def _page_owner_map(ir: list[dict[str, Json]]) -> dict[str, str]:
     return page_of
 
 
-def _write_drawio(ir: list[dict[str, Json]]) -> str | None:
-    """Write one structural mxfile document (None when unresolvable)."""
+def _write_drawio(  # noqa: C901
+    ir: list[dict[str, Json]], writer_options: object = None
+) -> str | None:
+    """Write one structural mxfile document (None when unresolvable).
+
+    Honours the writer ``version``, ``newline`` and ``attributeOrder``
+    (§2.10); the layer/diagram structure stays projection-compatible (O-10).
+    """
+    version = "1.0"
+    newline = "\n"
+    attribute_order: list[str] | None = None
+    if isinstance(writer_options, dict):
+        raw_version = writer_options.get("version")
+        if isinstance(raw_version, str) and raw_version != "":
+            version = raw_version
+        if writer_options.get("newline") == "CRLF":
+            newline = "\r\n"
+        raw_order = writer_options.get("attributeOrder")
+        if isinstance(raw_order, list) and all(isinstance(entry, str) for entry in raw_order):
+            attribute_order = list(raw_order)
     page_of = _page_owner_map(ir)
-    lines = ['<?xml version="1.0" encoding="UTF-8"?>', "<mxfile>"]
+    lines = [f'<mxfile version="{_escape_attribute(version)}">']
     pages = [record for record in ir if isinstance(record, dict) and record.get("kind") == "page"]
     page_ids = {str(page.get("id")) for page in pages if isinstance(page.get("id"), str)}
     for page in pages:
@@ -266,10 +321,10 @@ def _write_drawio(ir: list[dict[str, Json]]) -> str | None:
             record_id = record.get("id")
             if not isinstance(record_id, str) or page_of.get(record_id) != page_id:
                 continue
-            _write_cell(record, page_ids, lines)
+            _write_cell(record, page_ids, lines, attribute_order)
         lines.append("</diagram>")
     lines.append("</mxfile>")
-    return "\n".join(lines) + "\n"
+    return newline.join(lines)
 
 
 def _serialize_checked(
@@ -323,18 +378,17 @@ def _serialize_checked(
     )
 
 
-def serialize_prepared(
+def serialize_prepared(  # noqa: PLR0911
     prepared: object, pinned_writer_options: object
 ) -> ResultSuccess | ResultRefused:
-    """Serialize one prepared artifact to structural bytes (spec §11)."""
+    """Serialize one prepared artifact (lot4-export.ts:1128-1159, §2.10)."""
     candidate = copy.deepcopy(prepared) if isinstance(prepared, dict) else {}
     identity = candidate.get("profileIdentity")
     revision = candidate.get("semanticRevision")
-    options_code = _check_writer_options(pinned_writer_options)
-    if options_code is not None:
-        return refused_result("serializePrepared", options_code, None, None)
     echo_identity = identity if isinstance(identity, dict) else None
     echo_revision = revision if isinstance(revision, str) else None
+    # JS order: format, staleness, second format (sparx has no serializer),
+    # then the serializer checks.
     checked, code = _serialize_checked(candidate)
     if checked is None:
         return refused_result(
@@ -345,7 +399,17 @@ def serialize_prepared(
     capability = checked["capability"]
     id_map = checked["idMap"]
     report = checked["report"]
-    text = _write_drawio(records)
+    if format_name != "drawio":
+        return refused_result(
+            "serializePrepared", "export-format-unsupported", echo_identity, echo_revision
+        )
+    options_code = _check_writer_options(pinned_writer_options)
+    if options_code is not None:
+        return refused_result("serializePrepared", options_code, echo_identity, echo_revision)
+    try:
+        text = _write_drawio(records, pinned_writer_options)
+    except Exception:  # noqa: BLE001 - writer contract failure -> operation-error
+        return refused_result("serializePrepared", "operation-error", echo_identity, echo_revision)
     if text is None:
         return refused_result("serializePrepared", "render-stale", echo_identity, echo_revision)
     data = text.encode("utf-8")
