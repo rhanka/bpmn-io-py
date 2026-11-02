@@ -244,11 +244,12 @@ def test_render_traversal_refuses_outside_export() -> None:
     from bpmn_io.profile import select
     from bpmn_io.profile._evaluate import make_read_context
 
-    context = make_read_context(_native_link())
+    link = _native_link()
+    context = make_read_context(link)
     for via in ("pages", "occurrences", "semantic"):
         selector = {"from": "root", "via": via, "order": "page-occurrence"}
         if via == "semantic":
             selector["order"] = "id"
-        result = select(selector, context, {})
+        result = select(selector, context, {"root": link})
         assert result.status == "refused", via
         assert result.code == "profile-value-context"  # type: ignore[union-attr]

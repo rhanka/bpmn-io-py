@@ -55,6 +55,8 @@ ports pinned by `UPSTREAM.toml`, stdlib only):
 | `_transaction.py` | guard states, detached stage, the C → pre-normalize lint → N → post-normalize lint pipeline (§4.8), report composition (§4.9), no-op detection, history entries |
 | `_queries.py` | `list_entries`, `list_fields`, `check_field`, `query_references`, `copy`, `localize` |
 | `_bridge.py` | `HeadlessBridge` extended with the methods of §2 |
+| `_static.py` | static admission walk (PY-R4 ruling `.h2a/r5/PY-R4-RULING.md` §2, transcription of `src/profile/compiler-static.ts`), the only typing, identity and producer authority for `compile_profile` and metadata-free activation (§4.1, §6) |
+| `_occurrence.py` | occurrence-query evaluator (ruling §3, transcription of `src/profile/lot4-query.ts`), driving export capability, bind and emit evaluation in `map_export` |
 
 Public names: `bpmn_io.profile.localize` (new) and the new `HeadlessBridge`
 methods. `CompiledProfile` gains the compiled UI index; it reuses the lot-3
@@ -231,7 +233,8 @@ refuses even when a plan is supplied, and a plan, token or flag argument alone
 and G1 as context). Success only on exact identity match in every dimension
 runs no C/N and no lint, clears history, increments the session-local
 `historyEpoch` (excluded from parity, DESIGN §3.1 L268) and emits no change
-event.
+event. Normative: PY-R4 ruling `.h2a/r5/PY-R4-RULING.md` §2.13; the activation
+verdict equals the JS compile verdict with the bridge descriptors.
 
 ### 4.2 Surfaces and authorization (DESIGN §8.3 L649, L659)
 
@@ -581,7 +584,17 @@ ef9e781).
    as `MISSING` (R4-02, R4-03). A profile compiled without descriptor metadata
    records no traversals: activation re-runs the static walk with the bridge
    type index (C-3); fail-open stays only when neither side knows the types
-   (R1-03, R1-08, R2-02).
+   (R1-03, R1-08, R2-02). Normative static admission: PY-R4 ruling
+   `.h2a/r5/PY-R4-RULING.md` §2 (JS lines cited inline), metadata-free
+   activation §2.13, evaluator scope §3. Two sealed-forced deviations live in
+   `read` only (ruling §6): SF-1 admits, on a generic domain, a `read` whose
+   first segment no domain type declares, with value type `scalar` (JS
+   `profile-type`; forced by `export.map.capability-losses` and
+   `export.map.capability-unsupported`; owner items O-1 and the generic part
+   of O-3); SF-2 admits on `OccurrenceHandle` the paths
+   `/sourceOccurrence/occurrenceKey`, `/targetOccurrence/occurrenceKey` and
+   `/glyphId` with type `string` (JS `profile-type`; forced by 19
+   `export.map.*` cases; owner item O-7). Both stay until the owner decides.
 
 Writing an existing ID stays a CR-06 `profile-producer` refusal (DESIGN §2.4
 L165, §2.4.1 L206). A compile success is compared as the `PureResult` success

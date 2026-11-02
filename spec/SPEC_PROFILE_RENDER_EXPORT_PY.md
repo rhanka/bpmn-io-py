@@ -50,6 +50,8 @@ internal helpers free):
 | `_render.py` | `resolve_theme` producing RenderData/1, coverage, diagnostics |
 | `_export_ir.py` | export-ir/1 field vocabulary (CR-11), symbol table, ID policies |
 | `_export.py` | `map_export`, capability, loss mapping, idMap, artifacts |
+| `_static.py` | static admission walk (PY-R4 ruling `.h2a/r5/PY-R4-RULING.md` §2, transcription of `src/profile/compiler-static.ts`), the only typing authority behind `compile_profile` and activation (§10.1 step 5) |
+| `_occurrence.py` | occurrence-query evaluator (ruling §3, transcription of `src/profile/lot4-query.ts`) behind capability, bind and emit evaluation in `map_export` (§10.1 steps 5–6) |
 | `_serialize.py` | `serialize_prepared` and the `drawio/1` structural serializer |
 | `_prepare.py` | `prepare_export` orchestration and its stage observer seam (§12) |
 | `_legacy.py` | `map_legacy_diagnostics` (legacy diagnostic adapter table, §13), `resolve_legacy_theme` |
@@ -661,21 +663,39 @@ harmonization C17).
    `export-format-unsupported` is a format-level code; harmonization C16).
    A refused capability `when` is a refused element recognition (non-match) only
    inside recognition; any other evaluation error propagates to the refusing caller
-   with its original code (JS block-B review G4, J6).
+   with its original code (JS block-B review G4, J6). Normative: PY-R4 ruling
+   `.h2a/r5/PY-R4-RULING.md` §2 (static admission, JS lines cited inline),
+   §2.13 (metadata-free activation) and §3 (evaluator scope). Two
+   sealed-forced deviations live in `read` only (ruling §6): SF-1 admits, on a
+   generic domain, a `read` whose first segment no domain type declares, with
+   value type `scalar` (JS `profile-type`; forced by
+   `export.map.capability-losses` and `export.map.capability-unsupported`;
+   owner items O-1 and the generic part of O-3); SF-2 admits on
+   `OccurrenceHandle` the paths `/sourceOccurrence/occurrenceKey`,
+   `/targetOccurrence/occurrenceKey` and `/glyphId` with type `string` (JS
+   `profile-type`; forced by 19 `export.map.*` cases; owner item O-7).
 6. Planning pass: the export recipes of the record run in order over their
-   occurrence-selector results (page-occurrence order), every value evaluated
-   in occurrence scope with bound `{self, aliases}` (`bpmn_io.profile._occurrence`,
-   `src/profile/lot4-export.ts:391`, `:565`); each `outputId` request
-   `(pageId, occurrenceKey, domain)` is recorded (PageHandle uses the reserved
-   empty key; implicit page parents request the page key). `refuse` actions refuse
-   with their code; `bind` cardinality errors refuse `profile-ambiguous-binding`;
-   `outputId` on a native handle without exactly one occurrence of that element on
-   the current page refuses `export-occurrence-ambiguous`; a required field
-   evaluating to `MISSING` refuses `export-field-invalid` (an optional field
-   evaluating to `MISSING` is omitted). An export recipe `when` is not evaluated
-   by `map_export` (`src/profile/lot4-export.ts:370-394`); a refused selector or
-   field value outside recognition keeps the evaluator's original code instead
-   of `render-stale` (JS block-B review J6).
+   occurrence-selector results (page-occurrence order). Planning records only
+   the `outputId` requests `(pageId, occurrenceKey, domain)` (PageHandle uses
+   the reserved empty key; implicit page parents request the page key); every
+   other emit value stays unevaluated until emission, where field values
+   evaluate in occurrence scope with bound `{self, aliases}`
+   (`src/profile/lot4-export.ts:565`). A non-`outputId` emit
+   `parent` is evaluated with bound `{self}` only, while an `outputId` parent
+   resolves over the bound aliases (`src/profile/lot4-export.ts:591-595`).
+   `refuse` actions refuse with their code; `bind` cardinality errors refuse
+   `profile-ambiguous-binding`; `outputId` on a native handle without exactly
+   one occurrence of that element on the current page refuses
+   `export-occurrence-ambiguous`. Emission then resolves each record in JS
+   order (`src/profile/lot4-export.ts:560-608`): the `id`, then the parent
+   value resolved and checked (planned id, self, order, page/node), then the
+   remaining fields, so a parent refusal precedes any optional-field refusal
+   (R5-05). A required field evaluating to `MISSING` refuses
+   `export-field-invalid` (an optional field evaluating to `MISSING` is
+   omitted). An export recipe `when` is not evaluated by `map_export`
+   (`src/profile/lot4-export.ts:370-394`); a refused selector or field value
+   outside recognition keeps the evaluator's original code instead of
+   `render-stale` (JS block-B review J6).
 7. ID allocation (per call, no state across calls):
    - `counter`: requested keys sorted by domain (`page, node, edge, label`), then
      page `order`, then UTF-16 `occurrenceKey`, numbered from `counterOrigin`; `e_` +

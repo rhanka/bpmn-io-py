@@ -64,7 +64,7 @@ def test_selector_self_orders_by_id() -> None:
 
     root = _native_root()
     context = make_read_context(root)
-    result = select({"from": "root", "via": "self", "order": "id"}, context, {})
+    result = select({"from": "root", "via": "self", "order": "id"}, context, {"root": root})
     assert result.status == "ok"
     assert result.payload is not None  # type: ignore[union-attr]
 

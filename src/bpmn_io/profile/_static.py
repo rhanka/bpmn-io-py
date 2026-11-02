@@ -1100,6 +1100,14 @@ def _static_step(  # noqa: C901, PLR0912, PLR0915 - one branch per recipe step o
                 if not t.metadata_free:
                     t.write(Domain((str(step.get("type")),)), "/id", "scalar", phase)
         t.write(parent, path, "containment", phase)
+        # compiler-static.ts:273 (unique helper :16-21): duplicate create or
+        # ensure field names refuse profile-symbol before field typing.
+        seen_names: list[object] = []
+        for f in _list(step.get("fields")):
+            field_name = _record(f).get("name")
+            if field_name in seen_names:
+                fail("profile-symbol")
+            seen_names.append(field_name)
         for f in _list(step.get("fields")):
             fr = _record(f)
             name = str(fr.get("name"))

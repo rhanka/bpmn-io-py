@@ -897,8 +897,15 @@ def _eval_reachable(
     targets = _eval_selector(target_ast, context, bindings)
     if not sources or not targets:
         return False
-    wanted_ids = {id(handle.element) for handle in targets}
-    starts = {id(handle.element) for handle in sources}
+    # compiler.ts:1114,1126: only handles with a string id take part in the
+    # graph; an id-less handle (such as an occurrence without id) is neither
+    # a start nor a target.
+    wanted_ids = {
+        id(handle.element) for handle in targets if _element_id(handle.element) is not None
+    }
+    starts = {id(handle.element) for handle in sources if _element_id(handle.element) is not None}
+    if not wanted_ids or not starts:
+        return False
     return _bfs_reachable(
         _reachability_graph(context, wanted), starts, wanted_ids, min_hops, max_hops
     )
@@ -914,15 +921,15 @@ def _eval_selector(  # noqa: C901, PLR0912, PLR0915
     via = node.get("via")
     if not isinstance(from_name, str) or not isinstance(via, str):
         raise TypeError("profile-type")  # noqa: EM101
-    if from_name not in bindings and from_name != "root":
+    # compiler.ts:763: the selector source must be a declared binding;
+    # an unbound source (including root outside a scope that binds it)
+    # refuses profile-symbol instead of reading the tree root.
+    if from_name not in bindings:
         raise ValueError("profile-symbol")  # noqa: EM101
-    if from_name == "root":
-        base: list[object] = [context.root]
-    else:
-        base_value = bindings.get(from_name, _MISSING)
-        if base_value is _MISSING:
-            raise TypeError("profile-type")  # noqa: EM101
-        base = [base_value]
+    base_value = bindings.get(from_name, _MISSING)
+    if base_value is _MISSING:
+        raise TypeError("profile-type")  # noqa: EM101
+    base: list[object] = [base_value]
     candidates: list[object] = []
     if via == "self":
         candidates = list(base)

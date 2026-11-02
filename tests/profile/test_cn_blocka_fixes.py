@@ -173,7 +173,7 @@ def test_b1_count_select_evaluates() -> None:
             "min": 1,
         },
         context,
-        {},
+        {"root": process},
     )
     assert result.status == "ok", result
     assert result.payload is True  # type: ignore[attr-defined]
@@ -204,7 +204,7 @@ def test_b1_reachable_from_to_evaluates() -> None:
             "minHops": 0,
         },
         context,
-        {},
+        {"root": process},
     )
     assert result.status == "ok", result
     assert result.payload is True  # type: ignore[attr-defined]

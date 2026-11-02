@@ -185,6 +185,10 @@ def test_occurrence_predicate(predicate: object, scope: OccurrenceScope) -> bool
         right = evaluate_occurrence_value(predicate.get("right"), scope)
         if left is MISSING or right is MISSING:
             return False
+        # lot4-query.ts:220-224: JS identity (left === right); structured
+        # values are equal only when they are the same object.
+        if isinstance(left, (dict, list)) or isinstance(right, (dict, list)):
+            return left is right
         if isinstance(left, bool) or isinstance(right, bool):
             return isinstance(left, bool) and isinstance(right, bool) and left == right
         if isinstance(left, (int, float)) and isinstance(right, (int, float)):

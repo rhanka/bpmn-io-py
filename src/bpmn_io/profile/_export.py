@@ -69,8 +69,15 @@ _R_COPY_KEYS: dict[str, tuple[str, ...]] = {
 
 
 @dataclass
+class _DeferredValue:
+    """One emit field or parent value kept as AST for emission evaluation."""
+
+    ast: object
+
+
+@dataclass
 class _PlanEmit:
-    """One planned emit with evaluated fields and self coordinates."""
+    """One planned emit with fields and self coordinates."""
 
     recipe_id: str
     kind: str
@@ -82,6 +89,7 @@ class _PlanEmit:
     emitted_type: str | None
     semantic_id: str | None
     source: dict[str, Json]
+    bound: dict[str, object] = field(default_factory=dict)
 
 
 @dataclass
@@ -412,7 +420,13 @@ def _native_request(
 def _plan_field_value(
     run: _ExportRun, ast: object, bindings: dict[str, object]
 ) -> tuple[object, str | None]:
-    """Evaluate one emit field value, recording outputId requests."""
+    """Record one emit outputId request; other values stay deferred.
+
+    Only ``outputId`` values resolve during planning (their requests feed id
+    allocation). Every other value is evaluated at emission in JS order
+    (``lot4-export.ts:560-608``), so a parent refusal precedes any
+    optional-field refusal.
+    """
     if isinstance(ast, dict) and ast.get("op") == "outputId":
         request, code = _request_for_output_id(run, ast, bindings)
         if code is not None:
@@ -423,7 +437,7 @@ def _plan_field_value(
             return None, "render-stale"
         run.requests.append(request)
         return ("output-id", len(run.requests) - 1), None
-    return _eval_step_value(run, ast, bindings)
+    return _DeferredValue(ast), None
 
 
 def _plan_emit_step(
@@ -453,12 +467,14 @@ def _plan_emit_step(
         has_parent = True
         parent_ast = step.get("parent")
         # lot4-export.ts:591-595: an outputId parent resolves over the bound
-        # aliases; any other parent value is evaluated with bound {self} only.
-        is_output_id = isinstance(parent_ast, dict) and parent_ast.get("op") == "outputId"
-        parent_bindings = bindings if is_output_id else {"self": bindings.get("self")}
-        parent, code = _plan_field_value(run, parent_ast, parent_bindings)
-        if code is not None:
-            return code
+        # aliases; any other parent value is evaluated at emission with bound
+        # {self} only.
+        if isinstance(parent_ast, dict) and parent_ast.get("op") == "outputId":
+            parent, code = _plan_field_value(run, parent_ast, bindings)
+            if code is not None:
+                return code
+        else:
+            parent = _DeferredValue(parent_ast)
     page_id, occurrence_key, emitted_type, source = _self_coordinates(run, handle)
     if kind in ("node", "edge", "label") and step.get("parent") is None and page_id is None:
         return "render-stale"
@@ -474,6 +490,7 @@ def _plan_emit_step(
         emitted_type=emitted_type,
         semantic_id=semantic_id if isinstance(semantic_id, str) else None,
         source=source,
+        bound=dict(bindings),
     )
     run.actions.append(("emit", record, run.iteration))
     bindings[alias] = record
@@ -784,8 +801,113 @@ def _check_endpoints(
     return None
 
 
+def _resolve_planned_value(
+    run: _ExportRun, value: object, out: _Emission, bindings: dict[str, object]
+) -> tuple[object, str | None]:
+    """Resolve one planned field value with allocated ids (value, code)."""
+    if isinstance(value, _DeferredValue):
+        return _eval_step_value(run, value.ast, bindings)
+    return _substitute_ids(value, out.allocated), None
+
+
+def _first_field_names(kind: str) -> list[str]:
+    """Return the field names resolved before the parent (lot4-export.ts:560-608)."""
+    return ["name", "value"] if kind == "metadata" else ["id"]
+
+
+def _resolve_named_field(  # noqa: PLR0913, PLR0917 - emission order threading
+    run: _ExportRun,
+    entries: list[tuple[str, object]],
+    taken: dict[int, object],
+    out: _Emission,
+    scope: dict[str, object],
+    name: str,
+) -> str | None:
+    """Resolve the first untaken field with one name (refusal code or None)."""
+    for index, (entry_name, raw) in enumerate(entries):
+        if entry_name == name and index not in taken:
+            value, code = _resolve_planned_value(run, raw, out, scope)
+            if code is not None:
+                return code
+            taken[index] = value
+            return None
+    return None
+
+
+def _planned_record_id(entries: list[tuple[str, object]], taken: dict[int, object]) -> object:
+    """Return the first taken id value (None when absent)."""
+    for index, (entry_name, _) in enumerate(entries):
+        if entry_name == "id" and index in taken:
+            return taken[index]
+    return None
+
+
+def _resolve_emit_parent(  # noqa: PLR0913, PLR0917 - emission order threading
+    run: _ExportRun,
+    emit: _PlanEmit,
+    out: _Emission,
+    scope: dict[str, object],
+    entries: list[tuple[str, object]],
+    taken: dict[int, object],
+) -> tuple[object, str | None]:
+    """Resolve and check one emit's parent before its fields (value, code)."""
+    parent = emit.parent
+    code: str | None = None
+    if emit.has_parent and isinstance(parent, _DeferredValue):
+        # lot4-export.ts:591-595: a non-outputId parent sees {self} only.
+        parent, code = _eval_step_value(run, parent.ast, {"self": scope.get("self")})
+    if code is None and emit.kind != "metadata":
+        record_id = _planned_record_id(entries, taken)
+        if not isinstance(record_id, str) or not record_id:
+            code = "export-field-invalid"
+        elif record_id in out.table:
+            code = "export-parent-invalid"
+        else:
+            _, code = _emit_parent(
+                dataclasses.replace(emit, fields=[], parent=parent), out, record_id
+            )
+    if code is not None:
+        return None, code
+    return parent, None
+
+
+def _resolve_emit_order(
+    run: _ExportRun, emit: _PlanEmit, out: _Emission
+) -> tuple[_PlanEmit | None, str | None]:
+    """Resolve one emit's values in JS emission order (resolved emit, code)."""
+    scope = dict(emit.bound)
+    entries = list(emit.fields)
+    taken: dict[int, object] = {}
+    for name in _first_field_names(emit.kind):
+        code = _resolve_named_field(run, entries, taken, out, scope, name)
+        if code is not None:
+            return None, code
+    parent, code = _resolve_emit_parent(run, emit, out, scope, entries, taken)
+    if code is not None:
+        return None, code
+    for index in range(len(entries)):
+        if index not in taken:
+            value, code = _resolve_planned_value(run, entries[index][1], out, scope)
+            if code is not None:
+                return None, code
+            taken[index] = value
+    ordered = [(entries[index][0], taken[index]) for index in range(len(entries))]
+    return dataclasses.replace(emit, fields=ordered, parent=parent), None
+
+
 def _emit_record(run: _ExportRun, emit: _PlanEmit, out: _Emission) -> str | None:
     """Emit one planned record with R copies (refusal code or None)."""
+    # lot4-export.ts:560-608 order: the id, then the parent value resolved
+    # and checked (planned id, self, order, page/node), then the remaining
+    # fields; a parent refusal precedes any optional-field refusal.
+    resolved, code = _resolve_emit_order(run, emit, out)
+    if code is not None or resolved is None:
+        return code or "export-field-invalid"
+    return _emit_resolved_record(run, resolved, out)
+
+
+def _emit_resolved_record(run: _ExportRun, emit: _PlanEmit, out: _Emission) -> str | None:
+    """Emit one resolved record with R copies (refusal code or None)."""
     fields, code = _emit_fields(emit, out.allocated)
     if code is not None or fields is None:
         return code or "export-field-invalid"

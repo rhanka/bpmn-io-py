@@ -238,6 +238,22 @@ outside `export`/`capability` refuse `profile-type` (`:158-166`, O-4);
 (`bpmn_io.profile._occurrence`, driving `map_export`) reads an unbound name as
 `MISSING`, not a refusal (`lot4-query.ts:116-120`, `:189-194`, O-6).
 
+Normative transcription: PY-R4 ruling `.h2a/r5/PY-R4-RULING.md` §2 (static
+admission), §2.13 (metadata-free activation: activation re-runs the static walk
+with the bridge type index, so the activation verdict equals the JS compile
+verdict with the bridge descriptors, C-3) and §3 (evaluator scope: the evaluator
+is fixed by the call site and retained through `semantic`). Two sealed-forced
+deviations live in `read` only (ruling §6, named constants of `_static.py` so
+one owner decision removes them): SF-1 admits, on a generic domain, a `read`
+whose first segment no domain type declares, with value type `scalar` (JS
+`profile-type`; forced by `export.map.capability-losses` and
+`export.map.capability-unsupported`; owner items O-1 and the generic part of
+O-3); SF-2 admits on `OccurrenceHandle` the paths
+`/sourceOccurrence/occurrenceKey`, `/targetOccurrence/occurrenceKey` and
+`/glyphId` with type `string` (JS `profile-type`; forced by 19
+`export.map.*` cases; owner item O-7). Both stay until the owner decides;
+no other §2 rule deviates from JS.
+
 `Report/2` entries carry exactly `code, severity, classification, stage, ruleId,
 messageKey, disposition`, `source`/`result` coordinates
 (`domain, pointer, targetId, provenance`), required `beforePresent,
