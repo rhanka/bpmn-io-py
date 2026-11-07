@@ -1,0 +1,134 @@
+{
+  "caseId": "bpmn-001-main-native",
+  "operation": "serializeBpmn",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "writerOptions",
+      "json": {
+        "format": true,
+        "preamble": true
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "output",
+      "json": [
+        {
+          "element": "dataStore",
+          "id": "Store_Policy",
+          "parent": "definitions",
+          "attributes": {
+            "name": "Policy archive"
+          }
+        },
+        {
+          "element": "dataStoreReference",
+          "id": "StoreRef_Policy",
+          "parent": "process:Process_Main",
+          "attributes": {
+            "dataStoreRef": "Store_Policy",
+            "name": "Policy archive"
+          }
+        },
+        {
+          "element": "participant",
+          "id": "Pool_Main",
+          "parent": "collaboration:Collab_Main",
+          "attributes": {
+            "processRef": "Process_Main"
+          }
+        },
+        {
+          "element": "participant",
+          "id": "Band_Main",
+          "parent": "collaboration:Collab_Main",
+          "absent": [
+            "processRef"
+          ]
+        },
+        {
+          "element": "dataInput",
+          "id": "Input_Order",
+          "parent": "ioSpecification",
+          "owner": "process:Process_Main"
+        },
+        {
+          "element": "dataOutput",
+          "id": "Output_Receipt",
+          "parent": "ioSpecification",
+          "owner": "process:Process_Main"
+        },
+        {
+          "element": "inputSet",
+          "id": "InputSet_Main",
+          "children": {
+            "dataInputRefs": [
+              "Input_Order"
+            ]
+          }
+        },
+        {
+          "element": "dataInputAssociation",
+          "id": "Input_Link",
+          "parent": "task:Task_Check",
+          "children": {
+            "sourceRef": [
+              "Input_Order"
+            ],
+            "targetRef": [
+              "Port_Check_In"
+            ]
+          }
+        },
+        {
+          "element": "dataOutputAssociation",
+          "id": "Output_Link",
+          "parent": "task:Task_Ship",
+          "children": {
+            "sourceRef": [
+              "Port_Ship_Out"
+            ],
+            "targetRef": [
+              "Output_Receipt"
+            ]
+          }
+        },
+        {
+          "element": "textAnnotation",
+          "id": "Aid_Scanner",
+          "children": {
+            "text": [
+              "[Aid] Scanner"
+            ]
+          }
+        },
+        {
+          "element": "association",
+          "id": "Assoc_Policy",
+          "attributes": {
+            "sourceRef": "StoreRef_Policy",
+            "targetRef": "Task_Check",
+            "associationDirection": "One"
+          }
+        },
+        {
+          "element": "textAnnotation",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "bpmn-structure/1",
+    "source-immutability/1"
+  ]
+}

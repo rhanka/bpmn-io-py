@@ -1,0 +1,59 @@
+{
+  "case": "cn-gates-table",
+  "clause": "DESIGN R3.3 §13 OPEN register; §16 owner decisions; §7.2",
+  "author": "spec-seal",
+  "operation": "gates",
+  "profile": null,
+  "derivation": "§16 ratified the owner part of items 1, 2, 4, 6, 8 and 11 on 2026-10-14; every technical gate (conductor + both libraries) is still open, so each guarded mutation refuses profile-open in edit activation and proceeds only for neutral qualification, except membership removal whose responsibility representation is unresolved (§4.4): responsibility-preservation-required.",
+  "input": {},
+  "expected": {
+    "OPEN-EXTERNAL": {
+      "owner": "ratified",
+      "ownerRecord": "DESIGN R3.3 §16 item 2",
+      "technical": "open",
+      "guards": "normalize: an effective bpmn:Lane flowNodeRef membership change",
+      "edit": "profile-open",
+      "qualification": "proceeds"
+    },
+    "OPEN-ID": {
+      "owner": "ratified",
+      "ownerRecord": "DESIGN R3.3 §16 item 1",
+      "technical": "open",
+      "guards": "remap_ids",
+      "edit": "profile-open",
+      "qualification": "proceeds"
+    },
+    "OPEN-IO": {
+      "owner": "ratified",
+      "ownerRecord": "DESIGN R3.3 §16 item 8",
+      "technical": "open",
+      "guards": "complete: filling an absent bpmn:DataOutputAssociation sourceRef",
+      "edit": "profile-open",
+      "qualification": "proceeds"
+    },
+    "OPEN-MACHINE": {
+      "owner": "ratified",
+      "ownerRecord": "DESIGN R3.3 §16 item 6",
+      "technical": "open",
+      "guards": "bind_supports",
+      "edit": "profile-open",
+      "qualification": "proceeds"
+    },
+    "OPEN-RESERVED-N": {
+      "owner": "ratified",
+      "ownerRecord": "DESIGN R3.3 §16 item 11",
+      "technical": "open",
+      "guards": "normalize: an ensure that would create a support object",
+      "edit": "profile-open",
+      "qualification": "proceeds"
+    },
+    "OPEN-SHARING": {
+      "owner": "ratified",
+      "ownerRecord": "DESIGN R3.3 §16 item 4",
+      "technical": "open",
+      "guards": "normalize: removal of an existing bpmn:Lane flowNodeRef membership",
+      "edit": "profile-open",
+      "qualification": "responsibility-preservation-required"
+    }
+  }
+}

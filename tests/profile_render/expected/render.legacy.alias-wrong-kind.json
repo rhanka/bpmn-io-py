@@ -1,0 +1,33 @@
+{
+  "case": "render.legacy.alias-wrong-kind",
+  "clause": "DESIGN R3.3 \u00a79.5 Legacy themes",
+  "witness": "only kind theme records map looks",
+  "derivation": "Record {kind:marker, old:standard, ...} is not a theme alias, so standard has no theme mapping. An unresolved legacy look is an unresolved render input: render-stale (DESIGN \u00a79.2 'unresolved input returns render-stale'; \u00a710.2 limits legacy-unmapped to legacy diagnostic codes; block-B harmonization decision C17).",
+  "operation": "resolveLegacyTheme",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/compatibilityAliases",
+          "value": [
+            {
+              "kind": "marker",
+              "old": "standard",
+              "destination": "plain",
+              "mode": "explicit-adapter"
+            }
+          ]
+        }
+      ]
+    },
+    "legacyName": "standard"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "render-stale",
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

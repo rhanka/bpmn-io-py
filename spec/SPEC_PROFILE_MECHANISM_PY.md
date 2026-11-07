@@ -225,6 +225,37 @@ effective-base index, immutable native tree/index, immutable source
 coordinates, support bindings, stage and validated command inputs, plus
 immutable layout/R bindings for theme/export evaluation.
 
+Compiler-static occurrence-domain family (`src/profile/compiler-static.ts`,
+`src/profile/lot4-query.ts`), transcribed 1:1 into `bpmn_io.profile._static`
+(the only typing, identity and producer authority; the legacy `_compiler` walk
+keeps family recording, demands and descriptor-independent checks): a narrowed
+`from` domain checks the narrowed types only (`:181-189`, O-2); render vias
+outside `export`/`capability` refuse `profile-type` (`:158-166`, O-4);
+`bindingOwner` is bound in every environment built from `baseEnv` (`:54`,
+`:240`, `:369`, O-5); a nested occurrence `where` sees an occurrence `self`
+(`:179`, `:197`, R3-01). The native evaluator refuses an unbound `read`/`id`
+/`typeIs` with `profile-symbol` (R4-02); only the export occurrence evaluator
+(`bpmn_io.profile._occurrence`, driving `map_export`) reads an unbound name as
+`MISSING`, not a refusal (`lot4-query.ts:116-120`, `:189-194`, O-6).
+
+Normative transcription: PY-R4 ruling `.h2a/r5/PY-R4-RULING.md` §2 (static
+admission), §2.13 (metadata-free activation: activation re-runs the static walk
+with the bridge type index, so the activation verdict equals the JS compile
+verdict with the bridge descriptors, C-3) and §3 (evaluator scope: the evaluator
+is fixed by the call site and retained through `semantic`); PY-R6 ruling
+`.h2a/r8/PY-R6-RULING.md` §2 (export emitter), §6.1 (parity gate `e07-gate.sh`)
+and §6.4 (corpus-first, no special cases). Two sealed-forced
+deviations live in `read` only (ruling §6, named constants of `_static.py` so
+one owner decision removes them): SF-1 admits, on a generic domain, a `read`
+whose first segment no domain type declares, with value type `scalar` (JS
+`profile-type`; forced by `export.map.capability-losses` and
+`export.map.capability-unsupported`; owner items O-1 and the generic part of
+O-3); SF-2 admits on `OccurrenceHandle` the paths
+`/sourceOccurrence/occurrenceKey`, `/targetOccurrence/occurrenceKey` and
+`/glyphId` with type `string` (JS `profile-type`; forced by 19
+`export.map.*` cases; owner item O-7). Both stay until the owner decides;
+no other §2 rule deviates from JS.
+
 `Report/2` entries carry exactly `code, severity, classification, stage, ruleId,
 messageKey, disposition`, `source`/`result` coordinates
 (`domain, pointer, targetId, provenance`), required `beforePresent,
@@ -348,31 +379,35 @@ Identity/graph: `id-collision`, `descriptor-role-unknown`,
 
 ### 9.1 Compatibility decision binding (DESIGN §3.3, R3.3)
 
-`check_compatibility` applies the DESIGN §3.3 rows in order (DESIGN.md R3.3
-lines 294–324, changelog §15.5) before C/N/theme/export or edit, and returns
+`check_compatibility` applies the J1-J21 order (`src/profile/compatibility.ts:38-76`,
+DESIGN §3.3, changelog §15.5) before C/N/theme/export or edit, and returns
 exactly one verdict: `{status: "ok"}` or `{status: "refused", code?}` with `code`
 from the 20-code registry when present. Its inputs carry the envelope
 `document_version` and the host, snapshot and document identities that the
-first rows decide on (lines 302–304), alongside the runtime, the injected and
+first rows decide on, alongside the runtime, the injected and
 document profile identities, source availability, the selected migration, the
-required capabilities/assets and envelope validity. Source-dependent remedies (P1, lines 298–299): at the
-first applicable row whose only remedies need the exact source package or a
-source-validated migration — mechanism-differ, schema-differ,
-base/descriptor-mismatch, business-ID/major-mismatch, patch/minor rows — an
-unknown D version/digest or an unavailable source yields
-`profile-source-unavailable`, never a latest fallback. Schema axis (P2, lines
-305–310): `profile-schema-version` fires only for an injected P schema
-unsupported by R; a D schema unsupported by R refuses with
-`document-schema-unsupported`; supported but unequal P/D schemas require the
-exact source path or an explicit migration
+required capabilities/assets and envelope validity. A present `documentVersion`
+other than `"1"` refuses `document-version-unsupported` (J1); an absent
+`documentVersion` (or an absent document identity) refuses
+`profile-metadata-missing` (J2). J3, J12, J13 and J20 compare by canonical
+(profile-c14n/2) equality. Source-dependent remedies (P1): an unknown P or D
+version (not a release triplet) or digest, or a source package not
+`known-and-available`, yields `profile-source-unavailable` at the first
+applicable source-dependent row (mechanism-differ, schema-differ,
+base/descriptor-mismatch, business-ID/major-mismatch, patch/minor rows);
+either version unknown refuses `profile-source-unavailable` unconditionally
+right after the descriptor row (J14). Schema axis (P2): `profile-schema-version`
+fires only for an injected P schema unsupported by R; a D schema unsupported by
+R refuses with `document-schema-unsupported`; supported but unequal P/D schemas
+require the exact source path or an explicit migration
 (`profile-schema-migration-required`, subject to P1), placed immediately after
 the mechanism-differ row. A known same-version unequal digest refuses
 `profile-digest-mismatch` (no migration waiver, no P1 override); missing
 capability/asset keeps its ordered `profile-capability` /
 `profile-resource-missing` diagnostic. Row order governs every reading: earlier
 identity/version conflicts precede source availability, and an otherwise exact
-but invalid envelope stays a bare refusal with no new code (verdict-schema
-`$comment`).
+but invalid envelope stays a bare refusal with no new code unless the envelope
+is valid **and** `P` equals `D` canonically (J20; verdict-schema `$comment`).
 
 ## 10. Open points for lots 1–2 (not decided here)
 

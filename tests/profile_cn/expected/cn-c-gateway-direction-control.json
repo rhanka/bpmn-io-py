@@ -1,0 +1,241 @@
+{
+  "case": "cn-c-gateway-direction-control",
+  "clause": "DESIGN R3.3 §7.1 (private policy, not a universal library rule); §14.4",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "neutral",
+  "derivation": "The topology and GatewayDirection rules are private effective-base policy data, not library rules (§7.1). The neutral profile declares none, so C changes only isExecutable: the stale G_ctl incoming [F2], the absent S1 outgoing and the absent gatewayDirection stay exactly as imported. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_ctl",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_ctl",
+            "flowElements": [
+              {
+                "$type": "bpmn:StartEvent",
+                "id": "S1"
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_ctl",
+                "incoming": [
+                  "F2"
+                ]
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_ctl",
+                "name": "Work"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F1",
+                "sourceRef": "S1",
+                "targetRef": "G_ctl"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F2",
+                "sourceRef": "G_ctl",
+                "targetRef": "T_ctl"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "c1ea81711cdc2b4e45856df4742b9e70f2a7df5bfc6821d086cc3d0ec9293b5c"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "c1ea81711cdc2b4e45856df4742b9e70f2a7df5bfc6821d086cc3d0ec9293b5c",
+    "revision": "dd5a9ce006ca04930999de8aabe5f454404aa8278064d0694a3a1d8f8b5b454b",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-process",
+          "messageKey": "complete.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": "Process_ctl",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/isExecutable",
+            "targetId": "Process_ctl",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": false,
+          "property": "isExecutable"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "c1ea81711cdc2b4e45856df4742b9e70f2a7df5bfc6821d086cc3d0ec9293b5c",
+      "outputRevision": "dd5a9ce006ca04930999de8aabe5f454404aa8278064d0694a3a1d8f8b5b454b"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_ctl",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_ctl",
+            "flowElements": [
+              {
+                "$type": "bpmn:StartEvent",
+                "id": "S1"
+              },
+              {
+                "$type": "bpmn:ExclusiveGateway",
+                "id": "G_ctl",
+                "incoming": [
+                  "F2"
+                ]
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "T_ctl",
+                "name": "Work"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F1",
+                "sourceRef": "S1",
+                "targetRef": "G_ctl"
+              },
+              {
+                "$type": "bpmn:SequenceFlow",
+                "id": "F2",
+                "sourceRef": "G_ctl",
+                "targetRef": "T_ctl"
+              }
+            ],
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "dd5a9ce006ca04930999de8aabe5f454404aa8278064d0694a3a1d8f8b5b454b"
+    }
+  },
+  "fixedPoint": true
+}

@@ -1,0 +1,36 @@
+{
+  "caseId": "ticks-002-rational-not-binary",
+  "operation": "layoutTicks",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "points",
+      "json": [
+        2.0005,
+        2.0035,
+        4.0055,
+        8.0095
+      ]
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": [
+          2000,
+          2004,
+          4006,
+          8010
+        ],
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

@@ -8,7 +8,7 @@ digest-pinned closure for base, descriptors, assets and capabilities.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from bpmn_io.profile._c14n import digest, digest_bytes
 from bpmn_io.profile._lexical import check_lexical
@@ -28,6 +28,8 @@ class ValidatedProfile:
     base: dict[str, object]
     descriptors: list[dict[str, object]]
     capabilities: list[str]
+    # Lot 4: verified resource bytes by resource id (empty without a bag).
+    assets: dict[str, bytes] = field(default_factory=dict)
 
 
 def _parse_json_bytes(data: bytes) -> tuple[dict[str, object] | None, str | None]:
@@ -107,6 +109,7 @@ def load_profile(  # noqa: PLR0913, PLR0911, PLR0912, C901
         for name in profile_capabilities:
             if not isinstance(name, str) or name not in capabilities:
                 return PureRefused(code="profile-capability")
+    assets: dict[str, bytes] = {}
     if asset_bag is not None:
         resources = profile.get("resources")
         if isinstance(resources, list):
@@ -115,11 +118,14 @@ def load_profile(  # noqa: PLR0913, PLR0911, PLR0912, C901
                     return PureRefused(code="profile-schema")
                 key = entry.get("assetKey")
                 want_digest = entry.get("sha256")
+                resource_id = entry.get("id")
                 if not isinstance(key, str) or not isinstance(want_digest, str):
                     continue
                 raw = asset_bag.get(key)
                 if raw is None or digest_bytes(raw) != want_digest:
                     return PureRefused(code="profile-pin")
+                if isinstance(resource_id, str):
+                    assets[resource_id] = bytes(raw)
     schema_id = schema.get("$id") if isinstance(schema, dict) else None
     return PureSuccess(
         payload=ValidatedProfile(
@@ -129,5 +135,6 @@ def load_profile(  # noqa: PLR0913, PLR0911, PLR0912, C901
             base=dict(base),
             descriptors=[dict(e) for e in descriptors if isinstance(e, dict)],
             capabilities=[str(c) for c in profile_capabilities if isinstance(c, str)],
+            assets=assets,
         )
     )

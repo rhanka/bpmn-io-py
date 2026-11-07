@@ -1,0 +1,52 @@
+{
+  "caseId": "render-017-unsupported-coverage",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main-note.envelope.json",
+      "sha256": "88aa47074d31769ac83558876320d36587c6b7d925ee7f47ee083443e06025cf"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/main-note.layout.json",
+      "sha256": "4e2b461cb568dc576c3520d2b764b475c3d1b038e5f29b5728ea0113f454483f"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [],
+        "bioc": []
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/note-plain.resolve-result.json",
+      "sha256": "8eefc6758e9400c0751e8293f1e8590be212e08bd3073c11ef43b4ef98f9d197"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

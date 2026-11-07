@@ -23,6 +23,8 @@ if TYPE_CHECKING:
 
 __all__ = [
     "DocumentEnvelope",
+    "check_envelope_integrity",
+    "check_envelope_shape",
     "complete_envelope",
     "extract_presentation",
     "import_envelope",
@@ -389,6 +391,155 @@ def _check_tree_shape(tree: object) -> str | None:
     if not isinstance(tree, dict):
         return "profile-schema"
     if not isinstance(tree.get("$type"), str):
+        return "profile-schema"
+    return None
+
+
+#: Closed envelope members (DESIGN §5.1).
+_CLOSED_ENVELOPE_KEYS: Final[frozenset[str]] = frozenset(
+    {"documentVersion", "profileIdentity", "tree", "bindings", "semanticRevision"}
+)
+
+#: Closed profile-identity pin record members (DESIGN §5.1).
+_CLOSED_PIN_KEYS: Final[frozenset[str]] = frozenset({"id", "version", "sha256"})
+
+
+def _check_pin(pin: object) -> str | None:
+    """Validate one closed ``{id, version, sha256}`` pin (refusal or None)."""
+    if not isinstance(pin, dict) or set(pin.keys()) != _CLOSED_PIN_KEYS:
+        return "profile-schema"
+    for key in ("id", "version", "sha256"):
+        if not isinstance(pin.get(key), str):
+            return "profile-schema"
+    return None
+
+
+def _check_identity_full(  # noqa: PLR0911 - one return per pin failure
+    profile_identity: object,
+) -> str | None:
+    """Validate the closed §5.1 identity record with pins (refusal or None)."""
+    if not isinstance(profile_identity, dict):
+        return "profile-schema"
+    if set(profile_identity.keys()) != set(_IDENTITY_KEYS):
+        return "profile-schema"
+    for key in ("mechanismVersion", "schemaVersion", "profile", "version", "sha256"):
+        if not isinstance(profile_identity.get(key), str):
+            return "profile-schema"
+    code = _check_identity_values(profile_identity)
+    if code is not None:
+        return code
+    if _check_pin(profile_identity.get("base")) is not None:
+        return "profile-schema"
+    descriptors = profile_identity.get("descriptors")
+    if not isinstance(descriptors, list) or not descriptors:
+        return "profile-schema"
+    for entry in descriptors:
+        if _check_pin(entry) is not None:
+            return "profile-schema"
+    return None
+
+
+def check_envelope_shape(  # noqa: PLR0911 - one return per shape failure
+    envelope: object,
+) -> str | None:
+    """Validate the envelope shape needed to read version, identity and revision.
+
+    Checks the closed envelope members, the unknown ``documentVersion``
+    (``document-version-unsupported``), the closed §5.1 identity record
+    with pins, the committed-tree object with ``$type`` and the string
+    revision; anything else refuses ``profile-schema``. Bindings content
+    and revision integrity belong to :func:`check_envelope_integrity`.
+    """
+    if not isinstance(envelope, dict):
+        return "profile-schema"
+    if set(envelope.keys()) != _CLOSED_ENVELOPE_KEYS:
+        return "profile-schema"
+    if envelope.get("documentVersion") != "1":
+        return "document-version-unsupported"
+    if _check_identity_full(envelope.get("profileIdentity")) is not None:
+        return "profile-schema"
+    if _check_tree_shape(envelope.get("tree")) is not None:
+        return "profile-schema"
+    if not isinstance(envelope.get("semanticRevision"), str):
+        return "profile-schema"
+    return None
+
+
+def _collect_ids(tree: object) -> set[str]:
+    """Collect every string element id of one JSON tree (bounded, iterative)."""
+    found: set[str] = set()
+    stack: list[tuple[object, int]] = [(tree, 0)]
+    seen = 0
+    while stack:
+        current, depth = stack.pop()
+        seen += 1
+        if seen > _MAX_PROJECTION_NODES or depth > _MAX_PROJECTION_DEPTH:
+            break
+        if isinstance(current, dict):
+            element_id = current.get("id")
+            if isinstance(element_id, str):
+                found.add(element_id)
+            stack.extend((value, depth + 1) for value in current.values())
+        elif isinstance(current, list):
+            stack.extend((value, depth + 1) for value in current)
+    return found
+
+
+def _check_bindings_integrity(bindings: list[object], known_ids: set[str]) -> str | None:
+    """Check binding ownership and target uniqueness (refusal or None)."""
+    seen_targets: set[str] = set()
+    for entry in bindings:
+        if not isinstance(entry, dict):
+            return "profile-schema"
+        owner = entry.get("ownerId")
+        target = entry.get("targetId")
+        if not isinstance(owner, str) or not isinstance(target, str):
+            return "profile-schema"
+        if owner not in known_ids or target not in known_ids:
+            return "support-binding-conflict"
+        if target in seen_targets:
+            return "support-binding-conflict"
+        seen_targets.add(target)
+    return None
+
+
+def check_envelope_integrity(  # noqa: PLR0911 - one return per integrity failure
+    envelope: object,
+) -> str | None:
+    """Validate envelope integrity after compatibility (refusal or None).
+
+    Checks binding record shape (``profile-schema``), owner+role
+    uniqueness, duplicate records, every binding ``ownerId``/``targetId``
+    naming an element and no ``targetId`` bound twice (else
+    ``support-binding-conflict``), then the committed semantic projection
+    and revision (else ``profile-schema``).
+    """
+    if not isinstance(envelope, dict):
+        return "profile-schema"
+    bindings = envelope.get("bindings")
+    tree = envelope.get("tree")
+    profile_identity = envelope.get("profileIdentity")
+    code = validate_bindings(bindings)
+    if code is not None:
+        return code
+    if (
+        not isinstance(bindings, list)
+        or not isinstance(tree, dict)
+        or not isinstance(profile_identity, dict)
+    ):
+        return "profile-schema"
+    known_ids = _collect_ids(tree)
+    code = _check_bindings_integrity(bindings, known_ids)
+    if code is not None:
+        return code
+    try:
+        projected = _project_dict(tree)
+    except ValueError:
+        return "profile-schema"
+    if projected != tree:
+        return "profile-schema"
+    want = _semantic_revision(tree, profile_identity, bindings)
+    if envelope.get("semanticRevision") != want:
         return "profile-schema"
     return None
 

@@ -1,0 +1,51 @@
+{
+  "case": "render.compile.path-bad-arity",
+  "clause": "DESIGN R3.3 \u00a72.4.1 schema authority; \u00a79.3 glyph shape conditionals",
+  "witness": "path command L with three values is a schema violation",
+  "derivation": "pathCommand M/L requires exactly two values in the pinned schema; three values refuse profile-schema at load. Parity sync PS-25: a compileProfile refusal is the PureResult record {status, code, diagnostics: []} (DESIGN \u00a710.1 L737); compile refusals carry no diagnostic.",
+  "operation": "compileProfile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "mark",
+            "kind": "path",
+            "viewBox": [
+              0,
+              0,
+              24,
+              24
+            ],
+            "commands": [
+              {
+                "command": "M",
+                "values": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "command": "L",
+                "values": [
+                  1,
+                  2,
+                  3
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-schema",
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

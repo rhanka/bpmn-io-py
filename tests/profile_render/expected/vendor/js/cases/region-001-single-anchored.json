@@ -1,0 +1,96 @@
+{
+  "caseId": "region-001-single-anchored",
+  "operation": "layoutRegions",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "region-input",
+      "json": {
+        "page": {
+          "x": 0,
+          "y": 0,
+          "width": 1200000,
+          "height": 640000
+        },
+        "body": {
+          "x": 30000,
+          "y": 0,
+          "width": 1070000,
+          "height": 150000
+        },
+        "tokens": {
+          "headerWidth": 30000,
+          "padding": 10000,
+          "gap": 20000,
+          "minHeight": 60000
+        },
+        "items": [
+          {
+            "elementId": "Input_Order",
+            "occurrenceKey": "Input_Order_di",
+            "object": {
+              "width": 36000,
+              "height": 50000
+            },
+            "label": {
+              "width": 30000,
+              "height": 14000
+            },
+            "anchor": {
+              "x": 180000,
+              "y": 260000,
+              "width": 100000,
+              "height": 80000
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": {
+          "pageBounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1200000,
+            "height": 640000
+          },
+          "body": {
+            "x": 30000,
+            "y": 0,
+            "width": 1070000,
+            "height": 150000
+          },
+          "items": [
+            {
+              "elementId": "Input_Order",
+              "occurrenceKey": "Input_Order_di",
+              "bounds": {
+                "x": 212000,
+                "y": 10000,
+                "width": 36000,
+                "height": 50000
+              },
+              "labelBounds": {
+                "x": 215000,
+                "y": 60000,
+                "width": 30000,
+                "height": 14000
+              }
+            }
+          ]
+        },
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

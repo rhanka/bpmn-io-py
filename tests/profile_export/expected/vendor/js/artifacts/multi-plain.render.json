@@ -1,0 +1,796 @@
+{
+  "renderVersion": "1",
+  "binding": {
+    "semanticRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+    "profileDigest": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "descriptorDigest": "8cb3013f19489ae7b9eee46d790186ef3c8c4b5df17a63f397de1e066ad74719",
+    "layoutDigest": "256605fa7960332a6c9398016fd4200ba3f33bdfc168a69886c93b79b22b4a89",
+    "themeId": "plain",
+    "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+    "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+    "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+    "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+    "payloadDigest": "13742b3bf0a3c943b5bcfec62e51a3cf04f03893dceb0258a9baedabe3701013"
+  },
+  "pages": [
+    {
+      "pageId": "Page_A",
+      "name": "Sheet A",
+      "order": 0,
+      "semanticRootId": "Process_A",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 800000,
+        "height": 400000
+      }
+    },
+    {
+      "pageId": "Page_B",
+      "name": "Sheet B",
+      "order": 1,
+      "semanticRootId": "Process_B",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 800000,
+        "height": 400000
+      }
+    }
+  ],
+  "occurrences": [
+    {
+      "pageId": "Page_A",
+      "occurrenceKey": "Assoc_A_di",
+      "semanticId": "Assoc_A",
+      "role": "content",
+      "bounds": {
+        "x": 250000,
+        "y": 165000,
+        "width": 0,
+        "height": 115000
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "open"
+        },
+        {
+          "name": "dash",
+          "value": "dashed"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "association-line",
+      "sourceOccurrence": {
+        "pageId": "Page_A",
+        "occurrenceKey": "StoreRef_A_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_A",
+        "occurrenceKey": "Task_A1_di"
+      },
+      "waypoints": [
+        {
+          "x": 250000,
+          "y": 280000
+        },
+        {
+          "x": 250000,
+          "y": 165000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_A",
+      "occurrenceKey": "Band_A_di",
+      "semanticId": "Band_A",
+      "role": "support",
+      "bounds": {
+        "x": 0,
+        "y": 270000,
+        "width": 700000,
+        "height": 100000
+      },
+      "label": {
+        "text": "References A",
+        "bounds": {
+          "x": 0,
+          "y": 270000,
+          "width": 30000,
+          "height": 100000
+        },
+        "lines": [
+          "References A"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#f4f4f4"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "band"
+    },
+    {
+      "pageId": "Page_A",
+      "occurrenceKey": "Pool_A_di",
+      "semanticId": "Pool_A",
+      "role": "support",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 700000,
+        "height": 250000
+      },
+      "label": {
+        "text": "Process A",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 30000,
+          "height": 250000
+        },
+        "lines": [
+          "Process A"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "pool"
+    },
+    {
+      "pageId": "Page_A",
+      "occurrenceKey": "StoreRef_A_di",
+      "semanticId": "StoreRef_A",
+      "role": "reference-band",
+      "bounds": {
+        "x": 225000,
+        "y": 280000,
+        "width": 50000,
+        "height": 50000
+      },
+      "label": {
+        "text": "Shared register",
+        "bounds": {
+          "x": 212000,
+          "y": 330000,
+          "width": 76000,
+          "height": 14000
+        },
+        "lines": [
+          "Shared register"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#f0f0ff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "store"
+    },
+    {
+      "pageId": "Page_A",
+      "occurrenceKey": "Task_A1_di",
+      "semanticId": "Task_A1",
+      "role": "content",
+      "bounds": {
+        "x": 200000,
+        "y": 85000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Prepare",
+        "bounds": {
+          "x": 200000,
+          "y": 85000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Prepare"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "task"
+    },
+    {
+      "pageId": "Page_B",
+      "occurrenceKey": "Assoc_B_di",
+      "semanticId": "Assoc_B",
+      "role": "content",
+      "bounds": {
+        "x": 450000,
+        "y": 165000,
+        "width": 0,
+        "height": 115000
+      },
+      "emittedType": "edge",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "open"
+        },
+        {
+          "name": "dash",
+          "value": "dashed"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "association-line",
+      "sourceOccurrence": {
+        "pageId": "Page_B",
+        "occurrenceKey": "StoreRef_B_di"
+      },
+      "targetOccurrence": {
+        "pageId": "Page_B",
+        "occurrenceKey": "Task_B1_di"
+      },
+      "waypoints": [
+        {
+          "x": 450000,
+          "y": 280000
+        },
+        {
+          "x": 450000,
+          "y": 165000
+        }
+      ]
+    },
+    {
+      "pageId": "Page_B",
+      "occurrenceKey": "Band_B_di",
+      "semanticId": "Band_B",
+      "role": "support",
+      "bounds": {
+        "x": 0,
+        "y": 270000,
+        "width": 700000,
+        "height": 100000
+      },
+      "label": {
+        "text": "References B",
+        "bounds": {
+          "x": 0,
+          "y": 270000,
+          "width": 30000,
+          "height": 100000
+        },
+        "lines": [
+          "References B"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#f4f4f4"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "band"
+    },
+    {
+      "pageId": "Page_B",
+      "occurrenceKey": "Pool_B_di",
+      "semanticId": "Pool_B",
+      "role": "support",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 700000,
+        "height": 250000
+      },
+      "label": {
+        "text": "Process B",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 30000,
+          "height": 250000
+        },
+        "lines": [
+          "Process B"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "pool"
+    },
+    {
+      "pageId": "Page_B",
+      "occurrenceKey": "StoreRef_B_di",
+      "semanticId": "StoreRef_B",
+      "role": "reference-band",
+      "bounds": {
+        "x": 425000,
+        "y": 280000,
+        "width": 50000,
+        "height": 50000
+      },
+      "label": {
+        "text": "Register copy",
+        "bounds": {
+          "x": 418000,
+          "y": 330000,
+          "width": 64000,
+          "height": 14000
+        },
+        "lines": [
+          "Register copy"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#f0f0ff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "store"
+    },
+    {
+      "pageId": "Page_B",
+      "occurrenceKey": "Task_B1_di",
+      "semanticId": "Task_B1",
+      "role": "content",
+      "bounds": {
+        "x": 400000,
+        "y": 85000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Review",
+        "bounds": {
+          "x": 400000,
+          "y": 85000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Review"
+        ]
+      },
+      "emittedType": "node",
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "glyphId": "task"
+    }
+  ],
+  "coverage": [
+    {
+      "semanticId": "Definitions_Multi",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Store_Shared",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Process_A",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Assoc_A",
+      "occurrences": [
+        {
+          "pageId": "Page_A",
+          "occurrenceKey": "Assoc_A_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Task_A1",
+      "occurrences": [
+        {
+          "pageId": "Page_A",
+          "occurrenceKey": "Task_A1_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "StoreRef_A",
+      "occurrences": [
+        {
+          "pageId": "Page_A",
+          "occurrenceKey": "StoreRef_A_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Process_B",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Assoc_B",
+      "occurrences": [
+        {
+          "pageId": "Page_B",
+          "occurrenceKey": "Assoc_B_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Task_B1",
+      "occurrences": [
+        {
+          "pageId": "Page_B",
+          "occurrenceKey": "Task_B1_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "StoreRef_B",
+      "occurrences": [
+        {
+          "pageId": "Page_B",
+          "occurrenceKey": "StoreRef_B_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Collab_A",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Pool_A",
+      "occurrences": [
+        {
+          "pageId": "Page_A",
+          "occurrenceKey": "Pool_A_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Band_A",
+      "occurrences": [
+        {
+          "pageId": "Page_A",
+          "occurrenceKey": "Band_A_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Collab_B",
+      "occurrences": [],
+      "disposition": "nonvisual"
+    },
+    {
+      "semanticId": "Pool_B",
+      "occurrences": [
+        {
+          "pageId": "Page_B",
+          "occurrenceKey": "Pool_B_di"
+        }
+      ],
+      "disposition": "rendered"
+    },
+    {
+      "semanticId": "Band_B",
+      "occurrences": [
+        {
+          "pageId": "Page_B",
+          "occurrenceKey": "Band_B_di"
+        }
+      ],
+      "disposition": "rendered"
+    }
+  ],
+  "diagnostics": []
+}

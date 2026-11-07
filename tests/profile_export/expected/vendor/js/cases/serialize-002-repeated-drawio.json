@@ -1,0 +1,335 @@
+{
+  "caseId": "serialize-002-repeated-drawio",
+  "operation": "serializePrepared",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "prepared",
+      "path": "lot4-layout-export/expectations/artifacts/repeated.prepared.json",
+      "sha256": "b760ea55f22a872b5e4b6ce2f9c40738b4aeb14950f898c2804bf4ae4421dea1"
+    },
+    {
+      "role": "writerOptions",
+      "json": {
+        "version": "lot4-2",
+        "encoding": "UTF-8",
+        "newline": "LF",
+        "indent": 0,
+        "compression": "none",
+        "attributeOrder": [
+          "id",
+          "value",
+          "style",
+          "parent",
+          "vertex",
+          "edge",
+          "source",
+          "target"
+        ],
+        "emptyElement": "short"
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/serialize-002-repeated-drawio.serialize-result.json",
+      "sha256": "dd3143b0be4d12c298a94927e08a47bccf6eadca79e32551713d93e4de732c05"
+    },
+    {
+      "role": "unsealed",
+      "json": [
+        {
+          "pointer": "/payload/bytes",
+          "reason": "Exact draw.io bytes are not fixed by DESIGN R3.3 (geometry unit conversion and style vocabulary of the target adapter, U-08; engine bytes OPEN-EXPORT-EVIDENCE, U-01): the bytes are checked by drawio-structure/1 and serialize-bytes/1, and every digest equals SHA-256 of the returned bytes."
+        },
+        {
+          "pointer": "/payload/digest",
+          "reason": "Exact draw.io bytes are not fixed by DESIGN R3.3 (geometry unit conversion and style vocabulary of the target adapter, U-08; engine bytes OPEN-EXPORT-EVIDENCE, U-01): the bytes are checked by drawio-structure/1 and serialize-bytes/1, and every digest equals SHA-256 of the returned bytes."
+        },
+        {
+          "pointer": "/report/artifacts/0/digest",
+          "reason": "Exact draw.io bytes are not fixed by DESIGN R3.3 (geometry unit conversion and style vocabulary of the target adapter, U-08; engine bytes OPEN-EXPORT-EVIDENCE, U-01): the bytes are checked by drawio-structure/1 and serialize-bytes/1, and every digest equals SHA-256 of the returned bytes."
+        }
+      ]
+    },
+    {
+      "role": "drawio-structure",
+      "json": {
+        "mxfile": {
+          "absentAttributes": [
+            "modified",
+            "etag"
+          ]
+        },
+        "diagrams": [
+          {
+            "id": "e_1",
+            "name": "Overview",
+            "cells": [
+              {
+                "id": "e_3",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Scanner"
+              },
+              {
+                "id": "e_4",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "References"
+              },
+              {
+                "id": "e_5",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Order shipped"
+              },
+              {
+                "id": "e_6",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Approved?"
+              },
+              {
+                "id": "e_7",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Order"
+              },
+              {
+                "id": "e_8",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "External"
+              },
+              {
+                "id": "e_9",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Work"
+              },
+              {
+                "id": "e_10",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Receipt"
+              },
+              {
+                "id": "e_11",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Main process"
+              },
+              {
+                "id": "e_12",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Order received"
+              },
+              {
+                "id": "e_13",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Policy archive"
+              },
+              {
+                "id": "e_14",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Check order"
+              },
+              {
+                "id": "e_15",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Fix order"
+              },
+              {
+                "id": "e_16",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Ship order"
+              },
+              {
+                "id": "e_24",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_3",
+                "target": "e_14"
+              },
+              {
+                "id": "e_25",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_13",
+                "target": "e_14"
+              },
+              {
+                "id": "e_26",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_15",
+                "target": "e_14"
+              },
+              {
+                "id": "e_27",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_14",
+                "target": "e_6"
+              },
+              {
+                "id": "e_28",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_6",
+                "target": "e_15"
+              },
+              {
+                "id": "e_29",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_16",
+                "target": "e_5"
+              },
+              {
+                "id": "e_30",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_12",
+                "target": "e_14"
+              },
+              {
+                "id": "e_31",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_6",
+                "target": "e_16"
+              },
+              {
+                "id": "e_32",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_7",
+                "target": "e_14"
+              },
+              {
+                "id": "e_33",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_16",
+                "target": "e_10"
+              },
+              {
+                "id": "e_36",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "NO"
+              },
+              {
+                "id": "e_37",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "YES"
+              }
+            ]
+          },
+          {
+            "id": "e_2",
+            "name": "Detail",
+            "cells": [
+              {
+                "id": "e_17",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "References"
+              },
+              {
+                "id": "e_18",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Order"
+              },
+              {
+                "id": "e_19",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "External"
+              },
+              {
+                "id": "e_20",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Work"
+              },
+              {
+                "id": "e_21",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Main process"
+              },
+              {
+                "id": "e_22",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Policy archive"
+              },
+              {
+                "id": "e_23",
+                "kind": "vertex",
+                "parent": "$layer",
+                "value": "Check order"
+              },
+              {
+                "id": "e_34",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_22",
+                "target": "e_23"
+              },
+              {
+                "id": "e_35",
+                "kind": "edge",
+                "parent": "$layer",
+                "source": "e_18",
+                "target": "e_23"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "role": "byte-invariants",
+      "json": {
+        "encoding": "UTF-8",
+        "byteOrderMark": false,
+        "newline": "LF",
+        "indent": 0,
+        "compression": "none",
+        "emptyElement": "short",
+        "attributeOrder": [
+          "id",
+          "value",
+          "style",
+          "parent",
+          "vertex",
+          "edge",
+          "source",
+          "target"
+        ],
+        "digestIsSha256OfBytes": true
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "serialize-bytes/1",
+    "drawio-structure/1",
+    "source-immutability/1"
+  ]
+}

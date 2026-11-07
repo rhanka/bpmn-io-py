@@ -1,0 +1,33 @@
+{
+  "caseId": "switch-005-missing-token",
+  "operation": "checkThemeSwitch",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "from",
+      "json": "plain"
+    },
+    {
+      "role": "to",
+      "json": "bare"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "refused",
+        "code": "theme-geometry-conflict",
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "refused:theme-geometry-conflict",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

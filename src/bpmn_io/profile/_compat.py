@@ -1,14 +1,17 @@
 """Compatibility decision (DESIGN R3.3 §3.3, binding §9.1).
 
-Applies the matrix rows in order with P1 source-dependent remedies and the
-P2 schema axis. Returns exactly one verdict: ``ok`` or a refusal with a code
-from the 20-code registry, plus the bare refusal for an otherwise exact but
-invalid envelope.
+Mirrors ``src/profile/compatibility.ts:38-76`` at ``fec4dae`` in its exact
+decision order (rows J1-J21). Applies the matrix rows in order with P1
+source-dependent remedies and the P2 schema axis. Returns exactly one
+verdict: ``ok`` or a refusal with a code from the 20-code registry, plus
+the bare refusal for an otherwise exact but invalid envelope.
 """
 
 from __future__ import annotations
 
 import re
+
+from bpmn_io.profile._c14n import jcs
 
 __all__ = ["check_compatibility"]
 
@@ -27,47 +30,9 @@ def _parse_version(value: object) -> tuple[int, int, int] | None:
     return (int(match.group(1)), int(match.group(2)), int(match.group(3)))
 
 
-def _identity_equal(first: object, second: object) -> bool:
-    """Compare two profile identities for exact equality."""
-    if first is None or second is None:
-        return first is None and second is None
-    if not isinstance(first, dict) or not isinstance(second, dict):
-        return False
-    keys = (
-        "mechanismVersion",
-        "schemaVersion",
-        "profile",
-        "version",
-        "sha256",
-        "base",
-        "descriptors",
-    )
-    for key in keys:
-        first_value = first.get(key)
-        second_value = second.get(key)
-        if key == "descriptors":
-            if _descriptors_equal(first_value, second_value) is False:
-                return False
-        elif first_value != second_value:
-            return False
-    return True
-
-
-def _descriptors_equal(first: object, second: object) -> bool:
-    """Compare two descriptor pin lists as multisets."""
-    if not isinstance(first, list) or not isinstance(second, list):
-        return first == second
-
-    def _sort_key(entry: object) -> tuple[str, str, str]:
-        if not isinstance(entry, dict):
-            return ("", "", "")
-        return (
-            str(entry.get("id", "")),
-            str(entry.get("version", "")),
-            str(entry.get("sha256", "")),
-        )
-
-    return sorted(first, key=_sort_key) == sorted(second, key=_sort_key)
+def _same(first: object, second: object) -> bool:
+    """Compare two values by canonical equality (``compatibility.ts:20``)."""
+    return jcs(first) == jcs(second)
 
 
 def _known_digest(value: object) -> bool:
@@ -110,7 +75,7 @@ def check_compatibility(  # noqa: C901, PLR0912, PLR0911, PLR0915, PLR0913
     required_assets: list[str] | None = None,
     envelope_valid: bool = True,
 ) -> dict[str, object]:
-    """Decide compatibility per DESIGN §3.3 in row order with P1/P2.
+    """Decide compatibility per ``compatibility.ts:38-76`` in row order J1-J21.
 
     Inputs carry the envelope ``document_version`` and the host, snapshot
     and document identities alongside the runtime, the injected and document
@@ -137,174 +102,129 @@ def check_compatibility(  # noqa: C901, PLR0912, PLR0911, PLR0915, PLR0913
         [str(a) for a in runtime_assets] if isinstance(runtime_assets, list) else []
     )
 
-    # Standalone XML (no envelope at all) previews as missing metadata.
-    if document_version is None and not isinstance(document_identity, dict):
-        return {"status": "refused", "code": "profile-metadata-missing"}
-
-    # Row 1: unknown envelope document version.
-    if document_version != "1":
+    # J1 (compatibility.ts:43): a present documentVersion other than "1".
+    if document_version is not None and document_version != "1":
         return {"status": "refused", "code": "document-version-unsupported"}
 
-    # Row 2: missing envelope/profile metadata.
-    if not isinstance(document_identity, dict) or not isinstance(injected_identity, dict):
+    # J2 (compatibility.ts:44): absent documentVersion or absent document.
+    if document_version is None or not isinstance(document_identity, dict):
         return {"status": "refused", "code": "profile-metadata-missing"}
 
-    # Row 3: conflicting host, snapshot and document identities.
-    present: list[dict[str, object]] = [
-        candidate
-        for candidate in (host_identity, snapshot_identity, document_identity)
-        if isinstance(candidate, dict)
-    ]
-    for i in range(len(present)):
-        for j in range(i + 1, len(present)):
-            if not _identity_equal(present[i], present[j]):
-                return {"status": "refused", "code": "profile-metadata-conflict"}
+    # Python-only guard (JS has no verdict: P is required and throws): N-A.
+    if not isinstance(injected_identity, dict):
+        return {"status": "refused", "code": "profile-metadata-missing"}
+
+    # J3 (compatibility.ts:46): host/snapshot conflicting with the document.
+    for candidate in (host_identity, snapshot_identity):
+        if candidate is not None and not _same(candidate, document_identity):
+            return {"status": "refused", "code": "profile-metadata-conflict"}
 
     injected_mechanism = injected_identity.get("mechanismVersion")
     injected_schema = injected_identity.get("schemaVersion")
     document_mechanism = document_identity.get("mechanismVersion")
     document_schema = document_identity.get("schemaVersion")
 
-    # Row 4 (P2): injected P schema unsupported by R.
+    # J4 (compatibility.ts:47): injected schema unsupported by R.
     if not isinstance(injected_schema, str) or injected_schema not in runtime_schemas:
         return {"status": "refused", "code": "profile-schema-version"}
 
-    # Row 5: injected P mechanism unsupported by R.
+    # J5 (compatibility.ts:48): injected mechanism unsupported by R.
     if not isinstance(injected_mechanism, str) or injected_mechanism not in runtime_mechanisms:
         return {"status": "refused", "code": "mechanism-version-unsupported"}
 
-    # Row 6: document D mechanism unsupported by R.
+    # J6 (compatibility.ts:49): document mechanism unsupported by R.
     if not isinstance(document_mechanism, str) or document_mechanism not in runtime_mechanisms:
         return {"status": "refused", "code": "document-mechanism-unsupported"}
 
-    # Row 7 (P2): document D schema unsupported by R.
+    # J7 (compatibility.ts:50): document schema unsupported by R.
     if not isinstance(document_schema, str) or document_schema not in runtime_schemas:
         return {"status": "refused", "code": "document-schema-unsupported"}
 
-    source_ok = _source_ok(source_availability)
-    doc_known = _doc_known(document_identity)
+    target = _parse_version(injected_identity.get("version"))
+    source = _parse_version(document_identity.get("version"))
+    digests_known = _known_digest(injected_identity.get("sha256")) and _known_digest(
+        document_identity.get("sha256")
+    )
+    source_available = (
+        _source_ok(source_availability)
+        and target is not None
+        and source is not None
+        and digests_known
+    )
 
-    def _p1() -> dict[str, object]:
+    def _remedy(code: str) -> dict[str, object]:
         """Yield the P1 remedy override for source-dependent rows."""
+        if source_available:
+            return {"status": "refused", "code": code}
         return {"status": "refused", "code": "profile-source-unavailable"}
 
-    # Row 8: supported unequal mechanisms (source-dependent, P1).
+    # J8 (compatibility.ts:58): supported unequal mechanisms (P1).
     if injected_mechanism != document_mechanism:
-        if not source_ok or not doc_known:
-            return _p1()
-        return {"status": "refused", "code": "mechanism-migration-required"}
+        return _remedy("mechanism-migration-required")
 
-    # Row 9 (P2): supported unequal schemas (source-dependent, P1).
+    # J9 (compatibility.ts:59): supported unequal schemas (P1).
     if injected_schema != document_schema:
-        if not source_ok or not doc_known:
-            return _p1()
-        return {"status": "refused", "code": "profile-schema-migration-required"}
+        return _remedy("profile-schema-migration-required")
 
-    # Row 10: missing capability/asset (ordered, never P1-overridden).
+    # J10 (compatibility.ts:60): missing capability (never P1).
     for name in required_caps:
         if name not in runtime_caps:
             return {"status": "refused", "code": "profile-capability"}
+    # J11 (compatibility.ts:61): missing asset (never P1).
     for name in required_ass:
         if name not in runtime_ass:
             return {"status": "refused", "code": "profile-resource-missing"}
 
-    # Row 11: base/descriptor pins differ (source-dependent, P1).
-    injected_base = injected_identity.get("base")
-    document_base = document_identity.get("base")
-    if injected_base != document_base:
-        if not source_ok or not doc_known:
-            return _p1()
-        return {"status": "refused", "code": "base-mismatch"}
-    if not _descriptors_equal(
-        injected_identity.get("descriptors"), document_identity.get("descriptors")
-    ):
-        if not source_ok or not doc_known:
-            return _p1()
-        return {"status": "refused", "code": "descriptor-mismatch"}
+    # J12 (compatibility.ts:62): base mismatch (P1, canonical equality).
+    if not _same(injected_identity.get("base"), document_identity.get("base")):
+        return _remedy("base-mismatch")
 
-    # Row 12: business IDs/majors differ (source-dependent, P1).
+    # J13 (compatibility.ts:63): descriptor mismatch (P1, canonical equality).
+    if not _same(injected_identity.get("descriptors"), document_identity.get("descriptors")):
+        return _remedy("descriptor-mismatch")
+
+    # J14 (compatibility.ts:64): either version unknown (unconditional).
+    if target is None or source is None:
+        return {"status": "refused", "code": "profile-source-unavailable"}
+
+    # J15 (compatibility.ts:65): ID or major differ (P1).
     injected_profile = injected_identity.get("profile")
     document_profile = document_identity.get("profile")
-    injected_version = injected_identity.get("version")
-    document_version_value = document_identity.get("version")
-    injected_parsed = _parse_version(injected_version)
-    document_parsed = _parse_version(document_version_value)
-    if injected_profile != document_profile:
-        if not source_ok or not doc_known:
-            return _p1()
-        return {"status": "refused", "code": "profile-major-mismatch"}
-    if (
-        injected_parsed is not None
-        and document_parsed is not None
-        and injected_parsed[0] != document_parsed[0]
-    ):
-        if not source_ok or not doc_known:
-            return _p1()
-        return {"status": "refused", "code": "profile-major-mismatch"}
-    if injected_parsed is None or document_parsed is None:
-        # Unparseable business versions with equal IDs fall through to the
-        # source row when the document side is unknown; otherwise treat as a
-        # major mismatch only when the source is available and known.
-        if injected_profile == document_profile and (not source_ok or not doc_known):
-            return _p1()
-        if injected_profile == document_profile and (
-            injected_parsed is None or document_parsed is None
-        ):
-            # When both sides carry the same ID but versions cannot be ordered
-            # and the source is available, keep the ordered major diagnostic.
-            if source_ok and doc_known:
-                return {"status": "refused", "code": "profile-major-mismatch"}
-            return _p1()
+    if injected_profile != document_profile or target[0] != source[0]:
+        return _remedy("profile-major-mismatch")
 
-    # Row 13: same ID/version with known unequal digests (never P1).
+    # J16 (compatibility.ts:66): same ID/version with known unequal digests.
     injected_digest = injected_identity.get("sha256")
     document_digest = document_identity.get("sha256")
+    injected_version = injected_identity.get("version")
+    document_version_value = document_identity.get("version")
     if (
-        injected_profile == document_profile
-        and injected_version == document_version_value
-        and isinstance(injected_digest, str)
-        and isinstance(document_digest, str)
+        injected_version == document_version_value
+        and digests_known
         and injected_digest != document_digest
-        and _known_digest(injected_digest)
-        and _known_digest(document_digest)
     ):
         return {"status": "refused", "code": "profile-digest-mismatch"}
 
-    # Rows 14-17: patch/minor steps (source-dependent, P1).
-    if (
-        injected_profile == document_profile
-        and injected_parsed is not None
-        and document_parsed is not None
-        and injected_parsed != document_parsed
-        and injected_parsed[0] == document_parsed[0]
-    ):
-        if not source_ok or not doc_known:
-            return _p1()
-        injected_major, injected_minor, injected_patch = injected_parsed
-        document_major, document_minor, document_patch = document_parsed
-        _ = (injected_major, document_major)
-        if injected_minor == document_minor:
-            if injected_patch > document_patch:
-                return {
-                    "status": "refused",
-                    "code": "profile-patch-migration-required",
-                }
-            return {
-                "status": "refused",
-                "code": "profile-patch-downgrade-required",
-            }
-        if injected_minor > document_minor:
-            return {
-                "status": "refused",
-                "code": "profile-minor-migration-required",
-            }
-        return {"status": "refused", "code": "profile-minor-downgrade-required"}
-
-    # Row 18: unknown version/digest or unavailable source.
-    if not source_ok or not doc_known:
+    # J17 (compatibility.ts:67): source not fully known and available.
+    if not source_available:
         return {"status": "refused", "code": "profile-source-unavailable"}
 
-    # Row 19: exact and valid accepts; exact but invalid stays bare.
-    if not envelope_valid:
+    # J18 (compatibility.ts:68-71): patch steps (minors equal).
+    if target[1] == source[1]:
+        if target[2] > source[2]:
+            return {"status": "refused", "code": "profile-patch-migration-required"}
+        if target[2] < source[2]:
+            return {"status": "refused", "code": "profile-patch-downgrade-required"}
+
+    # J19 (compatibility.ts:72-73): minor steps.
+    if target[1] > source[1]:
+        return {"status": "refused", "code": "profile-minor-migration-required"}
+    if target[1] < source[1]:
+        return {"status": "refused", "code": "profile-minor-downgrade-required"}
+
+    # J20 (compatibility.ts:74): exact and valid accepts, else bare refusal.
+    if not envelope_valid or not _same(injected_identity, document_identity):
         return {"status": "refused"}
+
+    # J21 (compatibility.ts:75): otherwise ok.
     return {"status": "ok"}

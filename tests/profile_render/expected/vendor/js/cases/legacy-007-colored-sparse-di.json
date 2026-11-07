@@ -1,0 +1,74 @@
+{
+  "caseId": "legacy-007-colored-sparse-di",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/main.layout.json",
+      "sha256": "377e069bbaf287e4addb152628c4a4537bca331059eaae7002106a0036d5b9d1"
+    },
+    {
+      "role": "themeId",
+      "json": "legacy-colored"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Task_Ship_di",
+            "tokens": [
+              {
+                "name": "fill",
+                "value": "#ffe0e0"
+              }
+            ]
+          }
+        ],
+        "bioc": [
+          {
+            "pageId": "Page_Main",
+            "occurrenceKey": "Task_Fix_di",
+            "tokens": [
+              {
+                "name": "stroke",
+                "value": "#0000aa"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/main-legacy-colored.resolve-result.json",
+      "sha256": "1963931af11b1fb9e4f3f9a5be67e77279547ea108893e1e74c72b05bc610ac0"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

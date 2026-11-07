@@ -1,0 +1,167 @@
+{
+  "caseId": "decision-005-case-operator",
+  "operation": "evaluateValue",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "values",
+      "json": [
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "istanbul"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "İzmir"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "İzmir"
+          },
+          "mode": "lower",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "ΟΔΟΣ Σ"
+          },
+          "mode": "lower",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "ΟΣΑ"
+          },
+          "mode": "lower",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "σοφός"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "ɤ-shape"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "straße ﬆop"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "ŉ ǅ"
+          },
+          "mode": "upper",
+          "unicode": "15.0.0"
+        },
+        {
+          "op": "case",
+          "value": {
+            "op": "literal",
+            "value": "ŉ ǅ"
+          },
+          "mode": "lower",
+          "unicode": "15.0.0"
+        }
+      ]
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "output",
+      "json": [
+        {
+          "status": "ok",
+          "payload": "ISTANBUL",
+          "diagnostics": []
+        },
+        {
+          "status": "ok",
+          "payload": "İZMIR",
+          "diagnostics": []
+        },
+        {
+          "status": "ok",
+          "payload": "i̇zmir",
+          "diagnostics": []
+        },
+        {
+          "status": "ok",
+          "payload": "οδος σ",
+          "diagnostics": []
+        },
+        {
+          "status": "ok",
+          "payload": "οσα",
+          "diagnostics": []
+        },
+        {
+          "status": "ok",
+          "payload": "ΣΟΦΌΣ",
+          "diagnostics": []
+        },
+        {
+          "status": "ok",
+          "payload": "ɤ-SHAPE",
+          "diagnostics": []
+        },
+        {
+          "status": "ok",
+          "payload": "STRASSE STOP",
+          "diagnostics": []
+        },
+        {
+          "status": "ok",
+          "payload": "ʼN Ǆ",
+          "diagnostics": []
+        },
+        {
+          "status": "ok",
+          "payload": "ŉ ǆ",
+          "diagnostics": []
+        }
+      ]
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "seam-exact/1"
+  ]
+}

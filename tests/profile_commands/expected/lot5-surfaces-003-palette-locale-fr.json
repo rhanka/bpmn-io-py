@@ -1,0 +1,269 @@
+{
+  "case": "lot5-surfaces-003-palette-locale-fr",
+  "clause": "DESIGN R3.3 \u00a78.3 L649; \u00a78.3 L659; \u00a710.1 L737",
+  "derivation": "Vendored unchanged from the JS lot-5 seal (seal.json SHA-256 1e32756cf2f533568c59abcd90007e1da26d788db90816725ab18b586c7576e4), case file cases/surfaces-003-palette-locale-fr.json SHA-256 7a1cc2f638e83096a90e0ede15ecaa36028d78c62da8eff6f2124ffc96006483; values owned by that seal (harmonization \u00a73; block-B parity sync PS-H23). No value was recomputed or obtained from an implementation. Expected: the JS twin artifact: the Python headless outputs of the same command or query input. JS discrimination: Falls back to the stable message key, or to an empty label, when the exact locale has no text, instead of policies.localeFallback (en); or ignores existing fr texts. Section-1 decisions checked against the sealed values (PS-08, PS-09, PS-10, PS-11, PS-14, PS-16, PS-25, PS-28, PS-29): none changes a value of this case.",
+  "author": "spec-seal",
+  "operation": "listEntries",
+  "profile": {
+    "vendored": "vendor/js/lot5-ui/expectations/fixtures/ui-neutral-profile.json",
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
+  },
+  "input": {
+    "source": {
+      "vendored": "vendor/js/lot5-ui/expectations/cases/surfaces-003-palette-locale-fr.json",
+      "sha256": "7a1cc2f638e83096a90e0ede15ecaa36028d78c62da8eff6f2124ffc96006483"
+    },
+    "pathBase": "vendor/js/lot5-ui/expectations/",
+    "inputArtifacts": [
+      {
+        "path": "fixtures/documents/basic.snapshot.json",
+        "role": "snapshot",
+        "sha256": "e72fb51afb484918ca2c3aef4eff2a84502cbbd3c6e7aafd1a2f9baa8c8e7ce9"
+      },
+      {
+        "json": [
+          {
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+            "locale": "fr",
+            "subject": "Proc_main",
+            "surface": "palette"
+          },
+          {
+            "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+            "locale": "fr",
+            "subject": "Proc_main",
+            "surface": "paste"
+          }
+        ],
+        "role": "queries"
+      }
+    ]
+  },
+  "expected": {
+    "result": [
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "aid",
+                    "theme": "plain"
+                  },
+                  "id": "aid-create",
+                  "label": {
+                    "key": "entry.aid-create",
+                    "text": "Aid note"
+                  },
+                  "order": 0,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "notes"
+            },
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "item",
+                    "theme": "plain"
+                  },
+                  "id": "item-create",
+                  "label": {
+                    "key": "entry.item-create",
+                    "text": "Item"
+                  },
+                  "order": 10,
+                  "upstreamEntries": [
+                    "create.data-object"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "reference",
+                    "theme": "plain"
+                  },
+                  "id": "reference-create",
+                  "label": {
+                    "key": "entry.reference-create",
+                    "text": "Document de r\u00e9f\u00e9rence"
+                  },
+                  "order": 10,
+                  "upstreamEntries": [
+                    "create.data-store"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "input",
+                    "theme": "plain"
+                  },
+                  "id": "input-create",
+                  "label": {
+                    "key": "entry.input-create",
+                    "text": "Process input"
+                  },
+                  "order": 20,
+                  "upstreamEntries": []
+                },
+                {
+                  "icon": {
+                    "glyph": "input",
+                    "theme": "plain"
+                  },
+                  "id": "input-loose-create",
+                  "label": {
+                    "key": "entry.input-loose-create",
+                    "text": "Unassigned input"
+                  },
+                  "order": 30,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "data"
+            },
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "start",
+                    "theme": "plain"
+                  },
+                  "id": "start-create",
+                  "label": {
+                    "key": "entry.start-create",
+                    "text": "Start"
+                  },
+                  "order": 0,
+                  "upstreamEntries": [
+                    "create.start-event"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "end",
+                    "theme": "plain"
+                  },
+                  "id": "end-create",
+                  "label": {
+                    "key": "entry.end-create",
+                    "text": "End"
+                  },
+                  "order": 9,
+                  "upstreamEntries": [
+                    "create.end-event"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "user-task",
+                    "theme": "plain"
+                  },
+                  "id": "UserTask-create",
+                  "label": {
+                    "key": "entry.UserTask-create",
+                    "text": "User task"
+                  },
+                  "order": 10,
+                  "upstreamEntries": []
+                },
+                {
+                  "icon": {
+                    "glyph": "task",
+                    "theme": "plain"
+                  },
+                  "id": "task-create",
+                  "label": {
+                    "key": "entry.task-create",
+                    "text": "T\u00e2che"
+                  },
+                  "order": 10,
+                  "upstreamEntries": [
+                    "create.task"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "gateway",
+                    "theme": "plain"
+                  },
+                  "id": "gateway-create",
+                  "label": {
+                    "key": "entry.gateway-create",
+                    "text": "Decision"
+                  },
+                  "order": 20,
+                  "upstreamEntries": [
+                    "create.exclusive-gateway"
+                  ]
+                },
+                {
+                  "icon": {
+                    "glyph": "call",
+                    "theme": "plain"
+                  },
+                  "id": "call-create",
+                  "label": {
+                    "key": "entry.call-create",
+                    "text": "Call"
+                  },
+                  "order": 40,
+                  "upstreamEntries": []
+                },
+                {
+                  "icon": {
+                    "glyph": "call",
+                    "theme": "plain"
+                  },
+                  "id": "external-call-create",
+                  "label": {
+                    "key": "entry.external-call-create",
+                    "text": "External call"
+                  },
+                  "order": 50,
+                  "upstreamEntries": []
+                }
+              ],
+              "group": "flow"
+            }
+          ],
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "surface": "palette"
+        },
+        "status": "ok"
+      },
+      {
+        "diagnostics": [],
+        "payload": {
+          "groups": [
+            {
+              "entries": [
+                {
+                  "icon": {
+                    "glyph": "process",
+                    "theme": "plain"
+                  },
+                  "id": "paste-elements",
+                  "label": {
+                    "key": "entry.paste-elements",
+                    "text": "Paste"
+                  },
+                  "order": 20,
+                  "upstreamEntries": [
+                    "paste"
+                  ]
+                }
+              ],
+              "group": "edit"
+            }
+          ],
+          "revision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "surface": "paste"
+        },
+        "status": "ok"
+      }
+    ]
+  }
+}

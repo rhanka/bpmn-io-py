@@ -1,0 +1,61 @@
+{
+  "caseId": "serialize-004-determinism",
+  "operation": "serializePrepared-sequence",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "prepared-a",
+      "path": "lot4-layout-export/expectations/artifacts/main.prepared.json",
+      "sha256": "08662cbd3cdc832b5e1b6b013cb83fd1249c9cd37e79df504691da16a24d132c"
+    },
+    {
+      "role": "prepared-b",
+      "path": "lot4-layout-export/expectations/artifacts/multi.prepared.json",
+      "sha256": "11fdc9605955cec0a7763da8eb43e0211bd793523e0cf1a9875dd5f0e47b98a1"
+    },
+    {
+      "role": "writerOptions",
+      "json": {
+        "version": "lot4-2",
+        "encoding": "UTF-8",
+        "newline": "LF",
+        "indent": 0,
+        "compression": "none",
+        "attributeOrder": [
+          "id",
+          "value",
+          "style",
+          "parent",
+          "vertex",
+          "edge",
+          "source",
+          "target"
+        ],
+        "emptyElement": "short"
+      }
+    },
+    {
+      "role": "order",
+      "json": [
+        "a",
+        "a",
+        "b",
+        "a"
+      ]
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "output",
+      "json": {
+        "sameBytesForSameInput": true,
+        "abaUnchanged": true
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "determinism/1"
+  ]
+}

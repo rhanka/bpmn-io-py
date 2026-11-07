@@ -1,0 +1,419 @@
+{
+  "case": "render.layout.band-stripe-width",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "band-stripe role with a band-stripe glyph: leading rectangle min(stripeWidth, region.width), full height",
+  "derivation": "Same as render.layout.grid-side-stripe with the stripe glyph replaced by a band-stripe template (stripeWidth 20000): stripe (0,0,min(20000,500016),100000); everything else unchanged. The profile is re-pinned to the lot-4 extension packages neutral-render-descriptors/1 and neutral-render-base/1 (tests/profile_render/expected/artifacts/), which admit every native type of the tree.",
+  "operation": "computeLayout",
+  "input": {
+    "profile": {
+      "base": "neutral-grid-profile.json",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/base",
+          "value": {
+            "id": "neutral-render-base/1",
+            "version": "fixture-1",
+            "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/descriptors",
+          "value": [
+            {
+              "id": "neutral-render-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+            }
+          ]
+        },
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "stripe",
+            "kind": "template",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": [],
+            "template": "band-stripe",
+            "parameters": [
+              {
+                "name": "stripeWidth",
+                "value": 20000
+              }
+            ]
+          }
+        },
+        {
+          "op": "replace",
+          "path": "/themes/0/syntheticOccurrences/0/glyph",
+          "value": "stripe"
+        }
+      ]
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_1",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "isExecutable": true,
+          "laneSets": [
+            {
+              "$type": "bpmn:LaneSet",
+              "id": "LaneSet_1",
+              "lanes": [
+                {
+                  "$type": "bpmn:Lane",
+                  "id": "Lane_side",
+                  "name": "side"
+                }
+              ]
+            }
+          ],
+          "flowElements": [
+            {
+              "$type": "bpmn:ServiceTask",
+              "id": "Task_B",
+              "name": "Ready"
+            },
+            {
+              "$type": "bpmn:ServiceTask",
+              "id": "Task_A",
+              "name": "Check"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:Association",
+              "id": "Z-consumer",
+              "sourceRef": "Task_A",
+              "targetRef": "Task_B",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "Y-consumer",
+              "sourceRef": "Task_A",
+              "targetRef": "Task_B",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:Association",
+              "id": "A-producer",
+              "sourceRef": "Task_B",
+              "targetRef": "Task_A",
+              "associationDirection": "One"
+            },
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_1",
+              "text": "[Note] stra\u00dfe"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [
+      {
+        "ownerId": "Process_1",
+        "role": "side",
+        "targetId": "Lane_side"
+      }
+    ],
+    "placements": [
+      {
+        "elementId": "Task_A",
+        "ownerProcessId": "Process_1",
+        "regionKey": "side",
+        "relatedAssociationIds": [
+          "A-producer",
+          "Y-consumer",
+          "Z-consumer"
+        ],
+        "anchorAssociationId": "Y-consumer"
+      },
+      {
+        "elementId": "Task_B",
+        "ownerProcessId": "Process_1",
+        "regionKey": "side",
+        "relatedAssociationIds": [
+          "A-producer",
+          "Y-consumer",
+          "Z-consumer"
+        ],
+        "anchorAssociationId": "A-producer"
+      }
+    ],
+    "diagrams": [
+      {
+        "$type": "bpmndi:BPMNDiagram",
+        "id": "P-main",
+        "name": "Main",
+        "plane": {
+          "$type": "bpmndi:BPMNPlane",
+          "id": "P-main-plane",
+          "bpmnElement": "Process_1",
+          "planeElement": [
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Lane_side_di",
+              "bpmnElement": "Lane_side",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 0,
+                "y": 0,
+                "width": 500,
+                "height": 100
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Task_A_di",
+              "bpmnElement": "Task_A",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 100,
+                "y": 200,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Task_B_di",
+              "bpmnElement": "Task_B",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 300,
+                "y": 200,
+                "width": 100,
+                "height": 80
+              }
+            },
+            {
+              "$type": "bpmndi:BPMNShape",
+              "id": "Note_1_di",
+              "bpmnElement": "Note_1",
+              "bounds": {
+                "$type": "dc:Bounds",
+                "x": 100,
+                "y": 350,
+                "width": 150,
+                "height": 40
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "computeLayout",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-grid/1",
+      "version": "2.0.0",
+      "sha256": "933b03c2a9582db8797dee7219575da5d689900e7b4e494c9f28445f4257fe8b",
+      "base": {
+        "id": "neutral-render-base/1",
+        "version": "fixture-1",
+        "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-render-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+        }
+      ]
+    },
+    "baseRevision": "46b353ec5859cefeeb1a890b67d1c2b90c09674cf54e356f5e857479e7c2d332",
+    "revision": "46b353ec5859cefeeb1a890b67d1c2b90c09674cf54e356f5e857479e7c2d332",
+    "report": {
+      "reportVersion": "2",
+      "operation": "computeLayout",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "933b03c2a9582db8797dee7219575da5d689900e7b4e494c9f28445f4257fe8b",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-grid/1",
+        "version": "2.0.0",
+        "sha256": "933b03c2a9582db8797dee7219575da5d689900e7b4e494c9f28445f4257fe8b",
+        "base": {
+          "id": "neutral-render-base/1",
+          "version": "fixture-1",
+          "sha256": "8cf37dbe242ea7a57aa51803bc4e2d73b0841ef00b81ac778781e5f4d4c0b10c"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-render-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e30d6a3942741456a638e4dd291f1d3d90f65df89be3c2595a20e6b8e3c960e9"
+          }
+        ]
+      },
+      "inputRevision": "46b353ec5859cefeeb1a890b67d1c2b90c09674cf54e356f5e857479e7c2d332",
+      "outputRevision": "46b353ec5859cefeeb1a890b67d1c2b90c09674cf54e356f5e857479e7c2d332",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    },
+    "payload": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "P-main",
+          "name": "Main",
+          "order": 0,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 500016,
+            "height": 390000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Lane_side_di",
+          "semanticId": "Lane_side",
+          "role": "side",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 500016,
+            "height": 100000
+          }
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Note_1_di",
+          "semanticId": "Note_1",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 350000,
+            "width": 150000,
+            "height": 40000
+          },
+          "label": {
+            "text": "STRASSE",
+            "bounds": {
+              "x": 100000,
+              "y": 350000,
+              "width": 150000,
+              "height": 40000
+            },
+            "lines": [
+              "STRASSE"
+            ]
+          }
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Task_A_di",
+          "semanticId": "Task_A",
+          "role": "side",
+          "bounds": {
+            "x": 300000,
+            "y": 8,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Check",
+            "bounds": {
+              "x": 348500,
+              "y": 80008,
+              "width": 3000,
+              "height": 1000
+            },
+            "lines": [
+              "Check"
+            ]
+          }
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "Task_B_di",
+          "semanticId": "Task_B",
+          "role": "side",
+          "bounds": {
+            "x": 400008,
+            "y": 8,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Ready",
+            "bounds": {
+              "x": 448508,
+              "y": 80008,
+              "width": 3000,
+              "height": 1000
+            },
+            "lines": [
+              "Ready"
+            ]
+          }
+        },
+        {
+          "pageId": "P-main",
+          "occurrenceKey": "[\"side-stripe\",\"Process_1\",\"P-main\"]",
+          "role": "band-stripe",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 20000,
+            "height": 100000
+          },
+          "label": {
+            "text": "Auxiliary",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 20000,
+              "height": 100000
+            },
+            "lines": [
+              "Auxiliary"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "author": "spec-seal"
+}

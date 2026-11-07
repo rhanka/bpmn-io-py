@@ -1,0 +1,26 @@
+{
+  "case": "render.ticks.large-and-integral",
+  "clause": "DESIGN R3.3 \u00a73.1 Canonicalization (rounding, ticks)",
+  "witness": "integral DI values are exact and large values keep exact ties",
+  "derivation": "36 -> 36000; 1234.5675 -> 1234567.5 -> 1234568; 98765.4325 -> 98765432.5 -> 98765432; -12.0005 -> -12000.5 -> -12000.",
+  "operation": "layoutTicks",
+  "input": {
+    "points": [
+      36,
+      1234.5675,
+      98765.4325,
+      -12.0005
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      36000,
+      1234568,
+      98765432,
+      -12000
+    ],
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

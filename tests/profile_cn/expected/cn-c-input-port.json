@@ -1,0 +1,345 @@
+{
+  "case": "cn-c-input-port",
+  "clause": "DESIGN R3.3 §7.1 Completion C (Ports); §13 OPEN-IO; §16 item 8",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "cn-c",
+  "derivation": "DIA_valid's activity-owned Property target is preserved byte for byte. DIA_missing lacks its required target port: under the base's explicit code authority C creates one Property in Task_P.properties keyed by the association id, stable-id(Task_P, input-port, DIA_missing), and assigns it. No first-port shortcut: Prop_valid is not reused. The cn-c topology recipe also gives the flowless Task_P empty incoming/outgoing arrays (absent -> [], H F1). Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_port",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_P",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:DataObject",
+                "id": "DO_P"
+              },
+              {
+                "$type": "bpmn:DataObjectReference",
+                "id": "Ref_P",
+                "dataObjectRef": "DO_P"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_P",
+                "name": "Use input",
+                "properties": [
+                  {
+                    "$type": "bpmn:Property",
+                    "id": "Prop_valid"
+                  }
+                ],
+                "dataInputAssociations": [
+                  {
+                    "$type": "bpmn:DataInputAssociation",
+                    "id": "DIA_valid",
+                    "sourceRef": [
+                      "Ref_P"
+                    ],
+                    "targetRef": "Prop_valid"
+                  },
+                  {
+                    "$type": "bpmn:DataInputAssociation",
+                    "id": "DIA_missing",
+                    "sourceRef": [
+                      "Ref_P"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "65d0438eb9fea7b3ad6a276170531944dff3e6238716d47b6d57426a81fc1745"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-c/1",
+      "version": "1.0.0",
+      "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "65d0438eb9fea7b3ad6a276170531944dff3e6238716d47b6d57426a81fc1745",
+    "revision": "eefd8fef4c9413a21bbc2803d05f78845b8b62108b09ee3e35fe40e60cceaec1",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [
+        {
+          "code": "complete/create",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-input-port",
+          "messageKey": "complete.create",
+          "disposition": "corrected",
+          "source": {
+            "domain": "none",
+            "pointer": null,
+            "targetId": null,
+            "provenance": "generated"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/properties/1",
+            "targetId": "g_33a62e2459f74e0b366a08b825b47a9480b0560f5a67ea8847749f0661a831de",
+            "provenance": "generated"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": {
+            "$type": "bpmn:Property",
+            "id": "g_33a62e2459f74e0b366a08b825b47a9480b0560f5a67ea8847749f0661a831de"
+          },
+          "property": "properties"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-input-port",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/dataInputAssociations/1/targetRef",
+            "targetId": "DIA_missing",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/dataInputAssociations/1/targetRef",
+            "targetId": "DIA_missing",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": "g_33a62e2459f74e0b366a08b825b47a9480b0560f5a67ea8847749f0661a831de",
+          "property": "targetRef"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
+            "targetId": "Task_P",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/incoming",
+            "targetId": "Task_P",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "incoming"
+        },
+        {
+          "code": "complete/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "complete",
+          "ruleId": "complete-task-topology",
+          "messageKey": "complete.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
+            "targetId": "Task_P",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/2/outgoing",
+            "targetId": "Task_P",
+            "provenance": "exact"
+          },
+          "beforePresent": false,
+          "afterPresent": true,
+          "after": [],
+          "property": "outgoing"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "65d0438eb9fea7b3ad6a276170531944dff3e6238716d47b6d57426a81fc1745",
+      "outputRevision": "eefd8fef4c9413a21bbc2803d05f78845b8b62108b09ee3e35fe40e60cceaec1"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_port",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_P",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:DataObject",
+                "id": "DO_P"
+              },
+              {
+                "$type": "bpmn:DataObjectReference",
+                "id": "Ref_P",
+                "dataObjectRef": "DO_P"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_P",
+                "name": "Use input",
+                "properties": [
+                  {
+                    "$type": "bpmn:Property",
+                    "id": "Prop_valid"
+                  },
+                  {
+                    "$type": "bpmn:Property",
+                    "id": "g_33a62e2459f74e0b366a08b825b47a9480b0560f5a67ea8847749f0661a831de"
+                  }
+                ],
+                "dataInputAssociations": [
+                  {
+                    "$type": "bpmn:DataInputAssociation",
+                    "id": "DIA_valid",
+                    "sourceRef": [
+                      "Ref_P"
+                    ],
+                    "targetRef": "Prop_valid"
+                  },
+                  {
+                    "$type": "bpmn:DataInputAssociation",
+                    "id": "DIA_missing",
+                    "sourceRef": [
+                      "Ref_P"
+                    ],
+                    "targetRef": "g_33a62e2459f74e0b366a08b825b47a9480b0560f5a67ea8847749f0661a831de"
+                  }
+                ],
+                "incoming": [],
+                "outgoing": []
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "eefd8fef4c9413a21bbc2803d05f78845b8b62108b09ee3e35fe40e60cceaec1"
+    }
+  },
+  "fixedPoint": true
+}

@@ -1,0 +1,108 @@
+{
+  "case": "cn-c-second-pass-refused",
+  "clause": "DESIGN R3.3 §2.4 bounded second evaluation (failure is normalization-not-fixed); §7.3 rollback",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "cn-c-second-pass",
+  "derivation": "mark-task-name sets name := 'marked' (idempotent) and refuse-marked-task refuses fixture-second-pass for a Task named 'marked'. First pass: every plan reads the phase-start snapshot (name 'A'), so the refuse recipe has no candidate and the pass succeeds with name 'marked' plus the empty topology arrays. The bounded second evaluation changes nothing but reaches the refuse step: the second run does not return the identical result, so the fixed-point proof fails with normalization-not-fixed (DESIGN §2.4), never with the second-pass code, and no candidate is exposed. Refusal record (H B2, B3, B4): no candidate; diagnostics and report entries are empty (no lint stage ran); the input identity and revision are echoed and repeated as report sourceIdentity and inputRevision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c-second-pass/1",
+        "version": "1.0.0",
+        "sha256": "bf0fe1d3b0afaebaa87be46b2d2a3cd0855c7be0091336227718596a024b2e07",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_sp",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_1",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_1",
+                "name": "A"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "b0ccd9d9b150074e611b9e1504d04997489c9864e29a3fc76506ca64e6837a6d"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "complete",
+    "code": "normalization-not-fixed",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c-second-pass/1",
+        "version": "1.0.0",
+        "sha256": "bf0fe1d3b0afaebaa87be46b2d2a3cd0855c7be0091336227718596a024b2e07",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "b0ccd9d9b150074e611b9e1504d04997489c9864e29a3fc76506ca64e6837a6d"
+    },
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-c-second-pass/1",
+      "version": "1.0.0",
+      "sha256": "bf0fe1d3b0afaebaa87be46b2d2a3cd0855c7be0091336227718596a024b2e07",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "b0ccd9d9b150074e611b9e1504d04997489c9864e29a3fc76506ca64e6837a6d"
+  }
+}

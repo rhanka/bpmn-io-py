@@ -1,0 +1,84 @@
+{
+  "caseId": "idplan-007-utf16-key-order",
+  "operation": "exportIdPlan",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "plan-input",
+      "json": {
+        "policy": "counter",
+        "counterOrigin": 0,
+        "pages": [
+          {
+            "pageId": "P",
+            "order": 0
+          }
+        ],
+        "requests": [
+          {
+            "pageId": "P",
+            "occurrenceKey": "",
+            "domain": "node"
+          },
+          {
+            "pageId": "P",
+            "occurrenceKey": "𐀀",
+            "domain": "node"
+          },
+          {
+            "pageId": "P",
+            "occurrenceKey": "z",
+            "domain": "node"
+          },
+          {
+            "pageId": "P",
+            "occurrenceKey": "Z",
+            "domain": "node"
+          }
+        ]
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": {
+          "ids": [
+            {
+              "pageId": "P",
+              "occurrenceKey": "Z",
+              "domain": "node",
+              "id": "e_0"
+            },
+            {
+              "pageId": "P",
+              "occurrenceKey": "z",
+              "domain": "node",
+              "id": "e_1"
+            },
+            {
+              "pageId": "P",
+              "occurrenceKey": "𐀀",
+              "domain": "node",
+              "id": "e_2"
+            },
+            {
+              "pageId": "P",
+              "occurrenceKey": "",
+              "domain": "node",
+              "id": "e_3"
+            }
+          ]
+        },
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

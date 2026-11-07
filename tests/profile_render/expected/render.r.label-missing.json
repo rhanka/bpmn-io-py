@@ -1,0 +1,223 @@
+{
+  "case": "render.r.label-missing",
+  "clause": "DESIGN R3.3 \u00a79.2 Digest formulas and freshness",
+  "witness": "a layout record without the label the binding evaluates is stale",
+  "derivation": "Layout = render.layout.di-two-pages payload with the aa-task-b label removed while the task binding evaluates Ready (presence mismatch). R copies layout geometry and labels; a layout label that differs from the label the selected theme's binding evaluates, or a presence mismatch, is a stale input: render-stale (DESIGN \u00a79.2 stale/unresolved input, \u00a79.3 label is the binding Value; harmonization K16). Nothing is repaired.",
+  "operation": "resolveTheme",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": []
+    },
+    "themeId": "plain",
+    "tree": {
+      "$type": "bpmn:Definitions",
+      "id": "Definitions_1",
+      "rootElements": [
+        {
+          "$type": "bpmn:Process",
+          "id": "Process_1",
+          "isExecutable": false,
+          "flowElements": [
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_B",
+              "name": "Ready"
+            },
+            {
+              "$type": "bpmn:Task",
+              "id": "Task_A",
+              "name": "Draft"
+            }
+          ],
+          "artifacts": [
+            {
+              "$type": "bpmn:TextAnnotation",
+              "id": "Note_1",
+              "text": "[Aid] helper"
+            }
+          ]
+        }
+      ]
+    },
+    "bindings": [],
+    "layout": {
+      "layoutVersion": "1",
+      "pages": [
+        {
+          "pageId": "Z-page",
+          "name": "First sheet",
+          "order": 0,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 250000,
+            "height": 180000
+          }
+        },
+        {
+          "pageId": "A-page",
+          "name": "Second sheet",
+          "order": 1,
+          "semanticRootId": "Process_1",
+          "bounds": {
+            "x": 50000,
+            "y": 60000,
+            "width": 100000,
+            "height": 80000
+          }
+        }
+      ],
+      "geometry": [
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "aa-task-b",
+          "semanticId": "Task_B",
+          "role": "shape",
+          "bounds": {
+            "x": 250000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "mm-note",
+          "semanticId": "Note_1",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 240000,
+            "width": 120000,
+            "height": 40000
+          },
+          "label": {
+            "text": "helper",
+            "bounds": {
+              "x": 100000,
+              "y": 240000,
+              "width": 120000,
+              "height": 40000
+            },
+            "lines": [
+              "helper"
+            ]
+          }
+        },
+        {
+          "pageId": "Z-page",
+          "occurrenceKey": "zz-task-a",
+          "semanticId": "Task_A",
+          "role": "shape",
+          "bounds": {
+            "x": 100000,
+            "y": 100000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Draft",
+            "bounds": {
+              "x": 100000,
+              "y": 100000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Draft"
+            ]
+          }
+        },
+        {
+          "pageId": "A-page",
+          "occurrenceKey": "zz-task-a-2",
+          "semanticId": "Task_A",
+          "role": "shape",
+          "bounds": {
+            "x": 50000,
+            "y": 60000,
+            "width": 100000,
+            "height": 80000
+          },
+          "label": {
+            "text": "Draft",
+            "bounds": {
+              "x": 50000,
+              "y": 60000,
+              "width": 100000,
+              "height": 80000
+            },
+            "lines": [
+              "Draft"
+            ]
+          }
+        }
+      ]
+    },
+    "overrides": {
+      "semantic": [],
+      "occurrence": []
+    },
+    "diStyles": {
+      "native": [],
+      "bioc": []
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "operation": "resolveTheme",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.1.0",
+      "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "fixture-2",
+        "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "fixture-2",
+          "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+        }
+      ]
+    },
+    "baseRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+    "code": "render-stale",
+    "diagnostics": [],
+    "report": {
+      "reportVersion": "2",
+      "operation": "resolveTheme",
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral/1",
+        "version": "1.1.0",
+        "sha256": "51f1b7b7c69bc77d32e2d167f0a7b19c910ac2a1e5276cc836992487cb426c40",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "a23a15d22585e765caeb8ad83bedb76c20bcb5fa1f7bee81ef062f4e97a15ea9"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "d737e07dc2b397bb02261fb5e7e46b51b7225f58fe82bebaa78cca2e613d62d2"
+          }
+        ]
+      },
+      "inputRevision": "1d3a18690d0f6837b47c380f5ea0eac6c442f469453a74b2c003c4b5a7bb71a3",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": []
+    }
+  },
+  "author": "spec-seal"
+}

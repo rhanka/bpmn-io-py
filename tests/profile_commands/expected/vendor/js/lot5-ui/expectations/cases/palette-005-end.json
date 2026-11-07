@@ -1,0 +1,162 @@
+{
+  "caseId": "lot5-palette-005-end",
+  "commandArtifact": {
+    "json": {
+      "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+      "commands": [
+        {
+          "command": "surface",
+          "context": {"key":"k-palette-end","owner":"Proc_main","value":""},
+          "entry": "end-create"
+        }
+      ],
+      "expectedViewRevision": "097d7205eaf7fd73c5ef93e83b261f82ebfc66656bfed674655908f529c43254",
+      "transactionId": "tx-palette-end"
+    },
+    "role": "transaction"
+  },
+  "comparatorIds": [
+    "lot5/result",
+    "lot5/snapshot",
+    "lot5/events",
+    "lot5/history",
+    "lot5/twin"
+  ],
+  "expectedArtifacts": [
+    {
+      "json": {
+        "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+        "operation": "applyCommands",
+        "payload": {
+          "changed": true,
+          "envelope": {"bindings":[],"documentVersion":"1","profileIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"semanticRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","tree":{"$type":"bpmn:Definitions","exporterVersion":"ui-neutral-base/1","id":"Defs_ui","rootElements":[{"$type":"bpmn:Process","artifacts":[{"$type":"bpmn:TextAnnotation","id":"Note_1","text":"[Aid] spreadsheet"},{"$type":"bpmn:Association","associationDirection":"One","id":"Link_1","sourceRef":"Ref_1","targetRef":"Task_A"},{"$type":"bpmn:Association","associationDirection":"None","id":"AidLink_1","sourceRef":"Note_1","targetRef":"Task_B"},{"$type":"bpmn:TextAnnotation","documentation":[{"$type":"bpmn:Documentation","text":"Source: tool inventory, sheet 2"}],"id":"Note_2","text":"[Aid]calculator"},{"$type":"bpmn:TextAnnotation","id":"Note_3","text":" [Aid] ledger"},{"$type":"bpmn:TextAnnotation","id":"Note_4","text":"Check totals"}],"flowElements":[{"$type":"bpmn:StartEvent","id":"Start_1","name":"Order received"},{"$type":"bpmn:Task","id":"Task_A","name":"Check order"},{"$type":"bpmn:UserTask","id":"Task_B","name":"Approve order"},{"$type":"bpmn:EndEvent","id":"End_1","name":"Order closed"},{"$type":"bpmn:SequenceFlow","id":"Flow_1","sourceRef":"Start_1","targetRef":"Task_A"},{"$type":"bpmn:SequenceFlow","id":"Flow_2","name":"Fit straße","sourceRef":"Task_A","targetRef":"Task_B"},{"$type":"bpmn:SequenceFlow","id":"Flow_3","sourceRef":"Task_B","targetRef":"End_1"},{"$type":"bpmn:DataStoreReference","dataStoreRef":"Store_1","id":"Ref_1"},{"$type":"bpmn:DataObjectReference","dataObjectRef":"Obj_1","id":"Item_1","name":"Order form"},{"$type":"bpmn:DataObject","id":"Obj_1"},{"$type":"bpmn:CallActivity","calledElement":"Proc-review","documentation":[{"$type":"bpmn:Documentation","text":"Source: review procedure, step 4"}],"id":"Call_1","name":"Run review"},{"$type":"bpmn:CallActivity","calledElement":"ProcArchive","id":"Call_2","name":"Révision cycle"},{"$type":"bpmn:Task","id":"Task_X","name":"Standalone check"},{"$type":"bpmn:DataStoreReference","dataStoreRef":"Store_2","id":"Ref_2"},{"$type":"bpmn:CallActivity","id":"Call_3","name":"Draft call"},{"$type":"bpmn:UserTask","id":"Task_Y","name":"Standalone approval"},{"$type":"bpmn:CallActivity","calledElement":"ProcArchive","id":"Call_4","name":"[Locked] Archive run"},{"$type":"bpmn:CallActivity","calledElement":"Proc-review","id":"Call_5","name":"[Hidden] Legacy run"},{"$type":"bpmn:EndEvent","id":"g_43108defc893cf1345291740f0f1169e3fbb9a9b7f67650231456134f7f26f07","name":""}],"id":"Proc_main","ioSpecification":{"$type":"bpmn:InputOutputSpecification","dataInputs":[{"$type":"bpmn:DataInput","id":"Input_1","name":"Customer request"}],"inputSets":[{"$type":"bpmn:InputSet","dataInputRefs":["Input_1"],"id":"Set_A","name":"Standard"},{"$type":"bpmn:InputSet","id":"Set_B","name":"Express"}]},"isExecutable":false,"name":"Order handling"},{"$type":"bpmn:Process","flowElements":[{"$type":"bpmn:StartEvent","id":"Start_r","name":"Review requested"},{"$type":"bpmn:Task","id":"Task_R","name":"Review case"}],"id":"Proc-review","isExecutable":false,"name":"Révision cycle"},{"$type":"bpmn:Process","flowElements":[{"$type":"bpmn:StartEvent","id":"Start_x","name":"Archive requested"}],"id":"ProcArchive","isExecutable":false,"name":"Archive records 𐀀"},{"$type":"bpmn:DataStore","id":"Store_1","name":"Policy handbook"},{"$type":"bpmn:DataStore","id":"Store_2","name":"Tariff sheet"}],"targetNamespace":"urn:example:lot5-ui"}},
+          "semanticRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
+          "transactionId": "tx-palette-end",
+          "viewRevision": {"$rule":"view-revision","diStylesDigest":"b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4","layout":{"member":"snapshot","pointer":"/payload/presentation/layout"},"metricsDigest":"ed4cb922cc7617c770171efb9057cccb8d95a63a6f713d1edc7e8f2801ace211","overridesDigest":"e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c","semanticRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","themeDigest":"7cd96cb14de2c879a528cc57c0a03e77a98a9c16f4d975537606ff67e8452959","themeId":"plain"}
+        },
+        "profileIdentity": {
+          "base": {"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},
+          "descriptors": [{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],
+          "mechanismVersion": "1",
+          "profile": "ui-neutral/1",
+          "schemaVersion": "1.0.0",
+          "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+          "version": "1.1.0"
+        },
+        "report": {
+          "artifacts": [],
+          "entries": [],
+          "idMap": [],
+          "inputRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "operation": "applyCommands",
+          "outputRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
+          "rawStandardFindings": [],
+          "reportVersion": "2",
+          "sourceIdentity": {"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},
+          "targetIdentity": {"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}
+        },
+        "revision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
+        "status": "ok"
+      },
+      "role": "result"
+    },
+    {
+      "json": {
+        "baseRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
+        "operation": "getSnapshot",
+        "payload": {
+          "envelope": {"$equals":{"member":"result","pointer":"/payload/envelope"}},
+          "presentation": {"activePageId":"page-main","diStyles":{"bioc":[],"native":[]},"importedDi":{"$equals":{"input":"snapshot","pointer":"/presentation/importedDi"}},"layout":{"$rule":"layout-delta","add":[{"pageId":"page-main","role":"content","semanticId":"g_43108defc893cf1345291740f0f1169e3fbb9a9b7f67650231456134f7f26f07"}],"base":{"input":"snapshot","pointer":"/presentation/layout"},"modify":[],"pages":"growth","remove":[]},"overrides":{"occurrence":[],"semantic":[]},"selection":{"$rule":"selection-valid","layout":{"member":"snapshot","pointer":"/payload/presentation/layout"}},"themeId":"plain"},
+          "snapshotVersion": "1",
+          "viewRevision": {"$rule":"view-revision","diStylesDigest":"b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4","layout":{"member":"snapshot","pointer":"/payload/presentation/layout"},"metricsDigest":"ed4cb922cc7617c770171efb9057cccb8d95a63a6f713d1edc7e8f2801ace211","overridesDigest":"e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c","semanticRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","themeDigest":"7cd96cb14de2c879a528cc57c0a03e77a98a9c16f4d975537606ff67e8452959","themeId":"plain"}
+        },
+        "profileIdentity": {
+          "base": {"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},
+          "descriptors": [{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],
+          "mechanismVersion": "1",
+          "profile": "ui-neutral/1",
+          "schemaVersion": "1.0.0",
+          "sha256": "217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e",
+          "version": "1.1.0"
+        },
+        "report": {
+          "artifacts": [],
+          "entries": [],
+          "idMap": [],
+          "inputRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
+          "operation": "getSnapshot",
+          "outputRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
+          "rawStandardFindings": [],
+          "reportVersion": "2",
+          "sourceIdentity": {"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},
+          "targetIdentity": {"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}
+        },
+        "revision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
+        "status": "ok"
+      },
+      "role": "snapshot"
+    },
+    {
+      "json": [
+        {
+          "envelope": {"$equals":{"member":"snapshot","pointer":"/payload/envelope"}},
+          "origin": "command",
+          "report": {"$equals":{"member":"result","pointer":"/report"}},
+          "semanticRevision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
+          "transactionId": "tx-palette-end",
+          "viewRevision": {"$equals":{"member":"snapshot","pointer":"/payload/viewRevision"}}
+        }
+      ],
+      "role": "events"
+    },
+    {
+      "json": {
+        "redo": {
+          "events": [{"envelope":{"$equals":{"member":"snapshot","pointer":"/payload/envelope"}},"origin":"redo","report":{"$equals":{"member":"history","pointer":"/redo/result/report"}},"semanticRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","transactionId":"tx-palette-end","viewRevision":{"$equals":{"member":"snapshot","pointer":"/payload/viewRevision"}}}],
+          "result": {"baseRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","operation":"redo","payload":{"envelope":{"$equals":{"member":"snapshot","pointer":"/payload/envelope"}},"presentation":{"activePageId":"page-main","diStyles":{"bioc":[],"native":[]},"importedDi":{"$equals":{"input":"snapshot","pointer":"/presentation/importedDi"}},"layout":{"$equals":{"member":"snapshot","pointer":"/payload/presentation/layout"}},"overrides":{"occurrence":[],"semantic":[]},"selection":{"$rule":"selection-valid","layout":{"member":"history","pointer":"/redo/result/payload/presentation/layout"}},"themeId":"plain"},"snapshotVersion":"1","viewRevision":{"$equals":{"member":"snapshot","pointer":"/payload/viewRevision"}}},"profileIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"report":{"artifacts":[],"entries":[],"idMap":[],"inputRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","operation":"redo","outputRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","rawStandardFindings":[],"reportVersion":"2","sourceIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"targetIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}},"revision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","status":"ok"}
+        },
+        "rootTransactions": 1,
+        "undo": {
+          "events": [{"envelope":{"$equals":{"input":"snapshot","pointer":"/envelope"}},"origin":"undo","report":{"$equals":{"member":"history","pointer":"/undo/result/report"}},"semanticRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","transactionId":"tx-palette-end","viewRevision":"097d7205eaf7fd73c5ef93e83b261f82ebfc66656bfed674655908f529c43254"}],
+          "result": {"baseRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","operation":"undo","payload":{"envelope":{"$equals":{"input":"snapshot","pointer":"/envelope"}},"presentation":{"activePageId":"page-main","diStyles":{"bioc":[],"native":[]},"importedDi":{"$equals":{"input":"snapshot","pointer":"/presentation/importedDi"}},"layout":{"$equals":{"input":"snapshot","pointer":"/presentation/layout"}},"overrides":{"occurrence":[],"semantic":[]},"selection":{"$rule":"selection-valid","layout":{"member":"history","pointer":"/undo/result/payload/presentation/layout"}},"themeId":"plain"},"snapshotVersion":"1","viewRevision":"097d7205eaf7fd73c5ef93e83b261f82ebfc66656bfed674655908f529c43254"},"profileIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"report":{"artifacts":[],"entries":[],"idMap":[],"inputRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","operation":"undo","outputRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","rawStandardFindings":[],"reportVersion":"2","sourceIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"targetIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}},"revision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","status":"ok"}
+        }
+      },
+      "role": "history"
+    },
+    {
+      "json": {
+        "events": [
+          {"envelope":{"$equals":{"member":"twin","pointer":"/result/payload/envelope"}},"origin":"command","report":{"$equals":{"member":"twin","pointer":"/result/report"}},"semanticRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","transactionId":"tx-palette-end","viewRevision":{"$unsealed":"twin-presentation","type":"string"}}
+        ],
+        "history": {
+          "redo": {"events":[{"envelope":{"$equals":{"member":"twin","pointer":"/result/payload/envelope"}},"origin":"redo","report":{"$equals":{"member":"twin","pointer":"/history/redo/result/report"}},"semanticRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","transactionId":"tx-palette-end","viewRevision":{"$unsealed":"twin-presentation","type":"string"}}],"result":{"baseRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","operation":"redo","payload":{"envelope":{"$equals":{"member":"twin","pointer":"/result/payload/envelope"}},"presentation":{"$unsealed":"twin-presentation","type":"object"},"snapshotVersion":"1","viewRevision":{"$unsealed":"twin-presentation","type":"string"}},"profileIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"report":{"artifacts":[],"entries":[],"idMap":[],"inputRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","operation":"redo","outputRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","rawStandardFindings":[],"reportVersion":"2","sourceIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"targetIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}},"revision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","status":"ok"}},
+          "undo": {"events":[{"envelope":{"$equals":{"input":"snapshot","pointer":"/envelope"}},"origin":"undo","report":{"$equals":{"member":"twin","pointer":"/history/undo/result/report"}},"semanticRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","transactionId":"tx-palette-end","viewRevision":{"$unsealed":"twin-presentation","type":"string"}}],"result":{"baseRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","operation":"undo","payload":{"envelope":{"$equals":{"input":"snapshot","pointer":"/envelope"}},"presentation":{"$unsealed":"twin-presentation","type":"object"},"snapshotVersion":"1","viewRevision":{"$unsealed":"twin-presentation","type":"string"}},"profileIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"report":{"artifacts":[],"entries":[],"idMap":[],"inputRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","operation":"undo","outputRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","rawStandardFindings":[],"reportVersion":"2","sourceIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"targetIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}},"revision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","status":"ok"}}
+        },
+        "result": {
+          "baseRevision": "2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1",
+          "operation": "applyCommands",
+          "payload": {"changed":true,"envelope":{"bindings":[],"documentVersion":"1","profileIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"semanticRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","tree":{"$type":"bpmn:Definitions","exporterVersion":"ui-neutral-base/1","id":"Defs_ui","rootElements":[{"$type":"bpmn:Process","artifacts":[{"$type":"bpmn:TextAnnotation","id":"Note_1","text":"[Aid] spreadsheet"},{"$type":"bpmn:Association","associationDirection":"One","id":"Link_1","sourceRef":"Ref_1","targetRef":"Task_A"},{"$type":"bpmn:Association","associationDirection":"None","id":"AidLink_1","sourceRef":"Note_1","targetRef":"Task_B"},{"$type":"bpmn:TextAnnotation","documentation":[{"$type":"bpmn:Documentation","text":"Source: tool inventory, sheet 2"}],"id":"Note_2","text":"[Aid]calculator"},{"$type":"bpmn:TextAnnotation","id":"Note_3","text":" [Aid] ledger"},{"$type":"bpmn:TextAnnotation","id":"Note_4","text":"Check totals"}],"flowElements":[{"$type":"bpmn:StartEvent","id":"Start_1","name":"Order received"},{"$type":"bpmn:Task","id":"Task_A","name":"Check order"},{"$type":"bpmn:UserTask","id":"Task_B","name":"Approve order"},{"$type":"bpmn:EndEvent","id":"End_1","name":"Order closed"},{"$type":"bpmn:SequenceFlow","id":"Flow_1","sourceRef":"Start_1","targetRef":"Task_A"},{"$type":"bpmn:SequenceFlow","id":"Flow_2","name":"Fit straße","sourceRef":"Task_A","targetRef":"Task_B"},{"$type":"bpmn:SequenceFlow","id":"Flow_3","sourceRef":"Task_B","targetRef":"End_1"},{"$type":"bpmn:DataStoreReference","dataStoreRef":"Store_1","id":"Ref_1"},{"$type":"bpmn:DataObjectReference","dataObjectRef":"Obj_1","id":"Item_1","name":"Order form"},{"$type":"bpmn:DataObject","id":"Obj_1"},{"$type":"bpmn:CallActivity","calledElement":"Proc-review","documentation":[{"$type":"bpmn:Documentation","text":"Source: review procedure, step 4"}],"id":"Call_1","name":"Run review"},{"$type":"bpmn:CallActivity","calledElement":"ProcArchive","id":"Call_2","name":"Révision cycle"},{"$type":"bpmn:Task","id":"Task_X","name":"Standalone check"},{"$type":"bpmn:DataStoreReference","dataStoreRef":"Store_2","id":"Ref_2"},{"$type":"bpmn:CallActivity","id":"Call_3","name":"Draft call"},{"$type":"bpmn:UserTask","id":"Task_Y","name":"Standalone approval"},{"$type":"bpmn:CallActivity","calledElement":"ProcArchive","id":"Call_4","name":"[Locked] Archive run"},{"$type":"bpmn:CallActivity","calledElement":"Proc-review","id":"Call_5","name":"[Hidden] Legacy run"},{"$type":"bpmn:EndEvent","id":"g_43108defc893cf1345291740f0f1169e3fbb9a9b7f67650231456134f7f26f07","name":""}],"id":"Proc_main","ioSpecification":{"$type":"bpmn:InputOutputSpecification","dataInputs":[{"$type":"bpmn:DataInput","id":"Input_1","name":"Customer request"}],"inputSets":[{"$type":"bpmn:InputSet","dataInputRefs":["Input_1"],"id":"Set_A","name":"Standard"},{"$type":"bpmn:InputSet","id":"Set_B","name":"Express"}]},"isExecutable":false,"name":"Order handling"},{"$type":"bpmn:Process","flowElements":[{"$type":"bpmn:StartEvent","id":"Start_r","name":"Review requested"},{"$type":"bpmn:Task","id":"Task_R","name":"Review case"}],"id":"Proc-review","isExecutable":false,"name":"Révision cycle"},{"$type":"bpmn:Process","flowElements":[{"$type":"bpmn:StartEvent","id":"Start_x","name":"Archive requested"}],"id":"ProcArchive","isExecutable":false,"name":"Archive records 𐀀"},{"$type":"bpmn:DataStore","id":"Store_1","name":"Policy handbook"},{"$type":"bpmn:DataStore","id":"Store_2","name":"Tariff sheet"}],"targetNamespace":"urn:example:lot5-ui"}},"semanticRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","transactionId":"tx-palette-end","viewRevision":{"$unsealed":"twin-presentation","type":"string"}},
+          "profileIdentity": {"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},
+          "report": {"artifacts":[],"entries":[],"idMap":[],"inputRevision":"2490a79ad7a859f6916138c6d8e8ca05875364e452062500c1b80a03acad40e1","operation":"applyCommands","outputRevision":"a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662","rawStandardFindings":[],"reportVersion":"2","sourceIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"},"targetIdentity":{"base":{"id":"ui-neutral-base/1","sha256":"eabe8ae63be94d2ecfd8873651d9aa24089b438726b048be72f9f4e00be9adbb","version":"lot5-2"},"descriptors":[{"id":"ui-neutral-descriptors/1","sha256":"59f956064d24508d071e0a2f4cddb91a6f764bbb82b751234def3e63ffde4032","version":"lot5-2"}],"mechanismVersion":"1","profile":"ui-neutral/1","schemaVersion":"1.0.0","sha256":"217aed39fa21ede481945f0cf5b899e5424725ead193136b201a8051e2d3986e","version":"1.1.0"}},
+          "revision": "a8e403887f01de7303aa3148fa51d7cf4126665a18ab07991805774bab010662",
+          "status": "ok"
+        }
+      },
+      "role": "twin"
+    }
+  ],
+  "expectedStatus": "ok",
+  "inputArtifacts": [
+    {
+      "path": "fixtures/documents/basic.snapshot.json",
+      "role": "snapshot",
+      "sha256": "e72fb51afb484918ca2c3aef4eff2a84502cbbd3c6e7aafd1a2f9baa8c8e7ce9"
+    }
+  ],
+  "operation": "applyCommands",
+  "phase": "create",
+  "profileArtifact": {
+    "path": "fixtures/ui-neutral-profile.json",
+    "sha256": "c495634b669e817af02545b040b1d767bb0ea098b4924a6247b984b53b6787a1"
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "status": "ok",
+  "operation": "layout",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral/1",
+    "version": "1.2.0",
+    "sha256": "721234408bbf9ad62eb050836407f076b54bd35043db613da1119591cdedfc9f",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "baseRevision": "be9b5ed1ce9e742a1651efe820e65f2807a3878b49fc01d35a0777f2643ad285",
+  "revision": "be9b5ed1ce9e742a1651efe820e65f2807a3878b49fc01d35a0777f2643ad285",
+  "report": {
+    "reportVersion": "2",
+    "operation": "layout",
+    "sourceIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.2.0",
+      "sha256": "721234408bbf9ad62eb050836407f076b54bd35043db613da1119591cdedfc9f",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "targetIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.2.0",
+      "sha256": "721234408bbf9ad62eb050836407f076b54bd35043db613da1119591cdedfc9f",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "inputRevision": "be9b5ed1ce9e742a1651efe820e65f2807a3878b49fc01d35a0777f2643ad285",
+    "outputRevision": "be9b5ed1ce9e742a1651efe820e65f2807a3878b49fc01d35a0777f2643ad285",
+    "entries": [],
+    "rawStandardFindings": [],
+    "idMap": [],
+    "artifacts": []
+  },
+  "payload": {
+    "layoutVersion": "1",
+    "pages": [
+      {
+        "pageId": "Z-page",
+        "name": "First sheet",
+        "order": 0,
+        "semanticRootId": "Process_1",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1000000,
+          "height": 800000
+        }
+      },
+      {
+        "pageId": "A-page",
+        "name": "Second sheet",
+        "order": 1,
+        "semanticRootId": "Process_1",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1000000,
+          "height": 800000
+        }
+      }
+    ],
+    "geometry": [
+      {
+        "pageId": "Z-page",
+        "occurrenceKey": "a-first",
+        "semanticId": "Task_A",
+        "role": "content",
+        "bounds": {
+          "x": 8,
+          "y": 8,
+          "width": 100000,
+          "height": 80000
+        }
+      },
+      {
+        "pageId": "Z-page",
+        "occurrenceKey": "a-note",
+        "semanticId": "g_61b268027699fa668a9b0e3eced8130a2b2e188f426051e9ad25ebb1e33a800c",
+        "role": "content",
+        "bounds": {
+          "x": 100000,
+          "y": 500000,
+          "width": 100000,
+          "height": 40000
+        },
+        "label": {
+          "text": "helper",
+          "bounds": {
+            "x": 100000,
+            "y": 500000,
+            "width": 100000,
+            "height": 40000
+          },
+          "lines": [
+            "helper"
+          ]
+        }
+      },
+      {
+        "pageId": "Z-page",
+        "occurrenceKey": "z-lane",
+        "semanticId": "Lane_content",
+        "role": "support",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 800000,
+          "height": 200000
+        },
+        "label": {
+          "text": "content",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 30000,
+            "height": 200000
+          },
+          "lines": [
+            "content"
+          ]
+        }
+      },
+      {
+        "pageId": "Z-page",
+        "occurrenceKey": "z-last",
+        "semanticId": "Task_B",
+        "role": "content",
+        "bounds": {
+          "x": 100016,
+          "y": 8,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "Ready",
+          "bounds": {
+            "x": 130016,
+            "y": 80008,
+            "width": 40000,
+            "height": 14000
+          },
+          "lines": [
+            "Ready"
+          ]
+        }
+      },
+      {
+        "pageId": "A-page",
+        "occurrenceKey": "a-lane",
+        "semanticId": "Lane_content",
+        "role": "support",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 600000,
+          "height": 180000
+        },
+        "label": {
+          "text": "content",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 30000,
+            "height": 180000
+          },
+          "lines": [
+            "content"
+          ]
+        }
+      },
+      {
+        "pageId": "A-page",
+        "occurrenceKey": "a-last-page",
+        "semanticId": "Task_B",
+        "role": "content",
+        "bounds": {
+          "x": 8,
+          "y": 8,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "Ready",
+          "bounds": {
+            "x": 30008,
+            "y": 80008,
+            "width": 40000,
+            "height": 14000
+          },
+          "lines": [
+            "Ready"
+          ]
+        }
+      }
+    ]
+  }
+}

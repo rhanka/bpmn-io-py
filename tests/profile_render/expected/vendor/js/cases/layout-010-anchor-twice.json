@@ -1,0 +1,73 @@
+{
+  "caseId": "layout-010-anchor-twice",
+  "operation": "layout",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "placements",
+      "path": "lot4-layout-export/expectations/artifacts/main.placements.json",
+      "sha256": "4cf87df1d2bd304b8a014c3c3fc4370325b49496ee8f39ee1eb388958d88a4a4"
+    },
+    {
+      "role": "base-geometry",
+      "path": "lot4-layout-export/expectations/artifacts/main-twice.base-geometry.json",
+      "sha256": "34f5836f3b27b70c04447e28bfd7398c832b693989b2824ff7b4d4672487ff6b"
+    },
+    {
+      "role": "themeId",
+      "json": "plain"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/layout-010-anchor-twice.result.json",
+      "sha256": "2ed05950649849e3b2ac3b77ab106f2898649adff660128ee44b41569cb8eb8f"
+    },
+    {
+      "role": "unsealed",
+      "json": [
+        {
+          "pointer": "/payload/geometry/12/waypoints",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/12/bounds",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/16/waypoints",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/16/bounds",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/2/waypoints",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        },
+        {
+          "pointer": "/payload/geometry/2/bounds",
+          "reason": "Harmonization K5 (erratum E-11): DESIGN 9.4 L723 routes links after expansion but fixes no routing rule; the route members are checked by layout-route/1 invariants."
+        }
+      ]
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "layout-route/1",
+    "source-immutability/1"
+  ]
+}

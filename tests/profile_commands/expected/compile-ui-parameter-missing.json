@@ -1,0 +1,46 @@
+{
+  "case": "compile-ui-parameter-missing",
+  "clause": "DESIGN R3.3 \u00a72.4.1 L195 CR-10 every required recipe parameter supplied exactly once; \u00a78.3 L655",
+  "derivation": "The value->name binding of task-create is removed; required create-task parameter name is no longer supplied, so compilation refuses profile-ui-parameters. Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "remove",
+          "path": "/ui/1/parameters/2"
+        }
+      ],
+      "artifact": "artifacts/profiles/compile-ui-parameter-missing.json"
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-ui-parameters",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "d06d2cfea4ec3dff1856ce345b3febc1ba8da7c979e2a6ee866854b6993ed9ea",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

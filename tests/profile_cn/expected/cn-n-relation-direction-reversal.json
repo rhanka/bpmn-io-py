@@ -1,0 +1,495 @@
+{
+  "case": "cn-n-relation-direction-reversal",
+  "clause": "DESIGN R3.3 §7.2 Relation direction; §10.1 N direction reversal coordinates",
+  "author": "spec-seal",
+  "operation": "normalize",
+  "profile": "cn-n",
+  "derivation": "Supports are imported and bound, so no support is created and the edit activation accepts: N reverses the unambiguous Task -> DataStoreReference pair (id Link_R preserved, before/after reported) and sets its declared direction One; relation direction is not a gated mutation. The reference is placed with its link. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_rev",
+        "rootElements": [
+          {
+            "$type": "bpmn:DataStore",
+            "id": "Store_S",
+            "name": "Register"
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_R",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_R",
+                "name": "Consult"
+              },
+              {
+                "$type": "bpmn:DataStoreReference",
+                "id": "Ref_R",
+                "dataStoreRef": "Store_S"
+              }
+            ],
+            "artifacts": [
+              {
+                "$type": "bpmn:Association",
+                "id": "Link_R",
+                "sourceRef": "Task_R",
+                "targetRef": "Ref_R",
+                "associationDirection": "None"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Collaboration",
+            "id": "Collab_R",
+            "name": "collaboration",
+            "participants": [
+              {
+                "$type": "bpmn:Participant",
+                "id": "Main_R",
+                "name": "main-participant",
+                "processRef": "Process_R"
+              },
+              {
+                "$type": "bpmn:Participant",
+                "id": "Band_R",
+                "name": "reference-band"
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "ownerId": "Process_R",
+          "role": "collaboration",
+          "targetId": "Collab_R"
+        },
+        {
+          "ownerId": "Process_R",
+          "role": "main-participant",
+          "targetId": "Main_R"
+        },
+        {
+          "ownerId": "Process_R",
+          "role": "reference-band",
+          "targetId": "Band_R"
+        }
+      ],
+      "semanticRevision": "986857c63bd2ab9bfdc10092f4d7fa40e08530e512e28019579b71a1ee4a1b96"
+    },
+    "activation": "edit",
+    "placementIntent": null
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "normalize",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n/1",
+      "version": "1.0.0",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "986857c63bd2ab9bfdc10092f4d7fa40e08530e512e28019579b71a1ee4a1b96",
+    "revision": "f1d7742f8517f22def07bf9b686cb544fae17b73c014d5c95604b13720ce29da",
+    "report": {
+      "reportVersion": "2",
+      "operation": "normalize",
+      "entries": [
+        {
+          "code": "normalize/set",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "reverse-reference-links",
+          "messageKey": "normalize.set",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/artifacts/0/associationDirection",
+            "targetId": "Link_R",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/artifacts/0/associationDirection",
+            "targetId": "Link_R",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": "None",
+          "after": "One",
+          "property": "associationDirection"
+        },
+        {
+          "code": "normalize/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "reverse-reference-links",
+          "messageKey": "normalize.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/artifacts/0/sourceRef",
+            "targetId": "Link_R",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/artifacts/0/sourceRef",
+            "targetId": "Link_R",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": "Task_R",
+          "after": "Ref_R",
+          "property": "sourceRef"
+        },
+        {
+          "code": "normalize/assignRef",
+          "severity": "info",
+          "classification": "repairable",
+          "stage": "normalize",
+          "ruleId": "reverse-reference-links",
+          "messageKey": "normalize.assignRef",
+          "disposition": "corrected",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/artifacts/0/targetRef",
+            "targetId": "Link_R",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/1/artifacts/0/targetRef",
+            "targetId": "Link_R",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": "Ref_R",
+          "after": "Task_R",
+          "property": "targetRef"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "986857c63bd2ab9bfdc10092f4d7fa40e08530e512e28019579b71a1ee4a1b96",
+      "outputRevision": "f1d7742f8517f22def07bf9b686cb544fae17b73c014d5c95604b13720ce29da"
+    },
+    "payload": {
+      "envelope": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_rev",
+          "rootElements": [
+            {
+              "$type": "bpmn:DataStore",
+              "id": "Store_S",
+              "name": "Register"
+            },
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_R",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_R",
+                  "name": "Consult"
+                },
+                {
+                  "$type": "bpmn:DataStoreReference",
+                  "id": "Ref_R",
+                  "dataStoreRef": "Store_S"
+                }
+              ],
+              "artifacts": [
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Link_R",
+                  "sourceRef": "Ref_R",
+                  "targetRef": "Task_R",
+                  "associationDirection": "One"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Collaboration",
+              "id": "Collab_R",
+              "name": "collaboration",
+              "participants": [
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "Main_R",
+                  "name": "main-participant",
+                  "processRef": "Process_R"
+                },
+                {
+                  "$type": "bpmn:Participant",
+                  "id": "Band_R",
+                  "name": "reference-band"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [
+          {
+            "ownerId": "Process_R",
+            "role": "collaboration",
+            "targetId": "Collab_R"
+          },
+          {
+            "ownerId": "Process_R",
+            "role": "main-participant",
+            "targetId": "Main_R"
+          },
+          {
+            "ownerId": "Process_R",
+            "role": "reference-band",
+            "targetId": "Band_R"
+          }
+        ],
+        "semanticRevision": "f1d7742f8517f22def07bf9b686cb544fae17b73c014d5c95604b13720ce29da"
+      },
+      "placements": [
+        {
+          "elementId": "Ref_R",
+          "ownerProcessId": "Process_R",
+          "regionKey": "reference-band",
+          "relatedAssociationIds": [
+            "Link_R"
+          ],
+          "anchorAssociationId": "Link_R"
+        }
+      ],
+      "report": {
+        "reportVersion": "2",
+        "operation": "normalize",
+        "entries": [
+          {
+            "code": "normalize/set",
+            "severity": "info",
+            "classification": "repairable",
+            "stage": "normalize",
+            "ruleId": "reverse-reference-links",
+            "messageKey": "normalize.set",
+            "disposition": "corrected",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/1/artifacts/0/associationDirection",
+              "targetId": "Link_R",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "tree",
+              "pointer": "/rootElements/1/artifacts/0/associationDirection",
+              "targetId": "Link_R",
+              "provenance": "exact"
+            },
+            "beforePresent": true,
+            "afterPresent": true,
+            "before": "None",
+            "after": "One",
+            "property": "associationDirection"
+          },
+          {
+            "code": "normalize/assignRef",
+            "severity": "info",
+            "classification": "repairable",
+            "stage": "normalize",
+            "ruleId": "reverse-reference-links",
+            "messageKey": "normalize.assignRef",
+            "disposition": "corrected",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/1/artifacts/0/sourceRef",
+              "targetId": "Link_R",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "tree",
+              "pointer": "/rootElements/1/artifacts/0/sourceRef",
+              "targetId": "Link_R",
+              "provenance": "exact"
+            },
+            "beforePresent": true,
+            "afterPresent": true,
+            "before": "Task_R",
+            "after": "Ref_R",
+            "property": "sourceRef"
+          },
+          {
+            "code": "normalize/assignRef",
+            "severity": "info",
+            "classification": "repairable",
+            "stage": "normalize",
+            "ruleId": "reverse-reference-links",
+            "messageKey": "normalize.assignRef",
+            "disposition": "corrected",
+            "source": {
+              "domain": "tree",
+              "pointer": "/rootElements/1/artifacts/0/targetRef",
+              "targetId": "Link_R",
+              "provenance": "exact"
+            },
+            "result": {
+              "domain": "tree",
+              "pointer": "/rootElements/1/artifacts/0/targetRef",
+              "targetId": "Link_R",
+              "provenance": "exact"
+            },
+            "beforePresent": true,
+            "afterPresent": true,
+            "before": "Ref_R",
+            "after": "Task_R",
+            "property": "targetRef"
+          }
+        ],
+        "rawStandardFindings": [],
+        "idMap": [],
+        "artifacts": [],
+        "sourceIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "targetIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "inputRevision": "986857c63bd2ab9bfdc10092f4d7fa40e08530e512e28019579b71a1ee4a1b96",
+        "outputRevision": "f1d7742f8517f22def07bf9b686cb544fae17b73c014d5c95604b13720ce29da"
+      }
+    }
+  },
+  "fixedPoint": true
+}

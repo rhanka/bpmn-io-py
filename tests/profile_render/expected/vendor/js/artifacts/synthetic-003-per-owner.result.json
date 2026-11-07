@@ -1,0 +1,378 @@
+{
+  "status": "ok",
+  "operation": "layout",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "baseRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+  "revision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+  "report": {
+    "reportVersion": "2",
+    "operation": "layout",
+    "sourceIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "targetIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "inputRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+    "outputRevision": "502cb289c9a6e82691a8b2b7bdae86f1c11f24c3fe86f49767639f3d09b9a77f",
+    "entries": [],
+    "rawStandardFindings": [],
+    "idMap": [],
+    "artifacts": []
+  },
+  "payload": {
+    "layoutVersion": "1",
+    "pages": [
+      {
+        "pageId": "Page_A",
+        "name": "Sheet A",
+        "order": 0,
+        "semanticRootId": "Process_A",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 800000,
+          "height": 400000
+        }
+      },
+      {
+        "pageId": "Page_B",
+        "name": "Sheet B",
+        "order": 1,
+        "semanticRootId": "Process_B",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 800000,
+          "height": 400000
+        }
+      }
+    ],
+    "geometry": [
+      {
+        "pageId": "Page_A",
+        "occurrenceKey": "Assoc_A_di",
+        "semanticId": "Assoc_A",
+        "role": "content",
+        "bounds": {
+          "x": 250000,
+          "y": 165000,
+          "width": 0,
+          "height": 115000
+        },
+        "sourceOccurrence": {
+          "pageId": "Page_A",
+          "occurrenceKey": "StoreRef_A_di"
+        },
+        "targetOccurrence": {
+          "pageId": "Page_A",
+          "occurrenceKey": "Task_A1_di"
+        },
+        "waypoints": [
+          {
+            "x": 250000,
+            "y": 280000
+          },
+          {
+            "x": 250000,
+            "y": 165000
+          }
+        ]
+      },
+      {
+        "pageId": "Page_A",
+        "occurrenceKey": "Band_A_di",
+        "semanticId": "Band_A",
+        "role": "support",
+        "bounds": {
+          "x": 0,
+          "y": 270000,
+          "width": 700000,
+          "height": 100000
+        },
+        "label": {
+          "text": "References A",
+          "bounds": {
+            "x": 0,
+            "y": 270000,
+            "width": 30000,
+            "height": 100000
+          },
+          "lines": [
+            "References A"
+          ]
+        }
+      },
+      {
+        "pageId": "Page_A",
+        "occurrenceKey": "Pool_A_di",
+        "semanticId": "Pool_A",
+        "role": "support",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 700000,
+          "height": 250000
+        },
+        "label": {
+          "text": "Process A",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 30000,
+            "height": 250000
+          },
+          "lines": [
+            "Process A"
+          ]
+        }
+      },
+      {
+        "pageId": "Page_A",
+        "occurrenceKey": "StoreRef_A_di",
+        "semanticId": "StoreRef_A",
+        "role": "reference-band",
+        "bounds": {
+          "x": 225000,
+          "y": 280000,
+          "width": 50000,
+          "height": 50000
+        },
+        "label": {
+          "text": "Shared register",
+          "bounds": {
+            "x": 212000,
+            "y": 330000,
+            "width": 76000,
+            "height": 14000
+          },
+          "lines": [
+            "Shared register"
+          ]
+        }
+      },
+      {
+        "pageId": "Page_A",
+        "occurrenceKey": "Task_A1_di",
+        "semanticId": "Task_A1",
+        "role": "content",
+        "bounds": {
+          "x": 200000,
+          "y": 85000,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "Prepare",
+          "bounds": {
+            "x": 200000,
+            "y": 85000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Prepare"
+          ]
+        }
+      },
+      {
+        "pageId": "Page_A",
+        "occurrenceKey": "[\"band-stripe\",\"Process_A\",\"Page_A\"]",
+        "role": "band-stripe",
+        "bounds": {
+          "x": 0,
+          "y": 270000,
+          "width": 20000,
+          "height": 100000
+        }
+      },
+      {
+        "pageId": "Page_B",
+        "occurrenceKey": "Assoc_B_di",
+        "semanticId": "Assoc_B",
+        "role": "content",
+        "bounds": {
+          "x": 450000,
+          "y": 165000,
+          "width": 0,
+          "height": 115000
+        },
+        "sourceOccurrence": {
+          "pageId": "Page_B",
+          "occurrenceKey": "StoreRef_B_di"
+        },
+        "targetOccurrence": {
+          "pageId": "Page_B",
+          "occurrenceKey": "Task_B1_di"
+        },
+        "waypoints": [
+          {
+            "x": 450000,
+            "y": 280000
+          },
+          {
+            "x": 450000,
+            "y": 165000
+          }
+        ]
+      },
+      {
+        "pageId": "Page_B",
+        "occurrenceKey": "Band_B_di",
+        "semanticId": "Band_B",
+        "role": "support",
+        "bounds": {
+          "x": 0,
+          "y": 270000,
+          "width": 700000,
+          "height": 100000
+        },
+        "label": {
+          "text": "References B",
+          "bounds": {
+            "x": 0,
+            "y": 270000,
+            "width": 30000,
+            "height": 100000
+          },
+          "lines": [
+            "References B"
+          ]
+        }
+      },
+      {
+        "pageId": "Page_B",
+        "occurrenceKey": "Pool_B_di",
+        "semanticId": "Pool_B",
+        "role": "support",
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 700000,
+          "height": 250000
+        },
+        "label": {
+          "text": "Process B",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 30000,
+            "height": 250000
+          },
+          "lines": [
+            "Process B"
+          ]
+        }
+      },
+      {
+        "pageId": "Page_B",
+        "occurrenceKey": "StoreRef_B_di",
+        "semanticId": "StoreRef_B",
+        "role": "reference-band",
+        "bounds": {
+          "x": 425000,
+          "y": 280000,
+          "width": 50000,
+          "height": 50000
+        },
+        "label": {
+          "text": "Register copy",
+          "bounds": {
+            "x": 418000,
+            "y": 330000,
+            "width": 64000,
+            "height": 14000
+          },
+          "lines": [
+            "Register copy"
+          ]
+        }
+      },
+      {
+        "pageId": "Page_B",
+        "occurrenceKey": "Task_B1_di",
+        "semanticId": "Task_B1",
+        "role": "content",
+        "bounds": {
+          "x": 400000,
+          "y": 85000,
+          "width": 100000,
+          "height": 80000
+        },
+        "label": {
+          "text": "Review",
+          "bounds": {
+            "x": 400000,
+            "y": 85000,
+            "width": 100000,
+            "height": 80000
+          },
+          "lines": [
+            "Review"
+          ]
+        }
+      },
+      {
+        "pageId": "Page_B",
+        "occurrenceKey": "[\"band-stripe\",\"Process_B\",\"Page_B\"]",
+        "role": "band-stripe",
+        "bounds": {
+          "x": 0,
+          "y": 270000,
+          "width": 20000,
+          "height": 100000
+        }
+      }
+    ]
+  }
+}

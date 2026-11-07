@@ -1,0 +1,43 @@
+{
+  "caseId": "export-027-variety-drawio",
+  "operation": "mapExport",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/variety.envelope.json",
+      "sha256": "7fe9f9ecd969547da2475e7dea1819539efe4c21e3dca68617e6ef4ee6ea581e"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/variety.layout.json",
+      "sha256": "23f41da0a6c5f50c0ed5a413e515ecc61e3ad7b6ba18af11319bb50385c87736"
+    },
+    {
+      "role": "render",
+      "path": "lot4-layout-export/expectations/artifacts/variety-plain.render.json",
+      "sha256": "aaa8759f0990c507d3fe0657d10b035472634d38ed3eaa5b2f8adaf2044b33a7"
+    },
+    {
+      "role": "format",
+      "json": "drawio"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/export-027-variety-drawio.map-result.json",
+      "sha256": "2079e42da47522f520edaed477c442069cfca241f3dbbb89991a2782492a38f7"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

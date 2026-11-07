@@ -115,6 +115,7 @@ def test_bridge_stores_di_separately_from_tree() -> None:
     """Loading a diagrams-bearing envelope commits a DI-free tree plus DI."""
     from bpmn_io.profile import HeadlessBridge, complete_envelope
     from bpmn_io.profile._envelope import DocumentEnvelope
+    from bpmn_io.profile._render_digest import descriptor_digest
 
     committed = complete_envelope(_identity(), _tree(), [])
     raw = DocumentEnvelope(
@@ -138,7 +139,8 @@ def test_bridge_stores_di_separately_from_tree() -> None:
     assert isinstance(presentation, dict)
     imported = presentation["importedDi"]
     assert imported["diagrams"] == _DIAGRAMS
-    assert imported["descriptorDigest"] == ""
+    assert imported["descriptorDigest"] == descriptor_digest(_identity()["descriptors"])
+    assert imported["descriptorDigest"] != ""
 
 
 def test_imported_di_record_round_trips_digest() -> None:

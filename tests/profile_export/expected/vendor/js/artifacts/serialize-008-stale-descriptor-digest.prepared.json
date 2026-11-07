@@ -1,0 +1,2126 @@
+{
+  "format": "drawio",
+  "profileIdentity": {
+    "mechanismVersion": "1",
+    "schemaVersion": "1.0.0",
+    "profile": "neutral-lot4/1",
+    "version": "1.1.0",
+    "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "base": {
+      "id": "neutral-lot4-base/1",
+      "version": "lot4-2",
+      "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+    },
+    "descriptors": [
+      {
+        "id": "neutral-lot4-descriptors/1",
+        "version": "lot4-2",
+        "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+      }
+    ]
+  },
+  "semanticRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+  "viewRevision": "66e6f580e7c7a7d1ebc1913524ea5da5ad58a37118c61183d3f22b8fd06c2dc8",
+  "ir": [
+    {
+      "kind": "page",
+      "id": "e_1",
+      "name": "Main sheet",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1200000,
+        "height": 640000
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_2",
+      "name": "Scanner",
+      "parent": "e_1",
+      "bounds": {
+        "x": 180000,
+        "y": 170000,
+        "width": 100000,
+        "height": 40000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#eeeeff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 180000,
+          "y": 170000,
+          "width": 100000,
+          "height": 40000
+        },
+        "lines": [
+          "Scanner"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_3",
+      "name": "References",
+      "parent": "e_1",
+      "bounds": {
+        "x": 0,
+        "y": 470000,
+        "width": 1100000,
+        "height": 120000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#f4f4f4"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 0,
+          "y": 470000,
+          "width": 30000,
+          "height": 120000
+        },
+        "lines": [
+          "References"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_4",
+      "name": "Order shipped",
+      "parent": "e_1",
+      "bounds": {
+        "x": 600000,
+        "y": 282000,
+        "width": 36000,
+        "height": 36000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 583000,
+          "y": 323000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Order shipped"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_5",
+      "name": "Approved?",
+      "parent": "e_1",
+      "bounds": {
+        "x": 330000,
+        "y": 275000,
+        "width": 50000,
+        "height": 50000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "bold"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 320000,
+          "y": 330000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Approved?"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_6",
+      "name": "Order",
+      "parent": "e_1",
+      "bounds": {
+        "x": 212000,
+        "y": 10000,
+        "width": 36000,
+        "height": 50000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 215000,
+          "y": 60000,
+          "width": 30000,
+          "height": 14000
+        },
+        "lines": [
+          "Order"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_7",
+      "name": "External",
+      "parent": "e_1",
+      "bounds": {
+        "x": 30000,
+        "y": 0,
+        "width": 1070000,
+        "height": 150000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#fafafa"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 30000,
+          "y": 0,
+          "width": 30000,
+          "height": 150000
+        },
+        "lines": [
+          "External"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_8",
+      "name": "Work",
+      "parent": "e_1",
+      "bounds": {
+        "x": 30000,
+        "y": 150000,
+        "width": 1070000,
+        "height": 300000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 30000,
+          "y": 150000,
+          "width": 30000,
+          "height": 300000
+        },
+        "lines": [
+          "Work"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_9",
+      "name": "Receipt",
+      "parent": "e_1",
+      "bounds": {
+        "x": 472000,
+        "y": 10000,
+        "width": 36000,
+        "height": 50000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 469000,
+          "y": 60000,
+          "width": 42000,
+          "height": 14000
+        },
+        "lines": [
+          "Receipt"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_10",
+      "name": "Main process",
+      "parent": "e_1",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1100000,
+        "height": 450000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 30000,
+          "height": 450000
+        },
+        "lines": [
+          "Main process"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_11",
+      "name": "Order received",
+      "parent": "e_1",
+      "bounds": {
+        "x": 100000,
+        "y": 282000,
+        "width": 36000,
+        "height": 36000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 83000,
+          "y": 323000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Order received"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_12",
+      "name": "Policy archive",
+      "parent": "e_1",
+      "bounds": {
+        "x": 205000,
+        "y": 480000,
+        "width": 50000,
+        "height": 50000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#f0f0ff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 195000,
+          "y": 530000,
+          "width": 70000,
+          "height": 14000
+        },
+        "lines": [
+          "Policy archive"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_13",
+      "name": "Check order",
+      "parent": "e_1",
+      "bounds": {
+        "x": 180000,
+        "y": 260000,
+        "width": 100000,
+        "height": 80000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 180000,
+          "y": 260000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Check order"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_14",
+      "name": "Fix order",
+      "parent": "e_1",
+      "bounds": {
+        "x": 440000,
+        "y": 360000,
+        "width": 100000,
+        "height": 80000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "bold"
+        },
+        {
+          "name": "stroke",
+          "value": "#aa0000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 440000,
+          "y": 360000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Fix order"
+        ]
+      }
+    },
+    {
+      "kind": "node",
+      "id": "e_15",
+      "name": "Ship order",
+      "parent": "e_1",
+      "bounds": {
+        "x": 440000,
+        "y": 260000,
+        "width": 100000,
+        "height": 80000
+      },
+      "style": [
+        {
+          "name": "arrow",
+          "value": "none"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 440000,
+          "y": 260000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Ship order"
+        ]
+      }
+    },
+    {
+      "kind": "edge",
+      "id": "e_16",
+      "source": "e_2",
+      "target": "e_13",
+      "parent": "e_1",
+      "bounds": {
+        "x": 230000,
+        "y": 210000,
+        "width": 0,
+        "height": 50000
+      },
+      "waypoints": [
+        {
+          "x": 230000,
+          "y": 210000
+        },
+        {
+          "x": 230000,
+          "y": 260000
+        }
+      ],
+      "style": [
+        {
+          "name": "arrow",
+          "value": "open"
+        },
+        {
+          "name": "dash",
+          "value": "dashed"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ]
+    },
+    {
+      "kind": "edge",
+      "id": "e_17",
+      "source": "e_12",
+      "target": "e_13",
+      "parent": "e_1",
+      "bounds": {
+        "x": 230000,
+        "y": 340000,
+        "width": 0,
+        "height": 140000
+      },
+      "waypoints": [
+        {
+          "x": 230000,
+          "y": 480000
+        },
+        {
+          "x": 230000,
+          "y": 340000
+        }
+      ],
+      "style": [
+        {
+          "name": "arrow",
+          "value": "open"
+        },
+        {
+          "name": "dash",
+          "value": "dashed"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ]
+    },
+    {
+      "kind": "edge",
+      "id": "e_18",
+      "source": "e_14",
+      "target": "e_13",
+      "parent": "e_1",
+      "bounds": {
+        "x": 230000,
+        "y": 340000,
+        "width": 210000,
+        "height": 80000
+      },
+      "waypoints": [
+        {
+          "x": 440000,
+          "y": 420000
+        },
+        {
+          "x": 230000,
+          "y": 420000
+        },
+        {
+          "x": 230000,
+          "y": 340000
+        }
+      ],
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ]
+    },
+    {
+      "kind": "edge",
+      "id": "e_19",
+      "source": "e_13",
+      "target": "e_5",
+      "parent": "e_1",
+      "bounds": {
+        "x": 280000,
+        "y": 300000,
+        "width": 50000,
+        "height": 0
+      },
+      "waypoints": [
+        {
+          "x": 280000,
+          "y": 300000
+        },
+        {
+          "x": 330000,
+          "y": 300000
+        }
+      ],
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ]
+    },
+    {
+      "kind": "edge",
+      "id": "e_20",
+      "source": "e_5",
+      "target": "e_14",
+      "parent": "e_1",
+      "bounds": {
+        "x": 355000,
+        "y": 325000,
+        "width": 85000,
+        "height": 75000
+      },
+      "waypoints": [
+        {
+          "x": 355000,
+          "y": 325000
+        },
+        {
+          "x": 355000,
+          "y": 400000
+        },
+        {
+          "x": 440000,
+          "y": 400000
+        }
+      ],
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "bold"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#1f4fbf"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 360000,
+          "y": 380000,
+          "width": 20000,
+          "height": 14000
+        },
+        "lines": [
+          "NO"
+        ]
+      }
+    },
+    {
+      "kind": "edge",
+      "id": "e_21",
+      "source": "e_15",
+      "target": "e_4",
+      "parent": "e_1",
+      "bounds": {
+        "x": 540000,
+        "y": 300000,
+        "width": 60000,
+        "height": 0
+      },
+      "waypoints": [
+        {
+          "x": 540000,
+          "y": 300000
+        },
+        {
+          "x": 600000,
+          "y": 300000
+        }
+      ],
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ]
+    },
+    {
+      "kind": "edge",
+      "id": "e_22",
+      "source": "e_11",
+      "target": "e_13",
+      "parent": "e_1",
+      "bounds": {
+        "x": 136000,
+        "y": 300000,
+        "width": 44000,
+        "height": 0
+      },
+      "waypoints": [
+        {
+          "x": 136000,
+          "y": 300000
+        },
+        {
+          "x": 180000,
+          "y": 300000
+        }
+      ],
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ]
+    },
+    {
+      "kind": "edge",
+      "id": "e_23",
+      "source": "e_5",
+      "target": "e_15",
+      "parent": "e_1",
+      "bounds": {
+        "x": 380000,
+        "y": 300000,
+        "width": 60000,
+        "height": 0
+      },
+      "waypoints": [
+        {
+          "x": 380000,
+          "y": 300000
+        },
+        {
+          "x": 440000,
+          "y": 300000
+        }
+      ],
+      "style": [
+        {
+          "name": "arrow",
+          "value": "filled"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "bold"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#1f4fbf"
+        }
+      ],
+      "label": {
+        "bounds": {
+          "x": 395000,
+          "y": 285000,
+          "width": 30000,
+          "height": 14000
+        },
+        "lines": [
+          "YES"
+        ]
+      }
+    },
+    {
+      "kind": "edge",
+      "id": "e_24",
+      "source": "e_6",
+      "target": "e_13",
+      "parent": "e_1",
+      "bounds": {
+        "x": 230000,
+        "y": 60000,
+        "width": 0,
+        "height": 200000
+      },
+      "waypoints": [
+        {
+          "x": 230000,
+          "y": 60000
+        },
+        {
+          "x": 230000,
+          "y": 260000
+        }
+      ],
+      "style": [
+        {
+          "name": "arrow",
+          "value": "open"
+        },
+        {
+          "name": "dash",
+          "value": "dashed"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ]
+    },
+    {
+      "kind": "edge",
+      "id": "e_25",
+      "source": "e_15",
+      "target": "e_9",
+      "parent": "e_1",
+      "bounds": {
+        "x": 490000,
+        "y": 60000,
+        "width": 0,
+        "height": 200000
+      },
+      "waypoints": [
+        {
+          "x": 490000,
+          "y": 260000
+        },
+        {
+          "x": 490000,
+          "y": 60000
+        }
+      ],
+      "style": [
+        {
+          "name": "arrow",
+          "value": "open"
+        },
+        {
+          "name": "dash",
+          "value": "dashed"
+        },
+        {
+          "name": "fill",
+          "value": "#ffffff"
+        },
+        {
+          "name": "fontFamily",
+          "value": "fixture-sans"
+        },
+        {
+          "name": "fontSize",
+          "value": 10
+        },
+        {
+          "name": "fontWeight",
+          "value": "normal"
+        },
+        {
+          "name": "stroke",
+          "value": "#000000"
+        },
+        {
+          "name": "strokeWidth",
+          "value": 1
+        },
+        {
+          "name": "textColor",
+          "value": "#000000"
+        }
+      ]
+    },
+    {
+      "kind": "label",
+      "id": "e_26",
+      "text": "NO",
+      "parent": "e_1",
+      "bounds": {
+        "x": 360000,
+        "y": 380000,
+        "width": 20000,
+        "height": 14000
+      },
+      "lines": [
+        "NO"
+      ]
+    },
+    {
+      "kind": "label",
+      "id": "e_27",
+      "text": "YES",
+      "parent": "e_1",
+      "bounds": {
+        "x": 395000,
+        "y": 285000,
+        "width": 30000,
+        "height": 14000
+      },
+      "lines": [
+        "YES"
+      ]
+    }
+  ],
+  "renderBinding": {
+    "semanticRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+    "profileDigest": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+    "descriptorDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "layoutDigest": "30b7c39179878f3ece832c64ce2a9745955563b70425f53776d3c54c2ffb6211",
+    "themeId": "plain",
+    "themeDigest": "e2ec603d6be51b30824aebe5474ff4d89948f5400ac16708d42f82e921a6be10",
+    "overridesDigest": "e5d14358eed3eebbde859d54222bab9b9054c681496ba84ac751e77adc932b8c",
+    "diStylesDigest": "b9807dcc0243e9a28c1ca1e15b1b7858f334dd92bb76270ba1a8a097062599e4",
+    "metricsDigest": "4f02aa1a16d22d03bebaac92939210302637ba59a8a47504690986b40483d051",
+    "payloadDigest": "38ccdc15b23cc9ec4a5aece7e1f105244816035615c5b7ff8443303864da93ed"
+  },
+  "report": {
+    "reportVersion": "2",
+    "operation": "mapExport",
+    "sourceIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "targetIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-lot4/1",
+      "version": "1.1.0",
+      "sha256": "c613f315687e00db306c0262c0fdf3b8a0a08b6920130fda58ce070e9958bd82",
+      "base": {
+        "id": "neutral-lot4-base/1",
+        "version": "lot4-2",
+        "sha256": "3599ac08a9ba1ce429f739f39ab6654d01ae57060ed612f8b14196bad817e7e8"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-lot4-descriptors/1",
+          "version": "lot4-2",
+          "sha256": "a2578b19578280b307d8140696cbf5a0b66cd0af6bf788e49e399e60f1d9390a"
+        }
+      ]
+    },
+    "inputRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+    "outputRevision": "464029f68e42e2ddecefcbb996b5f6f0f7459c166fa1524b014f2c51be5ec86c",
+    "entries": [
+      {
+        "code": "export-loss/relation-kind",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.relation-kind",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/flowElements/1/dataInputAssociations/0",
+          "targetId": "Input_Link",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Main",
+        "occurrenceKey": "Input_Link_di",
+        "emittedType": "edge",
+        "lossClass": "relation-kind"
+      },
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/flowElements/12",
+          "targetId": "StoreRef_Policy",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Main",
+        "occurrenceKey": "StoreRef_Policy_di",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/relation-kind",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.relation-kind",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/flowElements/3/dataOutputAssociations/0",
+          "targetId": "Output_Link",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Main",
+        "occurrenceKey": "Output_Link_di",
+        "emittedType": "edge",
+        "lossClass": "relation-kind"
+      },
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/ioSpecification/dataInputs/0",
+          "targetId": "Input_Order",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Main",
+        "occurrenceKey": "Input_Order_di",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/semantic-type",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.semantic-type",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/ioSpecification/dataOutputs/0",
+          "targetId": "Output_Receipt",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Main",
+        "occurrenceKey": "Output_Receipt_di",
+        "emittedType": "node",
+        "lossClass": "semantic-type"
+      },
+      {
+        "code": "export-loss/metadata",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "drawing",
+        "messageKey": "export.loss.metadata",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/2/participants/1",
+          "targetId": "Band_Main",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Main",
+        "occurrenceKey": "Band_Main_di",
+        "emittedType": "node",
+        "lossClass": "metadata"
+      },
+      {
+        "code": "export-loss/metadata",
+        "severity": "warn",
+        "classification": "loss",
+        "stage": "export",
+        "ruleId": "export-aid-marker",
+        "messageKey": "export.loss.metadata",
+        "disposition": "mapped",
+        "source": {
+          "domain": "tree",
+          "pointer": "/rootElements/1/artifacts/1",
+          "targetId": "Aid_Scanner",
+          "provenance": "exact"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "pageId": "Page_Main",
+        "occurrenceKey": "Aid_Scanner_di",
+        "emittedType": "node",
+        "lossClass": "metadata"
+      }
+    ],
+    "rawStandardFindings": [],
+    "idMap": [
+      {
+        "sourceId": "Page_Main",
+        "resultId": "e_1",
+        "domain": "export",
+        "pageId": "Page_Main"
+      },
+      {
+        "sourceId": "Aid_Scanner",
+        "resultId": "e_2",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Aid_Scanner_di"
+      },
+      {
+        "sourceId": "Assoc_Aid",
+        "resultId": "e_16",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Assoc_Aid_di"
+      },
+      {
+        "sourceId": "Assoc_Policy",
+        "resultId": "e_17",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Assoc_Policy_di"
+      },
+      {
+        "sourceId": "Band_Main",
+        "resultId": "e_3",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Band_Main_di"
+      },
+      {
+        "sourceId": "End_Done",
+        "resultId": "e_4",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "End_Done_di"
+      },
+      {
+        "sourceId": "Flow_Back",
+        "resultId": "e_18",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Flow_Back_di"
+      },
+      {
+        "sourceId": "Flow_Check",
+        "resultId": "e_19",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Flow_Check_di"
+      },
+      {
+        "sourceId": "Flow_No",
+        "resultId": "e_20",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Flow_No_di"
+      },
+      {
+        "sourceId": "Flow_No",
+        "resultId": "e_26",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Flow_No_di"
+      },
+      {
+        "sourceId": "Flow_Ship",
+        "resultId": "e_21",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Flow_Ship_di"
+      },
+      {
+        "sourceId": "Flow_Start",
+        "resultId": "e_22",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Flow_Start_di"
+      },
+      {
+        "sourceId": "Flow_Yes",
+        "resultId": "e_23",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Flow_Yes_di"
+      },
+      {
+        "sourceId": "Flow_Yes",
+        "resultId": "e_27",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Flow_Yes_di"
+      },
+      {
+        "sourceId": "Gateway_Ok",
+        "resultId": "e_5",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Gateway_Ok_di"
+      },
+      {
+        "sourceId": "Input_Link",
+        "resultId": "e_24",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Input_Link_di"
+      },
+      {
+        "sourceId": "Input_Order",
+        "resultId": "e_6",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Input_Order_di"
+      },
+      {
+        "sourceId": "Lane_External",
+        "resultId": "e_7",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Lane_External_di"
+      },
+      {
+        "sourceId": "Lane_Work",
+        "resultId": "e_8",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Lane_Work_di"
+      },
+      {
+        "sourceId": "Output_Link",
+        "resultId": "e_25",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Output_Link_di"
+      },
+      {
+        "sourceId": "Output_Receipt",
+        "resultId": "e_9",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Output_Receipt_di"
+      },
+      {
+        "sourceId": "Pool_Main",
+        "resultId": "e_10",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Pool_Main_di"
+      },
+      {
+        "sourceId": "Start_Main",
+        "resultId": "e_11",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Start_Main_di"
+      },
+      {
+        "sourceId": "StoreRef_Policy",
+        "resultId": "e_12",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "StoreRef_Policy_di"
+      },
+      {
+        "sourceId": "Task_Check",
+        "resultId": "e_13",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Check_di"
+      },
+      {
+        "sourceId": "Task_Fix",
+        "resultId": "e_14",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Fix_di"
+      },
+      {
+        "sourceId": "Task_Ship",
+        "resultId": "e_15",
+        "domain": "export",
+        "pageId": "Page_Main",
+        "occurrenceKey": "Task_Ship_di"
+      }
+    ],
+    "artifacts": [
+      {
+        "format": "drawio",
+        "capability": "structural",
+        "digest": "7bd41ce07c34a1f6ab134cda68e68ce2013a2df10db05c0670fea9c82704708f",
+        "entryIndexes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ]
+  },
+  "capability": "structural",
+  "idMap": [
+    {
+      "sourceId": "Page_Main",
+      "resultId": "e_1",
+      "domain": "export",
+      "pageId": "Page_Main"
+    },
+    {
+      "sourceId": "Aid_Scanner",
+      "resultId": "e_2",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Aid_Scanner_di"
+    },
+    {
+      "sourceId": "Assoc_Aid",
+      "resultId": "e_16",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Assoc_Aid_di"
+    },
+    {
+      "sourceId": "Assoc_Policy",
+      "resultId": "e_17",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Assoc_Policy_di"
+    },
+    {
+      "sourceId": "Band_Main",
+      "resultId": "e_3",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Band_Main_di"
+    },
+    {
+      "sourceId": "End_Done",
+      "resultId": "e_4",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "End_Done_di"
+    },
+    {
+      "sourceId": "Flow_Back",
+      "resultId": "e_18",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Back_di"
+    },
+    {
+      "sourceId": "Flow_Check",
+      "resultId": "e_19",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Check_di"
+    },
+    {
+      "sourceId": "Flow_No",
+      "resultId": "e_20",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_No_di"
+    },
+    {
+      "sourceId": "Flow_No",
+      "resultId": "e_26",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_No_di"
+    },
+    {
+      "sourceId": "Flow_Ship",
+      "resultId": "e_21",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Ship_di"
+    },
+    {
+      "sourceId": "Flow_Start",
+      "resultId": "e_22",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Start_di"
+    },
+    {
+      "sourceId": "Flow_Yes",
+      "resultId": "e_23",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Yes_di"
+    },
+    {
+      "sourceId": "Flow_Yes",
+      "resultId": "e_27",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Flow_Yes_di"
+    },
+    {
+      "sourceId": "Gateway_Ok",
+      "resultId": "e_5",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Gateway_Ok_di"
+    },
+    {
+      "sourceId": "Input_Link",
+      "resultId": "e_24",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Input_Link_di"
+    },
+    {
+      "sourceId": "Input_Order",
+      "resultId": "e_6",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Input_Order_di"
+    },
+    {
+      "sourceId": "Lane_External",
+      "resultId": "e_7",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Lane_External_di"
+    },
+    {
+      "sourceId": "Lane_Work",
+      "resultId": "e_8",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Lane_Work_di"
+    },
+    {
+      "sourceId": "Output_Link",
+      "resultId": "e_25",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Output_Link_di"
+    },
+    {
+      "sourceId": "Output_Receipt",
+      "resultId": "e_9",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Output_Receipt_di"
+    },
+    {
+      "sourceId": "Pool_Main",
+      "resultId": "e_10",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Pool_Main_di"
+    },
+    {
+      "sourceId": "Start_Main",
+      "resultId": "e_11",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Start_Main_di"
+    },
+    {
+      "sourceId": "StoreRef_Policy",
+      "resultId": "e_12",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "StoreRef_Policy_di"
+    },
+    {
+      "sourceId": "Task_Check",
+      "resultId": "e_13",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Task_Check_di"
+    },
+    {
+      "sourceId": "Task_Fix",
+      "resultId": "e_14",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Task_Fix_di"
+    },
+    {
+      "sourceId": "Task_Ship",
+      "resultId": "e_15",
+      "domain": "export",
+      "pageId": "Page_Main",
+      "occurrenceKey": "Task_Ship_di"
+    }
+  ]
+}

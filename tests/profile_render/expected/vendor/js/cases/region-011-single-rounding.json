@@ -1,0 +1,124 @@
+{
+  "caseId": "region-011-single-rounding",
+  "operation": "layoutRegions",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "region-input",
+      "json": {
+        "page": {
+          "x": 0,
+          "y": 0,
+          "width": 1200000,
+          "height": 640000
+        },
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 4000,
+          "height": 70000
+        },
+        "tokens": {
+          "headerWidth": 0,
+          "padding": 0,
+          "gap": 0,
+          "minHeight": 0
+        },
+        "items": [
+          {
+            "elementId": "Input_A",
+            "occurrenceKey": "Input_A_di",
+            "object": {
+              "width": 301,
+              "height": 64000
+            },
+            "label": {
+              "width": 0,
+              "height": 0
+            },
+            "anchor": {
+              "x": 1000,
+              "y": 1000,
+              "width": 1003,
+              "height": 10
+            }
+          },
+          {
+            "elementId": "Input_B",
+            "occurrenceKey": "Input_B_di",
+            "object": {
+              "width": 10,
+              "height": 64001
+            },
+            "label": {
+              "width": 0,
+              "height": 0
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": {
+          "pageBounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1200000,
+            "height": 640000
+          },
+          "body": {
+            "x": 0,
+            "y": 0,
+            "width": 4000,
+            "height": 70000
+          },
+          "items": [
+            {
+              "elementId": "Input_A",
+              "occurrenceKey": "Input_A_di",
+              "bounds": {
+                "x": 1351,
+                "y": 0,
+                "width": 301,
+                "height": 64000
+              },
+              "labelBounds": {
+                "x": 1502,
+                "y": 64000,
+                "width": 0,
+                "height": 0
+              }
+            },
+            {
+              "elementId": "Input_B",
+              "occurrenceKey": "Input_B_di",
+              "bounds": {
+                "x": 1652,
+                "y": 0,
+                "width": 10,
+                "height": 64001
+              },
+              "labelBounds": {
+                "x": 1657,
+                "y": 64001,
+                "width": 0,
+                "height": 0
+              }
+            }
+          ]
+        },
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

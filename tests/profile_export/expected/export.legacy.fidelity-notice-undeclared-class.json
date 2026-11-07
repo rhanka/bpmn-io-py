@@ -1,0 +1,73 @@
+{
+  "case": "export.legacy.fidelity-notice-undeclared-class",
+  "clause": "DESIGN R3.3 \u00a710.2 legacy diagnostic adapter table; \u00a710.1 adapters",
+  "witness": "a FidelityNotice maps only when the manifest declares its loss class",
+  "derivation": "style-dropped is listed with lossClasses [appearance]; the notice carries the closed class metadata, which this manifest entry does not declare: it fails closed as legacy-unmapped (both conditions are required: closed class and manifest-declared class; DESIGN \u00a710.2 'each adapter publishes its finite per-code manifest', harmonization L4). Adapter-originated entries use ruleId adapter (DESIGN \u00a76.4 adapter convention; harmonization B24).",
+  "operation": "mapLegacyDiagnostics",
+  "input": {
+    "legacy": {
+      "producer": "fidelity-notice",
+      "code": "style-dropped",
+      "lossClass": "metadata"
+    },
+    "manifest": {
+      "adapter": "legacy-export/1",
+      "entries": [
+        {
+          "producer": "io-error",
+          "legacyCode": "unknown-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "unsupported-format"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "invalid-reference"
+        },
+        {
+          "producer": "io-error",
+          "legacyCode": "missing-endpoint"
+        },
+        {
+          "producer": "fidelity-notice",
+          "legacyCode": "style-dropped",
+          "lossClasses": [
+            "appearance"
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      {
+        "code": "legacy-unmapped",
+        "severity": "error",
+        "classification": "integrity",
+        "stage": "export",
+        "ruleId": "adapter",
+        "messageKey": "legacy.unmapped",
+        "disposition": "refused",
+        "source": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "result": {
+          "domain": "none",
+          "pointer": null,
+          "targetId": null,
+          "provenance": "unavailable"
+        },
+        "beforePresent": false,
+        "afterPresent": false,
+        "legacyCode": "style-dropped"
+      }
+    ],
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

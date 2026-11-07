@@ -1,0 +1,49 @@
+{
+  "case": "compile-upstream-duplicate-across-entries",
+  "clause": "DESIGN R3.3 \u00a78.3 L659 each upstream ID maps to exactly one enabled surface recipe; duplicate mappings are a compile error",
+  "derivation": "UI entry Zeta-task (index 2) is changed to list create.task, already listed by task-create. One upstream ID then maps to two entries; the DESIGN names no code, so the lot-5 binding uses the CR-05 namespace-uniqueness code profile-symbol (DESIGN L190). Seal fix round: the outcome is the complete PureResult refusal (empty diagnostics) of loading and compiling the committed profile bytes of input.profile.artifact.",
+  "author": "spec-seal",
+  "input": {
+    "profile": {
+      "fixture": "fixture-profile-neutral.json",
+      "delta": [
+        {
+          "op": "replace",
+          "path": "/ui/2/upstreamEntries",
+          "value": [
+            "create.task"
+          ]
+        }
+      ],
+      "artifact": "artifacts/profiles/compile-upstream-duplicate-across-entries.json"
+    }
+  },
+  "expected": {
+    "compile": {
+      "status": "refused",
+      "code": "profile-symbol",
+      "diagnostics": []
+    }
+  },
+  "derived": {
+    "identity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral/1",
+      "version": "1.6.0",
+      "sha256": "92a160ce956745f9384e70b154c48344349f3a6e71d56686cdad1a1e290a0168",
+      "base": {
+        "id": "neutral-base/1",
+        "version": "lot5-1",
+        "sha256": "d4792e70fc82169cf7043baa0de4d83b06230c8f4142a1566af8176edcf87768"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-descriptors/1",
+          "version": "lot5-1",
+          "sha256": "022a9bceb4171bfb1dc1102d5d5eb446594cf9bef3791139ce333139353bc067"
+        }
+      ]
+    }
+  }
+}

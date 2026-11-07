@@ -1,0 +1,16 @@
+{
+  "case": "cn-compile-create-identity-mismatch",
+  "clause": "DESIGN R3.3 §2.4 create identity; §2.4.1 CR-07",
+  "author": "spec-seal",
+  "operation": "compile_profile",
+  "profile": "neutral-containment-task",
+  "derivation": "Hand review: create-task's create step is rewritten with identity containment and no ownerId/slot/key (schema-valid: containment forbids the allocator fields). The type bpmn:Task is known and ID-bearing (id true in the neutral descriptors, Task.id admitted by the base); DESIGN §2.4 'identity:containment ... the compiler must prove that the effective base excludes id for this type' and CR-07 'allocated/containment agree with effective id admission' fail; the declared write {owner,/flowElements,create} still matches. Expected: refused profile-create-identity. Wire shape (parity sync PS-25): a compile refusal is exactly the PureResult {status: refused, code, diagnostics: []}.",
+  "input": {
+    "variant": "neutral-containment-task"
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-create-identity",
+    "diagnostics": []
+  }
+}

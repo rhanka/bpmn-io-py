@@ -1,0 +1,43 @@
+{
+  "caseId": "layout-011-geometry-theme-gated",
+  "operation": "layout",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/main.envelope.json",
+      "sha256": "407e44da330ed1d26bd6e151411ae9415dd3771b6915f84b553c10120d81c61f"
+    },
+    {
+      "role": "placements",
+      "path": "lot4-layout-export/expectations/artifacts/main.placements.json",
+      "sha256": "4cf87df1d2bd304b8a014c3c3fc4370325b49496ee8f39ee1eb388958d88a4a4"
+    },
+    {
+      "role": "base-geometry",
+      "path": "lot4-layout-export/expectations/artifacts/main-wide-own.base-geometry.json",
+      "sha256": "070b165f3bfe02f92255ef1bd260f00220818b1a3fafd5c1cf7e8f6b83b7fab6"
+    },
+    {
+      "role": "themeId",
+      "json": "wide-own"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/layout-011-geometry-theme-gated.result.json",
+      "sha256": "099e0c49b8b66016e2f90774b835c50147b77d9d7e13187ddbf0ed5bfb2926f4"
+    }
+  ],
+  "expectedStatus": "refused:profile-open",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

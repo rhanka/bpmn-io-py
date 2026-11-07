@@ -1,0 +1,152 @@
+{
+  "case": "cn-plan-lane-member-support",
+  "clause": "DESIGN R3.3 §2.4 action grammar; §2.4.1 action/write matrix; §2.5 planRecipe/applyPlan; §2.5 ReadContext descriptor index; §2.4 assignRef cardinality",
+  "author": "spec-seal",
+  "operation": "plan_recipe+apply_plan",
+  "profile": "support-cmd",
+  "derivation": "assign-lane-member on the support-cmd profile. planRecipe reads the descriptor index of its own ReadContext and records it in the write: bpmn:Lane.flowNodeRef is single-valued with targetTypes ['bpmn:Task'] in this profile's descriptors. applyPlan(plan, stagedTree, stagedEnvelope) has no descriptor argument (DESIGN §2.5) and applies the carried facts: the stored value is \"Task_A\". The twin case on the other profile stores the other form, so a runtime resolving facts from ambient or global state fails one of them.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-support-cmd/1",
+        "version": "1.1.0",
+        "sha256": "1d9c294f911262b3c4bf28deea69e641f4f26e8580f19a8d4cbf40b977ab19f1",
+        "base": {
+          "id": "neutral-base/1",
+          "version": "fixture-2",
+          "sha256": "47b7487e06f5bf70ddd99e957c01d023662503f9d2cba3c7f97edf7ad84c0f80"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-descriptors/1",
+            "version": "fixture-2",
+            "sha256": "fb336396bc174f1a0d1453aee4ee3f235c74bfab923b5485ad6fe203201e5165"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_support",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_A",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_A",
+                "name": "Work"
+              }
+            ],
+            "laneSets": [
+              {
+                "$type": "bpmn:LaneSet",
+                "id": "LaneSet_A",
+                "name": "Roles",
+                "lanes": [
+                  {
+                    "$type": "bpmn:Lane",
+                    "id": "Lane_A",
+                    "name": "Team"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "c6ea6e6914732ee7d88a580135946df111fe8ce46ff21e47cf6d932850adb045"
+    },
+    "recipe": "assign-lane-member",
+    "params": {
+      "lane": "Lane_A",
+      "node": "Task_A"
+    },
+    "authority": {
+      "actor": "editor",
+      "activation": "edit",
+      "deletionIntent": false
+    }
+  },
+  "expected": {
+    "plan": {
+      "status": "ok",
+      "payload": {
+        "planVersion": "1",
+        "phase": "edit",
+        "actor": "editor",
+        "activation": "edit",
+        "baseRevision": "c6ea6e6914732ee7d88a580135946df111fe8ce46ff21e47cf6d932850adb045",
+        "writes": [
+          {
+            "op": "assignRef",
+            "recipeId": "assign-lane-member",
+            "target": {
+              "id": "Lane_A"
+            },
+            "property": "flowNodeRef",
+            "mode": "replace",
+            "ids": [
+              "Task_A"
+            ],
+            "cardinality": "single",
+            "targetTypes": [
+              "bpmn:Task"
+            ]
+          }
+        ]
+      },
+      "diagnostics": []
+    },
+    "apply": {
+      "status": "ok",
+      "payload": {
+        "reportVersion": "change/1",
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_support",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_A",
+                  "name": "Work"
+                }
+              ],
+              "laneSets": [
+                {
+                  "$type": "bpmn:LaneSet",
+                  "id": "LaneSet_A",
+                  "name": "Roles",
+                  "lanes": [
+                    {
+                      "$type": "bpmn:Lane",
+                      "id": "Lane_A",
+                      "name": "Team",
+                      "flowNodeRef": "Task_A"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "entries": [],
+        "placements": [],
+        "created": [],
+        "removed": []
+      },
+      "diagnostics": []
+    }
+  }
+}

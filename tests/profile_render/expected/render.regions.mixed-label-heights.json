@@ -1,0 +1,120 @@
+{
+  "case": "render.regions.mixed-label-heights",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
+  "witness": "object centres stay on one line when label heights differ (no per-stack centring)",
+  "derivation": "Two 36000x50000 objects with labels 30000x14000 and 30000x28000, tokens 30000/10000/20000/60000, anchors centred at 230000 and 490000: lefts 212000, 472000; RH = max(60000, 78000 + 20000) = 98000; A = 25000, B = max(39000, 53000) = 53000, cy = max(25000, (98000 + 25000 - 53000)/2) = 35000: both objects at y 10000 and both labels at y 60000 (a per-stack centring would put the first object at y 17000, centre 42000, off the row line; DESIGN \u00a79.4 'align centers on one IO row'). Row rule (spec \u00a74.3): items in \u00a77.2 placement order; footprint max(object, label) width; left = anchor centre - footprint/2 when the anchor is shown, else contentLeft or previous right + gap; clamp to contentLeft; collision shifts right; one row at the top of the support body [Ly, Ly+RH], RH = max(minHeight, max(object+label) + 2 padding) (harmonization K2); every object centre lies on one line cy = Ly + max(A, (RH + A - B)/2), A = max h/2, B = max(h/2 + label height), so the union of the stacks is centred in the row (DESIGN \u00a79.4 'align centers on one IO row'); exact rationals, one roundEven per output coordinate.",
+  "operation": "layoutRegions",
+  "input": {
+    "region": {
+      "page": {
+        "x": 0,
+        "y": 0,
+        "width": 1200000,
+        "height": 640000
+      },
+      "body": {
+        "x": 30000,
+        "y": 0,
+        "width": 1070000,
+        "height": 150000
+      },
+      "tokens": {
+        "headerWidth": 30000,
+        "padding": 10000,
+        "gap": 20000,
+        "minHeight": 60000
+      },
+      "items": [
+        {
+          "elementId": "Input_A",
+          "occurrenceKey": "Input_A_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          },
+          "label": {
+            "width": 30000,
+            "height": 14000
+          },
+          "anchor": {
+            "x": 180000,
+            "y": 260000,
+            "width": 100000,
+            "height": 80000
+          }
+        },
+        {
+          "elementId": "Input_B",
+          "occurrenceKey": "Input_B_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          },
+          "label": {
+            "width": 30000,
+            "height": 28000
+          },
+          "anchor": {
+            "x": 440000,
+            "y": 260000,
+            "width": 100000,
+            "height": 80000
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "pageBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1200000,
+        "height": 640000
+      },
+      "body": {
+        "x": 30000,
+        "y": 0,
+        "width": 1070000,
+        "height": 150000
+      },
+      "items": [
+        {
+          "elementId": "Input_A",
+          "occurrenceKey": "Input_A_di",
+          "bounds": {
+            "x": 212000,
+            "y": 10000,
+            "width": 36000,
+            "height": 50000
+          },
+          "labelBounds": {
+            "x": 215000,
+            "y": 60000,
+            "width": 30000,
+            "height": 14000
+          }
+        },
+        {
+          "elementId": "Input_B",
+          "occurrenceKey": "Input_B_di",
+          "bounds": {
+            "x": 472000,
+            "y": 10000,
+            "width": 36000,
+            "height": 50000
+          },
+          "labelBounds": {
+            "x": 475000,
+            "y": 60000,
+            "width": 30000,
+            "height": 28000
+          }
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

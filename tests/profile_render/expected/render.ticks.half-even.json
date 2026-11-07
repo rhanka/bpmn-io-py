@@ -1,0 +1,32 @@
+{
+  "case": "render.ticks.half-even",
+  "clause": "DESIGN R3.3 \u00a73.1 Canonicalization (rounding, ticks)",
+  "witness": "pt values times 1000 round once, ties to even (also below zero)",
+  "derivation": "0.0005, 0.0015, 0.0025, 0.0035 are 0.5, 1.5, 2.5, 3.5 ticks -> 0, 2, 2, 4; the negative ties -0.5, -1.5, -2.5 -> 0, -2, -2 (negative zero is written 0).",
+  "operation": "layoutTicks",
+  "input": {
+    "points": [
+      0.0005,
+      0.0015,
+      0.0025,
+      0.0035,
+      -0.0005,
+      -0.0015,
+      -0.0025
+    ]
+  },
+  "expected": {
+    "status": "ok",
+    "payload": [
+      0,
+      2,
+      2,
+      4,
+      0,
+      -2,
+      -2
+    ],
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

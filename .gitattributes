@@ -7,3 +7,9 @@ tests/upstream/** -text
 contracts/** -text
 tests/oracle/profile_references.mjs -text
 tests/oracle/profile_c14n.mjs -text
+# Vendored JS parity cases and seals of lots 3-5, pinned by their
+# MANIFEST.sha256 and by the descriptor/profile pins they carry.
+tests/profile_cn/expected/** -text
+tests/profile_commands/expected/** -text
+tests/profile_export/expected/** -text
+tests/profile_render/expected/** -text

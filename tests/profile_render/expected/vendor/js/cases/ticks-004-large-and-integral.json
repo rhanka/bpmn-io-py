@@ -1,0 +1,40 @@
+{
+  "caseId": "ticks-004-large-and-integral",
+  "operation": "layoutTicks",
+  "phase": null,
+  "profileArtifact": null,
+  "inputArtifacts": [
+    {
+      "role": "points",
+      "json": [
+        152.5,
+        1000,
+        123456.789,
+        123456789012.345,
+        -1234.5675,
+        98765.4325
+      ]
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "payload": [
+          152500,
+          1000000,
+          123456789,
+          123456789012345,
+          -1234568,
+          98765432
+        ],
+        "diagnostics": []
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1"
+  ]
+}

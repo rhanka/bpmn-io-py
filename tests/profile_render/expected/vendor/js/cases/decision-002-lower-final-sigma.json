@@ -1,0 +1,52 @@
+{
+  "caseId": "decision-002-lower-final-sigma",
+  "operation": "resolveTheme",
+  "phase": null,
+  "profileArtifact": {
+    "path": "lot4-layout-export/expectations/artifacts/neutral-lot4-profile.json",
+    "sha256": "6b8f27c2ef5778cf29882fa8c7278b4945eb409105ebaf5ceb4e97c6c25b26c6"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "path": "lot4-layout-export/expectations/artifacts/choices.envelope.json",
+      "sha256": "38d28f627fb5e0b6f739ef218db7ac74a249fe3f7ec34640bb436dc2f390432d"
+    },
+    {
+      "role": "layout",
+      "path": "lot4-layout-export/expectations/artifacts/choices-lower.layout.json",
+      "sha256": "2d32aee2ca1bb9f05d8a52fd867c3b19b84944f060af4287a8a4dfbcb77a5b9f"
+    },
+    {
+      "role": "themeId",
+      "json": "lowered"
+    },
+    {
+      "role": "overrides",
+      "json": {
+        "semantic": [],
+        "occurrence": []
+      }
+    },
+    {
+      "role": "diStyles",
+      "json": {
+        "native": [],
+        "bioc": []
+      }
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "path": "lot4-layout-export/expectations/artifacts/choices-lowered.resolve-result.json",
+      "sha256": "ed8cc8ca6a175c3fef8ef662be15e2e2dacf42ffdcb3b65bd0e547efdce2a15e"
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-exact/1",
+    "profile-report/2",
+    "source-immutability/1"
+  ]
+}

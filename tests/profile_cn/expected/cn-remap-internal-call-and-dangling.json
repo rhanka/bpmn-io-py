@@ -1,0 +1,362 @@
+{
+  "case": "cn-remap-internal-call-and-dangling",
+  "clause": "DESIGN R3.3 §5.2 ID remapping (separate approved import migration); §13 OPEN-ID; §7.3 ID remaps, native references",
+  "author": "spec-seal",
+  "operation": "remap_ids",
+  "profile": "cn-n",
+  "derivation": "The approved command renames Process_sub and Task_m. Call_in's internal calledElement is rewritten to Process_child and the DI shape of Task_m now names Task_main (DI object ids unchanged); Call_out's calledElement names no in-document element: remapIds keeps it unchanged (never fetched) and reports one observed reference-dangling integrity entry (stage import, ruleId remap-ids, at <Call_out>/calledElement; H C2, B9) and succeeds. idMap lists every ID-bearing element. Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_map",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_main",
+            "isExecutable": false,
+            "flowElements": [
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_in",
+                "name": "Call child",
+                "calledElement": "Process_sub"
+              },
+              {
+                "$type": "bpmn:CallActivity",
+                "id": "Call_out",
+                "name": "Call outside",
+                "calledElement": "Process_external"
+              },
+              {
+                "$type": "bpmn:Task",
+                "id": "Task_m",
+                "name": "Main work"
+              }
+            ]
+          },
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_sub",
+            "isExecutable": false
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "b82ad8b0820f10ecf11e942cd21bf6a9d9916c42b64816abda6a023f7302f47e"
+    },
+    "importedDi": {
+      "descriptorDigest": "e3acf62669c4c0dbd5e9ed8990fe82fa3da9fd418926c8fe4171dd7147ec900c",
+      "diagrams": [
+        {
+          "$type": "bpmndi:BPMNDiagram",
+          "id": "Diagram_map",
+          "plane": {
+            "$type": "bpmndi:BPMNPlane",
+            "id": "Diagram_map_plane",
+            "bpmnElement": "Process_main",
+            "planeElement": [
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "Shape_call",
+                "bpmnElement": "Call_in",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 100,
+                  "y": 80,
+                  "width": 100,
+                  "height": 80
+                }
+              },
+              {
+                "$type": "bpmndi:BPMNShape",
+                "id": "Shape_task",
+                "bpmnElement": "Task_m",
+                "bounds": {
+                  "$type": "dc:Bounds",
+                  "x": 200,
+                  "y": 80,
+                  "width": 100,
+                  "height": 80
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "sha256": "33fb32daedea672f45f3a1cb1004e04ad0d8020917eb44d858e703dc0bada86a"
+    },
+    "command": {
+      "kind": "id-remap",
+      "approved": true,
+      "approval": "technical",
+      "map": [
+        {
+          "sourceId": "Process_sub",
+          "resultId": "Process_child",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Task_m",
+          "resultId": "Task_main",
+          "domain": "migration"
+        }
+      ],
+      "referenceFreeAttestations": []
+    },
+    "activation": "qualification"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "remapIds",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-n/1",
+      "version": "1.0.0",
+      "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "b82ad8b0820f10ecf11e942cd21bf6a9d9916c42b64816abda6a023f7302f47e",
+    "revision": "a911386adb4f266d5c1205ebe938b98cd9cf21c65765346ce4d82c557207f021",
+    "report": {
+      "reportVersion": "2",
+      "operation": "remapIds",
+      "entries": [
+        {
+          "code": "reference-dangling",
+          "severity": "error",
+          "classification": "integrity",
+          "stage": "import",
+          "ruleId": "remap-ids",
+          "messageKey": "reference-dangling",
+          "disposition": "observed",
+          "source": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/calledElement",
+            "targetId": "Call_out",
+            "provenance": "exact"
+          },
+          "result": {
+            "domain": "tree",
+            "pointer": "/rootElements/0/flowElements/1/calledElement",
+            "targetId": "Call_out",
+            "provenance": "exact"
+          },
+          "beforePresent": true,
+          "afterPresent": true,
+          "before": "Process_external",
+          "after": "Process_external",
+          "property": "calledElement"
+        }
+      ],
+      "rawStandardFindings": [],
+      "idMap": [
+        {
+          "sourceId": "Call_in",
+          "resultId": "Call_in",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Call_out",
+          "resultId": "Call_out",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Definitions_map",
+          "resultId": "Definitions_map",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Process_main",
+          "resultId": "Process_main",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Process_sub",
+          "resultId": "Process_child",
+          "domain": "migration"
+        },
+        {
+          "sourceId": "Task_m",
+          "resultId": "Task_main",
+          "domain": "migration"
+        }
+      ],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-n/1",
+        "version": "1.0.0",
+        "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "b82ad8b0820f10ecf11e942cd21bf6a9d9916c42b64816abda6a023f7302f47e",
+      "outputRevision": "a911386adb4f266d5c1205ebe938b98cd9cf21c65765346ce4d82c557207f021"
+    },
+    "payload": {
+      "envelope": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn-n/1",
+          "version": "1.0.0",
+          "sha256": "2c08eef06669646b88562d6051aa1d499327c33c1cfde14e02c8f3f5c7b559e0",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-1",
+            "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-1",
+              "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_map",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_main",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_in",
+                  "name": "Call child",
+                  "calledElement": "Process_child"
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_out",
+                  "name": "Call outside",
+                  "calledElement": "Process_external"
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_main",
+                  "name": "Main work"
+                }
+              ]
+            },
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_child",
+              "isExecutable": false
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "a911386adb4f266d5c1205ebe938b98cd9cf21c65765346ce4d82c557207f021"
+      },
+      "importedDi": {
+        "descriptorDigest": "e3acf62669c4c0dbd5e9ed8990fe82fa3da9fd418926c8fe4171dd7147ec900c",
+        "diagrams": [
+          {
+            "$type": "bpmndi:BPMNDiagram",
+            "id": "Diagram_map",
+            "plane": {
+              "$type": "bpmndi:BPMNPlane",
+              "id": "Diagram_map_plane",
+              "bpmnElement": "Process_main",
+              "planeElement": [
+                {
+                  "$type": "bpmndi:BPMNShape",
+                  "id": "Shape_call",
+                  "bpmnElement": "Call_in",
+                  "bounds": {
+                    "$type": "dc:Bounds",
+                    "x": 100,
+                    "y": 80,
+                    "width": 100,
+                    "height": 80
+                  }
+                },
+                {
+                  "$type": "bpmndi:BPMNShape",
+                  "id": "Shape_task",
+                  "bpmnElement": "Task_main",
+                  "bounds": {
+                    "$type": "dc:Bounds",
+                    "x": 200,
+                    "y": 80,
+                    "width": 100,
+                    "height": 80
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "sha256": "3570e06bf7437b9b189a128bd04a3536cabce23eadf76c161e21d227648afc3e"
+      }
+    }
+  }
+}

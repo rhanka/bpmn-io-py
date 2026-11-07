@@ -1,0 +1,91 @@
+{
+  "layoutVersion": "1",
+  "pages": [
+    {
+      "pageId": "Z-page",
+      "name": "First sheet",
+      "order": 0,
+      "semanticRootId": "Process_1",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1000000,
+        "height": 800000
+      }
+    },
+    {
+      "pageId": "A-page",
+      "name": "Second sheet",
+      "order": 1,
+      "semanticRootId": "Process_1",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 1000000,
+        "height": 800000
+      }
+    }
+  ],
+  "geometry": [
+    {
+      "pageId": "Z-page",
+      "occurrenceKey": "a-first",
+      "semanticId": "Task_A",
+      "role": "content",
+      "bounds": {
+        "x": 100000,
+        "y": 100000,
+        "width": 100000,
+        "height": 80000
+      }
+    },
+    {
+      "pageId": "Z-page",
+      "occurrenceKey": "z-last",
+      "semanticId": "Task_B",
+      "role": "content",
+      "bounds": {
+        "x": 300000,
+        "y": 100000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Ready",
+        "bounds": {
+          "x": 300000,
+          "y": 100000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Ready"
+        ]
+      }
+    },
+    {
+      "pageId": "A-page",
+      "occurrenceKey": "a-last-page",
+      "semanticId": "Task_B",
+      "role": "content",
+      "bounds": {
+        "x": 100000,
+        "y": 100000,
+        "width": 100000,
+        "height": 80000
+      },
+      "label": {
+        "text": "Ready",
+        "bounds": {
+          "x": 100000,
+          "y": 100000,
+          "width": 100000,
+          "height": 80000
+        },
+        "lines": [
+          "Ready"
+        ]
+      }
+    }
+  ]
+}

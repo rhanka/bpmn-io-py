@@ -1,0 +1,59 @@
+{
+  "case": "render.template.corner-fold-tie-up",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "corner-fold size roundEven(min(w,h)*foldRatio) and its three-point path",
+  "derivation": "80006 x 0.25 = 20001.5, tie to even 20002; path (x+w-fold,y),(x+w-fold,y+fold),(x+w,y+fold) gives the listed points.",
+  "operation": "templateGeometry",
+  "input": {
+    "glyph": {
+      "id": "fold",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        100,
+        80
+      ],
+      "commands": [],
+      "template": "corner-fold",
+      "parameters": [
+        {
+          "name": "foldRatio",
+          "value": 0.25
+        },
+        {
+          "name": "headerRotation",
+          "value": 0
+        }
+      ]
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 80006,
+      "height": 90000
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "fold": 20002,
+      "foldPath": [
+        {
+          "x": 60004,
+          "y": 0
+        },
+        {
+          "x": 60004,
+          "y": 20002
+        },
+        {
+          "x": 80006,
+          "y": 20002
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

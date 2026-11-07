@@ -1,0 +1,72 @@
+{
+  "case": "render.template.corner-fold-rotation-center-up",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "rotation centre ties round to the even neighbour upwards",
+  "derivation": "headerRotation 270; label bounds (100001,200001,50001,20001): centre x = 125001.5 -> 125002, y = 210001.5 -> 210002.",
+  "operation": "templateGeometry",
+  "input": {
+    "glyph": {
+      "id": "fold",
+      "kind": "template",
+      "viewBox": [
+        0,
+        0,
+        100,
+        80
+      ],
+      "commands": [],
+      "template": "corner-fold",
+      "parameters": [
+        {
+          "name": "foldRatio",
+          "value": 0.25
+        },
+        {
+          "name": "headerRotation",
+          "value": 270
+        }
+      ]
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 100000,
+      "height": 80000
+    },
+    "labelBounds": {
+      "x": 100001,
+      "y": 200001,
+      "width": 50001,
+      "height": 20001
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "fold": 20000,
+      "foldPath": [
+        {
+          "x": 80000,
+          "y": 0
+        },
+        {
+          "x": 80000,
+          "y": 20000
+        },
+        {
+          "x": 100000,
+          "y": 20000
+        }
+      ],
+      "labelRotation": {
+        "angle": 270,
+        "center": {
+          "x": 125002,
+          "y": 210002
+        }
+      }
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

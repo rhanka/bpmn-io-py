@@ -7,6 +7,7 @@ UTF-16 ordering. Wire field names stay exactly DESIGN's.
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass
 from typing import Final, Literal
 
@@ -28,6 +29,8 @@ __all__ = [
     "make_report",
     "pure_refused",
     "pure_success",
+    "refused_result",
+    "report_with_header",
     "result_refused",
     "result_success",
     "sort_id_map",
@@ -468,3 +471,59 @@ def worst_capability(values: list[str]) -> str:
         message = f"unknown capability {worst!r}"
         raise ValueError(message)
     return worst
+
+
+# Lot 4 (read-only operation reports, DESIGN R3.3 §10.1): every Result/1
+# operation of this lot is read-only, so input and output identities and
+# revisions coincide; refusals echo the input envelope identity/revision
+# and carry the unified findings as both entries and diagnostics.
+def report_with_header(  # noqa: PLR0913, PLR0917 - fixed header frame
+    operation: str,
+    identity: dict[str, object],
+    revision: str,
+    entries: tuple[ReportEntry, ...] | list[ReportEntry] = (),
+    id_map: tuple[dict[str, object], ...] | list[dict[str, object]] = (),
+    artifacts: tuple[dict[str, object], ...] | list[dict[str, object]] = (),
+) -> Report:
+    """Build one read-only Report/2 with the §3.2 success header."""
+    return Report(
+        operation=operation,
+        entries=tuple(entries),
+        raw_standard_findings=(),
+        id_map=tuple(id_map),
+        artifacts=tuple(artifacts),
+        source_identity=copy.deepcopy(identity),
+        target_identity=copy.deepcopy(identity),
+        input_revision=revision,
+        output_revision=revision,
+    )
+
+
+def refused_result(
+    operation: str,
+    code: str,
+    identity: dict[str, object] | None,
+    revision: str | None,
+    entries: tuple[ReportEntry, ...] | list[ReportEntry] = (),
+) -> ResultRefused:
+    """Build one read-only refusal with echoed identity and entry diagnostics."""
+    wired = [entry.to_json() for entry in sort_report_entries(entries)]
+    report = Report(
+        operation=operation,
+        entries=tuple(entries),
+        raw_standard_findings=(),
+        id_map=(),
+        artifacts=(),
+        source_identity=copy.deepcopy(identity) if identity is not None else None,
+        target_identity=None,
+        input_revision=revision,
+        output_revision=None,
+    )
+    return ResultRefused(
+        operation=operation,
+        code=code,
+        diagnostics=tuple(wired),
+        report=report,
+        profile_identity=copy.deepcopy(identity) if identity is not None else None,
+        base_revision=revision,
+    )

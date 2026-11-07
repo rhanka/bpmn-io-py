@@ -1,0 +1,37 @@
+{
+  "case": "render.compile.template-param-missing",
+  "clause": "DESIGN R3.3 \u00a79.3 Per-notion style, text and glyph contracts",
+  "witness": "template glyph without its exact parameter set",
+  "derivation": "Added header-band glyph with parameters []; headerHeight is missing, CR-09 refuses profile-glyph-shape. Parity sync PS-25: a compileProfile refusal is the PureResult record {status, code, diagnostics: []} (DESIGN \u00a710.1 L737); compile refusals carry no diagnostic.",
+  "operation": "compileProfile",
+  "input": {
+    "profile": {
+      "base": "neutral-profile.json",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/themes/0/glyphs/-",
+          "value": {
+            "id": "band",
+            "kind": "template",
+            "viewBox": [
+              0,
+              0,
+              100,
+              80
+            ],
+            "commands": [],
+            "template": "header-band",
+            "parameters": []
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "refused",
+    "code": "profile-glyph-shape",
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

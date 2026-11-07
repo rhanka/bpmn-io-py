@@ -9,6 +9,17 @@ from __future__ import annotations
 
 from bpmn_io.profile._bridge import HeadlessBridge, create_bridge
 from bpmn_io.profile._c14n import digest, digest_bytes, jcs, jcs_bytes
+
+# Lot 3 (recipes, C, supports, import adapters): one contiguous block.
+from bpmn_io.profile._cn_apply import apply_plan
+from bpmn_io.profile._cn_complete import complete
+from bpmn_io.profile._cn_context import Authority, create_read_context
+from bpmn_io.profile._cn_gates import GATES
+from bpmn_io.profile._cn_import import import_projection
+from bpmn_io.profile._cn_normalize import normalize, sort_placements
+from bpmn_io.profile._cn_plan import plan_recipe
+from bpmn_io.profile._cn_remap import remap_ids
+from bpmn_io.profile._cn_supports import bind_supports, propose_support_bindings
 from bpmn_io.profile._compat import check_compatibility
 from bpmn_io.profile._compiler import (
     CompiledProfile,
@@ -42,6 +53,7 @@ from bpmn_io.profile._inventory import (
 from bpmn_io.profile._lexical import LexicalError, LexicalOk, check_lexical
 from bpmn_io.profile._lint import lint
 from bpmn_io.profile._loader import ValidatedProfile, load_profile
+from bpmn_io.profile._queries import localize as localize
 from bpmn_io.profile._results import (
     STAGE_ORDER,
     Coordinate,
@@ -77,7 +89,7 @@ from bpmn_io.profile._unicode_case import (
     upper_full,
 )
 
-__all__ = [
+__all__ = [  # noqa: RUF022 - lots append contiguous per-lot blocks
     "CLOSED_KEYWORDS",
     "INVENTORY_HASHES",
     "PATTERN_INVENTORY",
@@ -121,6 +133,8 @@ __all__ = [
     "jcs_bytes",
     "lint",
     "load_profile",
+    # lot 5: headless command and field surface.
+    "localize",
     "lower_full",
     "make_coordinate",
     "make_imported_di",
@@ -141,4 +155,17 @@ __all__ = [
     "validate_bindings",
     "validate_envelope",
     "worst_capability",
+    # Lot 3 (recipes, C, supports, import adapters): one contiguous block.
+    "Authority",
+    "GATES",
+    "apply_plan",
+    "bind_supports",
+    "complete",
+    "create_read_context",
+    "import_projection",
+    "normalize",
+    "plan_recipe",
+    "propose_support_bindings",
+    "remap_ids",
+    "sort_placements",
 ]

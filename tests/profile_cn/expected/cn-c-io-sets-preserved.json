@@ -1,0 +1,250 @@
+{
+  "case": "cn-c-io-sets-preserved",
+  "clause": "DESIGN R3.3 §7.1 Completion C (Sets); §16 item 8",
+  "author": "spec-seal",
+  "operation": "complete",
+  "profile": "cn-c",
+  "derivation": "Two InputSets and one OutputSet already cover every declared IO: no default set is created, no membership is removed or reordered, the result equals the input and the report has no entry (baseRevision = revision). Report header (H B4): sourceIdentity and targetIdentity are the envelope identity, inputRevision is baseRevision, outputRevision is revision.",
+  "input": {
+    "envelope": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_sets",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_IO2",
+            "isExecutable": false,
+            "ioSpecification": {
+              "$type": "bpmn:InputOutputSpecification",
+              "dataInputs": [
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "DI_1",
+                  "name": "One"
+                },
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "DI_2",
+                  "name": "Two"
+                }
+              ],
+              "dataOutputs": [
+                {
+                  "$type": "bpmn:DataOutput",
+                  "id": "DO_1",
+                  "name": "Result"
+                }
+              ],
+              "inputSets": [
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "IS_A",
+                  "dataInputRefs": [
+                    "DI_1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "IS_B",
+                  "dataInputRefs": [
+                    "DI_2"
+                  ]
+                }
+              ],
+              "outputSets": [
+                {
+                  "$type": "bpmn:OutputSet",
+                  "id": "OS_A",
+                  "dataOutputRefs": [
+                    "DO_1"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "9860ad85be0f244909ce89b3a126e770ea1eb80e7ba8461eb59886f50772b347"
+    },
+    "mode": "retained",
+    "activation": "edit"
+  },
+  "expected": {
+    "status": "ok",
+    "operation": "complete",
+    "profileIdentity": {
+      "mechanismVersion": "1",
+      "schemaVersion": "1.0.0",
+      "profile": "neutral-cn-c/1",
+      "version": "1.0.0",
+      "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+      "base": {
+        "id": "neutral-cn-base/1",
+        "version": "fixture-1",
+        "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+      },
+      "descriptors": [
+        {
+          "id": "neutral-cn-descriptors/1",
+          "version": "fixture-1",
+          "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+        }
+      ]
+    },
+    "baseRevision": "9860ad85be0f244909ce89b3a126e770ea1eb80e7ba8461eb59886f50772b347",
+    "revision": "9860ad85be0f244909ce89b3a126e770ea1eb80e7ba8461eb59886f50772b347",
+    "report": {
+      "reportVersion": "2",
+      "operation": "complete",
+      "entries": [],
+      "rawStandardFindings": [],
+      "idMap": [],
+      "artifacts": [],
+      "sourceIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "targetIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "inputRevision": "9860ad85be0f244909ce89b3a126e770ea1eb80e7ba8461eb59886f50772b347",
+      "outputRevision": "9860ad85be0f244909ce89b3a126e770ea1eb80e7ba8461eb59886f50772b347"
+    },
+    "payload": {
+      "documentVersion": "1",
+      "profileIdentity": {
+        "mechanismVersion": "1",
+        "schemaVersion": "1.0.0",
+        "profile": "neutral-cn-c/1",
+        "version": "1.0.0",
+        "sha256": "fda235d3aa6448a2b37cd795a657e401b2b0186811a5da7f4bb5d080b262f99b",
+        "base": {
+          "id": "neutral-cn-base/1",
+          "version": "fixture-1",
+          "sha256": "cf8411383d0deeef400cebe16e13aea426ee5b62f30aee4142a1761e506e829e"
+        },
+        "descriptors": [
+          {
+            "id": "neutral-cn-descriptors/1",
+            "version": "fixture-1",
+            "sha256": "e7c42137045d9a36caee48e8fecce0934b4a6d7a3cf5c8957dd369ce784dccda"
+          }
+        ]
+      },
+      "tree": {
+        "$type": "bpmn:Definitions",
+        "id": "Definitions_sets",
+        "rootElements": [
+          {
+            "$type": "bpmn:Process",
+            "id": "Process_IO2",
+            "isExecutable": false,
+            "ioSpecification": {
+              "$type": "bpmn:InputOutputSpecification",
+              "dataInputs": [
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "DI_1",
+                  "name": "One"
+                },
+                {
+                  "$type": "bpmn:DataInput",
+                  "id": "DI_2",
+                  "name": "Two"
+                }
+              ],
+              "dataOutputs": [
+                {
+                  "$type": "bpmn:DataOutput",
+                  "id": "DO_1",
+                  "name": "Result"
+                }
+              ],
+              "inputSets": [
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "IS_A",
+                  "dataInputRefs": [
+                    "DI_1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:InputSet",
+                  "id": "IS_B",
+                  "dataInputRefs": [
+                    "DI_2"
+                  ]
+                }
+              ],
+              "outputSets": [
+                {
+                  "$type": "bpmn:OutputSet",
+                  "id": "OS_A",
+                  "dataOutputRefs": [
+                    "DO_1"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "bindings": [],
+      "semanticRevision": "9860ad85be0f244909ce89b3a126e770ea1eb80e7ba8461eb59886f50772b347"
+    }
+  },
+  "fixedPoint": true
+}

@@ -1,0 +1,124 @@
+{
+  "case": "render.regions.grow-width-height",
+  "clause": "DESIGN R3.3 \u00a79.4 Region geometry, including Process IO",
+  "witness": "the body grows to the last right edge plus padding and to the row height; the page grows to contain it",
+  "derivation": "render.layout.io-growth re-expressed: body (0,0,200000,60000) on page (0,0,600000,260000); lefts 132000, 332000, 388000; width' = 424000 + 10000 = 434000, height' = RH = 80000; pageBounds = smallest rectangle containing the page and the grown body = (0,0,600000,260000). Row rule (spec \u00a74.3): items in \u00a77.2 placement order; footprint max(object, label) width; left = anchor centre - footprint/2 when the anchor is shown, else contentLeft or previous right + gap; clamp to contentLeft; collision shifts right; one row at the top of the support body [Ly, Ly+RH], RH = max(minHeight, max(object+label) + 2 padding) (harmonization K2); every object centre lies on one line cy = Ly + max(A, (RH + A - B)/2), A = max h/2, B = max(h/2 + label height), so the union of the stacks is centred in the row (DESIGN \u00a79.4 'align centers on one IO row'); exact rationals, one roundEven per output coordinate.",
+  "operation": "layoutRegions",
+  "input": {
+    "region": {
+      "page": {
+        "x": 0,
+        "y": 0,
+        "width": 600000,
+        "height": 260000
+      },
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 200000,
+        "height": 60000
+      },
+      "tokens": {
+        "headerWidth": 30000,
+        "padding": 10000,
+        "gap": 20000,
+        "minHeight": 80000
+      },
+      "items": [
+        {
+          "elementId": "In_A",
+          "occurrenceKey": "In_A_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          },
+          "anchor": {
+            "x": 100000,
+            "y": 150000,
+            "width": 100000,
+            "height": 80000
+          }
+        },
+        {
+          "elementId": "In_B",
+          "occurrenceKey": "In_B_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          },
+          "anchor": {
+            "x": 300000,
+            "y": 150000,
+            "width": 100000,
+            "height": 80000
+          }
+        },
+        {
+          "elementId": "Out_C",
+          "occurrenceKey": "Out_C_di",
+          "object": {
+            "width": 36000,
+            "height": 50000
+          },
+          "anchor": {
+            "x": 300000,
+            "y": 150000,
+            "width": 100000,
+            "height": 80000
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "payload": {
+      "pageBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 600000,
+        "height": 260000
+      },
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 434000,
+        "height": 80000
+      },
+      "items": [
+        {
+          "elementId": "In_A",
+          "occurrenceKey": "In_A_di",
+          "bounds": {
+            "x": 132000,
+            "y": 15000,
+            "width": 36000,
+            "height": 50000
+          }
+        },
+        {
+          "elementId": "In_B",
+          "occurrenceKey": "In_B_di",
+          "bounds": {
+            "x": 332000,
+            "y": 15000,
+            "width": 36000,
+            "height": 50000
+          }
+        },
+        {
+          "elementId": "Out_C",
+          "occurrenceKey": "Out_C_di",
+          "bounds": {
+            "x": 388000,
+            "y": 15000,
+            "width": 36000,
+            "height": 50000
+          }
+        }
+      ]
+    },
+    "diagnostics": []
+  },
+  "author": "spec-seal"
+}

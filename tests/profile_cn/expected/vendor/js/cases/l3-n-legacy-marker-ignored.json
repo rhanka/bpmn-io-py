@@ -1,0 +1,688 @@
+{
+  "caseId": "l3-n-legacy-marker-ignored",
+  "operation": "normalize",
+  "phase": "normalize",
+  "profileArtifact": {
+    "path": "lot3-cn/expectations/profile/neutral-cn.json",
+    "sha256": "f94d4589a850bdf664612bc10e61be88efc6bae7d1f8e25f6b70b919f5096c32"
+  },
+  "inputArtifacts": [
+    {
+      "role": "envelope",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_support",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Calls",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_K",
+                  "name": "Start",
+                  "outgoing": [
+                    "Flow_K1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_K",
+                  "name": "Work",
+                  "incoming": [
+                    "Flow_K1"
+                  ],
+                  "outgoing": [
+                    "Flow_K2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_K",
+                  "name": "End",
+                  "incoming": [
+                    "Flow_K2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_K1",
+                  "sourceRef": "Start_K",
+                  "targetRef": "Task_K"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_K2",
+                  "sourceRef": "Task_K",
+                  "targetRef": "End_K"
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_Legacy",
+                  "name": "Billing",
+                  "incoming": [],
+                  "outgoing": [],
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "external",
+                      "textFormat": "text/plain"
+                    }
+                  ]
+                }
+              ],
+              "artifacts": [
+                {
+                  "$type": "bpmn:TextAnnotation",
+                  "id": "Note_Legacy",
+                  "text": "[Legacy call] Billing"
+                },
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_Note",
+                  "sourceRef": "Note_Legacy",
+                  "targetRef": "Call_Legacy",
+                  "associationDirection": "None"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "0a4f3857319e2f35b0a3fc0df3f0f928f8aa4962db50f815ede39c324a99388f"
+      }
+    },
+    {
+      "role": "activation",
+      "json": "qualification"
+    }
+  ],
+  "expectedArtifacts": [
+    {
+      "role": "result",
+      "json": {
+        "status": "ok",
+        "operation": "normalize",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "baseRevision": "0a4f3857319e2f35b0a3fc0df3f0f928f8aa4962db50f815ede39c324a99388f",
+        "revision": "caffb8da25c3e185f152304d0d4406e4592ee4d9dcf83d5e13c72a1295884494",
+        "report": {
+          "reportVersion": "2",
+          "operation": "normalize",
+          "sourceIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "targetIdentity": {
+            "mechanismVersion": "1",
+            "schemaVersion": "1.0.0",
+            "profile": "neutral-cn/1",
+            "version": "1.1.0",
+            "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+            "base": {
+              "id": "neutral-cn-base/1",
+              "version": "fixture-cn-1",
+              "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+            },
+            "descriptors": [
+              {
+                "id": "neutral-cn-descriptors/1",
+                "version": "fixture-cn-1",
+                "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+              }
+            ]
+          },
+          "inputRevision": "0a4f3857319e2f35b0a3fc0df3f0f928f8aa4962db50f815ede39c324a99388f",
+          "outputRevision": "caffb8da25c3e185f152304d0d4406e4592ee4d9dcf83d5e13c72a1295884494",
+          "entries": [
+            {
+              "code": "normalize/assignRef",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "normalize",
+              "ruleId": "n-structure",
+              "messageKey": "normalize.assignRef",
+              "disposition": "corrected",
+              "source": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "generated"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/1/participants/0/processRef",
+                "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                "provenance": "generated"
+              },
+              "property": "processRef",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": "Process_A"
+            },
+            {
+              "code": "normalize/ensure",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "normalize",
+              "ruleId": "n-structure",
+              "messageKey": "normalize.ensure",
+              "disposition": "corrected",
+              "source": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "generated"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/1",
+                "targetId": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1",
+                "provenance": "generated"
+              },
+              "property": "rootElements",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": {
+                "$type": "bpmn:Collaboration",
+                "id": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1",
+                "name": "collaboration",
+                "participants": [
+                  {
+                    "$type": "bpmn:Participant",
+                    "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                    "name": "main-participant",
+                    "processRef": "Process_A"
+                  }
+                ]
+              }
+            },
+            {
+              "code": "normalize/ensure",
+              "severity": "info",
+              "classification": "repairable",
+              "stage": "normalize",
+              "ruleId": "n-structure",
+              "messageKey": "normalize.ensure",
+              "disposition": "corrected",
+              "source": {
+                "domain": "none",
+                "pointer": null,
+                "targetId": null,
+                "provenance": "generated"
+              },
+              "result": {
+                "domain": "tree",
+                "pointer": "/rootElements/1/participants/0",
+                "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                "provenance": "generated"
+              },
+              "property": "participants",
+              "beforePresent": false,
+              "afterPresent": true,
+              "after": {
+                "$type": "bpmn:Participant",
+                "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                "name": "main-participant",
+                "processRef": "Process_A"
+              }
+            }
+          ],
+          "rawStandardFindings": [],
+          "idMap": [],
+          "artifacts": []
+        },
+        "payload": {
+          "envelope": {
+            "documentVersion": "1",
+            "profileIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "tree": {
+              "$type": "bpmn:Definitions",
+              "id": "Definitions_support",
+              "targetNamespace": "urn:neutral-cn:1",
+              "exporterVersion": "fixture-cn-1",
+              "rootElements": [
+                {
+                  "$type": "bpmn:Process",
+                  "id": "Process_A",
+                  "name": "Calls",
+                  "isExecutable": false,
+                  "flowElements": [
+                    {
+                      "$type": "bpmn:StartEvent",
+                      "id": "Start_K",
+                      "name": "Start",
+                      "outgoing": [
+                        "Flow_K1"
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:Task",
+                      "id": "Task_K",
+                      "name": "Work",
+                      "incoming": [
+                        "Flow_K1"
+                      ],
+                      "outgoing": [
+                        "Flow_K2"
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:EndEvent",
+                      "id": "End_K",
+                      "name": "End",
+                      "incoming": [
+                        "Flow_K2"
+                      ]
+                    },
+                    {
+                      "$type": "bpmn:SequenceFlow",
+                      "id": "Flow_K1",
+                      "sourceRef": "Start_K",
+                      "targetRef": "Task_K"
+                    },
+                    {
+                      "$type": "bpmn:SequenceFlow",
+                      "id": "Flow_K2",
+                      "sourceRef": "Task_K",
+                      "targetRef": "End_K"
+                    },
+                    {
+                      "$type": "bpmn:CallActivity",
+                      "id": "Call_Legacy",
+                      "name": "Billing",
+                      "incoming": [],
+                      "outgoing": [],
+                      "documentation": [
+                        {
+                          "$type": "bpmn:Documentation",
+                          "text": "external",
+                          "textFormat": "text/plain"
+                        }
+                      ]
+                    }
+                  ],
+                  "artifacts": [
+                    {
+                      "$type": "bpmn:TextAnnotation",
+                      "id": "Note_Legacy",
+                      "text": "[Legacy call] Billing"
+                    },
+                    {
+                      "$type": "bpmn:Association",
+                      "id": "Assoc_Note",
+                      "sourceRef": "Note_Legacy",
+                      "targetRef": "Call_Legacy",
+                      "associationDirection": "None"
+                    }
+                  ]
+                },
+                {
+                  "$type": "bpmn:Collaboration",
+                  "id": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1",
+                  "name": "collaboration",
+                  "participants": [
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                      "name": "main-participant",
+                      "processRef": "Process_A"
+                    }
+                  ]
+                }
+              ]
+            },
+            "bindings": [
+              {
+                "ownerId": "Process_A",
+                "role": "collaboration",
+                "targetId": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1"
+              },
+              {
+                "ownerId": "Process_A",
+                "role": "main-participant",
+                "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999"
+              }
+            ],
+            "semanticRevision": "caffb8da25c3e185f152304d0d4406e4592ee4d9dcf83d5e13c72a1295884494"
+          },
+          "placements": [],
+          "report": {
+            "reportVersion": "2",
+            "operation": "normalize",
+            "sourceIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "targetIdentity": {
+              "mechanismVersion": "1",
+              "schemaVersion": "1.0.0",
+              "profile": "neutral-cn/1",
+              "version": "1.1.0",
+              "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+              "base": {
+                "id": "neutral-cn-base/1",
+                "version": "fixture-cn-1",
+                "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+              },
+              "descriptors": [
+                {
+                  "id": "neutral-cn-descriptors/1",
+                  "version": "fixture-cn-1",
+                  "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+                }
+              ]
+            },
+            "inputRevision": "0a4f3857319e2f35b0a3fc0df3f0f928f8aa4962db50f815ede39c324a99388f",
+            "outputRevision": "caffb8da25c3e185f152304d0d4406e4592ee4d9dcf83d5e13c72a1295884494",
+            "entries": [
+              {
+                "code": "normalize/assignRef",
+                "severity": "info",
+                "classification": "repairable",
+                "stage": "normalize",
+                "ruleId": "n-structure",
+                "messageKey": "normalize.assignRef",
+                "disposition": "corrected",
+                "source": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "generated"
+                },
+                "result": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/1/participants/0/processRef",
+                  "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                  "provenance": "generated"
+                },
+                "property": "processRef",
+                "beforePresent": false,
+                "afterPresent": true,
+                "after": "Process_A"
+              },
+              {
+                "code": "normalize/ensure",
+                "severity": "info",
+                "classification": "repairable",
+                "stage": "normalize",
+                "ruleId": "n-structure",
+                "messageKey": "normalize.ensure",
+                "disposition": "corrected",
+                "source": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "generated"
+                },
+                "result": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/1",
+                  "targetId": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1",
+                  "provenance": "generated"
+                },
+                "property": "rootElements",
+                "beforePresent": false,
+                "afterPresent": true,
+                "after": {
+                  "$type": "bpmn:Collaboration",
+                  "id": "g_0a8caa16444f4c61e14ffc4d7b77eb0dd75f8764840be0d3d7b8be550c0923d1",
+                  "name": "collaboration",
+                  "participants": [
+                    {
+                      "$type": "bpmn:Participant",
+                      "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                      "name": "main-participant",
+                      "processRef": "Process_A"
+                    }
+                  ]
+                }
+              },
+              {
+                "code": "normalize/ensure",
+                "severity": "info",
+                "classification": "repairable",
+                "stage": "normalize",
+                "ruleId": "n-structure",
+                "messageKey": "normalize.ensure",
+                "disposition": "corrected",
+                "source": {
+                  "domain": "none",
+                  "pointer": null,
+                  "targetId": null,
+                  "provenance": "generated"
+                },
+                "result": {
+                  "domain": "tree",
+                  "pointer": "/rootElements/1/participants/0",
+                  "targetId": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                  "provenance": "generated"
+                },
+                "property": "participants",
+                "beforePresent": false,
+                "afterPresent": true,
+                "after": {
+                  "$type": "bpmn:Participant",
+                  "id": "g_63c1320e77563613dfeb040257a357d372f10c6410201070f434944e2a26a999",
+                  "name": "main-participant",
+                  "processRef": "Process_A"
+                }
+              }
+            ],
+            "rawStandardFindings": [],
+            "idMap": [],
+            "artifacts": []
+          }
+        }
+      }
+    },
+    {
+      "role": "caller-state",
+      "json": {
+        "documentVersion": "1",
+        "profileIdentity": {
+          "mechanismVersion": "1",
+          "schemaVersion": "1.0.0",
+          "profile": "neutral-cn/1",
+          "version": "1.1.0",
+          "sha256": "cec8e0fdb6bab44ed31b15042372ff21d031b561ee83052a20bb10eade8b1845",
+          "base": {
+            "id": "neutral-cn-base/1",
+            "version": "fixture-cn-1",
+            "sha256": "92ed7564f70e2ab45c0b042f1621d37b0c9ffb2e24466ed9d35a75a275fd281a"
+          },
+          "descriptors": [
+            {
+              "id": "neutral-cn-descriptors/1",
+              "version": "fixture-cn-1",
+              "sha256": "de6bd1eee25c76da263e67e1302be70fa5cb045a18721254a1bd08c29c67b7b3"
+            }
+          ]
+        },
+        "tree": {
+          "$type": "bpmn:Definitions",
+          "id": "Definitions_support",
+          "targetNamespace": "urn:neutral-cn:1",
+          "exporterVersion": "fixture-cn-1",
+          "rootElements": [
+            {
+              "$type": "bpmn:Process",
+              "id": "Process_A",
+              "name": "Calls",
+              "isExecutable": false,
+              "flowElements": [
+                {
+                  "$type": "bpmn:StartEvent",
+                  "id": "Start_K",
+                  "name": "Start",
+                  "outgoing": [
+                    "Flow_K1"
+                  ]
+                },
+                {
+                  "$type": "bpmn:Task",
+                  "id": "Task_K",
+                  "name": "Work",
+                  "incoming": [
+                    "Flow_K1"
+                  ],
+                  "outgoing": [
+                    "Flow_K2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:EndEvent",
+                  "id": "End_K",
+                  "name": "End",
+                  "incoming": [
+                    "Flow_K2"
+                  ]
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_K1",
+                  "sourceRef": "Start_K",
+                  "targetRef": "Task_K"
+                },
+                {
+                  "$type": "bpmn:SequenceFlow",
+                  "id": "Flow_K2",
+                  "sourceRef": "Task_K",
+                  "targetRef": "End_K"
+                },
+                {
+                  "$type": "bpmn:CallActivity",
+                  "id": "Call_Legacy",
+                  "name": "Billing",
+                  "incoming": [],
+                  "outgoing": [],
+                  "documentation": [
+                    {
+                      "$type": "bpmn:Documentation",
+                      "text": "external",
+                      "textFormat": "text/plain"
+                    }
+                  ]
+                }
+              ],
+              "artifacts": [
+                {
+                  "$type": "bpmn:TextAnnotation",
+                  "id": "Note_Legacy",
+                  "text": "[Legacy call] Billing"
+                },
+                {
+                  "$type": "bpmn:Association",
+                  "id": "Assoc_Note",
+                  "sourceRef": "Note_Legacy",
+                  "targetRef": "Call_Legacy",
+                  "associationDirection": "None"
+                }
+              ]
+            }
+          ]
+        },
+        "bindings": [],
+        "semanticRevision": "0a4f3857319e2f35b0a3fc0df3f0f928f8aa4962db50f815ede39c324a99388f"
+      }
+    }
+  ],
+  "expectedStatus": "ok",
+  "comparatorIds": [
+    "result-1/lot3",
+    "source-preservation/lot3",
+    "profile-c14n/2",
+    "placements-order/lot3"
+  ]
+}
